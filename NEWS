@@ -1,0 +1,180 @@
+NEWS file for piuparts
+======================
+
+                piuparts is a tool for testing that .deb packages can be
+                installed, upgraded, and removed without trouble. See
+                the README file and the manual page for more
+                information. This file summarizes the major changes,
+                particularly user visible changes, for each release.
+                Detailed change information can be found in bzr commit
+                messages.
+
+Version 0.20, September 22, 2006
+--------------------------------
+
+                When running external commands, use subprocess.Popen so that
+                there is no need for tricky (and therefore buggy) quoting
+                of shell command line arguments.
+
+Version 0.19, September 8, 2006
+-------------------------------
+
+                When reporting a bad symlink, show the target.
+
+
+Version 0.18, September 7, 2006
+-------------------------------
+
+New features
+
+                Piuparts now checks for symlinks whose target does not
+                exist.
+                
+                Option parsing code has been rewritten, and --help now
+                works better.
+                
+                The chroot is now minimized before used: all unnecessary
+                packages are purged.
+                
+                /dev/MAKEDEV, /etc/nologin, /usr/doc/cpio,
+                /var/spool/cron added to default ignores.
+                
+                A version number may now begin with a + character. There
+                was a package that did that and piuparts crashed.
+
+
+Version 0.17
+------------
+
+Bug fixes
+
+                The configuration files of piuparts-master/slave are
+                now documented in the README.
+                
+                The Python profiler is no longer used. It used to be,
+                but that was a leftover from development (also known
+                as failure to read diffs before committing).
+                
+                When testing upgrades between distributions, piuparts
+                now makes sure that the packages being tested are upgraded,
+                even if it means removing an old version of a dependency.
+
+New features
+
+                Piuparts now checks for processes running inside the
+                chroot after it has installed or purged a package.
+                Because it uses policy-rc.d to prevent any services
+                from starting, no processes should run inside the
+                chroot after an installation or a purge has completed.
+                This check then finds packages that don't use invoke-rc.d
+                to start new processes.
+                
+                A number of new default ignores have been added:
+                /etc/modprobe.d, compiled versions of debconf's Python
+                modules, papercut, ssl certificates.
+                
+                /proc is now mounted (and unmounted) inside the chroot.
+
+
+Version 0.16
+------------
+
+Bug fixes
+
+                The temporary directory for the chroot was not being
+                removed in all cases when running apt-get failed. This
+                has now been fixed.
+
+New features
+
+                Added piuparts-analyze.py, which looks at new logs of
+                failed tests and compares them to logs of failed tests
+                for earlier versions of the same packages, and if so,
+                moves them automatically around. This saves a bit of
+                manual works. Thanks to Goswin Brederlow for the idea.
+                
+                When piuparts creates a chroot from a tarball (option
+                -b), it now upgrades it before using it.
+
+                A number of new entries to the default ignores list.
+                
+                Log files are now created with permissions that are
+                0666 modified with the process umask.
+                
+                piuparts-report.py has been optimized somewhat.
+
+Version 0.15
+------------
+
+Bug fixes
+
+                The dependency parser in piupartslib now understands
+                < and > (they're deprecated but one or two packges still
+                use them). It also now allows underscores in package
+                names because of the type-handling package.
+                
+                Small fixes to the manual page.
+                
+New features and significant user visible changes
+
+                piuparts-master now understands Provides: headers.
+                
+                A number of new entries to the default ignores list.
+                
+                New option --keep-sources-list from John Wright.
+
+
+Version 0.14
+------------
+
+Bug fixes
+
+                Specifications for ignoring some directories were buggy
+                and have now been fixed: /var/spool/news, /var/lib/cvs.
+                
+                When testing a .deb file given on the command line,
+                if any of its dependencies were missing, the package
+                itself would be removed instead of piuparts reporting
+                an error. This has been fixed.
+                
+                The check for whether a package is marked untestable
+                for piuparts-master now works.
+
+New features and significant user visible changes
+
+                New program piuparts-report.py produces some "statistics"
+                about packages and their status with regard to testing
+                with piuparts-slave.
+                
+                The chroot is always set up for piuparts, even if it is
+                unpacked from a tarball. This reduces problems with 
+                out-of-date chroots and with using the pbuilder base.tgz
+                tarball.
+
+                Now ignored by default: /var/lib/firebird, /var/spool/news,
+                /var/lib/rbldns, /home/ftp.
+
+Version 0.13
+------------
+
+Bug fixes
+
+                The configuration for apt-get (in the chroot) to allow
+                un-authenticated sources now actually works. There used
+                to be a typo.
+
+New features and other user visible changes
+
+                The old run-piuparts.py script has been replaced by a
+                distributed system, consisting of piuparts-master.py and
+                piuparts-slave.py, plus a reporting script
+                piuparts-report.py. Since these are not useful for most
+                users, they're not installed on $PATH, but in
+                /usr/share/piuparts instead.
+                
+                The slave part also runs upgrade tests between Debian
+                releases, which run-piuparts.py didn't.
+                
+                Some additional files are ignored by default when
+                comparing the state of the chroot before and after
+                package installation.
