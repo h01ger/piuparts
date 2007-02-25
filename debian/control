@@ -1,6 +1,6 @@
 Source: piuparts
-Maintainer: Lustre Developers team <piuparts-devel@lists.alioth.debian.org>
-Uploaders: Lars Wirzenius <lars@debian.org>, Amaya Rodrigo Sastre <amaya@debian.org>, Bill Allombert <ballombe@debian.org>, Ian Jackson <iwj@debian.org>, John Wright <jsw@movingsucks.com>, Alastair McKinstry <mckinstry@debian.org>
+Maintainer: piuparts developers team <piuparts-devel@lists.alioth.debian.org>
+Uploaders: Lars Wirzenius <lars@debian.org>, Amaya Rodrigo Sastre <amaya@debian.org>, Bill Allombert <ballombe@debian.org>, Ian Jackson <iwj@debian.org>, John Wright <john@movingsucks.org>, Alastair McKinstry <mckinstry@debian.org>
 Section: devel
 Priority: optional
 Standards-Version: 3.7.2
