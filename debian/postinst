@@ -1,7 +1,0 @@
-#!/bin/sh
-
-set -e
-
-if [ "$1" = "configure" ]; then
-  update-python-modules -i piuparts
-fi
