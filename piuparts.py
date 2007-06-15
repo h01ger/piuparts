@@ -555,7 +555,6 @@ class Chroot:
             self.copy_files(filenames, "tmp")
             tmp_files = [os.path.basename(a) for a in filenames]
             tmp_files = [os.path.join("tmp", name) for name in tmp_files]
-            tmp_files = [shellquote(x) for x in tmp_files]
             self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
             self.run(["apt-get", "-yf", "--no-remove", "install"])
             self.run(["apt-get", "clean"])
