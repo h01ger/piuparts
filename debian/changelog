@@ -4,11 +4,16 @@ piuparts (0.21) UNRELEASED; urgency=low
     - Fix the name of the maintainer (we're the "piuparts developers team", not
       Lustre)
     - Correct my email address in the uploaders field
-  * piuparts:
+  * piuparts.py
     - Don't call shellquote() on arguments, since we're not using the shell.
       (Closes: #386839)
+    - Add a --warn-on-others option.  See the man page for details.
+  * piuparts.docbook:
+    - Document the --warn-on-others option.
+  * Makefile:
+    - Give docbook2x-man a --encoding=utf-8 argument.  It was failing to build.
 
- -- John Wright <john@movingsucks.org>  Mon, 18 Jun 2007 21:42:07 +0100
+ -- John Wright <john.wright@hp.com>  Mon, 18 Jun 2007 22:58:04 +0100
 
 piuparts (0.20-3) unstable; urgency=low
 

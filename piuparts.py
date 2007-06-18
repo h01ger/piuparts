@@ -65,6 +65,7 @@ class Settings:
         self.savetgz = None
         self.endmeta = None
         self.saveendmeta = None
+        self.warn_on_others = False
         self.keep_sources_list = False
         self.check_broken_symlinks = True
         self.ignored_files = [
@@ -767,6 +768,17 @@ def file_list(meta_infos, file_owners):
             list.append("    owned by: %s\n" % ", ".join(file_owners[name]))
     return "".join(list)
 
+
+def offending_packages(meta_infos, file_owners):
+    """Return a Set of offending packages."""
+    pkgset = sets.Set()
+    for name, data in meta_infos:
+        if name in file_owners:
+            for pkg in file_owners[name]:
+                pkgset.add(pkg)
+    return pkgset
+
+
 def diff_selections(chroot, selections):
     """Compare original and current package selection.
        Return dict where dict[package_name] = original_status, that is,
@@ -794,15 +806,25 @@ def get_package_names_from_package_files(filenames):
     return list
 
 
-def check_results(chroot, root_info, file_owners):
+def check_results(chroot, root_info, file_owners, packages=[]):
     """Check that current chroot state matches 'root_info'."""
+    if settings.warn_on_others:
+        pkgset = sets.Set(packages)
+    else:
+        pkgset = sets.Set()
     current_info = chroot.save_meta_data()
     (new, removed, modified) = diff_meta_data(root_info, current_info)
     ok = True
     if new:
-        logging.error("Package purging left files on system:\n" + 
-                      file_list(new, file_owners))
-        ok = False
+        msg = "Package purging left files on system:\n" + \
+              file_list(new, file_owners)
+        offendingset = offending_packages(new, file_owners)
+        if settings.warn_on_others and not offendingset.intersection(pkgset):
+            # Just print a warning since none of our packages caused the error
+            logging.info("Warning: " + msg)
+        else:
+            logging.error(msg)
+            ok = False
     if removed:
         logging.error("After purging files have disappeared:\n" +
                       file_list(removed, file_owners))
@@ -840,7 +862,7 @@ def install_purge_test(chroot, root_info, selections, args, packages):
     chroot.check_for_broken_symlinks()
     chroot.unmount_proc()
 
-    return check_results(chroot, root_info, file_owners)
+    return check_results(chroot, root_info, file_owners, packages=packages)
 
 
 def install_upgrade_test(chroot, root_info, selections, args, package_names):
@@ -1075,6 +1097,12 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="No meaning anymore.")
     
+    parser.add_option("--warn-on-others",
+                      action="store_true", default=False,
+                      help="Print a warning rather than failing if "
+                           "files are left behind by a package that "
+                           "was not given on the command-line.")
+    
     (opts, args) = parser.parse_args()
     
     settings.args_are_package_files = not opts.apt
@@ -1092,6 +1120,7 @@ def parse_command_line():
                                for x in opts.mirror]
     settings.check_broken_symlinks = not opts.no_symlinks
     settings.savetgz = opts.save
+    settings.warn_on_others = opts.warn_on_others
 
     if opts.tmpdir is not None:
         settings.tmpdir = opts.tmpdir

@@ -401,6 +401,34 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         
             <varlistentry>
             
+                <term><option>--warn-on-others</option></term>
+                
+                <listitem>
+                
+                    <para>Print a warning rather than failing if files are 
+                    left behind by a package that was not given on
+                    the command-line.</para>
+
+                    <para>This way, you can basically isolate the purge test
+                    to your own packages.  If a package that is brought in as
+                    a dependency doesn't purge cleanly, the test will not
+                    fail because of it (but a warning message will be
+                    printed).</para>
+
+                    <para>This does have its shortcomings:  if a file is left
+                    behind that doesn't seem to belong to any package, using
+                    this option will make that a warning rather than a failure.
+                    In my opinion, this is an acceptable risk -- the offending
+                    file would still be output (as a warning), and the
+                    developer would hopefully know which files belong to their
+                    package.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
                 <term><option>-V</option></term>
                 <term><option>--version</option></term>
                 

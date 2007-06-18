@@ -14,7 +14,7 @@ ignore = -I fdmount -N
 all: piuparts.1
 
 piuparts.1: piuparts.docbook
-	docbook2x-man piuparts.docbook
+	docbook2x-man --encoding=utf-8 piuparts.docbook
 
 install: all
 	install -d $(sbindir) 
