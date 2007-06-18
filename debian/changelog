@@ -1,11 +1,14 @@
-piuparts (0.20-4) UNRELEASED; urgency=low
+piuparts (0.21) UNRELEASED; urgency=low
 
   * debian/control:
     - Fix the name of the maintainer (we're the "piuparts developers team", not
       Lustre)
     - Correct my email address in the uploaders field
+  * piuparts:
+    - Don't call shellquote() on arguments, since we're not using the shell.
+      (Closes: #386839)
 
- -- John Wright <john@movingsucks.org>  Sat, 24 Feb 2007 19:26:25 -0700
+ -- John Wright <john@movingsucks.org>  Mon, 18 Jun 2007 21:42:07 +0100
 
 piuparts (0.20-3) unstable; urgency=low
 

@@ -1,0 +1,73 @@
+body {
+    color: #000000; 
+    background: #fffafa;
+    font-family: serif;
+    margin: 0 0 0 0;
+    border: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+
+div.main {
+    margin: 2ex 2em 2ex 2em;
+    padding: 0ex 0ex 0ex 0em;
+    border: 0 0 0 0;
+
+    text-align: justify;
+    line-height: 1.5;
+    clear: right;
+}
+
+h1 {
+    text-align: left; 
+    font-size: 150%;
+    font-family: sans-serif;
+}
+
+h2 {
+    text-align: left; 
+    padding-top: 1ex;
+    font-size: 130%;
+    font-family: sans-serif;
+    margin-left: 0em;
+}
+
+h3 {
+    font-size: 100%;
+    text-align: left;
+    font-family: sans-serif;
+}
+
+a:link {
+    color:#000be1;
+}
+
+a:visited {
+    color:#868ad9;
+}
+
+a:link:active, a:link:visited {
+    color:#ff0000;
+}
+
+a:link:hover, a:visited:hover {
+    background: #dddddd;
+}
+
+.main .sparse li {
+    padding-top: 1ex;
+    margin-top: 1ex;
+    border-top: 1ex;
+}
+
+td, th {
+    text-align: right;
+}
+
+ul li {
+    padding-top: 1ex;
+    padding-bottom: 1ex;
+}
+ul li li {
+    padding-top: 0.5ex;
+    padding-bottom: 0;
+}
