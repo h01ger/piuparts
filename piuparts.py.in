@@ -30,7 +30,7 @@ Lars Wirzenius <liw@iki.fi>
 """
 
 
-VERSION = "0.20"
+VERSION = "__PIUPARTS_VERSION__"
 
 
 import time

@@ -11,10 +11,14 @@ etcdir = $(prefix)/etc
 # mirror = -m 'http://liw.iki.fi/debian main'
 ignore = -I fdmount -N
 
-all: piuparts.1
+all: piuparts.1 piuparts.py
 
 piuparts.1: piuparts.docbook
 	docbook2x-man --encoding=utf-8 piuparts.docbook
+
+piuparts.py: piuparts.py.in
+	m4 -D __PIUPARTS_VERSION__=$$(dpkg-parsechangelog | grep ^Version: \
+		| cut -d' ' -f2) < $< > $@
 
 install: all
 	install -d $(sbindir) 
@@ -53,4 +57,4 @@ unittests:
 	python unittests.py
 
 clean:
-	rm -rf tmp* piuparts.1
+	rm -rf tmp* dir=settings.tmpdir* piuparts.1 piuparts.py
