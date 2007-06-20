@@ -4,7 +4,7 @@ Uploaders: Lars Wirzenius <lars@debian.org>, Amaya Rodrigo Sastre <amaya@debian.
 Section: devel
 Priority: optional
 Standards-Version: 3.7.2
-Build-Depends-Indep: docbook2x, python-support
+Build-Depends-Indep: docbook2x, python-support, m4
 XS-Python-Version: all
 
 Package: piuparts
