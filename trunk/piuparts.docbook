@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+Copyright 2005 Lars Wirzenius (liw@iki.fi)
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2 of the License, or (at your
+option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+-->
+
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN"
+"file:///usr/share/xml/docbook/schema/dtd/4.1/docbookx.dtd"
+[]>
+
+<refentry>
+
+    <refentryinfo>
+        <address>
+            <email>liw@iki.fi</email>
+        </address>
+        <author>
+            <firstname>Lars</firstname>
+            <surname>Wirzenius</surname>
+        </author>
+        <date>2005-07-10</date>
+    </refentryinfo>
+    
+    <refmeta>
+        <refentrytitle>piuparts</refentrytitle>
+        <manvolnum>1</manvolnum>
+    </refmeta>
+    
+    <refnamediv>
+        <refname>piuparts</refname> 
+        <refpurpose>.deb installation, upgrade, and removal 
+                    testing suite</refpurpose>
+    </refnamediv>
+    
+    <refsynopsisdiv>
+        <cmdsynopsis>
+            <command>piuparts</command>
+            <arg><option>-apvV</option></arg>
+            <arg><option>-d</option> <replaceable>distro</replaceable></arg>
+            <arg><option>-i</option> <replaceable>filename</replaceable></arg>
+            <arg><option>-I</option> <replaceable>regexp</replaceable></arg>
+            <arg><option>-l</option> <replaceable>logfile</replaceable></arg>
+            <arg><option>-m</option> <replaceable>url</replaceable></arg>
+            <arg rep="repeat"><replaceable>package</replaceable></arg>
+        </cmdsynopsis>
+    </refsynopsisdiv>
+    
+    <refsect1>
+        <title>DESCRIPTION</title>
+
+        <para><command>piuparts</command> tests that Debian packages
+        handle installation, upgrading, and removal correctly. It does
+        this by creating a minimal Debian installation in a chroot, and
+        installing, upgrading, and removing packages in that
+        environment, and comparing the state of the directory tree
+        before and after. <command>piuparts</command> reports any files
+        that have been added, removed, or modified during this
+        process.</para>
+        
+        <para><command>piuparts</command> is meant as a quality
+        assurance tool for people who create Debian packages to test
+        them before they upload them to the Debian package
+        archive.</para>
+        
+        <para>By default, piuparts can do three different tests:</para>
+        
+        <orderedlist>
+        
+            <listitem><para>A simple install-purge test within one
+            Debian distribution (chosen with the <option>-d</option>
+            option, <literal>unstable</literal> by default). It sets up
+            the chroot with the desired distribution, then installs and
+            purges the packages, and reports problems.</para></listitem>
+        
+            <listitem><para>A simple install-upgrade-purge test within
+            one Debian distribution. This test is like the install-purge
+            test, but install the packages first via
+            <command>apt-get</command> and then from the package files
+            given on the command line. If the command line has package
+            names (option <option>-a</option> used), or the packages are
+            not known to <command>apt-get</command> (new packages), this
+            test is skipped, otherwise it is performed
+            automatically.</para></listitem>
+
+            <listitem><para>An upgrade test between Debian releases.
+            This test is enabled by using the <option>-d</option> option
+            multiple times and disables the other two tests. It sets up
+            the chroot with the first distribution named, then upgrades
+            it to each successive one, and then remembers the directory
+            tree state at the end. After this, it starts over with the
+            chroot of the first distribution, installs the desired
+            packages (via <command>apt-get</command>), and does the
+            successive upgrading (via <command>apt-get
+            dist-upgrade</command>). Then, if package files (and not
+            just package names) were given on the command line, it
+            installs them. Finally, it reports problems against the
+            state of the directory tree at the last distribution
+            compared with the state without the packages having been
+            installed. This test can be quite slow to
+            execute.</para>
+            
+            <para>Note that this does not work with experimental,
+            because apt-get does not automatically upgrade to packages in
+            experimental. To test a particular package or group of packages
+            in experimental, use the second test.</para></listitem>
+            
+        </orderedlist>
+        
+        <para>Command line arguments are names of package files by
+        default (e.g., <filename>piuparts_1.0-1_all.deb</filename>) or
+        names of packages, if the <option>-a</option> option is
+        given. All packages will be tested as a group, not one
+        by one.</para>
+        
+        <para><command>piuparts</command> outputs to the standard output
+        some log messages to show what is going on. If a
+        log file is used, the messages go there as well.</para>
+
+        <para><command>piuparts</command> needs to be run as root.</para>
+        
+    </refsect1>
+
+    <refsect1>
+        <title>OPTIONS</title>
+        
+        <para>Options must come before the other command line
+        arguments.</para>
+
+        <variablelist>
+        
+            <varlistentry>
+            
+                <term><option>-a</option></term>
+                <term><option>--apt</option></term>
+                
+                <listitem>
+                
+                    <para>The <replaceable>package</replaceable> arguments
+                    on the command line are to be treated as package names
+                    and installed via <command>apt-get</command> instead
+                    of being names of package files, to be installed
+                    via <command>dpkg -i</command>.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-b</option> <replaceable>tarball</replaceable></term>
+                <term><option>--basetgz=</option><replaceable>tarball</replaceable></term>
+                
+                <listitem>
+                
+                    <para>Use <replaceable>tarball</replaceable> as the
+                    contents of the initial chroot, instead of building
+                    a new one with <command>debootstrap</command>.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-d</option> <replaceable>name</replaceable></term>
+                <term><option>--distribution=</option><replaceable>name</replaceable></term>
+                
+                <listitem>
+                
+                    <para>Which Debian distribution to use: a code name
+                    (sarge, etch, sid) or experimental. The default is
+                    sid (i.e, unstable).</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-i</option> <replaceable>filename</replaceable></term>
+                <term><option>--ignore=</option><replaceable>filename</replaceable></term>
+                
+                <listitem>
+                
+                    <para>Add a filename to the list of filenames to be
+                    ignored when comparing changes before and after
+                    installation. By default,
+                    <command>piuparts</command> ignores files that
+                    always change during a package installation and
+                    uninstallation, such as <command>dpkg</command>
+                    status files. The filename should be relative to the
+                    root of the chroot (e.g.,
+                    <filename>var/lib/dpkg/status</filename>). This
+                    option can be used as many times as
+                    necessary.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-I</option> <replaceable>regexp</replaceable></term>
+                <term><option>--ignore-regexp=</option><replaceable>regexp</replaceable></term>
+                
+                <listitem>
+                
+                    <para>Add a regular expression pattern to the list
+                    of patterns for filenames to be ignored when
+                    comparing changes before and after installation.
+                    This option can be used as many times as
+                    necessary.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-k</option></term>
+                <term><option>--keep-tmpdir</option></term>
+                
+                <listitem>
+                
+                    <para>Don't remove the temporary directory for
+		    the chroot when the program ends.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>--keep-sources-list</option></term>
+                
+                <listitem>
+                
+                    <para>Don't modify the chroot's etc/apt/sources.list (only
+                    makes sense with <option>--basetgz</option>).</para>
+
+                </listitem>
+            
+            </varlistentry>
+            
+            <varlistentry>
+            
+                <term><option>-l</option> <replaceable>filename</replaceable></term>
+                <term><option>--log-file=</option><replaceable>filename</replaceable></term>
+                
+                <listitem>
+                
+                    <para>Write log file to
+                    <replaceable>filename</replaceable> in addition to
+                    the standard output.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-m</option> <replaceable>url</replaceable></term>
+                <term><option>--mirror=</option><replaceable>url</replaceable></term>
+                
+                <listitem>
+                
+                    <para>Which Debian mirror to use. The default is the
+                    first mirror named in
+                    <filename>/etc/apt/sources.list</filename> or
+                    <filename>http://ftp.debian.org/</filename> if none is
+                    found. This option may be used multiple times to use
+                    multiple mirrors. Only the first mirror is used with
+                    <command>debootstrap</command>.</para>
+                    
+                    <para>The 'components' that are used for a mirror
+                    can also be set with this option: a space separated
+                    list within the same argument (so you need to quote
+                    the entire argument in the shell). If no components
+                    are given explicitly, the usual Debian components
+                    are used (<literal>main</literal>,
+                    <literal>contrib</literal>, and
+                    <literal>non-free</literal>). For the mirrors read from
+                    <filename>/etc/apt/sources.list</filename>, the 
+                    components are read from the same place.</para>
+                    
+                    <para>Note that <literal>file:</literal> addresses
+                    do not currently work, since the files aren't
+                    accessible from within the chroot and Lars has been
+                    too lazy to add bind mounting support.</para>
+
+                </listitem>
+            
+            </varlistentry>
+
+            <varlistentry>
+            
+                <term><option>-n</option></term>
+                <term><option>--no-ignores</option></term>
+                
+                <listitem>
+                
+                    <para>Forget all built-in and other ignores that
+                    have been set so far. Any <option>-i</option> or
+                    <option>-I</option> arguments that come after
+                    this one will be obeyed, but none of the ones
+                    that come before.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-N</option></term>
+                <term><option>--no-symlinks</option></term>
+                
+                <listitem>
+                
+                    <para>Don't check for broken symlinks.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-p</option></term>
+                <term><option>--pbuilder</option></term>
+                
+                <listitem>
+                
+                    <para>Use
+                    <filename>/var/cache/pbuilder/base.tgz</filename> as
+                    the base tarball. This is a shorthand so that you
+                    don't need to use <option>-b</option> for it.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-s</option> <replaceable>filename</replaceable></term>
+                <term><option>--save=</option><replaceable>filename</replaceable></term>
+                
+                <listitem>
+                
+                    <para>Save the chroot, after it has been set up,
+                    into <replaceable>filename</replaceable>. It can then
+                    be used with <option>-b</option>.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-t</option> <replaceable>directory</replaceable></term>
+                <term><option>--tmpdir=</option><replaceable>directory</replaceable></term>
+                
+                <listitem>
+                
+                    <para>Use <replaceable>directory</replaceable> as the place
+                    where temporary files and directories are created. The
+                    default is the environment variable <envar>TMPDIR</envar>,
+                    or <filename>/tmp</filename> if not set.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-v</option></term>
+                <term><option>--verbose</option></term>
+                
+                <listitem>
+                
+                    <para>This option no longer has any meaning, but it
+                    is still accepted for backwards compatibility.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>--warn-on-others</option></term>
+                
+                <listitem>
+                
+                    <para>Print a warning rather than failing if files are 
+                    left behind by a package that was not given on
+                    the command-line.</para>
+
+                    <para>This way, you can basically isolate the purge test
+                    to your own packages.  If a package that is brought in as
+                    a dependency doesn't purge cleanly, the test will not
+                    fail because of it (but a warning message will be
+                    printed).</para>
+
+                    <para>This does have its shortcomings:  if a file is left
+                    behind that doesn't seem to belong to any package, using
+                    this option will make that a warning rather than a failure.
+                    In my opinion, this is an acceptable risk -- the offending
+                    file would still be output (as a warning), and the
+                    developer would hopefully know which files belong to their
+                    package.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
+                <term><option>-V</option></term>
+                <term><option>--version</option></term>
+                
+                <listitem>
+                
+                    <para>Write out the version number of the 
+                    program.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+        </variablelist>
+
+    </refsect1>
+
+    <refsect1>
+        <title>EXAMPLES</title>
+
+            <para>Assume that you have just built a new version of your
+            Debian package, to be uploaded to Debian unstable. It is in
+            <filename>../foo_1.0-2_i386.deb</filename> and you would
+            like to know whether it installs and uninstalls properly.
+            Here's what you would do:</para>
+
+            <programlisting>piuparts ../foo_1.0-2_i386.deb</programlisting>
+
+            <para>If the package exists in the Debian archive already,
+            the above command also tests that it upgrades properly.</para>
+            
+            <para>To do the same test, but using a particular mirror,
+            and only the <literal>main</literal> component, you would
+            do this:</para>
+            
+            <programlisting
+            >piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.deb</programlisting>
+
+            <para>If you want to test that a package installs properly
+            in the stable (sarge) Debian release, then can be upgraded
+            to the testing (etch) and unstable (sid) versions, and then
+            uninstalled without problems, you would give the following
+            command:</para>
+
+            <programlisting
+            >piuparts -a -d sarge -d etch -d sid foo</programlisting>
+
+    </refsect1>
+
+    <refsect1>
+        <title>ENVIRONMENT</title>
+        
+        <variablelist>
+            <varlistentry>
+                <term><envar>TMPDIR</envar></term>
+                <listitem>
+
+                    <para>Location for temporary files and directories.
+                    If not set, use <filename>/tmp</filename>. See
+                    also the <option>-t</option> (<option>--tmpdir</option>)
+                    option.</para>
+
+                </listitem>
+            
+            </varlistentry>
+        </variablelist>
+        
+    </refsect1>
+
+    <refsect1>
+        <title>NOTES</title>
+        
+        <para>Outputs of commands run by <command>piuparts</command>
+        are limited to the last megabyte. To change this limit, the
+        source code needs to be edited.</para>
+
+    </refsect1>
+
+    <refsect1>
+        <title>SEE ALSO</title>
+        
+        <para>
+            <citerefentry>
+                <refentrytitle>pbuilder</refentrytitle>
+                <manvolnum>1</manvolnum>
+            </citerefentry>,
+            <citerefentry>
+                <refentrytitle>debootstrap</refentrytitle>
+                <manvolnum>8</manvolnum>
+            </citerefentry>
+        </para>
+
+    </refsect1>
+
+    <refsect1>
+        <title>AUTHOR</title>
+        
+        <para>Lars Wirzenius (liw@iki.fi).</para>
+
+    </refsect1>
+
+</refentry>

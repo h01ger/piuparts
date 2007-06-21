@@ -1,0 +1,15 @@
+This is piuparts, packaged for Debian by Lars Wirzenius <liw@iki.fi>.
+Original author is also Lars Wirzenius.
+
+Upstream source repository: http://liw.iki.fi/liw/bzr/
+Upstream is a lunatic who doesn't make release tarballs publically
+available. The Debian .orig.tar.gz is what would be released, though.
+
+piuparts is free software.  You may copy it according to the
+GNU General Public License, version 2. A copy of the license
+is not included, but you can get one from most FTP sites that
+have GNU software, for example, prep.ai.mit.edu.
+
+On a Debian GNU/Linux system, the GPL version 2 can be found in
+/usr/share/common-licenses/GPL-2 (and if that file does not exist,
+then /usr/share/common-licenses/GPL should contain it).

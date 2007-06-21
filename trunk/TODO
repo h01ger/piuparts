@@ -1,0 +1,64 @@
+Things to do for piuparts
+=========================
+
+* piuparts can't currently test postfix, since installing postfix removes
+exim and removing postfix would require re-installing exim, and that
+doesn't happen; there's other packages like that, too
+
+----------------
+
+- find_default_debian_mirrors: if parts[2] contains a / (think
+  stable/updates for security.d.o), you can't ignore this, it will break
+  later...
+
+- wishlist: make it possible to call aptitude (or similar) instead
+  of apt-get and allow to override the commandline arguments of
+  the used program (interesting e.g. together with aptitude to
+  install the package with and without recommended packages)
+
+- you need to either use --allow-unauthenticated or --force-yes
+  to apt-get calls; problem: --force-yes is too dangerous and 
+  --allow-unauthenticated doesn't exist in old versions (which
+  is relevant for testing upgrades from woody upwards, for example);
+  djpig suggests using "-o APT::Get::AllowUnauthenticated=True".
+
+- mounting /proc and perhaps others (usbfs, sysfs, /dev/pts, etc.) in
+  the chroot might be a good idea because some packages might need this.
+  Interestingly enough this currently seems to prevent start-stop-daemon
+  from starting any daemons ;)
+
+Frank Lichtenheld <djpig@debian.org>
+
+
+Low priority stuff (a.k.a. "nobody's said they must have it now")
+-----------------------------------------------------------------
+
+* Make piuparts work with file: urls a local mirror. Bind mount?
+
+* Kill children after a timeout to make sure the test doesn't run forever.
+
+* Check for and kill extraneous processes afterwards. Perhaps by checking
+whether their working directory is in the chroot.
+
+* toresbe:
+
+  Indeed.  And if you can, Lars, please include a test to see which
+ packages which modify their own conffiles so the user is presented with
+ a dpkg conffile changed dialogue during the upgrade.  It would also be
+ very interesting to see how many packages leave behind orphaned
+ conffiles after purging a newer version which does not contain the
+ files anymore.
+
+* deal with packages that need to replace higher priority packages
+(which then need to be put back when the package is removed)
+
+* Bill Allombert: Does piupart test whether packages trigger useless
+conffiles handling ? (i.e. dpkg pretend you have modified a conffile
+when it has not) this is one kind of bugs I would really get rid of.
+
+* piuparts-slave: keep track of reservations permanently
+* piuparts-master: keep track of whom a reservation is made
+* piuparts-slave: timestamps to log messages
+* piuparts-slave: if chroot.tgz is older than N hours, regenerate it
+* piuparts-slave: make the chroot more minimial
+* piuparts: upgrade the chroot before taking a snapshot of its files
