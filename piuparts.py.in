@@ -67,6 +67,7 @@ class Settings:
         self.saveendmeta = None
         self.warn_on_others = False
         self.keep_sources_list = False
+        self.skip_minimize = False
         self.check_broken_symlinks = True
         self.ignored_files = [
             "/dev/MAKEDEV",
@@ -496,6 +497,10 @@ class Chroot:
         if False:
             logging.debug("NOT minimizing chroot because of dpkg bug")
             return
+
+        if settings.skip_minimize:
+             return
+
         self.run(["apt-get", "install", "debfoster"])
         self.run(["debfoster", "-o", "MaxPriority=required", "-o",
                   "UseRecommends=no", "-f", "-n", "apt", "debfoster"])
@@ -1061,6 +1066,10 @@ def parse_command_line():
                            "etc/apt/sources.list (only makes sense " +
                            "with --basetgz).")
     
+    parser.add_option("--skip-minimize", 
+                      action="store_true", default=False,
+                      help="Skip minimize chroot step.")
+	
     parser.add_option("-l", "--log-file", metavar="FILENAME",
                       help="Write log file to FILENAME in addition to " +
                            "the standard output.")
@@ -1112,6 +1121,7 @@ def parse_command_line():
     settings.ignored_patterns += opts.ignore_regex
     settings.keep_tmpdir = opts.keep_tmpdir
     settings.keep_sources_list = opts.keep_sources_list
+    settings.skip_minimize = opts.skip_minimize
     log_file_name = opts.log_file
     settings.debian_mirrors = [parse_mirror_spec(x, 
                                                  ["main", 
