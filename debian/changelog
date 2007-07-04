@@ -2,8 +2,11 @@ piuparts (0.22) UNRELEASED; urgency=low
 
   * debian/control:
     - Add XS-Vcs-Svn and XS-Vcs-Browser fields
+  * Makefile:
+    - Fix a bug generating piuparts.py from piuparts.py.in, where m4 was
+      interpreting certain Python functions like len().  (Closes: 431248)
 
- -- John Wright <john.wright@hp.com>  Thu, 21 Jun 2007 13:09:20 +0100
+ -- John Wright <john@movingsucks.org>  Wed,  4 Jul 2007 11:08:07 -0600
 
 piuparts (0.21) unstable; urgency=low
 

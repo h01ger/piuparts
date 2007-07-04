@@ -17,7 +17,7 @@ piuparts.1: piuparts.docbook
 	docbook2x-man --encoding=utf-8 piuparts.docbook
 
 piuparts.py: piuparts.py.in
-	m4 -D __PIUPARTS_VERSION__=$$(dpkg-parsechangelog | grep ^Version: \
+	m4 -P -D __PIUPARTS_VERSION__=$$(dpkg-parsechangelog | grep ^Version: \
 		| cut -d' ' -f2) < $< > $@
 
 install: all
