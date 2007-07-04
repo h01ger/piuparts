@@ -7,22 +7,22 @@ libdir = $(prefix)/lib
 site23 = $(libdir)/python2.3/site-packages
 site24 = $(libdir)/python2.4/site-packages
 etcdir = $(prefix)/etc
+version=${shell dpkg-parsechangelog | sed -n 's/^Version: *//p'}
+
 
 # mirror = -m 'http://liw.iki.fi/debian main'
 ignore = -I fdmount -N
 
-all: piuparts.1 piuparts.py
+all: piuparts.1 
 
 piuparts.1: piuparts.docbook
 	docbook2x-man --encoding=utf-8 piuparts.docbook
 
-piuparts.py: piuparts.py.in
-	m4 -P -D __PIUPARTS_VERSION__=$$(dpkg-parsechangelog | grep ^Version: \
-		| cut -d' ' -f2) < $< > $@
-
 install: all
 	install -d $(sbindir) 
-	install piuparts.py $(sbindir)/piuparts
+	echo $(version)
+	sed 's/__PIUPARTS_VERSION__/$(version)/g' piuparts.py > $(sbindir)/piuparts
+#	install piuparts.py $(sbindir)/piuparts
 
 	install -d $(man1dir) 
 	install -m 0644 piuparts.1 $(man1dir)
@@ -57,4 +57,4 @@ unittests:
 	python unittests.py
 
 clean:
-	rm -rf tmp* dir=settings.tmpdir* piuparts.1 piuparts.py
+	rm -rf piuparts.1
