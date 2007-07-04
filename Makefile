@@ -21,8 +21,8 @@ piuparts.1: piuparts.docbook
 install: all
 	install -d $(sbindir) 
 	echo $(version)
-	sed 's/__PIUPARTS_VERSION__/$(version)/g' piuparts.py > $(sbindir)/piuparts
-#	install piuparts.py $(sbindir)/piuparts
+	sed 's/__PIUPARTS_VERSION__/$(version)/g' piuparts.py > piuparts
+	install piuparts $(sbindir)/piuparts
 
 	install -d $(man1dir) 
 	install -m 0644 piuparts.1 $(man1dir)
@@ -57,4 +57,4 @@ unittests:
 	python unittests.py
 
 clean:
-	rm -rf piuparts.1
+	rm -rf piuparts.1 piuparts
