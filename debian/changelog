@@ -5,9 +5,18 @@ piuparts (0.22) unstable; urgency=low
     - Add XS-Vcs-Svn and XS-Vcs-Browser fields
 
   [ Ana Beatriz Guerrero Lopez ]
-  * 
+  * Rename piuparts.py.in back to piuparts.py.
+  * Add option --skip-minimize that allows skip the minimize chroot step 
+    with debfoster.
+  * Remove m4 substitution, and use sed instead. Drop Build-Depends on m4. 
+    (Closes: #431248)
+  * debian/rules:
+    - Remove execution of checkversion in package build, not longer needed.
+  * debian/control:
+    - Add myself to uploaders.
+    - Add (future) piuparts website.
 
- -- piuparts developers team <piuparts-devel@lists.alioth.debian.org>  Wed, 04 Jul 2007 19:43:36 +0200
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Wed, 04 Jul 2007 21:03:44 +0200
 
 piuparts (0.21) unstable; urgency=low
 

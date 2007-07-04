@@ -1066,6 +1066,12 @@ def parse_command_line():
                            "etc/apt/sources.list (only makes sense " +
                            "with --basetgz).")
     
+    parser.add_option("--warn-on-others",
+                      action="store_true", default=False,
+                      help="Print a warning rather than failing if "
+                           "files are left behind by a package that "
+                           "was not given on the command-line.")
+			   
     parser.add_option("--skip-minimize", 
                       action="store_true", default=False,
                       help="Skip minimize chroot step.")
@@ -1105,12 +1111,6 @@ def parse_command_line():
     parser.add_option("-v", "--verbose", 
                       action="store_true", default=False,
                       help="No meaning anymore.")
-    
-    parser.add_option("--warn-on-others",
-                      action="store_true", default=False,
-                      help="Print a warning rather than failing if "
-                           "files are left behind by a package that "
-                           "was not given on the command-line.")
     
     (opts, args) = parser.parse_args()
     
