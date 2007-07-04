@@ -10,6 +10,7 @@ piuparts (0.22) unstable; urgency=low
     with debfoster.
   * Remove m4 substitution, and use sed instead. Drop Build-Depends on m4. 
     (Closes: #431248)
+  * Drop support for python 2.3 and add support for python 2.5.
   * debian/rules:
     - Remove execution of checkversion in package build, not longer needed.
   * debian/control:

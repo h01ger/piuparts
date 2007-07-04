@@ -4,8 +4,8 @@ sharedir = $(prefix)/share
 mandir = $(sharedir)/man
 man1dir = $(mandir)/man1
 libdir = $(prefix)/lib
-site23 = $(libdir)/python2.3/site-packages
 site24 = $(libdir)/python2.4/site-packages
+site25 = $(libdir)/python2.5/site-packages
 etcdir = $(prefix)/etc
 version=${shell dpkg-parsechangelog | sed -n 's/^Version: *//p'}
 
@@ -35,10 +35,10 @@ install: all
 	install piuparts-analyze.py $(sharedir)/piuparts/piuparts-analyze
 	chmod +x $(sharedir)/piuparts/*.py
 
-	install -d $(site23)/piupartslib
 	install -d $(site24)/piupartslib
-	install -m 0644 piupartslib/*.py $(site23)/piupartslib
+	install -d $(site25)/piupartslib
 	install -m 0644 piupartslib/*.py $(site24)/piupartslib
+	install -m 0644 piupartslib/*.py $(site25)/piupartslib
 
 	install -d $(etcdir)/piuparts
 	for x in master slave; do \
