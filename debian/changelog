@@ -1,6 +1,8 @@
 piuparts (0.23) UNRELEASED; urgency=low
 
   * Cosmetic change, now file owner and file are shown in the same line.
+  * Add option --list-installed-files, that list files added/removed/modified 
+    to the chroot after the package's installation.  (Closes: #431821)
 
  -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Sat, 07 Jul 2007 01:17:47 +0200
 

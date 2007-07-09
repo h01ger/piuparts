@@ -68,6 +68,7 @@ class Settings:
         self.warn_on_others = False
         self.keep_sources_list = False
         self.skip_minimize = False
+        self.list_installed_files = False
         self.check_broken_symlinks = True
         self.ignored_files = [
             "/dev/MAKEDEV",
@@ -555,14 +556,47 @@ class Chroot:
                 logging.error("Error copying %s to %s: %s" % 
                       (source_name, target_name, detail))
                 panic()
+		
+    def list_installed_files (self, pre_info, post_info):
+        """List the new files installed, removed and modified between two dir trees.
+        Actually, it is a nice output of the funcion diff_meta_dat."""
+        (new, removed, modified) = diff_meta_data(pre_info, post_info)
+        file_owners = self.get_files_owned_by_packages()
+
+        if new:
+            logging.debug("New installed files on system:\n" + file_list(new, file_owners))
+        else:
+            logging.debug("The package did not install any file!\n" + file_list(new, file_owners))		    
+
+        if removed:
+            logging.debug("The following files have disappeared:\n" +
+                          file_list(new, file_owners))
+
+        if modified:
+            logging.debug("The following files have been modified:\n" +
+                          file_list(new, file_owners))
+
 
     def install_package_files(self, filenames):
         if filenames:
             self.copy_files(filenames, "tmp")
             tmp_files = [os.path.basename(a) for a in filenames]
             tmp_files = [os.path.join("tmp", name) for name in tmp_files]
-            self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
-            self.run(["apt-get", "-yf", "--no-remove", "install"])
+
+            if settings.list_installed_files:
+                pre_info = self.save_meta_data()
+
+                self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
+                self.list_installed_files (pre_info, self.save_meta_data())
+
+                self.run(["apt-get", "-yf", "--no-remove", "install"])
+                self.list_installed_files (pre_info, self.save_meta_data())
+
+            else:
+                self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
+                self.run(["apt-get", "-yf", "--no-remove", "install"])
+
+
             self.run(["apt-get", "clean"])
             remove_files([os.path.join(self.name, name) 
                             for name in tmp_files])
@@ -768,10 +802,12 @@ def file_list(meta_infos, file_owners):
     meta_infos.sort()
     list = []
     for name, data in meta_infos:
-        
+        list.append("  %s\t" % name)
         if name in file_owners:
-            list.append(" owned by: %s\t" % ", ".join(file_owners[name]))
-        list.append("  %s\n" % name)
+            list.append(" owned by: %s\n" % ", ".join(file_owners[name]))
+	else:
+            list.append(" not owned\n")	
+
     return "".join(list)
 
 
@@ -1076,7 +1112,12 @@ def parse_command_line():
     parser.add_option("--skip-minimize", 
                       action="store_true", default=False,
                       help="Skip minimize chroot step.")
-	
+    
+    parser.add_option("--list-installed-files", 
+                      action="store_true", default=False,
+                      help="List files added to the chroot after the " +
+		      "installation of the package")
+		      
     parser.add_option("-l", "--log-file", metavar="FILENAME",
                       help="Write log file to FILENAME in addition to " +
                            "the standard output.")
@@ -1123,6 +1164,7 @@ def parse_command_line():
     settings.keep_tmpdir = opts.keep_tmpdir
     settings.keep_sources_list = opts.keep_sources_list
     settings.skip_minimize = opts.skip_minimize
+    settings.list_installed_files = opts.list_installed_files
     log_file_name = opts.log_file
     settings.debian_mirrors = [parse_mirror_spec(x, 
                                                  ["main", 
