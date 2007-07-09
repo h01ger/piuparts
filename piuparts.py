@@ -768,9 +768,10 @@ def file_list(meta_infos, file_owners):
     meta_infos.sort()
     list = []
     for name, data in meta_infos:
-        list.append("  %s\n" % name)
+        
         if name in file_owners:
-            list.append("    owned by: %s\n" % ", ".join(file_owners[name]))
+            list.append(" owned by: %s\t" % ", ".join(file_owners[name]))
+        list.append("  %s\n" % name)
     return "".join(list)
 
 
