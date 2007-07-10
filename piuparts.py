@@ -567,7 +567,7 @@ class Chroot:
         if new:
             logging.debug("New installed files on system:\n" + file_list(new, file_owners))
         else:
-            logging.debug("The package did not install any file!\n" + file_list(new, file_owners))		    
+            logging.debug("The package did not install any new file.\n")		    
 
         if removed:
             logging.debug("The following files have disappeared:\n" +
@@ -576,6 +576,8 @@ class Chroot:
         if modified:
             logging.debug("The following files have been modified:\n" +
                           file_list(new, file_owners))
+        else:
+            logging.debug("The package did not modify any file.\n")	
 
 
     def install_package_files(self, filenames):
@@ -693,8 +695,14 @@ class Chroot:
 
     def install_packages_by_name(self, packages):
         if packages:
-            self.run(["apt-get", "-y", "install"] + packages)
-
+	    if settings.list_installed_files:
+                pre_info = self.save_meta_data()
+                self.run(["apt-get", "-y", "install"] + packages)
+                self.list_installed_files (pre_info, self.save_meta_data())
+            else:
+                self.run(["apt-get", "-y", "install"] + packages)
+	    
+	    
     def check_for_no_processes(self):
         """Check there are no processes running inside the chroot."""
         (status, output) = run(["lsof", "+D", self.name], ignore_errors=True)
