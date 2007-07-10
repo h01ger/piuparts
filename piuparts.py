@@ -571,11 +571,11 @@ class Chroot:
 
         if removed:
             logging.debug("The following files have disappeared:\n" +
-                          file_list(new, file_owners))
+                          file_list(removed, file_owners))
 
         if modified:
             logging.debug("The following files have been modified:\n" +
-                          file_list(new, file_owners))
+                          file_list(modified, file_owners))
         else:
             logging.debug("The package did not modify any file.\n")	
 
