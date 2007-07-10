@@ -1129,7 +1129,7 @@ def parse_command_line():
     
     parser.add_option("--no-upgrade-test", 
                       action="store_true", default=False,
-                      help="Skip testing upgrade from an existing version" +
+                      help="Skip testing upgrade from an existing version " +
 		      "in the archive.")
       
     parser.add_option("-l", "--log-file", metavar="FILENAME",

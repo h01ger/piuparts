@@ -285,7 +285,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
                 </listitem>
             
             </varlistentry>
-                    <varlistentry>
+            <varlistentry>
             
                 <term><option>--skip-minimize</option></term>
                 
@@ -298,7 +298,30 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
                 </listitem>
             
+            </varlistentry>
+            <varlistentry>
+            
+                <term><option>--list-installed-files</option></term>
+                
+                <listitem>
+                
+                    <para>List the files added to the chroot after the installation
+                        of the package and after the installation of the package 
+                        dependencies.</para>
+
+                </listitem>
+            
             </varlistentry> 
+            <varlistentry>
+            
+                <term><option>--no-upgrade-test</option></term>
+                
+                <listitem>
+                    <para>Skip testing upgrade from an existing version in the
+                        archive.</para>
+                </listitem>
+            
+            </varlistentry>  
             <varlistentry>
             
                 <term><option>-l</option> <replaceable>filename</replaceable></term>
