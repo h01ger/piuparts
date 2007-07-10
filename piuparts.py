@@ -69,6 +69,7 @@ class Settings:
         self.keep_sources_list = False
         self.skip_minimize = False
         self.list_installed_files = False
+        self.no_upgrade_test = False
         self.check_broken_symlinks = True
         self.ignored_files = [
             "/dev/MAKEDEV",
@@ -1116,8 +1117,13 @@ def parse_command_line():
     parser.add_option("--list-installed-files", 
                       action="store_true", default=False,
                       help="List files added to the chroot after the " +
-		      "installation of the package")
-		      
+		      "installation of the package.")
+    
+    parser.add_option("--no-upgrade-test", 
+                      action="store_true", default=False,
+                      help="Skip testing upgrade from an existing version" +
+		      "in the archive.")
+      
     parser.add_option("-l", "--log-file", metavar="FILENAME",
                       help="Write log file to FILENAME in addition to " +
                            "the standard output.")
@@ -1165,6 +1171,7 @@ def parse_command_line():
     settings.keep_sources_list = opts.keep_sources_list
     settings.skip_minimize = opts.skip_minimize
     settings.list_installed_files = opts.list_installed_files
+    settings.no_upgrade_test = opts.no_upgrade_test
     log_file_name = opts.log_file
     settings.debian_mirrors = [parse_mirror_spec(x, 
                                                  ["main", 
@@ -1252,17 +1259,18 @@ def main():
             logging.error("FAIL: Installation and purging test.")
             panic()
         logging.info("PASS: Installation and purging test.")
-    
-        if not settings.args_are_package_files:
-            logging.info("Can't test upgrades: -a or --apt option used.")
-        elif not chroot.apt_get_knows(packages):
-            logging.info("Can't test upgrade: packages not known by apt-get.")
-        elif install_upgrade_test(chroot, root_info, selections, args, 
+
+        if not settings.no_upgrade_test:
+            if not settings.args_are_package_files:
+                logging.info("Can't test upgrades: -a or --apt option used.")
+            elif not chroot.apt_get_knows(packages):
+                logging.info("Can't test upgrade: packages not known by apt-get.")
+            elif install_upgrade_test(chroot, root_info, selections, args, 
                                   packages):
-            logging.info("PASS: Installation, upgrade and purging tests.")
-        else:
-            logging.error("FAIL: Installation, upgrade and purging tests.")
-            panic()
+                logging.info("PASS: Installation, upgrade and purging tests.")
+            else:
+                logging.error("FAIL: Installation, upgrade and purging tests.")
+                panic()
     
         chroot.remove()
         dont_do_on_panic(id)
