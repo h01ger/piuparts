@@ -1,3 +1,10 @@
+piuparts (0.24) unstable; urgency=low
+
+  * Add /var/lib/apt/extended_states to ignored_files. Thanks Anibal!
+   (Closes: #434980)
+
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Mon, 06 Aug 2007 15:47:37 +0200
+
 piuparts (0.23) unstable; urgency=low
 
   * Cosmetic change, now file owner and file are shown in the same line.
