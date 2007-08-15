@@ -752,7 +752,31 @@ class Chroot:
 	    panic()
         else:
             logging.debug("No broken symlinks as far as we can find.")
+	    
+    def check_if_cronfiles(self, packages):
+        """Check if a package has cron files under /etc/cron.d and in case positive, 
+        it returns the list of files. """
 
+        dir = self.relative("var/lib/dpkg/info")
+        list = []
+        has_cronfiles  = False
+        for p in packages:
+            basename = p + ".list"
+            f = file(os.path.join(dir,basename), "r")
+            for line in f:
+                pathname = line.strip()
+		if pathname.startswith("/etc/cron.") and os.path.isfile(pathname):
+		    if not has_cronfiles:
+		        has_cronfiles = True
+                    list.append(pathname)
+		    logging.debug("Cronfile found: " + pathname)
+            f.close()
+        return has_cronfiles, list
+
+    def check_output_cronfiles (self, list):
+        """Check if a given list of cronfiles has any output."""
+        for file in list:
+            logging.info("Checking cronfile: " + file)
 
 def objects_are_different(pair1, pair2):
     """Are filesystem objects different based on their meta data?"""
@@ -902,6 +926,8 @@ def install_purge_test(chroot, root_info, selections, args, packages):
         chroot.install_packages_by_name(packages)
         chroot.run(["apt-get", "clean"])
 
+    cronfiles, cronfiles_list = chroot.check_if_cronfiles(packages)
+
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
@@ -912,6 +938,10 @@ def install_purge_test(chroot, root_info, selections, args, packages):
     chroot.restore_selections(changes, packages)
     
     chroot.check_for_broken_symlinks()
+    if cronfiles:
+        chroot.check_output_cronfiles(cronfiles_list)
+    else:
+        logging.info("The packages does not have cronfiles")
     chroot.unmount_proc()
 
     return check_results(chroot, root_info, file_owners, packages=packages)
