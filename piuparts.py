@@ -70,6 +70,7 @@ class Settings:
         self.skip_minimize = False
         self.list_installed_files = False
         self.no_upgrade_test = False
+        self.skip_cronfiles_test = False
         self.check_broken_symlinks = True
         self.ignored_files = [
             "/dev/MAKEDEV",
@@ -926,7 +927,8 @@ def install_purge_test(chroot, root_info, selections, args, packages):
         chroot.install_packages_by_name(packages)
         chroot.run(["apt-get", "clean"])
 
-    cronfiles, cronfiles_list = chroot.check_if_cronfiles(packages)
+    if not settings.skip_cronfiles_test:
+        cronfiles, cronfiles_list = chroot.check_if_cronfiles(packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -938,10 +940,11 @@ def install_purge_test(chroot, root_info, selections, args, packages):
     chroot.restore_selections(changes, packages)
     
     chroot.check_for_broken_symlinks()
-    if cronfiles:
-        chroot.check_output_cronfiles(cronfiles_list)
-    else:
-        logging.info("The packages does not have cronfiles")
+    if not settings.skip_cronfiles_test:
+        if cronfiles:
+            chroot.check_output_cronfiles(cronfiles_list)
+        else:
+            logging.info("The packages does not have cronfiles")
     chroot.unmount_proc()
 
     return check_results(chroot, root_info, file_owners, packages=packages)
@@ -1160,9 +1163,13 @@ def parse_command_line():
     
     parser.add_option("--no-upgrade-test", 
                       action="store_true", default=False,
-                      help="Skip testing upgrade from an existing version " +
+                      help="Skip testing the upgrade from an existing version " +
 		      "in the archive.")
-      
+
+    parser.add_option("--skip-cronfiles-test", 
+                      action="store_true", default=False,
+                      help="Skip testing the output from the cron files.")
+		      
     parser.add_option("-l", "--log-file", metavar="FILENAME",
                       help="Write log file to FILENAME in addition to " +
                            "the standard output.")
@@ -1211,6 +1218,7 @@ def parse_command_line():
     settings.skip_minimize = opts.skip_minimize
     settings.list_installed_files = opts.list_installed_files
     settings.no_upgrade_test = opts.no_upgrade_test
+    settings.skip_cronfiles_test = opts.skip_cronfiles_test
     log_file_name = opts.log_file
     settings.debian_mirrors = [parse_mirror_spec(x, 
                                                  ["main", 
