@@ -263,7 +263,7 @@ def shellquote(str):
 
 
 def run(command, ignore_errors=False):
-    """Run an external command and die with error message if it failes."""
+    """Run an external command and die with error message if it fails."""
     assert type(command) == type([])
     logging.debug("Starting command: %s" % command)
     env = os.environ.copy()
@@ -761,7 +761,7 @@ class Chroot:
             logging.debug("No broken symlinks as far as we can find.")
 	    
     def check_if_cronfiles(self, packages):
-        """Check if a package has cron files under /etc/cron.d and in case positive, 
+        """Check if the packages have cron files under /etc/cron.d and in case positive, 
         it returns the list of files. """
 
         dir = self.relative("var/lib/dpkg/info")
