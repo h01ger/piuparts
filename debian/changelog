@@ -4,8 +4,8 @@ piuparts (0.24) unstable; urgency=low
    (Closes: #434980)
   * Add quick howto about how to use piuparts under docs.
   * Add test that checks the output from the cron files left in the system
-    after remove a package. This include the option --skip-cronfiles-test,
-    to allow skip this test.
+    after removing a package. This includes the option --skip-cronfiles-test,
+    to allow skipping this test.
 
  -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Mon, 20 Aug 2007 10:27:29 +0200
 
