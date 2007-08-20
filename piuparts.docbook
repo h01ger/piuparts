@@ -57,7 +57,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             <arg><option>-I</option> <replaceable>regexp</replaceable></arg>
             <arg><option>-l</option> <replaceable>logfile</replaceable></arg>
             <arg><option>-m</option> <replaceable>url</replaceable></arg>
-            <arg rep="repeat"><replaceable>package</replaceable></arg>
+            <arg><replaceable>package</replaceable></arg>
         </cmdsynopsis>
     </refsynopsisdiv>
     
