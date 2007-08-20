@@ -645,7 +645,13 @@ class Chroot:
         # First remove all packages.
         self.remove_or_purge("remove", deps_to_remove + deps_to_purge +
                                         nondeps_to_remove + nondeps_to_purge)
-    
+
+        if not settings.skip_cronfiles_test:
+            cronfiles, cronfiles_list = self.check_if_cronfiles(packages)
+	
+        if not settings.skip_cronfiles_test and cronfiles:
+            self.check_output_cronfiles(cronfiles_list)
+
         # Then purge all packages being depended on.
         self.remove_or_purge("purge", deps_to_purge)
         
@@ -763,21 +769,33 @@ class Chroot:
         has_cronfiles  = False
         for p in packages:
             basename = p + ".list"
+
+	    if not os.path.exists(os.path.join(dir,basename)):
+                continue
+
             f = file(os.path.join(dir,basename), "r")
             for line in f:
                 pathname = line.strip()
-		if pathname.startswith("/etc/cron.") and os.path.isfile(pathname):
-		    if not has_cronfiles:
-		        has_cronfiles = True
-                    list.append(pathname)
-		    logging.debug("Cronfile found: " + pathname)
+                if pathname.startswith("/etc/cron."):
+                    if os.path.isfile(self.relative(pathname.strip("/"))):
+                        if not has_cronfiles:
+                            has_cronfiles = True
+                        list.append(pathname)
+                        logging.info("Package " + p + " contains cron file: " + pathname)
             f.close()
+
         return has_cronfiles, list
 
     def check_output_cronfiles (self, list):
-        """Check if a given list of cronfiles has any output."""
+        """Check if a given list of cronfiles has any output. Executes 
+	cron file as cron would do (except for SHELL)"""
         for file in list:
-            logging.info("Checking cronfile: " + file)
+
+            if not os.path.exists(self.relative(file.strip("/"))):
+                continue 
+
+            self.run([file])
+
 
 def objects_are_different(pair1, pair2):
     """Are filesystem objects different based on their meta data?"""
@@ -927,8 +945,6 @@ def install_purge_test(chroot, root_info, selections, args, packages):
         chroot.install_packages_by_name(packages)
         chroot.run(["apt-get", "clean"])
 
-    if not settings.skip_cronfiles_test:
-        cronfiles, cronfiles_list = chroot.check_if_cronfiles(packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -940,11 +956,6 @@ def install_purge_test(chroot, root_info, selections, args, packages):
     chroot.restore_selections(changes, packages)
     
     chroot.check_for_broken_symlinks()
-    if not settings.skip_cronfiles_test:
-        if cronfiles:
-            chroot.check_output_cronfiles(cronfiles_list)
-        else:
-            logging.info("The packages does not have cronfiles")
     chroot.unmount_proc()
 
     return check_results(chroot, root_info, file_owners, packages=packages)
