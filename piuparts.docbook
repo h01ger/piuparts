@@ -324,6 +324,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             </varlistentry>  
             <varlistentry>
             
+                <term><option>--skip-cronfiles-test</option></term>
+                
+                <listitem>
+                    <para>Skip testing the output from the cron files left in the
+                    system after remove a package.</para>
+                </listitem>
+            
+            </varlistentry>  
+            <varlistentry>
+            
                 <term><option>-l</option> <replaceable>filename</replaceable></term>
                 <term><option>--log-file=</option><replaceable>filename</replaceable></term>
                 
