@@ -3,8 +3,11 @@ piuparts (0.24) unstable; urgency=low
   * Add /var/lib/apt/extended_states to ignored_files. Thanks Anibal!
    (Closes: #434980)
   * Add quick howto about how to use piuparts under docs.
+  * Add test that checks the output from the cron files left in the system
+    after remove a package. This include the option --skip-cronfiles-test,
+    to allow skip this test.
 
- -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Mon, 06 Aug 2007 15:47:37 +0200
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Mon, 20 Aug 2007 10:27:29 +0200
 
 piuparts (0.23) unstable; urgency=low
 
