@@ -334,6 +334,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             </varlistentry>  
             <varlistentry>
             
+                <term><option>---scriptsdir=<replaceable>DIR</replaceable></option></term>
+                
+                <listitem>
+                    <para>Directory where are placed the custom scripts. For more information
+                    about this, read custom-scripts.txt</para>
+                </listitem>
+            
+            </varlistentry>  
+            <varlistentry>
+            
                 <term><option>-l</option> <replaceable>filename</replaceable></term>
                 <term><option>--log-file=</option><replaceable>filename</replaceable></term>
                 

@@ -1,8 +1,12 @@
 piuparts (0.25) unstable; urgency=low
 
-  * ....  
+  * Add the option to run custom scripts inside the piuparts chroot.
+    Scripts are stored in a directory and give it as argument with the
+    option --scriptsdir=/dir/with/the/scripts
+    This feature is still experimental :)
+  * Add custom-scripts.txt with information about the custom scripts.
 
- -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Tue, 21 Aug 2007 04:32:56 +0200
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Tue, 28 Aug 2007 14:39:32 +0200
 
 piuparts (0.24) unstable; urgency=low
 
