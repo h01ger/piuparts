@@ -20,6 +20,7 @@ binary-indep: build
 	install -m 0644 ChangeLog debian/tmp/usr/share/doc/$P/changelog
 	install -m 0644 README debian/tmp/usr/share/doc/$P
 	install -m 0644 how-to-use-piuparts.txt debian/tmp/usr/share/doc/$P
+	install -m 0644 custom-scripts.txt debian/tmp/usr/share/doc/$P
 	gzip -9 debian/tmp/usr/share/doc/$P/*
 	install -m 0644 debian/copyright debian/tmp/usr/share/doc/$P
 	dpkg-gencontrol -isp
