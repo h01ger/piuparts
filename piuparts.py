@@ -590,6 +590,8 @@ class Chroot:
             tmp_files = [os.path.basename(a) for a in filenames]
             tmp_files = [os.path.join("tmp", name) for name in tmp_files]
 
+            self.run_scripts("pre_install")
+
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
 
@@ -603,7 +605,7 @@ class Chroot:
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
                 self.run(["apt-get", "-yf", "--no-remove", "install"])
 
-            self.run_scripts("install")
+            self.run_scripts("post_install")
 
             self.run(["apt-get", "clean"])
             remove_files([os.path.join(self.name, name) 
@@ -650,7 +652,7 @@ class Chroot:
         self.remove_or_purge("remove", deps_to_remove + deps_to_purge +
                                         nondeps_to_remove + nondeps_to_purge)
         # Run custom scripts after remove all packages. 
-        self.run_scripts("remove")	
+        self.run_scripts("post_remove")	
 
         if not settings.skip_cronfiles_test:
             cronfiles, cronfiles_list = self.check_if_cronfiles(packages)
@@ -665,7 +667,7 @@ class Chroot:
         self.remove_or_purge("purge", nondeps_to_purge)
 
         # Run custom scripts after purge all packages. 
-        self.run_scripts("purge")
+        self.run_scripts("post_purge")
 
         # Now do a final run to see that everything worked.
         self.run(["dpkg", "--purge", "--pending"])
@@ -815,7 +817,7 @@ class Chroot:
 	list_scripts = os.listdir(basepath)
 	list_scripts.sort()
         for file in list_scripts:
-		if file.startswith("post_"+step):
+		if file.startswith(step):
                     script = os.path.join("tmp/scripts", file)
                     self.run([script]) 
 
@@ -993,6 +995,8 @@ def install_upgrade_test(chroot, root_info, selections, args, package_names):
 
     # First install via apt-get.
     chroot.install_packages_by_name(package_names)
+
+    chroot.run_scripts("pre_upgrade")
 
     chroot.check_for_broken_symlinks()
 
@@ -1351,7 +1355,7 @@ def main():
             dest = chroot.relative("tmp/scripts/")
             os.mkdir(dest)
             for file in os.listdir(settings.scriptsdir):
-                if file.startswith("post_") and os.path.isfile(os.path.join((settings.scriptsdir), file)):
+                if (file.startswith("post_") or file.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), file)):
                     shutil.copy(os.path.join((settings.scriptsdir), file), dest) 
 
         if not install_purge_test(chroot, root_info, selections,
