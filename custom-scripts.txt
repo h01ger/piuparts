@@ -7,24 +7,24 @@ piuparts: --scriptsdir=/dir/with/the/scripts
 
 The scripts can be run:
 
-    Before *install* your package. The name of the script must
+    Before *installing* your package. The name of the script must
     start with:
     pre_install_
 
-    After *install* your package and its deps. In the case of the 
+    After *installing* your package and its deps. In the case of the 
     upgrade test, it is after install and upgrade. The name of the 
     script must start with:
     post_install_
 
-    After *remove* your package, The name of the script must start with:
+    After *removing* your package, The name of the script must start with:
     post_remove_
 
-    After *purge* your package, The name of the script must start with:
+    After *purging* your package, The name of the script must start with:
     post_purge_
 
-    Before *upgrade* your package, after install current version in 
-    the archive (this is done in the second test, "Installation, upgrade 
-    and purging test"). The name of the script must start with:
+    Before *upgrading* your package, once the current version in the archive
+    has been installed (this is done in the second test, "Installation, 
+    upgrade and purging test"). The name of the script must start with:
     pre_upgrade_
 
 
@@ -34,14 +34,23 @@ order.
 The scripts are run *inside* the piuparts chroot and only can be shell 
 scripts, if you want to run Python or Perl scripts, you have to install 
 Python or Perl. The chroot where piuparts is run is minized and does not 
-include
-Perl.
+include Perl.
 
 
 It would be interesting to declare some piuparts variables like the name
 of the current testing packages, and be able to use this variable in the 
 custom scripts. But this option is not available yet.
 
+Example script:
+
+$cat post_install_number.sh
+----------------------------------------------- 
+#!/bin/bash
+
+number=`dpkg -l | wc -l`
+echo "There are $number packages installed."
+exit 0
+-----------------------------------------------
 
 
 

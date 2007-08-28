@@ -1,3 +1,9 @@
+piuparts (0.25) unstable; urgency=low
+
+  * ....  
+
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Tue, 21 Aug 2007 04:32:56 +0200
+
 piuparts (0.24) unstable; urgency=low
 
   * Add /var/lib/apt/extended_states to ignored_files. Thanks Anibal!
