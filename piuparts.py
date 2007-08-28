@@ -56,6 +56,7 @@ class Settings:
     
     def __init__(self):
         self.tmpdir = None
+        self.scriptsdir = None
         self.keep_tmpdir = False
         self.max_command_output_size = 1024 * 1024
         self.args_are_package_files = True
@@ -125,7 +126,7 @@ class Settings:
             "/var/cache/debconf/templates.dat-old",
             "/var/cache/man/index.db",
             "/var/lib/apt/extended_states",
-			"/var/lib/dpkg/available", 
+            "/var/lib/dpkg/available", 
             "/var/lib/dpkg/available-old", 
             "/var/lib/dpkg/diversions",
             "/var/lib/dpkg/diversions-old",
@@ -166,6 +167,7 @@ class Settings:
             "/var/spool/squid(/.*)?",
             "/var/run/.*",
             "/var/www(/.*)?",
+            "/tmp/scripts(/.*)?"
             ]
 
 
@@ -601,6 +603,7 @@ class Chroot:
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
                 self.run(["apt-get", "-yf", "--no-remove", "install"])
 
+            self.run_scripts("install")
 
             self.run(["apt-get", "clean"])
             remove_files([os.path.join(self.name, name) 
@@ -620,11 +623,12 @@ class Chroot:
         for name in packages:
             self.run(["dpkg", "--" + operation, name], ignore_errors=True)
         self.run(["dpkg", "--remove", "--pending"], ignore_errors=True)
-    
+
+ 
     def restore_selections(self, changes, packages):
         """Restore package selections in a chroot by applying 'changes'.
            'changes' is a return value from diff_selections."""
-    
+ 
         deps = {}
         nondeps = {}
         for name, state in changes.iteritems():
@@ -645,6 +649,8 @@ class Chroot:
         # First remove all packages.
         self.remove_or_purge("remove", deps_to_remove + deps_to_purge +
                                         nondeps_to_remove + nondeps_to_purge)
+        # Run custom scripts after remove all packages. 
+        self.run_scripts("remove")	
 
         if not settings.skip_cronfiles_test:
             cronfiles, cronfiles_list = self.check_if_cronfiles(packages)
@@ -654,10 +660,13 @@ class Chroot:
 
         # Then purge all packages being depended on.
         self.remove_or_purge("purge", deps_to_purge)
-        
+
         # Finally, purge actual packages.
         self.remove_or_purge("purge", nondeps_to_purge)
-    
+
+        # Run custom scripts after purge all packages. 
+        self.run_scripts("purge")
+
         # Now do a final run to see that everything worked.
         self.run(["dpkg", "--purge", "--pending"])
         self.run(["dpkg", "--remove", "--pending"])
@@ -795,6 +804,21 @@ class Chroot:
                 continue 
 
             self.run([file])
+
+    def run_scripts (self, step):
+        """ Run custom scripts to given step post-install|remove|purge"""
+	
+	if settings.scriptsdir is None:
+	    exit
+        logging.info("Running scripts post "+ step)
+        basepath = self.relative("tmp/scripts/")
+	list_scripts = os.listdir(basepath)
+	list_scripts.sort()
+        for file in list_scripts:
+		if file.startswith("post_"+step):
+                    script = os.path.join("tmp/scripts", file)
+                    self.run([script]) 
+
 
 
 def objects_are_different(pair1, pair2):
@@ -1180,7 +1204,10 @@ def parse_command_line():
     parser.add_option("--skip-cronfiles-test", 
                       action="store_true", default=False,
                       help="Skip testing the output from the cron files.")
-		      
+
+    parser.add_option("--scriptsdir", metavar="DIR",
+                      help="Directory where are placed the custom scripts.")
+    
     parser.add_option("-l", "--log-file", metavar="FILENAME",
                       help="Write log file to FILENAME in addition to " +
                            "the standard output.")
@@ -1257,6 +1284,13 @@ def parse_command_line():
         else:
             settings.tmpdir = "/tmp"
 
+    if opts.scriptsdir is not None:
+        settings.scriptsdir = opts.scriptsdir
+	if not os.path.isdir(settings.scriptsdir):
+            logging.error("Scripts directory is not a directory: %s" % 
+                          settings.scriptsdir)
+            panic()
+
     if not settings.debian_distros:
         settings.debian_distros = ["sid"]
 
@@ -1312,6 +1346,14 @@ def main():
         root_info = chroot.save_meta_data()
         selections = chroot.get_selections()
     
+        #copy scripts dir into the chroot
+        if settings.scriptsdir is not None:
+            dest = chroot.relative("tmp/scripts/")
+            os.mkdir(dest)
+            for file in os.listdir(settings.scriptsdir):
+                if file.startswith("post_") and os.path.isfile(os.path.join((settings.scriptsdir), file)):
+                    shutil.copy(os.path.join((settings.scriptsdir), file), dest) 
+
         if not install_purge_test(chroot, root_info, selections,
 				  args, packages):
             logging.error("FAIL: Installation and purging test.")
