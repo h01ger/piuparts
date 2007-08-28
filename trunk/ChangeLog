@@ -1,0 +1,329 @@
+2005-11-12  Lars Wirzenius  <liw@iki.fi>
+
+        * Further detailed changes to be seen in the bzr commit message
+          log, and summarized in the NEWS file for each release.
+
+2005-10-17  Lars Wirzenius  <liw@iki.fi>
+
+        * Version 0.12.
+        
+        * /var/log/faillog ignored by default.
+        
+        * Documented that upgrade testing to experimental doesn't work.
+
+2005-10-14  Lars Wirzenius  <liw@iki.fi>
+
+        * Version 0.11.
+        
+        * Summary of changes:
+        
+            - Checks for missing package names on command line immediately,
+              not after creating chroot.
+              
+            - apt-get in the chroot gets configured to allow unauthenticated
+              repositories.
+              
+            - Tweaks to list of files ignored by default.
+
+2005-09-15  Lars Wirzenius  <liw@iki.fi>
+
+        * Version 0.10.
+
+2005-09-15  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.py: When creating policy-rc.d, make it executable.
+        
+        * piuparts.docbook: Added missing "if". Thanks, Jonas Meurer.
+        
+        * run-piuparts.py: Wrote.
+
+2005-09-09  Lars Wirzenius  <liw@iki.fi>
+
+        * Version 0.9.
+
+2005-09-08  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.py: Added --resolv-deps to debootstrap call, so that it
+        works with testing/sid.
+
+2005-09-05  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py, piuparts.docbook: Added -k (--keep-tmpdir) option.
+
+	* piuparts.py: Added some more default ignores.
+
+	* piuparts.py: Remember which packages own which files before
+	removing packages.
+
+2005-08-31  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.py: Made panic() work. Added feature to report which
+        packages own the new/modifed/removed files. Requested in Debian
+        bug 324248 by Anibal Monsalve Salazar.
+
+2005-08-30  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.py: Use Python 2.3's logging module instead of NIH
+        code. Also, log everything identically to stdout and log file,
+        since the old behavior was confusing to many people, as observed
+        on IRC and at Debconf5. This also obsoletes -v (--verbose).
+        
+        * piuparts.docbook: Document that -v (--verbose) is obsolete.
+
+2005-08-30  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.docbook: It's <envar>, not <envvar>, and you need to
+        pay attention to warning messages, you imbecile.
+
+2005-08-29  Lars Wirzenius  <liw@iki.fi>
+
+        * Version 0.8.
+
+2005-08-29  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.py: Accept matches for any part of a filename, instead
+        of requiring that they match everything. This is less surprising
+        to users and they can still use ^ and $ to anchor a match to the
+        ends, if they need it.
+        
+        * Makefile: Ignore the fdmount temp files that cause upgrades to
+        etch/sid fail at the moments, and re-enable upgrade tests.
+        
+        * piuparts.py, piuparts.docbook: Added option -t and changed the
+        default location for temporary files and directorys (including
+        the chroot) to be $TMPDIR (or /tmp if not set).
+
+2005-08-25  Lars Wirzenius  <liw@iki.fi>
+
+        * Makefile: Upgrade testing from sarge to etch fails for me, because
+        of something to do with fdutils, so I have disabled it for now.
+        
+        * piuparts.py: Only use the first mirror found in sources.list,
+        which is anyway what the manual page claims we are doing. This
+        should reduce the problems people have been having with piuparts
+        creating broken source.lists in the chroot when people have more
+        than a canonical Debian repository listed.
+        
+        * piuparts.py: Remove temporary files upon error exit.
+        
+        * piuparts.docbook: Use code names instead of
+        stable/testing/unstable in the example.
+
+2005-07-15  Lars Wirzenius  <liw@iki.fi>
+
+	* Version 0.7.
+
+2005-07-15  Lars Wirzenius  <liw@iki.fi>
+
+        * Makefile: Moved binary to sbin since only root can usefully
+        run it.
+
+2005-07-13  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.py: Create a /usr/sbin/policy-rc.d inside the chroot
+        when it is created. Suggested by Frank Lichtenheld.
+        
+        * piuparts.py: Fixed a message from "FAIL:" to "PASS:". Oops.
+        
+        * Makefile: Commented out an explicit mirror definition so it
+        should now use sources.list defaults.
+
+2005-07-10  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.py: Suggested by Frank Lichtenheld: don't run dpkg
+        and do other work if there are no files (cleans up log file,
+        saves a couple of seconds).
+        
+        * piuparts.py, piuparts.docbook: Implemented and documented a
+        limit on the size of outputs of command piuparts runs.
+
+2005-07-08  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.py: When a command has been run and it failed, show
+        the output it gave. Removed extra dashes from argument to
+        getopt. Changed references to "dit" (the old name for the
+        program) to "piuparts". Changed some log file lines a bit easier
+        to grep for, and made the start of a log easier to see. Bugs
+        reported and wishes expressed by Frank Lichtenheld.
+
+2005-07-08  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.docbook: Added notes that piuparts needs to be run as
+        root and that options must come before other command line
+        arguments.
+
+2005-07-05  Lars Wirzenius  <liw@iki.fi>
+
+	* Version 0.6.
+
+2005-07-05  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py: Bugfix: when removing packages from the chroot,
+	don't remove packages being depended on before the packages doing
+	the depending. That won't work. Any fool would know it, except me.
+	
+	* piuparts.py: Implemented saving of meta data for the upgrade
+	testing between Debian releases.
+
+2005-07-04  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py: Made it possible to specify components to use for
+	a mirror.
+	
+	* piuparts.docbook: Documented the user visible changes.
+
+2005-06-27  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py: Remove and purge dependencies before the packages
+	that were installed, so that problems with postrm scripts using
+	non-essential packages upon purge become evident.
+
+2005-06-27  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py, piuparts.docbook: Added -n / --no-ignores option.
+
+2005-06-27  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py: Made mirrors mentioned in /etc/apt/sources.list be
+	the default mirrors. Also, --mirror can be used multiple times
+	now.
+	
+	* piuparts.docbook: Documented this.
+	
+	* Makefile: log to tmp3.log instead of twice to tmp2.log.
+
+2005-06-27  Lars Wirzenius  <liw@iki.fi>
+
+	* Makefile: Use -f with gzip so it doesn't complain when installing
+	new version on top of old.
+
+2005-06-27  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py: Added /etc/ld.so.conf to list of ignored files
+	and changed exim related ignore patterns (adding exim4, for
+	example).
+	
+        * piuparts.py: When purging, use --purge and not --remove to
+        dpkg.
+	
+        * piuparts.py: Report version and command line arguments at
+        startup.
+        
+        * piuparts.py: When calling install_purge_test, report package
+        list when command line args are package names, instead of empty
+        list.
+
+2005-06-23  Lars Wirzenius  <liw@iki.fi>
+
+	* Version 0.5.
+
+2005-06-23  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py: Check symlink targets as well.
+
+2005-06-23  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.docbook: Added --ignore-regexp to manual page.
+
+2005-06-23  Lars Wirzenius  <liw@iki.fi>
+
+	* TODO: Added.
+	
+	* Makefile: Added test case for upgrading between distros.
+	
+	* piuparts.docbook: Rewrote DESCRIPTION and EXAMPLES sections.
+	
+	* piuparts.py: Added /var/cache/man/index.db and
+	/var/log/dpkg.log to ignored files. Added regexps for more
+	versatile ignoring and -I option.
+	
+	* piuparts.py: Disabled comparison of mtimes of files for now.
+	
+	* piuparts.py: File listings are now sorted.
+	
+	* piuparts.py: Added upgrade tests between Debian releases.
+
+2005-06-20  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py: Refactored things more than a bit in preparation
+	for new functionality.
+
+2005-06-19  Lars Wirzenius  <liw@iki.fi>
+
+	* Version 0.4.
+
+2005-06-19  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.docbook, piuparts.py: Added -p option.
+	
+	* piuparts.docbook: Updated a description of what the program
+	does.
+
+2005-06-19  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.docbook: Documented upgrade testing.
+
+2005-06-19  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py: Added a simple form of upgrade testing.
+
+2005-06-19  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.py: Implemented suggestion from Frank Lichtenheld to
+        do package purginging in two steps: first remove, then purge.
+        This helps find postrm scripts that use things they aren't
+        allowed to use.
+	
+	* README: Added naming credit to Tollef Fog Heen.
+
+2005-06-18  Lars Wirzenius  <liw@iki.fi>
+
+	* Version 0.3.
+
+2005-06-18  Lars Wirzenius  <liw@iki.fi>
+
+        * piuparts.py: Added /var/cache/debconf and
+        /var/cache/debconf/passwords.dat to the list of filenames that
+        are automatically ignored.
+        
+        * piuparts.py: After unpacking a base tarball, run apt-get update
+        and clean on it, to be sure everything is up to date.
+
+2005-06-18  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py: Added option -a (--apt) that lets the user install
+	the packages to be tested via apt-get, instead of by specifying
+	package files.
+	
+	* piuparts.docbook: Documented -a (--apt).
+
+2005-06-17  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.docbook: Added a note that piuparts is meant for people
+	making Debian packages before they upload them.
+
+2005-06-17  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py, piuparts.docbook: Added -V (--version) option.
+
+2005-06-17  Lars Wirzenius  <liw@iki.fi>
+
+	* piuparts.py, README: Removed notice about python-apt / apt_pkg
+	since it wasn't actually used.
+	
+        * piuparts.py: Changed things so that we us os.walk and os.stat
+        to find filesystem object meta data, instead of creating a
+        tarball and then scanning that. This makes things quite a bit
+        faster: with a pre-generate base tarball (from pbuilder, for
+        example), a simple installation test can now happen in less than
+        7 seconds wall clock time.
+
+2005-06-14  Lars Wirzenius  <liw@iki.fi>
+
+        * Version 0.2.
+
+        * Second public release. The first one was just a mention on an
+        IRC channel, so it doesn't really count, and I didn't feel like
+        doing change log entries before now. This version only does
+        simple installation and removal testing, but should work at
+        least for simple cases.

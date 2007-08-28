@@ -1,0 +1,216 @@
+piuparts (0.25) unstable; urgency=low
+
+  * Add the option to run custom scripts inside the piuparts chroot.
+    Scripts are stored in a directory and give it as argument with the
+    option --scriptsdir=/dir/with/the/scripts
+    This feature is still experimental :)
+  * Add custom-scripts.txt with information about the custom scripts.
+
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Tue, 28 Aug 2007 14:39:32 +0200
+
+piuparts (0.24) unstable; urgency=low
+
+  * Add /var/lib/apt/extended_states to ignored_files. Thanks Anibal!
+   (Closes: #434980)
+  * Add quick howto about how to use piuparts under docs.
+  * Add test that checks the output from the cron files left in the system
+    after removing a package. This includes the option --skip-cronfiles-test,
+    to allow skipping this test.
+
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Mon, 20 Aug 2007 10:27:29 +0200
+
+piuparts (0.23) unstable; urgency=low
+
+  * Cosmetic change, now file owner and file are shown in the same line.
+  * Add option --list-installed-files, that list files added/removed/modified 
+    to the chroot after the package's installation.  (Closes: #431821)
+  * Add option --no-upgrade-test, that allows skip testing upgrade from an 
+    existing version in the archive. (Closes: #349933)
+
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Tue, 10 Jul 2007 19:47:21 +0200
+
+piuparts (0.22) unstable; urgency=low
+
+  [ John Wright ]
+  * debian/control:
+    - Add XS-Vcs-Svn and XS-Vcs-Browser fields
+
+  [ Ana Beatriz Guerrero Lopez ]
+  * Rename piuparts.py.in back to piuparts.py.
+  * Add option --skip-minimize that allows skip the minimize chroot step 
+    with debfoster.
+  * Remove m4 substitution, and use sed instead. Drop Build-Depends on m4. 
+    (Closes: #431248)
+  * Drop support for python 2.3 and add support for python 2.5.
+  * debian/rules:
+    - Remove execution of checkversion in package build, not longer needed.
+  * debian/control:
+    - Add myself to uploaders.
+    - Add (future) piuparts website.
+
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Wed, 04 Jul 2007 21:03:44 +0200
+
+piuparts (0.21) unstable; urgency=low
+
+  * Convert to Debian-native packaging style.  From now on, changes to piuparts
+    will be tracked here.  (Closes: #389610)
+  * Makefile:
+    - Give docbook2x-man a --encoding=utf-8 argument.  It was failing to build.
+    - Generate piuparts.py from piuparts.py.in, filling in the VERSION variable
+      with the version from debian/changelog
+  * debian/control:
+    - Fix the name of the maintainer (we're the "piuparts developers team", not
+      Lustre)
+    - Correct my email address in the uploaders field
+    - Add Build-Depends on m4
+  * piuparts.py.in:
+    - Don't call shellquote() on arguments, since we're not using the shell.
+      (Closes: #386839)
+    - Add a --warn-on-others option.  See the man page for details.
+  * piuparts.docbook:
+    - Document the --warn-on-others option.
+
+ -- John Wright <john@movingsucks.org>  Thu, 21 Jun 2007 00:27:22 +0100
+
+piuparts (0.20-3) unstable; urgency=low
+
+  * New Maintainer(s): piuparts team. Closes: #390754.
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Mon, 23 Oct 2006 16:02:19 +0100
+
+piuparts (0.20-2) unstable; urgency=low
+
+  * Orphaning.
+
+ -- Lars Wirzenius <liw@iki.fi>  Mon,  2 Oct 2006 23:43:00 +0300
+
+piuparts (0.20-1) unstable; urgency=low
+
+  * New upstream version. Fixed Debian bugs:
+    - Symlink correctness checking was broken when symlinks pointed at
+      symlinks. (Closes: #387796)
+    - fails if a deb filename contains a "strange" char. (Closes: #386839)
+
+ -- Lars Wirzenius <liw@iki.fi>  Fri, 22 Sep 2006 12:58:24 +0300
+
+piuparts (0.19-1) unstable; urgency=low
+
+  * New upstream version. No Debian bugs fixed.
+
+ -- Lars Wirzenius <liw@iki.fi>  Fri,  8 Sep 2006 20:28:31 +0300
+
+piuparts (0.18-1) unstable; urgency=low
+
+  * New upstream version. No Debian bugs fixed.
+  * debian/control: Updated for new Python policy.
+  * debian/prerm, debian/postrm: Written. They compile/remove byte code 
+    files.
+
+ -- Lars Wirzenius <liw@iki.fi>  Thu,  7 Sep 2006 20:42:03 +0300
+
+piuparts (0.17-1) unstable; urgency=low
+
+  * debian/control: Added dependency on lsof, since that is now used to
+    check that there are no processes running inside the chroot.
+  * New upstream version, fixes the following open bugs in Debian:
+    - missing words in piuparts(1) (Closes: 362551)
+    - default ignore pattern for papercut files added (Closes: #355401)
+
+ -- Lars Wirzenius <liw@iki.fi>  Sun, 25 Jun 2006 19:35:19 +0300
+
+piuparts (0.16-1) unstable; urgency=low
+
+  * New upstream version. Fixes the following bugs reported against the 
+    Debian package:
+    - TODO: keep track of bugs to show expected failures and unexpected
+      successes (Closes: #353215)
+    - It would be nice if the chroot were updated before the snapshot
+      (Closes: #356678)
+  * debian/control: Made the dependency on debootstrap be versioned.
+    Closes: #355875.
+
+ -- Lars Wirzenius <liw@iki.fi>  Fri, 22 Mar 2006 22:40:00 +0200
+
+piuparts (0.15-1) unstable; urgency=low
+
+  * New upstream version. Includes fixes for Debian bugs:
+    - "Specify packages to use for testing" (Closes: #354811)
+    - "Misleading documentation of -v" (Closes: #352941)
+
+ -- Lars Wirzenius <liw@iki.fi>  Wed, 01 Mar 2006 20:53:00 +0200
+
+piuparts (0.14-1) unstable; urgency=low
+
+  * New upstream version. Includes fix for:
+    - "piuparts should flag as an error a failed installation of a dependency"
+      (Closes: #343324)
+
+ -- Lars Wirzenius <liw@iki.fi>  Sun, 18 Dec 2005 23:22:00 +0200
+
+piuparts (0.13-1) unstable; urgency=low
+
+  * New upstream version.
+  * debian/changelog: Minor tweaking to the description.
+
+ -- Lars Wirzenius <liw@iki.fi>  Sat, 12 Nov 2005 00:53:04 +0200
+
+piuparts (0.12-1) unstable; urgency=low
+
+  * New upstream version. Fixes bug in Debian:
+    - dist-upgrade to experimental does not work (now documented as a 
+      feature). Closes: #330749.
+
+ -- Lars Wirzenius <liw@iki.fi>  Mon, 17 Oct 2005 21:03:12 +0300
+
+piuparts (0.11-1) unstable; urgency=low
+
+  * New upstream version. Fixes bugs in Debian:
+    - Checks whether there are packages on the command line before creating
+      a chroot. Closes: #322441.
+    - apt-get configured to allow unauthenticated repositories. 
+      Closes: #326705.
+
+ -- Lars Wirzenius <liw@iki.fi>  Fri, 14 Oct 2005 01:16:25 +0300
+
+piuparts (0.10-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Lars Wirzenius <liw@iki.fi>  Thu, 15 Sep 2005 23:31:30 +0300
+
+piuparts (0.9-1) unstable; urgency=low
+
+  * New upstream version, fixes bugs reported against Debian:
+    - Upstream version number in Debian package and in upstream sources
+      now match. Closes: #326058.
+    - Files reported by piuparts are now associated with their packages,
+      when possible. Closes: #324248.
+  * debian/rules: Added "checkversion" target to make sure we no longer
+    do stupid things like #326058, at least in the Debian package.
+
+ -- Lars Wirzenius <liw@iki.fi>  Fri, 09 Sep 2005 00:34:36 +0300
+
+piuparts (0.8-1) unstable; urgency=low
+
+  * New upstream version, fixes bugs:
+    - Example in manual page now works (Closes: #319990)
+    - Temporary directories are now removed on failure (Closes: #323653)
+    - Parsing /etc/apt/sources.list now better (Closes: #319989)
+    - Temporary directorys are now put in $TMPDIR or /etc (Closes: #322440)
+  * debian/control: Added build-depends on docbook2x. Closes: #318693
+  * debian/changelog: Added note about upstream source repository.
+
+ -- Lars Wirzenius <liw@iki.fi>  Mon, 29 Aug 2005 23:03:32 +0300
+
+piuparts (0.7-1) unstable; urgency=low
+
+  * New upstream version.
+  * This is the first package that will be uploaded to the Debian archive.
+
+ -- Lars Wirzenius <liw@iki.fi>  Fri, 15 Jul 2005 13:09:00 +0300
+
+piuparts (0.6-1) unstable; urgency=low
+
+  * First release of the Debian package.
+
+ -- Lars Wirzenius <liw@iki.fi>  Tue,  5 Jul 2005 20:08:00 +0300
