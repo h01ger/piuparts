@@ -1,6 +1,6 @@
 piuparts (0.26) unstable; urgency=low
 
-  * ...  
+  * Update list of ignored files. (Closes: #439592)
 
  -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Tue, 28 Aug 2007 22:30:43 +0200
 

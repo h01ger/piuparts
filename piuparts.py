@@ -76,12 +76,15 @@ class Settings:
         self.ignored_files = [
             "/dev/MAKEDEV",
             "/etc/aliases",
+            "/etc/apt/apt.conf",
             "/etc/apt/secring.gpg",
             "/etc/apt/trustdb.gpg",
             "/etc/crypttab",
             "/etc/exports",
             "/etc/group",
             "/etc/group-",
+            "/etc/gshadow",
+            "/etc/gshadow-",
             "/etc/hosts.allow.bak",
             "/etc/inetd.conf",
             "/etc/init.d/gnocatan-meta-server",
@@ -107,8 +110,7 @@ class Settings:
             "/etc/shells",
             "/etc/skel/.zshrc",
             "/home/ftp",
-            "/usr/doc", # Temporary until cpio upgrade bug is fixed
-            "/usr/doc/cpio", # Temporary until cpio upgrade bug is fixed
+            "/usr/sbin/policy-rc.d",
             "/usr/share/doc/base-config",
             "/usr/share/doc/base-config/README.Debian",
             "/usr/share/doc/base-config/changelog.gz",
@@ -118,6 +120,7 @@ class Settings:
             "/var/backups/infodir.bak",
             "/var/cache/apt/archives/lock",
             "/var/cache/apt/pkgcache.bin", 
+            "/var/cache/apt/srcpkgcache.bin",
             "/var/cache/debconf",
             "/var/cache/debconf/config.dat",
             "/var/cache/debconf/config.dat-old",
@@ -126,7 +129,7 @@ class Settings:
             "/var/cache/debconf/templates.dat-old",
             "/var/cache/man/index.db",
             "/var/lib/apt/extended_states",
-            "/var/lib/dpkg/available", 
+            "/var/lib/dpkg/available",
             "/var/lib/dpkg/available-old", 
             "/var/lib/dpkg/diversions",
             "/var/lib/dpkg/diversions-old",
@@ -145,7 +148,6 @@ class Settings:
             "/var/log/dpkg.log",
             "/var/log/faillog",
             "/var/log/lastlog",
-            "/var/spool/cron", # Temporary until at bug is fixed.
             "/",
             ]
         self.ignored_patterns = [
