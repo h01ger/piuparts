@@ -592,7 +592,8 @@ class Chroot:
             tmp_files = [os.path.basename(a) for a in filenames]
             tmp_files = [os.path.join("tmp", name) for name in tmp_files]
 
-            self.run_scripts("pre_install")
+            if settings.scriptsdir is not None:
+                self.run_scripts("pre_install")
 
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
@@ -607,7 +608,8 @@ class Chroot:
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
                 self.run(["apt-get", "-yf", "--no-remove", "install"])
 
-            self.run_scripts("post_install")
+            if settings.scriptsdir is not None:
+                self.run_scripts("post_install")
 
             self.run(["apt-get", "clean"])
             remove_files([os.path.join(self.name, name) 
@@ -814,9 +816,7 @@ class Chroot:
     def run_scripts (self, step):
         """ Run custom scripts to given step post-install|remove|purge"""
 
-        if settings.scriptsdir is None:
-            exit
-        logging.info("Running scripts post "+ step)
+        logging.info("Running scripts "+ step)
         basepath = self.relative("tmp/scripts/")
         list_scripts = os.listdir(basepath)
         list_scripts.sort()
@@ -999,8 +999,9 @@ def install_upgrade_test(chroot, root_info, selections, args, package_names):
 
     # First install via apt-get.
     chroot.install_packages_by_name(package_names)
-
-    chroot.run_scripts("pre_upgrade")
+    
+    if settings.scriptsdir is not None:
+        chroot.run_scripts("pre_upgrade")
 
     chroot.check_for_broken_symlinks()
 
