@@ -652,7 +652,8 @@ class Chroot:
         self.remove_or_purge("remove", deps_to_remove + deps_to_purge +
                                         nondeps_to_remove + nondeps_to_purge)
         # Run custom scripts after remove all packages. 
-        self.run_scripts("post_remove")	
+	if settings.scriptsdir is not None:
+            self.run_scripts("post_remove")	
 
         if not settings.skip_cronfiles_test:
             cronfiles, cronfiles_list = self.check_if_cronfiles(packages)
@@ -666,8 +667,9 @@ class Chroot:
         # Finally, purge actual packages.
         self.remove_or_purge("purge", nondeps_to_purge)
 
-        # Run custom scripts after purge all packages. 
-        self.run_scripts("post_purge")
+        # Run custom scripts after purge all packages.
+        if settings.scriptsdir is not None: 
+            self.run_scripts("post_purge")
 
         # Now do a final run to see that everything worked.
         self.run(["dpkg", "--purge", "--pending"])

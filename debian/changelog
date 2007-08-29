@@ -1,3 +1,9 @@
+piuparts (0.26) unstable; urgency=low
+
+  * ...  
+
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Tue, 28 Aug 2007 22:30:43 +0200
+
 piuparts (0.25) unstable; urgency=low
 
   * Add the option to run custom scripts inside the piuparts chroot.
