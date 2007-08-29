@@ -154,10 +154,10 @@ class Settings:
             "/dev/",
             "/etc/ssl/certs(/.*)?",
             "/lib/modules/.*/modules.*",
-	    "/usr/lib/python2\../site-packages/debconf.py[co]",
+            "/usr/lib/python2\../site-packages/debconf.py[co]",
             "/var/lib/cvs(/.*)?",
             "/var/lib/dpkg/alternatives",
-	    "/var/lib/maxdb(/.*)?",
+            "/var/lib/maxdb(/.*)?",
             "/var/lib/onak(/.*)?",
             "/var/lib/papercut(/.*)?",
             "/var/log/exim/.*",
@@ -813,17 +813,17 @@ class Chroot:
 
     def run_scripts (self, step):
         """ Run custom scripts to given step post-install|remove|purge"""
-	
-	if settings.scriptsdir is None:
-	    exit
+
+        if settings.scriptsdir is None:
+            exit
         logging.info("Running scripts post "+ step)
         basepath = self.relative("tmp/scripts/")
-	list_scripts = os.listdir(basepath)
-	list_scripts.sort()
+        list_scripts = os.listdir(basepath)
+        list_scripts.sort()
         for file in list_scripts:
-		if file.startswith(step):
-                    script = os.path.join("tmp/scripts", file)
-                    self.run([script]) 
+            if file.startswith(step):
+                script = os.path.join("tmp/scripts", file)
+                self.run([script]) 
 
 
 
