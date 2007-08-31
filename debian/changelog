@@ -1,8 +1,9 @@
 piuparts (0.26) unstable; urgency=low
 
   * Update list of ignored files. (Closes: #439592)
+  * In the cron test, not executable files are not run. (Closes: #440141)
 
- -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Tue, 28 Aug 2007 22:30:43 +0200
+ -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Fri, 31 Aug 2007 15:44:36 +0200
 
 piuparts (0.25) unstable; urgency=low
 

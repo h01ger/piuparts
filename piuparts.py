@@ -795,10 +795,13 @@ class Chroot:
                 pathname = line.strip()
                 if pathname.startswith("/etc/cron."):
                     if os.path.isfile(self.relative(pathname.strip("/"))):
-                        if not has_cronfiles:
-                            has_cronfiles = True
-                        list.append(pathname)
-                        logging.info("Package " + p + " contains cron file: " + pathname)
+                        st = os.lstat(self.relative(pathname.strip("/")))
+                        mode = st[stat.ST_MODE]
+                        if (mode & stat.S_IEXEC): 
+                            if not has_cronfiles:
+                                has_cronfiles = True
+                            list.append(pathname)
+                            logging.info("Package " + p + " contains cron file: " + pathname)
             f.close()
 
         return has_cronfiles, list
