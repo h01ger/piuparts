@@ -1,3 +1,12 @@
+piuparts (0.27) UNRELEASED; urgency=low
+
+  * Add support for testing multiple distributions and architectures to
+    piuparts-master.py and piuparts-slave.py.  Please see the README file,
+    piuparts-master.conf.sample and piuparts-slave.conf.sample for more
+    details. (Closes: #349365)
+
+ -- John Wright <jsw@debian.org>  Tue, 04 Sep 2007 19:08:26 -0600
+
 piuparts (0.26) unstable; urgency=low
 
   * Update list of ignored files. (Closes: #439592)
