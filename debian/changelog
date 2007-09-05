@@ -4,8 +4,10 @@ piuparts (0.27) UNRELEASED; urgency=low
     piuparts-master.py and piuparts-slave.py.  Please see the README file,
     piuparts-master.conf.sample and piuparts-slave.conf.sample for more
     details. (Closes: #349365)
+  * debian/control:
+    - Update my email address in the Uploaders field
 
- -- John Wright <jsw@debian.org>  Tue, 04 Sep 2007 19:08:26 -0600
+ -- John Wright <jsw@debian.org>  Tue, 04 Sep 2007 19:19:52 -0600
 
 piuparts (0.26) unstable; urgency=low
 
