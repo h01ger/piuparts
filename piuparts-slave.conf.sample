@@ -22,3 +22,25 @@ upgrade-test-distros = sarge etch sid
 upgrade-test-chroot-tgz = sarge.tar.gz
 max-reserved = 50
 debug = no
+
+# As in piuparts-master.conf, you can have multiple sections, so that you can
+# run piuparts-slave.py for multiple dists
+
+# For testing-proposed-updates, you'll have to roll your own chroot, or modify
+# the sources.list in a generated chroot for testing, in order to include the
+# appropriate deb line for testing-proposed-updates
+## [t-p-u-i386]
+## idle-sleep = 300
+## # master-host = localhost
+## # master-user = piuparts
+## # master-directory = .
+## master-command = python /usr/share/piuparts/piuparts-master.py t-p-u-i386
+## # mirror = http://your.mirror.here/debian
+## piuparts-cmd = sudo piuparts
+## distro = testing-proposed-updates
+## chroot-tgz = t-p-u.tar.gz
+## keep-sources-list = yes
+## upgrade-test-distros =
+## upgrade-test-chroot-tgz =
+## max-reserved = 50
+## debug = no

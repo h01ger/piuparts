@@ -56,8 +56,8 @@ def setup_logging(log_level, log_file_name):
 
 class Config(piupartslib.conf.Config):
 
-    def __init__(self):
-        piupartslib.conf.Config.__init__(self, "slave",
+    def __init__(self, section="slave"):
+        piupartslib.conf.Config.__init__(self, section,
             {
                 "idle-sleep": "10",
                 "master-host": None,
@@ -72,6 +72,8 @@ class Config(piupartslib.conf.Config):
                 "upgrade-test-chroot-tgz": None,
                 "max-reserved": "1",
                 "debug": "no",
+                "keep-sources-list": "no",
+                "arch": None,
             },
             ["master-host", "master-user", "master-command"])
 
@@ -236,6 +238,8 @@ def test_package(config, package, packages_files):
     
     command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s " % \
                 config
+    if config["keep-sources-list"] in ["yes", "true"]:
+        command += "--keep-sources-list "
     command += package["Package"]
     
     logging.debug("Executing: %s" % command)
@@ -278,8 +282,8 @@ def test_package(config, package, packages_files):
 
 def create_chroot(config, tarball, distro):
     logging.info("Creating new tarball %s" % tarball)
-    command = "%s -ad %s -s %s.new hello" % \
-                (config["piuparts-cmd"], distro, tarball)
+    command = "%s -ad %s -s %s.new -m %s hello" % \
+                (config["piuparts-cmd"], distro, tarball, config["mirror"])
     logging.debug("Executing: " + command)
     f = os.popen("{ %s; } 2>&1" % command, "r")
     for line in f:
@@ -290,7 +294,11 @@ def create_chroot(config, tarball, distro):
 
 def fetch_packages_file(config, distro):
     mirror = config["mirror"]
-    arch = "i386" # FIXME to figure our arch right
+    arch = config["arch"]
+    if not arch:
+        # Try to figure it out ourselves, using dpkg
+        input, output = os.popen2("dpkg --print-architecture")
+        arch = output.read().rstrip()
     packages_url = \
         "%s/dists/%s/main/binary-%s/Packages.bz2" % (mirror, distro, arch)
 
@@ -311,7 +319,17 @@ def create_file(filename, contents):
 def main():
     setup_logging(logging.INFO, None)
     
-    config = Config()
+    # For supporting multiple piuparts-slave configurations on a particular
+    # machine (e.g. for testing multiple suites), we take a command-line
+    # argument referring to a section in the slave configuration file.  For
+    # backwards compatibility, if no argument is given, the "slave" section is
+    # assumed.
+    if len(sys.argv) == 2:
+        section = sys.argv[1]
+        config = Config(section=section)
+    else:
+        section = None
+        config = Config()
     config.read(CONFIG_FILE)
     
     if config["debug"] in ["yes", "true"]:
@@ -321,7 +339,8 @@ def main():
     if not os.path.exists(config["chroot-tgz"]):
         create_chroot(config, config["chroot-tgz"], config["distro"])
 
-    if not os.path.exists(config["upgrade-test-chroot-tgz"]):
+    if (config["upgrade-test-distros"] and not
+        os.path.exists(config["upgrade-test-chroot-tgz"])):
         create_chroot(config, config["upgrade-test-chroot-tgz"], 
                       config["upgrade-test-distros"].split()[0])
 

@@ -42,7 +42,7 @@ Distrubuted testing
                 suffice:
                 
                  1. Pick a machine to run the master. It cannot be a chroot,
-                    but sarge should be good enough.
+                    but etch should be good enough.
                  2. Install piuparts on it.
                  3. Create an account for the master.
                  4. Configure /etc/piuparts/piuparts-master.conf 
@@ -59,15 +59,15 @@ Distrubuted testing
                  9. Create an ssh keypair for the slave. No passphrase.
                 10. Add the slave's public key to the master's 
                     .ssh/authorized_keys
-                11. Configure sudo on the slave machine to allow the slave
-                    account become root without password (otherwise you'll
-                    be typing in a password all the time).
+		11. Configure sudo on the slave machine to allow the slave
+		    account run /usr/sbin/piuparts as root without password
+		    (otherwise you'll be typing in a password all the time).
 
                 12. Run /usr/share/piuparts/piuparts-slave.py on the slave
-                    accounts. Packages that are installed want to use
-                    /dev/tty, so you can't do this from cron. Also, you'll
-                    want to keep an eye on what is happening, to catch
-                    runaway processes and stuff.
+		    accounts. Packages that are installed want to use
+		    /dev/tty, so you can't do this from cron. Also, you'll
+		    want to keep an eye on what is happening, to catch
+		    runaway processes and stuff.
 
                 13. The logs go into the master account, into
                     subdirectories.
@@ -196,10 +196,14 @@ Master configuration file
                     [master]
                     foo = bar
                     
-                where "master" is the name of a section. There can only be
-                one section in the master configuration file, but it must
-                be named "master". "foo" is the name of a configuration
-                item, and "bar" is the value.
+		where "master" is the name of a section.  By default,
+		piuparts-master.py uses the "master" section in the master
+		configuration file, but you can tell it to use another
+		section by giving the name of that section as an argument.
+		"foo" is the name of a configuration item, and "bar" is the
+		value.  If a section other than "master" is used, all the
+		piuparts logs for that section are kept in a subdirectory by
+		the name of the section.
                 
                 The following configuration items are defined for the master:
                 
@@ -230,8 +234,9 @@ Slave configuration file
                 piuparts-slave uses the configuration file
                 /etc/piuparts/piuparts-slave.conf. It has the same
                 general syntax as the master's configuration file. The
-                section is called "slave" and the configuration items
-                are as follows:
+		default section is called "slave" (again, you can use a
+		different section by specifying it on the command-line) and
+		the configuration items are as follows:
                 
                 * "idle-sleep" is the length of time the slave should wait
                   before querying the master again if the master didn't have
@@ -251,7 +256,13 @@ Slave configuration file
                 * "master-command" is the command to run on master-host to
                   start the master. When the master has been installed from
                   the Debian package, the command is 
-                  "python /usr/share/piuparts/piuparts-master.py".
+		  "python /usr/share/piuparts/piuparts-master.py".  If you
+		  want to use a section in the master configuration file
+		  other than "master", append the section name to this
+		  command.  For example, if the master configuration file has
+		  a "sid-ia64" section that you want to use, the command
+		  should be
+		  "python /usr/share/piuparts/piuparts-master.py sid-ia64".
                   
                 * "mirror" tells the slave which mirror it is to use. The
                   slave gives this to piuparts when it runs it.
@@ -272,7 +283,8 @@ Slave configuration file
                 * "upgrade-test-distros" is the space delimited list of
                   distributions the slave should use for testing upgrades
                   between distributions (i.e., Debian versions). Currently,
-                  "sarge etch sid" is a good choice.
+		  "sarge etch sid" is a good choice.  Make this empty if you
+		  do not want to run upgrade tests.
 
                 * "upgrade-test-chroot-tgz" is the name of the file the slave
                   should use for the tarball to keep the chroot for the
@@ -291,6 +303,13 @@ Slave configuration file
                   for about an hour before reporting results and reserving
                   more. For a contemporary AMD64 machine with a reasonably
                   fast disk subsystem the value 50 seems to work fine.
+
+		* "keep-sources-list" controls whether the slave runs
+		  piuparts with the "--keep-sources-list" option.  This
+		  option does not apply to upgrade tests.  The value should
+		  be "yes" or "no", with the default being "no".  Use this
+		  option for dists that you need a custom sources.list for,
+		  such as "testing-proposed-updates".
 
                 * "debug" tells the slave whether to log debug level
                   messages. The value should be "yes" or "no", with the

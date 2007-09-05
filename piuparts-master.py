@@ -48,8 +48,8 @@ def setup_logging(log_level, log_file_name):
 
 class Config(piupartslib.conf.Config):
 
-    def __init__(self):
-        piupartslib.conf.Config.__init__(self, "master",
+    def __init__(self, section="master"):
+        piupartslib.conf.Config.__init__(self, section,
             {
                 "log-file": None,
                 "packages-url": None,
@@ -104,7 +104,7 @@ class Protocol:
 
 class Master(Protocol):
 
-    def __init__(self, input, output, packages_file):
+    def __init__(self, input, output, packages_file, section=None):
         Protocol.__init__(self, input, output)
         self._commands = {
             "reserve": self._reserve,
@@ -113,7 +113,7 @@ class Master(Protocol):
             "fail": self._fail,
             "untestable": self._untestable,
         }
-        self._db = piupartslib.packagesdb.PackagesDB()
+        self._db = piupartslib.packagesdb.PackagesDB(prefix=section)
         self._db.create_subdirs()
         self._db.read_packages_file(packages_file)
         self._writeline("hello")
@@ -170,14 +170,23 @@ class Master(Protocol):
 
 
 def main():
-    config = Config()
+    # For supporting multiple architectures and suites, we take a command-line
+    # argument referring to a section in the master configuration file.  For
+    # backwards compatibility, if no argument is given, the "master" section is
+    # assumed.
+    if len(sys.argv) == 2:
+        section = sys.argv[1]
+        config = Config(section=section)
+    else:
+        section = None
+        config = Config()
     config.read(CONFIG_FILE)
     
     setup_logging(logging.DEBUG, config["log-file"])
     
     logging.info("Fetching %s" % config["packages-url"])
     packages_file = piupartslib.open_packages_url(config["packages-url"])
-    m = Master(sys.stdin, sys.stdout, packages_file)
+    m = Master(sys.stdin, sys.stdout, packages_file, section=section)
     packages_file.close()
     while m.do_transaction():
         pass

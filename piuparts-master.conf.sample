@@ -12,3 +12,15 @@
 [master]
 log-file = /dev/null
 # packages-url = http://your.mirror.here/debian/dists/sid/main/binary-i386/Packages.bz2
+
+# You can have other sections, in order to support one master for multiple
+# dists and/or architectures.  In the slave configuration file, be sure to
+# append the appropriate section name to the master-command option.
+
+## [sid-ia64]
+## log-file = /dev/null
+## packages-url = http://ftp.debian.org/debian/dists/sid/binary-ia64/Packages.bz2
+
+## [t-p-u-i386]
+## log-file = /dev/null
+## packages-url = http://ftp.debian.org/debian/dists/testing-proposed-updates/binary-i386/Packages.bz2

@@ -111,14 +111,14 @@ class LogDB:
         return dircache.listdir(dirname)
         
     def exists(self, pathname):
-	try:
-	    cache = self.exists_cache
-	except AttributeError:
-	    self.exists_cache = {}
-	    cache = self.exists_cache
-	if pathname not in cache:
-             cache[pathname] = os.path.exists(pathname)
-	return cache[pathname]
+        try:
+            cache = self.exists_cache
+        except AttributeError:
+            self.exists_cache = {}
+            cache = self.exists_cache
+        if pathname not in cache:
+            cache[pathname] = os.path.exists(pathname)
+        return cache[pathname]
         
     def open_file(self, pathname, mode):
         return file(pathname, mode)
@@ -137,17 +137,17 @@ class LogDB:
         return False
     
     def any_log_exists(self, package, subdirs):
-	try:
-	    cache = self.basename_cache
-	except AttributeError:
-	    self.basename_cache = {}
-	    cache = self.basename_cache
+        try:
+            cache = self.basename_cache
+        except AttributeError:
+            self.basename_cache = {}
+            cache = self.basename_cache
         package_name = package["Package"]
         for subdir in subdirs:
             for basename in self.listdir(subdir):
-		if basename not in cache:
-		    cache[basename] = basename.split("_", 1)
-		parts = cache[basename]
+                if basename not in cache:
+                    cache[basename] = basename.split("_", 1)
+                parts = cache[basename]
                 if len(parts) == 2 and parts[0] == package_name:
                     return True
         return False
@@ -212,7 +212,8 @@ class PackagesDB:
         "dependency-fix-not-yet-tested": "dependency-fix-not-yet-tested",
     }
 
-    def __init__(self, logdb=None):
+    def __init__(self, logdb=None, prefix=None):
+        self.prefix = prefix
         self._packages_files = []
         self._ready_for_testing = None
         self._logdb = logdb or LogDB()
@@ -225,18 +226,24 @@ class PackagesDB:
         
     def set_subdirs(self, ok=None, fail=None, evil=None, reserved=None,
                     moreok=None, morefail=None):
+        # Prefix all the subdirs with the prefix
+        if self.prefix:
+            format = self.prefix + "/%s"
+        else:
+            format = "%s"
+
         if ok:
-            self._ok = ok
+            self._ok = format % ok
         if fail:
-            self._fail = fail
+            self._fail = format % fail
         if evil:
-            self._evil = evil
+            self._evil = format % evil
         if reserved:
-            self._reserved = reserved
+            self._reserved = format % reserved
         if moreok:
-            self._moreok = moreok
+            self._moreok = [format % s for s in moreok]
         if morefail:
-            self._morefail = morefail
+            self._morefail = [format % s for s in morefail]
         self._all = [self._ok, self._fail, self._evil, self._reserved] + \
                     self._moreok + self._morefail
            
