@@ -309,7 +309,7 @@ Slave configuration file
 		  option does not apply to upgrade tests.  The value should
 		  be "yes" or "no", with the default being "no".  Use this
 		  option for dists that you need a custom sources.list for,
-		  such as "testing-proposed-updates".
+		  such as "stable-proposed-updates".
 
                 * "debug" tells the slave whether to log debug level
                   messages. The value should be "yes" or "no", with the

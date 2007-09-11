@@ -21,6 +21,6 @@ log-file = /dev/null
 ## log-file = /dev/null
 ## packages-url = http://ftp.debian.org/debian/dists/sid/binary-ia64/Packages.bz2
 
-## [t-p-u-i386]
+## [s-p-u-i386]
 ## log-file = /dev/null
-## packages-url = http://ftp.debian.org/debian/dists/testing-proposed-updates/binary-i386/Packages.bz2
+## packages-url = http://ftp.debian.org/debian/dists/stable-proposed-updates/binary-i386/Packages.bz2
