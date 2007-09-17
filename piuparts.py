@@ -907,6 +907,18 @@ def offending_packages(meta_infos, file_owners):
     return pkgset
 
 
+def prune_files_list(files, depsfiles):
+    """Remove elements from 'files' that are in 'depsfiles', and return the
+    list of removed elements.
+    """
+    warn = []
+    for file in depsfiles:
+        if file in files:
+            files.remove(file)
+            warn.append(file)
+    return warn
+
+
 def diff_selections(chroot, selections):
     """Compare original and current package selection.
        Return dict where dict[package_name] = original_status, that is,
@@ -934,25 +946,35 @@ def get_package_names_from_package_files(filenames):
     return list
 
 
-def check_results(chroot, root_info, file_owners, packages=[]):
-    """Check that current chroot state matches 'root_info'."""
-    if settings.warn_on_others:
-        pkgset = sets.Set(packages)
-    else:
-        pkgset = sets.Set()
+def check_results(chroot, root_info, file_owners, deps_info=None):
+    """Check that current chroot state matches 'root_info'.
+    
+    If settings.warn_on_others is True and deps_info is not None, then only
+    print a warning rather than failing if the current chroot contains files
+    that are in deps_info but not in root_info.  (In this case, deps_info
+    should be the result of chroot.save_meta_data() right after the
+    dependencies are installed, but before the actual packages to test are
+    installed.)
+    """
+
     current_info = chroot.save_meta_data()
-    (new, removed, modified) = diff_meta_data(root_info, current_info)
+    if settings.warn_on_others and deps_info is not None:
+        (new, removed, modified) = diff_meta_data(root_info, current_info)
+        (depsnew, depsremoved, depsmodified) = diff_meta_data(root_info,
+                                                              deps_info)
+
+        warnnew = prune_files_list(new, depsnew)
+        warnremoved = prune_files_list(removed, depsremoved)
+        warnmodified = prune_files_list(modified, depsmodified)
+
+    else:
+        (new, removed, modified) = diff_meta_data(root_info, current_info)
+
     ok = True
     if new:
-        msg = "Package purging left files on system:\n" + \
-              file_list(new, file_owners)
-        offendingset = offending_packages(new, file_owners)
-        if settings.warn_on_others and not offendingset.intersection(pkgset):
-            # Just print a warning since none of our packages caused the error
-            logging.info("Warning: " + msg)
-        else:
-            logging.error(msg)
-            ok = False
+        logging.error("Package purging left files on system:\n" +
+                       file_list(new, file_owners))
+        ok = False
     if removed:
         logging.error("After purging files have disappeared:\n" +
                       file_list(removed, file_owners))
@@ -961,6 +983,26 @@ def check_results(chroot, root_info, file_owners, packages=[]):
         logging.error("After purging files have been modified:\n" +
                       file_list(modified, file_owners))
         ok = False
+
+    if ok and settings.warn_on_others and deps_info is not None:
+        if warnnew:
+            msg = ("Warning: Package puring left files on system:\n" +
+                   file_list(warnnew, file_owners) + \
+                   "These files seem to have been left by dependencies rather "
+                   "than by packages\nbeing explicitly tested.\n")
+            logging.info(msg)
+        if warnremoved:
+            msg = ("After purging files have dissappeared:\n" +
+                   file_list(warnremoved, file_owners) +
+                   "This seems to have been caused by dependencies rather "
+                   "than by packages\nbbeing explicitly tested.\n")
+            logging.info(msg)
+        if warnmodified:
+            msg = ("After purging files have been modified:\n" +
+                   file_list(warnmodified, file_owners) +
+                   "This seems to have been caused by dependencies rather "
+                   "than by packages\nbbeing explicitly tested.\n")
+            logging.info(msg)
 
     return ok
 
@@ -975,6 +1017,20 @@ def install_purge_test(chroot, root_info, selections, args, packages):
     if args:
         chroot.install_package_files(args)
     else:
+        if settings.warn_on_others:
+            # First install only the dependencies.  We do this by giving
+            # apt-get the list of packages to install, and following that list
+            # with the same packages with '-' appended to the end.  Then,
+            # apt-get ensures that the packages never actually get installed,
+            # but kindly installs their dependencies for us.  Once we've got
+            # the dependencies installed, save the file ownership information
+            # so we can tell which modifications were caused by the actual
+            # packages we are testing, rather than by their dependencies.
+            chroot.install_packages_by_name(packages +
+                                            ["%s-" % p for p in packages])
+            deps_info = chroot.save_meta_data()
+        else:
+            deps_info = None
         chroot.install_packages_by_name(packages)
         chroot.run(["apt-get", "clean"])
 
@@ -991,7 +1047,7 @@ def install_purge_test(chroot, root_info, selections, args, packages):
     chroot.check_for_broken_symlinks()
     chroot.unmount_proc()
 
-    return check_results(chroot, root_info, file_owners, packages=packages)
+    return check_results(chroot, root_info, file_owners, deps_info=deps_info)
 
 
 def install_upgrade_test(chroot, root_info, selections, args, package_names):
@@ -1196,8 +1252,13 @@ def parse_command_line():
     parser.add_option("--warn-on-others",
                       action="store_true", default=False,
                       help="Print a warning rather than failing if "
-                           "files are left behind by a package that "
-                           "was not given on the command-line.")
+                           "files are left behind, modified, or removed "
+                           "by a package that was not given on the "
+                           "command-line.  This currently only works in "
+                           "conjunction with --apt, and errors in "
+                           "packages with circular dependencies with "
+                           "specified packages will be treated as "
+                           "errors rather than warnings.")
 			   
     parser.add_option("--skip-minimize", 
                       action="store_true", default=False,
@@ -1316,6 +1377,11 @@ def parse_command_line():
        (not settings.basetgz or len(settings.debian_distros) > 1):
         logging.error("--keep-sources-list only makes sense with --basetgz "
                       "and only one distribution")
+        exit = 1
+
+    if settings.warn_on_others and settings.args_are_package_files:
+        logging.error("--warn-on-others currently only works in conjunction "
+                      "with --apt")
         exit = 1
     
     if not args:
