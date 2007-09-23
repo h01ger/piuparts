@@ -1016,6 +1016,7 @@ def install_purge_test(chroot, root_info, selections, args, packages):
     chroot.mount_proc()
     if args:
         chroot.install_package_files(args)
+        deps_info = None
     else:
         if settings.warn_on_others:
             # First install only the dependencies.  We do this by giving

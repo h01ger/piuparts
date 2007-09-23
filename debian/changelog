@@ -1,3 +1,10 @@
+piuparts (0.28) UNRELEASED; urgency=low
+
+  * Fix an UnboundLocalError introduced in the --warn-on-others fix that would
+    occur if run without the --apt option. (Closes: #443641)
+
+ -- John Wright <jsw@debian.org>  Sat, 22 Sep 2007 22:54:39 -0600
+
 piuparts (0.27) unstable; urgency=low
 
   * Add support for testing multiple distributions and architectures to
