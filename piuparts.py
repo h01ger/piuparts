@@ -31,6 +31,7 @@ Lars Wirzenius <liw@iki.fi>
 
 
 VERSION = "__PIUPARTS_VERSION__"
+FLAVOR = "__DEBIAN_FLAVOR__"
 
 
 import time
@@ -50,11 +51,69 @@ import subprocess
 import unittest
 
 
+class Defaults:
+
+    """Default settings which depend on flavor of Debian.
+    
+    Some settings, such as the default mirror and distribution, depend on
+    which flavor of Debian we run under: Debian itself, or a derived
+    distribution such as Ubuntu. This class abstracts away the defaults
+    so that the rest of the code can just refer to the values defined
+    herein.
+    
+    """
+
+    def get_mirror(self):
+        """Return default mirror."""
+    
+    def get_distribution(self):
+        """Return default distribution."""
+        
+
+class DebianDefaults(Defaults):
+
+    def get_mirror(self):
+        return [("http://ftp.debian.org/debian",
+                 ["main", "contrib", "non-free"])]
+
+    def get_distribution(self):
+        return ["sid"]
+
+
+class UbuntuDefaults(Defaults):
+
+    def get_mirror(self):
+        return [("http://archive.ubuntu.com/ubuntu",
+                 ["main", "universe", "restricted", "multiverse"])]
+
+    def get_distribution(self):
+        return ["gutsy"]
+
+
+class DefaultsFactory:
+
+    """Instantiate the right defaults class."""
+    
+    def guess_flavor(self):
+        return FLAVOR
+    
+    def new_defaults(self):
+        if not settings.defaults:
+            settings.defaults = self.guess_flavor()
+        if settings.defaults.lower() == "debian":
+            return DebianDefaults()
+        if settings.defaults.lower() == "ubuntu":
+            return UbuntuDefaults()
+        logging.error("Unknown set of defaults: %s" % settings.defaults)
+        panic()
+
+
 class Settings:
 
     """Global settings for this program."""
     
     def __init__(self):
+        self.defaults = None
         self.tmpdir = None
         self.scriptsdir = None
         self.keep_tmpdir = False
@@ -1212,6 +1271,10 @@ def parse_command_line():
     parser = optparse.OptionParser(usage="%prog [options] package ...",
                                    version="piuparts %s" % VERSION)
     
+    parser.add_option("-D", "--defaults", action="store",
+                      help="Choose which set of defaults to use "
+                           "(debian/ubuntu).")
+    
     parser.add_option("-a", "--apt", action="store_true", default=False,
                       help="Command line arguments are package names " +
                            "to be installed via apt.")
@@ -1320,7 +1383,8 @@ def parse_command_line():
                       help="No meaning anymore.")
     
     (opts, args) = parser.parse_args()
-    
+
+    settings.defaults = opts.defaults
     settings.args_are_package_files = not opts.apt
     settings.basetgz = opts.basetgz
     settings.debian_distros = opts.distribution
@@ -1366,14 +1430,15 @@ def parse_command_line():
                           settings.scriptsdir)
             panic()
 
+    defaults = DefaultsFactory().new_defaults()
+    
     if not settings.debian_distros:
-        settings.debian_distros = ["sid"]
+        settings.debian_distros = defaults.get_distribution()
 
     if not settings.debian_mirrors:
         settings.debian_mirrors = find_default_debian_mirrors()
         if not settings.debian_mirrors:
-            settings.debian_mirrors = [("http://ftp.debian.org/",
-                                        ["main", "contrib", "non-free"])]
+            settings.debian_mirrors = defaults.get_mirror()
 
     if settings.keep_sources_list and \
        (not settings.basetgz or len(settings.debian_distros) > 1):
