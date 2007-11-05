@@ -193,6 +193,22 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         
             <varlistentry>
             
+                <term><option>-D</option> <replaceable>flavor</replaceable></term>
+                <term><option>--defaults</option> <replaceable>flavor</replaceable></term>
+                
+                <listitem>
+                
+                    <para>Use default settings suitable for a particular
+                    <replaceable>flavor</replaceable> of Debian: either
+                    <literal>debian</literal> or <literal>ubuntu</literal>.
+                    </para>
+
+                </listitem>
+            
+            </varlistentry>
+        
+            <varlistentry>
+            
                 <term><option>-i</option> <replaceable>filename</replaceable></term>
                 <term><option>--ignore=</option><replaceable>filename</replaceable></term>
                 
