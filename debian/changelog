@@ -1,6 +1,13 @@
 piuparts (0.29) unreleased; urgency=low
 
+  [ Ana Beatriz Guerrero Lopez ]
   * Update uploaders, remove Amaya and Alastair. 
+  
+  [ Lars Wirzenius ]
+  * piuparts.py: Call "apt-get update" before calling Chroot.minimize, so
+    that we can find the debfoster package on Ubuntu.
+  * debian/control: Fixed "Uploaders:" to have my preferred e-mail address
+    (liw@iki.fi) instead of my Debian one.
 
  -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Thu, 18 Oct 2007 14:35:04 +0200
 

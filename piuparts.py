@@ -498,6 +498,7 @@ class Chroot:
         run(["debootstrap", "--resolve-deps", settings.debian_distros[0], 
              self.name, settings.debian_mirrors[0][0]])
         self.configure_chroot()
+        self.run(["apt-get", "update"])
         self.minimize()
 
     def minimize(self):
