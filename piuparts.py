@@ -824,12 +824,16 @@ class Chroot:
             if dirpath == self.name and "proc" in dirnames:
                 dirnames.remove("proc")
             for filename in filenames:
-                name = os.path.join(dirpath, filename)
+                full_name = name = os.path.join(dirpath, filename)
                 if name.startswith(self.name):
                     name = name[len(self.name):]
                 ret = is_broken_symlink(self.name, dirpath, filename)
                 if ret and not self.is_ignored(name):
-                    broken.append("%s -> %s" % (name, ret))
+                    try:
+                        target = os.readlink(full_name)
+                    except os.error:
+                        target = "<unknown>"
+                    broken.append("%s -> %s" % (name, os.readlink(name)))
         if broken:
             logging.error("Broken symlinks:\n%s" % 
                           indent_string("\n".join(broken)))
