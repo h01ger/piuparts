@@ -11,7 +11,7 @@ XS-Vcs-Browser: http://svn.debian.org/wsvn/piuparts/trunk/
 
 Package: piuparts
 Architecture: all
-Depends: apt, python (>> 2.3), debootstrap (>= 0.3.3), lsof
+Depends: apt, python (>> 2.3), debootstrap (>= 0.3.3), lsof, lsb-release
 Description: .deb package installation, upgrading, and removal testing tool
  piuparts tests that .deb packages (as used by Debian) handle
  installation, upgrading, and removal correctly. It does this by

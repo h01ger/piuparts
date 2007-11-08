@@ -15,6 +15,8 @@ piuparts (0.29) unreleased; urgency=low
     to set defaults at package building time.
   * piuparts.py: Report target of broken symlink correctly, instead of
     saying "True".
+  * piuparts.py: Use lsb-release to guess the Debian flavor.
+  * debian/control: Added dependency on lsb-release.
 
  -- Lars Wirzenius <liw@iki.fi>  Mon, 05 Nov 2007 23:19:35 +0200
 

@@ -9,8 +9,6 @@ site25 = $(libdir)/python2.5/site-packages
 etcdir = $(prefix)/etc
 version=${shell dpkg-parsechangelog | sed -n 's/^Version: *//p'}
 
-FLAVOR = debian
-
 
 # mirror = -m 'http://liw.iki.fi/debian main'
 ignore = -I fdmount -N
@@ -23,8 +21,7 @@ piuparts.1: piuparts.docbook
 install: all
 	install -d $(sbindir) 
 	echo $(version)
-	sed -e 's/__PIUPARTS_VERSION__/$(version)/g' \
-	    -e 's/__DEBIAN_FLAVOR__/$(FLAVOR)/g' piuparts.py > piuparts
+	sed -e 's/__PIUPARTS_VERSION__/$(version)/g' piuparts.py > piuparts
 	install piuparts $(sbindir)/piuparts
 
 	install -d $(man1dir) 

@@ -31,7 +31,6 @@ Lars Wirzenius <liw@iki.fi>
 
 
 VERSION = "__PIUPARTS_VERSION__"
-FLAVOR = "__DEBIAN_FLAVOR__"
 
 
 import time
@@ -95,11 +94,15 @@ class DefaultsFactory:
     """Instantiate the right defaults class."""
     
     def guess_flavor(self):
-        return FLAVOR
+        p = subprocess.Popen(["lsb_release", "-i", "-s"], 
+                             stdout=subprocess.PIPE)
+        stdout, stderr = p.communicate()
+        return stdout.strip().lower()
     
     def new_defaults(self):
         if not settings.defaults:
             settings.defaults = self.guess_flavor()
+            print "Guessed:", settings.defaults
         if settings.defaults.lower() == "debian":
             return DebianDefaults()
         if settings.defaults.lower() == "ubuntu":
