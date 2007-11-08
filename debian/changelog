@@ -13,6 +13,8 @@ piuparts (0.29) unreleased; urgency=low
     another for Ubuntu. The settings choose default mirror and distribution
     set (sid vs gutsy). This will allow an Ubuntu version of the package
     to set defaults at package building time.
+  * piuparts.py: Report target of broken symlink correctly, instead of
+    saying "True".
 
  -- Lars Wirzenius <liw@iki.fi>  Mon, 05 Nov 2007 23:19:35 +0200
 
