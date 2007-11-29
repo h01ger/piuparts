@@ -45,14 +45,7 @@ install: all
 	    install -m 0644 piuparts-$$x.conf.sample \
 	                    $(etcdir)/piuparts/piuparts-$$x.conf; done
 
-# The 'check' target probably only works for me. Sorry. Eventually this
-# should get a proper test suite, but that's for a later day.
-check: unittests
-	python piuparts.py $(mirror) $(ignore) -l tmp.log -d sarge test-debs/liwc*.deb
-	python piuparts.py $(mirror) $(ignore) -l tmp2.log -d sarge -d etch test-debs/liwc*.deb
-	python piuparts.py $(mirror) $(ignore) -l tmp3.log -d sarge -d etch -a liwc
-
-unittests:
+check:
 	python piuparts.py unittest
 	python unittests.py
 
