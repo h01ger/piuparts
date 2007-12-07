@@ -214,6 +214,7 @@ class Settings:
             "/var/lib/dpkg/firebird",
             "/var/lib/logrotate/status",
             "/var/lib/rbldns",
+            "/var/log/apt/term.log",
             "/var/log/dpkg.log",
             "/var/log/faillog",
             "/var/log/lastlog",
