@@ -62,6 +62,9 @@ class Defaults:
     
     """
 
+    def get_components(self):
+        """Return list of default components for a mirror."""
+
     def get_mirror(self):
         """Return default mirror."""
     
@@ -71,9 +74,11 @@ class Defaults:
 
 class DebianDefaults(Defaults):
 
+    def get_components(self):
+        return ["main", "contrib", "non-free"]
+
     def get_mirror(self):
-        return [("http://ftp.debian.org/debian",
-                 ["main", "contrib", "non-free"])]
+        return [("http://ftp.debian.org/debian", self.get_components())]
 
     def get_distribution(self):
         return ["sid"]
@@ -81,9 +86,11 @@ class DebianDefaults(Defaults):
 
 class UbuntuDefaults(Defaults):
 
+    def get_components(self):
+        return ["main", "universe", "restricted", "multiverse"]
+
     def get_mirror(self):
-        return [("http://archive.ubuntu.com/ubuntu",
-                 ["main", "universe", "restricted", "multiverse"])]
+        return [("http://archive.ubuntu.com/ubuntu", self.get_components())]
 
     def get_distribution(self):
         return ["gutsy"]
@@ -1404,10 +1411,10 @@ def parse_command_line():
     settings.no_upgrade_test = opts.no_upgrade_test
     settings.skip_cronfiles_test = opts.skip_cronfiles_test
     log_file_name = opts.log_file
-    settings.debian_mirrors = [parse_mirror_spec(x, 
-                                                 ["main", 
-                                                  "contrib", 
-                                                  "non-free"]) 
+
+    defaults = DefaultsFactory().new_defaults()
+    
+    settings.debian_mirrors = [parse_mirror_spec(x, defaults.get_components())
                                for x in opts.mirror]
     settings.check_broken_symlinks = not opts.no_symlinks
     settings.savetgz = opts.save
@@ -1437,8 +1444,6 @@ def parse_command_line():
                           settings.scriptsdir)
             panic()
 
-    defaults = DefaultsFactory().new_defaults()
-    
     if not settings.debian_distros:
         settings.debian_distros = defaults.get_distribution()
 
