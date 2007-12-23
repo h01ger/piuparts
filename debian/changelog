@@ -1,7 +1,7 @@
-piuparts (0.29) unreleased; urgency=low
+piuparts (0.29) UNRELEASED; urgency=low
 
   [ Ana Beatriz Guerrero Lopez ]
-  * Update uploaders, remove Amaya and Alastair.
+  * Updated uploaders, remove Amaya and Alastair.
 
   [ Lars Wirzenius ]
   * piuparts.py: Call "apt-get update" before calling Chroot.minimize, so
@@ -18,7 +18,15 @@ piuparts (0.29) unreleased; urgency=low
   * piuparts.py: Use lsb-release to guess the Debian flavor.
   * debian/control: Added dependency on lsb-release.
 
- -- Lars Wirzenius <liw@iki.fi>  Mon, 05 Nov 2007 23:19:35 +0200
+  [ Holger Levsen ]
+  * Added myself to uploaders.
+  * Added Homepage: header to debian/control and changed the homepage to be
+    http://wiki.debian.org/piuparts.
+  * Use Vcs-* headers in debian/control instead of XS-Vcs-*.
+  * Bumped policy version to 3.7.3.
+  * Updated download location in debian/copyright.
+
+ -- Holger Levsen <holger@debian.org>  Sun, 23 Dec 2007 14:17:33 +0100
 
 piuparts (0.28) unstable; urgency=low
 

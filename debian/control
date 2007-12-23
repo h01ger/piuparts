@@ -1,13 +1,14 @@
 Source: piuparts
 Maintainer: piuparts developers team <piuparts-devel@lists.alioth.debian.org>
-Uploaders: Lars Wirzenius <liw@iki.fi>, Bill Allombert <ballombe@debian.org>, Ian Jackson <iwj@debian.org>, John Wright <jsw@debian.org>, Ana Beatriz Guerrero Lopez <ana@debian.org>
+Uploaders: Lars Wirzenius <liw@iki.fi>, Bill Allombert <ballombe@debian.org>, Ian Jackson <iwj@debian.org>, John Wright <jsw@debian.org>, Ana Beatriz Guerrero Lopez <ana@debian.org>, Holger Levsen <holger@debian.org>
 Section: devel
 Priority: optional
-Standards-Version: 3.7.2
+Standards-Version: 3.7.3
 Build-Depends-Indep: docbook2x, python-support
 XS-Python-Version: all
-XS-Vcs-Svn: svn://svn.debian.org/svn/piuparts/trunk/
-XS-Vcs-Browser: http://svn.debian.org/wsvn/piuparts/trunk/
+Vcs-Svn: svn://svn.debian.org/svn/piuparts/trunk/
+Vcs-Browser: http://svn.debian.org/wsvn/piuparts/trunk/
+Homepage: http://wiki.debian.org/piuparts
 
 Package: piuparts
 Architecture: all
@@ -22,5 +23,4 @@ Description: .deb package installation, upgrading, and removal testing tool
  . 
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.
-  Homepage: http://piuparts.alioth.debian.org/
 XB-Python-Version: all
