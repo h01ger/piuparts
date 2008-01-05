@@ -290,10 +290,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
                     fail because of it (but a warning message will be
                     printed).</para>
 
-                    <para>Currently, this option only works in conjunction
-                    with <option>--apt</option>, and errors in packages
-                    with circular dependencies with specified packages will
-                    be treated as errors rather than warnings.</para>
+                    <para>Behavior with multple packages given on the
+                    command-line could be problematic, particularly if the
+                    dependency tree of one package in the list includes
+                    another in the list.  Therefore, it is recommended to
+                    use this option with one package at a time.</para>
 
                 </listitem>
             

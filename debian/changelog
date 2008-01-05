@@ -26,7 +26,19 @@ piuparts (0.29) UNRELEASED; urgency=low
   * Bumped policy version to 3.7.3.
   * Updated download location in debian/copyright.
 
- -- Holger Levsen <holger@debian.org>  Sun, 23 Dec 2007 14:17:33 +0100
+  [ John Wright ]
+  * Change the --warn-on-others implementation to create a dummy metapackage
+    with the needed dependencies and install it in the chroot, rather than
+    using "apt-get install package package-".  The previous implementation
+    had issues when the package was already installed (and especially if the
+    package had essential packages in its reverse dependencies).  This has
+    the pleasant side-effect of making --warn-on-others work both with and
+    without --apt. (Closes: #458929)
+  * Fix a bug in check_for_broken_symlinks(): the targets for the broken
+    symlinks (used for logging) were being read from files on the real root
+    filesystem, rather than in the chroot.
+
+ -- John Wright <jsw@debian.org>  Sat, 05 Jan 2008 02:30:15 -0700
 
 piuparts (0.28) unstable; urgency=low
 

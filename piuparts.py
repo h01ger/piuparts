@@ -48,6 +48,7 @@ import pickle
 import sets
 import subprocess
 import unittest
+from debian_bundle import deb822
 
 
 class Defaults:
@@ -389,6 +390,38 @@ def remove_files(filenames):
         except OSError, detail:
             logging.error("Couldn't remove %s: %s" % (filename, detail))
             panic()
+
+
+def make_metapackage(name, depends, conflicts):
+    """Return the path to a .deb created just for satisfying dependencies
+    
+    Caller is responsible for removing the temporary directory containing the
+    .deb when finished.
+    """
+    # Inspired by pbuilder's pbuilder-satisfydepends-aptitude
+
+    tmpdir = tempfile.mkdtemp(dir=settings.tmpdir)
+    os.makedirs(os.path.join(tmpdir, name, 'DEBIAN'))
+    control = deb822.Deb822()
+    control['Package'] = name
+    control['Version'] = '0.invalid.0'
+    control['Architecture'] = 'all'
+    control['Maintainer'] = ('piuparts developers team '
+                             '<piuparts-devel@lists.alioth.debian.org>')
+    control['Description'] = ('Dummy package to satisfy dependencies - '
+                              'created by piuparts\n'
+                              ' This package was creaetd automatically by '
+                              'piuparts and can safely be removed')
+    if depends:
+        control['Depends'] = depends
+    if conflicts:
+        control['Conflicts'] = conflicts
+
+    create_file(os.path.join(tmpdir, name, 'DEBIAN', 'control'),
+                control.dump())
+
+    run(['dpkg-deb', '-b', os.path.join(tmpdir, name)])
+    return os.path.join(tmpdir, name) + '.deb'
 
 
 def is_broken_symlink(root, dirpath, filename):
@@ -844,7 +877,7 @@ class Chroot:
                         target = os.readlink(full_name)
                     except os.error:
                         target = "<unknown>"
-                    broken.append("%s -> %s" % (name, os.readlink(name)))
+                    broken.append("%s -> %s" % (name, target))
         if broken:
             logging.error("Broken symlinks:\n%s" % 
                           indent_string("\n".join(broken)))
@@ -1089,24 +1122,54 @@ def install_purge_test(chroot, root_info, selections, args, packages):
 
     # Install packages into the chroot.
     chroot.mount_proc()
+
+    if settings.warn_on_others:
+        # Create a metapackage with dependencies from the given packages
+        if args:
+            control_infos = []
+            # We were given package files, so let's get the Depends and
+            # Conflicts directly from the .debs
+            for deb in args:
+                returncode, output = run(["dpkg", "-f", deb])
+                control = deb822.Deb822(output)
+                control_infos.append(control)
+        else:
+            # We have package names.  Use apt to get all their control
+            # information.
+            apt_cache_args = ["apt-cache", "show"]
+            apt_cache_args.extend(packages)
+            returncode, output = chroot.run(apt_cache_args)
+            control_infos = deb822.Deb822.iter_paragraphs(output.splitlines())
+            
+        depends = []
+        conflicts = []
+        for control in control_infos:
+            if control.get("depends"):
+                depends.append(control["depends"])
+            if control.get("conflicts"):
+                conflicts.append(control["conflicts"])
+        all_depends = ", ".join(depends)
+        all_conflicts = ", ".join(conflicts)
+        metapackage = make_metapackage("piuparts-depends-dummy",
+                                       all_depends, all_conflicts)
+        
+        # Install the metapackage
+        chroot.install_package_files([metapackage])
+        # Now remove it
+        metapackagename = os.path.basename(metapackage)[:-4]
+        chroot.remove_or_purge("purge", [metapackagename])
+        shutil.rmtree(os.path.dirname(metapackage))
+
+        # Save the file ownership information so we can tell which
+        # modifications were caused by the actual packages we are testing,
+        # rather than by their dependencies.
+        deps_info = chroot.save_meta_data()
+    else:
+        deps_info = None
+
     if args:
         chroot.install_package_files(args)
-        deps_info = None
     else:
-        if settings.warn_on_others:
-            # First install only the dependencies.  We do this by giving
-            # apt-get the list of packages to install, and following that list
-            # with the same packages with '-' appended to the end.  Then,
-            # apt-get ensures that the packages never actually get installed,
-            # but kindly installs their dependencies for us.  Once we've got
-            # the dependencies installed, save the file ownership information
-            # so we can tell which modifications were caused by the actual
-            # packages we are testing, rather than by their dependencies.
-            chroot.install_packages_by_name(packages +
-                                            ["%s-" % p for p in packages])
-            deps_info = chroot.save_meta_data()
-        else:
-            deps_info = None
         chroot.install_packages_by_name(packages)
         chroot.run(["apt-get", "clean"])
 
@@ -1334,11 +1397,12 @@ def parse_command_line():
                       help="Print a warning rather than failing if "
                            "files are left behind, modified, or removed "
                            "by a package that was not given on the "
-                           "command-line.  This currently only works in "
-                           "conjunction with --apt, and errors in "
-                           "packages with circular dependencies with "
-                           "specified packages will be treated as "
-                           "errors rather than warnings.")
+                           "command-line.  Behavior with multple packages "
+                           "given could be problematic, particularly if the "
+                           "dependency tree of one package in the list "
+                           "includes another in the list.  Therefore, it is "
+                           "recommended to use this option with one package "
+                           "at a time.")
 			   
     parser.add_option("--skip-minimize", 
                       action="store_true", default=False,
@@ -1459,11 +1523,6 @@ def parse_command_line():
                       "and only one distribution")
         exit = 1
 
-    if settings.warn_on_others and settings.args_are_package_files:
-        logging.error("--warn-on-others currently only works in conjunction "
-                      "with --apt")
-        exit = 1
-    
     if not args:
         logging.error("Need command line arguments: " +
                       "names of packages or package files")
