@@ -35,7 +35,6 @@ import piupartslib
 
 
 CONFIG_FILE = "piuparts-master.conf"
-CONFIG_FILE = "/etc/piuparts/piuparts-master.conf"
 
 
 def setup_logging(log_level, log_file_name):
@@ -254,8 +253,8 @@ def main():
     packages_file = piupartslib.open_packages_url(config["packages-url"])
     m = Master(sys.stdin, sys.stdout, packages_file, section=section)
     packages_file.close()
-#    while m.do_transaction():
-#        pass
+    while m.do_transaction():
+        pass
     m.write_summaries()
 
 
