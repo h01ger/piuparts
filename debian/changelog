@@ -17,6 +17,10 @@ piuparts (0.29) UNRELEASED; urgency=low
     saying "True".
   * piuparts.py: Use lsb-release to guess the Debian flavor.
   * debian/control: Added dependency on lsb-release.
+  * piuparts-master.py: Make the master write summary of total pass/fail
+    packages, plus status per binary package. This is for having the
+    Debian PTS and the Ubuntu developer weather report show summaries
+    of piuparts results.
 
   [ Holger Levsen ]
   * Added myself to uploaders.
@@ -38,7 +42,7 @@ piuparts (0.29) UNRELEASED; urgency=low
     symlinks (used for logging) were being read from files on the real root
     filesystem, rather than in the chroot.
 
- -- John Wright <jsw@debian.org>  Sat, 05 Jan 2008 02:30:15 -0700
+ -- Lars Wirzenius <liw@iki.fi>  Mon, 21 Jan 2008 15:53:48 +0200
 
 piuparts (0.28) unstable; urgency=low
 

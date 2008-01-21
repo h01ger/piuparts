@@ -27,12 +27,15 @@ import sys
 import logging
 import urllib
 import ConfigParser
+import os
+import tempfile
 
 
 import piupartslib
 
 
 CONFIG_FILE = "piuparts-master.conf"
+CONFIG_FILE = "/etc/piuparts/piuparts-master.conf"
 
 
 def setup_logging(log_level, log_file_name):
@@ -104,6 +107,14 @@ class Protocol:
 
 class Master(Protocol):
 
+    _failed_states = (
+        "failed-testing",
+        "fix-not-yet-tested",
+    )
+    _passed_states = (
+        "successfully-tested",
+    )
+
     def __init__(self, input, output, packages_file, section=None):
         Protocol.__init__(self, input, output)
         self._commands = {
@@ -168,6 +179,61 @@ class Master(Protocol):
         self._db.make_package_untestable(args[0], args[1], log)
         self._short_response("ok")
 
+    def count_packages_in_states(self, states):
+        count = 0
+        for state in states:
+            count += len(self._db.get_packages_in_state(state))
+        return count
+
+    def rename_if_newer_else_delete(self, orig, new):
+        ok = True
+        if os.path.exists(orig):
+            st_orig = os.stat(orig)
+            st_new = os.stat(new)
+            ok = st_orig.st_mtime < st_new.st_mtime
+        if ok:
+            os.rename(new, orig)
+        else:
+            os.remove(new)
+
+    def write_counts_summary(self):
+        fd, name = tempfile.mkstemp(prefix="counts.txt.", dir=".")
+        os.close(fd)
+
+        failed = self.count_packages_in_states(self._failed_states)
+        passed = self.count_packages_in_states(self._passed_states)
+
+        f = file(name, "w")
+        f.write("Fail: %d\n" % failed)
+        f.write("Pass: %d\n" % passed)
+        f.close()
+        self.rename_if_newer_else_delete("counts.txt", name)
+
+    def find_log(self, package):
+        n = self._db._logdb._log_name(package["Package"], package["Version"])
+        for dirname in self._db._all:
+            nn = os.path.join(dirname, n)
+            if os.path.exists(nn):
+                return nn
+        return None
+
+    def write_packages_summary(self):
+        fd, name = tempfile.mkstemp(prefix="packages.txt.", dir=".")
+        os.close(fd)
+
+        f = file(name, "w")
+        for pkgname in self._db._packages:
+            state = self._db.state_by_name(pkgname)
+            logname = self.find_log(self._db._packages[pkgname]) or ""
+            f.write("%s %s %s\n" % (pkgname, state, logname))
+        f.close()
+
+        self.rename_if_newer_else_delete("packages.txt", name)
+
+    def write_summaries(self):
+        self.write_counts_summary()
+        self.write_packages_summary()
+
 
 def main():
     # For supporting multiple architectures and suites, we take a command-line
@@ -188,8 +254,9 @@ def main():
     packages_file = piupartslib.open_packages_url(config["packages-url"])
     m = Master(sys.stdin, sys.stdout, packages_file, section=section)
     packages_file.close()
-    while m.do_transaction():
-        pass
+#    while m.do_transaction():
+#        pass
+    m.write_summaries()
 
 
 if __name__ == "__main__":
