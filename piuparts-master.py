@@ -198,7 +198,7 @@ class Master(Protocol):
     def write_counts_summary(self):
         fd, name = tempfile.mkstemp(prefix="counts.txt.", dir=".")
         os.close(fd)
-        os.chmod(name, 0666)
+        os.chmod(name, 0644)
 
         failed = self.count_packages_in_states(self._failed_states)
         passed = self.count_packages_in_states(self._passed_states)
@@ -220,7 +220,7 @@ class Master(Protocol):
     def write_packages_summary(self):
         fd, name = tempfile.mkstemp(prefix="packages.txt.", dir=".")
         os.close(fd)
-        os.chmod(name, 0666)
+        os.chmod(name, 0644)
 
         f = file(name, "w")
         for pkgname in self._db._packages:
