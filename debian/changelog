@@ -1,4 +1,4 @@
-piuparts (0.29) UNRELEASED; urgency=low
+piuparts (0.29) unstable; urgency=low
 
   [ Ana Beatriz Guerrero Lopez ]
   * Updated uploaders, remove Amaya and Alastair.
@@ -44,7 +44,7 @@ piuparts (0.29) UNRELEASED; urgency=low
     symlinks (used for logging) were being read from files on the real root
     filesystem, rather than in the chroot.
 
- -- Lars Wirzenius <liw@iki.fi>  Thu, 31 Jan 2008 16:07:57 +0200
+ -- Lars Wirzenius <liw@iki.fi>  Fri, 01 Feb 2008 16:38:38 +0200
 
 piuparts (0.28) unstable; urgency=low
 
