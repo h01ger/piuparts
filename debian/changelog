@@ -1,3 +1,10 @@
+piuparts (0.30) UNRELEASED; urgency=low
+
+  [ Lars Wirzenius ]
+  * Started new changelog for new changes.
+
+ -- Lars Wirzenius <liw@iki.fi>  Fri, 01 Feb 2008 17:46:11 +0200
+
 piuparts (0.29) unstable; urgency=low
 
   [ Ana Beatriz Guerrero Lopez ]
