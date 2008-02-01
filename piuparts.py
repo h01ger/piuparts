@@ -48,6 +48,7 @@ import pickle
 import sets
 import subprocess
 import unittest
+import urllib
 from debian_bundle import deb822
 
 
@@ -937,6 +938,264 @@ class Chroot:
                 self.run([script]) 
 
 
+class VirtServ(Chroot):
+    # Provides a thing that looks to the rest of piuparts much like
+    # a chroot but is actually provided by an adt virtualisation server.
+    # See /usr/share/doc/autopkgtest/README.virtualisation-server.
+
+    def __init__(self, cmdline):
+        self._cmdline = cmdline
+        self.name = '/ADT-VIRT'
+        self._vs = None
+
+    def _awaitok(self, cmd):
+        r = self._vs.stdout.readline().rstrip('\n')
+        l = r.split(' ')
+        if l[0] != 'ok': self._fail('virtserver response to %s: %s' % (cmd,r))
+        logging.debug('adt-virt << %s', r)
+        return l[1:]
+
+    def _vs_send(self, cmd):
+        if type(cmd) == type([]):
+                def maybe_quote(a):
+                    if type(a) != type(()): return a
+                    (a,) = a
+                    return urllib.quote(a)
+                cmd = ' '.join(map(maybe_quote,cmd))
+        logging.debug('adt-virt >> %s', cmd)
+        print >>self._vs.stdin, cmd
+        return cmd.split(' ')[0]
+
+    def _command(self, cmd):
+        # argument forms:   complete-command-string
+        #                   [arg, ...]    where arg may be (arg,) to quote it
+        cmdp = self._vs_send(cmd)
+        self._vs.stdin.flush()
+        return self._awaitok(cmdp)
+
+    def _getfilecontents(self, filename):
+        try:
+            (_,tf) = create_temp_file()
+            self._command(['copyup',(filename,),(tf,)])
+            f = file(tf)
+            d = f.read()
+            f.close()
+        finally:
+            os.remove(tf)
+        return d
+
+    def create_temp_dir(self):
+        if self._vs is None:
+            logging.debug('adt-virt || %s' % self._cmdline)
+            self._vs = subprocess.Popen(self._cmdline, shell=True,
+                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=None)
+            self._awaitok('banner')
+            self._caps = self._command('capabilities')
+
+    def shutdown(self):
+        if self._vs is None: return
+        self._vs_send('quit')
+        self._vs.stdin.close()
+        self._vs.stdout.close()
+        self._vs.wait()
+        self._vs = None
+
+    def remove(self):
+        self._command('close')
+
+    def _fail(self,m):
+        logging.error("adt-virt-* error: "+m)
+        panic()
+
+    def _open(self):
+        self._scratch = self._command('open')[0]
+
+    # this is a hack to make install_and_upgrade_between distros
+    #  work; we pretend to save the chroot to a tarball but in
+    #  fact we do nothing and then we can `restore' the `tarball' with
+    #  adt-virt revert
+    def create_temp_tgz_file(self):
+        return self
+    def pack_into_tgz(self, tgz):
+        if tgz is not self: self._fail('packing into tgz not supported')
+        if not 'revert' in self._caps: self._fail('testbed cannot revert')
+    def unpack_from_tgz(self, tgz):
+        if tgz is not self: self._fail('unpacking from tgz not supported')
+        self._open()
+
+    def _execute(self, cmdl, tolerate_errors=False):
+        assert type(cmdl) == type([])
+        prefix = ['sh','-ec','''
+            LC_ALL=C
+            unset LANGUAGES
+            export LC_ALL
+            exec 2>&1
+            exec "$@"
+                ''','<command>']
+        ca = ','.join(map(urllib.quote, prefix + cmdl))
+        stdout = '%s/cmd-stdout' % self._scratch
+        stderr = '%s/cmd-stderr-base' % self._scratch
+        cmd = ['execute',ca,
+               '/dev/null',(stdout,),(stderr,),
+               '/root','timeout=600']
+        es = int(self._command(cmd)[0])
+        if es and not tolerate_errors:
+            stderr_data = self._getfilecontents(stderr)
+            logging.error("Execution failed (status=%d): %s\n%s" %
+                (es, `cmdl`, indent_string(stderr_data)))
+            panic()
+        return (es, stdout, stderr)
+
+    def _execute_getoutput(self, cmdl):
+        (es,stdout,stderr) = self._execute(cmdl)
+        stderr_data = self._getfilecontents(stderr)
+        if es or stderr_data:
+            logging.error('Internal command failed (status=%d): %s\n%s' %
+                (es, `cmdl`, indent_string(stderr_data)))
+            panic()
+        (_,tf) = create_temp_file()
+        try:
+            self._command(['copyup',(stdout,),(tf,)])
+        except:
+            os.remove(tf)
+            raise
+        return tf
+
+    def run(self, command, ignore_errors=False):
+        cmdl = ['sh','-ec','cd /\n' + ' '.join(command)]
+        (es,stdout,stderr) = self._execute(cmdl, tolerate_errors=True)
+        stdout_data = self._getfilecontents(stdout)
+        print >>sys.stderr, "VirtServ run", `command`,`cmdl`, '==>', `es`,`stdout`,`stderr`, '|', stdout_data
+        if es == 0 or ignore_errors: return (es, stdout_data)
+        stderr_data = self._getfilecontents(stderr)
+        logging.error('Command failed (status=%d): %s\n%s' %
+                    (es, `command`, indent_string(stdout_data + stderr_data)))
+        panic()
+
+    def setup_minimal_chroot(self):
+        self._open()
+
+    def _tbpath(self, with_junk):
+        if not with_junk.startswith(self.name):
+            logging.error("Un-mangling testbed path `%s' but it does not"
+                        "start with expected manglement `%s'" %
+                        (with_junk, self.name))
+            panic()
+        return with_junk[len(self.name):]
+
+    def chmod(self, path, mode):
+        self._execute(['chmod', ('0%o' % mode), self._tbpath(path)])
+    def remove_files(self, paths):
+        self._execute(['rm','--'] + map(self._tbpath, paths))
+    def copy_file(self, our_src, tb_dest):
+        self._command(['copydown',(our_src,),
+                (self._tbpath(tb_dest)+'/'+os.path.basename(our_src),)])
+    def create_file(self, path, data):
+        path = self._tbpath(path)
+        try:
+            (_,tf) = create_temp_file()
+            f = file(tf,'w')
+            f.write(tf)
+            f.close()
+            self._command(['copydown',(tf,),(path,)])
+        finally:
+            os.remove(tf)
+
+    class DummyStat: pass
+
+    def save_meta_data(self):
+        mode_map = {
+            's': stat.S_IFSOCK,
+            'l': stat.S_IFLNK,
+            'f': stat.S_IFREG,
+            'b': stat.S_IFBLK,
+            'd': stat.S_IFDIR,
+            'c': stat.S_IFCHR,
+            'p': stat.S_IFIFO,
+        }
+
+        dict = {}
+
+        tf = self._execute_getoutput(['find','/','-xdev','-printf',
+                "%y %m %U %G %s %p %l \\n".replace(' ','\\0')])
+        try:
+            f = file(tf)
+
+            while 1:
+                line = ''
+                while 1:
+                    splut = line.split('\0')
+                    if len(splut) == 8 and splut[7] == '\n': break
+                    if len(splut) >= 8:
+                        self._fail('aaargh wrong output from find: %s' %
+                                    urllib.quote(line), `splut`)
+                    l = f.readline()
+                    if not l:
+                        if not line: break
+                        self._fail('aargh missing final newline from find'
+                                    ': %s, %s' % (`l`[0:200], `splut`[0:200]))
+                    line += l
+                if not line: break
+
+                st = VirtServ.DummyStat()
+                st.st_mode = mode_map[splut[0]] | int(splut[1],8)
+                (st.st_uid, st.st_gid, st.st_size) = map(int, splut[2:5])
+
+                dict[splut[5]] = (st, splut[6])
+
+            f.close()
+        finally:
+            os.remove(tf)
+
+        return dict     
+
+    def get_files_owned_by_packages(self):
+        tf = self._execute_getoutput(['bash','-ec','''
+                cd /var/lib/dpkg/info
+                find . -name "*.list" -type f -print0 | \\
+                    xargs -r0 egrep . /dev/null
+                test "${PIPESTATUS[*]}" = "0 0"
+            '''])
+        dict = {}
+        try:
+            f = file(tf)
+            for l in f:
+                (lf,pathname) = l.rstrip('\n').split(':',1)
+                assert lf.endswith('.list')
+                pkg = lf[:-5]
+                if pathname in dict:
+                    dict[pathname].append(pkg)
+                else:
+                    dict[pathname] = [pkg]
+
+            f.close()
+        finally:
+            os.remove(tf)
+        return dict
+
+    def check_for_broken_symlinks(self):
+        if not settings.check_broken_symlinks:
+            return
+        tf = self._execute_getoutput(['bash','-ec','''
+                find / -xdev -type l -print0 | \\
+                    xargs -r0 -i'{}' \\
+                    find '{}' -maxdepth 0 -follow -type l -ls
+                test "${PIPESTATUS[*]}" = "0 0"
+            '''])
+        try:
+            f = file(tf)
+            broken = False
+            for l in f:
+                logging.error("Broken symlink: " + l)
+                broken = True
+            if broken: panic()
+            logging.debug("No broken symlinks found.")
+        finally:
+            os.remove(tf)
+
+    def check_for_no_processes(self): pass # ?!
+    def mount_proc(self): pass
+    def unmount_proc(self): pass
 
 def objects_are_different(pair1, pair2):
     """Are filesystem objects different based on their meta data?"""
@@ -1242,14 +1501,14 @@ def install_and_upgrade_between_distros(filenames, packages):
     """Install package and upgrade it between distributions, then remove.
        Return True if successful, False if not."""
 
-    chroot = Chroot()
+    chroot = get_chroot()
     chroot.create()
     id = do_on_panic(chroot.remove)
 
     if settings.basetgz:
         root_tgz = settings.basetgz
     else:
-        (fd, root_tgz) = create_temp_file()
+        root_tgz = chroot.create_temp_tgz()
         chroot.pack_into_tgz(root_tgz)
         
     if settings.endmeta:
@@ -1268,7 +1527,7 @@ def install_and_upgrade_between_distros(filenames, packages):
     
         chroot.remove()
         dont_do_on_panic(id)
-        chroot = Chroot()
+        chroot = get_chroot()
         chroot.create_temp_dir()
         id = do_on_panic(chroot.remove)
         chroot.unpack_from_tgz(root_tgz)
@@ -1447,6 +1706,11 @@ def parse_command_line():
                       help="Use /var/cache/pbuilder/base.tgz as the base " +
                            "tarball.")
     
+    parser.add_option('', "--adt-virt",
+                      metavar='CMDLINE', default=None,
+                      help="Use CMDLINE via autopkgtest (adt-virt-*)"
+                           " protocol instead of managing a chroot.")
+    
     parser.add_option("-s", "--save", metavar="FILENAME",
                       help="Save the chroot into FILENAME.")
 
@@ -1484,6 +1748,11 @@ def parse_command_line():
     settings.check_broken_symlinks = not opts.no_symlinks
     settings.savetgz = opts.save
     settings.warn_on_others = opts.warn_on_others
+
+    if opts.adt_virt is None:
+        settings.adt_virt = None
+    else:
+        settings.adt_virt = VirtServ(opts.adt_virt)
 
     if opts.tmpdir is not None:
         settings.tmpdir = opts.tmpdir
@@ -1534,6 +1803,10 @@ def parse_command_line():
     return args
     
 
+def get_chroot():
+    if settings.adt_virt is None: return Chroot()
+    return settings.adt_virt
+
 def main():
     """Main program. But you knew that."""
 
@@ -1556,7 +1829,7 @@ def main():
         args = []
 
     if len(settings.debian_distros) == 1:
-        chroot = Chroot()
+        chroot = get_chroot()
         chroot.create()
         id = do_on_panic(chroot.remove)
 
@@ -1597,6 +1870,8 @@ def main():
         else:
             logging.error("FAIL: Upgrading between Debian distributions.")
             panic()
+
+    if settings.adt_virt is not None: settings.adt_virt.shutdown()
 
     logging.info("PASS: All tests.")
     logging.info("piuparts run ends.")
