@@ -1,9 +1,12 @@
 piuparts (0.30) UNRELEASED; urgency=low
 
-  [ Lars Wirzenius ]
-  * Started new changelog for new changes.
+  * piuparts.py:
+    - Implement Chroot.create_temp_tgz_file() (since it's used in the VirtServ
+      subclass)
+    - Fix a typo -- chroot.create_temp_tgz() was being called instead of
+      chroot.create_temp_tgz_file() (Closes: #465416)
 
- -- Lars Wirzenius <liw@iki.fi>  Fri, 01 Feb 2008 17:46:11 +0200
+ -- John Wright <jsw@debian.org>  Thu, 14 Feb 2008 20:32:35 -0700
 
 piuparts (0.29) unstable; urgency=low
 

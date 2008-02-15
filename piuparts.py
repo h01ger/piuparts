@@ -552,6 +552,13 @@ class Chroot:
             shutil.rmtree(self.name)
             logging.debug("Removed directory tree at %s" % self.name)
 
+    def create_temp_tgz_file(self):
+        """Return the path to a file to be used as a temporary tgz file"""
+        # Yes, create_temp_file() would work just as well, but putting it in
+        # the interface for Chroot allows the VirtServ hack to work.
+        (fd, temp_tgz) = create_temp_file()
+        return temp_tgz
+
     def pack_into_tgz(self, result):
         """Tar and compress all files in the chroot."""
         logging.debug("Saving %s to %s." % (self.name, result))
@@ -1508,7 +1515,7 @@ def install_and_upgrade_between_distros(filenames, packages):
     if settings.basetgz:
         root_tgz = settings.basetgz
     else:
-        root_tgz = chroot.create_temp_tgz()
+        root_tgz = chroot.create_temp_tgz_file()
         chroot.pack_into_tgz(root_tgz)
         
     if settings.endmeta:
