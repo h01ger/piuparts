@@ -1,4 +1,4 @@
-piuparts (0.30) UNRELEASED; urgency=low
+piuparts (0.30) unstable; urgency=low
 
   * piuparts.py:
     - Implement Chroot.create_temp_tgz_file() (since it's used in the VirtServ
