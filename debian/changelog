@@ -1,3 +1,10 @@
+piuparts (0.30) UNRELEASED; urgency=low
+
+  * piuparts.docbook: Added a few words of description of the tarball
+    that -b expects. (Closes: 466048)
+
+ -- Lars Wirzenius <liw@iki.fi>  Sat, 16 Feb 2008 10:14:13 +0200
+
 piuparts (0.30) unstable; urgency=low
 
   * piuparts.py:

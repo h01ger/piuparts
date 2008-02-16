@@ -171,6 +171,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
                     <para>Use <replaceable>tarball</replaceable> as the
                     contents of the initial chroot, instead of building
                     a new one with <command>debootstrap</command>.</para>
+                    
+                    <para>The tarball can be created with the
+                    <option>-s</option> option, or you can use one that
+                    pbuilder has created (see <option>-p</option>). If
+                    you create one manually, make sure the root of the
+                    chroot is the root of the tarball.</para>
 
                 </listitem>
             
