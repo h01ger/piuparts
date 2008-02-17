@@ -465,9 +465,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
                 
                 <listitem>
                 
-                    <para>Save the chroot, after it has been set up,
-                    into <replaceable>filename</replaceable>. It can then
-                    be used with <option>-b</option>.</para>
+                    <para>Save the chroot, after it has been set up, as
+                    a tarball into <replaceable>filename</replaceable>.
+                    It can then be used with <option>-b</option>.</para>
 
                 </listitem>
             
