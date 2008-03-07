@@ -411,7 +411,7 @@ def make_metapackage(name, depends, conflicts):
                              '<piuparts-devel@lists.alioth.debian.org>')
     control['Description'] = ('Dummy package to satisfy dependencies - '
                               'created by piuparts\n'
-                              ' This package was creaetd automatically by '
+                              ' This package was created automatically by '
                               'piuparts and can safely be removed')
     if depends:
         control['Depends'] = depends
