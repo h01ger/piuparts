@@ -539,19 +539,22 @@ class Chroot:
         """Create a chroot according to user's wishes."""
         self.create_temp_dir()
         id = do_on_panic(self.remove)
+
         if settings.basetgz:
             self.unpack_from_tgz(settings.basetgz)
-            self.configure_chroot()
-            self.run(["apt-get", "update"])
-            self.run(["apt-get", "-yf", "upgrade"])
-            self.minimize()
-            self.run(["apt-get", "clean"])
         else:
             self.setup_minimal_chroot()
-            self.run(["apt-get", "update"])
-            self.run(["apt-get", "clean"])
-            if settings.savetgz:
-                self.pack_into_tgz(settings.savetgz)
+
+        self.configure_chroot()
+        self.mount_proc()
+        if settings.basetgz:
+            self.run(["apt-get", "-yf", "upgrade"])
+        self.minimize()
+        self.run(["apt-get", "clean"])
+
+        if settings.savetgz:
+            self.pack_into_tgz(settings.savetgz)
+
         dont_do_on_panic(id)
 
     def remove(self):
@@ -571,14 +574,8 @@ class Chroot:
     def pack_into_tgz(self, result):
         """Tar and compress all files in the chroot."""
         logging.debug("Saving %s to %s." % (self.name, result))
-        try:
-            tf = tarfile.open(result, "w:gz")
-            tf.add(self.name, arcname=".")
-            tf.close()
-        except tarfile.TarError, detail:
-            logging.error("Couldn't create tar file %s: %s" % 
-                          (result, detail))
-            panic()
+
+        run(['tar', '--exclude', './proc/*', '-czf', result, '-C', self.name, './'])
 
     def unpack_from_tgz(self, tarball):
         """Unpack a tarball to a chroot."""
@@ -617,9 +614,6 @@ class Chroot:
               (settings.debian_distros[0], self.name))
         run(["debootstrap", "--resolve-deps", settings.debian_distros[0], 
              self.name, settings.debian_mirrors[0][0]])
-        self.configure_chroot()
-        self.run(["apt-get", "update"])
-        self.minimize()
 
     def minimize(self):
         """Minimize a chroot by removing (almost all) unnecessary packages"""
@@ -641,6 +635,7 @@ class Chroot:
             self.create_apt_sources(settings.debian_distros[0])
         self.create_apt_conf()
         self.create_policy_rc_d()
+        self.run(["apt-get", "update"])
 
     def upgrade_to_distros(self, distros, packages):
         """Upgrade a chroot installation to each successive distro."""
@@ -1395,7 +1390,6 @@ def install_purge_test(chroot, root_info, selections, args, packages):
        chroot, with packages in states given by 'selections'."""
 
     # Install packages into the chroot.
-    chroot.mount_proc()
 
     if settings.warn_on_others:
         # Create a metapackage with dependencies from the given packages
@@ -1458,7 +1452,6 @@ def install_purge_test(chroot, root_info, selections, args, packages):
     chroot.restore_selections(changes, packages)
     
     chroot.check_for_broken_symlinks()
-    chroot.unmount_proc()
 
     return check_results(chroot, root_info, file_owners, deps_info=deps_info)
 
@@ -1466,8 +1459,6 @@ def install_purge_test(chroot, root_info, selections, args, packages):
 def install_upgrade_test(chroot, root_info, selections, args, package_names):
     """Install package via apt-get, then upgrade from package files.
     Return True if successful, False if not."""
-
-    chroot.mount_proc()
 
     # First install via apt-get.
     chroot.install_packages_by_name(package_names)
@@ -1489,8 +1480,6 @@ def install_upgrade_test(chroot, root_info, selections, args, package_names):
     
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
-
-    chroot.unmount_proc()
 
     return check_results(chroot, root_info, file_owners)
 
@@ -1529,9 +1518,7 @@ def install_and_upgrade_between_distros(filenames, packages):
     if settings.endmeta:
         root_info, selections = load_meta_data(settings.endmeta)
     else:
-        chroot.mount_proc()
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
-        chroot.unmount_proc()
         chroot.run(["apt-get", "clean"])
 
         root_info = chroot.save_meta_data()
@@ -1549,8 +1536,6 @@ def install_and_upgrade_between_distros(filenames, packages):
 
     chroot.check_for_no_processes()
     
-    chroot.mount_proc()
-
     chroot.run(["apt-get", "update"])
     chroot.install_packages_by_name(packages)
 
@@ -1573,8 +1558,6 @@ def install_and_upgrade_between_distros(filenames, packages):
 
     chroot.check_for_no_processes()
     
-    chroot.unmount_proc()
-
     if root_tgz != settings.basetgz:
         remove_files([root_tgz])
     chroot.remove()
