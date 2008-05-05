@@ -15,7 +15,10 @@ piuparts (0.31) UNRELEASED; urgency=low
   * Ignore /var/cache/ldconfig/aux-cache.
   * Added myself to uploaders.
 
- -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Mon, 05 May 2008 11:55:33 +0200
+  [ Luk Claes ]
+  * Added -w to lsof call to suppress warnings. (Closes: #466102).
+
+ -- Luk Claes <luk@lukdock>  Mon, 05 May 2008 12:31:59 +0200
 
 piuparts (0.30) unstable; urgency=low
 

@@ -850,7 +850,7 @@ class Chroot:
 	    
     def check_for_no_processes(self):
         """Check there are no processes running inside the chroot."""
-        (status, output) = run(["lsof", "+D", self.name], ignore_errors=True)
+        (status, output) = run(["lsof", "-w", "+D", self.name], ignore_errors=True)
         count = len(output.split("\n")) - 1
         if count > 0:
             logging.error("Processes are running inside chroot:\n%s" % 
