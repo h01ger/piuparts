@@ -13,8 +13,9 @@ piuparts (0.31) UNRELEASED; urgency=low
   * Finally fixes the check for broken symlinks. Thanks go to
     Tobias Grimm for the patch. Closes: #468157, 478587.
   * Ignore /var/cache/ldconfig/aux-cache.
+  * Added myself to uploaders.
 
- -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Mon, 05 May 2008 11:54:48 +0200
+ -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Mon, 05 May 2008 11:55:33 +0200
 
 piuparts (0.30) unstable; urgency=low
 
