@@ -199,6 +199,7 @@ class Settings:
             "/var/cache/debconf/passwords.dat",
             "/var/cache/debconf/templates.dat",
             "/var/cache/debconf/templates.dat-old",
+            "/var/cache/ldconfig/aux-cache",
             "/var/cache/man/index.db",
             "/var/lib/apt/extended_states",
             "/var/lib/dpkg/available",
