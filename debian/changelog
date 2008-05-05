@@ -10,8 +10,10 @@ piuparts (0.31) UNRELEASED; urgency=low
     in the chroot. (Closes: #458922)
   * Doc fix: remove mention of pbuilder in how-to-use-piuparts.txt.
     Using -s to save the tarball is easier.
+  * Finally fixes the check for broken symlinks. Thanks go to
+    Tobias Grimm for the patch. Closes: #468157, 478587.
 
- -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Mon, 05 May 2008 11:42:13 +0200
+ -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Mon, 05 May 2008 11:44:55 +0200
 
 piuparts (0.30) unstable; urgency=low
 

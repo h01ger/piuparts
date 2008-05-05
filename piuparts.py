@@ -448,7 +448,7 @@ def is_broken_symlink(root, dirpath, filename):
         if os.path.isabs(target):
             pathname = os.path.join(root, target[1:]) # Assume Unix filenames
         else:
-            pathname = os.path.join(dirpath, target)
+            pathname = os.path.join(os.path.dirname(pathname), target)
 
     # The symlink chain, if any, has now been resolved. Does the target
     # exist?
@@ -477,9 +477,7 @@ class IsBrokenSymlinkTests(unittest.TestCase):
         self.symlink("/absolute-works", "absolute-works-to-symlink")
         
     def tearDown(self):
-        for symlink in self.symlinks:
-            os.remove(symlink)
-        os.rmdir(self.testdir)
+        shutil.rmtree(self.testdir)
         
     def testRelativeBroken(self):
         self.failUnless(is_broken_symlink(self.testdir, self.testdir, 
@@ -512,6 +510,15 @@ class IsBrokenSymlinkTests(unittest.TestCase):
     def testAbsoluteWorksToSymlink(self):
         self.failIf(is_broken_symlink(self.testdir, self.testdir, 
                                       "absolute-works-to-symlink"))
+
+    def testMultiLevelNestedSymlinks(self):
+        # target/first-link -> ../target/second-link -> ../target
+
+        os.mkdir(os.path.join(self.testdir, "target"))
+        self.symlink("../target", "target/second-link")
+        self.symlink("../target/second-link", "target/first-link")
+        self.failIf(is_broken_symlink(self.testdir, self.testdir,
+                                      "target/first-link"))
 
 
 class Chroot:
