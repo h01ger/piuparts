@@ -8,8 +8,10 @@ piuparts (0.31) UNRELEASED; urgency=low
   * Added a --debfoster-options option, to allow the user to override
     debfoster's default options and test with more packages installed
     in the chroot. (Closes: #458922)
+  * Doc fix: remove mention of pbuilder in how-to-use-piuparts.txt.
+    Using -s to save the tarball is easier.
 
- -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Mon, 05 May 2008 11:36:18 +0200
+ -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Mon, 05 May 2008 11:42:13 +0200
 
 piuparts (0.30) unstable; urgency=low
 
