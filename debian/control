@@ -8,7 +8,7 @@ Uploaders: Lars Wirzenius <liw@iki.fi>,
     Holger Levsen <holger@debian.org>,
     Lucas Nussbaum <lucas@lucas-nussbaum.net>
 Section: devel
-Priority: optional
+Priority: extra
 Standards-Version: 3.7.3
 Build-Depends-Indep: docbook2x, python-support
 XS-Python-Version: all
