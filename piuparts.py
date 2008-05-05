@@ -144,6 +144,7 @@ class Settings:
         self.no_upgrade_test = False
         self.skip_cronfiles_test = False
         self.check_broken_symlinks = True
+	self.debfoster_options = None
         self.ignored_files = [
             "/dev/MAKEDEV",
             "/etc/aliases",
@@ -622,8 +623,7 @@ class Chroot:
              return
 
         self.run(["apt-get", "install", "debfoster"])
-        self.run(["debfoster", "-o", "MaxPriority=required", "-o",
-                  "UseRecommends=no", "-f", "-n", "apt", "debfoster"])
+        self.run(["debfoster"] + settings.debfoster_options)
         remove_files([self.relative("var/lib/debfoster/keepers")])
         self.run(["dpkg", "--purge", "debfoster"])
 
@@ -1731,6 +1731,10 @@ def parse_command_line():
     parser.add_option("-v", "--verbose", 
                       action="store_true", default=False,
                       help="No meaning anymore.")
+
+    parser.add_option("--debfoster-options",
+                      default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
+		      help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
     
     (opts, args) = parser.parse_args()
 
@@ -1755,6 +1759,7 @@ def parse_command_line():
     settings.check_broken_symlinks = not opts.no_symlinks
     settings.savetgz = opts.save
     settings.warn_on_others = opts.warn_on_others
+    settings.debfoster_options = opts.debfoster_options.split()
 
     if opts.adt_virt is None:
         settings.adt_virt = None

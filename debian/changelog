@@ -1,9 +1,15 @@
-piuparts (0.30) UNRELEASED; urgency=low
+piuparts (0.31) UNRELEASED; urgency=low
 
+  [ Lars Wirzenius ]
   * piuparts.docbook: Added a few words of description of the tarball
     that -b expects. (Closes: 466048)
 
- -- Lars Wirzenius <liw@iki.fi>  Sat, 16 Feb 2008 10:14:13 +0200
+  [ Lucas Nussbaum ]
+  * Added a --debfoster-options option, to allow the user to override
+    debfoster's default options and test with more packages installed
+    in the chroot. (Closes: #458922)
+
+ -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Mon, 05 May 2008 11:36:18 +0200
 
 piuparts (0.30) unstable; urgency=low
 
