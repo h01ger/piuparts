@@ -13,10 +13,10 @@ need to be logged as root or use sudo.
 
 This will create a sid chroot with debootstrap, where it'll test your package.
 
-If you want to test your package in another release, for example, etch, you can
+If you want to test your package in another release, for example, lenny, you can
 do so with:
 
-    # piuparts sm_0.6-1_i386.deb -d etch
+    # piuparts sm_0.6-1_i386.deb -d lenny
 
 By default, this will read the first mirror from your /etc/apt/sources.list 
 file. If you want to specify a different mirror you can do it with the option 
@@ -34,7 +34,7 @@ such as approx.
 
 Piuparts has the option of using a tarball as the contents of the initial chroot, 
 instead of building a new one with debootstrap. A easy way to use this option 
-is use a tarbal created with pbuilder. If you are not a pbuilder user, you can 
+is use a tarball created with pbuilder. If you are not a pbuilder user, you can 
 create this tarball with the command (again, as root):
 
     # puilder create
@@ -52,14 +52,16 @@ If you want to use your own pre-made tarball:
     # piuparts --basetgz=/path/to/my/tarball.tgz sm_0.6-1_i386.deb
 
 Piuparts also has the option of using a tarball as the contents of the initial
-chroot, instead of building a new one with debootstrap. You can save a tarball
-for later use with the -s (--save) piuparts option.
+chroot, instead of building a new one with pbuilder. You can save a tarball
+for later use with the -s (--save) piuparts option. Some people like this, 
+others prefer to onyl have to maintain one tarball. Read the piuparts manpage 
+about the -p, -b and -s options
 
 
 * Piuparts tests
 ----------------
 
-By default, piuparts does 2 test:
+By default, piuparts does two tests:
 1 - Installation and purging test.
 2 - Installation, upgrade and purging tests.
 

@@ -27,6 +27,7 @@ piuparts (0.31) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * Add a copyright statement to debian/copyright.
   * Add support for post_upgrade custom script.
+  * Minor fixes in how-to-use-piuparts.txt.
 
  -- Holger Levsen <holger@debian.org>  Sun, 11 May 2008 21:20:37 +0200
 
