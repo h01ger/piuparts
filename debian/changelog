@@ -25,6 +25,9 @@ piuparts (0.31) UNRELEASED; urgency=low
   * Move piuparts to priority: extra, since it depends on debootstrap which
     is extra (Closes: #477634).
 
+  [ Holger Levsen ]
+  * Add a copyright statement to debian/copyright 
+
  -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Mon, 05 May 2008 13:01:01 +0200
 
 piuparts (0.30) unstable; urgency=low
