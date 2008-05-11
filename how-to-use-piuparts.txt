@@ -32,7 +32,26 @@ If you use piuparts on a regular basis, waiting for it to create a chroot every
 time takes too much time, even if you are using a local mirror or a caching tool 
 such as approx. 
 
-Piuparts has the option of using a tarball as the contents of the initial
+Piuparts has the option of using a tarball as the contents of the initial chroot, 
+instead of building a new one with debootstrap. A easy way to use this option 
+is use a tarbal created with pbuilder. If you are not a pbuilder user, you can 
+create this tarball with the command (again, as root):
+
+    # puilder create
+ 
+then you only have to remember to update this tarball with:
+
+    #  pbuilder update.
+
+To run piuparts using this tarball:
+
+    # piuparts -p sm_0.6-1_i386.deb
+
+If you want to use your own pre-made tarball:
+
+    # piuparts --basetgz=/path/to/my/tarball.tgz sm_0.6-1_i386.deb
+
+Piuparts also has the option of using a tarball as the contents of the initial
 chroot, instead of building a new one with debootstrap. You can save a tarball
 for later use with the -s (--save) piuparts option.
 

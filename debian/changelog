@@ -8,8 +8,7 @@ piuparts (0.31) UNRELEASED; urgency=low
   * Added a --debfoster-options option, to allow the user to override
     debfoster's default options and test with more packages installed
     in the chroot. (Closes: #458922)
-  * Doc fix: remove mention of pbuilder in how-to-use-piuparts.txt.
-    Using -s to save the tarball is easier.
+  * Mention piuparts -s in in how-to-use-piuparts.txt.
   * Finally fixes the check for broken symlinks. Thanks go to
     Tobias Grimm for the patch. Closes: #468157, 478587.
   * Ignore /var/cache/ldconfig/aux-cache.
@@ -19,7 +18,7 @@ piuparts (0.31) UNRELEASED; urgency=low
   * Added -w to lsof call to suppress warnings. (Closes: #466102).
 
   [ Lucas Nussbaum ]
-  * Keep /proc mounted. Switch to calling tar directly in 
+  * Keep /proc mounted. Switch to calling tar directly in
     pack_into_tgz(). Minor refactorings. Thanks go to Tobias Grimm
     for the patch. Closes: #478577.
   * Move piuparts to priority: extra, since it depends on debootstrap which
@@ -29,7 +28,7 @@ piuparts (0.31) UNRELEASED; urgency=low
   * Add a copyright statement to debian/copyright.
   * Add support for post_upgrade custom script.
 
- -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Mon, 05 May 2008 13:01:01 +0200
+ -- Holger Levsen <holger@debian.org>  Sun, 11 May 2008 21:20:37 +0200
 
 piuparts (0.30) unstable; urgency=low
 
