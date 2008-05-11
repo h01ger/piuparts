@@ -650,6 +650,9 @@ class Chroot:
             # of the library, and we've told apt-get not to remove
             # packages. So, we force the installation like this.
             self.install_packages_by_name(packages)
+            # Run custom scripts after upgrade
+            if settings.scriptsdir is not None:
+                self.run_scripts("post_upgrade")
             self.check_for_no_processes()
     
     def apt_get_knows(self, package_names):

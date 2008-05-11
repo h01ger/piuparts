@@ -26,7 +26,8 @@ piuparts (0.31) UNRELEASED; urgency=low
     is extra (Closes: #477634).
 
   [ Holger Levsen ]
-  * Add a copyright statement to debian/copyright 
+  * Add a copyright statement to debian/copyright.
+  * Add support for post_upgrade custom script.
 
  -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Mon, 05 May 2008 13:01:01 +0200
 
