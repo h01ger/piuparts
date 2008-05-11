@@ -26,6 +26,9 @@ piuparts (0.31) unstable; urgency=low
   * Add a copyright statement to debian/copyright.
   * Add support for post_upgrade custom script.
   * Minor fixes in how-to-use-piuparts.txt.
+  * piuparts.docbook: Correct the path to dtd, it's
+    /usr/share/xml/docbook/schema/dtd/4.1.2/docbookx.dtd and add a
+    build-dependency for docbook-xml
 
  -- Holger Levsen <holger@debian.org>  Sun, 11 May 2008 22:17:52 +0200
 

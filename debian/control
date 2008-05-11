@@ -10,7 +10,7 @@ Uploaders: Lars Wirzenius <liw@iki.fi>,
 Section: devel
 Priority: extra
 Standards-Version: 3.7.3
-Build-Depends-Indep: docbook2x, python-support
+Build-Depends-Indep: docbook2x, python-support, docbook-xml
 XS-Python-Version: all
 Vcs-Svn: svn://svn.debian.org/svn/piuparts/trunk/
 Vcs-Browser: http://svn.debian.org/wsvn/piuparts/trunk/
