@@ -1,4 +1,4 @@
-piuparts (0.31) UNRELEASED; urgency=low
+piuparts (0.31) unstable; urgency=low
 
   [ Lars Wirzenius ]
   * piuparts.docbook: Added a few words of description of the tarball
@@ -10,26 +10,24 @@ piuparts (0.31) UNRELEASED; urgency=low
     in the chroot. (Closes: #458922)
   * Mention piuparts -s in in how-to-use-piuparts.txt.
   * Finally fixes the check for broken symlinks. Thanks go to
-    Tobias Grimm for the patch. Closes: #468157, 478587.
+    Tobias Grimm for the patch. (Closes: #468157, 478587)
   * Ignore /var/cache/ldconfig/aux-cache.
   * Added myself to uploaders.
+  * Keep /proc mounted. Switch to calling tar directly in
+    pack_into_tgz(). Minor refactorings. Thanks go to Tobias Grimm
+    for the patch. (Closes: #478577)
+  * Move piuparts to priority: extra, since it depends on debootstrap which
+    is extra. (Closes: #477634)
 
   [ Luk Claes ]
   * Added -w to lsof call to suppress warnings. (Closes: #466102).
-
-  [ Lucas Nussbaum ]
-  * Keep /proc mounted. Switch to calling tar directly in
-    pack_into_tgz(). Minor refactorings. Thanks go to Tobias Grimm
-    for the patch. Closes: #478577.
-  * Move piuparts to priority: extra, since it depends on debootstrap which
-    is extra (Closes: #477634).
 
   [ Holger Levsen ]
   * Add a copyright statement to debian/copyright.
   * Add support for post_upgrade custom script.
   * Minor fixes in how-to-use-piuparts.txt.
 
- -- Holger Levsen <holger@debian.org>  Sun, 11 May 2008 21:20:37 +0200
+ -- Holger Levsen <holger@debian.org>  Sun, 11 May 2008 22:17:52 +0200
 
 piuparts (0.30) unstable; urgency=low
 
