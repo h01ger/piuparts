@@ -1,3 +1,9 @@
+piuparts (0.32) UNRELEASED; urgency=low
+
+  * Fix a typo in how-to-use-piuparts.txt.
+
+ -- John Wright <jsw@debian.org>  Mon, 12 May 2008 13:46:21 -0600
+
 piuparts (0.31) unstable; urgency=low
 
   [ Lars Wirzenius ]
