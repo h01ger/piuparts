@@ -54,7 +54,7 @@ If you want to use your own pre-made tarball:
 Piuparts also has the option of using a tarball as the contents of the initial
 chroot, instead of building a new one with pbuilder. You can save a tarball
 for later use with the -s (--save) piuparts option. Some people like this, 
-others prefer to onyl have to maintain one tarball. Read the piuparts manpage 
+others prefer to only have to maintain one tarball. Read the piuparts manpage 
 about the -p, -b and -s options
 
 
