@@ -1627,7 +1627,7 @@ def parse_command_line():
     
     parser.add_option("-d", "--distribution", action="append", metavar="NAME",
                       help="Which Debian distribution to use: a code name " +
-                           "(sarge, etch, sid) or experimental. The " +
+                           "(etch, lenny, sid) or experimental. The " +
                            "default is sid (i.e., unstable).")
     
     parser.add_option("-i", "--ignore", action="append", metavar="FILENAME",

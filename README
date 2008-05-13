@@ -42,15 +42,15 @@ Distrubuted testing
                 suffice:
                 
                  1. Pick a machine to run the master. It cannot be a chroot,
-                    but etch should be good enough.
+                    but a etch system is good enough.
                  2. Install piuparts on it.
                  3. Create an account for the master.
                  4. Configure /etc/piuparts/piuparts-master.conf 
                     appropriately.
                  
                  5. Pick one or more slaves to run the slave. You can use
-                    the machine running the master also as a slave. You need
-                    sid (or possibly etch), but it can be in a chroot.
+                    the machine running the master also as a slave. Etch is
+		    fine, it can even be in a chroot.
                  6. Install piuparts on it.
                  7. Configure /etc/piuparts/piuparts-slave.conf
                     appropriately.
@@ -283,7 +283,7 @@ Slave configuration file
                 * "upgrade-test-distros" is the space delimited list of
                   distributions the slave should use for testing upgrades
                   between distributions (i.e., Debian versions). Currently,
-		  "sarge etch sid" is a good choice.  Make this empty if you
+		  "etch lenny sid" is a good choice.  Make this empty if you
 		  do not want to run upgrade tests.
 
                 * "upgrade-test-chroot-tgz" is the name of the file the slave

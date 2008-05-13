@@ -190,7 +190,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
                 <listitem>
                 
                     <para>Which Debian distribution to use: a code name
-                    (sarge, etch, sid) or experimental. The default is
+                    (etch, lenny, sid) or experimental. The default is
                     sid (i.e, unstable).</para>
 
                 </listitem>
@@ -543,13 +543,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             >piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.deb</programlisting>
 
             <para>If you want to test that a package installs properly
-            in the stable (sarge) Debian release, then can be upgraded
-            to the testing (etch) and unstable (sid) versions, and then
+            in the stable (etch) Debian release, then can be upgraded
+            to the testing (lenny) and unstable (sid) versions, and then
             uninstalled without problems, you would give the following
             command:</para>
 
             <programlisting
-            >piuparts -a -d sarge -d etch -d sid foo</programlisting>
+            >piuparts -a -d etch -d lenny -d sid foo</programlisting>
 
     </refsect1>
 
