@@ -6,6 +6,8 @@ piuparts (0.32) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * Replace all references to sarge and etch with etch and lenny.
   * Update README to reflect that piuparts runs fine in etch. 
+  * Rename the post_upgrade custom script to post_distupgrade and introduce
+    pre_distupgrade.
 
  -- Holger Levsen <holger@debian.org>  Tue, 13 May 2008 11:31:07 +0200
 

@@ -27,6 +27,9 @@ The scripts can be run:
     upgrade and purging test"). The name of the script must start with:
     pre_upgrade_
 
+    Before upgrading the chroot to another distro and after upgrading:
+    pre_distupgrade_
+    post_distupgrade_
 
 You can run several scripts in every step, they are run in alphabetical 
 order.

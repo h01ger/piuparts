@@ -642,6 +642,9 @@ class Chroot:
         for distro in distros:
             logging.debug("Upgrading %s to %s" % (self.name, distro))
             self.create_apt_sources(distro)
+	    # Run custom scripts before upgrade
+            if settings.scriptsdir is not None:
+                self.run_scripts("pre_distupgrade")
             self.run(["apt-get", "update"])
             self.run(["apt-get", "-yf", "dist-upgrade"])
             # Sometimes dist-upgrade won't upgrade the packages we want
@@ -652,7 +655,7 @@ class Chroot:
             self.install_packages_by_name(packages)
             # Run custom scripts after upgrade
             if settings.scriptsdir is not None:
-                self.run_scripts("post_upgrade")
+                self.run_scripts("post_distupgrade")
             self.check_for_no_processes()
     
     def apt_get_knows(self, package_names):
