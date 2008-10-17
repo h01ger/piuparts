@@ -1,4 +1,4 @@
-piuparts (0.32) UNRELEASED; urgency=low
+piuparts (0.32) unstable; urgency=low
 
   [ John Wright ]
   * Fix a typo in how-to-use-piuparts.txt.
@@ -8,8 +8,9 @@ piuparts (0.32) UNRELEASED; urgency=low
   * Update README to reflect that piuparts runs fine in etch. 
   * Rename the post_upgrade custom script to post_distupgrade and introduce
     pre_distupgrade.
+  * Bumped standards version, no changes needed.
 
- -- Holger Levsen <holger@debian.org>  Tue, 13 May 2008 11:31:07 +0200
+ -- Holger Levsen <holger@debian.org>  Fri, 17 Oct 2008 10:28:14 +0000
 
 piuparts (0.31) unstable; urgency=low
 

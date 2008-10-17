@@ -9,7 +9,7 @@ Uploaders: Lars Wirzenius <liw@iki.fi>,
     Lucas Nussbaum <lucas@lucas-nussbaum.net>
 Section: devel
 Priority: extra
-Standards-Version: 3.7.3
+Standards-Version: 3.8.0
 Build-Depends-Indep: docbook2x, python-support, docbook-xml
 XS-Python-Version: all
 Vcs-Svn: svn://svn.debian.org/svn/piuparts/trunk/
