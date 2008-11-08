@@ -1,3 +1,10 @@
+piuparts (0.33) unstable; urgency=low
+
+  * Added --bindmount option, thanks to Aníbal Monsalve Salaza for the patch. 
+    (Closes: #496186)
+
+ -- Holger Levsen <holger@debian.org>  Sat, 08 Nov 2008 17:07:22 +0000
+
 piuparts (0.32) unstable; urgency=low
 
   [ John Wright ]

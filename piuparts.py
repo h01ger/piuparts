@@ -133,6 +133,7 @@ class Settings:
         self.args_are_package_files = True
         self.debian_mirrors = []
         self.debian_distros = []
+        self.bindmounts = []
         self.basetgz = None
         self.savetgz = None
         self.endmeta = None
@@ -635,6 +636,9 @@ class Chroot:
             self.create_apt_sources(settings.debian_distros[0])
         self.create_apt_conf()
         self.create_policy_rc_d()
+        for bindmount in settings.bindmounts:
+            run(["mkdir", "-p", self.relative(bindmount)])
+            run(["mount", "-obind", bindmount, self.relative(bindmount)])
         self.run(["apt-get", "update"])
 
     def upgrade_to_distros(self, distros, packages):
@@ -820,6 +824,8 @@ class Chroot:
         return dict
 
     def relative(self, pathname):
+        if pathname.startswith('/'):
+            return os.path.join(self.name, pathname[1:])
         return os.path.join(self.name, pathname)
 
     def get_files_owned_by_packages(self):
@@ -865,6 +871,8 @@ class Chroot:
     def unmount_proc(self):
         """Unmount /proc inside chroot."""
         self.run(["umount", "/proc"], ignore_errors=True)
+        for bindmount in settings.bindmounts:
+            run(["umount", self.relative(bindmount)], ignore_errors=True)
 
     def is_ignored(self, pathname):
         """Is a file (or dir or whatever) to be ignored?"""
@@ -1596,6 +1604,7 @@ def find_default_debian_mirrors():
 
 
 def forget_ignores(option, opt, value, parser, *args, **kwargs):
+    settings.bindmounts = []
     parser.values.ignore = []
     parser.values.ignore_regex = []
     settings.ignored_files = []
@@ -1627,6 +1636,10 @@ def parse_command_line():
     
     parser.add_option("-B", "--end-meta", metavar="FILE",
                       help="XXX")
+    
+    parser.add_option("--bindmount", action="append", metavar="DIR",
+                      default=[],
+                      help="Directory to be bind-mounted inside the chroot.")
     
     parser.add_option("-d", "--distribution", action="append", metavar="NAME",
                       help="Which Debian distribution to use: a code name " +
@@ -1738,6 +1751,7 @@ def parse_command_line():
     settings.defaults = opts.defaults
     settings.args_are_package_files = not opts.apt
     settings.basetgz = opts.basetgz
+    settings.bindmounts += opts.bindmount
     settings.debian_distros = opts.distribution
     settings.ignored_files += opts.ignore
     settings.ignored_patterns += opts.ignore_regex

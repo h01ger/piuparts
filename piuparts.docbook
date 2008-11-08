@@ -57,6 +57,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             <arg><option>-I</option> <replaceable>regexp</replaceable></arg>
             <arg><option>-l</option> <replaceable>logfile</replaceable></arg>
             <arg><option>-m</option> <replaceable>url</replaceable></arg>
+            <arg><option>--bindmount</option> <replaceable>dir</replaceable></arg>
             <arg><replaceable>package</replaceable></arg>
         </cmdsynopsis>
     </refsynopsisdiv>
@@ -404,12 +405,23 @@ with this program; if not, write to the Free Software Foundation, Inc.,
                     components are read from the same place.</para>
                     
                     <para>Note that <literal>file:</literal> addresses
-                    do not currently work, since the files aren't
-                    accessible from within the chroot and Lars has been
-                    too lazy to add bind mounting support.</para>
+                    works if the directories are made accessible from within
+                    the chroot with <option>--bindmount</option>.</para>
 
                 </listitem>
             
+            </varlistentry>
+
+            <varlistentry>
+
+                <term><option>--bindmount=</option><replaceable>dir</replaceable></term>
+
+                <listitem>
+
+                    <para>Bind-mount a directory inside the chroot.</para>
+
+                </listitem>
+
             </varlistentry>
 
             <varlistentry>
