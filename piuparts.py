@@ -944,6 +944,7 @@ class Chroot:
                     if os.path.isfile(self.relative(pathname.strip("/"))):
                         st = os.lstat(self.relative(pathname.strip("/")))
                         mode = st[stat.ST_MODE]
+                        # XXX /etc/cron.d/ files are NOT executables
                         if (mode & stat.S_IEXEC): 
                             if not has_cronfiles:
                                 has_cronfiles = True
@@ -956,12 +957,19 @@ class Chroot:
     def check_output_cronfiles (self, list):
         """Check if a given list of cronfiles has any output. Executes 
 	cron file as cron would do (except for SHELL)"""
+        failed = False
         for file in list:
 
             if not os.path.exists(self.relative(file.strip("/"))):
                 continue 
 
-            self.run([file])
+            (retval, output) = self.run([file])
+            if output:
+                failed = True
+                logging.error("Cron file %s has output with package removed" % file)
+
+        if failed:
+            panic()
 
     def run_scripts (self, step):
         """ Run custom scripts to given step post-install|remove|purge"""

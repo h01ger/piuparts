@@ -1,9 +1,13 @@
 piuparts (0.34) UNRELEASED; urgency=low
 
+  [ Holger Levsen ]
   * Mount /selinux on systems where selinux is enabled. Thanks to Filippo
     Giunchedi for the patch! (CLoses: 507171)
 
- -- Holger Levsen <holger@debian.org>  Sat, 29 Nov 2008 01:40:28 +0100
+  [ Filippo Giunchedi ]
+  * Check for any output when running cron files in addition to exit code
+
+ -- Filippo Giunchedi <filippo@debian.org>  Sat, 29 Nov 2008 16:06:55 +0100
 
 piuparts (0.33) unstable; urgency=low
 
