@@ -548,6 +548,7 @@ class Chroot:
 
         self.configure_chroot()
         self.mount_proc()
+        self.mount_selinux()
         if settings.basetgz:
             self.run(["apt-get", "-yf", "upgrade"])
         self.minimize()
@@ -562,6 +563,7 @@ class Chroot:
         """Remove a chroot and all its contents."""
         if not settings.keep_tmpdir and os.path.exists(self.name):
             self.unmount_proc()
+            self.unmount_selinux()
             shutil.rmtree(self.name)
             logging.debug("Removed directory tree at %s" % self.name)
 
@@ -863,6 +865,18 @@ class Chroot:
             logging.error("Processes are running inside chroot:\n%s" % 
                           indent_string(output))
             panic()
+
+
+    def mount_selinux(self):
+        if selinux_enabled():
+            run(["mkdir", "-p", self.relative("/selinux")])
+            run(["mount", "-t", "selinuxfs", "/selinux", self.relative("/selinux")])
+            logging.info("SElinux mounted into chroot")
+
+    def unmount_selinux(self):
+        if selinux_enabled():
+            run(["umount", self.relative("/selinux")])
+            logging.info("SElinux unmounted from chroot")
 
     def mount_proc(self):
         """Mount /proc inside chroot."""
@@ -1220,6 +1234,14 @@ class VirtServ(Chroot):
     def check_for_no_processes(self): pass # ?!
     def mount_proc(self): pass
     def unmount_proc(self): pass
+
+def selinux_enabled(enabled_test="/usr/sbin/selinuxenabled"):
+    if os.access(enabled_test, os.X_OK):
+        retval, output = run([enabled_test])
+        if retval == 0:
+            return True
+        else:
+            return False
 
 def objects_are_different(pair1, pair2):
     """Are filesystem objects different based on their meta data?"""
