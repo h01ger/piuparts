@@ -3,6 +3,7 @@ piuparts (0.34) unstable; urgency=low
   [ Holger Levsen ]
   * Mount /selinux on systems where selinux is enabled. Thanks to Filippo
     Giunchedi for the patch! (CLoses: 507171)
+  * Remove wrong advice in debian/copyright which irritated lintian.
 
   [ Filippo Giunchedi ]
   * Check for any output when running cron files in addition to exit code
