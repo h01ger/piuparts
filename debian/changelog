@@ -1,4 +1,4 @@
-piuparts (0.34) UNRELEASED; urgency=low
+piuparts (0.34) unstable; urgency=low
 
   [ Holger Levsen ]
   * Mount /selinux on systems where selinux is enabled. Thanks to Filippo
@@ -7,7 +7,7 @@ piuparts (0.34) UNRELEASED; urgency=low
   [ Filippo Giunchedi ]
   * Check for any output when running cron files in addition to exit code
 
- -- Filippo Giunchedi <filippo@debian.org>  Sat, 29 Nov 2008 16:06:55 +0100
+ -- Holger Levsen <holger@debian.org>  Fri, 27 Feb 2009 12:34:31 +0100
 
 piuparts (0.33) unstable; urgency=low
 
