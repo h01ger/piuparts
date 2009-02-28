@@ -1,0 +1,9 @@
+#!/bin/sh
+
+DATE=`date +%Y-%m-%d`
+
+cd
+mkdir old-${DATE}
+mv fail new pass reserved untestable old-${DATE}/
+mkdir fail new pass reserved untestable 
+ 
