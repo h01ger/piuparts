@@ -566,6 +566,8 @@ class Chroot:
             self.unmount_selinux()
             shutil.rmtree(self.name)
             logging.debug("Removed directory tree at %s" % self.name)
+        elif settings.keep_tmpdir:
+            logging.debug("Keeping directory tree at %s" % self.name)	
 
     def create_temp_tgz_file(self):
         """Return the path to a file to be used as a temporary tgz file"""
