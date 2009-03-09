@@ -1,10 +1,10 @@
-piuparts (0.35) UNRELEASED; urgency=medium
+piuparts (0.35) unstable; urgency=medium
 
   * Fix recursive failure which occured when selinux-utils was installed but
     not enabled. Thanks to Peter De Wachter for the patch. (Closes: #519017)
   * Output path to temp directory if -k is used. (Closes: #466112)
 
- -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 00:19:53 +0100
+ -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 00:43:22 +0100
 
 piuparts (0.34) unstable; urgency=low
 
