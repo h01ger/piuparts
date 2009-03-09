@@ -1245,7 +1245,7 @@ class VirtServ(Chroot):
 
 def selinux_enabled(enabled_test="/usr/sbin/selinuxenabled"):
     if os.access(enabled_test, os.X_OK):
-        retval, output = run([enabled_test])
+        retval, output = run([enabled_test], ignore_errors=True)
         if retval == 0:
             return True
         else:
