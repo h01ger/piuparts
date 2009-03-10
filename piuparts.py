@@ -216,6 +216,7 @@ class Settings:
             "/var/lib/dpkg/status-old", 
             "/var/lib/dpkg/statoverride",
             "/var/lib/dpkg/statoverride-old",
+            "/var/lib/dpkg/triggers/File",
             "/var/lib/dpkg/firebird",
             "/var/lib/logrotate/status",
             "/var/lib/rbldns",

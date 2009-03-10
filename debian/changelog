@@ -2,6 +2,7 @@ piuparts (0.36) UNRELEASED; urgency=low
 
   * Add check whether scriptsdir exits, to fail gracefully if not. 
   * Copy scriptsdir to chroot also when doing upgrade tests.
+  * Ignore modifications of /var/lib/dpkg/triggers/File.
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
 
