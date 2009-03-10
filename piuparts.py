@@ -979,6 +979,7 @@ class Chroot:
         logging.info("Running scripts "+ step)
         basepath = self.relative("tmp/scripts/")
         if not os.path.exists(basepath):
+            logging.error("Scripts directory %s does not exist" % basepath)
             panic()
         list_scripts = os.listdir(basepath)
         list_scripts.sort()
