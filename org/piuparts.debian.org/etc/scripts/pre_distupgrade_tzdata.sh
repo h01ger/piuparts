@@ -1,5 +1,6 @@
 #!/bin/sh
 
+exit 0
 echo "DebugXXX: running $0"
 
 apt-get update 
