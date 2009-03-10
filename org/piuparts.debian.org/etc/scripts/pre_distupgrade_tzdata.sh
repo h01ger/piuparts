@@ -1,6 +1,12 @@
 #!/bin/sh
 
+echo "DebugXXX: running $0"
+
 apt-get update 
-echo debug XXX
 cat /etc/apt/sources.list
-dpkg -l tzdata && apt-get install libstdc++6 && apt-get dist-upgrade
+dpkg -l tzdata && { 
+	apt-get install libstdc++6
+	apt-get upgrade
+	apt-get dist-upgrade
+}
+	
