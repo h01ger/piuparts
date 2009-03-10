@@ -1,3 +1,9 @@
+piuparts (0.36) UNRELEASED; urgency=low
+
+  * Add check whether scriptsdir exits, to fail gracefully if not. 
+
+ -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
+
 piuparts (0.35) unstable; urgency=medium
 
   * Fix recursive failure which occured when selinux-utils was installed but
