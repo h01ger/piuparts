@@ -554,6 +554,15 @@ class Chroot:
         self.minimize()
         self.run(["apt-get", "clean"])
 
+        #copy scripts dir into the chroot
+        if settings.scriptsdir is not None:
+            dest = self.relative("tmp/scripts/")
+            os.mkdir(dest)
+            logging.debug("Copying scriptsdir to %s" % dest)
+            for file in os.listdir(settings.scriptsdir):
+                if (file.startswith("post_") or file.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), file)):
+                    shutil.copy(os.path.join((settings.scriptsdir), file), dest) 
+
         if settings.savetgz:
             self.pack_into_tgz(settings.savetgz)
 
@@ -1893,14 +1902,6 @@ def main():
 
         root_info = chroot.save_meta_data()
         selections = chroot.get_selections()
-    
-        #copy scripts dir into the chroot
-        if settings.scriptsdir is not None:
-            dest = chroot.relative("tmp/scripts/")
-            os.mkdir(dest)
-            for file in os.listdir(settings.scriptsdir):
-                if (file.startswith("post_") or file.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), file)):
-                    shutil.copy(os.path.join((settings.scriptsdir), file), dest) 
 
         if not install_purge_test(chroot, root_info, selections,
 				  args, packages):
