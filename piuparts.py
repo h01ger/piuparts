@@ -558,7 +558,8 @@ class Chroot:
         #copy scripts dir into the chroot
         if settings.scriptsdir is not None:
             dest = self.relative("tmp/scripts/")
-            os.mkdir(dest)
+            if not os.path.exists(self.relative("tmp/scripts/")):
+              os.mkdir(dest)
             logging.debug("Copying scriptsdir to %s" % dest)
             for file in os.listdir(settings.scriptsdir):
                 if (file.startswith("post_") or file.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), file)):
