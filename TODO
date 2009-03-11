@@ -33,8 +33,6 @@ Frank Lichtenheld <djpig@debian.org>
 Low priority stuff (a.k.a. "nobody's said they must have it now")
 -----------------------------------------------------------------
 
-* Make piuparts work with file: urls a local mirror. Bind mount?
-
 * Kill children after a timeout to make sure the test doesn't run forever.
 
 * Check for and kill extraneous processes afterwards. Perhaps by checking
