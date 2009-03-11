@@ -1,0 +1,10 @@
+#
+# This is the configuration file for piuparts-report, the HTML report
+# creation portion of the distributed piuparts system.
+#
+# Lars Wirzenius <liw@iki.fi>
+#
+
+[report]
+output-dir = html
+index-page = index.html

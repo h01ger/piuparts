@@ -29,7 +29,7 @@ install: all
 	gzip -9f $(man1dir)/piuparts.1
 
 	install -d $(sharedir)/piuparts
-	for file in piuparts-slave piuparts-master; do \
+	for file in piuparts-slave piuparts-master piuparts-report; do \
 	    sed "/^CONFIG_FILE = /s:\".*\":\"/etc/piuparts/$$file.conf\":" \
 	        $$file.py > $(sharedir)/piuparts/$$file.py; done
 	install piuparts-analyze.py $(sharedir)/piuparts/piuparts-analyze
@@ -41,7 +41,7 @@ install: all
 	install -m 0644 piupartslib/*.py $(site25)/piupartslib
 
 	install -d $(etcdir)/piuparts
-	for x in master slave; do \
+	for x in master slave reports; do \
 	    install -m 0644 piuparts-$$x.conf.sample \
 	                    $(etcdir)/piuparts/piuparts-$$x.conf; done
 
