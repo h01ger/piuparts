@@ -5,11 +5,11 @@ todo
 ----
 - use local mirror
 - document/do: /var/www needs to be populated, /etc/apache2/ too
-- something creates /org/piuparts.do/etc/piuparts/ - that shouldnt happen
 - document users needed
 - document sudoers need
 - in -master.py and -slave.py: create master + slave dirs if they dont exists 
 - move /home/*/bin/* into piuparts/trunk (cleanup as option for the commands, and stats as seperate piuparts-stats script)
+- fix the Makefile so that there is clean way not to install example configuration
 
 done
 ----
@@ -25,7 +25,7 @@ done
 	cd /org/puiparts.debian.org
 	svn co svn://svn.debian.org/svn/piuparts/trunk src
         cd src
-	make prefix=/org/piuparts.debian.org etcdir=/org/piuparts.debian.org/etc install
+	sudo make prefix=/org/piuparts.debian.org etcdir=/org/piuparts.debian.org/etc install && sudo rm ../etc/piuparts/ -Rf
 
 to start a new run and throw away all results:
 ----------------------------------------------
