@@ -41,7 +41,7 @@ install: all
 	install -m 0644 piupartslib/*.py $(site25)/piupartslib
 
 	install -d $(etcdir)/piuparts
-	for x in master slave reports; do \
+	for x in master slave report; do \
 	    install -m 0644 piuparts-$$x.conf.sample \
 	                    $(etcdir)/piuparts/piuparts-$$x.conf; done
 
