@@ -5,6 +5,10 @@ Things to do for piuparts
 exim and removing postfix would require re-installing exim, and that
 doesn't happen; there's other packages like that, too
 
+* piuparts can't currently test upgrades of requiered packages. (Because they
+cannot be removed, it assumes these are untestable, which is only true for
+removal tests...
+
 ----------------
 
 - find_default_debian_mirrors: if parts[2] contains a / (think
@@ -15,12 +19,6 @@ doesn't happen; there's other packages like that, too
   of apt-get and allow to override the commandline arguments of
   the used program (to be able to test with and without recommended 
   packages or authentication).
-
-- you need to either use --allow-unauthenticated or --force-yes
-  to apt-get calls; problem: --force-yes is too dangerous and 
-  --allow-unauthenticated doesn't exist in old versions (which
-  is relevant for testing upgrades from woody upwards, for example);
-  djpig suggests using "-o APT::Get::AllowUnauthenticated=True".
 
 - mounting /proc and perhaps others (usbfs, sysfs, /dev/pts, etc.) in
   the chroot might be a good idea because some packages might need this.

@@ -6,6 +6,8 @@ piuparts (0.36) UNRELEASED; urgency=low
   * Do not install recommends and suggests.
   * Re-add piuparts-reports.py which got removed/lost between 0.14 and 0.20 
     without changelog entry.
+  * Change the test whether a package is testable to check whether the 
+    package is of priority "required", and not whether it's "Essential".
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
 

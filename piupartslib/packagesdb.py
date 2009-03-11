@@ -82,8 +82,8 @@ class Package(UserDict.UserDict):
         return list
 
     def is_testable(self):
-        """Are we testable at all? Essential/required/important aren't."""
-        return self.get("Essential", "") != "yes"
+        """Are we testable at all? Required aren't."""
+        return self.get("Priority", "") != "required"
 
     def dump(self, output_file):
         output_file.write("".join(self.headers))
