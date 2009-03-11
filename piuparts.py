@@ -615,7 +615,9 @@ class Chroot:
         """Create /etc/apt/apt.conf inside the chroot."""
         create_file(self.relative("etc/apt/apt.conf"),
                     'APT::Get::AllowUnauthenticated "yes";\n' + 
-                    'APT::Get::Assume-Yes "yes";\n')
+                    'APT::Get::Assume-Yes "yes";\n' +
+                    'APT::Install-Recommends "0";\n' +
+                    'APT::Install-Suggests "0";\n')
 
     def create_policy_rc_d(self):
         """Create a policy-rc.d that prevents daemons from running."""

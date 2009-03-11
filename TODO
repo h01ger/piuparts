@@ -13,8 +13,8 @@ doesn't happen; there's other packages like that, too
 
 - wishlist: make it possible to call aptitude (or similar) instead
   of apt-get and allow to override the commandline arguments of
-  the used program (interesting e.g. together with aptitude to
-  install the package with and without recommended packages)
+  the used program (to be able to test with and without recommended 
+  packages or authentication).
 
 - you need to either use --allow-unauthenticated or --force-yes
   to apt-get calls; problem: --force-yes is too dangerous and 
