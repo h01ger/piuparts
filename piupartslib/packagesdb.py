@@ -187,7 +187,7 @@ class PackagesDB:
         "failed-testing",
         "fix-not-yet-tested",
         "cannot-be-tested",
-        "essential-required-important",
+        "essential-required",
         "waiting-to-be-tested",
         "waiting-for-dependency-to-be-tested",
         "dependency-failed-testing",
@@ -295,7 +295,7 @@ class PackagesDB:
         if self._logdb.any_log_exists(package, [self._evil]):
             return "cannot-be-tested"
         if not package.is_testable():
-            return "essential-required-important"
+            return "essential-required"
 
         for dep in package.dependencies():
             if dep not in self._package_state:
@@ -309,7 +309,7 @@ class PackagesDB:
         state = "waiting-to-be-tested"
         for dep in package.dependencies():
             if self._package_state[dep] not in \
-               ["successfully-tested", "essential-required-important"]:
+               ["successfully-tested", "essential-required"]:
                 state = "unknown"
                 break
         if state == "waiting-to-be-tested":

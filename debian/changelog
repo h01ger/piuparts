@@ -8,6 +8,8 @@ piuparts (0.36) UNRELEASED; urgency=low
     without changelog entry.
   * Change the test whether a package is testable to check whether the 
     package is of priority "required", and not whether it's "Essential".
+  * Rename status "essential-required-important" to "essential-required" 
+    as important packages can be tested like all the others.
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
 
