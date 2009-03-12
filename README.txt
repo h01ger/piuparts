@@ -3,7 +3,10 @@ Notes about the installation
 
 todo
 ----
+- rewrite piuparts-report so that stats.html becomes index.html (and keep the css and the links from both pages in one)
+- document piuparts-reports...
 - use local mirror
+- turn off debugging
 - document/do: /var/www needs to be populated, /etc/apache2/ too
 - document users needed
 - document sudoers need
