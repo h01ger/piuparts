@@ -208,7 +208,7 @@ class PackagesDB:
         "dependency-failed-testing": "dependency-failed-testing",
         "dependency-cannot-be-tested": "dependency-cannot-be-tested",
         "dependency-does-not-exist": "dependency-does-not-exist",
-        "circular-dependency": "circular-dependency",
+        "circular-dependency": "waiting-to-be-tested",
         "dependency-fix-not-yet-tested": "dependency-fix-not-yet-tested",
     }
 
