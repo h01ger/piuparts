@@ -37,7 +37,7 @@ to start a new run and throw away all results:
 
 piupartss@piatti:/org/piuparts.debian.org$ sudo rm slave/ master/ -Rf && mkdir slave master && \
   mkdir sid squeeze lenny2squeeze && cd ../master && mkdir sid squeeze lenny2squeeze && cd .. && \
-  chmod g+w slave master && cd slave && nice python ../share/piuparts/piuparts-slave.py sid
+  chmod g+w slave master && cd slave/sid && nice python ../../share/piuparts/piuparts-slave.py sid
 # this only tests sid
 
 to create reports:
