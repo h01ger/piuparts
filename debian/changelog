@@ -15,6 +15,8 @@ piuparts (0.36) UNRELEASED; urgency=low
       failure analysing will be harder.
   * Re-add piuparts-reports.py which got removed/lost between 0.14 and 0.20 
     without changelog entry.
+  * piuparts-reports.py: 
+    - make unknown packages printed bold in state reports.
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
 

@@ -165,6 +165,8 @@ def html_protect(str):
     str = "&gt;".join(str.split(">"))
     str = "&#34;".join(str.split('"'))
     str = "&#39;".join(str.split("'"))
+    if str == "unknown-package":
+      str = "<b>unknown-package</b>"
     return str
 
 
