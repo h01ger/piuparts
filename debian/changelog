@@ -1,19 +1,20 @@
 piuparts (0.36) UNRELEASED; urgency=low
 
-  * Add check whether scriptsdir exits, to fail gracefully if not. 
-  * Copy scriptsdir to chroot also when doing upgrade tests.
-  * Ignore modifications of /var/lib/dpkg/triggers/*
-  * Do not install recommends and suggests.
+  * piuparts.py:
+    - add check whether scriptsdir exits, to fail gracefully if not. 
+    - copy scriptsdir to chroot also when doing upgrade tests.
+    - ignore modifications of /var/lib/dpkg/triggers/*
+    - configure apt in chroots to not install recommends and suggests.
+  * piupartslib/packagesdb.py:
+    - change the test whether a package is testable to check whether the 
+      package is of priority "required", and not whether it's "Essential".
+    - rename status "essential-required-important" to "essential-required" 
+      as important packages can be tested like all the others.
+    - assume packages in state "circular-dependency" are testable. True, they
+      are not testable without the circular dependent package, so in case of 
+      failure analysing will be harder.
   * Re-add piuparts-reports.py which got removed/lost between 0.14 and 0.20 
     without changelog entry.
-  * Change the test whether a package is testable to check whether the 
-    package is of priority "required", and not whether it's "Essential".
-  * Rename status "essential-required-important" to "essential-required" 
-    as important packages can be tested like all the others.
-  * Experiment to try to make packages testable, which have circular 
-    dependencies. I think think this should work, because I believe package 
-    with circular dependencies can simply be tested together - the remaining
-    issue is to find out, which package really failed...
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
 
