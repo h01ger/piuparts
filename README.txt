@@ -19,7 +19,8 @@ done
 ----
 - in /org/
 	svn co svn://svn.debian.org/svn/piuparts/piatti/org/piuparts.debian.org .
-	mkdir slave master tmp && chmod g+w slave master
+	mkdir slave master tmp cd slave && mkdir sid squeeze lenny2squeeze \
+          && cd ../master && mkdir sid squeeze lenny2squeeze && cd .. && chmod g+w slave master
 - in /home/piupartss:
 	put "export PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages" into .bashrc
 - in /home/piupartsm:
@@ -33,8 +34,15 @@ done
 
 to start a new run and throw away all results:
 ----------------------------------------------
-piupartss@piatti:/org/piuparts.debian.org$ sudo rm slave/ master/ -Rf && mkdir slave master && chmod g+w slave master && cd slave && nice python ../share/piuparts/piuparts-slave.py
-# should probably become an option for piuparts-slave :)
+
+piupartss@piatti:/org/piuparts.debian.org$ sudo rm slave/ master/ -Rf && mkdir slave master && \
+  mkdir sid squeeze lenny2squeeze && cd ../master && mkdir sid squeeze lenny2squeeze && cd .. && \
+  chmod g+w slave master && cd slave && nice python ../share/piuparts/piuparts-slave.py sid
+# this only tests sid
+
+to create reports:
+------------------
+to be written
 
 
 March 2009
