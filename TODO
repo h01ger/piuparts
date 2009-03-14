@@ -12,9 +12,13 @@ Things to do for piuparts
   stable/updates for security.d.o), you can't ignore this, it will break
   later...
 
+- make it possible to configure additional sources lines
+
 - piuparts can't currently test postfix, since installing postfix removes
   exim and removing postfix would require re-installing exim, and that
   doesn't happen; there's other packages like that, too
+
+- split the failed state into several problem-type failed states
 
 - mounting /proc and perhaps others (usbfs, sysfs, /dev/pts, etc.) in
   the chroot might be a good idea because some packages might need this.
