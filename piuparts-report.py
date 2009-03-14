@@ -133,8 +133,8 @@ desc_by_dir = {
 
 class Config(piupartslib.conf.Config):
 
-    def __init__(self):
-        piupartslib.conf.Config.__init__(self, "report",
+    def __init__(self, section="report"):
+        piupartslib.conf.Config.__init__(self, section,
             {
                 "output-dir": "html",
                 "index-page": "index.html",
