@@ -256,10 +256,20 @@ def write_file(filename, contents):
 
 
 def main():
-    setup_logging(logging.DEBUG, None)
-    config = Config()
+    # For supporting multiple architectures and suites, we take a command-line
+    # argument referring to a section in the reports configuration file.  For
+    # backwards compatibility, if no argument is given, the "report" section is
+    # assumed.
+    if len(sys.argv) == 2:
+        section = sys.argv[1]
+        config = Config(section=section)
+    else:
+        section = None
+        config = Config()
     config.read(CONFIG_FILE)
-    
+
+    setup_logging(logging.DEBUG, None)
+        
     logging.debug("Finding log files")
     dirs = ["pass", "fail", "bugged", "fixed", "reserved", "untestable"]
     logs_by_dir = {}
