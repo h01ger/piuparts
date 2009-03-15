@@ -9,6 +9,7 @@
 #
 
 [slave]
+log-file = slave.log
 idle-sleep = 300
 # master-host = localhost
 # master-user = piuparts
