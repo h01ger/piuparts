@@ -130,6 +130,15 @@ desc_by_dir = {
                   "piuparts at the current time.",
 }
 
+state_by_dir = {
+    "pass": "successfully-tested",
+    "fail": "failed-testing",
+    "bugged": "failed-testing",
+    "fixed": "fix-not-yet-tested",
+    "reserved": "waiting-to-be-tested",
+    "untestable": "dependency-cannot-be-tested",
+}
+
 
 class Config(piupartslib.conf.Config):
 
@@ -305,10 +314,16 @@ def main():
     logging.debug("Writing package statistics page")    
     table = "<table>\n"
     for state in st.get_states():
+        dirlink = "<td>"
+        for dir in dirs:
+          if state_by_dir[dir] == state:
+            dirlink += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
+        dirlink += "</td>"
         table += ("<tr><td><a href='state-%s.html'>%s</a></td>" +
-                  "<td>%d</td></tr>\n") % \
+                  "<td>%d</td>%s</tr>\n") % \
                     (html_protect(state), html_protect(state),
-                     len(st.get_packages_in_state(state)))
+                     len(st.get_packages_in_state(state)),
+                     dirlink)
     table += "<tr> <th>Total</th> <th>%d</th></tr>\n" % \
                 st.get_total_packages()
     table += "</table>\n"
