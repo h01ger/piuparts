@@ -3,6 +3,7 @@ Notes about the installation
 
 todo
 ----
+- run piuparts-reports.py from cron
 - rewrite piuparts-report so that stats.html becomes index.html (and keep the css and the links from both pages in one)
 - document piuparts-reports...
 - use local mirror
@@ -34,10 +35,10 @@ done
 
 to start a new run and throw away all results:
 ----------------------------------------------
-
-piupartss@piatti:/org/piuparts.debian.org$ sudo rm slave/ master/ -Rf && mkdir slave master && \
-  mkdir sid squeeze lenny2squeeze && cd ../master && mkdir sid squeeze lenny2squeeze && cd .. && \
-  chmod g+w slave master && cd slave/sid && nice python ../../share/piuparts/piuparts-slave.py sid
+piupartss@piatti:/org/piuparts.debian.org$ sudo rm master slave-sid slave-squeeze slave-lenny2squeeze -Rf
+piupartss@piatti:/org/piuparts.debian.org$ sudo mkdir master slave-sid slave-squeeze slave-lenny2squeeze
+piupartss@piatti:/org/piuparts.debian.org$ chmod g+w -R master slave-sid slave-squeeze slave-lenny2squeeze
+piupartss@piatti:/org/piuparts.debian.org$ cd slave-sid && nice python ../../share/piuparts/piuparts-slave.py sid
 # this only tests sid
 
 to create reports:
