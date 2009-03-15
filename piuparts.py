@@ -129,6 +129,7 @@ class Settings:
         self.tmpdir = None
         self.scriptsdir = None
         self.keep_tmpdir = False
+        self.single_changes_list = False
         self.max_command_output_size = 1024 * 1024
         self.args_are_package_files = True
         self.debian_mirrors = []
@@ -310,12 +311,12 @@ def dump(msg):
         handler.flush()
 
 
-def panic():
+def panic(exit=1):
     for i in range(counter):
         if i in on_panic_hooks:
             on_panic_hooks[i]()
-    sys.exit(1)
-    
+    sys.exit(exit)
+
 
 def indent_string(str):
     """Indent all lines in a string with two spaces and return result."""
@@ -1384,6 +1385,46 @@ def get_package_names_from_package_files(filenames):
                 list.append(line.split(":", 1)[1].strip())
     return list
 
+# Method to process a changes file, returning a list of all the .deb packages
+# from the 'Files' stanza.
+def process_changes(changes):
+    # Determine the path to the changes file, then check if it's readable.
+    dir_path = ""
+    changes_path = ""
+    if not os.path.dirname(changes):
+        changes_path = os.path.basename(changes)
+    else:
+        dir_path = os.path.dirname(changes) + "/"
+        changes_path = os.path.abspath(changes)
+    if not os.access(changes_path, os.R_OK):
+        logging.warn(changes_path + " is not readable. Skipping.")
+        return
+
+    # Determine the packages in the changes file through the 'Files' stanza.
+    field = 'Files'
+    pattern = re.compile(\
+        r'^'+field+r':' + r'''  # The field we want the contents from
+        (.*?)                   # The contents of the field
+        \n([^ ]|$)              # Start of a new field or EOF
+        ''',
+        re.MULTILINE | re.DOTALL | re.VERBOSE)
+    f = open(changes_path)
+    file_text = f.read()
+    f.close()
+    matches = pattern.split(file_text)
+
+    # Append all the packages found in the changes file to a package list.
+    package_list = []
+    newline_p = re.compile('\n')
+    package_p = re.compile('.*?([^ ]+\.deb)$')
+    for line in newline_p.split(matches[1]):
+        if package_p.match(line):
+            package = dir_path + package_p.split(line)[1]
+            package_list.append(package)
+
+    # Return the list.
+    return package_list
+
 
 def check_results(chroot, root_info, file_owners, deps_info=None):
     """Check that current chroot state matches 'root_info'.
@@ -1446,7 +1487,7 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     return ok
 
 
-def install_purge_test(chroot, root_info, selections, args, packages):
+def install_purge_test(chroot, root_info, selections, package_list, packages):
     """Do an install-purge test. Return True if successful, False if not.
        Assume 'root' is a directory already populated with a working
        chroot, with packages in states given by 'selections'."""
@@ -1455,11 +1496,11 @@ def install_purge_test(chroot, root_info, selections, args, packages):
 
     if settings.warn_on_others:
         # Create a metapackage with dependencies from the given packages
-        if args:
+        if package_list:
             control_infos = []
             # We were given package files, so let's get the Depends and
             # Conflicts directly from the .debs
-            for deb in args:
+            for deb in package_list:
                 returncode, output = run(["dpkg", "-f", deb])
                 control = deb822.Deb822(output)
                 control_infos.append(control)
@@ -1497,8 +1538,8 @@ def install_purge_test(chroot, root_info, selections, args, packages):
     else:
         deps_info = None
 
-    if args:
-        chroot.install_package_files(args)
+    if package_list:
+        chroot.install_package_files(package_list)
     else:
         chroot.install_packages_by_name(packages)
         chroot.run(["apt-get", "clean"])
@@ -1518,7 +1559,7 @@ def install_purge_test(chroot, root_info, selections, args, packages):
     return check_results(chroot, root_info, file_owners, deps_info=deps_info)
 
 
-def install_upgrade_test(chroot, root_info, selections, args, package_names):
+def install_upgrade_test(chroot, root_info, selections, package_list, package_names):
     """Install package via apt-get, then upgrade from package files.
     Return True if successful, False if not."""
 
@@ -1531,7 +1572,7 @@ def install_upgrade_test(chroot, root_info, selections, args, package_names):
     chroot.check_for_broken_symlinks()
 
     # Then from the package files.
-    chroot.install_package_files(args)
+    chroot.install_package_files(package_list)
     
     file_owners = chroot.get_files_owned_by_packages()
 
@@ -1785,7 +1826,11 @@ def parse_command_line():
     parser.add_option("-t", "--tmpdir", metavar="DIR",
                       help="Use DIR for temporary storage. Default is " +
                            "$TMPDIR or /tmp.")
-    
+
+    parser.add_option("--single-changes-list", default=False,
+                      action="store_true",
+                      help="test all packages from all changes files together.")
+
     parser.add_option("-v", "--verbose", 
                       action="store_true", default=False,
                       help="No meaning anymore.")
@@ -1793,6 +1838,7 @@ def parse_command_line():
     parser.add_option("--debfoster-options",
                       default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
 		      help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
+
     
     (opts, args) = parser.parse_args()
 
@@ -1804,6 +1850,7 @@ def parse_command_line():
     settings.ignored_files += opts.ignore
     settings.ignored_patterns += opts.ignore_regex
     settings.keep_tmpdir = opts.keep_tmpdir
+    settings.single_changes_list = opts.single_changes_list
     settings.keep_sources_list = opts.keep_sources_list
     settings.skip_minimize = opts.skip_minimize
     settings.list_installed_files = opts.list_installed_files
@@ -1878,6 +1925,52 @@ def get_chroot():
     if settings.adt_virt is None: return Chroot()
     return settings.adt_virt
 
+# Process the packages given in a list
+def process_packages(package_list):
+    # Find the names of packages.
+    if settings.args_are_package_files:
+        packages = get_package_names_from_package_files(package_list)
+    else:
+        packages = package_list
+        package_list = []
+
+    if len(settings.debian_distros) == 1:
+        chroot = get_chroot()
+        chroot.create()
+        id = do_on_panic(chroot.remove)
+
+        root_info = chroot.save_meta_data()
+        selections = chroot.get_selections()
+
+        if not install_purge_test(chroot, root_info, selections,
+                  package_list, packages):
+            logging.error("FAIL: Installation and purging test.")
+            panic()
+        logging.info("PASS: Installation and purging test.")
+
+        if not settings.no_upgrade_test:
+            if not settings.args_are_package_files:
+                logging.info("Can't test upgrades: -a or --apt option used.")
+            elif not chroot.apt_get_knows(packages):
+                logging.info("Can't test upgrade: packages not known by apt-get.")
+            elif install_upgrade_test(chroot, root_info, selections, package_list, 
+                                  packages):
+                logging.info("PASS: Installation, upgrade and purging tests.")
+            else:
+                logging.error("FAIL: Installation, upgrade and purging tests.")
+                panic()
+    
+        chroot.remove()
+        dont_do_on_panic(id)
+    else:
+        if install_and_upgrade_between_distros(package_list, packages):
+            logging.info("PASS: Upgrading between Debian distributions.")
+        else:
+            logging.error("FAIL: Upgrading between Debian distributions.")
+            panic()
+
+    if settings.adt_virt is not None: settings.adt_virt.shutdown()
+
 def main():
     """Main program. But you knew that."""
 
@@ -1892,49 +1985,27 @@ def main():
     # Packages that don't use debconf will lose.
     os.environ["DEBIAN_FRONTEND"] = "noninteractive"
 
-    # Find the names of packages.
-    if settings.args_are_package_files:
-        packages = get_package_names_from_package_files(args)
-    else:
-        packages = args
-        args = []
 
-    if len(settings.debian_distros) == 1:
-        chroot = get_chroot()
-        chroot.create()
-        id = do_on_panic(chroot.remove)
-
-        root_info = chroot.save_meta_data()
-        selections = chroot.get_selections()
-
-        if not install_purge_test(chroot, root_info, selections,
-				  args, packages):
-            logging.error("FAIL: Installation and purging test.")
-            panic()
-        logging.info("PASS: Installation and purging test.")
-
-        if not settings.no_upgrade_test:
-            if not settings.args_are_package_files:
-                logging.info("Can't test upgrades: -a or --apt option used.")
-            elif not chroot.apt_get_knows(packages):
-                logging.info("Can't test upgrade: packages not known by apt-get.")
-            elif install_upgrade_test(chroot, root_info, selections, args, 
-                                  packages):
-                logging.info("PASS: Installation, upgrade and purging tests.")
+    changes_packages_list = []
+    regular_packages_list = []
+    changes_p = re.compile('.*\.changes$')
+    for arg in args:
+        if changes_p.match(arg):
+            package_list = process_changes(arg)
+            if settings.single_changes_list:
+                for package in package_list:
+                    regular_packages_list.append(package)
             else:
-                logging.error("FAIL: Installation, upgrade and purging tests.")
-                panic()
-    
-        chroot.remove()
-        dont_do_on_panic(id)
-    else:
-        if install_and_upgrade_between_distros(args, packages):
-            logging.info("PASS: Upgrading between Debian distributions.")
+                changes_packages_list.append(package_list)
         else:
-            logging.error("FAIL: Upgrading between Debian distributions.")
-            panic()
+            regular_packages_list.append(arg)
 
-    if settings.adt_virt is not None: settings.adt_virt.shutdown()
+    if changes_packages_list:
+        for package_list in changes_packages_list:
+            process_packages(package_list)
+
+    if regular_packages_list:
+        process_packages(regular_packages_list)
 
     logging.info("PASS: All tests.")
     logging.info("piuparts run ends.")

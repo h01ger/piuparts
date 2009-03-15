@@ -5,6 +5,12 @@ piuparts (0.36) UNRELEASED; urgency=low
     - copy scriptsdir to chroot also when doing upgrade tests.
     - ignore modifications of /var/lib/dpkg/triggers/*
     - configure apt in chroots to not install recommends and suggests.
+    - add support for scanning for packages in changes files, thanks to Andres
+      Mejia for the patch. (Closes: #352940)
+    - change some methods from using 'args' to 'package_list'. This more 
+      accurately represents what is being passed into these methods now. 
+    - add an optional parameter to panic() method to specify what exit status
+      to use. Also thanks to Andres. 
   * piupartslib/packagesdb.py:
     - change the test whether a package is testable to check whether the 
       package is of priority "required", and not whether it's "Essential".

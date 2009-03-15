@@ -59,6 +59,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             <arg><option>-m</option> <replaceable>url</replaceable></arg>
             <arg><option>--bindmount</option> <replaceable>dir</replaceable></arg>
             <arg><replaceable>package</replaceable></arg>
+            <arg><replaceable>changes_file</replaceable></arg>
         </cmdsynopsis>
     </refsynopsisdiv>
     
@@ -123,11 +124,20 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             
         </orderedlist>
         
-        <para>Command line arguments are names of package files by
-        default (e.g., <filename>piuparts_1.0-1_all.deb</filename>) or
-        names of packages, if the <option>-a</option> option is
-        given. All packages will be tested as a group, not one
-        by one.</para>
+        <para>Command line arguments are the paths to package files
+        (e.g., <filename>piuparts_1.0-1_all.deb</filename>), paths to
+        changes files (e.g., 
+	<filename>piuparts_1.0-1_i386.changes</filename>),
+        or names of packages, if the <option>--apt</option> option is
+        given. </para>
+
+	<para>When processing changes files, by default, every package in a
+        changes file will be processed together with all individual packages
+        given on the command line. Then each package given on the command line
+        is processed in a single group. If the
+        <option>--single-changes-list</option> is used, the packages in every
+        changes file are processed together along with any individual packages
+        that were given on the command line.</para>
         
         <para><command>piuparts</command> outputs to the standard output
         some log messages to show what is going on. If a
@@ -503,6 +513,22 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         
             <varlistentry>
             
+                <term><option>--single-changes-list</option></term>
+                
+                <listitem>
+                
+                    <para>When processing changes files, piuparts will process
+                    the packages in each individual changes file seperately.
+                    This option will set piuparts to scan the packages of all
+                    changes files together along with any individual package
+                    files that may have been given on the command line.</para>
+
+                </listitem>
+            
+            </varlistentry>
+
+            <varlistentry>
+            
                 <term><option>-v</option></term>
                 <term><option>--verbose</option></term>
                 
@@ -553,6 +579,17 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             
             <programlisting
             >piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.deb</programlisting>
+
+            <para>If you want to do the same as above but for your changes
+            files, pass in your changes files when running piuparts, and
+            piuparts will process each package in the changes files as though
+            you had passed all those packages on the command line to piuparts
+            yourself. For example:</para>
+
+            <programlisting>piuparts ../foo_1.0-2_i386.changes</programlisting>
+            <programlisting
+            >piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.changes</programlisting>
+
 
             <para>If you want to test that a package installs properly
             in the stable (etch) Debian release, then can be upgraded
