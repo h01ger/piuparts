@@ -25,6 +25,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - print "unknown-package" bold in state reports.
     - support sections in configuration file. 
     - provide links to logfiles in statistics page.
+    - improve look.
   * control: depend on python (>>2.4) at least. 
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100

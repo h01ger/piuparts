@@ -38,17 +38,57 @@ import piupartslib
 CONFIG_FILE = "piuparts-report.conf"
 
 
-LOG_LIST_PAGE_TEMPLATE = """
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-<head>
-    <title>%(title)s</title>
-    <link rel="stylesheet" href="piuparts.css" type="text/css"/>
-</head>
-<body>
+HTML_HEADER = """
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+ <html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>piatti.debian.org / piatti.cs.helsinki.fi</title>
+  <link type="text/css" rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="/favicon.ico">
+ </head>
+ <body>
+  <div align="center">
+   <a href="http://www.debian.org/">
+    <img src="http://piuparts.debian.org/images/openlogo-nd-50.png" border="0" hspace="0" vspace="0" alt=""></a>
+   <a href="http://www.debian.org/">
+    <img src="http://piuparts.debian.org/images/debian.png" border="0" hspace="0" vspace="0" alt="Debian Project"></a>
+  </div>
+  <br />
+  <table class="reddy" width="100%">
+   <tr>
+    <td class="reddy">
+     <img src="http://piuparts.debian.org/images/red-upperleft.png" align="left" border="0" hspace="0" vspace="0"
+      alt="" width="15" height="16"></td>
+    <td rowspan="2" class="reddy">Policy is your friend. Trust the Policy. Love the Policy. Obey the Policy.</td>
+    <td class="reddy">
+     <img src="http://piuparts.debian.org/images/red-upperright.png" align="right" border="0" hspace="0" vspace="0"
+     alt="" width="16" height="16"></td>
+   </tr>
+   <tr>
+    <td class="reddy">
+     <img src="http://piuparts.debian.org/images/red-lowerleft.png" align="left" border="0" hspace="0" vspace="0"
+      alt="" width="16" height="16"></td>
+    <td class="reddy">
+     <img src="http://piuparts.debian.org/images/red-lowerright.png" align="right" border="0" hspace="0" vspace="0"
+      alt="" width="15" height="16"></td>
+   </tr>
+  </table>
+"""
+
+
+HTML_FOOTER = """
+<a href="http://validator.w3.org/check?uri=referer">
+    <img border="0" src="/images/valid-html401.png" alt="Valid HTML 4.01!" height="31" width="88">
+</a>
+<a href="http://jigsaw.w3.org/css-validator/check/referer">
+    <img border="0" src="/images/vcss.gif" alt="Valid CSS!"  height="31" width="88">
+</a>
+    
+</body>
+</html>
+"""
+
+
+LOG_LIST_BODY_TEMPLATE = """
 <div class="main">
 <h1>%(title)s</h1>
 <p>%(preface)s</p>
@@ -58,51 +98,25 @@ This page was generated: %(time)s.</p>
 %(loglist)s
 </ul>
 </div>
-</body>
-</html>
 """
 
 
-STATS_PAGE_TEMPLATE = """
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-<head>
-    <title>Statistics of packages</title>
-    <link rel="stylesheet" href="piuparts.css" type="text/css"/>
-</head>
-<body>
+STATS_BODY_TEMPLATE = """
 <div class="main">
 <h1>Statistics of packages</h1>
 <p>This page contains some statistics about packages piuparts is looking
 at.</p>
 %(table)s
 </div>
-</body>
-</html>
 """
 
 
-STATE_PAGE_TEMPLATE = """
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-<head>
-    <title>%(state)s</title>
-    <link rel="stylesheet" href="piuparts.css" type="text/css"/>
-</head>
-<body>
+STATE_BODY_TEMPLATE = """
 <div class="main">
 <h1>Packages in state "%(state)s"</h1>
 <p>This page contains a list of package in state "%(state)s".</p>
 %(list)s
 </div>
-</body>
-</html>
 """
 
 
@@ -200,7 +214,7 @@ def write_log_list_page(filename, title, preface, logs):
         lines.append(line)
 
     f = file(filename, "w")
-    f.write(LOG_LIST_PAGE_TEMPLATE % 
+    f.write(HTML_HEADER + LOG_LIST_BODY_TEMPLATE % 
             {
                 "title": html_protect(title),
                 "preface": preface,
@@ -208,7 +222,7 @@ def write_log_list_page(filename, title, preface, logs):
                 "count": len(logs),
                 "versioncount": version_count,
                 "time": time.strftime("%Y-%m-%d %H:%M:%S %z"),
-            })
+            } + HTML_FOOTER)
     f.close()
 
 
@@ -328,7 +342,7 @@ def main():
                 st.get_total_packages()
     table += "</table>\n"
     write_file(os.path.join(config["output-dir"], "stats.html"),
-               STATS_PAGE_TEMPLATE % { "table": table })
+               HTML_HEADER + STATS_BODY_TEMPLATE % { "table": table } + HTML_FOOTER)
 
     for state in st.get_states():
         logging.debug("Writing page for %s" % state)
@@ -347,10 +361,10 @@ def main():
         list += "</ul>\n"
         write_file(os.path.join(config["output-dir"], 
                                 "state-%s.html" % state),
-                   STATE_PAGE_TEMPLATE % {
+                   HTML_HEADER + STATE_BODY_TEMPLATE % {
                        "state": html_protect(state),
                        "list": list
-                   })
+                   } + HTML_FOOTER)
 
 
 if __name__ == "__main__":
