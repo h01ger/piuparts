@@ -18,7 +18,7 @@ Homepage: http://wiki.debian.org/piuparts
 
 Package: piuparts
 Architecture: all
-Depends: apt, python (>> 2.3), debootstrap (>= 0.3.3), lsof, lsb-release, 
+Depends: apt, python (>> 2.4), debootstrap (>= 0.3.3), lsof, lsb-release, 
     python-debian (>= 0.1.4)
 Description: .deb package installation, upgrading, and removal testing tool
  piuparts tests that .deb packages (as used by Debian) handle
