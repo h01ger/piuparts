@@ -1,6 +1,8 @@
 Things to do for piuparts
 =========================
 
+- update-reports: create sidebar with about & faq and section links. read sections from conf file and loop through.
+
 - upgrade-reports should have a list of available arch and list packages 
   only available on untested archs in a new state categorory.
 
