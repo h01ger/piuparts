@@ -348,16 +348,15 @@ def main():
     logging.debug("Writing package statistics page")    
     table = "<table>\n"
     for state in st.get_states():
-        dirlink = "<td>"
+        dir_link = ""
         for dir in dirs:
           if state_by_dir[dir] == state:
-            dirlink += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
-        dirlink += "</td>"
+            dir_link += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
         table += ("<tr><td><a href='state-%s.html'>%s</a></td>" +
-                  "<td>%d</td>%s</tr>\n") % \
+                  "<td>%d</td><td>%s</td></tr>\n") % \
                     (html_protect(state), html_protect(state),
                      len(st.get_packages_in_state(state)),
-                     dirlink)
+                     dir_link)
     table += "<tr> <th>Total</th> <th colspan=2>%d</th></tr>\n" % \
                 st.get_total_packages()
     table += "</table>\n"
