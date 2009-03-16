@@ -57,8 +57,11 @@ def setup_logging(log_level, log_file_name):
 class Config(piupartslib.conf.Config):
 
     def __init__(self, section="slave"):
+        self.section = section
         piupartslib.conf.Config.__init__(self, section,
             {
+                "sections": "slave",
+                "slave-directory": section,
                 "idle-sleep": "10",
                 "master-host": None,
                 "master-user": None,
@@ -209,6 +212,93 @@ class Slave:
             pass
 
 
+class Section:
+
+    def __init__(self, section):
+        self._config = Config(section=section)
+        self._config.read(CONFIG_FILE)
+        self._slave_directory = os.path.abspath(self._config["slave-directory"])
+
+    def setup(self):
+        if self._config["debug"] in ["yes", "true"]:
+            self._logger = logging.getLogger()
+            self._logger.setLevel(logging.DEBUG)
+        
+        if not os.path.exists(self._config["chroot-tgz"]):
+            create_chroot(self._config, self._config["chroot-tgz"], self._config["distro"])
+    
+        if (self._config["upgrade-test-distros"] and not
+            os.path.exists(self._config["upgrade-test-chroot-tgz"])):
+            create_chroot(self._config, self._config["upgrade-test-chroot-tgz"], 
+                        self._config["upgrade-test-distros"].split()[0])
+    
+        for dir in ["new", "pass", "fail"]:
+            dir = os.path.join(self._slave_directory, dir)
+            if not os.path.exists(os.path.join(self._slave_directory, dir)):
+                os.mkdir(dir)
+    
+        self._slave = Slave()
+        self._slave.set_master_host(self._config["master-host"])
+        self._slave.set_master_user(self._config["master-user"])
+        self._slave.set_master_directory(self._config["master-directory"])
+        self._slave.set_master_command(self._config["master-command"])
+    
+        for dir in ["pass", "fail", "untestable", "reserved"]:
+            dir = os.path.join(self._slave_directory, dir)
+            if not os.path.exists(dir):
+                os.makedirs(dir)
+
+    def run(self):
+        logging.info("-------------------------------------------")
+        logging.info("Running section " + self._config.section)
+        self._slave.connect_to_master()
+
+        oldcwd = os.path.getcwd()
+        os.chdir(self._slave_directory)
+
+        for logdir in ["pass", "fail", "untestable"]:
+            for basename in os.listdir(logdir):
+                if basename.endswith(".log"):
+                    fullname = os.path.join(logdir, basename)
+                    self._slave.send_log(logdir, fullname)
+                    os.remove(fullname)
+
+        if not self._slave.get_reserved():
+            max_reserved = int(self._config["max-reserved"])
+            while len(self._slave.get_reserved()) < max_reserved and self._slave.reserve():
+                pass
+
+        self._slave.close()
+
+        if not self._slave.get_reserved():
+            logging.debug("Nothing to do, sleeping for a bit")
+            time.sleep(int(self._config["idle-sleep"]))
+            continue
+
+        packages_files = {}
+        distros = [self._config["distro"]] + self._config["upgrade-test-distros"].split()
+        for distro in distros:
+            if distro not in packages_files:
+                packages_files[distro] = fetch_packages_file(self._config, distro)
+        packages_file = packages_files[self._config["distro"]]
+
+        for package_name, version in self._slave.get_reserved():
+            if package_name in packages_file:
+                package = packages_file[package_name]
+                if version == package["Version"]:
+                    test_package(self._config, package, packages_files)
+                else:
+                    create_file(os.path.join("untestable", 
+                                             log_name(package_name, version)),
+                                "%s %s not found" % (package_name, version))
+            else:
+                create_file(os.path.join("untestable", 
+                                         log_name(package_name, version)),
+                            "Package %s not found" % package_name)
+            self._slave.forget_reserved(package_name, version)
+        os.chdir(oldcwd)
+
+
 def log_name(package, version):
     return "%s_%s.log" % (package, version)
 
@@ -320,89 +410,28 @@ def main():
     setup_logging(logging.INFO, None)
     
     # For supporting multiple piuparts-slave configurations on a particular
-    # machine (e.g. for testing multiple suites), we take a command-line
-    # argument referring to a section in the slave configuration file.  For
-    # backwards compatibility, if no argument is given, the "slave" section is
+    # machine (e.g. for testing multiple suites), we take one or more command-line
+    # arguments referring to sections in the slave configuration file.  For
+    # backwards compatibility, if no arguments are given, the "slave" section is
     # assumed.
-    if len(sys.argv) == 2:
-        section = sys.argv[1]
-        config = Config(section=section)
+    section_names = []
+    if len(sys.argv) > 1:
+        section_names = sys.argv[1:]
     else:
-        section = None
-        config = Config()
-    config.read(CONFIG_FILE)
-    
-    if config["debug"] in ["yes", "true"]:
-        logger = logging.getLogger()
-        logger.setLevel(logging.DEBUG)
-    
-    if not os.path.exists(config["chroot-tgz"]):
-        create_chroot(config, config["chroot-tgz"], config["distro"])
+        slave_config = Config(section="slave"))
+        slave_config.read(CONFIG_FILE)
+        section_names = slave_config["sections"].split()
 
-    if (config["upgrade-test-distros"] and not
-        os.path.exists(config["upgrade-test-chroot-tgz"])):
-        create_chroot(config, config["upgrade-test-chroot-tgz"], 
-                      config["upgrade-test-distros"].split()[0])
-
-    for dir in ["new", "pass", "fail"]:
-        if not os.path.exists(dir):
-            os.mkdir(dir)
-
-    s = Slave()
-    s.set_master_host(config["master-host"])
-    s.set_master_user(config["master-user"])
-    s.set_master_directory(config["master-directory"])
-    s.set_master_command(config["master-command"])
-
-    for dir in ["pass", "fail", "untestable", "reserved"]:
-        if not os.path.exists(dir):
-            os.makedirs(dir)
+    sections = []
+    for section_name in section_names:
+        section = Section(section_name)
+        section.setup()
+        sections.append(section)
 
     while True:
-        logging.info("-------------------------------------------")
-        s.connect_to_master()
-    
-        for logdir in ["pass", "fail", "untestable"]:
-            for basename in os.listdir(logdir):
-                if basename.endswith(".log"):
-                    fullname = os.path.join(logdir, basename)
-                    s.send_log(logdir, fullname)
-                    os.remove(fullname)
+        for section in sections:
+            section.run()
 
-        if not s.get_reserved():
-            max_reserved = int(config["max-reserved"])
-            while len(s.get_reserved()) < max_reserved and s.reserve():
-                pass
-
-        s.close()
-
-        if not s.get_reserved():
-            logging.debug("Nothing to do, sleeping for a bit")
-            time.sleep(int(config["idle-sleep"]))
-            continue
-        
-        packages_files = {}
-        distros = [config["distro"]] + config["upgrade-test-distros"].split()
-        for distro in distros:
-            if distro not in packages_files:
-                packages_files[distro] = fetch_packages_file(config, distro)
-        packages_file = packages_files[config["distro"]]
-        
-        for package_name, version in s.get_reserved():
-            if package_name in packages_file:
-                package = packages_file[package_name]
-                if version == package["Version"]:
-                    test_package(config, package, packages_files)
-                else:
-                    create_file(os.path.join("untestable", 
-                                             log_name(package_name, version)),
-                                "%s %s not found" % (package_name, version))
-            else:
-                create_file(os.path.join("untestable", 
-                                         log_name(package_name, version)),
-                            "Package %s not found" % package_name)
-            s.forget_reserved(package_name, version)
-        
 
 if __name__ == "__main__":
     main()

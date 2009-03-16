@@ -26,6 +26,10 @@ piuparts (0.36) UNRELEASED; urgency=low
     - support sections in configuration file. 
     - provide links to logfiles in statistics page.
     - improve look.
+  * piuparts-slave.py:
+    - support looping trough multiple sections in slave.conf via new config value
+      "sections". Thanks to Frank Ploss for writing this patch with me and helping
+      me understand the code much better!
   * control: depend on python (>>2.4) at least. 
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100

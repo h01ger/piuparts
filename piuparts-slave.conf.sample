@@ -9,6 +9,10 @@
 #
 
 [slave]
+sections = sid
+
+[sid]
+sections = sid
 log-file = slave.log
 idle-sleep = 300
 # master-host = localhost
@@ -19,8 +23,8 @@ master-command = python /usr/share/piuparts/piuparts-master.py
 piuparts-cmd = sudo piuparts
 distro = sid
 chroot-tgz = sid.tar.gz
-upgrade-test-distros = etch lenny sid
-upgrade-test-chroot-tgz = etch.tar.gz
+upgrade-test-distros = 
+upgrade-test-chroot-tgz = 
 max-reserved = 50
 debug = no
 
