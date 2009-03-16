@@ -1,0 +1,11 @@
+# m h dom mon dow (0|7=sun,1=mon)    command
+
+# 
+# notify about reboots
+#
+@reboot ddate | mail -s "piatti rebooted, please restart the piuparts-slave screen session"  piuparts-devel@lists.alioth.debian.org
+#
+# create reports every hour
+#
+42 * * * * PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages nice python /org/piuparts.debian.org/share/piuparts/piuparts-report.py
+

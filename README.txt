@@ -3,9 +3,6 @@ Notes about the installation
 
 todo
 ----
-- run piuparts-reports.py from cron
-- rewrite piuparts-report so that stats.html becomes index.html (and keep the css and the links from both pages in one)
-- document piuparts-reports...
 - use local mirror
 - turn off debugging
 - look at the irssi_away script to see how to monitor screen sessions, to notify when piuparts is hanging
@@ -13,7 +10,6 @@ todo
 - document users needed
 - document sudoers need
 - in -master.py and -slave.py: create master + slave dirs if they dont exists 
-- move /home/*/bin/* into piuparts/trunk (cleanup as option for the commands, and stats as seperate piuparts-stats script)
 - fix the Makefile so that there is clean way not to install example configuration
 
 done
@@ -32,6 +28,7 @@ done
 	svn co svn://svn.debian.org/svn/piuparts/trunk src
         cd src
 	sudo make prefix=/org/piuparts.debian.org etcdir=/org/piuparts.debian.org/etc install && sudo rm ../etc/piuparts/ -Rf
+- piuparts-report.py is run from ~/piupartsm/crontab
 
 to start a new run and throw away all results:
 ----------------------------------------------

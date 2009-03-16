@@ -3,7 +3,7 @@
 #
 #  update piuparts setup on piatti.debian.org
 #
-#   (c) 2006 Holger Levsen         holger@layer-acht.org
+#   (c) 2009 Holger Levsen         holger@layer-acht.org
 #   GPL2 licenced
 #
 
@@ -14,14 +14,31 @@ fi
 
 set -e
 
-cd ~piupartsm/bin
+#
+# update slave home, mostly scripts
+#
+cd ~
 svn up
-cd ~/bin
+
+#
+# update master home, mostly crontab to run piuparts-reports
+#
+cd ~piupartsm
 svn up
+#not yet
+#sudo -u piupartsm crontab ~piupartsm/crontab
+
+#
+# update configuration + htdocs
+#
 cd /org/piuparts.debian.org/etc
 svn up
 cd ../htdocs
 svn up
+
+#
+# update source
+#
 cd ../src
 svn up
 sudo make prefix=/org/piuparts.debian.org etcdir=/org/piuparts.debian.org/etc install 
