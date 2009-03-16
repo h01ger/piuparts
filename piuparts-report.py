@@ -52,7 +52,7 @@ HTML_HEADER = """
    <a href="http://www.debian.org/">
     <img src="http://piuparts.debian.org/images/debian.png" border="0" hspace="0" vspace="0" alt="Debian Project"></a>
   </div>
-  <br />
+  <br>
   <table class="reddy" width="100%">
    <tr>
     <td class="reddy">
@@ -124,7 +124,7 @@ This page was generated: %(time)s.</p>
 STATE_BODY_TEMPLATE = """
 <div id="main">
 <h1>Packages in state "%(state)s"</h1>
-<p>This page contains a list of package in state "%(state)s".</p>
+<p>This page contains a list of package in state "%(state)s". Last updated: %(time)s.</p>
 %(list)s
 </div>
 """
@@ -152,6 +152,15 @@ INDEX_BODY_TEMPLATE = """
   The <a href="http://wiki.debian.org/piuparts">piuparts</a> setup is currently
   still being polished. Better reports and statistics as well as PTS integration is
    planned. Join #debian-qa if you want to help.
+ </p>
+
+ <p>
+  reports:
+  <ul>
+   <li><a href="/sid/">sid</a></li>
+   <li><a href="/squeeze/">squeeze</a></li>
+   <li><a href="/lenny2squeeze/">lenny2squeeze</a></li>
+  </ul>
  </p>
 
  <p>These pages are updated every six hours. Last update: %(time)s </p>
@@ -230,8 +239,12 @@ def html_protect(str):
     str = "&gt;".join(str.split(">"))
     str = "&#34;".join(str.split('"'))
     str = "&#39;".join(str.split("'"))
-    if str == "unknown-package":
-      str = "<b>unknown-package</b>"
+    return str
+
+
+def emphasize_reason(str):
+    if str == "unknown-package" or str == "failed-testing":
+      str = "<b>" + str + "</b>"
     return str
 
 
@@ -392,7 +405,7 @@ class Section:
                         for dep in package.dependencies():
                             list += "<li>dependency %s is %s</li>\n" % \
                                      (html_protect(dep), 
-                                      html_protect(st.state_by_name(dep)))
+                                      html_protect(emphasize_reason(st.state_by_name(dep))))
                         list += "</ul>\n"
                     list += "</li>\n"
                 list += "</ul>\n"
@@ -400,6 +413,7 @@ class Section:
                                         "state-%s.html" % state),
                                         HTML_HEADER + STATE_BODY_TEMPLATE % {
                                         "state": html_protect(state),
+                                        "time": time.strftime("%Y-%m-%d %H:%M:%S %z"),
                                         "list": list
                                         } + HTML_FOOTER)
 
