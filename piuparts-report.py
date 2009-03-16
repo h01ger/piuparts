@@ -71,6 +71,26 @@ HTML_HEADER = """
      <img src="http://piuparts.debian.org/images/red-lowerright.png" align="right" border="0" hspace="0" vspace="0"
       alt="" width="15" height="16"></td>
    </tr>
+   <tr>
+    <td class="reddy">
+     <img src="http://piuparts.debian.org/images/red-upperleft.png" align="left" border="0" hspace="0" vspace="0"
+      alt="" width="15" height="16"></td>
+    <td rowspan="2" class="reddy">
+      <a href="http://wiki.debian.org/piuparts">About</a> - <a href="http://wiki.debian.org/piuparts/FAQ">FAQ</a> -
+      reports: <a href="/sid/">sid</a> - <a href="/squeeze/">squeeze</a> - <a href="/lenny2squeeze/">lenny2squeeze</a>
+    </td>
+    <td class="reddy">
+     <img src="http://piuparts.debian.org/images/red-upperright.png" align="right" border="0" hspace="0" vspace="0"
+     alt="" width="16" height="16"></td>
+   </tr>
+   <tr>
+    <td class="reddy">
+     <img src="http://piuparts.debian.org/images/red-lowerleft.png" align="left" border="0" hspace="0" vspace="0"
+      alt="" width="16" height="16"></td>
+    <td class="reddy">
+     <img src="http://piuparts.debian.org/images/red-lowerright.png" align="right" border="0" hspace="0" vspace="0"
+      alt="" width="15" height="16"></td>
+   </tr>
   </table>
 """
 
@@ -89,7 +109,7 @@ HTML_FOOTER = """
 
 
 LOG_LIST_BODY_TEMPLATE = """
-<div class="main">
+<div id="main">
 <h1>%(title)s</h1>
 <p>%(preface)s</p>
 <p>The list has %(count)d packages, with %(versioncount)s total versions.
@@ -102,7 +122,7 @@ This page was generated: %(time)s.</p>
 
 
 STATS_BODY_TEMPLATE = """
-<div class="main">
+<div id="main">
 <h1>Statistics of packages</h1>
 <p>This page contains some statistics about packages piuparts is looking
 at.</p>
@@ -112,7 +132,7 @@ at.</p>
 
 
 STATE_BODY_TEMPLATE = """
-<div class="main">
+<div id="main">
 <h1>Packages in state "%(state)s"</h1>
 <p>This page contains a list of package in state "%(state)s".</p>
 %(list)s
