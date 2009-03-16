@@ -100,7 +100,7 @@ HTML_FOOTER = """
     <img border="0" src="/images/valid-html401.png" alt="Valid HTML 4.01!" height="31" width="88">
 </a>
 <a href="http://jigsaw.w3.org/css-validator/check/referer">
-    <img border="0" src="/images/vcss.gif" alt="Valid CSS!"  height="31" width="88">
+    <img border="0" src="/images/vcss.png" alt="Valid CSS!"  height="31" width="88">
 </a>
     
 </body>
@@ -124,7 +124,7 @@ This page was generated: %(time)s.</p>
 STATE_BODY_TEMPLATE = """
 <div id="main">
 <h1>Packages in state "%(state)s"</h1>
-<p>This page contains a list of package in state "%(state)s". Last updated: %(time)s.</p>
+<p>This page contains a list of packages in state "%(state)s". Last updated: %(time)s.</p>
 %(list)s
 </div>
 """
@@ -133,8 +133,8 @@ STATE_BODY_TEMPLATE = """
 SECTION_STATS_BODY_TEMPLATE = """
 <div id="main">
 <h1>Statistics of packages per section</h1>
-<p>This page contains some statistics about packages piuparts is looking
-at.</p>
+<p>This page contains some statistics about packages from <pre>%(packages-url)s</pre>piuparts is looking
+at. Last updated: %(time)s.</p>
 %(table)s
 </div>
 """
@@ -155,7 +155,7 @@ INDEX_BODY_TEMPLATE = """
  </p>
 
  <p>
-  reports:
+  <b>Distributions tested:</b>:
   <ul>
    <li><a href="/sid/">sid</a></li>
    <li><a href="/squeeze/">squeeze</a></li>
@@ -163,7 +163,7 @@ INDEX_BODY_TEMPLATE = """
   </ul>
  </p>
 
- <p>These pages are updated every six hours. Last update: %(time)s </p>
+ <p>These pages are updated at 6 and 18 UTC. Last update completed at %(time)s.</p>
 </div>
 """
 
@@ -392,7 +392,11 @@ class Section:
                       st.get_total_packages()
             table += "</table>\n"
             write_file(os.path.join(self._output_directory, "index.html"),
-                       HTML_HEADER + SECTION_STATS_BODY_TEMPLATE % { "table": table } + HTML_FOOTER)
+                       HTML_HEADER + SECTION_STATS_BODY_TEMPLATE % {
+                                                                    "packages-url": html_protect(self._config["packages-url"]), 
+                                                                    "time": time.strftime("%Y-%m-%d %H:%M:%S %z"),
+                                                                    "table": table,
+                                                                    } + HTML_FOOTER)
 
             for state in st.get_states():
                 logging.debug("Writing page for %s" % state)
