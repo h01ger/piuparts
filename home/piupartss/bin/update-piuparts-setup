@@ -7,8 +7,17 @@
 #   GPL2 licenced
 #
 
+if [ "`id -n -u`" != "piupartss" ] ; then
+        echo please run this script as piupartss user
+        exit 1
+fi
+
 set -e
 
+cd ~piupartsm/bin
+svn up
+cd ~/bin
+svn up
 cd /org/piuparts.debian.org/etc
 svn up
 cd ../htdocs

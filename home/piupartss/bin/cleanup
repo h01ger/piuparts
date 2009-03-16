@@ -2,8 +2,7 @@
 
 DATE=`date +%Y-%m-%d`
 
-cd
+cd /org/piuparts.debian.org
 mkdir old-${DATE}
-mv fail new pass reserved untestable old-${DATE}/
-mkdir fail new pass reserved untestable 
- 
+mv master slave old-${DATE}/
+
