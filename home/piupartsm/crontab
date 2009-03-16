@@ -3,7 +3,7 @@
 # 
 # notify about reboots
 #
-@reboot ddate | mail -s "piatti rebooted, please restart the piuparts-slave screen session"  piuparts-devel@lists.alioth.debian.org
+@reboot ddate | mail -s "piatti rebooted, please restart the piuparts-slave screen session" piupartss
 #
 # create reports every six hour
 #  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
