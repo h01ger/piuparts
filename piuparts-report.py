@@ -154,7 +154,7 @@ INDEX_BODY_TEMPLATE = """
    planned. Join #debian-qa if you want to help.
  </p>
 
- <p>These pages are updated every hour.</p>
+ <p>These pages are updated every six hours. Last update: %(time)s </p>
 </div>
 """
 
@@ -421,16 +421,18 @@ def main():
         report_config.read(CONFIG_FILE)
         section_names = report_config["sections"].split()
 
-    logging.debug("Writing index page")
-    write_file(report_config["index-page"],
-        HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
-
     sections = []
     for section_name in section_names:
         section = Section(section_name)
         section.output()
         sections.append(section)
 
+    logging.debug("Writing index page")
+    write_file(report_config["index-page"],
+        HTML_HEADER + INDEX_BODY_TEMPLATE % 
+            {
+                "time": time.strftime("%Y-%m-%d %H:%M:%S %z"),
+            } + HTML_FOOTER)
 
 if __name__ == "__main__":
     main()
