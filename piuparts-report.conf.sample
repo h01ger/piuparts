@@ -8,6 +8,9 @@
 [report]
 sections = sid
 index-page = ./index.html
+output-directory = html
+# packages-url = 
+# master-directory = .
 
 [sid]
 output-directory = html
