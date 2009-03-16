@@ -27,4 +27,3 @@ svn up
 sudo make prefix=/org/piuparts.debian.org etcdir=/org/piuparts.debian.org/etc install 
 sudo rm ../etc/piuparts/ -Rf
 
-cd ../slave-sid
