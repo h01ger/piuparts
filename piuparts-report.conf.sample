@@ -6,5 +6,11 @@
 #
 
 [report]
-output-dir = html
-index-page = index.html
+sections = sid
+index-page = ./index.html
+
+[sid]
+output-directory = html
+# packages-url = 
+# master-directory = .
+

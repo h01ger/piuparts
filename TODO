@@ -3,13 +3,16 @@ Things to do for piuparts
 
 - document sections for piuparts-slave in README. 
 
-- update-reports: read sections from conf file and loop through.
-
 - upgrade-reports should have a list of available arch and list packages 
   only available on untested archs in a new state categorory.
 
+- the templates used by update-reports.py should be taken from /etc/piuparts/templates/
+  and not be included in the python source
+
 - merge how-to-use-piuparts.txt custom-scripts.txt README and piuparts.docbook
   into one asciidoc document.
+
+- merge conf-files into piuparts-sm.conf
 
 - piuparts can't currently test upgrades of required packages. (Because they
   cannot be removed, it assumes these are untestable, which is only true for

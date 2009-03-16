@@ -56,7 +56,7 @@ def setup_logging(log_level, log_file_name):
 
 class Config(piupartslib.conf.Config):
 
-    def __init__(self, section):
+    def __init__(self, section="slave"):
         self.section = section
         piupartslib.conf.Config.__init__(self, section,
             {

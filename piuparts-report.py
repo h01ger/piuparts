@@ -121,6 +121,15 @@ This page was generated: %(time)s.</p>
 """
 
 
+STATE_BODY_TEMPLATE = """
+<div id="main">
+<h1>Packages in state "%(state)s"</h1>
+<p>This page contains a list of package in state "%(state)s".</p>
+%(list)s
+</div>
+"""
+
+
 STATS_BODY_TEMPLATE = """
 <div id="main">
 <h1>Statistics of packages</h1>
@@ -131,11 +140,21 @@ at.</p>
 """
 
 
-STATE_BODY_TEMPLATE = """
+INDEX_BODY_TEMPLATE = """
 <div id="main">
-<h1>Packages in state "%(state)s"</h1>
-<p>This page contains a list of package in state "%(state)s".</p>
-%(list)s
+ <p>This machine is
+  <a href="http://db.debian.org/machines.cgi?host=piatti">piatti.debian.org</a>,
+  generously donated by HP and hosted at piuparts.cs.helsinki.fi by the
+  University of Helsinki, CS department.
+ </p>
+
+ <p>
+  The <a href="http://wiki.debian.org/piuparts">piuparts</a> setup is currently
+  still being polished. Better reports and stats as well as PTS integration is
+   planned. Join #debian-qa if you want to help.
+ </p>
+
+ <p>These pages are updated every hour.</p>
 </div>
 """
 
@@ -177,13 +196,16 @@ state_by_dir = {
 class Config(piupartslib.conf.Config):
 
     def __init__(self, section="report"):
+        self.section = section
         piupartslib.conf.Config.__init__(self, section,
             {
-                "output-dir": "html",
+                "sections": "report",
+                "output-directory": "html",
                 "index-page": "index.html",
                 "packages-url": None,
+                "master-directory": ".",
             },
-            ["output-dir", "packages-url"])
+            ["output-directory", "packages-url", "master-directory"])
 
 
 def setup_logging(log_level, log_file_name):
@@ -246,7 +268,7 @@ def write_log_list_page(filename, title, preface, logs):
     f.close()
 
 
-def print_by_dir(config, logs_by_dir):
+def print_by_dir(output_directory, logs_by_dir):
     for dir in logs_by_dir:
         list = []
         for basename in logs_by_dir[dir]:
@@ -254,7 +276,7 @@ def print_by_dir(config, logs_by_dir):
             assert "_" in basename
             package, version = basename[:-len(".log")].split("_")
             list.append((os.path.join(dir, basename), package, version))
-        write_log_list_page(os.path.join(config["output-dir"], dir + ".html"),
+        write_log_list_page(os.path.join(output_directory, dir + ".html"),
                             title_by_dir[dir], 
                             desc_by_dir[dir], list)
 
@@ -298,92 +320,116 @@ def write_file(filename, contents):
     f.close()
 
 
+class Section:
+
+    def __init__(self, section):
+        self._config = Config(section=section)
+        self._config.read(CONFIG_FILE)
+        self._output_directory = os.path.abspath(os.path.join(self._config["output-directory"], self._config.section))
+        if not os.path.exists(self._output_directory):
+            os.mkdir(self._output_directory)
+        self._master_directory = os.path.abspath(os.path.join(self._config["master-directory"], self._config.section))
+
+    def output(self):
+        logging.debug("-------------------------------------------")
+        logging.debug("Running section " + self._config.section)
+        if os.path.exists(self._master_directory):
+
+            oldcwd = os.getcwd()
+            os.chdir(self._master_directory)
+
+            logging.debug("Finding log files")
+            dirs = ["pass", "fail", "bugged", "fixed", "reserved", "untestable"]
+            logs_by_dir = {}
+            for dir in dirs:
+                logs_by_dir[dir] = find_log_files(dir)
+
+            logging.debug("Copying log files")
+            copy_logs(logs_by_dir, self._output_directory)
+
+            logging.debug("Removing old log files")
+            remove_old_logs(logs_by_dir, self._output_directory)
+
+            logging.debug("Writing per-dir HTML pages")
+            print_by_dir(self._output_directory, logs_by_dir)
+    
+            logging.debug("Loading and parsing Packages file")
+            if 1:
+                logging.info("Fetching %s" % self._config["packages-url"])
+                packages_file = piupartslib.open_packages_url(self._config["packages-url"])
+            else:
+                packages_file = file("Packages")
+            st = piupartslib.packagesdb.PackagesDB()
+            st.read_packages_file(packages_file)
+            packages_file.close()
+
+            logging.debug("Writing package statistics page")    
+            table = "<table>\n"
+            for state in st.get_states():
+                dir_link = ""
+                for dir in dirs:
+                  if state_by_dir[dir] == state:
+                    dir_link += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
+                table += ("<tr><td><a href='state-%s.html'>%s</a></td>" +
+                          "<td>%d</td><td>%s</td></tr>\n") % \
+                          (html_protect(state), html_protect(state),
+                          len(st.get_packages_in_state(state)),
+                          dir_link)
+            table += "<tr> <th>Total</th> <th colspan=2>%d</th></tr>\n" % \
+                      st.get_total_packages()
+            table += "</table>\n"
+            write_file(os.path.join(self._output_directory, "stats.html"),
+                       HTML_HEADER + STATS_BODY_TEMPLATE % { "table": table } + HTML_FOOTER)
+
+            for state in st.get_states():
+                logging.debug("Writing page for %s" % state)
+                list = "<ul>\n"
+                for package in st.get_packages_in_state(state):
+                    list += "<li>%s (%s)" % (html_protect(package["Package"]),
+                                             html_protect(package["Maintainer"]))
+                    if package.dependencies():
+                        list += "\n<ul>\n"
+                        for dep in package.dependencies():
+                            list += "<li>dependency %s is %s</li>\n" % \
+                                     (html_protect(dep), 
+                                      html_protect(st.state_by_name(dep)))
+                        list += "</ul>\n"
+                    list += "</li>\n"
+                list += "</ul>\n"
+                write_file(os.path.join(self._output_directory, 
+                                        "state-%s.html" % state),
+                                        HTML_HEADER + STATE_BODY_TEMPLATE % {
+                                        "state": html_protect(state),
+                                        "list": list
+                                        } + HTML_FOOTER)
+
+                os.chdir(oldcwd)
+
+
 def main():
+    setup_logging(logging.DEBUG, None)
+
     # For supporting multiple architectures and suites, we take a command-line
     # argument referring to a section in the reports configuration file.  For
     # backwards compatibility, if no argument is given, the "report" section is
     # assumed.
-    if len(sys.argv) == 2:
+    section_names = []
+    if len(sys.argv) > 1:
         section = sys.argv[1]
-        config = Config(section=section)
     else:
-        section = None
-        config = Config()
-    config.read(CONFIG_FILE)
+        report_config = Config(section="report")
+        report_config.read(CONFIG_FILE)
+        section_names = report_config["sections"].split()
 
-    setup_logging(logging.DEBUG, None)
-        
-    logging.debug("Finding log files")
-    dirs = ["pass", "fail", "bugged", "fixed", "reserved", "untestable"]
-    logs_by_dir = {}
-    for dir in dirs:
-        logs_by_dir[dir] = find_log_files(dir)
+    logging.debug("Writing index page")
+    write_file(report_config["index-page"]),
+        HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
 
-    logging.debug("Copying log files")
-    if not os.path.exists(config["output-dir"]):
-        os.makedirs(config["output-dir"])
-    copy_logs(logs_by_dir, config["output-dir"])
-
-    logging.debug("Removing old log files")
-    remove_old_logs(logs_by_dir, config["output-dir"])
-
-    logging.debug("Writing per-dir HTML pages")
-    print_by_dir(config, logs_by_dir)
-    
-    if os.path.exists(config["index-page"]):
-        logging.debug("Writing index page")
-        update_file(config["index-page"], 
-                    os.path.join(config["output-dir"], "index.html"))
-
-    logging.debug("Loading and parsing Packages file")
-    if 1:
-        logging.info("Fetching %s" % config["packages-url"])
-        packages_file = piupartslib.open_packages_url(config["packages-url"])
-    else:
-        packages_file = file("Packages")
-    st = piupartslib.packagesdb.PackagesDB()
-    st.read_packages_file(packages_file)
-    packages_file.close()
-
-    logging.debug("Writing package statistics page")    
-    table = "<table>\n"
-    for state in st.get_states():
-        dir_link = ""
-        for dir in dirs:
-          if state_by_dir[dir] == state:
-            dir_link += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
-        table += ("<tr><td><a href='state-%s.html'>%s</a></td>" +
-                  "<td>%d</td><td>%s</td></tr>\n") % \
-                    (html_protect(state), html_protect(state),
-                     len(st.get_packages_in_state(state)),
-                     dir_link)
-    table += "<tr> <th>Total</th> <th colspan=2>%d</th></tr>\n" % \
-                st.get_total_packages()
-    table += "</table>\n"
-    write_file(os.path.join(config["output-dir"], "stats.html"),
-               HTML_HEADER + STATS_BODY_TEMPLATE % { "table": table } + HTML_FOOTER)
-
-    for state in st.get_states():
-        logging.debug("Writing page for %s" % state)
-        list = "<ul>\n"
-        for package in st.get_packages_in_state(state):
-            list += "<li>%s (%s)" % (html_protect(package["Package"]),
-                                     html_protect(package["Maintainer"]))
-            if package.dependencies():
-                list += "\n<ul>\n"
-                for dep in package.dependencies():
-                    list += "<li>dependency %s is %s</li>\n" % \
-                            (html_protect(dep), 
-                             html_protect(st.state_by_name(dep)))
-                list += "</ul>\n"
-            list += "</li>\n"
-        list += "</ul>\n"
-        write_file(os.path.join(config["output-dir"], 
-                                "state-%s.html" % state),
-                   HTML_HEADER + STATE_BODY_TEMPLATE % {
-                       "state": html_protect(state),
-                       "list": list
-                   } + HTML_FOOTER)
+    sections = []
+    for section_name in section_names:
+        section = Section(section_name)
+        section.output()
+        sections.append(section)
 
 
 if __name__ == "__main__":

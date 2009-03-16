@@ -19,17 +19,19 @@ piuparts (0.36) UNRELEASED; urgency=low
     - assume packages in state "circular-dependency" are testable. True, they
       are not testable without the circular dependent package, so in case of 
       failure analysing will be harder.
+  * piuparts-slave.py:
+    - support looping trough multiple sections in slave.conf via new config value
+      "sections". Thanks to Frank Ploss for writing this patch with me and helping
+      me understand the code much better!
   * Re-add piuparts-reports.py which got removed/lost between 0.14 and 0.20 
     without changelog entry.
   * piuparts-reports.py: 
     - print "unknown-package" bold in state reports.
     - support sections in configuration file. 
+    - support looping trough multiple sections in report.conf via new config value
+      "sections". 
     - provide links to logfiles in statistics page.
     - improve look.
-  * piuparts-slave.py:
-    - support looping trough multiple sections in slave.conf via new config value
-      "sections". Thanks to Frank Ploss for writing this patch with me and helping
-      me understand the code much better!
   * control: depend on python (>>2.4) at least. 
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
