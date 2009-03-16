@@ -8,5 +8,5 @@
 # create reports every six hour
 #  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
 #
-42 4,10,16,22 * * * PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages nice python /org/piuparts.debian.org/share/piuparts/piuparts-report.py > ~piupartsm/reports.log
+0 6,18 * * * PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages nice python /org/piuparts.debian.org/share/piuparts/piuparts-report.py > ~piupartsm/reports.log
 
