@@ -36,12 +36,7 @@ done
 to start a new run and throw away all results:
 ----------------------------------------------
 piupartss@piatti:/org/piuparts.debian.org$ ./update-piuparts-setup
-piupartss@piatti:/org/piuparts.debian.org/slave-sid$ nice python ../../share/piuparts/piuparts-slave.py sid
-# this only tests sid
-
-to create reports:
-------------------
-to be written
+piupartss@piatti:/org/piuparts.debian.org/slave$ nice python ../../share/piuparts/piuparts-slave.py 
 
 
 March 2009
