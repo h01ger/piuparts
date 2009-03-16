@@ -409,7 +409,7 @@ class Section:
                         for dep in package.dependencies():
                             list += "<li>dependency %s is %s</li>\n" % \
                                      (html_protect(dep), 
-                                      html_protect(emphasize_reason(st.state_by_name(dep))))
+                                      emphasize_reason(html_protect(st.state_by_name(dep))))
                         list += "</ul>\n"
                     list += "</li>\n"
                 list += "</ul>\n"
