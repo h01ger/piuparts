@@ -56,7 +56,7 @@ def setup_logging(log_level, log_file_name):
 
 class Config(piupartslib.conf.Config):
 
-    def __init__(self, section="slave"):
+    def __init__(self, section):
         self.section = section
         piupartslib.conf.Config.__init__(self, section,
             {
@@ -218,11 +218,16 @@ class Section:
         self._config = Config(section=section)
         self._config.read(CONFIG_FILE)
         self._slave_directory = os.path.abspath(self._config["slave-directory"])
+        if not os.path.exists(self._slave_directory):
+            os.mkdir(self._slave_directory)
 
     def setup(self):
         if self._config["debug"] in ["yes", "true"]:
             self._logger = logging.getLogger()
             self._logger.setLevel(logging.DEBUG)
+
+        oldcwd = os.getcwd()
+        os.chdir(self._slave_directory)
         
         if not os.path.exists(self._config["chroot-tgz"]):
             create_chroot(self._config, self._config["chroot-tgz"], self._config["distro"])
@@ -247,13 +252,14 @@ class Section:
             dir = os.path.join(self._slave_directory, dir)
             if not os.path.exists(dir):
                 os.makedirs(dir)
+        os.chdir(oldcwd)
 
     def run(self):
         logging.info("-------------------------------------------")
         logging.info("Running section " + self._config.section)
         self._slave.connect_to_master()
 
-        oldcwd = os.path.getcwd()
+        oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
 
         for logdir in ["pass", "fail", "untestable"]:
