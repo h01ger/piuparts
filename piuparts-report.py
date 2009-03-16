@@ -422,7 +422,7 @@ def main():
         section_names = report_config["sections"].split()
 
     logging.debug("Writing index page")
-    write_file(report_config["index-page"]),
+    write_file(report_config["index-page"],
         HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
 
     sections = []
