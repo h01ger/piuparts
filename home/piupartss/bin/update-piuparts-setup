@@ -18,28 +18,38 @@ set -e
 # update slave home, mostly scripts
 #
 cd ~
+pwd
 svn up
+svn status
 
 #
-# update master home, mostly crontab to run piuparts-reports
+# update master home, that's mostly crontab to run piuparts-reports
 #
-cd ~piupartsm
-svn up
+# this is done as piupartsm user, as else ~piupartsm needs to be writeable
+# by the group, which prevents ssh logins...
+#
+sudo su - piupartsm -c "pwd ; svn up ; svn status"
 sudo su - piupartsm -c "crontab crontab"
 
 #
 # update configuration + htdocs
 #
 cd /org/piuparts.debian.org/etc
+pwd
 svn up
+svn status
 cd ../htdocs
+pwd
 svn up
+svn status
 
 #
 # update source
 #
 cd ../src
+pwd
 svn up
+svn status
 sudo make prefix=/org/piuparts.debian.org etcdir=/org/piuparts.debian.org/etc install 
 sudo rm ../etc/piuparts/ -Rf
 
