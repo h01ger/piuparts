@@ -358,7 +358,7 @@ def main():
                     (html_protect(state), html_protect(state),
                      len(st.get_packages_in_state(state)),
                      dirlink)
-    table += "<tr> <th>Total</th> <th>%d</th></tr>\n" % \
+    table += "<tr> <th>Total</th> <th colspan=2>%d</th></tr>\n" % \
                 st.get_total_packages()
     table += "</table>\n"
     write_file(os.path.join(config["output-dir"], "stats.html"),
