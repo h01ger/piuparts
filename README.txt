@@ -4,7 +4,6 @@ Notes about the installation
 todo
 ----
 - use local mirror
-- turn off debugging
 - look at the irssi_away script to see how to monitor screen sessions, to notify when piuparts is hanging
 - document/do: /var/www needs to be populated, /etc/apache2/ too
 - document users needed
