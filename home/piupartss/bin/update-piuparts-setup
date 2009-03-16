@@ -1,0 +1,21 @@
+#!/bin/sh -x
+
+#
+#  update piuparts setup on piatti.debian.org
+#
+#   (c) 2006 Holger Levsen         holger@layer-acht.org
+#   GPL2 licenced
+#
+
+set -e
+
+cd /org/piuparts.debian.org/etc
+svn up
+cd ../htdocs
+svn up
+cd ../src
+svn up
+sudo make prefix=/org/piuparts.debian.org etcdir=/org/piuparts.debian.org/etc install 
+sudo rm ../etc/piuparts/ -Rf
+
+cd ../slave-sid

@@ -35,10 +35,8 @@ done
 
 to start a new run and throw away all results:
 ----------------------------------------------
-piupartss@piatti:/org/piuparts.debian.org$ sudo rm master slave-sid slave-squeeze slave-lenny2squeeze -Rf
-piupartss@piatti:/org/piuparts.debian.org$ sudo mkdir master slave-sid slave-squeeze slave-lenny2squeeze
-piupartss@piatti:/org/piuparts.debian.org$ chmod g+w -R master slave-sid slave-squeeze slave-lenny2squeeze
-piupartss@piatti:/org/piuparts.debian.org$ cd slave-sid && nice python ../../share/piuparts/piuparts-slave.py sid
+piupartss@piatti:/org/piuparts.debian.org$ ./update-piuparts-setup
+piupartss@piatti:/org/piuparts.debian.org/slave-sid$ nice python ../../share/piuparts/piuparts-slave.py sid
 # this only tests sid
 
 to create reports:
