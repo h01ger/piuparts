@@ -130,9 +130,9 @@ STATE_BODY_TEMPLATE = """
 """
 
 
-STATS_BODY_TEMPLATE = """
+SECTION_STATS_BODY_TEMPLATE = """
 <div id="main">
-<h1>Statistics of packages</h1>
+<h1>Statistics of packages per section</h1>
 <p>This page contains some statistics about packages piuparts is looking
 at.</p>
 %(table)s
@@ -150,7 +150,7 @@ INDEX_BODY_TEMPLATE = """
 
  <p>
   The <a href="http://wiki.debian.org/piuparts">piuparts</a> setup is currently
-  still being polished. Better reports and stats as well as PTS integration is
+  still being polished. Better reports and statistics as well as PTS integration is
    planned. Join #debian-qa if you want to help.
  </p>
 
@@ -363,7 +363,7 @@ class Section:
             st.read_packages_file(packages_file)
             packages_file.close()
 
-            logging.debug("Writing package statistics page")    
+            logging.debug("Writing section statistics page")    
             table = "<table>\n"
             for state in st.get_states():
                 dir_link = ""
@@ -378,8 +378,8 @@ class Section:
             table += "<tr> <th>Total</th> <th colspan=2>%d</th></tr>\n" % \
                       st.get_total_packages()
             table += "</table>\n"
-            write_file(os.path.join(self._output_directory, "stats.html"),
-                       HTML_HEADER + STATS_BODY_TEMPLATE % { "table": table } + HTML_FOOTER)
+            write_file(os.path.join(self._output_directory, "index.html"),
+                       HTML_HEADER + SECTION_STATS_BODY_TEMPLATE % { "table": table } + HTML_FOOTER)
 
             for state in st.get_states():
                 logging.debug("Writing page for %s" % state)
