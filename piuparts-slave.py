@@ -273,30 +273,29 @@ class Section:
         if not self._slave.get_reserved():
             logging.debug("Nothing to do, sleeping for a bit")
             time.sleep(int(self._config["idle-sleep"]))
-            continue
+        else:
+            packages_files = {}
+            distros = [self._config["distro"]] + self._config["upgrade-test-distros"].split()
+            for distro in distros:
+                if distro not in packages_files:
+                    packages_files[distro] = fetch_packages_file(self._config, distro)
+            packages_file = packages_files[self._config["distro"]]
 
-        packages_files = {}
-        distros = [self._config["distro"]] + self._config["upgrade-test-distros"].split()
-        for distro in distros:
-            if distro not in packages_files:
-                packages_files[distro] = fetch_packages_file(self._config, distro)
-        packages_file = packages_files[self._config["distro"]]
-
-        for package_name, version in self._slave.get_reserved():
-            if package_name in packages_file:
-                package = packages_file[package_name]
-                if version == package["Version"]:
-                    test_package(self._config, package, packages_files)
+            for package_name, version in self._slave.get_reserved():
+                if package_name in packages_file:
+                    package = packages_file[package_name]
+                    if version == package["Version"]:
+                        test_package(self._config, package, packages_files)
+                    else:
+                        create_file(os.path.join("untestable", 
+                                    log_name(package_name, version)),
+                                    "%s %s not found" % (package_name, version))
                 else:
                     create_file(os.path.join("untestable", 
-                                             log_name(package_name, version)),
-                                "%s %s not found" % (package_name, version))
-            else:
-                create_file(os.path.join("untestable", 
-                                         log_name(package_name, version)),
-                            "Package %s not found" % package_name)
-            self._slave.forget_reserved(package_name, version)
-        os.chdir(oldcwd)
+                                log_name(package_name, version)),
+                                "Package %s not found" % package_name)
+                self._slave.forget_reserved(package_name, version)
+            os.chdir(oldcwd)
 
 
 def log_name(package, version):
@@ -418,7 +417,7 @@ def main():
     if len(sys.argv) > 1:
         section_names = sys.argv[1:]
     else:
-        slave_config = Config(section="slave"))
+        slave_config = Config(section="slave")
         slave_config.read(CONFIG_FILE)
         section_names = slave_config["sections"].split()
 
