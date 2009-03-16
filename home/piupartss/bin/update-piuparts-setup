@@ -25,7 +25,7 @@ svn up
 #
 cd ~piupartsm
 svn up
-sudo -u piupartsm crontab ~piupartsm/crontab
+sudo su - piupartsm -c "crontab crontab"
 
 #
 # update configuration + htdocs
