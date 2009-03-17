@@ -25,7 +25,10 @@ nice for 0.36
 for 0.37 and on
 
 - upgrade-reports should have a list of available arch and list packages 
-  only available on untested archs in a new state categorory.
+  only available on untested archs in a new state "(depends-)not-available-on-tested-archs"
+
+- master should (per default) only schedule packages which are not available 
+  on the master arch to slaves of different archs -> "schedule-evenly-to-slaves = no"
 
 - piuparts can't currently test upgrades of required packages. (Because they
   cannot be removed, it assumes these are untestable, which is only true for
@@ -36,8 +39,6 @@ for 0.37 and on
   later...
 
 - support for extra-packages-url (for volatile, security, etc)
-
-- make it possible to configure additional sources lines
 
 - piuparts can't currently test postfix, since installing postfix removes
   exim and removing postfix would require re-installing exim, and that
