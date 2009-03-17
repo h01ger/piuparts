@@ -20,7 +20,6 @@ nice for 0.36
 
 - improve the config parser so we dont need redundant config entries...
 - merge conf-files into piuparts-sm.conf
-- automatically add ~$date to version string if distribution=UNRELASED
 
 for 0.37 and on
 
