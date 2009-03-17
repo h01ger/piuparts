@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh 
 
 #
 #  update piuparts setup on piatti.debian.org
@@ -17,7 +17,10 @@ set -e
 #
 # update slave home, mostly scripts
 #
-cd ~
+cd 
+if [ ! -d .svn ] ; then
+	svn co svn://svn.debian.org/svn/piuparts/piatti/home/piupartss .
+fi
 pwd
 svn up
 svn status
@@ -28,28 +31,41 @@ svn status
 # this is done as piupartsm user, as else ~piupartsm needs to be writeable
 # by the group, which prevents ssh logins...
 #
+cd ~piupartsm
+if [ ! -d .svn ] ; then
+	sudo su - piupartsm -c "cd ; svn co svn://svn.debian.org/svn/piuparts/piatti/home/piupartsm ."
+fi
 sudo su - piupartsm -c "pwd ; svn up ; svn status"
 sudo su - piupartsm -c "crontab crontab"
 
 #
-# update configuration + htdocs
+# update /org/piuparts.debian.org
 #
-cd /org/piuparts.debian.org/etc
+if [ ! -d /org/piuparts.debian.org/.svn ] ; then
+        sudo mkdir -p /org/piuparts.debian.org/
+	cd /org/piuparts.debian.org/
+	svn co svn://svn.debian.org/svn/piuparts/piatti/org/piuparts.debian.org/ .
+fi
+cd /org/piuparts.debian.org/
 pwd
 svn up
 svn status
-cd ../htdocs
-pwd
-svn up
-svn status
+mkdir -p master slave
+chown piupartss.piuparts slave
+chown piupartsm.piuparts master
+chmod 755 master slave
 
 #
 # update source
 #
-cd ../src
+if [ ! -d /org/piuparts.debian.org/src/.svn ] ; then
+        sudo mkdir -p /org/piuparts.debian.org/src/
+	cd  /org/piuparts.debian.org/src/
+	svn co svn://svn.debian.org/svn/piuparts/trunk .
+fi
+cd  /org/piuparts.debian.org/src/
 pwd
 svn up
 svn status
-sudo make prefix=/org/piuparts.debian.org etcdir=/org/piuparts.debian.org/etc install 
-sudo rm ../etc/piuparts/ -Rf
+sudo make prefix=/org/piuparts.debian.org install-py 
 
