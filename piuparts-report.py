@@ -155,7 +155,7 @@ INDEX_BODY_TEMPLATE = """
  </p>
 
  <p>
-  <b>Distributions tested:</b>:
+  <b>Distributions tested:</b>
   <ul>
    <li><a href="/sid/">sid</a></li>
    <li><a href="/squeeze/">squeeze</a></li>
