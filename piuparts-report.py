@@ -244,7 +244,7 @@ def html_protect(str):
 
 def emphasize_reason(str):
     if str == "unknown-package" or str == "failed-testing":
-      str = "<b>" + str + "</b>"
+      str = "<em" + str + "</em>"
     return str
 
 
