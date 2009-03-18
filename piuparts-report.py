@@ -99,7 +99,9 @@ HTML_FOOTER = """
 <hr>
   <div id="footer">
   <div>
-   piuparts was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by <a href="mailto:holger@layer-acht.org">Holger Levsen</a> and others. GPL2 licenced.
+   piuparts was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by 
+   <a href="mailto:holger@debian.org">Holger Levsen</a>,  
+   <a href="mailto:luk@debian.org">Luk Claes</a> and others. GPL2 licenced.
   </div>
   <div>
    <a href="http://validator.w3.org/check?uri=referer">
@@ -283,7 +285,7 @@ def write_log_list_page(filename, title, preface, logs):
                 "loglist": "".join(lines),
                 "count": len(logs),
                 "versioncount": version_count,
-                "time": time.strftime("%Y-%m-%d %H:%M:%S %z"),
+                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
             } + HTML_FOOTER)
     f.close()
 
@@ -401,7 +403,7 @@ class Section:
             write_file(os.path.join(self._output_directory, "index.html"),
                        HTML_HEADER + SECTION_STATS_BODY_TEMPLATE % {
                                                                     "packages-url": html_protect(self._config["packages-url"]), 
-                                                                    "time": time.strftime("%Y-%m-%d %H:%M:%S %z"),
+                                                                    "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                                                     "table": table,
                                                                     } + HTML_FOOTER)
 
@@ -424,7 +426,7 @@ class Section:
                                         "state-%s.html" % state),
                                         HTML_HEADER + STATE_BODY_TEMPLATE % {
                                         "state": html_protect(state),
-                                        "time": time.strftime("%Y-%m-%d %H:%M:%S %z"),
+                                        "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                         "list": list
                                         } + HTML_FOOTER)
 
@@ -456,7 +458,7 @@ def main():
     write_file(report_config["index-page"],
         HTML_HEADER + INDEX_BODY_TEMPLATE % 
             {
-                "time": time.strftime("%Y-%m-%d %H:%M:%S %z"),
+                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
             } + HTML_FOOTER)
 
 if __name__ == "__main__":

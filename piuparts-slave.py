@@ -325,7 +325,7 @@ def test_package(config, package, packages_files):
     logging.debug("Opening log file %s" % output_name)
     new_name = os.path.join("new", output_name)
     output = file(new_name, "w")
-    output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S UTC\n", 
+    output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n", 
                                time.gmtime()))
     output.write("\n")
     package.dump(output)
@@ -364,7 +364,7 @@ def test_package(config, package, packages_files):
             status = 0
 
     output.write("\n")
-    output.write(time.strftime("End: %Y-%m-%d %H:%M:%S UTC\n", 
+    output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n", 
                                time.gmtime()))
     output.close()
     if not os.WIFEXITED(status) or os.WEXITSTATUS(status) != 0:

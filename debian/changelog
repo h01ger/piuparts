@@ -34,6 +34,7 @@ piuparts (0.36) UNRELEASED; urgency=low
       value "sections". 
     - provide links to logfiles in statistics page.
     - improve look.
+  * Always use alphabetic time zone abbreviation in timestamps.
   * Makefile: add "~$date" to versionstring if building an unreleased version.
   * debian/control: depend on python (>>2.4), make dependency to python-debian
     unversioned and add build-dependencies for debhelper and asciidoc.
