@@ -43,6 +43,8 @@ sudo su - piupartsm -c "crontab crontab"
 #
 if [ ! -d /org/piuparts.debian.org/.svn ] ; then
         sudo mkdir -p /org/piuparts.debian.org/
+	sudo chown piupartss.piuparts /org/piuparts.debian.org/
+	sudo chmod 775 /org/piuparts.debian.org/
 	cd /org/piuparts.debian.org/
 	svn co svn://svn.debian.org/svn/piuparts/piatti/org/piuparts.debian.org/ .
 fi
@@ -51,8 +53,8 @@ pwd
 svn up
 svn status
 mkdir -p master slave
-chown piupartss.piuparts slave
-chown piupartsm.piuparts master
+sudo chown piupartss.piuparts slave
+sudo chown piupartsm.piuparts master
 chmod 755 master slave
 
 #
@@ -61,6 +63,8 @@ chmod 755 master slave
 if [ ! -d /org/piuparts.debian.org/src/.svn ] ; then
         sudo mkdir -p /org/piuparts.debian.org/src/
 	cd  /org/piuparts.debian.org/src/
+        sudo chown piupartss.piuparts /org/piuparts.debian.org/src
+        sudo chmod 755 /org/piuparts.debian.org/src
 	svn co svn://svn.debian.org/svn/piuparts/trunk .
 fi
 cd  /org/piuparts.debian.org/src/
