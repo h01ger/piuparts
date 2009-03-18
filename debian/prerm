@@ -1,3 +1,0 @@
-#! /bin/sh
-set -e
-update-python-modules -c -i piuparts
