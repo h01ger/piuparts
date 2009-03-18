@@ -55,7 +55,7 @@ svn status
 mkdir -p master slave
 sudo chown piupartss.piuparts slave
 sudo chown piupartsm.piuparts master
-chmod 755 master slave
+sudo chmod 755 master slave
 
 #
 # update source
