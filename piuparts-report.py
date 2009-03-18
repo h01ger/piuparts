@@ -96,13 +96,20 @@ HTML_HEADER = """
 
 
 HTML_FOOTER = """
-<a href="http://validator.w3.org/check?uri=referer">
+<hr>
+  <div id="footer">
+  <div>
+   piuparts was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by <a href="mailto:holger@layer-acht.org">Holger Levsen</a> and others. GPL2 licenced.
+  </div>
+  <div>
+   <a href="http://validator.w3.org/check?uri=referer">
     <img border="0" src="/images/valid-html401.png" alt="Valid HTML 4.01!" height="31" width="88">
-</a>
-<a href="http://jigsaw.w3.org/css-validator/check/referer">
+   </a>
+   <a href="http://jigsaw.w3.org/css-validator/check/referer">
     <img border="0" src="/images/vcss.png" alt="Valid CSS!"  height="31" width="88">
-</a>
-    
+   </a>
+  </div>
+ </div>
 </body>
 </html>
 """
@@ -113,7 +120,7 @@ LOG_LIST_BODY_TEMPLATE = """
 <h1>%(title)s</h1>
 <p>%(preface)s</p>
 <p>The list has %(count)d packages, with %(versioncount)s total versions.
-This page was generated: %(time)s.</p>
+</p><p>This page was generated: %(time)s.</p>
 <ul>
 %(loglist)s
 </ul>
@@ -124,7 +131,7 @@ This page was generated: %(time)s.</p>
 STATE_BODY_TEMPLATE = """
 <div id="main">
 <h1>Packages in state "%(state)s"</h1>
-<p>This page contains a list of packages in state "%(state)s". Last updated: %(time)s.</p>
+<p>This page contains a list of packages in state "%(state)s".</p><p>Last updated: %(time)s.</p>
 %(list)s
 </div>
 """
@@ -133,8 +140,8 @@ STATE_BODY_TEMPLATE = """
 SECTION_STATS_BODY_TEMPLATE = """
 <div id="main">
 <h1>Statistics of packages per section</h1>
-<p>This page contains some statistics about packages from <pre>%(packages-url)s</pre>piuparts is looking
-at. Last updated: %(time)s.</p>
+<p>This page contains some statistics about packages from <code>%(packages-url)s</code> piuparts is looking
+at.</p><p>Last updated: %(time)s.</p>
 %(table)s
 </div>
 """
