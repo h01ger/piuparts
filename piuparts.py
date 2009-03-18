@@ -130,6 +130,7 @@ class Settings:
         self.scriptsdir = None
         self.keep_tmpdir = False
         self.single_changes_list = False
+        # limit output of logfiles to the last megabyte:
         self.max_command_output_size = 1024 * 1024
         self.args_are_package_files = True
         self.debian_mirrors = []
@@ -181,6 +182,8 @@ class Settings:
             "/etc/passwd",
             "/etc/passwd-",
             "/etc/printcap",
+            "/etc/shadow",
+            "/etc/shadow-",
             "/etc/shells",
             "/etc/skel/.zshrc",
             "/home/ftp",

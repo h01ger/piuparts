@@ -26,6 +26,8 @@ for 0.37 and on
 - upgrade-reports should have a list of available arch and list packages 
   only available on untested archs in a new state "(depends-)not-available-on-tested-archs"
 
+- update-reports should generate source centered overview pages for packages
+
 - master should (per default) only schedule packages which are not available 
   on the master arch to slaves of different archs -> "schedule-evenly-to-slaves = no"
 
