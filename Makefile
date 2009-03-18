@@ -16,7 +16,7 @@ endif
 
 ignore = -I fdmount -N
 
-all: piuparts.1 
+all: piuparts.1 install-conf install-py
 
 piuparts.1: piuparts.docbook
 	docbook2x-man --encoding=utf-8 piuparts.docbook
@@ -49,7 +49,7 @@ install-py:
 	install -m 0644 piupartslib/*.py $(site24)/piupartslib
 	install -m 0644 piupartslib/*.py $(site25)/piupartslib
 
-install: install-py install-conf
+install: all
 
 check:
 	python piuparts.py unittest

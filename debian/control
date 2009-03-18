@@ -10,8 +10,8 @@ Uploaders: Lars Wirzenius <liw@iki.fi>,
 Section: devel
 Priority: extra
 Standards-Version: 3.8.0
-Build-Depends-Indep: docbook2x, python-support, docbook-xml
-XS-Python-Version: all
+Build-Depends: debhelper (>=5.0.42)
+Build-Depends-Indep: docbook2x, python-support, docbook-xml, asciidoc
 Vcs-Svn: svn://svn.debian.org/svn/piuparts/trunk/
 Vcs-Browser: http://svn.debian.org/wsvn/piuparts/trunk/
 Homepage: http://wiki.debian.org/piuparts
@@ -19,7 +19,7 @@ Homepage: http://wiki.debian.org/piuparts
 Package: piuparts
 Architecture: all
 Depends: apt, python (>> 2.4), debootstrap (>= 0.3.3), lsof, lsb-release, 
-    python-debian (>= 0.1.4)
+    python-debian
 Description: .deb package installation, upgrading, and removal testing tool
  piuparts tests that .deb packages (as used by Debian) handle
  installation, upgrading, and removal correctly. It does this by
@@ -30,4 +30,3 @@ Description: .deb package installation, upgrading, and removal testing tool
  . 
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.
-XB-Python-Version: all

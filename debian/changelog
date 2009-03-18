@@ -34,8 +34,10 @@ piuparts (0.36) UNRELEASED; urgency=low
       value "sections". 
     - provide links to logfiles in statistics page.
     - improve look.
-  * control: depend on python (>>2.4) at least. 
   * Makefile: add "~$date" to versionstring if building an unreleased version.
+  * debian/control: depend on python (>>2.4), make dependency to python-debian
+    unversioned and add one for debhelper.
+  * Rewrite debian/rules using debhelper.
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
 
