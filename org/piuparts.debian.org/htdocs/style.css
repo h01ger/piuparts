@@ -4,6 +4,13 @@
         vertical-align: top;
 }
 
+hr {
+  width: 95%; 
+  color:#d70751; 
+  background-color:#d70751; 
+  height:3px;
+}
+
 p.note {
  font-family: sans-serif;
  color: #900;
@@ -25,7 +32,7 @@ p.text {
 body {
  font-family: Arial, Helvetica, sans-serif;
  color: #000000;
- background-color: #FFF;
+ background-color: #ddd;
 }
 
 table.reddy
@@ -45,9 +52,9 @@ td.reddy {
  font-family: serif;
  font-size: 24px;
  font-weight: normal;
- background-color: #DF0451;
+ background-color: #d70751;
  color: #FFFF00;
- border: 0px solid #DF0451;
+ border: 0px solid #d70751;
  vertical-align: middle;
  text-align: center;
  padding: 0px;
@@ -181,6 +188,7 @@ a:hover{
  text-decoration: underline;
 }
 
-.footer {
+#footer {
  font-size: 90%;
+ text-align: center;
 }
