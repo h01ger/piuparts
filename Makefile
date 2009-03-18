@@ -16,10 +16,13 @@ endif
 
 ignore = -I fdmount -N
 
-all: piuparts.1 install-conf install-py
+all: piuparts-doc install-conf install-py
 
-piuparts.1: piuparts.docbook
+piuparts-doc:
 	docbook2x-man --encoding=utf-8 piuparts.docbook
+	asciidoc -a toc -a toclevels=3 README.txt
+	a2x -a toc -a toclevels=3 -f pdf README.txt
+	rm README.xml
 
 install-conf:
 	install -d $(etcdir)/piuparts
@@ -56,4 +59,4 @@ check:
 	python unittests.py
 
 clean:
-	rm -rf piuparts.1 piuparts
+	rm -rf piuparts.1 piuparts README.pdf README.html 

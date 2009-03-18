@@ -36,8 +36,10 @@ piuparts (0.36) UNRELEASED; urgency=low
     - improve look.
   * Makefile: add "~$date" to versionstring if building an unreleased version.
   * debian/control: depend on python (>>2.4), make dependency to python-debian
-    unversioned and add one for debhelper.
+    unversioned and add build-dependencies for debhelper and asciidoc.
   * Rewrite debian/rules using debhelper.
+  * Merge README, how-to-use-piuparts.txt and custom-scripts.txt into 
+    README.txt and build pdf and html versions of it.
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
 

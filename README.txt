@@ -1,11 +1,12 @@
 piuparts README
-===============
+---------------
 
-                Lars Wirzenius <liw@iki.fi>
+Author: Lars Wirzenius 
+Email: <liw@iki.fi>
 
 
 Introduction
-------------
+~~~~~~~~~~~~
 
                 This is a tool for testing that .deb packages can be
                 installed, upgraded, and removed without problems. The
@@ -25,7 +26,7 @@ Introduction
                 
 
 Distrubuted testing
--------------------
+~~~~~~~~~~~~~~~~~~~
 
                 As part of the quality assurance effort of Debian, I run
                 piuparts on the Debian package archive. This requires a
@@ -81,7 +82,7 @@ Distrubuted testing
 
 
 Distributed piuparts testing protocol
---------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 
                 The slave machine and the piuparts-master program
                 communicate using a simplistic line based protocol. Ssh
@@ -186,7 +187,7 @@ Distributed piuparts testing protocol
 
 
 Master configuration file
--------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
                 piuparts-master uses the configuration file
                 /etc/piuparts/piuparts-master.conf. The syntax is defined
@@ -229,7 +230,7 @@ Master configuration file
 
 
 Slave configuration file
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
                 piuparts-slave uses the configuration file
                 /etc/piuparts/piuparts-slave.conf. It has the same
@@ -318,3 +319,153 @@ Slave configuration file
                 Some of the configuration items are not required, but it
                 is best to set them all to be sure what the configuration
                 actually is.
+
+How to use piuparts in 5 minutes
+--------------------------------
+
+* Basic Usage
+~~~~~~~~~~~~~
+
+Testing your packages with piuparts is as easy as typing at the console prompt:
+
+    # piuparts sm_0.6-1_i386.deb
+
+Note that in order to work, piuparts has to be executed as user root, so you 
+need to be logged as root or use sudo.
+
+This will create a sid chroot with debootstrap, where it'll test your package.
+
+If you want to test your package in another release, for example, lenny, you can
+do so with:
+
+    # piuparts sm_0.6-1_i386.deb -d lenny
+
+By default, this will read the first mirror from your /etc/apt/sources.list 
+file. If you want to specify a different mirror you can do it with the option 
+-m:
+
+    # piuparts sm_0.6-1_i386.deb -m http://ftp.de.debian.org/debian
+
+
+* Some tips
+~~~~~~~~~~~
+
+If you use piuparts on a regular basis, waiting for it to create a chroot every 
+time takes too much time, even if you are using a local mirror or a caching tool 
+such as approx. 
+
+Piuparts has the option of using a tarball as the contents of the initial chroot, 
+instead of building a new one with debootstrap. A easy way to use this option 
+is use a tarball created with pbuilder. If you are not a pbuilder user, you can 
+create this tarball with the command (again, as root):
+
+    # puilder create
+ 
+then you only have to remember to update this tarball with:
+
+    #  pbuilder update.
+
+To run piuparts using this tarball:
+
+    # piuparts -p sm_0.6-1_i386.deb
+
+If you want to use your own pre-made tarball:
+
+    # piuparts --basetgz=/path/to/my/tarball.tgz sm_0.6-1_i386.deb
+
+Piuparts also has the option of using a tarball as the contents of the initial
+chroot, instead of building a new one with pbuilder. You can save a tarball
+for later use with the -s (--save) piuparts option. Some people like this, 
+others prefer to only have to maintain one tarball. Read the piuparts manpage 
+about the -p, -b and -s options
+
+
+* Piuparts tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, piuparts does two tests:
+1 - Installation and purging test.
+2 - Installation, upgrade and purging tests.
+
+The first test installs the package in a minimal chroot, removes it and purges
+it. The second test installs the current version in the archive of the given 
+packages, then upgrades to the new version (deb files given to piuparts in the
+input), removes and purges.
+
+If you only want to perfom the first test, you can use the option: 
+--no-upgrade-test  
+
+
+* Analyzing piuparts results
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When piuparts finishes all the tests satisfactorily, you will get these lines
+as final output:
+
+    0m39.5s INFO: PASS: All tests.
+    0m39.5s INFO: piuparts run ends.
+
+Anyway, it is a good idea to read the whole log in order to discover possible 
+problems that did not stop the piuparts execution.
+
+If you do not get those lines, piuparts has failed during a test. The latest 
+lines should give you a pointer to the problem with your package.
+
+Custom scripts with piuparts
+------------------------------
+
+You can specify several custom scripts to be run inside piuparts.
+You have to store them in a directory and give it as argument to
+piuparts: --scriptsdir=/dir/with/the/scripts
+
+The scripts can be run:
+
+    Before *installing* your package. The name of the script must
+    start with:
+    pre_install_
+
+    After *installing* your package and its deps. In the case of the 
+    upgrade test, it is after install and upgrade. The name of the 
+    script must start with:
+    post_install_
+
+    After *removing* your package, The name of the script must start with:
+    post_remove_
+
+    After *purging* your package, The name of the script must start with:
+    post_purge_
+
+    Before *upgrading* your package, once the current version in the archive
+    has been installed (this is done in the second test, "Installation, 
+    upgrade and purging test"). The name of the script must start with:
+    pre_upgrade_
+
+    Before upgrading the chroot to another distro and after upgrading:
+    pre_distupgrade_
+    post_distupgrade_
+
+You can run several scripts in every step, they are run in alphabetical 
+order.
+
+The scripts are run *inside* the piuparts chroot and only can be shell 
+scripts, if you want to run Python or Perl scripts, you have to install 
+Python or Perl. The chroot where piuparts is run is minized and does not 
+include Perl.
+
+
+It would be interesting to declare some piuparts variables like the name
+of the current testing packages, and be able to use this variable in the 
+custom scripts. But this option is not available yet.
+
+Example script:
+
+'$cat post_install_number.sh'
+----
+#!/bin/bash
+
+number=`dpkg -l | wc -l`
+echo "There are $number packages installed."
+exit 0
+----
+
+
