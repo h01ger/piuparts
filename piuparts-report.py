@@ -47,7 +47,6 @@ HTML_HEADER = """
  </head>
  <body>
  <div id="header">
-  <div align="left">
    <h1 class="header">
     <a href="http://www.debian.org/">
      <img src="http://piuparts.debian.org/images/openlogo-nd-50.png" border="0" hspace="0" vspace="0" alt=""></a>
@@ -55,7 +54,6 @@ HTML_HEADER = """
      <img src="http://piuparts.debian.org/images/debian.png" border="0" hspace="0" vspace="0" alt="Debian Project"></a>
     Quality Assurance
    </h1>
-  </div>
   <br>
   <table class="reddy" width="97%">
    <tr>
