@@ -47,8 +47,8 @@ HTML_HEADER = """
  </head>
  <body>
  <div id="header">
-  <div align="center">
-   <h1>
+  <div align="left">
+   <h1 class="header">
     <a href="http://www.debian.org/">
      <img src="http://piuparts.debian.org/images/openlogo-nd-50.png" border="0" hspace="0" vspace="0" alt=""></a>
     <a href="http://www.debian.org/">
@@ -57,7 +57,7 @@ HTML_HEADER = """
    </h1>
   </div>
   <br>
-  <table class="reddy" width="100%">
+  <table class="reddy" width="97%">
    <tr>
     <td class="reddy">
      <img src="http://piuparts.debian.org/images/red-upperleft.png" align="left" border="0" hspace="0" vspace="0"
@@ -96,14 +96,14 @@ HTML_HEADER = """
       alt="" width="15" height="16"></td>
    </tr>
   </table>
-  <hr>
  </div>
+ <hr>
 """
 
 
 HTML_FOOTER = """
-<hr>
-  <div id="footer">
+ <hr>
+ <div id="footer">
   <div>
    piuparts was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by 
    <a href="mailto:holger@debian.org">Holger Levsen</a>,  
