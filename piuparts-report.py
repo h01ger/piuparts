@@ -41,7 +41,7 @@ CONFIG_FILE = "piuparts-report.conf"
 HTML_HEADER = """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
  <html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>piatti.debian.org / piatti.cs.helsinki.fi</title>
+  <title>piuparts.debian.org / piuparts.cs.helsinki.fi</title>
   <link type="text/css" rel="stylesheet" href="/style.css">
   <link rel="shortcut icon" href="/favicon.ico">
  </head>
@@ -73,33 +73,74 @@ HTML_HEADER = """
      <img src="http://piuparts.debian.org/images/red-lowerright.png" align="right" border="0" hspace="0" vspace="0"
       alt="" width="15" height="16"></td>
    </tr>
-   <tr>
-    <td class="reddy">
-     <img src="http://piuparts.debian.org/images/red-upperleft.png" align="left" border="0" hspace="0" vspace="0"
-      alt="" width="15" height="16"></td>
-    <td rowspan="2" class="reddy">
-      <a href="http://wiki.debian.org/piuparts">About</a> - <a href="http://wiki.debian.org/piuparts/FAQ">FAQ</a> -
-      reports: <a href="/sid/">sid</a> - <a href="/squeeze/">squeeze</a> - <a href="/lenny2squeeze/">lenny2squeeze</a>
-    </td>
-    <td class="reddy">
-     <img src="http://piuparts.debian.org/images/red-upperright.png" align="right" border="0" hspace="0" vspace="0"
-     alt="" width="16" height="16"></td>
-   </tr>
-   <tr>
-    <td class="reddy">
-     <img src="http://piuparts.debian.org/images/red-lowerleft.png" align="left" border="0" hspace="0" vspace="0"
-      alt="" width="16" height="16"></td>
-    <td class="reddy">
-     <img src="http://piuparts.debian.org/images/red-lowerright.png" align="right" border="0" hspace="0" vspace="0"
-      alt="" width="15" height="16"></td>
-   </tr>
   </table>
  </div>
  <hr>
+<div id="main">
+<table class="containertable">
+ <tr class="containerrow" valign="top">
+  <td class="containercell">
+   <table class="lefttable">
+    <tr class="titlerow">
+     <td class="titlecell">
+      General information
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="/">Overview</a>
+     </td>
+    </tr>
+      <td class="contentcell">
+      <a href="http://wiki.debian.org/piuparts">About</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="http://wiki.debian.org/piuparts/FAQ">FAQ</a> 
+     </td>
+     </tr>     
+    <tr class="titlerow">
+     <td class="titlecell">
+      Available reports
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="/sid/">sid</a> 
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="/squeeze/">squeeze</a> 
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="/lenny2squeeze/">lenny2squeeze</a>
+     </td>
+    </tr>
+    <tr class="titlerow">
+     <td class="titlecell">
+      Last update
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      %(time)s
+     </td>
+    </tr>
+   </table>
+  </td>
+  <td class="containercell">
 """
 
 
 HTML_FOOTER = """
+  </td>
+ </tr>
+</table> 
+</div>
  <hr>
  <div id="footer">
   <div>
@@ -122,62 +163,113 @@ HTML_FOOTER = """
 
 
 LOG_LIST_BODY_TEMPLATE = """
-<div id="main">
-<h1>%(title)s</h1>
-<p>%(preface)s</p>
-<p>The list has %(count)d packages, with %(versioncount)s total versions.
-</p><p>This page was generated: %(time)s.</p>
-<ul>
-%(loglist)s
-</ul>
-</div>
+   <table class="righttable">
+    <tr class="titlerow">
+     <td class="titlecell">
+      %(title)s
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      %(preface)s
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      The list has %(count)d packages, with %(versioncount)s total versions.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <ul>
+       %(loglist)s
+      </ul>
+     </td>
+    </tr>
+   </table>
 """
 
 
 STATE_BODY_TEMPLATE = """
-<div id="main">
-<h1>Packages in state "%(state)s"</h1>
-<p>This page contains a list of packages in state "%(state)s".</p><p>Last updated: %(time)s.</p>
-%(list)s
-</div>
+   <table class="righttable">
+    <tr class="titlerow">
+     <td class="titlecell">
+      Packages in state "%(state)s"
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <ul>
+       %(list)s
+      </ul>
+     </td>
+    </tr>
+   </table>
 """
 
 
 SECTION_STATS_BODY_TEMPLATE = """
-<div id="main">
-<h1>Statistics of packages per section</h1>
-<p>This page contains some statistics about packages from <code>%(packages-url)s</code> piuparts is looking
-at.</p><p>Last updated: %(time)s.</p>
-%(table)s
-</div>
+   <table class="righttable">
+    <tr class="titlerow">
+     <td class="titlecell" colspan="3">
+      Statistics of packages per section
+     </td>
+    </tr>
+    %(tablerows)s
+    <tr class="titlerow">
+     <td class="titlecell" colspan="3">
+      URL to packages file(s)
+     </td>
+    </tr>
+     <tr class="normalrow">
+     <td class="contentcell2" colspan="3">
+      <code>%(packages-url)s</code>
+     </td>
+    </tr>
+   </table>
 """
 
 
 INDEX_BODY_TEMPLATE = """
-<div id="main">
- <p>This machine is
-  <a href="http://db.debian.org/machines.cgi?host=piatti">piatti.debian.org</a>,
-  generously donated by HP and hosted at piuparts.cs.helsinki.fi by the
-  University of Helsinki, CS department.
- </p>
-
- <p>
-  The <a href="http://wiki.debian.org/piuparts">piuparts</a> setup is currently
-  still being polished. Better reports and statistics as well as PTS integration is
-   planned. Join #debian-qa if you want to help.
- </p>
-
- <p>
-  <b>Distributions tested:</b>
-  <ul>
-   <li><a href="/sid/">sid</a></li>
-   <li><a href="/squeeze/">squeeze</a></li>
-   <li><a href="/lenny2squeeze/">lenny2squeeze</a></li>
-  </ul>
- </p>
-
- <p>These pages are updated at 6 and 18 UTC. Last update completed at %(time)s.</p>
-</div>
+   <table class="righttable">
+    <tr class="titlerow">
+     <td class="titlecell">
+      piuparts.debian.org / piuparts.cs.helsinki.fi
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      piuparts is a tool for testing that .deb packages can be installed, upgraded, and removed without problems. The
+      name, a variant of something suggested by Tollef Fog Heen, is short for "<em>p</em>ackage <em>i</em>nstallation, 
+      <em>up</em>grading <em>a</em>nd <em>r</em>emoval <em>t</em>esting <em>s</em>uite". 
+      <br>
+      It does this by  creating a minimal Debian installation in a chroot, and installing,
+      upgrading, and removing packages in that environment, and comparing the state of the directory tree before and after. 
+      piuparts reports any files that have been added, removed, or modified during this process.
+      <br>
+      piuparts is meant as a quality assurance tool for people who create .deb packages to test them before they upload 
+      them to the Debian package archive. To make sure piuparts is run on all packages, piuparts.debian.org was set up.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      piuparts.debian.org is a service running on <a href="http://db.debian.org/machines.cgi?host=piatti">piatti.debian.org</a>,
+      generously donated by <a href="http://hp.com/go/debian/" target="_blank">HP</a> and hosted at piuparts.cs.helsinki.fi by 
+      the University of Helsinki, at the <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a> in Finland.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      This setup is currently still being polished. Better reports and statistics as well as PTS integration is
+      planned. Join #debian-qa if you want to help.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      These pages are updated daily.
+     </td>
+    </tr>
+    </table>
 """
 
 
@@ -282,14 +374,16 @@ def write_log_list_page(filename, title, preface, logs):
         lines.append(line)
 
     f = file(filename, "w")
-    f.write(HTML_HEADER + LOG_LIST_BODY_TEMPLATE % 
+    f.write(HTML_HEADER % 
+            {
+                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+            } + LOG_LIST_BODY_TEMPLATE % 
             {
                 "title": html_protect(title),
                 "preface": preface,
                 "loglist": "".join(lines),
                 "count": len(logs),
                 "versioncount": version_count,
-                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
             } + HTML_FOOTER)
     f.close()
 
@@ -390,25 +484,25 @@ class Section:
             packages_file.close()
 
             logging.debug("Writing section statistics page")    
-            table = "<table>\n"
+            tablerows = ""
             for state in st.get_states():
                 dir_link = ""
                 for dir in dirs:
                   if state_by_dir[dir] == state:
                     dir_link += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
-                table += ("<tr><td><a href='state-%s.html'>%s</a></td>" +
-                          "<td>%d</td><td>%s</td></tr>\n") % \
-                          (html_protect(state), html_protect(state),
-                          len(st.get_packages_in_state(state)),
-                          dir_link)
-            table += "<tr> <th>Total</th> <th colspan=2>%d</th></tr>\n" % \
-                      st.get_total_packages()
-            table += "</table>\n"
-            write_file(os.path.join(self._output_directory, "index.html"),
-                       HTML_HEADER + SECTION_STATS_BODY_TEMPLATE % {
-                                                                    "packages-url": html_protect(self._config["packages-url"]), 
-                                                                    "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                                                                    "table": table,
+                tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a></td>" +
+                              "<td class=\"contentcell2\">%d</td><td class=\"contentcell2\">%s</td></tr>\n") % \
+                              (html_protect(state), html_protect(state),
+                              len(st.get_packages_in_state(state)),
+                              dir_link)
+            tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
+                         st.get_total_packages()
+            write_file(os.path.join(self._output_directory, "index.html"), HTML_HEADER %
+                                                                    {
+                                                                        "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                                                                    } + SECTION_STATS_BODY_TEMPLATE % {
+                                                                        "packages-url": html_protect(self._config["packages-url"]), 
+                                                                        "tablerows": tablerows,
                                                                     } + HTML_FOOTER)
 
             for state in st.get_states():
@@ -426,12 +520,12 @@ class Section:
                         list += "</ul>\n"
                     list += "</li>\n"
                 list += "</ul>\n"
-                write_file(os.path.join(self._output_directory, 
-                                        "state-%s.html" % state),
-                                        HTML_HEADER + STATE_BODY_TEMPLATE % {
-                                        "state": html_protect(state),
-                                        "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                                        "list": list
+                write_file(os.path.join(self._output_directory, "state-%s.html" % state), HTML_HEADER % 
+                                        { 
+                                         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                                        } + STATE_BODY_TEMPLATE % {
+                                         "state": html_protect(state),
+                                         "list": list
                                         } + HTML_FOOTER)
 
                 os.chdir(oldcwd)
@@ -459,11 +553,10 @@ def main():
         sections.append(section)
 
     logging.debug("Writing index page")
-    write_file(report_config["index-page"],
-        HTML_HEADER + INDEX_BODY_TEMPLATE % 
-            {
-                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-            } + HTML_FOOTER)
+    write_file(report_config["index-page"], HTML_HEADER %
+                                                         {
+                                                          "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                                                         } + INDEX_BODY_TEMPLATE + HTML_FOOTER)
 
 if __name__ == "__main__":
     main()
