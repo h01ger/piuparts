@@ -1,14 +1,20 @@
 #main {
         border: none;
-        width: 97%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
         vertical-align: top;
+        background-color: #ddd;
 }
 
 hr {
-  width: 100%; 
-  color:#d70751; 
-  background-color:#d70751; 
+  width: 100%;
+  color:#d70751;
+  background-color:#d70751;
   height:2px;
+  margin: 0px;
+  padding: 0px;
 }
 
 p.note {
@@ -30,9 +36,11 @@ p.text {
 }
 
 body {
+ padding: 0px;
+ margin: 0px;
  font-family: Arial, Helvetica, sans-serif;
  color: #000000;
- background-color: #ddd;
+ background-color: white;
 }
 
 table.reddy
@@ -41,6 +49,8 @@ table.reddy
  background-color: #000;
  border: 0px solid #000;
  border-collapse: collapse;
+ margin-top: 0px;
+ padding-top: 0px;
 }
 
 ul {
@@ -58,6 +68,7 @@ td.reddy {
  vertical-align: middle;
  text-align: center;
  padding: 0px;
+ margin: 0px;
 }
 
 p.validate {
@@ -71,6 +82,7 @@ table
  border: 0px solid #000;
  border-collapse: separate;
  border-spacing: 1px;
+ margin: 5px;
 }
 
 h1 {
@@ -183,18 +195,27 @@ a:active {
  text-decoration: none;
 }
 
-a:hover{
+a:hover {
  color: #0000FF;
  text-decoration: underline;
 }
 
-#footer {
- font-size: 90%;
- text-align: center;
- background-color: white;
+#header {
+ padding: 3px;
 }
 
-#headerfooter {
- font-size: 90%;
- background-color: white;
+h1.header {
+ font-size: 32px;
+ text-align: left;
+ margin-bottom: 0px;
+ padding-bottom: 0px;
+ padding-left: 30px;
 }
+
+#footer {
+ padding: 15px;
+ font-size: 90%;
+ text-align: center;
+}
+
+
