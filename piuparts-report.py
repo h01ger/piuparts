@@ -30,7 +30,7 @@ import logging
 import ConfigParser
 import urllib
 import shutil
-
+import string
 
 import piupartslib
 
@@ -126,8 +126,8 @@ HTML_HEADER = """
      </td>
     </tr>
     <tr class="normalrow">
-     <td class="contentcell2">
-      %(time)s
+     <td class="contentcell">
+      $time
      </td>
     </tr>
    </table>
@@ -147,6 +147,7 @@ HTML_FOOTER = """
    piuparts was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by 
    <a href="mailto:holger@debian.org">Holger Levsen</a>,  
    <a href="mailto:luk@debian.org">Luk Claes</a> and others. GPL2 licenced.
+   <br>
   </div>
   <div>
    <a href="http://validator.w3.org/check?uri=referer">
@@ -166,23 +167,23 @@ LOG_LIST_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
      <td class="titlecell">
-      %(title)s
+      $title
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      %(preface)s
+      $preface
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      The list has %(count)d packages, with %(versioncount)s total versions.
+      The list has $count packages, with $versioncount total versions.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
       <ul>
-       %(loglist)s
+       $loglist
       </ul>
      </td>
     </tr>
@@ -194,13 +195,13 @@ STATE_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
      <td class="titlecell">
-      Packages in state "%(state)s"
+      Packages in state "$state"
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
       <ul>
-       %(list)s
+       $list
       </ul>
      </td>
     </tr>
@@ -215,7 +216,7 @@ SECTION_STATS_BODY_TEMPLATE = """
       Statistics of packages per section
      </td>
     </tr>
-    %(tablerows)s
+    $tablerows
     <tr class="titlerow">
      <td class="titlecell" colspan="3">
       URL to packages file(s)
@@ -223,7 +224,7 @@ SECTION_STATS_BODY_TEMPLATE = """
     </tr>
      <tr class="normalrow">
      <td class="contentcell2" colspan="3">
-      <code>%(packages-url)s</code>
+      <code>$packages-url</code>
      </td>
     </tr>
    </table>
@@ -373,16 +374,16 @@ def write_log_list_page(filename, title, preface, logs):
                                      ", ".join(versions))
         lines.append(line)
 
+    htmlpage = string.Template(HTML_HEADER + LOG_LIST_BODY_TEMPLATE + HTML_FOOTER)
     f = file(filename, "w")
-    f.write(HTML_HEADER % {
+    f.write(htmlpage.safe_substitute( {
                 "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-            } + LOG_LIST_BODY_TEMPLATE % {
                 "title": html_protect(title),
                 "preface": preface,
-                "loglist": "".join(lines),
-                "count": len(logs),
+                "count": len(packages),
                 "versioncount": version_count,
-            } + HTML_FOOTER)
+                "loglist": "".join(lines)
+            }))
     f.close()
 
 
@@ -495,12 +496,12 @@ class Section:
                               dir_link)
             tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
                          st.get_total_packages()
-            write_file(os.path.join(self._output_directory, "index.html"), HTML_HEADER % {
-                                                                        "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                                                                    } + SECTION_STATS_BODY_TEMPLATE % {
-                                                                        "packages-url": html_protect(self._config["packages-url"]), 
-                                                                        "tablerows": tablerows,
-                                                                    } + HTML_FOOTER)
+            htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)
+            write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
+                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                "tablerows": tablerows,
+                "packages-url": html_protect(self._config["packages-url"]), 
+               }))
 
             for state in st.get_states():
                 logging.debug("Writing page for %s" % state)
@@ -517,14 +518,14 @@ class Section:
                         list += "</ul>\n"
                     list += "</li>\n"
                 list += "</ul>\n"
-                write_file(os.path.join(self._output_directory, "state-%s.html" % state), HTML_HEADER % { 
-                                         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                                        } + STATE_BODY_TEMPLATE % {
-                                         "state": html_protect(state),
-                                         "list": list
-                                        } + HTML_FOOTER)
+                htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
+                write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
+                                            "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                                            "state": html_protect(state),
+                                            "list": list
+                                           }))
 
-                os.chdir(oldcwd)
+            os.chdir(oldcwd)
 
 
 def main():
@@ -549,9 +550,10 @@ def main():
         sections.append(section)
 
     logging.debug("Writing index page")
-    write_file(report_config["index-page"], HTML_HEADER % {
-                                                          "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                                                         } + INDEX_BODY_TEMPLATE + HTML_FOOTER)
+    htmlpage = string.SafeTemplate(HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
+    write_file(report_config["index-page"], htmlpage.safe_substitute( {
+                                 "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                              }))
 
 if __name__ == "__main__":
     main()

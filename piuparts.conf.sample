@@ -1,11 +1,13 @@
 #
-# This is the configuration file for piuparts-slave, the slave portion
-# of the distributed piuparts system.
+# This is the configuration file for piuparts running in master-slave mode
 #
 # The sample file does not set all required values, to prevent the
 # master from being run accidentally.
 # 
-# Lars Wirzenius <liw@iki.fi>
+# You MUST make sure that the packages url is set correctly. The sample
+# file does not set it at all, to prevent the master from being run
+# accidentally.
+#
 #
 
 [slave]
@@ -28,8 +30,20 @@ upgrade-test-chroot-tgz =
 max-reserved = 50
 debug = no
 
-# As in piuparts-master.conf, you can have multiple sections, so that you can
-# run piuparts-slave.py for multiple dists
+[master]
+log-file = /dev/null
+# packages-url = http://your.mirror.here/debian/dists/sid/main/binary-i386/Packages.bz2
+
+# report
+[sid]
+output-directory = html
+
+[report]
+sections = sid
+index-page = ./index.html
+
+
+# You can have multiple sections, so that you can run piuparts for multiple dists
 
 # For stable-proposed-updates, you'll have to roll your own chroot, or modify
 # the sources.list in a generated chroot for stable, in order to include the
@@ -49,3 +63,13 @@ debug = no
 ## upgrade-test-chroot-tgz =
 ## max-reserved = 50
 ## debug = no
+
+## [sid-ia64]
+## log-file = /dev/null
+## packages-url = http://ftp.debian.org/debian/dists/sid/binary-ia64/Packages.bz2
+
+## [s-p-u-i386]
+## log-file = /dev/null
+## packages-url = http://ftp.debian.org/debian/dists/stable-proposed-updates/binary-i386/Packages.bz2
+
+

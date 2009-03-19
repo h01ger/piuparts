@@ -39,6 +39,8 @@ for 0.37 and on
 
 - support for extra-packages-url (for volatile, security, etc)
 
+- RSS feeds of logs
+
 - piuparts can't currently test postfix, since installing postfix removes
   exim and removing postfix would require re-installing exim, and that
   doesn't happen; there's other packages like that, too
