@@ -46,11 +46,15 @@ HTML_HEADER = """
   <link rel="shortcut icon" href="/favicon.ico">
  </head>
  <body>
+ <div id="header">
   <div align="center">
-   <a href="http://www.debian.org/">
-    <img src="http://piuparts.debian.org/images/openlogo-nd-50.png" border="0" hspace="0" vspace="0" alt=""></a>
-   <a href="http://www.debian.org/">
-    <img src="http://piuparts.debian.org/images/debian.png" border="0" hspace="0" vspace="0" alt="Debian Project"></a>
+   <h1>
+    <a href="http://www.debian.org/">
+     <img src="http://piuparts.debian.org/images/openlogo-nd-50.png" border="0" hspace="0" vspace="0" alt=""></a>
+    <a href="http://www.debian.org/">
+     <img src="http://piuparts.debian.org/images/debian.png" border="0" hspace="0" vspace="0" alt="Debian Project"></a>
+    Quality Assurance
+   </h1>
   </div>
   <br>
   <table class="reddy" width="100%">
@@ -92,6 +96,8 @@ HTML_HEADER = """
       alt="" width="15" height="16"></td>
    </tr>
   </table>
+  <hr>
+ </div>
 """
 
 
