@@ -2,8 +2,8 @@
         border: none;
         padding-top: 10px;
         padding-bottom: 10px;
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-left: 10px;
+        padding-right: 10px;
         vertical-align: top;
         background-color: #ddd;
 }
@@ -50,6 +50,7 @@ table.reddy
  border: 0px solid #000;
  border-collapse: collapse;
  margin-top: 0px;
+ margin-bottom: 5px;
  padding-top: 0px;
 }
 
@@ -77,7 +78,6 @@ table
  border: 0px solid #000;
  border-collapse: separate;
  border-spacing: 1px;
- margin: 5px;
 }
 
 h1 {
@@ -235,11 +235,7 @@ table.righttable {
     background-color: white;
     color: black;
 }
-table.lefttable + table.lefttable {
-    margin-top: 1em;
-}
 td.containercell {
-    padding: 10px;
     background-color: #ddd;
 }
 td.titlecell { 
