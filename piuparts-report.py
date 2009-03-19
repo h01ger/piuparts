@@ -45,6 +45,7 @@ HTML_HEADER = """
   <link type="text/css" rel="stylesheet" href="/style.css">
   <link rel="shortcut icon" href="/favicon.ico">
  </head>
+
  <body>
  <div id="header">
    <h1 class="header">
@@ -54,7 +55,6 @@ HTML_HEADER = """
      <img src="http://piuparts.debian.org/images/debian.png" border="0" hspace="0" vspace="0" alt="Debian Project"></a>
     Quality Assurance
    </h1>
-  <br>
   <table class="reddy" width="97%">
    <tr>
     <td class="reddy">
@@ -374,11 +374,9 @@ def write_log_list_page(filename, title, preface, logs):
         lines.append(line)
 
     f = file(filename, "w")
-    f.write(HTML_HEADER % 
-            {
+    f.write(HTML_HEADER % {
                 "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-            } + LOG_LIST_BODY_TEMPLATE % 
-            {
+            } + LOG_LIST_BODY_TEMPLATE % {
                 "title": html_protect(title),
                 "preface": preface,
                 "loglist": "".join(lines),
@@ -497,8 +495,7 @@ class Section:
                               dir_link)
             tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
                          st.get_total_packages()
-            write_file(os.path.join(self._output_directory, "index.html"), HTML_HEADER %
-                                                                    {
+            write_file(os.path.join(self._output_directory, "index.html"), HTML_HEADER % {
                                                                         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                                                     } + SECTION_STATS_BODY_TEMPLATE % {
                                                                         "packages-url": html_protect(self._config["packages-url"]), 
@@ -520,8 +517,7 @@ class Section:
                         list += "</ul>\n"
                     list += "</li>\n"
                 list += "</ul>\n"
-                write_file(os.path.join(self._output_directory, "state-%s.html" % state), HTML_HEADER % 
-                                        { 
+                write_file(os.path.join(self._output_directory, "state-%s.html" % state), HTML_HEADER % { 
                                          "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                         } + STATE_BODY_TEMPLATE % {
                                          "state": html_protect(state),
@@ -553,8 +549,7 @@ def main():
         sections.append(section)
 
     logging.debug("Writing index page")
-    write_file(report_config["index-page"], HTML_HEADER %
-                                                         {
+    write_file(report_config["index-page"], HTML_HEADER % {
                                                           "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                                          } + INDEX_BODY_TEMPLATE + HTML_FOOTER)
 
