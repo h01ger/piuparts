@@ -115,11 +115,6 @@ HTML_HEADER = """
       <a href="/squeeze/">squeeze</a> 
      </td>
     </tr>
-    <tr class="normalrow">
-     <td class="contentcell">
-      <a href="/lenny2squeeze/">lenny2squeeze</a>
-     </td>
-    </tr>
     <tr class="titlerow">
      <td class="titlecell">
       Last update
@@ -550,7 +545,7 @@ def main():
         sections.append(section)
 
     logging.debug("Writing index page")
-    htmlpage = string.SafeTemplate(HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
+    htmlpage = string.Template(HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
     write_file(report_config["index-page"], htmlpage.safe_substitute( {
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                               }))
