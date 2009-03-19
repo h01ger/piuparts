@@ -5,10 +5,10 @@
 }
 
 hr {
-  width: 95%; 
+  width: 100%; 
   color:#d70751; 
   background-color:#d70751; 
-  height:3px;
+  height:2px;
 }
 
 p.note {
@@ -191,4 +191,10 @@ a:hover{
 #footer {
  font-size: 90%;
  text-align: center;
+ background-color: white;
+}
+
+#headerfooter {
+ font-size: 90%;
+ background-color: white;
 }
