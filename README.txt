@@ -4,6 +4,7 @@ Notes about the piuparts installation on piatti.debian.org
 todo
 ----
 - script for starting piuparts-slave in screen and cronjob to send mail with its output
+- cronjob to check number of mounts on /org/piuparts.d.o/tmp/
 - use local mirror
 - there should be a 2nd group of piuparts-people. those who can sudo into piupartsm to process logfiles. maybe make that the qa-group
 
