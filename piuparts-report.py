@@ -219,7 +219,7 @@ SECTION_STATS_BODY_TEMPLATE = """
     </tr>
      <tr class="normalrow">
      <td class="contentcell2" colspan="3">
-      <code>$packages-url</code>
+      <code>$packagesurl</code>
      </td>
     </tr>
    </table>
@@ -244,11 +244,13 @@ INDEX_BODY_TEMPLATE = """
       piuparts reports any files that have been added, removed, or modified during this process.
       <br>
       piuparts is meant as a quality assurance tool for people who create .deb packages to test them before they upload 
-      them to the Debian package archive. To make sure piuparts is run on all packages, piuparts.debian.org was set up.
+      them to the Debian package archive.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      To make sure piuparts is run on all packages, piuparts.debian.org was set up.
+      <br>
       piuparts.debian.org is a service running on <a href="http://db.debian.org/machines.cgi?host=piatti">piatti.debian.org</a>,
       generously donated by <a href="http://hp.com/go/debian/" target="_blank">HP</a> and hosted at piuparts.cs.helsinki.fi by 
       the University of Helsinki, at the <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a> in Finland.
@@ -495,7 +497,7 @@ class Section:
             write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
                 "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                 "tablerows": tablerows,
-                "packages-url": html_protect(self._config["packages-url"]), 
+                "packagesurl": html_protect(self._config["packages-url"]), 
                }))
 
             for state in st.get_states():
