@@ -23,6 +23,7 @@ piuparts (0.36) UNRELEASED; urgency=low
       failure analysing will be harder.
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf
+  * Install scripts for master-slave mode without .py extension.
   * piuparts-slave.py:
     - support looping trough multiple sections in slave.conf via new config 
       value "sections". Thanks to Frank Ploss for writing this patch with me 
