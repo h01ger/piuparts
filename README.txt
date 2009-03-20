@@ -57,7 +57,14 @@ Apache configuration
 
 Generating reports for the website
 ----------------------------------
-piuparts-report is run from ~/piupartsm/crontab
+'piuparts-report' is run from '~piupartsm/crontab'
+
+Cronjobs to aid problem spotting
+--------------------------------
+'~piupartsm/bin/detect_network_issues' is run daily from cron and should detect failed piuparts runs due to network issues on the host.
+
+More checks should be added as we become aware of them.
+
 
 to start a new run and throw away all results:
 ----------------------------------------------
