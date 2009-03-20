@@ -41,11 +41,8 @@ install-py:
 	gzip -9f $(man1dir)/piuparts.1
 
 	install -d $(sharedir)/piuparts
-	for file in piuparts-slave piuparts-master piuparts-report; do \
-	    sed "/^CONFIG_FILE = /s:\".*\":\"/etc/piuparts/$$file.conf\":" \
-	        $$file.py > $(sharedir)/piuparts/$$file.py; done
-	install piuparts-analyze.py $(sharedir)/piuparts/piuparts-analyze
-	chmod +x $(sharedir)/piuparts/*.py
+	for file in piuparts-slave piuparts-master piuparts-reporti piuparts-analyze; do \
+	    install -m 0755 $$file.py $(sharedir)/piuparts/$$file ; done
 
 	install -d $(site24)/piupartslib
 	install -d $(site25)/piupartslib

@@ -34,7 +34,7 @@ import tempfile
 import piupartslib
 
 
-CONFIG_FILE = "piuparts-master.conf"
+CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 
 
 def setup_logging(log_level, log_file_name):
@@ -237,27 +237,21 @@ class Master(Protocol):
 
 
 def main():
-    # For supporting multiple architectures and suites, we take a command-line
-    # argument referring to a section in the master configuration file.  For
-    # backwards compatibility, if no argument is given, the "master" section is
-    # assumed.
+    # piuparts-master is always called by the slave with a section as argument
     if len(sys.argv) == 2:
         section = sys.argv[1]
         config = Config(section=section)
-    else:
-        section = None
-        config = Config()
-    config.read(CONFIG_FILE)
+        config.read(CONFIG_FILE)
     
-    setup_logging(logging.DEBUG, config["log-file"])
+        setup_logging(logging.DEBUG, config["log-file"])
     
-    logging.info("Fetching %s" % config["packages-url"])
-    packages_file = piupartslib.open_packages_url(config["packages-url"])
-    m = Master(sys.stdin, sys.stdout, packages_file, section=section)
-    packages_file.close()
-    while m.do_transaction():
-        pass
-    m.write_summaries()
+        logging.info("Fetching %s" % config["packages-url"])
+        packages_file = piupartslib.open_packages_url(config["packages-url"])
+        m = Master(sys.stdin, sys.stdout, packages_file, section=section)
+        packages_file.close()
+        while m.do_transaction():
+            pass
+        m.write_summaries()
 
 
 if __name__ == "__main__":

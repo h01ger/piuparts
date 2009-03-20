@@ -35,7 +35,7 @@ import piupartslib.conf
 import piupartslib.packagesdb
 
 
-CONFIG_FILE = "piuparts-slave.conf"
+CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 
 
 def setup_logging(log_level, log_file_name):
@@ -414,18 +414,16 @@ def create_file(filename, contents):
 def main():
     setup_logging(logging.INFO, None)
     
-    # For supporting multiple piuparts-slave configurations on a particular
-    # machine (e.g. for testing multiple suites), we take one or more command-line
-    # arguments referring to sections in the slave configuration file.  For
-    # backwards compatibility, if no arguments are given, the "slave" section is
-    # assumed.
+    # For supporting multiple architectures and suites, we take a command-line
+    # argument referring to a section in configuration file.  
+    # If no argument is given, the "global" section is assumed.
     section_names = []
     if len(sys.argv) > 1:
         section_names = sys.argv[1:]
     else:
-        slave_config = Config(section="slave")
-        slave_config.read(CONFIG_FILE)
-        section_names = slave_config["sections"].split()
+        global_config = Config(section="global")
+        global_config.read(CONFIG_FILE)
+        section_names = global_config["sections"].split()
 
     sections = []
     for section_name in section_names:

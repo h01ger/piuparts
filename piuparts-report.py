@@ -35,7 +35,7 @@ import string
 import piupartslib
 
 
-CONFIG_FILE = "piuparts-report.conf"
+CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 
 
 HTML_HEADER = """
@@ -265,6 +265,16 @@ INDEX_BODY_TEMPLATE = """
     <tr class="normalrow">
      <td class="contentcell2">
       These pages are updated daily.
+     </td>
+    </tr>
+     <td class="titlecell">
+      News
+      <!-- This shall properly be included in future -->
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      2009-03-19: lenny2squeeze is not needed, so all logs for squeeze (as well as lenny2squeeze) were deleted. (As squezze now includes two kinds of tests: installation and removal in squeeze, and installation in lenny, upgrade to squeeze, removal in squeeze.
      </td>
     </tr>
     </table>
@@ -529,16 +539,15 @@ def main():
     setup_logging(logging.DEBUG, None)
 
     # For supporting multiple architectures and suites, we take a command-line
-    # argument referring to a section in the reports configuration file.  For
-    # backwards compatibility, if no argument is given, the "report" section is
-    # assumed.
+    # argument referring to a section in configuration file.  
+    # If no argument is given, the "global" section is assumed.
     section_names = []
     if len(sys.argv) > 1:
         section = sys.argv[1]
     else:
-        report_config = Config(section="report")
-        report_config.read(CONFIG_FILE)
-        section_names = report_config["sections"].split()
+        global_config = Config(section="general")
+        global_config.read(CONFIG_FILE)
+        section_names = global_config["sections"].split()
 
     sections = []
     for section_name in section_names:
@@ -548,7 +557,7 @@ def main():
 
     logging.debug("Writing index page")
     htmlpage = string.Template(HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
-    write_file(report_config["index-page"], htmlpage.safe_substitute( {
+    write_file(global_config["index-page"], htmlpage.safe_substitute( {
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                               }))
 
