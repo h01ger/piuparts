@@ -57,13 +57,13 @@ Apache configuration
 
 Generating reports for the website
 ----------------------------------
-piuparts-report.py is run from ~/piupartsm/crontab
+piuparts-report is run from ~/piupartsm/crontab
 
 to start a new run and throw away all results:
 ----------------------------------------------
 ----
 piupartss@piatti:/org/piuparts.debian.org$ ./update-piuparts-setup
-piupartss@piatti:/org/piuparts.debian.org/slave$ nice python ../../share/piuparts/piuparts-slave.py 
+piupartss@piatti:/org/piuparts.debian.org/slave$ nice python ../../share/piuparts/piuparts-slave 
 ----
 
 filing bugs
