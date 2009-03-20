@@ -274,7 +274,7 @@ INDEX_BODY_TEMPLATE = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      2009-03-19: lenny2squeeze is not needed, so all logs for squeeze (as well as lenny2squeeze) were deleted. (As squezze now includes two kinds of tests: installation and removal in squeeze, and installation in lenny, upgrade to squeeze, removal in squeeze.
+      2009-03-19: lenny2squeeze is not needed, so all logs for squeeze (as well as lenny2squeeze) were deleted. (As squeeze now includes two kinds of tests: installation and removal in squeeze, and installation in lenny, upgrade to squeeze, removal in squeeze.
      </td>
     </tr>
     </table>
@@ -327,7 +327,7 @@ class Config(piupartslib.conf.Config):
                 "packages-url": None,
                 "master-directory": ".",
             },
-            ["output-directory", "packages-url", "master-directory"])
+            ["output-directory"])
 
 
 def setup_logging(log_level, log_file_name):
@@ -357,7 +357,7 @@ def html_protect(str):
 
 def emphasize_reason(str):
     if str == "unknown-package" or str == "failed-testing":
-      str = "<em" + str + "</em>"
+      str = "<em>" + str + "</em>"
     return str
 
 

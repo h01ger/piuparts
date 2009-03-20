@@ -3,7 +3,6 @@ Things to do for piuparts
 
 must for 0.36
 
-- convert to NEWS Debian system and introduce breakge of conf file backwards compatibility...
 - globalize more config variables.
 - document this in README
 - document sections for piuparts-slave in README. 
@@ -16,6 +15,9 @@ must for 0.36
 - create $section_packages.txt with into about all packages 
 - better header (link to FAQ, point out to read the bottom first..) for piuparts-logs
 - debug is on, even though its off in the config
+- take care of old conf files on upgrades
+- take care of old pyc files from python-central
+- scripts in /usr/share/piuparts/ probably a FHS violation
 
 for 0.37 and on
 

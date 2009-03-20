@@ -43,7 +43,10 @@ piuparts (0.36) UNRELEASED; urgency=low
     unversioned and add build-dependencies for debhelper and asciidoc.
   * Rewrite debian/rules using debhelper.
   * Merge README, how-to-use-piuparts.txt and custom-scripts.txt into 
-    README.txt and build pdf and html versions of it.
+    README.txt and build pdf and html versions of it. The README also has been
+    restructured and updated to reflect the configuration changes in 
+    master-slave mode.
+  * Add NEWS file.
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
 

@@ -26,9 +26,7 @@ piuparts-doc:
 
 install-conf:
 	install -d $(etcdir)/piuparts
-	for x in master slave report; do \
-	    install -m 0644 piuparts-$$x.conf.sample \
-	                    $(etcdir)/piuparts/piuparts-$$x.conf; done
+	install -m 0644 piuparts.conf.sample $(etcdir)/piuparts/piuparts.conf
 
 install-py: 
 	install -d $(sbindir) 
