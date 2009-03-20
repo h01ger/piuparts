@@ -545,7 +545,7 @@ def main():
     if len(sys.argv) > 1:
         section = sys.argv[1]
     else:
-        global_config = Config(section="general")
+        global_config = Config(section="global")
         global_config.read(CONFIG_FILE)
         section_names = global_config["sections"].split()
 
