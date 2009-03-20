@@ -41,7 +41,7 @@ install-py:
 	gzip -9f $(man1dir)/piuparts.1
 
 	install -d $(sharedir)/piuparts
-	for file in piuparts-slave piuparts-master piuparts-reporti piuparts-analyze; do \
+	for file in piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
 	    install -m 0755 $$file.py $(sharedir)/piuparts/$$file ; done
 
 	install -d $(site24)/piupartslib
