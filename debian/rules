@@ -17,7 +17,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 	dh_installman
-	$(MAKE) prefix=$(CURDIR)/debian/piuparts/usr etcdir=$(CURDIR)/debian/piuparts/etc install
+	$(MAKE) prefix=$(CURDIR)/debian/piuparts/usr etcdir=$(CURDIR)/debian/piuparts/etc all
 
 binary-arch:
 binary-indep: build install

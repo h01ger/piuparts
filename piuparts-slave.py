@@ -68,7 +68,7 @@ class Config(piupartslib.conf.Config):
                 "master-directory": ".",
                 "master-command": None,
                 "mirror": None,
-                "piuparts-cmd": "python piuparts.py",
+                "piuparts-cmd": "sudo piuparts",
                 "distro": "sid",
                 "chroot-tgz": None,
                 "upgrade-test-distros": None,
@@ -77,8 +77,7 @@ class Config(piupartslib.conf.Config):
                 "debug": "no",
                 "keep-sources-list": "no",
                 "arch": None,
-            },
-            ["master-host", "master-user", "master-command"])
+            }, "")
 
 
 class MasterNotOK(Exception):
@@ -221,7 +220,7 @@ class Section:
         if not os.path.exists(self._slave_directory):
             os.mkdir(self._slave_directory)
 
-    def setup(self):
+    def setup(self, master_host, master_user, master_directory):
         if self._config["debug"] in ["yes", "true"]:
             self._logger = logging.getLogger()
             self._logger.setLevel(logging.DEBUG)
@@ -243,9 +242,9 @@ class Section:
                 os.mkdir(dir)
     
         self._slave = Slave()
-        self._slave.set_master_host(self._config["master-host"])
-        self._slave.set_master_user(self._config["master-user"])
-        self._slave.set_master_directory(self._config["master-directory"])
+        self._slave.set_master_host(master_host)
+        self._slave.set_master_user(master_user)
+        self._slave.set_master_directory(master_directory)
         self._slave.set_master_command(self._config["master-command"])
     
         for dir in ["pass", "fail", "untestable", "reserved"]:
@@ -254,7 +253,7 @@ class Section:
                 os.makedirs(dir)
         os.chdir(oldcwd)
 
-    def run(self):
+    def run(self, idle_sleep):
         logging.info("-------------------------------------------")
         logging.info("Running section " + self._config.section)
         self._slave.connect_to_master()
@@ -278,7 +277,7 @@ class Section:
 
         if not self._slave.get_reserved():
             logging.debug("Nothing to do, sleeping for a bit")
-            time.sleep(int(self._config["idle-sleep"]))
+            time.sleep(int(idle_sleep))
         else:
             packages_files = {}
             distros = [self._config["distro"]] + self._config["upgrade-test-distros"].split()
@@ -428,12 +427,12 @@ def main():
     sections = []
     for section_name in section_names:
         section = Section(section_name)
-        section.setup()
+        section.setup(master_host=global_config["master-host"],master_user=global_config["master-user"],master_directory=global_config["master-directory"])
         sections.append(section)
 
     while True:
         for section in sections:
-            section.run()
+            section.run(idle_sleep=global_config["idle-sleep"])
 
 
 if __name__ == "__main__":

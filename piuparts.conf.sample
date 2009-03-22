@@ -4,36 +4,37 @@
 # The sample file does not set all required values, to prevent the
 # master from being run accidentally.
 # 
-# You MUST make sure that the packages url is set correctly. The sample
-# file does not set it at all, to prevent the master from being run
-# accidentally.
+# You MUST make sure that master-host, master-user, master-directory, mirror
+# and packages-url are also set correctly. The sample file does not set it at
+# all, to prevent the master from being run accidentally.
 #
 #
 
 [global]
 sections = sid
-
-[sid]
-sections = sid
-log-file = slave.log
-idle-sleep = 300
 # master-host = localhost
 # master-user = piuparts
 # master-directory = .
 output-directory = html
-master-command = python /usr/share/piuparts/piuparts-master
+idle-sleep = 300
+
+[sid]
+description = "Debian sid / main"
+master-command = python /usr/share/piuparts/piuparts-master sid
 # mirror = http://your.mirror.here/debian
 # packages-url = http://your.mirror.here/debian/dists/sid/main/binary-i386/Packages.bz2
 piuparts-cmd = sudo piuparts
+# another example:
+# piuparts-cmd = sudo piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /var/tmp
 distro = sid
 chroot-tgz = sid.tar.gz
 upgrade-test-distros = 
 upgrade-test-chroot-tgz = 
 max-reserved = 50
 debug = no
-og-file = /dev/null
+log-file = sid-master.log
 
-
+## another example:
 ## [s-p-u-i386]
 ## master-command = python /usr/share/piuparts/piuparts-master.py s-p-u-i386
 ## packages-url = http://ftp.debian.org/debian/dists/stable-proposed-updates/binary-i386/Packages.bz2

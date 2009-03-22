@@ -71,7 +71,7 @@ is use a tarball created with pbuilder. If you are not a pbuilder user, you can
 create this tarball with the command (again, as root):
 
 ---- 
-    # puilder create
+    # pbuilder create
 ---- 
  
 then you only have to remember to update this tarball with:

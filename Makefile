@@ -4,6 +4,7 @@ sharedir = $(prefix)/share
 mandir = $(sharedir)/man
 man1dir = $(mandir)/man1
 libdir = $(prefix)/lib
+docdir = $(prefix)/share/doc/piuparts/
 site24 = $(libdir)/python2.4/site-packages
 site25 = $(libdir)/python2.5/site-packages
 etcdir = $(prefix)/etc
@@ -16,38 +17,39 @@ endif
 
 ignore = -I fdmount -N
 
-all: piuparts-doc install-conf install-py
+all: install-conf install-doc install
 
-piuparts-doc:
+install-doc:
 	docbook2x-man --encoding=utf-8 piuparts.docbook
 	asciidoc -a toc -a toclevels=3 README.txt
 	a2x -a toc -a toclevels=3 -f pdf README.txt
 	rm README.xml
+	install -d $(docdir)/
+	for file in README.txt README.html README.pdf; do \
+	    install -m 0755 $$file $(docdir)/ ; done
+	
+	install -d $(man1dir) 
+	install -m 0644 piuparts.1 $(man1dir)
+	gzip -9f $(man1dir)/piuparts.1
 
 install-conf:
 	install -d $(etcdir)/piuparts
 	install -m 0644 piuparts.conf.sample $(etcdir)/piuparts/piuparts.conf
 
-install-py: 
+install:
 	install -d $(sbindir) 
 	echo $(version)
 	sed -e 's/__PIUPARTS_VERSION__/$(version)/g' piuparts.py > piuparts
 	install piuparts $(sbindir)/piuparts
-
-	install -d $(man1dir) 
-	install -m 0644 piuparts.1 $(man1dir)
-	gzip -9f $(man1dir)/piuparts.1
-
+	
 	install -d $(sharedir)/piuparts
 	for file in piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
 	    install -m 0755 $$file.py $(sharedir)/piuparts/$$file ; done
-
+	
 	install -d $(site24)/piupartslib
 	install -d $(site25)/piupartslib
 	install -m 0644 piupartslib/*.py $(site24)/piupartslib
 	install -m 0644 piupartslib/*.py $(site25)/piupartslib
-
-install: all
 
 check:
 	python piuparts.py unittest

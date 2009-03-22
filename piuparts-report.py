@@ -55,7 +55,7 @@ HTML_HEADER = """
      <img src="http://piuparts.debian.org/images/debian.png" border="0" hspace="0" vspace="0" alt="Debian Project"></a>
     Quality Assurance
    </h1>
-  <table class="reddy" width="97%">
+  <table class="reddy">
    <tr>
     <td class="reddy">
      <img src="http://piuparts.debian.org/images/red-upperleft.png" align="left" border="0" hspace="0" vspace="0"
@@ -162,7 +162,7 @@ LOG_LIST_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
      <td class="titlecell">
-      $title
+      $title in $section
      </td>
     </tr>
     <tr class="normalrow">
@@ -190,7 +190,7 @@ STATE_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
      <td class="titlecell">
-      Packages in state "$state"
+      Packages in state "$state" in $section
      </td>
     </tr>
     <tr class="normalrow">
@@ -208,7 +208,16 @@ SECTION_STATS_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
      <td class="titlecell" colspan="3">
-      Statistics of packages per section
+      $section statistics
+     </td>
+    </tr>
+     <tr class="normalrow">
+     <td class="contentcell2" colspan="3">
+      $description
+     </td>
+    <tr class="titlerow">
+     <td class="titlecell" colspan="3">
+      Packages per state
      </td>
     </tr>
     $tablerows
@@ -323,11 +332,10 @@ class Config(piupartslib.conf.Config):
             {
                 "sections": "report",
                 "output-directory": "html",
-                "index-page": "index.html",
                 "packages-url": None,
                 "master-directory": ".",
-            },
-            ["output-directory"])
+                "description": "",
+            }, "")
 
 
 def setup_logging(log_level, log_file_name):
@@ -386,6 +394,7 @@ def write_log_list_page(filename, title, preface, logs):
     f.write(htmlpage.safe_substitute( {
                 "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                 "title": html_protect(title),
+                "section": html_protect(self._config.section),
                 "preface": preface,
                 "count": len(packages),
                 "versioncount": version_count,
@@ -451,15 +460,16 @@ class Section:
     def __init__(self, section):
         self._config = Config(section=section)
         self._config.read(CONFIG_FILE)
-        self._output_directory = os.path.abspath(os.path.join(self._config["output-directory"], self._config.section))
-        if not os.path.exists(self._output_directory):
-            os.mkdir(self._output_directory)
-        self._master_directory = os.path.abspath(os.path.join(self._config["master-directory"], self._config.section))
 
-    def output(self):
+    def output(self, master_directory, output_directory):
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
+        self._master_directory = os.path.abspath(os.path.join(master_directory, self._config.section))
         if os.path.exists(self._master_directory):
+
+            self._output_directory = os.path.abspath(os.path.join(output_directory, self._config.section))
+            if not os.path.exists(self._output_directory):
+                os.mkdir(self._output_directory)
 
             oldcwd = os.getcwd()
             os.chdir(self._master_directory)
@@ -506,6 +516,8 @@ class Section:
             htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)
             write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
                 "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                "section": html_protect(self._config.section),
+                "description": html_protect(self._config["description"]),
                 "tablerows": tablerows,
                 "packagesurl": html_protect(self._config["packages-url"]), 
                }))
@@ -529,11 +541,11 @@ class Section:
                 write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
                                             "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                             "state": html_protect(state),
+                                            "section": html_protect(self._config.section),
                                             "list": list
                                            }))
 
             os.chdir(oldcwd)
-
 
 def main():
     setup_logging(logging.DEBUG, None)
@@ -552,12 +564,12 @@ def main():
     sections = []
     for section_name in section_names:
         section = Section(section_name)
-        section.output()
+        section.output(master_directory=global_config["master-directory"],output_directory=global_config["output-directory"])
         sections.append(section)
 
     logging.debug("Writing index page")
     htmlpage = string.Template(HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
-    write_file(global_config["index-page"], htmlpage.safe_substitute( {
+    write_file(os.path.join(global_config["output-directory"],"index.html"), htmlpage.safe_substitute( {
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                               }))
 

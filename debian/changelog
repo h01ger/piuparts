@@ -21,8 +21,6 @@ piuparts (0.36) UNRELEASED; urgency=low
     - assume packages in state "circular-dependency" are testable. True, they
       are not testable without the circular dependent package, so in case of 
       failure analysing will be harder.
-  * Break backwards compatibility of the configuration files for master-slave-
-    mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf
   * Install scripts for master-slave mode without .py extension.
   * piuparts-slave.py:
     - support looping trough multiple sections in slave.conf via new config 
@@ -36,9 +34,17 @@ piuparts (0.36) UNRELEASED; urgency=low
     - support looping trough multiple sections in report.conf via new config
       value "sections". 
     - provide links to logfiles in statistics page.
-    - improve look.
+    - improve layout, generate navigation for the pages.
+  * Break backwards compatibility of the configuration files for master-slave-
+    mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
+    Introduce a new global section in piuparts.conf which is shared among the
+    other sections there.
   * Always use alphabetic time zone abbreviation in timestamps.
-  * Makefile: add "~$date" to versionstring if building an unreleased version.
+  * Makefile: 
+    - add "~$date" to versionstring if building an unreleased version, thus
+      adding dpkg-dev to build-depends.
+    - split install target into install-doc, install-conf and install, to aid
+      development and deployment from trunk.
   * debian/control: depend on python (>>2.4), make dependency to python-debian
     unversioned and add build-dependencies for debhelper and asciidoc.
   * Rewrite debian/rules using debhelper.

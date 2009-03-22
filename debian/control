@@ -10,7 +10,7 @@ Uploaders: Lars Wirzenius <liw@iki.fi>,
 Section: devel
 Priority: extra
 Standards-Version: 3.8.0
-Build-Depends: debhelper (>=5.0.42)
+Build-Depends: debhelper (>=5.0.42), dpkg-dev
 Build-Depends-Indep: docbook2x, python-support, docbook-xml, asciidoc
 Vcs-Svn: svn://svn.debian.org/svn/piuparts/trunk/
 Vcs-Browser: http://svn.debian.org/wsvn/piuparts/trunk/

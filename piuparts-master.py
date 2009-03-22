@@ -233,7 +233,7 @@ class Master(Protocol):
 
     def write_summaries(self):
         self.write_counts_summary()
-        self.write_packages_summary()
+        #self.write_packages_summary()
 
 
 def main():
