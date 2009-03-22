@@ -4,7 +4,6 @@ Notes about the piuparts installation on piatti.debian.org
 todo
 ----
 - script for starting piuparts-slave in screen and cronjob to send mail with its output
-- cronjob to check number of mounts on /org/piuparts.d.o/tmp/
 - use local mirror
 - there should be a 2nd group of piuparts-people. those who can sudo into piupartsm to process logfiles. maybe make that the qa-group
 
@@ -28,8 +27,10 @@ piupartss       ALL=(ALL) NOPASSWD: ALL
 
 piuparts installation from svn source
 -------------------------------------
-* sudo apt-get install apt python debootstrap lsof lsb-release python-debian 
-* Copy 'svn:/svn.debian.org/svn/piuparts/piatti/home/piupartss/bin/update-piuparts-setup' on the host and run it. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further svn checkouts as well as source code installation. It needs the piupartss and piupartsm user set up as described below, though.
+* sudo apt-get install apt python debootstrap lsof lsb-release python-debian make dpkg-dev docbook2x python-support docbook-xml asciidoc 
+* you need a webserver too, if you run the master
+* Copy 'svn://svn.debian.org/svn/piuparts/piatti/home/piupartss/bin/update-piuparts-setup' on the host and run it. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further svn checkouts as well as source code installation. It needs the piupartss and piupartsm user set up as described below, though.
+* sudo ln -s /org/piuparts.debian.org/etc/ /etc/piuparts
 	
 Apache configuration
 --------------------
@@ -44,7 +45,7 @@ Apache configuration
         ErrorLog /var/log/apache2/piuparts.debian.org-error.log
         CustomLog /var/log/apache2/piuparts.debian.org-access.log combined
 
-        DocumentRoot /srv/piuparts.debian.org/htdocs
+        DocumentRoot /org/piuparts.debian.org/htdocs
 
         HostnameLookups Off
         UseCanonicalName Off
@@ -59,9 +60,13 @@ Generating reports for the website
 ----------------------------------
 'piuparts-report' is run from '~piupartsm/crontab'
 
+
 Cronjobs to aid problem spotting
 --------------------------------
-'~piupartsm/bin/detect_network_issues' is run daily from cron and should detect failed piuparts runs due to network issues on the host.
+Reside in '~piupartsm/bin/' and are run by '~piupartsm/crontab'.
+
+- 'detect_network_issues' should detect failed piuparts runs due to network issues on the host.
+- 'detect_stale_mounts' should detect stale mountpoints (usually of /proc) from failed piuparts runs.
 
 More checks should be added as we become aware of them.
 
@@ -70,7 +75,7 @@ to start a new run and throw away all results:
 ----------------------------------------------
 ----
 piupartss@piatti:/org/piuparts.debian.org$ ./update-piuparts-setup
-piupartss@piatti:/org/piuparts.debian.org/slave$ nice python ../../share/piuparts/piuparts-slave 
+piupartss@piatti:/org/piuparts.debian.org/slave$ nice python ../share/piuparts/piuparts-slave 
 ----
 
 filing bugs

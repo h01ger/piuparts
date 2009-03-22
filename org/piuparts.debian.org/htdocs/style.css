@@ -218,7 +218,6 @@ h1.header {
 
 /* Tables */
 table.containertable {
-    width: 100%;
     clear: both;
     background-color: #ddd;
     border: none; 

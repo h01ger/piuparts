@@ -3,9 +3,22 @@
 #
 #  update piuparts setup on piatti.debian.org
 #
-#   (c) 2009 Holger Levsen         holger@layer-acht.org
-#   GPL2 licenced
-#
+
+# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 if [ "`id -n -u`" != "piupartss" ] ; then
         echo please run this script as piupartss user
@@ -24,6 +37,10 @@ fi
 pwd
 svn up
 svn status
+grep -q PYTHONPATH .bashrc || {
+	echo PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages >> .bashrc
+	echo export PYTHONPATH >> .bashrc
+}
 
 #
 # update master home, that's mostly crontab to run piuparts-reports
@@ -37,6 +54,11 @@ if [ ! -d .svn ] ; then
 fi
 sudo su - piupartsm -c "pwd ; svn up ; svn status"
 sudo su - piupartsm -c "crontab crontab"
+grep -q PYTHONPATH ~piupartsm/.bashrc || {
+	echo PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages >> ~piupartsm/.bashrc
+	echo export PYTHONPATH >> ~piupartsm/.bashrc
+}
+
 
 #
 # update /org/piuparts.debian.org
@@ -54,8 +76,11 @@ svn up
 svn status
 mkdir -p master slave
 sudo chown piupartss.piuparts slave
-sudo chown piupartsm.piuparts master
-sudo chmod 755 master slave
+sudo chown piupartsm.piuparts master htdocs
+sudo chmod 755 master slave htdocs
+cd /org/piuparts.debian.org/etc
+# to support multiple host with this setup
+ln -sf piuparts.conf.$HOSTNAME piuparts.conf
 
 #
 # update source
@@ -71,5 +96,10 @@ cd  /org/piuparts.debian.org/src/
 pwd
 svn up
 svn status
-sudo make prefix=/org/piuparts.debian.org install-py 
+sudo make prefix=/org/piuparts.debian.org docdir=/org/piuparts.debian.org/htdocs/doc/ install install-doc
+
+#
+# create working dir
+#
+sudo mkdir -p /org/piuparts.debian.org/tmp
 

@@ -7,42 +7,33 @@
 sections = sid squeeze
 master-host = localhost
 master-user = piupartsm
-master-command = echo hello
-index-page = /org/piuparts.debian.org/htdocs/index.html
-output-directory = /org/piuparts.debian.org/htdocs/
-
-[sid]
-idle-sleep = 300
-master-host = localhost
-master-user = piupartsm
 master-directory = /org/piuparts.debian.org/master/
 output-directory = /org/piuparts.debian.org/htdocs/
+idle-sleep = 300
+
+[sid]
+description = Debian sid / main, installation and removal tests
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master sid
-log-file = master.log
-packages-url = http://ftp.fi.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
-mirror = http://ftp.fi.debian.org/debian/
+packages-url = http://ftp.de.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
+mirror = http://ftp.de.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 distro = sid
 chroot-tgz = sid.tar.gz
 upgrade-test-distros = 
 upgrade-test-chroot-tgz = 
-max-reserved = 100
+max-reserved = 30
+log-file = sid-master.log
 
 [squeeze]
-idle-sleep = 300
-master-host = localhost
-master-user = piupartsm
-output-directory = /org/piuparts.debian.org/htdocs/
-master-directory = /org/piuparts.debian.org/master/
+description = Debian squeeze / main, installation and removal tests as well as installation in lenny and upgrade to squeze and then removal tests
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master squeeze
-log-file = master.log
-packages-url = http://ftp.fi.debian.org/debian/dists/squeeze/main/binary-amd64/Packages.bz2
-mirror = http://ftp.fi.debian.org/debian/
+packages-url = http://ftp.de.debian.org/debian/dists/squeeze/main/binary-amd64/Packages.bz2
+mirror = http://ftp.de.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 distro = squeeze
 chroot-tgz = squeeze.tar.gz
 upgrade-test-distros = lenny squeeze
 upgrade-test-chroot-tgz = lenny.tar.gz
-max-reserved = 50
-
+max-reserved = 15
+log-file = squeeze-master.log
 

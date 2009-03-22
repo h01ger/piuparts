@@ -10,4 +10,5 @@
 #
 42 6 * * * PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages nice python /org/piuparts.debian.org/share/piuparts/piuparts-report
 
-42 7 * * * /home/piupartsm/bin/detect_network_issues
+42 7 * * * /home/piupartsm/bin/detect_stale_mounts
+43 7 * * * /home/piupartsm/bin/detect_network_issues

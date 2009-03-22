@@ -1,0 +1,39 @@
+#
+# This is the configuration file for piuparts running in master-slave mode.
+#
+#
+
+[global]
+sections = sid squeeze
+master-host = localhost
+master-user = piupartsm
+master-directory = /org/piuparts.debian.org/master/
+output-directory = /org/piuparts.debian.org/htdocs/
+idle-sleep = 300
+
+[sid]
+description = Debian sid / main, installation and removal tests
+master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master sid
+packages-url = http://ftp.fi.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
+mirror = http://ftp.fi.debian.org/debian/
+piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
+distro = sid
+chroot-tgz = sid.tar.gz
+upgrade-test-distros = 
+upgrade-test-chroot-tgz = 
+max-reserved = 100
+log-file = sid-master.log
+
+[squeeze]
+description = Debian squeeze / main, installation and removal tests as well as installation in lenny and upgrade to squeze and then removal tests
+master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master squeeze
+packages-url = http://ftp.fi.debian.org/debian/dists/squeeze/main/binary-amd64/Packages.bz2
+mirror = http://ftp.fi.debian.org/debian/
+piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
+distro = squeeze
+chroot-tgz = squeeze.tar.gz
+upgrade-test-distros = lenny squeeze
+upgrade-test-chroot-tgz = lenny.tar.gz
+max-reserved = 50
+log-file = squeeze-master.log
+
