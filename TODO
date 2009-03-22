@@ -4,7 +4,6 @@ Things to do for piuparts
 must for 0.36
 
 - document globalised config variables this in README
-- the sections in the nav bar are hardcoded atm..
 - rename packages.txt into $section_done_today.txt and include sections
 - create $section_packages.txt with into about all packages 
 - better header (link to FAQ, point out to read the bottom first..) for piuparts-logs

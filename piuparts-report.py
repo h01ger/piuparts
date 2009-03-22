@@ -92,12 +92,12 @@ HTML_HEADER = """
      </td>
     </tr>
       <td class="contentcell">
-      <a href="http://wiki.debian.org/piuparts">About</a>
+      <a href="http://wiki.debian.org/piuparts" target="_blank">About</a>
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://wiki.debian.org/piuparts/FAQ">FAQ</a> 
+      <a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">FAQ</a> 
      </td>
      </tr>     
     <tr class="titlerow">
@@ -105,14 +105,45 @@ HTML_HEADER = """
       Available reports
      </td>
     </tr>
-    <tr class="normalrow">
-     <td class="contentcell">
-      <a href="/sid/">sid</a> 
+    $section_navigation
+    <tr class="titlerow">
+     <td class="titlecell">
+      Other Debian QA efforts
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="/squeeze/">squeeze</a> 
+      <a href="http://edos.debian.net" target="_blank">EDOS tools</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="http://lintian.debian.org" target="_blank">Lintian</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="http://packages.qa.debian.org" target="_blank">Package Tracking System</a>
+     </td>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="http://udd.debian.org" target="_blank">Ultimate Debian Database</a>
+     </td>
+    </tr>
+    </tr>
+    <tr class="titlerow">
+     <td class="titlecell">
+      Documentation
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="http://www.debian.org/doc/debian-policy/" target="_blank">Debian policy</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="/doc" target="_blank">piuparts README</a>
      </td>
     </tr>
     <tr class="titlerow">
@@ -247,11 +278,17 @@ INDEX_BODY_TEMPLATE = """
       piuparts is a tool for testing that .deb packages can be installed, upgraded, and removed without problems. The
       name, a variant of something suggested by Tollef Fog Heen, is short for "<em>p</em>ackage <em>i</em>nstallation, 
       <em>up</em>grading <em>a</em>nd <em>r</em>emoval <em>t</em>esting <em>s</em>uite". 
-      <br>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       It does this by  creating a minimal Debian installation in a chroot, and installing,
       upgrading, and removing packages in that environment, and comparing the state of the directory tree before and after. 
       piuparts reports any files that have been added, removed, or modified during this process.
-      <br>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       piuparts is meant as a quality assurance tool for people who create .deb packages to test them before they upload 
       them to the Debian package archive.
      </td>
@@ -260,7 +297,7 @@ INDEX_BODY_TEMPLATE = """
      <td class="contentcell2">
       To make sure piuparts is run on all packages, piuparts.debian.org was set up.
       <br>
-      piuparts.debian.org is a service running on <a href="http://db.debian.org/machines.cgi?host=piatti">piatti.debian.org</a>,
+      piuparts.debian.org is a service running on <a href="http://db.debian.org/machines.cgi?host=piatti" target="_blank">piatti.debian.org</a>,
       generously donated by <a href="http://hp.com/go/debian/" target="_blank">HP</a> and hosted at piuparts.cs.helsinki.fi by 
       the University of Helsinki, at the <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a> in Finland.
      </td>
@@ -369,53 +406,6 @@ def emphasize_reason(str):
     return str
 
 
-def write_log_list_page(filename, title, preface, logs):
-    packages = {}
-    for pathname, package, version in logs:
-        packages[package] = packages.get(package, []) + [(pathname, version)]
-
-    names = packages.keys()
-    names.sort()
-    lines = []
-    version_count = 0
-    for package in names:
-        versions = []
-        for pathname, version in packages[package]:
-            version_count += 1
-            versions.append("<a href='%s'>%s</a>" % 
-                            (html_protect(pathname), 
-                             html_protect(version)))
-        line = "<li>%s %s</li>\n" % (html_protect(package), 
-                                     ", ".join(versions))
-        lines.append(line)
-
-    htmlpage = string.Template(HTML_HEADER + LOG_LIST_BODY_TEMPLATE + HTML_FOOTER)
-    f = file(filename, "w")
-    f.write(htmlpage.safe_substitute( {
-                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                "title": html_protect(title),
-                "section": html_protect(self._config.section),
-                "preface": preface,
-                "count": len(packages),
-                "versioncount": version_count,
-                "loglist": "".join(lines)
-            }))
-    f.close()
-
-
-def print_by_dir(output_directory, logs_by_dir):
-    for dir in logs_by_dir:
-        list = []
-        for basename in logs_by_dir[dir]:
-            assert basename.endswith(".log")
-            assert "_" in basename
-            package, version = basename[:-len(".log")].split("_")
-            list.append((os.path.join(dir, basename), package, version))
-        write_log_list_page(os.path.join(output_directory, dir + ".html"),
-                            title_by_dir[dir], 
-                            desc_by_dir[dir], list)
-
-
 def find_log_files(dir):
     return [name for name in os.listdir(dir) if name.endswith(".log")]
 
@@ -455,15 +445,72 @@ def write_file(filename, contents):
     f.close()
 
 
+def create_section_navigation(section_names):
+    tablerows = ""
+    for section in section_names:
+        tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell\"><a href='/%s'>%s</a></td></tr>\n") % \
+                          (html_protect(section), html_protect(section))
+    return tablerows;
+
+
 class Section:
 
     def __init__(self, section):
         self._config = Config(section=section)
         self._config.read(CONFIG_FILE)
 
-    def output(self, master_directory, output_directory):
+    def write_log_list_page(self, filename, title, preface, logs):
+        packages = {}
+        for pathname, package, version in logs:
+            packages[package] = packages.get(package, []) + [(pathname, version)]
+
+        names = packages.keys()
+        names.sort()
+        lines = []
+        version_count = 0
+        for package in names:
+            versions = []
+            for pathname, version in packages[package]:
+                version_count += 1
+                versions.append("<a href='%s'>%s</a>" % 
+                                (html_protect(pathname), 
+                                 html_protect(version)))
+            line = "<li>%s %s</li>\n" % (html_protect(package), 
+                                         ", ".join(versions))
+            lines.append(line)
+
+        htmlpage = string.Template(HTML_HEADER + LOG_LIST_BODY_TEMPLATE + HTML_FOOTER)
+        f = file(filename, "w")
+        f.write(htmlpage.safe_substitute( {
+                    "section_navigation": create_section_navigation(self._section_names),
+                    "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                    "title": html_protect(title),
+                    "section": html_protect(self._config.section),
+                    "preface": preface,
+                    "count": len(packages),
+                    "versioncount": version_count,
+                    "loglist": "".join(lines)
+                }))
+        f.close()
+
+
+    def print_by_dir(self, output_directory, logs_by_dir):
+        for dir in logs_by_dir:
+            list = []
+            for basename in logs_by_dir[dir]:
+                assert basename.endswith(".log")
+                assert "_" in basename
+                package, version = basename[:-len(".log")].split("_")
+                list.append((os.path.join(dir, basename), package, version))
+            self.write_log_list_page(os.path.join(output_directory, dir + ".html"),
+                                title_by_dir[dir], 
+                                desc_by_dir[dir], list)
+
+
+    def output(self, master_directory, output_directory, section_names):
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
+        self._section_names = section_names
         self._master_directory = os.path.abspath(os.path.join(master_directory, self._config.section))
         if os.path.exists(self._master_directory):
 
@@ -487,7 +534,7 @@ class Section:
             remove_old_logs(logs_by_dir, self._output_directory)
 
             logging.debug("Writing per-dir HTML pages")
-            print_by_dir(self._output_directory, logs_by_dir)
+            self.print_by_dir(self._output_directory, logs_by_dir)
     
             logging.debug("Loading and parsing Packages file")
             if 1:
@@ -515,6 +562,7 @@ class Section:
                          st.get_total_packages()
             htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)
             write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
+                "section_navigation": create_section_navigation(self._section_names),
                 "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                 "section": html_protect(self._config.section),
                 "description": html_protect(self._config["description"]),
@@ -539,6 +587,7 @@ class Section:
                 list += "</ul>\n"
                 htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
                 write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
+                                            "section_navigation": create_section_navigation(self._section_names),
                                             "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                             "state": html_protect(state),
                                             "section": html_protect(self._config.section),
@@ -564,12 +613,13 @@ def main():
     sections = []
     for section_name in section_names:
         section = Section(section_name)
-        section.output(master_directory=global_config["master-directory"],output_directory=global_config["output-directory"])
+        section.output(master_directory=global_config["master-directory"],output_directory=global_config["output-directory"],section_names=section_names)
         sections.append(section)
 
     logging.debug("Writing index page")
     htmlpage = string.Template(HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
     write_file(os.path.join(global_config["output-directory"],"index.html"), htmlpage.safe_substitute( {
+                                 "section_navigation": create_section_navigation(section_names),
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                               }))
 
