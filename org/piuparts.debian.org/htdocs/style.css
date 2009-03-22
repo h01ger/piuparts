@@ -17,6 +17,10 @@ hr {
   padding: 0px;
 }
 
+em {
+  font-weight: bold;
+}
+
 p.note {
  font-family: sans-serif;
  color: #900;
