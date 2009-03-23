@@ -22,6 +22,8 @@ piuparts (0.36) UNRELEASED; urgency=low
       are not testable without the circular dependent package, so in case of 
       failure analysing will be harder.
   * Install scripts for master-slave mode without .py extension.
+  * piuparts-master.py: remove code to write statistics, that is done only in 
+    piuparts-report.py now.
   * piuparts-slave.py:
     - support looping trough multiple sections in slave.conf via new config 
       value "sections". Thanks to Frank Ploss for writing this patch with me 
@@ -35,6 +37,7 @@ piuparts (0.36) UNRELEASED; urgency=low
       value "sections". 
     - provide links to logfiles in statistics page.
     - improve layout, generate navigation for the pages.
+    - generate counts.txt (per section) with raw numbers of packages per state.
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
     Introduce a new global section in piuparts.conf which is shared among the
@@ -53,6 +56,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     restructured and updated to reflect the configuration changes in 
     master-slave mode.
   * Add NEWS file.
+  * Update debian/copyright to reflect that piuparts is licenced under GPL2+.
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
 

@@ -4,15 +4,19 @@ Things to do for piuparts
 must for 0.36
 
 - document globalised config variables this in README
-- rename packages.txt into $section_done_today.txt and include sections
+- better counts.txt:
+-- factorize st used in write_counts_summary() and in generate_html_output()
 - create $section_packages.txt with into about all packages 
+-- write_packages_summary() is not used atm
+- then R
 - better header (link to FAQ, point out to read the bottom first..) for piuparts-logs
-- debug is on, even though its off in the config
 - master.log is hardcoded in p-master.py?!
 - take care of old conf files on upgrades
 - take care of old pyc files from python-central
 - scripts in /usr/share/piuparts/ probably a FHS violation
 - make sure README.* gets included in the package
+- document the feature that you cannot turn off debug for piuparts.py ;-) or fix it (its possible to workaround it..)
+- same for piuparts-reports.py
 - rm piuparts.css?
 - the templates used by update-reports.py should be taken from /etc/piuparts/templates/
   and not be included in the python source

@@ -445,6 +445,12 @@ def write_file(filename, contents):
     f.close()
 
 
+def append_file(filename, contents):
+    f = file(filename, "a")
+    f.write(contents)
+    f.close()
+
+
 def create_section_navigation(section_names):
     tablerows = ""
     for section in section_names:
@@ -458,6 +464,8 @@ class Section:
     def __init__(self, section):
         self._config = Config(section=section)
         self._config.read(CONFIG_FILE)
+        logging.debug("-------------------------------------------")
+        logging.debug("Running section " + self._config.section)
 
     def write_log_list_page(self, filename, title, preface, logs):
         packages = {}
@@ -507,9 +515,125 @@ class Section:
                                 desc_by_dir[dir], list)
 
 
-    def output(self, master_directory, output_directory, section_names):
-        logging.debug("-------------------------------------------")
-        logging.debug("Running section " + self._config.section)
+    def generate_html_output(self):
+        logging.debug("Finding log files")
+        dirs = ["pass", "fail", "bugged", "fixed", "reserved", "untestable"]
+        logs_by_dir = {}
+        for dir in dirs:
+            logs_by_dir[dir] = find_log_files(dir)
+
+        logging.debug("Copying log files")
+        copy_logs(logs_by_dir, self._output_directory)
+
+        logging.debug("Removing old log files")
+        remove_old_logs(logs_by_dir, self._output_directory)
+
+        logging.debug("Writing per-dir HTML pages")
+        self.print_by_dir(self._output_directory, logs_by_dir)
+
+        logging.debug("Loading and parsing Packages file")
+        if 1:
+            logging.info("Fetching %s" % self._config["packages-url"])
+            packages_file = piupartslib.open_packages_url(self._config["packages-url"])
+        else:
+            packages_file = file("Packages")
+        st = piupartslib.packagesdb.PackagesDB()
+        st.read_packages_file(packages_file)
+        packages_file.close()
+
+        logging.debug("Writing section statistics page")    
+        tablerows = ""
+        for state in st.get_states():
+            dir_link = ""
+            for dir in dirs:
+              if state_by_dir[dir] == state:
+                dir_link += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
+            tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a></td>" +
+                          "<td class=\"contentcell2\">%d</td><td class=\"contentcell2\">%s</td></tr>\n") % \
+                          (html_protect(state), html_protect(state),
+                          len(st.get_packages_in_state(state)),
+                          dir_link)
+        tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
+                     st.get_total_packages()
+        htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)
+        write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
+            "section_navigation": create_section_navigation(self._section_names),
+            "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+            "section": html_protect(self._config.section),
+            "description": html_protect(self._config["description"]),
+            "tablerows": tablerows,
+            "packagesurl": html_protect(self._config["packages-url"]), 
+           }))
+
+        for state in st.get_states():
+            logging.debug("Writing page for %s" % state)
+            list = "<ul>\n"
+            for package in st.get_packages_in_state(state):
+                list += "<li>%s (%s)" % (html_protect(package["Package"]),
+                                         html_protect(package["Maintainer"]))
+                if package.dependencies():
+                    list += "\n<ul>\n"
+                    for dep in package.dependencies():
+                        list += "<li>dependency %s is %s</li>\n" % \
+                                 (html_protect(dep), 
+                                  emphasize_reason(html_protect(st.state_by_name(dep))))
+                    list += "</ul>\n"
+                list += "</li>\n"
+            list += "</ul>\n"
+            htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
+            write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
+                                        "section_navigation": create_section_navigation(self._section_names),
+                                        "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                                        "state": html_protect(state),
+                                        "section": html_protect(self._config.section),
+                                        "list": list
+                                       }))
+
+    def write_counts_summary(self):
+        st = piupartslib.packagesdb.PackagesDB()
+        packages_file = piupartslib.open_packages_url(self._config["packages-url"])
+        st.read_packages_file(packages_file)
+        packages_file.close()
+
+        logging.debug("Writing counts.txt")    
+        header = "date"
+        counts = "%s" % time.strftime("%Y%m%d")
+        for state in st.get_states():
+            header += ", %s" % state
+            counts += ", %s" % len(st.get_packages_in_state(state))
+        header += "\n"       
+        counts += "\n"       
+ 
+        if not os.path.isfile("counts.txt"):
+          write_file("counts.txt", header)
+        append_file("counts.txt", counts)
+
+    def find_log(self, package):
+        n = self._db._logdb._log_name(package["Package"], package["Version"])
+        for dirname in self._db._all:
+            nn = os.path.join(dirname, n)
+            if os.path.exists(nn):
+                return nn
+        return None
+
+    def write_packages_summary(self):
+        fd, name = tempfile.mkstemp(prefix="packages.txt.", dir=".")
+        os.close(fd)
+        os.chmod(name, 0644)
+
+        f = file(name, "w")
+        for pkgname in self._db._packages:
+            state = self._db.state_by_name(pkgname)
+            logname = self.find_log(self._db._packages[pkgname]) or ""
+            f.write("%s %s %s\n" % (pkgname, state, logname))
+        f.close()
+
+
+    def generate_file_output(self):
+            self.write_counts_summary()
+            #self.write_packages_summary()
+
+    def generate_output(self, master_directory, output_directory, section_names):
         self._section_names = section_names
         self._master_directory = os.path.abspath(os.path.join(master_directory, self._config.section))
         if os.path.exists(self._master_directory):
@@ -521,80 +645,11 @@ class Section:
             oldcwd = os.getcwd()
             os.chdir(self._master_directory)
 
-            logging.debug("Finding log files")
-            dirs = ["pass", "fail", "bugged", "fixed", "reserved", "untestable"]
-            logs_by_dir = {}
-            for dir in dirs:
-                logs_by_dir[dir] = find_log_files(dir)
-
-            logging.debug("Copying log files")
-            copy_logs(logs_by_dir, self._output_directory)
-
-            logging.debug("Removing old log files")
-            remove_old_logs(logs_by_dir, self._output_directory)
-
-            logging.debug("Writing per-dir HTML pages")
-            self.print_by_dir(self._output_directory, logs_by_dir)
-    
-            logging.debug("Loading and parsing Packages file")
-            if 1:
-                logging.info("Fetching %s" % self._config["packages-url"])
-                packages_file = piupartslib.open_packages_url(self._config["packages-url"])
-            else:
-                packages_file = file("Packages")
-            st = piupartslib.packagesdb.PackagesDB()
-            st.read_packages_file(packages_file)
-            packages_file.close()
-
-            logging.debug("Writing section statistics page")    
-            tablerows = ""
-            for state in st.get_states():
-                dir_link = ""
-                for dir in dirs:
-                  if state_by_dir[dir] == state:
-                    dir_link += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
-                tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a></td>" +
-                              "<td class=\"contentcell2\">%d</td><td class=\"contentcell2\">%s</td></tr>\n") % \
-                              (html_protect(state), html_protect(state),
-                              len(st.get_packages_in_state(state)),
-                              dir_link)
-            tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
-                         st.get_total_packages()
-            htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)
-            write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
-                "section_navigation": create_section_navigation(self._section_names),
-                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                "section": html_protect(self._config.section),
-                "description": html_protect(self._config["description"]),
-                "tablerows": tablerows,
-                "packagesurl": html_protect(self._config["packages-url"]), 
-               }))
-
-            for state in st.get_states():
-                logging.debug("Writing page for %s" % state)
-                list = "<ul>\n"
-                for package in st.get_packages_in_state(state):
-                    list += "<li>%s (%s)" % (html_protect(package["Package"]),
-                                             html_protect(package["Maintainer"]))
-                    if package.dependencies():
-                        list += "\n<ul>\n"
-                        for dep in package.dependencies():
-                            list += "<li>dependency %s is %s</li>\n" % \
-                                     (html_protect(dep), 
-                                      emphasize_reason(html_protect(st.state_by_name(dep))))
-                        list += "</ul>\n"
-                    list += "</li>\n"
-                list += "</ul>\n"
-                htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
-                write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
-                                            "section_navigation": create_section_navigation(self._section_names),
-                                            "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                                            "state": html_protect(state),
-                                            "section": html_protect(self._config.section),
-                                            "list": list
-                                           }))
+            self.generate_html_output()
+            self.generate_file_output()
 
             os.chdir(oldcwd)
+
 
 def main():
     setup_logging(logging.DEBUG, None)
@@ -613,7 +668,7 @@ def main():
     sections = []
     for section_name in section_names:
         section = Section(section_name)
-        section.output(master_directory=global_config["master-directory"],output_directory=global_config["output-directory"],section_names=section_names)
+        section.generate_output(master_directory=global_config["master-directory"],output_directory=global_config["output-directory"],section_names=section_names)
         sections.append(section)
 
     logging.debug("Writing index page")
