@@ -9,7 +9,6 @@ must for 0.36
 - create $section_packages.txt with into about all packages 
 -- write_packages_summary() is not used atm
 - then R
-- include the stats in the daily report mail
 - better header (link to FAQ, point out to read the bottom first..) for piuparts-logs
 - master.log is hardcoded in p-master.py?!
 - take care of old conf files on upgrades

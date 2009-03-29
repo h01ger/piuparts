@@ -607,6 +607,8 @@ class Section:
         if not os.path.isfile("counts.txt"):
           write_file("counts.txt", header)
         append_file("counts.txt", counts)
+        logging.debug("States: %s" % header)
+        logging.debug("Counts: %s" % counts)
 
     def find_log(self, package):
         n = self._db._logdb._log_name(package["Package"], package["Version"])

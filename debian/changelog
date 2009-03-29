@@ -37,7 +37,9 @@ piuparts (0.36) UNRELEASED; urgency=low
       value "sections". 
     - provide links to logfiles in statistics page.
     - improve layout, generate navigation for the pages.
-    - generate counts.txt (per section) with raw numbers of packages per state.
+    - generate counts.txt (per section) with raw numbers of packages per state,
+      include these stats in the debug output (so it gets included in the mails
+      send by cron.)
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
     Introduce a new global section in piuparts.conf which is shared among the
