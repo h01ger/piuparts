@@ -601,14 +601,13 @@ class Section:
         for state in st.get_states():
             header += ", %s" % state
             counts += ", %s" % len(st.get_packages_in_state(state))
+            logging.debug("%s: %s" % header, counts)
         header += "\n"       
         counts += "\n"       
  
         if not os.path.isfile("counts.txt"):
           write_file("counts.txt", header)
         append_file("counts.txt", counts)
-        logging.debug("States: %s" % header)
-        logging.debug("Counts: %s" % counts)
 
     def find_log(self, package):
         n = self._db._logdb._log_name(package["Package"], package["Version"])
