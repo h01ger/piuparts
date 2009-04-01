@@ -599,9 +599,10 @@ class Section:
         header = "date"
         counts = "%s" % time.strftime("%Y%m%d")
         for state in st.get_states():
+            count = len(st.get_packages_in_state(state))
             header += ", %s" % state
-            counts += ", %s" % len(st.get_packages_in_state(state))
-            logging.debug("%s: %s" % (header, counts))
+            counts += ", %s" % count
+            logging.debug("%s: %s" % (state, count))
         header += "\n"       
         counts += "\n"       
  
