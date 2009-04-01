@@ -67,6 +67,7 @@ class Config(piupartslib.conf.Config):
                 "master-user": None,
                 "master-directory": ".",
                 "master-command": None,
+                "log-file": "piuparts-master.log",
                 "mirror": None,
                 "piuparts-cmd": "sudo piuparts",
                 "distro": "sid",
@@ -142,11 +143,14 @@ class Slave:
         else:
             user = ""
         (self._to_master, self._from_master) = \
-            os.popen2("ssh %s %s 'cd %s; %s 2> master.log.$$ && rm master.log.$$'" %
+            os.popen2("ssh %s %s 'cd %s; %s 2> %s.$$ && rm %s.$$'" %
                                     (self._master_host,
                                      user,
                                      self._master_directory or ".",
-                                     self._master_command))
+                                     self._master_command,
+                                     self._config["log-file"],
+                                     self._config["log-file"]))
+
         line = self._readline()
         if line != "hello\n":
             raise MasterDidNotGreet()
@@ -240,13 +244,13 @@ class Section:
             dir = os.path.join(self._slave_directory, dir)
             if not os.path.exists(os.path.join(self._slave_directory, dir)):
                 os.mkdir(dir)
-    
+
         self._slave = Slave()
         self._slave.set_master_host(master_host)
         self._slave.set_master_user(master_user)
         self._slave.set_master_directory(master_directory)
         self._slave.set_master_command(self._config["master-command"])
-    
+
         for dir in ["pass", "fail", "untestable", "reserved"]:
             dir = os.path.join(self._slave_directory, dir)
             if not os.path.exists(dir):

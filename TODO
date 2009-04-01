@@ -3,21 +3,14 @@ Things to do for piuparts
 
 must for 0.36
 
-- document globalised config variables this in README
+- document globalised config variables in README
 - better counts.txt:
 -- factorize st used in write_counts_summary() and in generate_html_output()
 - create $section_packages.txt with into about all packages 
 -- write_packages_summary() is not used atm
 - then R
-- better header (link to FAQ, point out to read the bottom first..) for piuparts-logs
-- master.log is hardcoded in p-master.py?!
 - take care of old conf files on upgrades
 - take care of old pyc files from python-central
-- scripts in /usr/share/piuparts/ probably a FHS violation
-- make sure README.* gets included in the package
-- document the feature that you cannot turn off debug for piuparts.py ;-) or fix it (its possible to workaround it..)
-- same for piuparts-reports.py
-- rm piuparts.css?
 - the templates used by update-reports.py should be taken from /etc/piuparts/templates/
   and not be included in the python source
 
@@ -46,6 +39,9 @@ for 0.37 and on
 - support for extra-packages-url (for volatile, security, etc)
 
 - RSS feeds of logs
+
+- not sure if it's a sensible thing to to, but provide a way to turn of debugging
+  output for piuparts.py
 
 - piuparts can't currently test postfix, since installing postfix removes
   exim and removing postfix would require re-installing exim, and that

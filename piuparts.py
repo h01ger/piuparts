@@ -1980,6 +1980,9 @@ def main():
     args = parse_command_line()
 
     logging.info("-" * 78)
+    logging.info("To quickly glance what went wrong, scroll down to the bottom of this logfile.")
+    logging.info("FAQ available at http://wiki.debian.org/piuparts/FAQ")
+    logging.info("-" * 78)
     logging.info("piuparts version %s starting up." % VERSION)
     logging.info("Command line arguments: %s" % " ".join(sys.argv))
     logging.info("Running on: %s %s %s %s %s" % os.uname())
