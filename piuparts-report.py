@@ -601,7 +601,7 @@ class Section:
         for state in st.get_states():
             header += ", %s" % state
             counts += ", %s" % len(st.get_packages_in_state(state))
-            logging.debug("%s: %s" % header, counts)
+            logging.debug("%s: %s" % (header, counts))
         header += "\n"       
         counts += "\n"       
  

@@ -16,6 +16,9 @@ must for 0.36
 
 for 0.37 and on
 
+- Check for and kill extraneous processes afterwards. Perhaps by checking
+  whether their working directory is in the chroot.
+
 - publish FAI classes to setup piuparts.$fqdn automatically
 
 - upgrade-reports should have a list of available arch and list packages 
@@ -63,8 +66,6 @@ Low priority stuff (a.k.a. "nobody's said they must have it now")
 
 * Kill children after a timeout to make sure the test doesn't run forever.
 
-* Check for and kill extraneous processes afterwards. Perhaps by checking
-  whether their working directory is in the chroot.
 
 * include a test to see which packages which modify their own conffiles 
   so the user is presented with a dpkg conffile changed dialogue during
