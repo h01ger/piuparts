@@ -21,7 +21,7 @@ all: install-conf install-doc install
 
 install-doc:
 	docbook2x-man --encoding=utf-8 piuparts.docbook
-	asciidoc -a toc -a toclevels=3 README.txt
+	a2x -a toc -a toclevels=3 -f xhtml README.txt
 	a2x -a toc -a toclevels=3 -f pdf README.txt
 	rm README.xml
 	install -d $(docdir)/

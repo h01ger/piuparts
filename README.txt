@@ -4,33 +4,23 @@ piuparts README
 Author: Lars Wirzenius 
 Email: <liw@iki.fi>
 
+After reading this README you probably also want to have a look at the piuparts manpage, to learn about the available options. But read this document first! 
 
-Introduction
-~~~~~~~~~~~~
+== Introduction
 
-This is a tool for testing that .deb packages can be
+piuparts is a tool for testing that .deb packages can be
 installed, upgraded, and removed without problems. The
 name, a variant of something suggested by Tollef Fog
 Heen, is short for "package installation, upgrading, and
 removal testing suite".
 
-See the manual page for more information about using
-the program.
-
-You need at least Python 2.3 and debootstrap. The
-version of debootstrap in the Debian 3.1 release
-(codename sarge) is too old.
-
 piuparts is licensed under the GNU General Public
 License, version 2, or (at your option) any later version.
 
-                
 
-How to use piuparts in 5 minutes
---------------------------------
+== How to use piuparts in 5 minutes
 
-Basic Usage
-~~~~~~~~~~~
+=== Basic Usage
 
 Testing your packages with piuparts is as easy as typing at the console prompt:
 
@@ -59,8 +49,7 @@ file. If you want to specify a different mirror you can do it with the option
 ---- 
 
 
-Some tips
-~~~~~~~~~
+=== Some tips
 
 If you use piuparts on a regular basis, waiting for it to create a chroot every 
 time takes too much time, even if you are using a local mirror or a caching tool 
@@ -99,9 +88,9 @@ for later use with the '-s' ('--save') piuparts option. Some people like this,
 others prefer to only have to maintain one tarball. Read the piuparts manpage 
 about the '-p', '-b' and '-s' options
 
+piuparts has a manpage too.
 
-Piuparts tests
-~~~~~~~~~~~~~~
+=== Piuparts tests
 
 By default, piuparts does two tests:
 
@@ -117,8 +106,7 @@ If you only want to perfom the first test, you can use the option:
 '--no-upgrade-test'  
 
 
-Analyzing piuparts results
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Analyzing piuparts results
 
 When piuparts finishes all the tests satisfactorily, you will get these lines
 as final output:
@@ -134,8 +122,7 @@ problems that did not stop the piuparts execution.
 If you do not get those lines, piuparts has failed during a test. The latest 
 lines should give you a pointer to the problem with your package.
 
-Custom scripts with piuparts
-------------------------------
+== Custom scripts with piuparts
 
 You can specify several custom scripts to be run inside piuparts.
 You have to store them in a directory and give it as argument to
@@ -186,8 +173,7 @@ It would be interesting to declare some piuparts variables like the name
 of the current testing packages, and be able to use this variable in the 
 custom scripts. But this option is not available yet.
 
-Example custom script:
-~~~~~~~~~~~~~~~~~~~~~~
+=== Example custom script:
 
 '$ cat post_install_number.sh'
 ----
@@ -199,8 +185,7 @@ exit 0
 ----
 
 
-Distrubuted testing
--------------------
+== Distrubuted testing
 
 As part of the quality assurance effort of Debian, 
 piuparts is run on the Debian package archive. This requires a
@@ -238,8 +223,7 @@ notice, and preferably so that they don't have direct
 network access.
 
 
-Distributed piuparts testing protocol
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Distributed piuparts testing protocol
                 
 The slave machine and the piuparts-master program
 communicate using a simplistic line based protocol. SSH
@@ -354,8 +338,7 @@ The master may likewise abort, without an error message,
 if the slave sends garbage, or sends too much data.
 
 
-piuparts.conf configuration file
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== piuparts.conf configuration file
 
 piuparts-master, piuparts-slave and piuparts-report share the configuration file
 '/etc/piuparts/piuparts.conf'. The syntax is defined
@@ -375,13 +358,12 @@ FIXME:
 #piuparts logs for that section are kept in a subdirectory by
 #the name of the section.
 
-global configuration
-^^^^^^^^^^^^^^^^^^^^
+==== global configuration
+
 These settings are used by piuparts-master, -slave and -report alike:
 
 
-master configuration 
-^^^^^^^^^^^^^^^^^^^^
+==== master configuration 
 
 the following settings are only useful for piuparts-master:
 
@@ -392,8 +374,7 @@ the following settings are only useful for piuparts-master:
 Both configuration items must be in the configuration file, or master will refuse to run.
 
 
-slave configuration 
-^^^^^^^^^^^^^^^^^^^
+==== slave configuration 
 
 the following settings are only useful for piuparts-slave:
                 
@@ -427,11 +408,12 @@ the following settings are only useful for piuparts-slave:
 
 Some of the configuration items are not required, but it is best to set them all to be sure what the configuration actually is.
 
-report configuration 
-^^^^^^^^^^^^^^^^^^^^^
+==== report configuration 
 
 the following settings are only useful for piuparts-report:
 
 FIXME
 
+=== About the setup on piuparts.debian.org
 
+See link:svn://svn.debian.org/svn/piuparts/piatti/README.txt[]

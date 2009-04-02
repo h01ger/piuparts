@@ -8,16 +8,20 @@ must for 0.36
 -- factorize st used in write_counts_summary() and in generate_html_output()
 - create $section_packages.txt with into about all packages 
 -- write_packages_summary() is not used atm
+-- write stats about the reasons for failures
 - then R
 - take care of old conf files on upgrades
 - take care of old pyc files from python-central
-- the templates used by update-reports.py should be taken from /etc/piuparts/templates/
-  and not be included in the python source
 
 for 0.37 and on
 
 - Check for and kill extraneous processes afterwards. Perhaps by checking
   whether their working directory is in the chroot.
+  Introduce a whitelist of processes to wait for and assume it's an error 
+  if those haven't been killed after $time=10min. see #387428
+
+- the templates used by update-reports.py should be taken from /etc/piuparts/templates/
+  and not be included in the python source
 
 - publish FAI classes to setup piuparts.$fqdn automatically
 
