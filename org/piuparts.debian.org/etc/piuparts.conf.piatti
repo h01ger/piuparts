@@ -34,6 +34,6 @@ distro = squeeze
 chroot-tgz = squeeze.tar.gz
 upgrade-test-distros = lenny squeeze
 upgrade-test-chroot-tgz = lenny.tar.gz
-max-reserved = 50
+max-reserved = 100
 log-file = squeeze-master.log
 
