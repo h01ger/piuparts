@@ -881,7 +881,7 @@ class Chroot:
         (status, output) = run(["lsof", "-w", "+D", self.name], ignore_errors=True)
         count = len(output.split("\n")) - 1
         if count > 0:
-            logging.error("Processes are running inside chroot:\n%s" % 
+            logging.error("FAIL: Processes are running inside chroot:\n%s" % 
                           indent_string(output))
             panic()
 
@@ -937,7 +937,7 @@ class Chroot:
                         target = "<unknown>"
                     broken.append("%s -> %s" % (name, target))
         if broken:
-            logging.error("Broken symlinks:\n%s" % 
+            logging.error("FAIL: Broken symlinks:\n%s" % 
                           indent_string("\n".join(broken)))
 	    panic()
         else:
@@ -985,7 +985,7 @@ class Chroot:
             (retval, output) = self.run([file])
             if output:
                 failed = True
-                logging.error("Cron file %s has output with package removed" % file)
+                logging.error("FAIL: Cron file %s has output with package removed" % file)
 
         if failed:
             panic()
@@ -1254,7 +1254,7 @@ class VirtServ(Chroot):
             f = file(tf)
             broken = False
             for l in f:
-                logging.error("Broken symlink: " + l)
+                logging.error("FAIL: Broken symlink: " + l)
                 broken = True
             if broken: panic()
             logging.debug("No broken symlinks found.")
@@ -1455,15 +1455,15 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
 
     ok = True
     if new:
-        logging.error("Package purging left files on system:\n" +
+        logging.error("FAIL: Package purging left files on system:\n" +
                        file_list(new, file_owners))
         ok = False
     if removed:
-        logging.error("After purging files have disappeared:\n" +
+        logging.error("FAIL: After purging files have disappeared:\n" +
                       file_list(removed, file_owners))
         ok = False
     if modified:
-        logging.error("After purging files have been modified:\n" +
+        logging.error("FAIL: After purging files have been modified:\n" +
                       file_list(modified, file_owners))
         ok = False
 
