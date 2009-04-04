@@ -21,11 +21,11 @@ all: install-conf install-doc install
 
 install-doc:
 	docbook2x-man --encoding=utf-8 piuparts.docbook
-	a2x -a toc -a toclevels=3 -f xhtml README.txt
+	a2x --copy -a toc -a toclevels=3 -f xhtml README.txt
 	a2x -a toc -a toclevels=3 -f pdf README.txt
 	rm README.xml
 	install -d $(docdir)/
-	for file in README.txt README.html README.pdf; do \
+	for file in README.txt README.html docbook-xsl.css *.png README.pdf; do \
 	    install -m 0755 $$file $(docdir)/ ; done
 	
 	install -d $(man1dir) 
