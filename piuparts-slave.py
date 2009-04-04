@@ -136,7 +136,7 @@ class Slave:
         logging.debug("Setting master command to %s" % cmd)
         self._master_command = cmd
     
-    def connect_to_master(self):
+    def connect_to_master(self, log_file):
         logging.info("Connecting to %s" % self._master_host)
         if self._master_user:
             user = "-l " + self._master_user
@@ -148,8 +148,8 @@ class Slave:
                                      user,
                                      self._master_directory or ".",
                                      self._master_command,
-                                     self._config["log-file"],
-                                     self._config["log-file"]))
+                                     log_file,
+                                     log_file))
 
         line = self._readline()
         if line != "hello\n":
@@ -224,7 +224,7 @@ class Section:
         if not os.path.exists(self._slave_directory):
             os.mkdir(self._slave_directory)
 
-    def setup(self, master_host, master_user, master_directory):
+    def setup(self, master_host, master_user, master_directory, idle_sleep):
         if self._config["debug"] in ["yes", "true"]:
             self._logger = logging.getLogger()
             self._logger.setLevel(logging.DEBUG)
@@ -250,6 +250,8 @@ class Section:
         self._slave.set_master_user(master_user)
         self._slave.set_master_directory(master_directory)
         self._slave.set_master_command(self._config["master-command"])
+        self._idle_sleep=idle_sleep
+        self._log_file=self._config["log-file"]
 
         for dir in ["pass", "fail", "untestable", "reserved"]:
             dir = os.path.join(self._slave_directory, dir)
@@ -257,10 +259,10 @@ class Section:
                 os.makedirs(dir)
         os.chdir(oldcwd)
 
-    def run(self, idle_sleep):
+    def run(self):
         logging.info("-------------------------------------------")
         logging.info("Running section " + self._config.section)
-        self._slave.connect_to_master()
+        self._slave.connect_to_master(self._log_file)
 
         oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
@@ -281,7 +283,7 @@ class Section:
 
         if not self._slave.get_reserved():
             logging.debug("Nothing to do, sleeping for a bit")
-            time.sleep(int(idle_sleep))
+            time.sleep(int(self._idle_sleep))
         else:
             packages_files = {}
             distros = [self._config["distro"]] + self._config["upgrade-test-distros"].split()
@@ -431,12 +433,12 @@ def main():
     sections = []
     for section_name in section_names:
         section = Section(section_name)
-        section.setup(master_host=global_config["master-host"],master_user=global_config["master-user"],master_directory=global_config["master-directory"])
+        section.setup(master_host=global_config["master-host"],master_user=global_config["master-user"],master_directory=global_config["master-directory"],idle_sleep=global_config["idle-sleep"])
         sections.append(section)
 
     while True:
         for section in sections:
-            section.run(idle_sleep=global_config["idle-sleep"])
+            section.run()
 
 
 if __name__ == "__main__":
