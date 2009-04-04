@@ -394,4 +394,4 @@ Some of the configuration items are not required, but it is best to set them all
 
 === About the setup on piuparts.debian.org
 
-See link:svn://svn.debian.org/svn/piuparts/piatti/README.txt[]
+See link:http://svn.debian.org/viewsvn/piuparts/piatti/README.txt?view=markup[svn://svn.debian.org/svn/piuparts/piatti/README.txt]
