@@ -348,37 +348,14 @@ this:
     [master]
     foo = bar
 ---- 
-FIXME:   
-#where "master" is the name of a section.  By default,
-#piuparts-master.py uses the "master" section in the master
-#configuration file, but you can tell it to use another
-#section by giving the name of that section as an argument.
-#"foo" is the name of a configuration item, and "bar" is the
-#value.  If a section other than "master" is used, all the
-#piuparts logs for that section are kept in a subdirectory by
-#the name of the section.
 
 ==== global configuration
 
-These settings are used by piuparts-master, -slave and -report alike:
+These settings are used for all sections. Except for the first two they are all mandatory:
 
+* "sections" defaults to sid and defines which sections should be processed in master-slave mode. Each section defined here has to have a section with the section specific settings explained below.
 
-==== master configuration 
-
-the following settings are only useful for piuparts-master:
-
-* "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "/dev/null", that is, log messages are not put in a file.
-
-* "packages-url" is a URL to the Packages.bz2 file for your mirror. It is usually best to use the Packages.bz2 for sid (unstable), unless you know what you're doing. For example, you might use 'http://ftp.debian.org/debian/dists/sid/main/binary-i386/Packages.bz2' but you really do want to replace "ftp.debian.org" with the name of your local mirror.
-
-Both configuration items must be in the configuration file, or master will refuse to run.
-
-
-==== slave configuration 
-
-the following settings are only useful for piuparts-slave:
-                
-* "idle-sleep" is the length of time the slave should wait before querying the master again if the master didn't have any new packages to test. In seconds, so a value of 300 would mean five minutes, and that seems to be a good value when there are fairly few slaves per master.
+* "idle-sleep" is the length of time the slave should wait before querying the master again if the master didn't have any new packages to test. In seconds, so a value of 300 would mean five minutes, and that seems to be a good value when there are fairly few slaves per master. The default is 10 seconds.
   
 * "master-host" is the host where the master exists. The slave will give this host to ssh.
   
@@ -387,7 +364,13 @@ the following settings are only useful for piuparts-slave:
 * "master-directory" is the directory where the master keeps its files. Can be relative to the master's home directory.
   
 * "master-command" is the command to run on master-host to start the master. When the master has been installed from the Debian package, the command is 'python /usr/share/piuparts/piuparts-master'.  If you want to use a section in the master configuration file other than "master", append the section name to this command.  For example, if the master configuration file has a "sid-ia64" section that you want to use, the command should be 'python /usr/share/piuparts/piuparts-master sid-ia64'.
-  
+ 
+* "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "/dev/null", that is, log messages are not put in a file.
+
+==== section specific configuration 
+
+* "packages-url" is a URL to the Packages.bz2 file for your mirror. It is usually best to use the Packages.bz2 for sid (unstable), unless you know what you're doing. For example, you might use 'http://ftp.debian.org/debian/dists/sid/main/binary-i386/Packages.bz2' but you really do want to replace "ftp.debian.org" with the name of your local mirror.
+ 
 * "mirror" tells the slave which mirror it is to use. The slave gives this to piuparts when it runs it.
   
 * "piuparts-cmd" is the command the slave uses to start piuparts. It should include 'sudo' if necessary so that piuparts runs with sufficient priviledges to do its testing (and that means root priviledges).
@@ -408,11 +391,6 @@ the following settings are only useful for piuparts-slave:
 
 Some of the configuration items are not required, but it is best to set them all to be sure what the configuration actually is.
 
-==== report configuration 
-
-the following settings are only useful for piuparts-report:
-
-FIXME
 
 === About the setup on piuparts.debian.org
 
