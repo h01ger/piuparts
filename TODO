@@ -3,10 +3,8 @@ Things to do for piuparts
 
 must for 0.36
 
-- document globalised config variables in README
-- better counts.txt:
--- factorize st used in write_counts_summary() and in generate_html_output()
-- create $section_packages.txt with into about all packages 
+- report:
+-- create $section_packages.txt with into about all packages 
 -- write_packages_summary() is not used atm
 -- write stats about the reasons for failures
 - then R

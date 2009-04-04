@@ -471,6 +471,12 @@ class Section:
         self._config.read(CONFIG_FILE)
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
+        logging.debug("Loading and parsing Packages file")
+        logging.info("Fetching %s" % self._config["packages-url"])
+        packages_file = piupartslib.open_packages_url(self._config["packages-url"])
+        self._st = piupartslib.packagesdb.PackagesDB()
+        self._st.read_packages_file(packages_file)
+        packages_file.close()
 
     def write_log_list_page(self, filename, title, preface, logs):
         packages = {}
@@ -536,19 +542,9 @@ class Section:
         logging.debug("Writing per-dir HTML pages")
         self.print_by_dir(self._output_directory, logs_by_dir)
 
-        logging.debug("Loading and parsing Packages file")
-        if 1:
-            logging.info("Fetching %s" % self._config["packages-url"])
-            packages_file = piupartslib.open_packages_url(self._config["packages-url"])
-        else:
-            packages_file = file("Packages")
-        st = piupartslib.packagesdb.PackagesDB()
-        st.read_packages_file(packages_file)
-        packages_file.close()
-
         logging.debug("Writing section statistics page")    
         tablerows = ""
-        for state in st.get_states():
+        for state in self._st.get_states():
             dir_link = ""
             for dir in dirs:
               if state_by_dir[dir] == state:
@@ -556,10 +552,10 @@ class Section:
             tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a></td>" +
                           "<td class=\"contentcell2\">%d</td><td class=\"contentcell2\">%s</td></tr>\n") % \
                           (html_protect(state), html_protect(state),
-                          len(st.get_packages_in_state(state)),
+                          len(self._st.get_packages_in_state(state)),
                           dir_link)
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
-                     st.get_total_packages()
+                          self._st.get_total_packages()
         htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)
         write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
             "section_navigation": create_section_navigation(self._section_names),
@@ -570,10 +566,10 @@ class Section:
             "packagesurl": html_protect(self._config["packages-url"]), 
            }))
 
-        for state in st.get_states():
+        for state in self._st.get_states():
             logging.debug("Writing page for %s" % state)
             list = "<ul>\n"
-            for package in st.get_packages_in_state(state):
+            for package in self._st.get_packages_in_state(state):
                 list += "<li>%s (%s)" % (html_protect(package["Package"]),
                                          html_protect(package["Maintainer"]))
                 if package.dependencies():
@@ -581,7 +577,7 @@ class Section:
                     for dep in package.dependencies():
                         list += "<li>dependency %s is %s</li>\n" % \
                                  (html_protect(dep), 
-                                  emphasize_reason(html_protect(st.state_by_name(dep))))
+                                  emphasize_reason(html_protect(self._st.state_by_name(dep))))
                     list += "</ul>\n"
                 list += "</li>\n"
             list += "</ul>\n"
@@ -595,16 +591,12 @@ class Section:
                                        }))
 
     def write_counts_summary(self):
-        st = piupartslib.packagesdb.PackagesDB()
-        packages_file = piupartslib.open_packages_url(self._config["packages-url"])
-        st.read_packages_file(packages_file)
-        packages_file.close()
 
         logging.debug("Writing counts.txt")    
         header = "date"
         counts = "%s" % time.strftime("%Y%m%d")
-        for state in st.get_states():
-            count = len(st.get_packages_in_state(state))
+        for state in self._st.get_states():
+            count = len(self._st.get_packages_in_state(state))
             header += ", %s" % state
             counts += ", %s" % count
             logging.debug("%s: %s" % (state, count))
