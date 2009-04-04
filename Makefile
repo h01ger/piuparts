@@ -25,7 +25,7 @@ install-doc:
 	a2x -a toc -a toclevels=3 -f pdf README.txt
 	rm README.xml
 	install -d $(docdir)/
-	for file in README.txt README.html docbook-xsl.css *.png README.pdf; do \
+	for file in README.txt README.html docbook-xsl.css README.pdf; do \
 	    install -m 0755 $$file $(docdir)/ ; done
 	
 	install -d $(man1dir) 
