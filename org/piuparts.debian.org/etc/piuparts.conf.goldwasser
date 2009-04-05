@@ -4,7 +4,8 @@
 #
 
 [global]
-sections = sid squeeze
+sections = sid
+#sections = sid squeeze
 master-host = localhost
 master-user = piupartsm
 master-directory = /org/piuparts.debian.org/master/
