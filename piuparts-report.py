@@ -106,6 +106,11 @@ HTML_HEADER = """
      </td>
     </tr>
     $section_navigation
+    <tr>
+     <td class="contentcell">
+      <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?tag=piuparts;users=debian-qa@lists.debian.org&archive=both" target="_blank">Bugs filed</a> 
+     </td>
+    </tr>     
     <tr class="titlerow">
      <td class="titlecell">
       Other Debian QA efforts
@@ -143,7 +148,13 @@ HTML_HEADER = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="/doc" target="_blank">piuparts README</a>
+      <a href="/doc/README.html" target="_blank">piuparts README</a>
+     </td>
+    </tr>
+    <tr class="titlerow">
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="/doc/piuparts.html" target="_blank">piuparts manpage</a>
      </td>
     </tr>
     <tr class="titlerow">
@@ -265,6 +276,26 @@ SECTION_STATS_BODY_TEMPLATE = """
    </table>
 """
 
+SOURCE_PACKAGE_BODY_TEMPLATE = """
+   <table class="righttable">
+    <tr class="titlerow">
+     <td class="titlecell" colspan="2">
+      Source package
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2" colspan="2">
+       $source
+     </td>
+    </tr>
+     <tr class="titlerow">
+     <td class="titlecell" colspan="2">
+      Binary package(s) in $section
+     </td>
+    </tr>
+     $binaryrows
+   </table>
+"""
 
 INDEX_BODY_TEMPLATE = """
    <table class="righttable">
@@ -375,6 +406,7 @@ class Config(piupartslib.conf.Config):
                 "sections": "report",
                 "output-directory": "html",
                 "packages-url": None,
+                "sources-url": None,
                 "master-directory": ".",
                 "description": "",
             }, "")
@@ -410,6 +442,12 @@ def emphasize_reason(str):
       str = "<em>" + str + "</em>"
     return str
 
+
+def path_to_source_summary_page(source):
+    if source[:3] == "lib":
+      return source[:4]
+    else:
+      return source[:1]
 
 def find_log_files(dir):
     return [name for name in os.listdir(dir) if name.endswith(".log")]
@@ -472,11 +510,18 @@ class Section:
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
         logging.debug("Loading and parsing Packages file")
+
         logging.info("Fetching %s" % self._config["packages-url"])
         packages_file = piupartslib.open_packages_url(self._config["packages-url"])
-        self._st = piupartslib.packagesdb.PackagesDB()
-        self._st.read_packages_file(packages_file)
+        self._binary_db = piupartslib.packagesdb.PackagesDB()
+        self._binary_db.read_packages_file(packages_file)
         packages_file.close()
+
+        logging.info("Fetching %s" % self._config["sources-url"])
+        sources_file = piupartslib.open_packages_url(self._config["sources-url"])
+        self._source_db = piupartslib.packagesdb.PackagesDB()
+        self._source_db.read_packages_file(sources_file)
+        sources_file.close()
 
     def write_log_list_page(self, filename, title, preface, logs):
         packages = {}
@@ -544,7 +589,7 @@ class Section:
 
         logging.debug("Writing section statistics page")    
         tablerows = ""
-        for state in self._st.get_states():
+        for state in self._binary_db.get_states():
             dir_link = ""
             for dir in dirs:
               if state_by_dir[dir] == state:
@@ -552,10 +597,10 @@ class Section:
             tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a></td>" +
                           "<td class=\"contentcell2\">%d</td><td class=\"contentcell2\">%s</td></tr>\n") % \
                           (html_protect(state), html_protect(state),
-                          len(self._st.get_packages_in_state(state)),
+                          len(self._binary_db.get_packages_in_state(state)),
                           dir_link)
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
-                          self._st.get_total_packages()
+                          self._binary_db.get_total_packages()
         htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)
         write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
             "section_navigation": create_section_navigation(self._section_names),
@@ -566,10 +611,10 @@ class Section:
             "packagesurl": html_protect(self._config["packages-url"]), 
            }))
 
-        for state in self._st.get_states():
+        for state in self._binary_db.get_states():
             logging.debug("Writing page for %s" % state)
             list = "<ul>\n"
-            for package in self._st.get_packages_in_state(state):
+            for package in self._binary_db.get_packages_in_state(state):
                 list += "<li>%s (%s)" % (html_protect(package["Package"]),
                                          html_protect(package["Maintainer"]))
                 if package.dependencies():
@@ -577,7 +622,7 @@ class Section:
                     for dep in package.dependencies():
                         list += "<li>dependency %s is %s</li>\n" % \
                                  (html_protect(dep), 
-                                  emphasize_reason(html_protect(self._st.state_by_name(dep))))
+                                  emphasize_reason(html_protect(self._binary_db.state_by_name(dep))))
                     list += "</ul>\n"
                 list += "</li>\n"
             list += "</ul>\n"
@@ -595,8 +640,8 @@ class Section:
         logging.debug("Writing counts.txt")    
         header = "date"
         counts = "%s" % time.strftime("%Y%m%d")
-        for state in self._st.get_states():
-            count = len(self._st.get_packages_in_state(state))
+        for state in self._binary_db.get_states():
+            count = len(self._binary_db.get_packages_in_state(state))
             header += ", %s" % state
             counts += ", %s" % count
             logging.debug("%s: %s" % (state, count))
@@ -608,29 +653,51 @@ class Section:
         append_file("counts.txt", counts)
 
     def find_log(self, package):
-        n = self._db._logdb._log_name(package["Package"], package["Version"])
+        n = self._binary_db._logdb._log_name(package["Package"], package["Version"])
         for dirname in self._db._all:
             nn = os.path.join(dirname, n)
             if os.path.exists(nn):
                 return nn
         return None
 
-    def write_packages_summary(self):
-        fd, name = tempfile.mkstemp(prefix="packages.txt.", dir=".")
-        os.close(fd)
-        os.chmod(name, 0644)
-
-        f = file(name, "w")
-        for pkgname in self._db._packages:
-            state = self._db.state_by_name(pkgname)
-            logname = self.find_log(self._db._packages[pkgname]) or ""
-            f.write("%s %s %s\n" % (pkgname, state, logname))
-        f.close()
-
+    def write_sources_summaries(self):
+        logging.debug("Writing source package summaries")    
+        sources = ""
+        for source in self._source_db.get_all_packages():
+                binaries = self._source_db.get_binary_package_names(source)
+                success = True
+                failed = False
+                binaryrows = ""
+                for binary in binaries.split(", "):
+                  state = self._binary_db.state_by_name(binary)
+                  binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, state)
+                  if state != "successfully-tested":
+                    success = False
+                  if state == "failed-testing":
+                    failed = True
+                source_state="unknown"
+                if success: source_state="success"
+                if failed:  source_state="failed"
+                sources += "%s: %s\n" % (source, source_state)
+                summary_page_path = os.path.join(self._output_directory, "source", path_to_source_summary_page(source))
+                if not os.path.exists(summary_page_path):
+                  os.makedirs(summary_page_path)
+                filename = os.path.join(summary_page_path, (source + ".html"))
+                htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
+                f = file(filename, "w")
+                f.write(htmlpage.safe_substitute( {
+                    "section_navigation": create_section_navigation(self._section_names),
+                    "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                    "source": html_protect(source),
+                    "section": html_protect(self._config.section),
+                    "binaryrows": binaryrows,
+                    }))
+                f.close()
+        write_file("sources.txt", sources)
 
     def generate_file_output(self):
             self.write_counts_summary()
-            #self.write_packages_summary()
+            self.write_sources_summaries()
 
     def generate_output(self, master_directory, output_directory, section_names):
         self._section_names = section_names

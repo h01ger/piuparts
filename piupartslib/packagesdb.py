@@ -266,7 +266,7 @@ class PackagesDB:
                 for provided in p.provides():
                     if provided not in self._packages:
                         self._packages[provided] = p
-    
+
     def _get_recursive_dependencies(self, package, break_circles=True):
         assert self._packages is not None
         deps = []
@@ -371,6 +371,16 @@ class PackagesDB:
     def get_packages_in_state(self, state):
         self._compute_package_states()
         return [self._packages[name] for name in self._in_state[state]]
+
+    def get_all_packages(self):
+        self._find_all_packages()
+        return self._packages
+
+    def get_binary_package_names(self, packagename):
+        return self._packages[packagename]["Binary"]
+
+    def get_package_state(self, package_name):
+        return self._package_state[packagename]
 
     def state_by_name(self, package_name):
         if package_name in self._package_state:

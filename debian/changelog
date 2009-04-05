@@ -40,6 +40,9 @@ piuparts (0.36) UNRELEASED; urgency=low
     - generate counts.txt (per section) with raw numbers of packages per state,
       include these stats in the debug output (so it gets included in the mails
       send by cron.)
+    - generate sources.txt (per section) with state summary per source package
+      (for the PTS to display a source packages piuparts state)
+    - generate html status pages for all source packages (to link from the PTS)
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
     Introduce a new global section in piuparts.conf which is shared among the

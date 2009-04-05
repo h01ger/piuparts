@@ -4,15 +4,25 @@ Things to do for piuparts
 must for 0.36
 
 - report:
--- create $section_packages.txt with into about all packages 
--- write_packages_summary() is not used atm
--- write stats about the reasons for failures
+--- dont do source stats if source-url not defined, document that in readme.txt
+--- find_log() is not used atm
+--- include links to logfiles in source summary pages
+--- include links to http://qa.debian.org/developer.php?login=$maintainer_email
 - then R
 - dont write counts.txt if it has already been written that day
 - take care of old conf files on upgrades
 - take care of old pyc files from python-central
+- rewrite manpage in asciidoc and get rid of some build-depends. also dont build readme.pdf
+- test pipuparts with piuparts before uploading
 
 for 0.37 and on
+
+- report: write stats about the reasons for failures
+
+- create emacspeak-broken-dpkg-preconfigure package for broken repo. (then later
+  put more broken packages in there and use that for testing piuparts)
+
+- write slave-watcher to monitor hanging processes, eg. looping dpkg-preconfigure
 
 - Check for and kill extraneous processes afterwards. Perhaps by checking
   whether their working directory is in the chroot.
