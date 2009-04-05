@@ -1,10 +1,10 @@
-#!/bin/sh 
+#!/bin/sh -x
 #
 # run piuparts-slave in screen so that a screendump can be mailed via cron to monitor the slave
 #
 set -e
 cd /org/piuparts.debian.org/slave
-(ps fax|grep -v grep| grep piuparts-slave.py ) || exit 0
-sudo rm /org/piuparts.debian.org/slave/screenlog.0
-sudo screen -L -d -m -S piuparts-slave-screen su - piupartss -c "cd /org/piuparts.debian.org/slave && python ../share/piuparts/piuparts-slave"
+(ps fax|grep -v grep| grep piuparts-slave ) && exit 0
+rm -f /org/piuparts.debian.org/slave/screenlog.0
+screen -L -d -m -S piuparts-slave-screen su - piupartss -c "cd /org/piuparts.debian.org/slave && python ../share/piuparts/piuparts-slave"
 

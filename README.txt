@@ -67,17 +67,30 @@ piupartss@piatti:/org/piuparts.debian.org$ ./update-piuparts-setup
 
 === Starting the slave
 
-Use the following command to start piuparts-slave on piatti, piuparts-master will be started automatically by the slave.
+Run the following script under *your* user account you will start piuparts-slave on piatti, piuparts-master will be started automatically by the slave.
 
 ----
-piupartss@piatti:~$ slave_run
+holger@piatti:~$ sudo /home/piupartss/bin/slave_run 
 ----
 
 There is a cronjob installed (in '~piupartsm/crontab') which sends a mail with the tail of the session every six hours.
 
+=== Joining an existing slave session
+
+Run the following script under *your* user account:
+
+----
+holger@piatti:~$ sudo /home/piupartss/bin/slave_join 
+----
+
 === Filing bugs
 
-to be written
+Use the following usertags:
+
+----
+User: debian-qa@lists.debian.org
+Usertags: piuparts piuparts.d.o
+----
 
 === Generating reports for the website
 

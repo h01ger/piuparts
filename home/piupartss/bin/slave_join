@@ -3,5 +3,5 @@
 # reattach to an existing slave session
 #
 set -e
-sudo screen -R -S piuparts-slave-screen
+screen -R -S piuparts-slave-screen
 
