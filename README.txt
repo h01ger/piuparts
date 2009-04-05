@@ -1,22 +1,23 @@
 Notes about the piuparts installation on piatti.debian.org 
 ==========================================================
 
-todo
-----
-- script for starting piuparts-slave in screen and cronjob to send mail with its output
+== ToDo
+
 - use local mirror
 - there should be a 2nd group of piuparts-people. those who can sudo into piupartsm to process logfiles. maybe make that the qa-group
 
+== Installation
 
-User setup
-----------
+=== User setup
+
 A piupartss and a piupartsm user is need. Both are members of the group piuparts and /org/piuparts.debian.org is 774 piupartss.piuparts.
 Both user have some files in $HOME which are kept in svn, including hidden files.
 
 Create an SSH keypair for piupartss and put it into ~/.ssh/authorized_keys of the piupartsm user, so the piupartss can login with ssh to localhost as piupartsm.
 
-'/etc/sudoers' for piatti
--------------------------
+=== '/etc/sudoers' for piatti
+
+----
 # The piuparts slave needs to handle chroots
 piupartss       ALL=(ALL) NOPASSWD: ALL
 
@@ -25,15 +26,15 @@ piupartss       ALL=(ALL) NOPASSWD: ALL
 %piuparts       ALL=(piupartsm) ALL
 ---
 
-piuparts installation from svn source
--------------------------------------
+=== piuparts installation from svn source
+
 * sudo apt-get install apt python debootstrap lsof lsb-release python-debian make dpkg-dev docbook2x python-support docbook-xml asciidoc dblatex
 * you need a webserver too, if you run the master
 * Copy 'svn://svn.debian.org/svn/piuparts/piatti/home/piupartss/bin/update-piuparts-setup' on the host and run it. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further svn checkouts as well as source code installation. It needs the piupartss and piupartsm user set up as described below, though.
 * sudo ln -s /org/piuparts.debian.org/etc/ /etc/piuparts
 	
-Apache configuration
---------------------
+=== Apache configuration
+
 (Any other webserver will do.)
 ----
 <VirtualHost *:80>
@@ -56,14 +57,35 @@ Apache configuration
 </VirtualHost>
 ----
 
-Generating reports for the website
-----------------------------------
-'piuparts-report' is run from '~piupartsm/crontab'
+== Updating the piuparts installtion
 
+----
+piupartss@piatti:/org/piuparts.debian.org$ ./update-piuparts-setup
+----
 
-Cronjobs to aid problem spotting
---------------------------------
-Reside in '~piupartsm/bin/' and are run by '~piupartsm/crontab'.
+== Running piuparts
+
+=== Starting the slave
+
+Use the following command to start piuparts-slave on piatti, piuparts-master will be started automatically by the slave.
+
+----
+piupartss@piatti:~$ slave_run
+----
+
+There is a cronjob installed (in '~piupartsm/crontab') which sends a mail with the tail of the session every six hours.
+
+=== Filing bugs
+
+to be written
+
+=== Generating reports for the website
+
+'piuparts-report' is run daily five minutes after midnight from '~piupartsm/crontab'
+
+=== Cronjobs to aid problem spotting
+
+Some cronjobs to aid problem spotting reside in '~piupartsm/bin/' and are run daily by '~piupartsm/crontab'.
 
 - 'detect_network_issues' should detect failed piuparts runs due to network issues on the host.
 - 'detect_stale_mounts' should detect stale mountpoints (usually of /proc) from failed piuparts runs.
@@ -71,18 +93,10 @@ Reside in '~piupartsm/bin/' and are run by '~piupartsm/crontab'.
 More checks should be added as we become aware of them.
 
 
-to start a new run and throw away all results:
-----------------------------------------------
-----
-piupartss@piatti:/org/piuparts.debian.org$ ./update-piuparts-setup
-piupartss@piatti:/org/piuparts.debian.org/slave$ nice python ../share/piuparts/piuparts-slave 
-----
+== Authors
 
-filing bugs
------------
-to be written
+March+April 2009
 
-
-March 2009
+Holger Levsen <holger@debian.org>
 Luk Claes <luk@debian.org>
-Holger Levsen <holger@debian.org> 
+

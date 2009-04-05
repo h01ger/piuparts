@@ -1,0 +1,7 @@
+#!/bin/sh 
+#
+# reattach to an existing slave session
+#
+set -e
+sudo screen -R -S piuparts-slave-screen
+
