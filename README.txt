@@ -3,6 +3,8 @@ Notes about the piuparts installation on piatti.debian.org
 
 == ToDo
 
+- improve slave-watcher cronjob entry, so that i checks every hour whether tail still looks the same, if so mail it, else mail the full day diff at midnight only -> less frequent mails :)
+- review sudoers and come up with (a bit) more restrictive one
 - use local mirror
 - there should be a 2nd group of piuparts-people. those who can sudo into piupartsm to process logfiles. maybe make that the qa-group
 
@@ -28,7 +30,7 @@ piupartss       ALL=(ALL) NOPASSWD: ALL
 
 === piuparts installation from svn source
 
-* sudo apt-get install apt python debootstrap lsof lsb-release python-debian make dpkg-dev docbook2x python-support docbook-xml asciidoc dblatex
+* sudo apt-get install apt python debootstrap lsof lsb-release python-debian make dpkg-dev docbook2x python-support docbook-xml dblatex docbook-xsl asciidoc
 * you need a webserver too, if you run the master
 * Copy 'svn://svn.debian.org/svn/piuparts/piatti/home/piupartss/bin/update-piuparts-setup' on the host and run it. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further svn checkouts as well as source code installation. It needs the piupartss and piupartsm user set up as described below, though.
 * sudo ln -s /org/piuparts.debian.org/etc/ /etc/piuparts
