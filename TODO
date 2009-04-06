@@ -8,6 +8,7 @@ must for 0.36
 --- find_log() is not used atm
 --- include links to logfiles in source summary pages
 --- include links to http://qa.debian.org/developer.php?login=$maintainer_email
+--- document sources-url in README.txt
 - then R
 - dont write counts.txt if it has already been written that day
 - take care of old conf files on upgrades
