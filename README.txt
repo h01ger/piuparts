@@ -30,7 +30,7 @@ piupartss       ALL=(ALL) NOPASSWD: ALL
 
 === piuparts installation from svn source
 
-* sudo apt-get install apt python debootstrap lsof lsb-release python-debian make dpkg-dev docbook2x python-support docbook-xml dblatex docbook-xsl asciidoc
+* sudo apt-get install apt python debootstrap lsof lsb-release python-debian make dpkg-dev python-support asciidoc xmlto
 * you need a webserver too, if you run the master
 * Copy 'svn://svn.debian.org/svn/piuparts/piatti/home/piupartss/bin/update-piuparts-setup' on the host and run it. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further svn checkouts as well as source code installation. It needs the piupartss and piupartsm user set up as described below, though.
 * sudo ln -s /org/piuparts.debian.org/etc/ /etc/piuparts
