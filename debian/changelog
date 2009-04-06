@@ -54,7 +54,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - split install target into install-doc, install-conf and install, to aid
       development and deployment from trunk.
   * debian/control: depend on python (>>2.4), make dependency to python-debian
-    unversioned and add build-dependencies for debhelper, asciidoc and xmlto.
+    unversioned and add build-dependencies on debhelper, asciidoc and xmlto.
     Remove build-dependencies on docbook2x and docbook-xml.
   * Rewrite debian/rules using debhelper.
   * Merge README, how-to-use-piuparts.txt and custom-scripts.txt into 

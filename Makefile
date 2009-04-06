@@ -22,7 +22,6 @@ all: install-conf install-doc install
 install-doc:
 	# build and install manual
 	a2x --copy -a toc -a toclevels=3 -f xhtml README.txt
-	rm README.xml
 	install -d $(docdir)/
 	for file in README.txt README.html docbook-xsl.css ; do \
 	    install -m 0755 $$file $(docdir)/ ; done
@@ -58,4 +57,4 @@ check:
 	python unittests.py
 
 clean:
-	rm -rf piuparts.1 piuparts.1.html piuparts README.html docbook-xsl.css piuparts.html
+	rm -rf piuparts.1 piuparts.1.xml piuparts.1.html piuparts README.xml README.html docbook-xsl.css piuparts.html 
