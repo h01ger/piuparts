@@ -154,7 +154,7 @@ HTML_HEADER = """
     <tr class="titlerow">
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="/doc/piuparts.html" target="_blank">piuparts manpage</a>
+      <a href="/doc/piuparts.1.html" target="_blank">piuparts manpage</a>
      </td>
     </tr>
     <tr class="titlerow">

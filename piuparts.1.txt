@@ -1,0 +1,168 @@
+piuparts(1)
+===========
+
+NAME
+----
+piuparts - .deb installation, upgrade, and removal testing suite
+
+SYNOPSIS
+--------
+*piuparts* ['-apvV'] ['-d' _distro_] ['-i' _filename_] ['-I' _regexp_] ['-l' _logfile_] ['-m' _url_] ['--bindmount' _dir_] [_package_] [_changes_file_]
+
+DESCRIPTION
+-----------
+*piuparts* tests that Debian packages handle installation, upgrading, and removal correctly. It does this by creating a minimal Debian installation in a chroot, and installing, upgrading, and removing packages in that environment, and comparing the state of the directory tree before and after. *piuparts* reports any files that have been added, removed, or modified during this process.
+
+*piuparts* is meant as a quality assurance tool for people who create Debian packages to test them before they upload them to the Debian package
+archive.
+
+By default, piuparts can do three different tests:
+
+. A simple install-purge test within one Debian distribution (chosen with the '-d' option, unstable by default). It sets up the chroot with the desired distribution, then installs and purges the packages, and reports problems.
+
+. A simple install-upgrade-purge test within one Debian distribution. This test is like the install-purge test, but install the packages first via *apt-get* and then from the package files given on the command line. If the command line has package names (option '-a' used), or the packages are not known to *apt-get* (new packages), this test is skipped, otherwise it is performed automatically.
+
+. An upgrade test between Debian releases. This test is enabled by using the '-d' option multiple times and disables the other two tests. It sets up the chroot with the first distribution named, then upgrades it to each successive one, and then remembers the directory tree state at the end. After this, it starts over with the chroot of the first distribution, installs the desired packages (via *apt-get*), and does the successive upgrading (via *apt-get dist-upgrade*). Then, if package files (and not just package names) were given on the command line, it installs them. Finally, it reports problems against the state of the directory tree at the last distribution compared with the state without the packages having been installed. This test can be quite slow to execute.
++
+Note that this does not work with experimental, because *apt-get* does not automatically upgrade to packages in experimental. To test a particular package or group of packages in experimental, use the second test. 
+
+
+Command line arguments are the paths to package files (e.g., _piuparts_1.0-1_all.deb_), paths to changes files (e.g., _piuparts_1.0-1_i386.changes_), or names of packages, if the '--apt' option is given.
+
+When processing changes files, by default, every package in a changes file will be processed together with all individual packages given on the command line. Then each package given on the command line is processed in a single group. If the '--single-changes-list' is used, the packages in every changes file are processed together along with any individual packages that were given on the command line.
+
+*piuparts* outputs to the standard output some log messages to show what is going on. If a log file is used, the messages go there as well.
+
+*piuparts* needs to be run as root.
+
+OPTIONS
+-------
+Options must come before the other command line arguments.
+
+*-a, --apt*::
+  The package arguments on the command line are to be treated as package names and installed via *apt-get* instead  of  being  names  of  package  files, to be installed via *dpkg -i*.
+
+*-b tarball, --basetgz*='tarball'::
+  Use tarball as the contents of the initial chroot, instead of building a new one with debootstrap.
++
+The tarball can be created with the '-s' option, or you can use one that *pbuilder* has created (see '-p'). If you create one manually, make sure the root of the chroot is the root of the tarball.
+
+*-d* 'name', *--distribution*='name'::
+  Which Debian distribution to use: a code name (etch, lenny, sid) or experimental. The default is sid (i.e, unstable).
+
+*-D* 'flavor', *--defaults* 'flavor'::
+  Use default settings suitable for a particular flavor of Debian: either debian or ubuntu.
+
+*-i*' filename', *--ignore*='filename'::
+  Add a filename to the list of filenames to be ignored when comparing changes before and after installation. By default, piuparts ignores files that always change during a package installation and uninstallation, such as *dpkg* status files. The filename should be relative to the root of the chroot (e.g., _var/lib/dpkg/status_). This option can be used as many times as necessary.
+
+*-I* 'regexp', *--ignore-regexp*='regexp'::
+  Add a regular expression pattern to the list of patterns for filenames to be ignored when comparing changes before and after installation. This option can be used as many times as necessary.
+
+*-k, --keep-tmpdir*::
+  Don't remove the temporary directory for the chroot when the program ends.
+
+*--keep-sources-list*::
+  Don't modify the chroot's etc/apt/sources.list (only makes sense with '--basetgz').
+
+*--warn-on-others*::
+  Print a warning rather than failing if files are left behind, modified, or removed by a package that was not given on the command-line.
++
+This way, you can basically isolate the purge test to your own packages. If a package that is brought in as a dependency doesn't purge cleanly, the test will not fail because of it (but a warning message will be printed).
++
+Behavior with multple packages given on the command-line could be problematic, particularly if the dependency tree of one package in the list includes another in the list. Therefore, it is recommended to use this option with one package at a time.
+
+*--skip-minimize*::
+  Allow skip minimize chroot step. This is useful when you want to test several packages with piuparts. You can prepare a tarball already minimized and skip this step in all the tests.
+
+*--list-installed-files*::
+  List the files added to the chroot after the installation of the package and after the installation of the package dependencies.
+
+*--no-upgrade-test*::
+  Skip testing upgrade from an existing version in the archive.
+
+*--skip-cronfiles-test*::
+  Skip testing the output from the cron files left in the system after remove a package.
+
+*--scriptsdir*='DIR'::
+  Directory where are placed the custom scripts. For more information about this, read custom-scripts.txt
+
+*-l* 'filename', *--log-file*='filename'::
+  Write log file to _filename_ in addition to the standard output.
+
+*-m* 'url', *--mirror*='url'::
+  Which Debian mirror to use. The default is the first mirror named in _/etc/apt/sources.list_ or _http://ftp.debian.org/_ if none is found. This option may be used multiple times to use multiple mirrors. Only the first mirror is used with *debootstrap*.
++
+The 'components' that are used for a mirror can also be set with this option: a space separated list within the same argument (so you need to quote the entire argument in the shell). If no components are given explicitly, the usual Debian components are used (main, contrib, and non-free). For the mirrors read from _/etc/apt/sources.list_, the components are read from the same place.
++
+Note that file: addresses works if the directories are made accessible from within the chroot with '--bindmount'.
+
+*--bindmount*='dir'::
+  Bind-mount a directory inside the chroot.
+
+*-n, --no-ignores*::
+  Forget all built-in and other ignores that have been set so far. Any '-i' or '-I' arguments that come after this one will be obeyed, but none of the ones that come before.
+
+*-N, --no-symlinks*::
+  Don't check for broken symlinks.
+
+*-p, --pbuilder*::
+  Use _/var/cache/pbuilder/base.tgz_ as the base tarball. This is a shorthand so that you don't need to use '-b' for it.
+
+*-s* 'filename', *--save*='filename'::
+  Save the chroot, after it has been set up, as a tarball into _filename_. It can then be used with '-b'.
+
+*-t directory, --tmpdir*='directory'::
+  Use directory as the place where temporary files and directories are created. The default is the environment variable *TMPDIR*, or _/tmp_ if not set.
+
+*--single-changes-list*::
+  When processing changes files, piuparts will process the packages in each individual changes file seperately. This option will set piuparts to scan the packages of all changes files together along with any individual package files that may have been given on the command line.
+
+*-v, --verbose*::
+  This option no longer has any meaning, but it is still accepted for backwards compatibility.
+
+*-V, --version*::
+  Write out the version number of the program.
+
+EXAMPLES
+--------
+Assume that you have just built a new version of your Debian package, to be uploaded to Debian unstable. It is in _../foo_1.0-2_i386.deb_ and you would like to know whether it installs and uninstalls properly. Here's what you would do:
+
+piuparts ../foo_1.0-2_i386.deb
+
+If the package exists in the Debian archive already, the above command also tests that it upgrades properly.
+
+To do the same test, but using a particular mirror, and only the main component, you would do this:
+
+piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.deb
+
+If you want to do the same as above but for your changes files, pass in your changes files when running piuparts, and piuparts will process each package in the changes files as though you had passed all those packages on the command line to piuparts yourself. For example:
+
+piuparts ../foo_1.0-2_i386.changes
+
+piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.changes
+
+If you want to test that a package installs properly in the stable (etch) Debian release, then can be upgraded to the testing (lenny) and unstable (sid) versions, and then uninstalled without problems, you would give the following command:
+
+piuparts -a -d etch -d lenny -d sid foo
+
+ENVIRONMENT
+-----------
+*TMPDIR* Location for temporary files and directories. If not set, use _/tmp_. See also the '-t' ('--tmpdir') option.
+
+NOTES
+-----
+Outputs of commands run by piuparts are limited to the last megabyte. To change this limit, the source code needs to be edited.
+
+SEE ALSO
+--------
+*pbuilder*(1), *debootstrap*(8)
+
+AUTHOR
+------
+Lars Wirzenius (liw@iki.fi)
+
+DATE
+----
+2005-07-10
+

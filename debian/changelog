@@ -40,8 +40,8 @@ piuparts (0.36) UNRELEASED; urgency=low
     - generate counts.txt (per section) with raw numbers of packages per state,
       include these stats in the debug output (so it gets included in the mails
       send by cron.)
-    - generate sources.txt (per section) with state summary per source package
-      (for the PTS to display a source packages piuparts state)
+    - generate sources.txt (per section) with a summary status per source 
+      package (for the PTS to display a source packages piuparts state)
     - generate html status pages for all source packages (to link from the PTS)
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
@@ -54,13 +54,16 @@ piuparts (0.36) UNRELEASED; urgency=low
     - split install target into install-doc, install-conf and install, to aid
       development and deployment from trunk.
   * debian/control: depend on python (>>2.4), make dependency to python-debian
-    unversioned and add build-dependencies for debhelper and asciidoc.
+    unversioned and add build-dependencies for debhelper, asciidoc and xmlto.
+    Remove build-dependencies on docbook2x and docbook-xml.
   * Rewrite debian/rules using debhelper.
   * Merge README, how-to-use-piuparts.txt and custom-scripts.txt into 
     README.txt, convert it to asciidoc and build pdf and html versions of it. 
   * Restructure and update README.txt to reflect the configuration changes in 
     master-slave mode.
   * Add NEWS file.
+  * Rewrite piuparts manpage in asciidoc.
+  * Build and install html version of the piuparts manpage.
   * Update debian/copyright to reflect that piuparts is licenced under GPL2+.
   * Update FSF address in all files referencing the GPL.
   * Remove unused file piuparts.css. 
