@@ -647,10 +647,11 @@ class Section:
             logging.debug("%s: %s" % (state, count))
         header += "\n"       
         counts += "\n"       
- 
-        if not os.path.isfile("counts.txt"):
-          write_file("counts.txt", header)
-        append_file("counts.txt", counts)
+
+        countsfile = os.path.join(self._output_directory, "counts.txt") 
+        if not os.path.isfile(countsfile):
+          write_file(countsfile, header)
+        append_file(countsfile, counts)
 
     def find_log(self, package):
         n = self._binary_db._logdb._log_name(package["Package"], package["Version"])
@@ -693,7 +694,7 @@ class Section:
                     "binaryrows": binaryrows,
                     }))
                 f.close()
-        write_file("sources.txt", sources)
+        write_file(os.path.join(self._output_directory, "sources.txt"), sources)
 
     def generate_file_output(self):
             self.write_counts_summary()
