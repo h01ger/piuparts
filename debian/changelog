@@ -53,9 +53,11 @@ piuparts (0.36) UNRELEASED; urgency=low
       adding dpkg-dev to build-depends.
     - split install target into install-doc, install-conf and install, to aid
       development and deployment from trunk.
-  * debian/control: depend on python (>>2.4), make dependency to python-debian
-    unversioned and add build-dependencies on debhelper, asciidoc and xmlto.
-    Remove build-dependencies on docbook2x and docbook-xml.
+  * debian/control: 
+    - depend on python (>>2.4), make dependency to python-debian unversioned
+    - add build-dependencies on debhelper, asciidoc and xmlto.
+    - remove build-dependencies on docbook2x and docbook-xml.
+    - set Homepage: to http://piuparts.debian.org
   * Rewrite debian/rules using debhelper.
   * Merge README, how-to-use-piuparts.txt and custom-scripts.txt into 
     README.txt, convert it to asciidoc and build pdf and html versions of it. 
@@ -67,6 +69,7 @@ piuparts (0.36) UNRELEASED; urgency=low
   * Update debian/copyright to reflect that piuparts is licenced under GPL2+.
   * Update FSF address in all files referencing the GPL.
   * Remove unused file piuparts.css. 
+  * Bump Standards-Version to 3.8.1, no changes neccessary.
 
  -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
 

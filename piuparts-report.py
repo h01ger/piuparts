@@ -356,7 +356,7 @@ INDEX_BODY_TEMPLATE = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      2009-03-19: lenny2squeeze is not needed, so all logs for squeeze (as well as lenny2squeeze) were deleted. (As squeeze now includes two kinds of tests: installation and removal in squeeze, and installation in lenny, upgrade to squeeze, removal in squeeze.
+      2009-03-19: lenny2squeeze is not needed, so all logs for squeeze (as well as lenny2squeeze) were deleted. (As squeeze now includes two kinds of tests: installation and removal in squeeze, and installation in lenny, upgrade to squeeze, removal in squeeze.)
      </td>
     </tr>
     </table>
