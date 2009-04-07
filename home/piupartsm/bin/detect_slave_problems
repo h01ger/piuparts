@@ -18,8 +18,12 @@
 
 #
 # this scripts monitors the output of piuparts-slave
-# when running in screen started by ~piupartss/bin/slave_run
+# when running in screen started by ~piupartss/bin/slave_run on piatti
 #
+HOSTNAME=`hostname`
+if [ "$HOSTNAME" != "piatti" ] ; then
+	exit 0
+fi
 
 SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
 MONITORDIR=/org/piuparts.debian.org/master/monitor-slave
