@@ -3,7 +3,6 @@ Notes about the piuparts installation on piatti.debian.org
 
 == ToDo
 
-- improve slave-watcher cronjob entry, so that i checks every hour whether tail still looks the same, if so mail it, else mail the full day diff at midnight only -> less frequent mails :)
 - review sudoers and come up with (a bit) more restrictive one
 - use local mirror
 - there should be a 2nd group of piuparts-people. those who can sudo into piupartsm to process logfiles. maybe make that the qa-group

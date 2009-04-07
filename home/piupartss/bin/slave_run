@@ -5,6 +5,9 @@
 set -e
 cd /org/piuparts.debian.org/slave
 (ps fax|grep -v grep| grep piuparts-slave ) && exit 0
-rm -f /org/piuparts.debian.org/slave/screenlog.0
+rm -f /org/piuparts.debian.org/slave/screenlog.0			# used by ~piupartsm/bin/detect_slave_problems
+rm -f /org/piuparts.debian.org/master/monitor-slave/mail-sent		# to only warn once a day about piuparts hanging
+rm -f /org/piuparts.debian.org/master/monitor-slave/screenlog.old	# and not to warn when it was just started 
+
 screen -L -d -m -S piuparts-slave-screen su - piupartss -c "cd /org/piuparts.debian.org/slave && python ../share/piuparts/piuparts-slave"
 

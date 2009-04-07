@@ -35,6 +35,7 @@ if [ ! -d .svn ] ; then
 	svn co svn://svn.debian.org/svn/piuparts/piatti/home/piupartss .
 fi
 pwd
+crontab crontab
 svn up
 svn status
 grep -q PYTHONPATH .bashrc || {
