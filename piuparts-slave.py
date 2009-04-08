@@ -324,7 +324,7 @@ def upgrade_testable(config, package, packages_files):
 
 
 def test_package(config, package, packages_files):
-    logging.info("Testing package %(Package)s %(Version)s" % package)
+    logging.info("Testing package %s/%s %s" % (config.section, package["Package"], package["Version"]))
 
     output_name = log_name(package["Package"], package["Version"])
     logging.debug("Opening log file %s" % output_name)

@@ -4,16 +4,16 @@ Things to do for piuparts
 must for 0.36
 
 - report:
---- dont do source stats if source-url not defined, document that in readme.txt
+--- write_sources_summaries() should be split in prepare_ and assemble_. assemble_ should use find_log() to build all needed pages
 --- find_log() is not used atm
+--- $package in $section
+--- include pts links
 --- include links to logfiles in source summary pages
 --- include links to http://qa.debian.org/developer.php?login=$maintainer_email
---- document sources-url in README.txt
 - then R
 - dont write counts.txt if it has already been written that day
 - take care of old conf files on upgrades
 - take care of old pyc files from python-central
-- rewrite manpage in asciidoc and get rid of some build-depends. also dont build readme.pdf
 - test pipuparts with piuparts before uploading
 
 for 0.37 and on

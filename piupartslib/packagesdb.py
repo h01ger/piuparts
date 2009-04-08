@@ -376,8 +376,8 @@ class PackagesDB:
         self._find_all_packages()
         return self._packages
 
-    def get_binary_package_names(self, packagename):
-        return self._packages[packagename]["Binary"]
+    def get_control_header(self, packagename, header):
+        return self._packages[packagename][header]
 
     def get_package_state(self, package_name):
         return self._package_state[packagename]

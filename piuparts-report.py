@@ -517,11 +517,12 @@ class Section:
         self._binary_db.read_packages_file(packages_file)
         packages_file.close()
 
-        logging.info("Fetching %s" % self._config["sources-url"])
-        sources_file = piupartslib.open_packages_url(self._config["sources-url"])
-        self._source_db = piupartslib.packagesdb.PackagesDB()
-        self._source_db.read_packages_file(sources_file)
-        sources_file.close()
+        if self._config["sources-url"]:
+          logging.info("Fetching %s" % self._config["sources-url"])
+          sources_file = piupartslib.open_packages_url(self._config["sources-url"])
+          self._source_db = piupartslib.packagesdb.PackagesDB()
+          self._source_db.read_packages_file(sources_file)
+          sources_file.close()
 
     def write_log_list_page(self, filename, title, preface, logs):
         packages = {}
@@ -665,7 +666,9 @@ class Section:
         logging.debug("Writing source package summaries")    
         sources = ""
         for source in self._source_db.get_all_packages():
-                binaries = self._source_db.get_binary_package_names(source)
+                binaries = self._source_db.get_control_header(source, "Binary")
+                maintainer = self._source_db.get_control_header(source, "Maintainer")
+                version = self._source_db.get_control_header(source, "Version")
                 success = True
                 failed = False
                 binaryrows = ""
@@ -689,7 +692,7 @@ class Section:
                 f.write(htmlpage.safe_substitute( {
                     "section_navigation": create_section_navigation(self._section_names),
                     "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                    "source": html_protect(source),
+                    "source": html_protect(source+", "+maintainer+", "+version),
                     "section": html_protect(self._config.section),
                     "binaryrows": binaryrows,
                     }))
@@ -698,7 +701,8 @@ class Section:
 
     def generate_file_output(self):
             self.write_counts_summary()
-            self.write_sources_summaries()
+            if self._config["sources-url"]:
+              self.write_sources_summaries()
 
     def generate_output(self, master_directory, output_directory, section_names):
         self._section_names = section_names
