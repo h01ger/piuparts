@@ -74,7 +74,7 @@ Run the following script under *your* user account you will start piuparts-slave
 holger@piatti:~$ sudo /home/piupartss/bin/slave_run 
 ----
 
-There is a cronjob installed (in '~piupartsm/crontab') which sends a mail with the tail of the session every six hours.
+There are several cronjobs installed via '~piupartsm/crontab' and '~piupartss/crontab') which monitor the slave and the host it's running on.
 
 === Joining an existing slave session
 
