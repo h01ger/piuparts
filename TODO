@@ -10,8 +10,12 @@ must for 0.36
 --- include pts links
 --- include links to logfiles in source summary pages
 --- include links to http://qa.debian.org/developer.php?login=$maintainer_email
+--- dont write counts.txt if it has already been written that day
+-- slave
+--- mention distro when sending logs
+--- slave_run: cleanup stale proc mountpoints
+--- cronjob: warn about 10 or more tmp filesystems...
 - then R
-- dont write counts.txt if it has already been written that day
 - take care of old conf files on upgrades
 - take care of old pyc files from python-central
 - test pipuparts with piuparts before uploading
