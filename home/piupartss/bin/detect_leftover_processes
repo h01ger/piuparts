@@ -16,8 +16,11 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
+MONITORDIR=/org/piuparts.debian.org/master/monitor-slave
+LOCKFILE="$MONITORDIR/leftover_processes"
+
 OUTPUT=$(sudo ls /proc/*/root -lad 2>/dev/null|grep "/org/piuparts.debian.org/tmp" | grep "(deleted)")
-if [ "$OUTPUT" != "" ] ; then
+if [ "$OUTPUT" != "" ] && [ "$(cat $LOCKFILE)" != "$OUTPUT" ] ; then
 	echo "Found processes running with a deleted chroot in /org/piuparts.debian.org/tmp/"
 	echo "This is usually because of 'FAIL: Processes are running inside chroot'"
 	echo
@@ -25,4 +28,9 @@ if [ "$OUTPUT" != "" ] ; then
 	echo
 	echo "Please cleanup manually."
 	echo "#522918 has been filed to make this manual operation unneeded."
+	mkdir -p $MONITORDIR
+	chown piupartsm.piuparts $MONITORDIR
+	chmod 775 $MONITORDIR
+	echo $OUTPUT > $LOCKFILE
+	chmod 664 $LOCKFILE
 fi

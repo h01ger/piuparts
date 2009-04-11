@@ -27,10 +27,12 @@ fi
 
 SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
 MONITORDIR=/org/piuparts.debian.org/master/monitor-slave
-LOCKFILE="$MONITORDIR/mail-sent"
+LOCKFILE="$MONITORDIR/slave-problems"
 
 mkdir -p $MONITORDIR
 cd $MONITORDIR
+chown piupartsm.piuparts $MONITORDIR
+chmod 775 $MONITORDIR
 
 # ~piupartss/bin/slave_run deletes screenlog.old so we know piuparts-slave has just been started 
 mv screenlog.new screenlog.old || cp $SCREENLOG screenlog.old
