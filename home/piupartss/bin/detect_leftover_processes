@@ -22,15 +22,16 @@ LOCKFILE="$MONITORDIR/leftover_processes"
 OUTPUT=$(sudo ls /proc/*/root -lad 2>/dev/null|grep "/org/piuparts.debian.org/tmp" | grep "(deleted)")
 if [ "$OUTPUT" != "" ] && [ "$(cat $LOCKFILE)" != "$OUTPUT" ] ; then
 	echo "Found processes running with a deleted chroot in /org/piuparts.debian.org/tmp/"
-	echo "This is usually because of 'FAIL: Processes are running inside chroot'"
+	echo "This is usually because of 'FAIL: Processes are running inside chroot' which usually"
+	echo "means the packages violates 'must use invoke-rc.d (policy 9.3.3.2)'."
 	echo
 	echo $OUTPUT
 	echo
 	echo "Please cleanup manually."
 	echo "#522918 has been filed to make this manual operation unneeded."
 	mkdir -p $MONITORDIR
-	chown piupartsm.piuparts $MONITORDIR
-	chmod 775 $MONITORDIR
+	sudo chown piupartsm.piuparts $MONITORDIR
+	sudo chmod 775 $MONITORDIR
 	echo $OUTPUT > $LOCKFILE
 	chmod 664 $LOCKFILE
 fi
