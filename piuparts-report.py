@@ -667,13 +667,13 @@ class Section:
         for source in self._source_db.get_all_packages():
                 binaries = self._source_db.get_control_header(source, "Binary")
                 maintainer = self._source_db.get_control_header(source, "Maintainer")
+                version = self._source_db.get_control_header(source, "Version")
                 success = True
                 failed = False
                 sourcedata = "<td class=\"contentcell2\">%s</td><td class=\"contentcell2\" colspan=\"2\">%s</td>" % (html_protect(source), html_protect(maintainer))
                 binaryrows = ""
                 for binary in binaries.split(", "):
                   state = self._binary_db.state_by_name(binary)
-                  version = self._binary_db.get_control_header(binary, "Version")
                   binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, state, version)
                   if state != "successfully-tested":
                     success = False

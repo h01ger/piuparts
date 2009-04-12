@@ -376,11 +376,11 @@ class PackagesDB:
         self._find_all_packages()
         return self._packages
 
-    def get_control_header(self, packagename, header):
-        return self._packages[packagename][header]
+    def get_control_header(self, package_name, header):
+        return self._packages[package_name][header]
 
     def get_package_state(self, package_name):
-        return self._package_state[packagename]
+        return self._package_state[package_name]
 
     def state_by_name(self, package_name):
         if package_name in self._package_state:
