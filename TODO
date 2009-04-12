@@ -6,10 +6,9 @@ must for 0.36
 - report:
 --- write_sources_summaries() should be split in prepare_ and assemble_. assemble_ should use find_log() to build all needed pages
 --- find_log() is not used atm
---- $package in $section
 --- include pts links
---- include links to logfiles in source summary pages
 --- include links to http://qa.debian.org/developer.php?login=$maintainer_email
+--- include links to logfiles in source summary pages
 --- dont write counts.txt if it has already been written that day
 -- slave
 --- mention distro when sending logs

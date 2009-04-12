@@ -253,10 +253,11 @@ SECTION_STATS_BODY_TEMPLATE = """
       $section statistics
      </td>
     </tr>
-     <tr class="normalrow">
+    <tr class="normalrow">
      <td class="contentcell2" colspan="3">
       $description
      </td>
+    </tr>
     <tr class="titlerow">
      <td class="titlecell" colspan="3">
       Packages per state
@@ -279,21 +280,21 @@ SECTION_STATS_BODY_TEMPLATE = """
 SOURCE_PACKAGE_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
-     <td class="titlecell" colspan="2">
-      Source package
+     <td class="titlecell" colspan="3">
+      Package $package
      </td>
     </tr>
     <tr class="normalrow">
-     <td class="contentcell2" colspan="2">
-       $source
+     <td class="contentcell2" colspan="3">
+      $source
      </td>
     </tr>
-     <tr class="titlerow">
-     <td class="titlecell" colspan="2">
+    <tr class="titlerow">
+     <td class="titlecell" colspan="3">
       Binary package(s) in $section
      </td>
     </tr>
-     $binaryrows
+    $binaryrows
    </table>
 """
 
@@ -668,13 +669,18 @@ class Section:
         for source in self._source_db.get_all_packages():
                 binaries = self._source_db.get_control_header(source, "Binary")
                 maintainer = self._source_db.get_control_header(source, "Maintainer")
-                version = self._source_db.get_control_header(source, "Version")
                 success = True
                 failed = False
                 binaryrows = ""
                 for binary in binaries.split(", "):
                   state = self._binary_db.state_by_name(binary)
-                  binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, state)
+                  version = self._binary_db.get_control_header(binary, "Version")
+                  binaryrows += "
+                                 <tr class=\"normalrow\">
+                                  <td class=\"contentcell2\">%s</td>
+                                  <td class=\"contentcell2\">%s</td>
+                                  <td class=\"contentcell2\">%s</td>
+                                 </tr>" % (binary, state, version)
                   if state != "successfully-tested":
                     success = False
                   if state == "failed-testing":
@@ -692,7 +698,7 @@ class Section:
                 f.write(htmlpage.safe_substitute( {
                     "section_navigation": create_section_navigation(self._section_names),
                     "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                    "source": html_protect(source+", "+maintainer+", "+version),
+                    "source": html_protect(source+", "+maintainer),
                     "section": html_protect(self._config.section),
                     "binaryrows": binaryrows,
                     }))
