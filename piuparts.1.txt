@@ -29,7 +29,7 @@ Note that this does not work with experimental, because *apt-get* does not autom
 
 Command line arguments are the paths to package files (e.g., _piuparts_1.0-1_all.deb_), paths to changes files (e.g., _piuparts_1.0-1_i386.changes_), or names of packages, if the '--apt' option is given.
 
-When processing changes files, by default, every package in a changes file will be processed together with all individual packages given on the command line. Then each package given on the command line is processed in a single group. If the '--single-changes-list' is used, the packages in every changes file are processed together along with any individual packages that were given on the command line.
+When processing changes files, by default, all packages in a changes file will be processed together with all individual packages given on the command line. Then each package given on the command line is processed in a single group. If the '--single-changes-list' is used, the packages in all changes files are processed together along with any individual packages that were given on the command line.
 
 *piuparts* outputs to the standard output some log messages to show what is going on. If a log file is used, the messages go there as well.
 
