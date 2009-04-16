@@ -18,7 +18,7 @@
 #
 # make sure slave is reminded daily (and also monitored if not started with ~piupartss/bin/slave_run)
 #
-23 0 * * * rm -f /org/piuparts.debian.org/master/monitor-slave/*
+42 0 * * * rm -f /org/piuparts.debian.org/master/monitor-slave/*
 
 #
 # monitor for problems once a day
