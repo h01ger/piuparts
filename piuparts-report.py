@@ -741,7 +741,7 @@ class Section:
             binaryrows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"3\">Binary package(s) in "+self._config.section+"</td></tr>"
             for binary in binaries.split(", "):
               state = self._binary_db.state_by_name(binary)
-              binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, link_to_state_page(self._config.section,source,state), version)
+              binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, self.link_to_state_page(self._config.section,source,state), version)
               if state != "successfully-tested":
                 success = False
               if state == "failed-testing":
