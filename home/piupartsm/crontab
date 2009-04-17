@@ -24,5 +24,6 @@
 # monitor for problems once a day
 #
 42 7 * * * /home/piupartsm/bin/detect_stale_mounts
+43 7 * * * /home/piupartsm/bin/detect_tmp_cruft
 44 7 * * * /home/piupartsm/bin/detect_network_issues
 45 7 * * * /home/piupartsm/bin/report_untestable_packages

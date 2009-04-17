@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+LS_TMP=$(ls --color=never -l /org/piuparts.debian.org/tmp)
+if [ "$(LS_TMP | wc -l)" -gt 12 ] ; then 
+	echo "More than ten directories in /org/piuparts.debian.org/tmp detected!"
+	echo
+	echo $LS_TMP
+	echo
+	echo "One is normal for piuparts operation, more is not."
+	echo "Please investigate and cleanup."
+fi
+rm $FILE

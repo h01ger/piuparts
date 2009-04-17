@@ -19,7 +19,7 @@
 MONITORDIR=/org/piuparts.debian.org/master/monitor-slave
 LOCKFILE="$MONITORDIR/leftover_processes"
 
-OUTPUT=$(sudo ls /proc/*/root -lad 2>/dev/null|grep "/org/piuparts.debian.org/tmp" | grep "(deleted)")
+OUTPUT=$(sudo ls  --color=never -lad /proc/*/root 2>/dev/null|grep "/org/piuparts.debian.org/tmp" | grep "(deleted)")
 if [ "$OUTPUT" != "" ] && [ "$(cat $LOCKFILE)" != "$OUTPUT" ] ; then
 	echo "Found processes running with a deleted chroot in /org/piuparts.debian.org/tmp/"
 	echo "This is usually because of 'FAIL: Processes are running inside chroot' which usually"
