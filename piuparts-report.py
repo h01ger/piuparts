@@ -489,6 +489,12 @@ def append_file(filename, contents):
     f.write(contents)
     f.close()
 
+def read_file(filename):
+    f = file(filename, "r")
+    l = f.readlines()
+    f.close()
+    return l
+
 def create_section_navigation(section_names):
     tablerows = ""
     for section in section_names:
@@ -674,7 +680,8 @@ class Section:
     def write_counts_summary(self):
         logging.debug("Writing counts.txt")    
         header = "date"
-        counts = "%s" % time.strftime("%Y%m%d")
+        current_day = "%s" % time.strftime("%Y%m%d")
+        counts = current_day
         for state in self._binary_db.get_states():
             count = len(self._binary_db.get_packages_in_state(state))
             header += ", %s" % state
@@ -686,7 +693,10 @@ class Section:
         countsfile = os.path.join(self._output_directory, "counts.txt") 
         if not os.path.isfile(countsfile):
           write_file(countsfile, header)
-        append_file(countsfile, counts)
+        else:
+          last_line = read_file(countsfile)[-1]
+        if not current_day in last_line:
+          append_file(countsfile, counts)
 
     def find_log(self, package):
         n = self._binary_db._logdb._log_name(package["Package"], package["Version"])

@@ -8,7 +8,6 @@ must for 0.36
 --- refactor code, sources.txt should not be calculated where it currently is
 --- include links to http://qa.debian.org/developer.php?login=$maintainer_email
 --- include links to logfiles in source summary pages
---- dont write counts.txt if it has already been written that day
 -- slave
 --- mention distro when sending logs
 --- slave_run: cleanup stale proc mountpoints
@@ -19,6 +18,9 @@ must for 0.36
 - take care of old conf files on upgrades
 - take care of old pyc files from python-central
 - test pipuparts with piuparts before uploading
+- provides are not handled correctky: ie libapt-pkg-perl has a dependency on 
+  libapt-pkg-libc6.7-6-4.6 which piuparts believes is an unknown-package while 
+  in reality its provided by apt
 
 for 0.37 and on
 
