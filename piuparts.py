@@ -206,6 +206,7 @@ class Settings:
             "/var/cache/debconf/templates.dat-old",
             "/var/cache/ldconfig/aux-cache",
             "/var/cache/man/index.db",
+            "/var/games",
             "/var/lib/apt/extended_states",
             "/var/lib/dpkg/available",
             "/var/lib/dpkg/available-old", 

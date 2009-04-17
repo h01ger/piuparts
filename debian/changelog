@@ -6,6 +6,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - ignore modifications of /var/lib/dpkg/triggers/*
     - ignore modifications of /etc/shadow* as /etc/passwd* and /etc/group* are
       ignored too.
+    - ignore if /var/games exists after purge (see #524461).
     - configure apt in chroots to not install recommends and suggests.
     - add support for scanning for packages in changes files, thanks to Andres
       Mejia for the patch. (Closes: #352940)
