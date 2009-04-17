@@ -1,54 +1,72 @@
 Things to do for piuparts
 =========================
 
-must for 0.36
+for 0.36:
 
 - report:
---- find_log() is not used atm
---- refactor code, sources.txt should not be calculated where it currently is
---- include links to http://qa.debian.org/developer.php?login=$maintainer_email
---- include links to logfiles in source summary pages
--- slave
---- mention distro when sending logs
---- slave_run: cleanup stale proc mountpoints
---- slave_stop script - unneeded with patch for #523958
+ - find_log() is not used atm
+ - refactor code, sources.txt should not be calculated where it currently is
+ - include links to http://qa.debian.org/developer.php?login=$maintainer_email
+ - include links to logfiles in source summary pages
+- slave
+ - mention distro when sending logs
+ - slave_stop script - unneeded with patch for #523958
 - then R
+- include patch for #519192
 - probably include patch for #523950
 - take care of old conf files on upgrades
 - take care of old pyc files from python-central
 - test pipuparts with piuparts before uploading
-- provides are not handled correctky: ie libapt-pkg-perl has a dependency on 
+- provides are not handled correctly: ie libapt-pkg-perl has a dependency on 
   libapt-pkg-libc6.7-6-4.6 which piuparts believes is an unknown-package while 
   in reality its provided by apt
+- break circular dependencies when there are only circular dependencies left for 
+  testing. prefer circular dependencies from the same source package until there are
+  none of this kind left.
+  warn visibly in logfile (but without error) when testing a packages with
+  circular dependencies.
 
-for 0.37 and on
+for 0.37:
 
-- report: write stats about the reasons for failures
+- report: 
+ - write stats about the reasons for failures
+ - write stats for total number of logs (when a package has more than a log in fail/ or bugged/)
+ - RSS feeds of logs
+
+- expire old logs a month after sucessful testing
 
 - create emacspeak-broken-dpkg-preconfigure package for broken repo. (then later
   put more broken packages in there and use that for testing piuparts)
 
-- write slave-watcher to monitor hanging processes, eg. looping dpkg-preconfigure
+- monitor:
+ - write slave-watcher to monitor hanging processes, eg. looping dpkg-preconfigure
+ - Check for and kill extraneous processes afterwards. Perhaps by checking
+   whether their working directory is in the chroot.
+   Introduce a whitelist of processes to wait for and assume it's an error 
+   if those haven't been killed after $time=10min. see #387428
+ - master.log grows to fast and there is no mechanism to stop it
 
-- Check for and kill extraneous processes afterwards. Perhaps by checking
-  whether their working directory is in the chroot.
-  Introduce a whitelist of processes to wait for and assume it's an error 
-  if those haven't been killed after $time=10min. see #387428
+- piuparts-slave: if chroot.tgz is older than N hours, regenerate it
+
+- slave_run: cleanup stale proc mountpoints
+
+- split the failed state into several problem-type failed states
 
 - the templates used by update-reports.py should be taken from /etc/piuparts/templates/
   and not be included in the python source
 
+- write reportbug wrapper for mass bug filing (start simple, make it more sophisticated 
+  in 0.38)
+
 - publish FAI classes to setup piuparts.$fqdn automatically
 
-- upgrade-reports should have a list of available arch and list packages 
-  only available on untested archs in a new state "(depends-)not-available-on-tested-archs"
+for 0.38 and on:
 
-- update-reports should generate source centered overview pages for packages
-
-- master should (per default) only schedule packages which are not available 
-  on the master arch to slaves of different archs -> "schedule-evenly-to-slaves = no"
-
-- master.log grows to fast and there is no mechanism to stop it
+- multi-arch:
+ - piuparts-report should have a list of available arch and list packages 
+   only available on untested archs in a new state "(depends-)not-available-on-tested-archs"
+ - master should (per default) only schedule packages which are not available 
+   on the master arch to slaves of different archs -> "schedule-evenly-to-slaves = no"
 
 - piuparts can't currently test upgrades of required packages. (Because they
   cannot be removed, it assumes these are untestable, which is only true for
@@ -60,16 +78,12 @@ for 0.37 and on
 
 - support for extra-packages-url (for volatile, security, etc)
 
-- RSS feeds of logs
-
 - not sure if it's a sensible thing to to, but provide a way to turn of debugging
   output for piuparts.py
 
 - piuparts can't currently test postfix, since installing postfix removes
   exim and removing postfix would require re-installing exim, and that
   doesn't happen; there's other packages like that, too
-
-- split the failed state into several problem-type failed states
 
 - mounting /proc and perhaps others (usbfs, sysfs, /dev/pts, etc.) in
   the chroot might be a good idea because some packages might need this.
@@ -79,12 +93,13 @@ for 0.37 and on
 Low priority stuff (a.k.a. "nobody's said they must have it now")
 -----------------------------------------------------------------
 
+* move shell cronjobs functionality into master, slave & report
+
 * make it possible to call aptitude (or similar) instead of apt-get and 
   allow to override the commandline arguments of the used program (to be 
   able to test with and without recommended packages or authentication).
 
 * Kill children after a timeout to make sure the test doesn't run forever.
-
 
 * include a test to see which packages which modify their own conffiles 
   so the user is presented with a dpkg conffile changed dialogue during
@@ -92,17 +107,16 @@ Low priority stuff (a.k.a. "nobody's said they must have it now")
   leave behind orphaned conffiles after purging a newer version which does
   not contain the files anymore.
 
-* deal with packages that need to replace higher priority packages
-  (which then need to be put back when the package is removed)
-
 * Bill Allombert: Does piupart test whether packages trigger useless
   conffiles handling ? (i.e. dpkg pretend you have modified a conffile
   when it has not) this is one kind of bugs I would really get rid of.
   h01ger: #466118 sounds like it does.
 
+* deal with packages that need to replace higher priority packages
+  (which then need to be put back when the package is removed)
+
 * piuparts-slave: keep track of reservations permanently
 * piuparts-master: keep track of whom a reservation is made
 * piuparts-slave: timestamps to log messages
-* piuparts-slave: if chroot.tgz is older than N hours, regenerate it
 * piuparts-slave: make the chroot more minimial
 * piuparts: upgrade the chroot before taking a snapshot of its files
