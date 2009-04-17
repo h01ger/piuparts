@@ -1,8 +1,0 @@
-#!/bin/sh
-
-DATE=`date +%Y-%m-%d`
-
-cd /org/piuparts.debian.org
-mkdir old-${DATE}
-mv master slave old-${DATE}/
-
