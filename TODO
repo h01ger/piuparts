@@ -8,7 +8,6 @@ must for 0.36
 --- refactor code, sources.txt should not be calculated where it currently is
 --- include links to http://qa.debian.org/developer.php?login=$maintainer_email
 --- include links to logfiles in source summary pages
---- include links to source pages in state summary pages
 --- dont write counts.txt if it has already been written that day
 -- slave
 --- mention distro when sending logs

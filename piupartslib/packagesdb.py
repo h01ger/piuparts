@@ -379,6 +379,13 @@ class PackagesDB:
     def get_control_header(self, package_name, header):
         return self._packages[package_name][header]
 
+    def get_source_package(self, package_name):
+        try:
+          source = self._packages[package_name]["Source"]
+        except:
+          source = self._packages[package_name]["Package"]
+        return source
+
     def get_package_state(self, package_name):
         return self._package_state[package_name]
 

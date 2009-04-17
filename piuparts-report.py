@@ -281,7 +281,7 @@ SOURCE_PACKAGE_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
      <td class="titlecell" colspan="3">
-      Package $package
+      Source package
      </td>
     </tr>
     $rows
@@ -527,11 +527,8 @@ def merge_templates(templates, section_names, source_pages_output_dir):
 
 def assemble_source_pages(output_directory,section_names):
     logging.debug("Assembling all source package summaries in %s" % output_directory)    
-
-    # needs to find them in subdir...
     templates = find_files_with_suffix(output_directory, ".tpl_src")
     merge_templates(templates, section_names, output_directory)
-
 
 class Section:
 
@@ -603,6 +600,12 @@ class Section:
                                 desc_by_dir[dir], list)
 
 
+    def link_to_source_summary(self,_source_package):
+        link = "<a href=\"/source/%s\">%s</a>" % (
+                source_subdir(_source_package)+"/"+_source_package+".html",
+                html_protect(_source_package))
+        return link
+
     def generate_html_output(self):
         logging.debug("Finding log files")
         dirs = ["pass", "fail", "bugged", "fixed", "reserved", "untestable"]
@@ -648,7 +651,7 @@ class Section:
             list = "<ul>\n"
             for package in self._binary_db.get_packages_in_state(state):
                 list += "<li>%s (%s)" % (
-                                         html_protect(package["Package"]),
+                                         self.link_to_source_summary(self._binary_db.get_source_package(package["Package"])),
                                          html_protect(package["Maintainer"]))
                 if package.dependencies():
                     list += "\n<ul>\n"
