@@ -32,12 +32,9 @@ piuparts (0.36) UNRELEASED; urgency=low
   * Re-add piuparts-reports.py which got removed/lost between 0.14 and 0.20 
     without changelog entry.
   * piuparts-reports.py: 
-    - print "unknown-package" bold in state reports.
     - support sections in configuration file. 
     - support looping trough multiple sections in report.conf via new config
       value "sections". 
-    - provide links to logfiles in statistics page.
-    - improve layout, generate navigation for all pages.
     - generate counts.txt (per section) with raw numbers of packages per state,
       include these stats in the debug output (so it gets included in the mails
       send by cron.)
@@ -45,7 +42,9 @@ piuparts (0.36) UNRELEASED; urgency=low
     - generate sources.txt (per section) with a summary status per source
       package (for the PTS to display a source packages piuparts state)
     - generate html status pages for all source packages (to link from the PTS)
-    - provide links to source status pages from state pages.
+    - provide links to logfiles in statistics page.
+    - provide links to source packages pages from state pages and back.
+    - improve layout, generate navigation for all pages.
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
     Introduce a new global section in piuparts.conf which is shared among the

@@ -606,10 +606,17 @@ class Section:
                                 desc_by_dir[dir], list)
 
 
-    def link_to_source_summary(self,_source_package):
+    def link_to_source_summary(self, package_name):
         link = "<a href=\"/source/%s\">%s</a>" % (
-                source_subdir(_source_package)+"/"+_source_package+".html",
-                html_protect(_source_package))
+                source_subdir(package_name)+"/"+package_name+".html",
+                html_protect(package_name))
+        return link
+
+    def link_to_state_page(self, section, package_name, state):
+        link = "<a href=\"/%s/%s\">%s</a>" % (
+                section,
+                state+".html"+"#"+package_name,
+                state)
         return link
 
     def generate_html_output(self):
@@ -656,7 +663,8 @@ class Section:
             logging.debug("Writing page for %s" % state)
             list = "<ul>\n"
             for package in self._binary_db.get_packages_in_state(state):
-                list += "<li>%s (%s)" % (
+                list += "<li id=\"%s\">%s (%s)" % (
+                                         package["Package"]),
                                          self.link_to_source_summary(self._binary_db.get_source_package(package["Package"])),
                                          html_protect(package["Maintainer"]))
                 if package.dependencies():
@@ -733,7 +741,7 @@ class Section:
             binaryrows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"3\">Binary package(s) in "+self._config.section+"</td></tr>"
             for binary in binaries.split(", "):
               state = self._binary_db.state_by_name(binary)
-              binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, state, version)
+              binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, link_to_state_page(self._config.section,source,state), version)
               if state != "successfully-tested":
                 success = False
               if state == "failed-testing":
