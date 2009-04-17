@@ -615,7 +615,7 @@ class Section:
     def link_to_state_page(self, section, package_name, state):
         link = "<a href=\"/%s/%s\">%s</a>" % (
                 section,
-                state+".html"+"#"+package_name,
+                "state-"+state+".html"+"#"+package_name,
                 state)
         return link
 
