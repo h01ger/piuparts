@@ -353,7 +353,7 @@ this:
 
 These settings are used for all sections. Except for the first two they are all mandatory:
 
-* "sections" defaults to sid and defines which sections should be processed in master-slave mode. Each section defined here has to have a section with the section specific settings explained below.
+* "sections" defaults to sid and defines which sections should be processed in master-slave mode. Each section defined here has to have a section with the section specific settings explained below. The first section defined should always be sid, because the data from first section a package is in is used for the source package html report.
 
 * "idle-sleep" is the length of time the slave should wait before querying the master again if the master didn't have any new packages to test. In seconds, so a value of 300 would mean five minutes, and that seems to be a good value when there are fairly few slaves per master. The default is 10 seconds.
   

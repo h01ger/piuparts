@@ -284,15 +284,7 @@ SOURCE_PACKAGE_BODY_TEMPLATE = """
       Package $package
      </td>
     </tr>
-    <tr class="normalrow">
-     $sourcedata
-    </tr>
-    <tr class="titlerow">
-     <td class="titlecell" colspan="3">
-      Binary package(s) in $section
-     </td>
-    </tr>
-    $binaryrows
+    $rows
    </table>
 """
 
@@ -442,14 +434,20 @@ def emphasize_reason(str):
     return str
 
 
-def path_to_source_summary_page(source):
+def source_subdir(source):
     if source[:3] == "lib":
       return source[:4]
     else:
       return source[:1]
 
-def find_log_files(dir):
-    return [name for name in os.listdir(dir) if name.endswith(".log")]
+
+def find_files_with_suffix(dir,suffix):
+    name=[name for name in os.listdir(dir) if name.endswith(suffix)]
+    subdirs=os.listdir(dir)
+    for subdir in subdirs:
+      if os.path.isdir(os.path.join(dir,subdir)):
+        name+=[name for name in os.listdir(os.path.join(dir,subdir)) if name.endswith(suffix)]
+    return name
 
 
 def update_file(source, target):
@@ -471,7 +469,6 @@ def copy_logs(logs_by_dir, output_dir):
             target = os.path.join(fulldir, basename)
             update_file(source, target)
 
-
 def remove_old_logs(logs_by_dir, output_dir):
     for dir in logs_by_dir:
         fulldir = os.path.join(output_dir, dir)
@@ -492,13 +489,48 @@ def append_file(filename, contents):
     f.write(contents)
     f.close()
 
-
 def create_section_navigation(section_names):
     tablerows = ""
     for section in section_names:
         tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell\"><a href='/%s'>%s</a></td></tr>\n") % \
                           (html_protect(section), html_protect(section))
     return tablerows;
+
+def merge_templates(templates, section_names, source_pages_output_dir):
+    logging.debug("Merging package templates from %s" % section_names)
+    for src_tpl in templates:
+        source_tpl = os.path.join(source_pages_output_dir,source_subdir(src_tpl),src_tpl)
+        f = file(source_tpl, "r")
+        rows = file.read(f)
+        f.close()
+        os.unlink(source_tpl)
+        template_path = source_tpl[:-len(".tpl_src")]
+
+        for section in section_names:
+            section_tpl = os.path.join(template_path+".tpl_"+section)
+            if os.path.isfile(section_tpl):
+                 f = file(section_tpl, "r")
+                 rows += file.read(f)
+                 f.close()
+                 os.unlink(section_tpl)
+ 
+        htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
+        package = os.path.basename(src_tpl)[:-len(".tpl_src")]
+        filename = os.path.join(source_pages_output_dir,source_subdir(package),package+".html")
+        f = file(filename, "w")
+        f.write(htmlpage.safe_substitute( {
+           "section_navigation": create_section_navigation(section_names),
+           "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+           "rows": rows,
+         }))
+        f.close()
+
+def assemble_source_pages(output_directory,section_names):
+    logging.debug("Assembling all source package summaries in %s" % output_directory)    
+
+    # needs to find them in subdir...
+    templates = find_files_with_suffix(output_directory, ".tpl_src")
+    merge_templates(templates, section_names, output_directory)
 
 
 class Section:
@@ -576,7 +608,7 @@ class Section:
         dirs = ["pass", "fail", "bugged", "fixed", "reserved", "untestable"]
         logs_by_dir = {}
         for dir in dirs:
-            logs_by_dir[dir] = find_log_files(dir)
+            logs_by_dir[dir] = find_files_with_suffix(dir, ".log")
 
         logging.debug("Copying log files")
         copy_logs(logs_by_dir, self._output_directory)
@@ -615,13 +647,14 @@ class Section:
             logging.debug("Writing page for %s" % state)
             list = "<ul>\n"
             for package in self._binary_db.get_packages_in_state(state):
-                list += "<li>%s (%s)" % (html_protect(package["Package"]),
+                list += "<li>%s (%s)" % (
+                                         html_protect(package["Package"]),
                                          html_protect(package["Maintainer"]))
                 if package.dependencies():
                     list += "\n<ul>\n"
                     for dep in package.dependencies():
                         list += "<li>dependency %s is %s</li>\n" % \
-                                 (html_protect(dep), 
+                                  (html_protect(dep), 
                                   emphasize_reason(html_protect(self._binary_db.state_by_name(dep))))
                     list += "</ul>\n"
                 list += "</li>\n"
@@ -636,7 +669,6 @@ class Section:
                                        }))
 
     def write_counts_summary(self):
-
         logging.debug("Writing counts.txt")    
         header = "date"
         counts = "%s" % time.strftime("%Y%m%d")
@@ -661,49 +693,54 @@ class Section:
                 return nn
         return None
 
-    def write_sources_summaries(self):
-        logging.debug("Writing source package summaries")    
+    def prepare_package_summaries(self):
+        logging.debug("Writing package templates in %s" % self._config.section)    
+
         sources = ""
         for source in self._source_db.get_all_packages():
-                binaries = self._source_db.get_control_header(source, "Binary")
-                maintainer = self._source_db.get_control_header(source, "Maintainer")
-                version = self._source_db.get_control_header(source, "Version")
-                success = True
-                failed = False
-                sourcedata = "<td class=\"contentcell2\">%s</td><td class=\"contentcell2\" colspan=\"2\">%s</td>" % (html_protect(source), html_protect(maintainer))
-                binaryrows = ""
-                for binary in binaries.split(", "):
-                  state = self._binary_db.state_by_name(binary)
-                  binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, state, version)
-                  if state != "successfully-tested":
-                    success = False
-                  if state == "failed-testing":
-                    failed = True
-                source_state="unknown"
-                if success: source_state="success"
-                if failed:  source_state="failed"
-                sources += "%s: %s\n" % (source, source_state)
-                summary_page_path = os.path.join(self._output_directory, "source", path_to_source_summary_page(source))
-                if not os.path.exists(summary_page_path):
-                  os.makedirs(summary_page_path)
-                filename = os.path.join(summary_page_path, (source + ".html"))
-                htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
+
+            summary_page_path = os.path.join(self._output_directory, "../source", source_subdir(source))
+            if not os.path.exists(summary_page_path):
+               os.makedirs(summary_page_path)
+
+            binaries = self._source_db.get_control_header(source, "Binary")
+            version = self._source_db.get_control_header(source, "Version")
+            maintainer = self._source_db.get_control_header(source, "Maintainer")
+
+            sourcerows = "<tr class=\"normalrow\"><td class=\"contentcell2\"><a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a></td><td class=\"contentcell2\" colspan=\"2\">%s</td></tr>" % (source, html_protect(source), html_protect(maintainer))
+
+            filename = os.path.join(summary_page_path, (source + ".tpl_src"))
+            if not os.path.isfile(filename):
                 f = file(filename, "w")
-                f.write(htmlpage.safe_substitute( {
-                    "section_navigation": create_section_navigation(self._section_names),
-                    "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                    "package": html_protect(source),
-                    "sourcedata": sourcedata,
-                    "section": html_protect(self._config.section),
-                    "binaryrows": binaryrows,
-                    }))
+                f.write(sourcerows)
                 f.close()
+
+            success = True
+            failed = False
+            binaryrows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"3\">Binary package(s) in "+self._config.section+"</td></tr>"
+            for binary in binaries.split(", "):
+              state = self._binary_db.state_by_name(binary)
+              binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, state, version)
+              if state != "successfully-tested":
+                success = False
+              if state == "failed-testing":
+                failed = True
+            filename = os.path.join(summary_page_path, (source + ".tpl_"+self._config.section))
+            f = file(filename, "w")
+            f.write(binaryrows)
+            f.close()
+
+            source_state="unknown"
+            if success: source_state="success"
+            if failed:  source_state="failed"
+            sources += "%s: %s\n" % (source, source_state)
+
         write_file(os.path.join(self._output_directory, "sources.txt"), sources)
 
     def generate_file_output(self):
-            self.write_counts_summary()
-            if self._config["sources-url"]:
-              self.write_sources_summaries()
+        self.write_counts_summary()
+        if self._config["sources-url"]:
+            self.prepare_package_summaries()
 
     def generate_output(self, master_directory, output_directory, section_names):
         self._section_names = section_names
@@ -721,7 +758,8 @@ class Section:
             self.generate_file_output()
 
             os.chdir(oldcwd)
-
+        else:
+            logging.debug("Warning: %s does not exist. Did you ever let the slave work on %s?" % self._master_directory, self._config.section)
 
 def main():
     setup_logging(logging.DEBUG, None)
@@ -742,6 +780,8 @@ def main():
         section = Section(section_name)
         section.generate_output(master_directory=global_config["master-directory"],output_directory=global_config["output-directory"],section_names=section_names)
         sections.append(section)
+
+    assemble_source_pages(os.path.join(global_config["output-directory"],"source"),section_names)
 
     logging.debug("Writing index page")
     htmlpage = string.Template(HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
