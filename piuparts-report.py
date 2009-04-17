@@ -664,7 +664,7 @@ class Section:
             list = "<ul>\n"
             for package in self._binary_db.get_packages_in_state(state):
                 list += "<li id=\"%s\">%s (%s)" % (
-                                         package["Package"]),
+                                         package["Package"],
                                          self.link_to_source_summary(self._binary_db.get_source_package(package["Package"])),
                                          html_protect(package["Maintainer"]))
                 if package.dependencies():
