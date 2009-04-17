@@ -78,7 +78,7 @@ svn status
 mkdir -p master slave
 sudo chown piupartss.piuparts slave
 sudo chown piupartsm.piuparts master htdocs
-sudo chmod 755 master slave htdocs
+sudo chmod 775 master slave htdocs
 cd /org/piuparts.debian.org/etc
 # to support multiple host with this setup
 ln -sf piuparts.conf.$HOSTNAME piuparts.conf
