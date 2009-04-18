@@ -45,6 +45,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - generate sources.txt (per section) with a summary status per source
       package (for the PTS to display a source packages piuparts state)
     - generate html status pages for all source packages (to link from the PTS)
+      with links to state explaination and available logfiles.
     - provide links to logfiles in statistics page.
     - provide links to source packages pages from state pages and back, as well
       as links to the dependencies state.

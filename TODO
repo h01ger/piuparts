@@ -4,9 +4,8 @@ Things to do for piuparts
 for 0.36:
 
 - report:
- - find_log() is not used atm
  - refactor code, sources.txt should not be calculated where it currently is
- - include links to logfiles in source summary pages
+ - get rid of old log pages and put stats in the index page
 - slave
  - mention distro when sending logs
 - then R
@@ -23,6 +22,12 @@ for 0.36:
   none of this kind left.
   warn visibly in logfile (but without error) when testing a packages with
   circular dependencies.
+- http://piuparts.debian.org/sid/state-failed-testing.html lists linux-image-2.6.29-1-amd64 
+  four times :-(
+- http://piuparts.debian.org/sid/state-dependency-does-not-exist.html#addresses-goodies-for-gnustep 
+  links to http://goldwasser.athome/source/a/addresses-for-gnustep (0.4.7-1).html 
+  obviously doesnt exist.
+- bug or feature: udebs turn up as a state ;-) see http://piuparts.debian.org/source/u/udev.html
 
 for 0.37:
 

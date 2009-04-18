@@ -342,7 +342,7 @@ INDEX_BODY_TEMPLATE = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-04-18</b>: Deleted all failed logfiles which complained about <p>/var/games</p> being present after purge, as this ain't an issue, see #524461.
+      <b>2009-04-18</b>: Deleted all failed logfiles which complained about <code>/var/games</code> being present after purge, as this ain't an issue, see #524461.
      </td>
     </tr>
     <tr class="normalrow">
@@ -576,7 +576,7 @@ class Section:
             versions = []
             for pathname, version in packages[package]:
                 version_count += 1
-                versions.append("<a href='%s'>%s</a>" % 
+                versions.append("<a href=\"%s\">%s</a>" % 
                                 (html_protect(pathname), 
                                  html_protect(version)))
             line = "<li>%s %s</li>\n" % (html_protect(package), 
@@ -610,6 +610,14 @@ class Section:
                                 title_by_dir[dir], 
                                 desc_by_dir[dir], list)
 
+    def find_links_to_logs(self, package_name, dirs, logs_by_dir):
+        links = []
+        for dir in dirs:
+          for basename in logs_by_dir[dir]:
+            if basename.startswith(package_name) and basename.endswith(".log"):
+              package, version = basename[:-len(".log")].split("_")
+              links.append("<a href=\"/%s\">%s</a>" % (os.path.join(self._config.section, dir, basename),html_protect(version)))
+        return links
 
     def link_to_source_summary(self, package_name):
         source_name=self._binary_db.get_source_package(package_name)
@@ -629,6 +637,22 @@ class Section:
                 link_target)
         finally:
           return link
+
+    def links_to_logs(self, package_name, state, logs_by_dir):
+        link = "N/A"
+        dirs = ""
+
+        if state == "successfully-tested":
+          dirs = ["pass", "fixed"]
+        elif state == "failed-testing":
+          dirs = ["fail", "bugged", "untestable"]
+
+        if dirs != "":
+          links = self.find_links_to_logs (package_name, dirs, logs_by_dir)
+          link = ", ".join(links)
+
+        return link
+
 
     def write_counts_summary(self):
         logging.debug("Writing counts.txt")    
@@ -651,15 +675,7 @@ class Section:
         if not current_day in last_line:
           append_file(countsfile, counts)
 
-    def find_log(self, package):
-        n = self._binary_db._logdb._log_name(package["Package"], package["Version"])
-        for dirname in self._db._all:
-            nn = os.path.join(dirname, n)
-            if os.path.exists(nn):
-                return nn
-        return None
-
-    def prepare_package_summaries(self):
+    def prepare_package_summaries(self, logs_by_dir):
         logging.debug("Writing package templates in %s" % self._config.section)    
 
         sources = ""
@@ -670,7 +686,7 @@ class Section:
                os.makedirs(summary_page_path)
 
             binaries = self._source_db.get_control_header(source, "Binary")
-            version = self._source_db.get_control_header(source, "Version")
+            current_version = self._source_db.get_control_header(source, "Version")
             maintainer = self._source_db.get_control_header(source, "Maintainer")
 
             sourcerows = "<tr class=\"normalrow\"><td class=\"contentcell2\"><a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a></td><td class=\"contentcell2\" colspan=\"2\">%s</td></tr>" % (source, html_protect(source), html_protect(maintainer))
@@ -686,7 +702,7 @@ class Section:
             binaryrows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"3\">Binary package(s) in "+self._config.section+"</td></tr>"
             for binary in binaries.split(", "):
               state = self._binary_db.state_by_name(binary)
-              binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, self.link_to_state_page(self._config.section,binary,state), version)
+              binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s: %s</td><td class=\"contentcell2\">current: %s</td></tr>" % (binary, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), current_version)
               if state != "successfully-tested":
                 success = False
               if state == "failed-testing":
@@ -772,7 +788,7 @@ class Section:
 
         self.write_counts_summary()
         if self._config["sources-url"]:
-            self.prepare_package_summaries()
+            self.prepare_package_summaries(logs_by_dir)
 
 
     def generate_output(self, master_directory, output_directory, section_names):
