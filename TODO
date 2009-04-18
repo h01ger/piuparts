@@ -43,7 +43,8 @@ for 0.37:
    better: create maintainer centric pages.
  - RSS feeds of logs
 
-- expire old logs a month after sucessful testing
+- expire old logs a month after testing if newer logs exists (except if the new log is fail
+  and the old is bugged, then the fail log should be moved to bugged first)
 
 - create emacspeak-broken-dpkg-preconfigure package for broken repo. (then later
   put more broken packages in there and use that for testing piuparts)

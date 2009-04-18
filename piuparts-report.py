@@ -617,6 +617,7 @@ class Section:
             if basename.startswith(package_name) and basename.endswith(".log"):
               package, version = basename[:-len(".log")].split("_")
               links.append("<a href=\"/%s\">%s</a>" % (os.path.join(self._config.section, dir, basename),html_protect(version)))
+        links.sort()
         return links
 
     def link_to_source_summary(self, package_name):
@@ -650,6 +651,9 @@ class Section:
         if dirs != "":
           links = self.find_links_to_logs (package_name, dirs, logs_by_dir)
           link = ", ".join(links)
+
+        if "/bugged/" in link:
+          link += " - <a href=\"http://bugs.debian.org/cgi-bin/pkgreport.cgi?package="+package_name+"\" target=\"_blank\">bug filed</a>"
 
         return link
 
