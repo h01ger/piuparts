@@ -17,8 +17,8 @@ piuparts (0.36) UNRELEASED; urgency=low
     - add advice how to read the logfile to the top of the logfiles produced.
     - add "FAIL: " to logging output for seven more failure types, so that it
       becomes easier to group failure causes.
-    - allow the user to stop it with control-C. Thanks to Carl Chenet for the
-      patch. (Closes: #523958)
+    - allow the user to stop piuparts with control-C. Thanks to Carl Chenet for
+      the patch. (Closes: #523958)
   * piupartslib/packagesdb.py:
     - change the test whether a package is testable to check whether the 
       package is of priority "required", and not whether it's "Essential".
@@ -31,6 +31,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - support looping trough multiple sections in slave.conf via new config 
       value "sections". Thanks to Frank Ploss for writing this patch with me 
       and helping me understand the code much better!
+    - allow the user to stop the slave with control-C.
   * Re-add piuparts-reports.py which got removed/lost between 0.14 and 0.20 
     without changelog entry.
   * piuparts-reports.py: 

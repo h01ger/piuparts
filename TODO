@@ -6,11 +6,9 @@ for 0.36:
 - report:
  - find_log() is not used atm
  - refactor code, sources.txt should not be calculated where it currently is
- - include links to http://qa.debian.org/developer.php?login=$maintainer_email
  - include links to logfiles in source summary pages
 - slave
  - mention distro when sending logs
- - slave_stop script - unneeded with patch for #523958
 - then R
 - include patch for #519192
 - probably include patch for #523950
@@ -36,6 +34,8 @@ for 0.37:
   - left-over processes (10.7.3)
   - unclassified
  - write stats for total number of logs (when a package has more than a log in fail/ or bugged/)
+ - include links to http://qa.debian.org/developer.php?login=$maintainer_email or probably
+   better: create maintainer centric pages.
  - RSS feeds of logs
 
 - expire old logs a month after sucessful testing

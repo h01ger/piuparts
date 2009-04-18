@@ -442,4 +442,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+  try:
+     main()
+  except KeyboardInterrupt:
+     print ''
+     print 'Slave interrupted by the user, exiting... manual cleanup still neccessary.'
+     sys.exit(1)  
