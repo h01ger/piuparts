@@ -17,6 +17,8 @@ piuparts (0.36) UNRELEASED; urgency=low
     - add advice how to read the logfile to the top of the logfiles produced.
     - add "FAIL: " to logging output for seven more failure types, so that it
       becomes easier to group failure causes.
+    - allow the user to stop it with control-C. Thanks to Carl Chenet for the
+      patch. (Closes: #523958)
   * piupartslib/packagesdb.py:
     - change the test whether a package is testable to check whether the 
       package is of priority "required", and not whether it's "Essential".

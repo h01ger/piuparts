@@ -2019,8 +2019,13 @@ def main():
 
 
 if __name__ == "__main__":
-    if sys.argv[1:] == ["unittest"]:
-        del sys.argv[1]
-        unittest.main()
-    else:
-        main()
+    try:
+        if sys.argv[1:] == ["unittest"]:
+            del sys.argv[1]
+            unittest.main()
+        else:
+            main()
+    except KeyboardInterrupt:
+        print ''
+        print 'Piuparts interrupted by the user, exiting...'
+        sys.exit(1)
