@@ -6,8 +6,6 @@ for 0.36:
 - report:
  - refactor code, sources.txt should not be calculated where it currently is
  - get rid of old log pages and put stats in the index page
-- slave
- - mention distro when sending logs
 - then R
 - include patch for #519192
 - probably include patch for #523950

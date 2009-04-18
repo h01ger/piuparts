@@ -163,8 +163,8 @@ class Slave:
         self._from_master = self._to_master = None
         logging.info("Connection to master closed")
 
-    def send_log(self, pass_or_fail, filename):
-        logging.info("Sending log file %s" % filename)
+    def send_log(self, section, pass_or_fail, filename):
+        logging.info("Sending log file %s/%s" % (section, filename))
         basename = os.path.basename(filename)
         package, rest = basename.split("_", 1)
         version = rest[:-len(".log")]
@@ -271,7 +271,7 @@ class Section:
             for basename in os.listdir(logdir):
                 if basename.endswith(".log"):
                     fullname = os.path.join(logdir, basename)
-                    self._slave.send_log(logdir, fullname)
+                    self._slave.send_log(self._config.section, logdir, fullname)
                     os.remove(fullname)
 
         if not self._slave.get_reserved():
