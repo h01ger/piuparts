@@ -342,12 +342,17 @@ INDEX_BODY_TEMPLATE = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      2009-04-04: Deleted all failed logfiles so far for two reasons: until now, only three out of ten failure types where logged with a pattern to search for in the logfiles, now this is done for all ten types of failures. And second, the way of breaking circular dependencies was not bulletproof, thus there were false positives in the failures. Now it should be fine, though maybe this will lead to lots of untestable packages... we'll see.
+      <b>2009-04-18</b>: Deleted all failed logfiles which complained about <p>/var/games</p> being present after purge, as this ain't an issue, see #524461.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      2009-03-19: lenny2squeeze is not needed, so all logs for squeeze (as well as lenny2squeeze) were deleted. (As squeeze now includes two kinds of tests: installation and removal in squeeze, and installation in lenny, upgrade to squeeze, removal in squeeze.)
+      <b>2009-04-04</b>: Deleted all failed logfiles so far for two reasons: until now, only three out of ten failure types where logged with a pattern to search for in the logfiles, now this is done for all ten types of failures. And second, the way of breaking circular dependencies was not bulletproof, thus there were false positives in the failures. Now it should be fine, though maybe this will lead to lots of untestable packages... we'll see.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2009-03-19</b>: lenny2squeeze is not needed, so all logs for squeeze (as well as lenny2squeeze) were deleted. (As squeeze now includes two kinds of tests: installation and removal in squeeze, and installation in lenny, upgrade to squeeze, removal in squeeze.)
      </td>
     </tr>
     </table>
@@ -607,17 +612,23 @@ class Section:
 
 
     def link_to_source_summary(self, package_name):
+        source_name=self._binary_db.get_source_package(package_name)
         link = "<a href=\"/source/%s\">%s</a>" % (
-                source_subdir(package_name)+"/"+package_name+".html",
+                source_subdir(source_name)+"/"+source_name+".html",
                 html_protect(package_name))
         return link
 
-    def link_to_state_page(self, section, package_name, state):
-        link = "<a href=\"/%s/%s\">%s</a>" % (
+    def link_to_state_page(self, section, package_name, link_target):
+        link = html_protect(package_name)
+        try:
+          state = self._binary_db.state_by_name(package_name)
+          if state != "unknown-package":
+            link = "<a href=\"/%s/%s\">%s</a>" % (
                 section,
                 "state-"+state+".html"+"#"+package_name,
-                state)
-        return link
+                link_target)
+        finally:
+          return link
 
     def write_counts_summary(self):
         logging.debug("Writing counts.txt")    
@@ -675,7 +686,7 @@ class Section:
             binaryrows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"3\">Binary package(s) in "+self._config.section+"</td></tr>"
             for binary in binaries.split(", "):
               state = self._binary_db.state_by_name(binary)
-              binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, self.link_to_state_page(self._config.section,source,state), version)
+              binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % (binary, self.link_to_state_page(self._config.section,binary,state), version)
               if state != "successfully-tested":
                 success = False
               if state == "failed-testing":
@@ -739,13 +750,13 @@ class Section:
             for package in self._binary_db.get_packages_in_state(state):
                 list += "<li id=\"%s\">%s (%s)" % (
                                          package["Package"],
-                                         self.link_to_source_summary(self._binary_db.get_source_package(package["Package"])),
+                                         self.link_to_source_summary(package["Package"]),
                                          html_protect(package["Maintainer"]))
                 if package.dependencies():
                     list += "\n<ul>\n"
                     for dep in package.dependencies():
                         list += "<li>dependency %s is %s</li>\n" % \
-                                  (html_protect(dep), 
+                                  (self.link_to_state_page(self._config.section,dep,dep), 
                                   emphasize_reason(html_protect(self._binary_db.state_by_name(dep))))
                     list += "</ul>\n"
                 list += "</li>\n"

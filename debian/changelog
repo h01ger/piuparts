@@ -43,7 +43,8 @@ piuparts (0.36) UNRELEASED; urgency=low
       package (for the PTS to display a source packages piuparts state)
     - generate html status pages for all source packages (to link from the PTS)
     - provide links to logfiles in statistics page.
-    - provide links to source packages pages from state pages and back.
+    - provide links to source packages pages from state pages and back, as well
+      as links to the dependencies state.
     - improve layout, generate navigation for all pages.
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
