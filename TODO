@@ -29,7 +29,12 @@ for 0.36:
 for 0.37:
 
 - report: 
- - write stats about the reasons for failures
+ - write stats about the reasons for failures:
+  - installation hangs and uses all cpu when installing with DEBIAN_FRONTEND="noninteractive"
+  - owned and unowned files after purge (policy 6.8 + 10.7.3)
+  - prompts without using debconf (#206684 is pending, will be in policy 3.8.2)
+  - left-over processes (10.7.3)
+  - unclassified
  - write stats for total number of logs (when a package has more than a log in fail/ or bugged/)
  - RSS feeds of logs
 

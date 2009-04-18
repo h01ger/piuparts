@@ -619,72 +619,6 @@ class Section:
                 state)
         return link
 
-    def generate_html_output(self):
-        logging.debug("Finding log files")
-        dirs = ["pass", "fail", "bugged", "fixed", "reserved", "untestable"]
-        logs_by_dir = {}
-        for dir in dirs:
-            logs_by_dir[dir] = find_files_with_suffix(dir, ".log")
-
-        logging.debug("Copying log files")
-        copy_logs(logs_by_dir, self._output_directory)
-
-        logging.debug("Removing old log files")
-        remove_old_logs(logs_by_dir, self._output_directory)
-
-        logging.debug("Writing per-dir HTML pages")
-        self.print_by_dir(self._output_directory, logs_by_dir)
-
-        logging.debug("Writing section statistics page")    
-        tablerows = ""
-        for state in self._binary_db.get_states():
-            dir_link = ""
-            for dir in dirs:
-              if state_by_dir[dir] == state:
-                dir_link += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
-            tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a></td>" +
-                          "<td class=\"contentcell2\">%d</td><td class=\"contentcell2\">%s</td></tr>\n") % \
-                          (html_protect(state), html_protect(state),
-                          len(self._binary_db.get_packages_in_state(state)),
-                          dir_link)
-        tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
-                          self._binary_db.get_total_packages()
-        htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)
-        write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
-            "section_navigation": create_section_navigation(self._section_names),
-            "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-            "section": html_protect(self._config.section),
-            "description": html_protect(self._config["description"]),
-            "tablerows": tablerows,
-            "packagesurl": html_protect(self._config["packages-url"]), 
-           }))
-
-        for state in self._binary_db.get_states():
-            logging.debug("Writing page for %s" % state)
-            list = "<ul>\n"
-            for package in self._binary_db.get_packages_in_state(state):
-                list += "<li id=\"%s\">%s (%s)" % (
-                                         package["Package"],
-                                         self.link_to_source_summary(self._binary_db.get_source_package(package["Package"])),
-                                         html_protect(package["Maintainer"]))
-                if package.dependencies():
-                    list += "\n<ul>\n"
-                    for dep in package.dependencies():
-                        list += "<li>dependency %s is %s</li>\n" % \
-                                  (html_protect(dep), 
-                                  emphasize_reason(html_protect(self._binary_db.state_by_name(dep))))
-                    list += "</ul>\n"
-                list += "</li>\n"
-            list += "</ul>\n"
-            htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
-            write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
-                                        "section_navigation": create_section_navigation(self._section_names),
-                                        "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                                        "state": html_protect(state),
-                                        "section": html_protect(self._config.section),
-                                        "list": list
-                                       }))
-
     def write_counts_summary(self):
         logging.debug("Writing counts.txt")    
         header = "date"
@@ -758,10 +692,77 @@ class Section:
 
         write_file(os.path.join(self._output_directory, "sources.txt"), sources)
 
-    def generate_file_output(self):
+
+    def generate_html(self):
+        logging.debug("Finding log files")
+        dirs = ["pass", "fail", "bugged", "fixed", "reserved", "untestable"]
+        logs_by_dir = {}
+        for dir in dirs:
+            logs_by_dir[dir] = find_files_with_suffix(dir, ".log")
+
+        logging.debug("Copying log files")
+        copy_logs(logs_by_dir, self._output_directory)
+
+        logging.debug("Removing old log files")
+        remove_old_logs(logs_by_dir, self._output_directory)
+
+        logging.debug("Writing per-dir HTML pages")
+        self.print_by_dir(self._output_directory, logs_by_dir)
+
+        logging.debug("Writing section statistics page")    
+        tablerows = ""
+        for state in self._binary_db.get_states():
+            dir_link = ""
+            for dir in dirs:
+              if state_by_dir[dir] == state:
+                dir_link += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
+            tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a></td>" +
+                          "<td class=\"contentcell2\">%d</td><td class=\"contentcell2\">%s</td></tr>\n") % \
+                          (html_protect(state), html_protect(state),
+                          len(self._binary_db.get_packages_in_state(state)),
+                          dir_link)
+        tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
+                          self._binary_db.get_total_packages()
+        htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)
+        write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
+            "section_navigation": create_section_navigation(self._section_names),
+            "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+            "section": html_protect(self._config.section),
+            "description": html_protect(self._config["description"]),
+            "tablerows": tablerows,
+            "packagesurl": html_protect(self._config["packages-url"]), 
+           }))
+
+        for state in self._binary_db.get_states():
+            logging.debug("Writing page for %s" % state)
+            list = "<ul>\n"
+            for package in self._binary_db.get_packages_in_state(state):
+                list += "<li id=\"%s\">%s (%s)" % (
+                                         package["Package"],
+                                         self.link_to_source_summary(self._binary_db.get_source_package(package["Package"])),
+                                         html_protect(package["Maintainer"]))
+                if package.dependencies():
+                    list += "\n<ul>\n"
+                    for dep in package.dependencies():
+                        list += "<li>dependency %s is %s</li>\n" % \
+                                  (html_protect(dep), 
+                                  emphasize_reason(html_protect(self._binary_db.state_by_name(dep))))
+                    list += "</ul>\n"
+                list += "</li>\n"
+            list += "</ul>\n"
+            htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
+            write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
+                                        "section_navigation": create_section_navigation(self._section_names),
+                                        "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                                        "state": html_protect(state),
+                                        "section": html_protect(self._config.section),
+                                        "list": list
+                                       }))
+
         self.write_counts_summary()
         if self._config["sources-url"]:
             self.prepare_package_summaries()
+
 
     def generate_output(self, master_directory, output_directory, section_names):
         self._section_names = section_names
@@ -775,8 +776,7 @@ class Section:
             oldcwd = os.getcwd()
             os.chdir(self._master_directory)
 
-            self.generate_html_output()
-            self.generate_file_output()
+            self.generate_html()
 
             os.chdir(oldcwd)
         else:
