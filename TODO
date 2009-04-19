@@ -7,8 +7,7 @@ for 0.36:
  - refactor code, sources.txt should not be calculated where it currently is
  - get rid of old log pages and put stats in the index page
 - then R
-- include patch for #519192
-- probably include patch for #523950
+- probably include patch for #519192 - not sure if i like that aproach
 - take care of old conf files on upgrades
 - take care of old pyc files from python-central
 - test pipuparts with piuparts before uploading
@@ -26,8 +25,13 @@ for 0.36:
   links to http://goldwasser.athome/source/a/addresses-for-gnustep (0.4.7-1).html 
   obviously doesnt exist.
 - bug or feature: udebs turn up as a state ;-) see http://piuparts.debian.org/source/u/udev.html
+- untestable packages are not recognicable as such, see http://piuparts.debian.org/source/a/apache2.html 
+  atm. (log is N/A, even though its there, even if empty) - http://piuparts.debian.org/sid/state-cannot-be-tested.html
+  aint helpful neither.
 
 for 0.37:
+
+- probably include patch for #523950
 
 - report: 
  - write stats about the reasons for failures:
