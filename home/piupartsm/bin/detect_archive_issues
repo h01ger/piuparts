@@ -22,16 +22,18 @@ DISTROS="sid squeeze"
 FILE=`mktemp`
 
 for distro in $DISTROS ; do 
-	rgrep -l "Cannot initiate the connection to ftp.fi.debian.org" $MASTER/$distro/fail >> $FILE
+	rgrep -l "E: Broken packages" $MASTER/$distro/fail >> $FILE
 done
 
 
 if [ -s $FILE ] ; then 
-	echo "Network problems on piatti.debian.org detected!"
+	echo "Broken packages detected!"
 	echo 
-	echo "Please review the following logfiles and most likely remove them." 
+	echo "Please review the following logfiles and most likely remove them. "
+        echo "Broken packages are usually a temporarily problem in the archive and are"
+        echo "caught by other tools like britney or http://edos.debian.net/edos-debcheck/"
         echo
-	echo "If it is always the same package failing, it's likely to be an issue in the"
+	echo "If is is always the same package failing, it's likely to be an issue in the"
 	echo "package."
 	echo
 	cat $FILE | sed -e "s#/org/piuparts.debian.org/master/#http://piuparts.debian.org/#g"
