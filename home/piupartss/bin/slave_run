@@ -1,12 +1,35 @@
 #!/bin/sh -x
+
+# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 #
 # run piuparts-slave in screen so that a screendump can be mailed via cron to monitor the slave
 #
 set -e
+
+SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
+MONITORDIR=/org/piuparts.debian.org/master/monitor-slave
+
 cd /org/piuparts.debian.org/slave
 (ps fax|grep -v grep| grep piuparts-slave ) && exit 0
-rm -f /org/piuparts.debian.org/slave/screenlog.0		# used by ~piupartsm/bin/detect_slave_problems
-rm -f /org/piuparts.debian.org/master/monitor-slave/*		# used by several scripts to only warn once a day 
+rm -f $SCREENLOG					# used by ~piupartsm/bin/detect_slave_problems
+rm -f $MONITORDIR/*					# used by several scripts to only warn once a day 
 
 screen -L -d -m -S piuparts-slave-screen su - piupartss -c "cd /org/piuparts.debian.org/slave && python ../share/piuparts/piuparts-slave"
 
+cp $SCREENLOG $MONITORDIR/screenlog.new
+chmod 775 $MONITORDIR/screenlog.new

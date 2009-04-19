@@ -18,7 +18,7 @@
 #
 # make sure slave is reminded daily (and also monitored if not started with ~piupartss/bin/slave_run)
 #
-42 0 * * * rm -f /org/piuparts.debian.org/master/monitor-slave/*
+42 0 * * * rm -f /org/piuparts.debian.org/master/monitor-slave/* ; cp /org/piuparts.debian.org/slave/screenlog.0 /org/piuparts.debian.org/master/monitor-slave/screenlog.new ; chmod -f 775 /org/piuparts.debian.org/master/monitor-slave/screenlog.new
 
 #
 # monitor for problems once a day

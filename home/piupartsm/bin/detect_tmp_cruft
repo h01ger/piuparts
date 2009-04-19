@@ -17,12 +17,12 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 LS_TMP=$(ls --color=never -l /org/piuparts.debian.org/tmp)
-if [ "$(echo $LS_TMP | wc -l)" -gt 12 ] ; then 
+if [ "$(echo "$LS_TMP" | wc -l)" -gt 12 ] ; then 
 	echo "More than ten directories in /org/piuparts.debian.org/tmp detected!"
 	echo
-	echo $LS_TMP
+	echo "$LS_TMP"
 	echo
 	echo "One is normal for piuparts operation, more is not."
 	echo "Please investigate and cleanup."
 fi
-rm $FILE
+
