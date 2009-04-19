@@ -439,7 +439,7 @@ def html_protect(str):
 
 
 def emphasize_reason(str):
-    if str == "unknown-package" or str == "failed-testing":
+    if str == "unknown-package" or str == "failed-testing" or str == "circular-dependency":
       str = "<em>" + str + "</em>"
     return str
 

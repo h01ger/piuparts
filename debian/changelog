@@ -34,7 +34,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - allow the user to stop the slave with control-C.
   * Re-add piuparts-reports.py which got removed/lost between 0.14 and 0.20 
     without changelog entry.
-  * piuparts-reports.py: 
+  * piuparts-report.py: 
     - support sections in configuration file. 
     - support looping trough multiple sections in report.conf via new config
       value "sections". 
