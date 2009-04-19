@@ -39,6 +39,7 @@ for 0.37:
   - owned and unowned files after purge (policy 6.8 + 10.7.3)
   - prompts without using debconf (#206684 is pending, will be in policy 3.8.2)
   - left-over processes (10.7.3)
+  - "E: Broken packages" - often indicates a problem with the archive at the time of testing, not with the package being tested
   - unclassified
  - write stats for total number of logs (when a package has more than a log in fail/ or bugged/)
  - include links to http://qa.debian.org/developer.php?login=$maintainer_email or probably
