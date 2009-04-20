@@ -48,28 +48,19 @@ body {
  background-color: white;
 }
 
-table.reddy
+#obeytoyourfriend
 {
  color: #000;
- background-color: #000;
+ background-color: white;
  border: 0px solid #000;
  border-collapse: collapse;
  margin-top: 0px;
  margin-bottom: 5px;
  padding-top: 0px;
-}
-
-td.reddy {
+ padding-left: 15px;
  font-family: serif;
- font-size: 24px;
- font-weight: normal;
- background-color: #d70751;
- color: #FFFF00;
- border: 0px solid #d70751;
- vertical-align: middle;
- text-align: center;
- padding: 0px;
- margin: 0px;
+ font-variant:small-caps;
+ font-size: 140%;
 }
 
 p.validate {
@@ -252,9 +243,18 @@ td.titlecell {
     text-align: center;
     padding: 4px;
 }
+td.bluetitlecell { 
+    color: white; 
+    background-color: #0755d7;
+    border: 2px solid black;
+    font-weight: bold; 
+    text-align: center;
+    padding: 4px;
+}
 td.labelcell {
     border: 1px solid black;
     padding: 2px;
+    font-style: bold;
 }
 td.contentcell {
     text-align: center;
@@ -266,3 +266,5 @@ td.contentcell2 {
     padding: 2px;
     border: 1px solid black;
 }
+
+    
