@@ -238,33 +238,36 @@ td.containercell {
 td.titlecell { 
     color: white; 
     background-color: #d70751;
-    border: 2px solid black;
     font-weight: bold; 
     text-align: center;
-    padding: 4px;
+    padding: 0.2em 0.2em 0.1em 0.2em;
+    border-top: 3px solid #999;
+    border-bottom: 1px solid #999;
 }
 td.bluetitlecell { 
     color: white; 
     background-color: #0755d7;
-    border: 2px solid black;
     font-weight: bold; 
     text-align: center;
-    padding: 4px;
+    padding: 0.2em 0.2em 0.1em 0.2em;
+    border-top: 3px solid #999;
+    border-bottom: 1px solid #999;
 }
 td.labelcell {
-    border: 1px solid black;
-    padding: 2px;
-    font-style: bold;
+    padding: 0.2em 0.2em 0.1em 0.2em;
+    border-top: 1px solid black;
+    border-right: 1px dotted black;
+    font-weight: bold;
 }
 td.contentcell {
     text-align: center;
-    padding: 2px;
-    border: 1px solid black;
+    padding: 0.2em 0.3em 0.2em 0.3em;
+    border-bottom: 1px dotted #999;
 }
 td.contentcell2 {
     text-align: left;
-    padding: 2px;
-    border: 1px solid black;
+    padding: 0.2em 0.3em 0.2em 0.3em;
+    border-bottom: 1px dotted #999;
+    border-right: 1px dotted #999;
 }
 
-    
