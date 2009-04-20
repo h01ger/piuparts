@@ -35,15 +35,21 @@ for 0.37:
 
 - report: 
  - write stats about the reasons for failures:
-  - installation hangs and uses all cpu when installing with DEBIAN_FRONTEND="noninteractive"
+  - installation hangs and uses all cpu when installing with 
+    DEBIAN_FRONTEND="noninteractive"
   - owned and unowned files after purge (policy 6.8 + 10.7.3)
   - prompts without using debconf (#206684 is pending, will be in policy 3.8.2)
   - left-over processes (10.7.3)
-  - "E: Broken packages" - often indicates a problem with the archive at the time of testing, not with the package being tested
+  - "E: Broken packages" - often indicates a problem with the archive at the
+    time of testing, not with the package being tested
+  - "/var/lib/dpkg/info/.*.postinst: .* command not found" - missing depends
+  - "/var/lib/dpkg/info/.*.postrm: .* command not found" - missing depends or
+    using non-essential packages in purge
   - unclassified
- - write stats for total number of logs (when a package has more than a log in fail/ or bugged/)
- - include links to http://qa.debian.org/developer.php?login=$maintainer_email or probably
-   better: create maintainer centric pages.
+ - write stats for total number of logs (when a package has more than a log 
+   in fail/ or bugged/)
+ - include links to http://qa.debian.org/developer.php?login=$maintainer_email 
+   or probably better: create maintainer centric pages.
  - RSS feeds of logs
 
 - expire old logs a month after testing if newer logs exists (except if the new log is fail

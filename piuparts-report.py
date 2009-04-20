@@ -55,25 +55,7 @@ HTML_HEADER = """
      <img src="http://piuparts.debian.org/images/debian.png" border="0" hspace="0" vspace="0" alt="Debian Project"></a>
     Quality Assurance
    </h1>
-  <table class="reddy">
-   <tr>
-    <td class="reddy">
-     <img src="http://piuparts.debian.org/images/red-upperleft.png" align="left" border="0" hspace="0" vspace="0"
-      alt="" width="15" height="16"></td>
-    <td rowspan="2" class="reddy">Policy is your friend. Trust the Policy. Love the Policy. Obey the Policy.</td>
-    <td class="reddy">
-     <img src="http://piuparts.debian.org/images/red-upperright.png" align="right" border="0" hspace="0" vspace="0"
-     alt="" width="16" height="16"></td>
-   </tr>
-   <tr>
-    <td class="reddy">
-     <img src="http://piuparts.debian.org/images/red-lowerleft.png" align="left" border="0" hspace="0" vspace="0"
-      alt="" width="16" height="16"></td>
-    <td class="reddy">
-     <img src="http://piuparts.debian.org/images/red-lowerright.png" align="right" border="0" hspace="0" vspace="0"
-      alt="" width="15" height="16"></td>
-   </tr>
-  </table>
+   <div id="obeytoyourfriend">Policy is your friend. Trust the Policy. Love the Policy. Obey the Policy.</div>
  </div>
  <hr>
 <div id="main">
@@ -101,7 +83,7 @@ HTML_HEADER = """
      </td>
      </tr>     
     <tr class="titlerow">
-     <td class="titlecell">
+     <td class="bluetitlecell">
       Available reports
      </td>
     </tr>
@@ -231,7 +213,7 @@ LOG_LIST_BODY_TEMPLATE = """
 STATE_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
-     <td class="titlecell">
+     <td class="bluetitlecell">
       Packages in state "$state" in $section
      </td>
     </tr>
@@ -259,7 +241,7 @@ SECTION_STATS_BODY_TEMPLATE = """
      </td>
     </tr>
     <tr class="titlerow">
-     <td class="titlecell" colspan="3">
+     <td class="bluetitlecell" colspan="3">
       Packages per state
      </td>
     </tr>
@@ -708,7 +690,7 @@ class Section:
 
             success = True
             failed = False
-            binaryrows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"3\">Binary package(s) in "+self._config.section+"</td></tr>"
+            binaryrows = "<tr class=\"titlerow\"><td class=\"bluetitlecell\" colspan=\"3\">Binary package(s) in "+self._config.section+"</td></tr>"
             for binary in binaries.split(", "):
               state = self._binary_db.state_by_name(binary)
               binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s: %s</td><td class=\"contentcell2\">current: %s</td></tr>" % (binary, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), current_version)
