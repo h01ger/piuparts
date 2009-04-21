@@ -18,7 +18,7 @@
 
 LOGS=$(find /org/piuparts.debian.org/master/*/untestable/ -name "*.log")
 
-if [ "$(echo "$LOGS" | wc -l )" -gt 0 ] ; then 
+if [ $(echo "$LOGS" | wc -l ) -gt 0 ] ; then 
 	echo "Untestable packages detected!"
 	echo "This is usually because a package was reserverd with a specific version and then"
         echo "a higher version became available and the reserved version vanished."
