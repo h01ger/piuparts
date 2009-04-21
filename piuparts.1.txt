@@ -128,23 +128,31 @@ EXAMPLES
 --------
 Assume that you have just built a new version of your Debian package, to be uploaded to Debian unstable. It is in _../foo_1.0-2_i386.deb_ and you would like to know whether it installs and uninstalls properly. Here's what you would do:
 
+----
 piuparts ../foo_1.0-2_i386.deb
+----
 
 If the package exists in the Debian archive already, the above command also tests that it upgrades properly.
 
 To do the same test, but using a particular mirror, and only the main component, you would do this:
 
+----
 piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.deb
+----
 
 If you want to do the same as above but for your changes files, pass in your changes files when running piuparts, and piuparts will process each package in the changes files as though you had passed all those packages on the command line to piuparts yourself. For example:
 
+----
 piuparts ../foo_1.0-2_i386.changes
 
 piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.changes
+----
 
 If you want to test that a package installs properly in the stable (etch) Debian release, then can be upgraded to the testing (lenny) and unstable (sid) versions, and then uninstalled without problems, you would give the following command:
 
+----
 piuparts -a -d etch -d lenny -d sid foo
+----
 
 ENVIRONMENT
 -----------

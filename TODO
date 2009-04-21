@@ -3,14 +3,15 @@ Things to do for piuparts
 
 for 0.36:
 
-- report:
- - refactor code, sources.txt should not be calculated where it currently is
- - get rid of old log pages and put stats in the index page
+- broken packages should be moved to untestable, and untestable log files
+  should be deleted automatically after a week
 - then R
-- probably include patch for #519192 - not sure if i like that aproach
 - take care of old conf files on upgrades
 - take care of old pyc files from python-central
 - test pipuparts with piuparts before uploading
+- report:
+ - refactor code, sources.txt should not be calculated where it currently is
+ - get rid of old log pages and put stats in the index page
 - provides are not handled correctly: ie libapt-pkg-perl has a dependency on 
   libapt-pkg-libc6.7-6-4.6 which piuparts believes is an unknown-package while 
   in reality its provided by apt
@@ -32,6 +33,7 @@ for 0.36:
 for 0.37:
 
 - probably include patch for #523950
+- probably include patch for #519192 - not sure if i like that aproach
 
 - report: 
  - write stats about the reasons for failures:
