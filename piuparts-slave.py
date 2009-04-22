@@ -282,7 +282,7 @@ class Section:
         self._slave.close()
 
         if not self._slave.get_reserved():
-            logging.debug("Nothing to do, sleeping for a bit")
+            logging.info("Nothing to do, sleeping for a bit")
             time.sleep(int(self._idle_sleep))
         else:
             packages_files = {}
