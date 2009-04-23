@@ -22,7 +22,7 @@ DISTROS="sid squeeze"
 FILE=`mktemp`
 
 for distro in $DISTROS ; do 
-	rgrep -l "Cannot initiate the connection to ftp.fi.debian.org" $MASTER/$distro/fail >> $FILE
+	rgrep -l "Cannot initiate the connection to" $MASTER/$distro/fail >> $FILE
 done
 
 
