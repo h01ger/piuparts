@@ -17,17 +17,34 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 MASTER=/org/piuparts.debian.org/master
+DISTROS="sid squeeze"
+DAYS=15 
 
 #
-# find packages which have been in untestable for more than 15 days and reschedule them for testing
+# find packages which are in the untestable-archive but have been tested by now,
+# remove those logs so the won't show up later
+#
+for distro in $DISTROS ; do
+	for package_log in $(find $MASTER/$distro/untestable/archive/ -name "*.log"); do
+		for dir in "pass failed bugged" ; do
+			FILE=$(basename $package_log)
+			if [ -f $MASTER/$distro/$dir/$FILE ] ; then
+				rm $package_log
+			fi
+		done
+	done
+done
+	
+#
+# find packages which have been in untestable for more than $DAYS days and reschedule them for testing
 #
 
-find $MASTER/*/untestable/archive -mtime +15 -name "*.log" > $LOGS
+find $MASTER/*/untestable/archive -mtime +$DAYS -name "*.log" > $LOGS
 if [ -s $LOGS ] ; then 
 	for package_log in $(cat $LOGS) ; do 
-			rm -f $package_log
+		rm -f $package_log
 	done
-	echo "Persistent untestable packages detected, which have been untestable for 15 days!"
+	echo "Persistent untestable packages detected, which have been untestable for $DAYS days!"
 	echo
 	echo "This is quite unusual, please investigate, probably using http://edos.debian.net/edos-debcheck/"
 	echo

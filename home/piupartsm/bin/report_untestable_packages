@@ -18,13 +18,14 @@
 
 MASTER=/org/piuparts.debian.org/master
 DISTROS="sid squeeze"
+DAYS=5 
 
 #
-# find packages which have been in untestable for more than 5 days and reschedule them for testing
+# find packages which have been in untestable for more than $DAYS days and reschedule them for testing
 #
 
 LOGS=`mktemp`
-find $MASTER/*/untestable/ -mtime +5 -name "*.log" > $LOGS
+find $MASTER/*/untestable/ -mtime +$DAYS -name "*.log" > $LOGS
 if [ -s $LOGS ] ; then 
 	for distro in $DISTROS ; do
 		mkdir -p $MASTER/$distro/untestable/archive
@@ -35,7 +36,7 @@ if [ -s $LOGS ] ; then
 			rm -f $package_log
 		done
 	done
-	echo "Untestable packages detected, which have been tested more than 5 days ago!"
+	echo "Untestable packages detected, which have been tested more than $DAYS days ago!"
 	echo "These packages have been rescheduling for piuparts testing."
 	echo
 	echo "If they continue to fail testing, you will be informed again in 10 days."
