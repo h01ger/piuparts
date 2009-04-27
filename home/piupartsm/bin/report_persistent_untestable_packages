@@ -16,33 +16,21 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-#
-# detect packages which are/were untestable due to archive issue and mark them as such
-#
-
 MASTER=/org/piuparts.debian.org/master
-DISTROS="sid squeeze"
 
-LOGS=`mktemp`
+#
+# find packages which have been in untestable for more than 15 days and reschedule them for testing
+#
 
-for distro in $DISTROS ; do 
-	rgrep -l "E: Broken packages" $MASTER/$distro/fail >> $LOGS
-        grep $distro $FILE | xargs mv $MASTER/$distro/untestable/
-done
-
+find $MASTER/*/untestable/archive -mtime +15 -name "*.log" > $LOGS
 if [ -s $LOGS ] ; then 
-	echo "Broken packages detected!"
-	echo 
-	echo 'The following packages have been moved to $distro/untestable and will be'
-	echo "tested again in 5 days."
+	for package_log in $(cat $LOGS) ; do 
+			rm -f $package_log
+	done
+	echo "Persistent untestable packages detected, which have been untestable for 15 days!"
 	echo
-        echo "Broken packages are usually a temporarily problem in the archive and are"
-        echo "caught by other tools like britney or http://edos.debian.net/edos-debcheck/"
-        echo
-	echo "If is is always the same package failing, it's likely to be an issue in the"
-	echo "package."
+	echo "This is quite unusual, please investigate, probably using http://edos.debian.net/edos-debcheck/"
 	echo
-	cat $LOGS | sed -e "s#/org/piuparts.debian.org/master/#http://piuparts.debian.org/#g" -e "s#/fail#/untestable#g"
-	echo
+	echo "$LOGS"
 fi
 rm $LOGS
