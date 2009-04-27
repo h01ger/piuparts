@@ -3,8 +3,6 @@ Things to do for piuparts
 
 for 0.36:
 
-- broken packages should be moved to untestable, and untestable log files
-  should be deleted automatically after a week
 - then R
 - take care of old conf files on upgrades
 	/etc/piuparts/piuparts-master.conf
