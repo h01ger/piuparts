@@ -3,10 +3,12 @@ Things to do for piuparts
 
 for 0.36:
 
-- then R
+- do fancy R graphs with the data from $distro/counts.txt
+
 - take care of old conf files on upgrades
 	/etc/piuparts/piuparts-master.conf
 	/etc/piuparts/piuparts-slave.conf
+
 - report:
  - refactor code, sources.txt should not be calculated where it currently is
  - get rid of old log pages and put stats in the index page
@@ -28,6 +30,7 @@ for 0.36:
 - untestable packages are not recognicable as such, see http://piuparts.debian.org/source/a/apache2.html 
   atm. (log is N/A, even though its there, even if empty) - http://piuparts.debian.org/sid/state-cannot-be-tested.html
   aint helpful neither.
+- confirm, that killing the slave results in retesting the currently tested package. 
 
 for 0.37:
 
@@ -39,6 +42,7 @@ for 0.37:
   - installation hangs and uses all cpu when installing with 
     DEBIAN_FRONTEND="noninteractive"
   - owned and unowned files after purge (policy 6.8 + 10.7.3)
+   - should ignore dirs untils #NUMBER is fixed
   - prompts without using debconf (#206684 is pending, will be in policy 3.8.2)
   - left-over processes (10.7.3)
   - "E: Broken packages" - often indicates a problem with the archive at the

@@ -660,11 +660,13 @@ class Section:
 
         countsfile = os.path.join(self._output_directory, "counts.txt") 
         if not os.path.isfile(countsfile):
+          logging.debug("writing new file: %s" % countsfile) 
           write_file(countsfile, header)
         else:
           last_line = read_file(countsfile)[-1]
         if not current_day in last_line:
           append_file(countsfile, counts)
+          logging.debug("appending line: %s" % counts) 
 
     def prepare_package_summaries(self, logs_by_dir):
         logging.debug("Writing package templates in %s" % self._config.section)    
