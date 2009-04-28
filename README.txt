@@ -4,7 +4,6 @@ Notes about the piuparts installation on piatti.debian.org
 == ToDo
 
 - review sudoers and come up with (a bit) more restrictive one
-- use local mirror
 - there should be a 2nd group of piuparts-people. those who can sudo into piupartsm to process logfiles. maybe make that the qa-group
 
 == Installation
@@ -29,7 +28,7 @@ piupartss       ALL=(ALL) NOPASSWD: ALL
 
 === piuparts installation from svn source
 
-* sudo apt-get install apt python debootstrap lsof lsb-release python-debian make dpkg-dev python-support asciidoc xmlto
+* sudo apt-get install apt python debootstrap lsof lsb-release python-debian make dpkg-dev python-support asciidoc xmlto python-rpy r-recommended r-base-dev
 * you need a webserver too, if you run the master
 * Copy 'svn://svn.debian.org/svn/piuparts/piatti/home/piupartss/bin/update-piuparts-setup' on the host and run it. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further svn checkouts as well as source code installation. It needs the piupartss and piupartsm user set up as described below, though.
 * sudo ln -s /org/piuparts.debian.org/etc/ /etc/piuparts

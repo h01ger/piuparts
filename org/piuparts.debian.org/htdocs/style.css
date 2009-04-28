@@ -35,7 +35,6 @@ div.c1 {text-align: center}
 p.text {
  font-family: sans-serif;
  padding: 5px;
- font-size: 105%;
  font-weight: normal;
 }
 
@@ -163,7 +162,7 @@ th.reject {
 }
 
 td {
- font-size: 105%;
+ font-size: 100%;
  border: 0px solid #000;
  padding: 4px;
  padding-left: 6px;
@@ -260,6 +259,12 @@ td.labelcell {
     font-weight: bold;
 }
 td.contentcell {
+    text-align: center;
+    padding: 0.2em 0.3em 0.2em 0.3em;
+    border-bottom: 1px dotted #999;
+}
+td.lastcell {
+    font-size: 80%;
     text-align: center;
     padding: 0.2em 0.3em 0.2em 0.3em;
     border-bottom: 1px dotted #999;
