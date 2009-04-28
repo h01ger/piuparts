@@ -53,6 +53,8 @@ diff screenlog.old screenlog.new >/dev/null 2>&1 && {
 #
 # send screenlog daily no matter what, but only once a day :)
 #
+# disabled, report should be enough to confirm the slave is still running...
+exit 0
 HOUR=`date +%H`
 if [ "$HOUR" = "00" ] ; then
 	touch screenlog.yesterday

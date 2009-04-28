@@ -16,20 +16,22 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
+MASTER=/org/piuparts.debian.org/master
+DISTROS="sid squeeze"
+
 #
 # detect packages which are/were untestable due to archive issue and mark them as such
 #
 
-MASTER=/org/piuparts.debian.org/master
-DISTROS="sid squeeze"
-
 LOGS=`mktemp`
-
 for distro in $DISTROS ; do 
-	rgrep -l "E: Broken packages" $MASTER/$distro/fail >> $LOGS
-        grep $distro $FILE | xargs mv $MASTER/$distro/untestable/
+	rgrep -l "E: Broken packages" $MASTER/$distro/fail 2>/dev/null >> $LOGS
+        if [ -s $LOGS ] ; then 
+          for package_log in $(grep $distro $LOGS) ; do 
+		mv $package_log $MASTER/$distro/untestable/
+	  done
+        fi
 done
-
 if [ -s $LOGS ] ; then 
 	echo "Broken packages detected!"
 	echo 

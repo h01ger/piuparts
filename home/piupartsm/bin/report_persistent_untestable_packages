@@ -24,11 +24,12 @@ DAYS=15
 # find packages which are in the untestable-archive but have been tested by now,
 # remove those logs so the won't show up later
 #
+
 for distro in $DISTROS ; do
-	for package_log in $(find $MASTER/$distro/untestable/archive/ -name "*.log"); do
+	for package_log in $(find $MASTER/$distro/untestable/archive/ -name "*.log" 2>/dev/null); do
 		for dir in "pass failed bugged" ; do
-			FILE=$(basename $package_log)
-			if [ -f $MASTER/$distro/$dir/$FILE ] ; then
+			file=$(basename $package_log)
+			if [ -f $MASTER/$distro/$dir/$file ] ; then
 				rm $package_log
 			fi
 		done
@@ -39,7 +40,8 @@ done
 # find packages which have been in untestable for more than $DAYS days and reschedule them for testing
 #
 
-find $MASTER/*/untestable/archive -mtime +$DAYS -name "*.log" > $LOGS
+LOGS=`mktemp`
+find $MASTER/*/untestable/archive -mtime +$DAYS -name "*.log" 2>/dev/null > $LOGS
 if [ -s $LOGS ] ; then 
 	for package_log in $(cat $LOGS) ; do 
 		rm -f $package_log

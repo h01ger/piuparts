@@ -25,7 +25,7 @@ DAYS=5
 #
 
 LOGS=`mktemp`
-find $MASTER/*/untestable/ -mtime +$DAYS -name "*.log" > $LOGS
+find $MASTER/*/untestable/ -mtime +$DAYS -name "*.log" 2>/dev/null > $LOGS
 if [ -s $LOGS ] ; then 
 	for distro in $DISTROS ; do
 		mkdir -p $MASTER/$distro/untestable/archive
