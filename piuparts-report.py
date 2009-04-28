@@ -31,6 +31,7 @@ import ConfigParser
 import urllib
 import shutil
 import string
+from rpy import *
 
 import piupartslib
 
@@ -82,6 +83,32 @@ HTML_HEADER = """
       <a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">FAQ</a> 
      </td>
      </tr>     
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="http://bugs.debian.org/piuparts" target="_blank">Bugs</a> 
+     </td>
+    </tr>     
+    <tr class="titlerow">
+     <td class="titlecell">
+      Documentation
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="/doc/README.html" target="_blank">piuparts README</a>
+     </td>
+    </tr>
+    <tr class="titlerow">
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="/doc/piuparts.1.html" target="_blank">piuparts manpage</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="http://www.debian.org/doc/debian-policy/" target="_blank">Debian policy</a>
+     </td>
+    </tr>
     <tr class="titlerow">
      <td class="bluetitlecell">
       Available reports
@@ -117,35 +144,13 @@ HTML_HEADER = """
       <a href="http://udd.debian.org" target="_blank">Ultimate Debian Database</a>
      </td>
     </tr>
-    </tr>
-    <tr class="titlerow">
-     <td class="titlecell">
-      Documentation
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell">
-      <a href="http://www.debian.org/doc/debian-policy/" target="_blank">Debian policy</a>
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell">
-      <a href="/doc/README.html" target="_blank">piuparts README</a>
-     </td>
-    </tr>
-    <tr class="titlerow">
-    <tr class="normalrow">
-     <td class="contentcell">
-      <a href="/doc/piuparts.1.html" target="_blank">piuparts manpage</a>
-     </td>
-    </tr>
     <tr class="titlerow">
      <td class="titlecell">
       Last update
      </td>
     </tr>
     <tr class="normalrow">
-     <td class="contentcell">
+     <td class="lastcell">
       $time
      </td>
     </tr>
@@ -165,15 +170,12 @@ HTML_FOOTER = """
   <div>
    piuparts was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by 
    <a href="mailto:holger@debian.org">Holger Levsen</a>,  
-   <a href="mailto:luk@debian.org">Luk Claes</a> and others. GPL2 licenced.
-   <br>
-  </div>
-  <div>
+   <a href="mailto:luk@debian.org">Luk Claes</a> and <a href="http://qa.debian.org/" target="_blank">others</a>. GPL2 licenced.
    <a href="http://validator.w3.org/check?uri=referer">
-    <img border="0" src="/images/valid-html401.png" alt="Valid HTML 4.01!" height="31" width="88">
+    <img border="0" src="/images/valid-html401.png" alt="Valid HTML 4.01!" height="15" width="80" valign="middle">
    </a>
    <a href="http://jigsaw.w3.org/css-validator/check/referer">
-    <img border="0" src="/images/vcss.png" alt="Valid CSS!"  height="31" width="88">
+    <img border="0" src="/images/w3c-valid-css.png" alt="Valid CSS!"  height="15" width="80" valign="middle">
    </a>
   </div>
  </div>
@@ -299,15 +301,13 @@ INDEX_BODY_TEMPLATE = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      To make sure piuparts is run on all packages, piuparts.debian.org was set up.
-      <br>
-      piuparts.debian.org is a service running on <a href="http://db.debian.org/machines.cgi?host=piatti" target="_blank">piatti.debian.org</a>,
-      generously donated by <a href="http://hp.com/go/debian/" target="_blank">HP</a> and hosted at piuparts.cs.helsinki.fi by 
-      the University of Helsinki, at the <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a> in Finland.
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
+      To make sure piuparts is run on all packages, piuparts.debian.org was set up as a service running on 
+      <a href="http://db.debian.org/machines.cgi?host=piatti" target="_blank">piatti.debian.org</a>. 
+      This machine was generously donated by <a href="http://hp.com/go/debian/" target="_blank">HP</a> 
+      to run piuparts on the Debian archive and is hosted as piuparts.cs.helsinki.fi by 
+      the University of Helsinki, at the 
+      <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a>
+      in Finland.
       This setup is currently still being polished. Better reports and statistics as well as PTS integration is
       planned. Join #debian-qa if you want to help.
      </td>
@@ -741,6 +741,20 @@ class Section:
                           (html_protect(state), html_protect(state),
                           len(self._binary_db.get_packages_in_state(state)),
                           dir_link)
+
+        # create and include graph
+        # FIXME: refactor!  
+        countsfile = os.path.join(self._output_directory, "counts.txt")
+        pngfile = os.path.join(self._output_directory, "monthly-states.png")
+        r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
+        r('cname <- c("date",rep(colnames(t)))')
+        r('v <- t[(nrow(t)-28):nrow(t),0:12]')
+        r('palette(c("green4", "red", "green", "brown", "black", "skyblue4", "yellow", "darkred", "salmon", "purple", "lightgreen",  "blue","darkgray"))')
+        r('bitmap(file="'+pngfile+'",type="png16m",width=12,height=9,pointsize=10,res=100)')
+        r('barplot(t(v),col = 1:13, main="Packages per state in '+self._config.section+' (past 4 weeks)", xlab="", ylab="Number of packages",space=0.1,border=0)')
+        r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
+        tablerows += "<tr class=\"normalrow\"> <td class=\"contentcell\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"600\" alt=\"Package states in the 4 weeks\"></a></td></tr>\n" % ("monthly-states.png", self._config.section, "monthly-states.png")
+
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
                           self._binary_db.get_total_packages()
         htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)

@@ -394,6 +394,6 @@ These settings are used for all sections. Except for the first two they are all 
 Some of the configuration items are not required, but it is best to set them all to be sure what the configuration actually is.
 
 
-=== About the setup on piuparts.debian.org
+=== Running piuparts in master-slave mode, piuparts-report and the setup on piuparts.debian.org
 
-See link:http://svn.debian.org/viewsvn/piuparts/piatti/README.txt?view=markup[svn://svn.debian.org/svn/piuparts/piatti/README.txt]
+If you want to run piuparts-report (which is only+very useful if you run piuparts in master-slave mode), you need to 'apt-get install python-rpy r-recommended r-base-dev'. For more information see link:http://svn.debian.org/viewsvn/piuparts/piatti/README.txt?view=markup[svn://svn.debian.org/svn/piuparts/piatti/README.txt].

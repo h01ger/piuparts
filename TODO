@@ -3,41 +3,47 @@ Things to do for piuparts
 
 for 0.36:
 
-- do fancy R graphs with the data from $distro/counts.txt
+- report:
+ - refactor code, sources.txt should not be calculated where it currently is
+ - get rid of old log pages and put stats in the index page
+ - do fancy R graphs with the data from $distro/counts.txt
+  - refactor..! search for FIXME
+  - also per state
+ - include links to http://qa.debian.org/developer.php?login=$maintainer_email 
+   or probably better: create maintainer centric pages.
+ - include uploaders in maintainer centric pages :-)
+ - include pts state (as an icon) in source summary pages
+
+- http://piuparts.debian.org/sid/state-dependency-does-not-exist.html#addresses-goodies-for-gnustep 
+  links to http://goldwasser.athome/source/a/addresses-for-gnustep (0.4.7-1).html 
+  obviously doesnt exist.
+
+- udebs turn up as a state - see http://piuparts.debian.org/source/u/udev.html
+
+- untestable packages are not recognicable as such, see http://piuparts.debian.org/source/a/apache2.html 
+  atm. (log is N/A, even though its there, even if empty) - http://piuparts.debian.org/sid/state-cannot-be-tested.html
+  aint helpful neither.
+
+- confirm, that killing the slave results in retesting the currently tested package. 
 
 - take care of old conf files on upgrades
 	/etc/piuparts/piuparts-master.conf
 	/etc/piuparts/piuparts-slave.conf
 
-- report:
- - refactor code, sources.txt should not be calculated where it currently is
- - get rid of old log pages and put stats in the index page
+once 0.36 is released:
 
-- provides are not handled correctly: ie libapt-pkg-perl has a dependency on 
-  libapt-pkg-libc6.7-6-4.6 which piuparts believes is an unknown-package while 
-  in reality its provided by apt
-- break circular dependencies when there are only circular dependencies left for 
-  testing. prefer circular dependencies from the same source package until there are
-  none of this kind left.
-  warn visibly in logfile (but without error) when testing a packages with
-  circular dependencies.
-- http://piuparts.debian.org/sid/state-failed-testing.html lists linux-image-2.6.29-1-amd64 
-  four times :-(
-- http://piuparts.debian.org/sid/state-dependency-does-not-exist.html#addresses-goodies-for-gnustep 
-  links to http://goldwasser.athome/source/a/addresses-for-gnustep (0.4.7-1).html 
-  obviously doesnt exist.
-- bug or feature: udebs turn up as a state ;-) see http://piuparts.debian.org/source/u/udev.html
-- untestable packages are not recognicable as such, see http://piuparts.debian.org/source/a/apache2.html 
-  atm. (log is N/A, even though its there, even if empty) - http://piuparts.debian.org/sid/state-cannot-be-tested.html
-  aint helpful neither.
-- confirm, that killing the slave results in retesting the currently tested package. 
+- integration with packages.qa.debian.org
+- announcement on d-d-a
 
 for 0.37:
 
 - probably include patch for #523950
 - probably include patch for #519192 - not sure if i like that aproach
 
-- report: 
+- master:
+ - write stats about number of daily tests (-> report: create fancy graphs)
+
+- report:
  - write stats about the reasons for failures:
   - installation hangs and uses all cpu when installing with 
     DEBIAN_FRONTEND="noninteractive"
@@ -53,8 +59,6 @@ for 0.37:
   - unclassified
  - write stats for total number of logs (when a package has more than a log 
    in fail/ or bugged/)
- - include links to http://qa.debian.org/developer.php?login=$maintainer_email 
-   or probably better: create maintainer centric pages.
  - RSS feeds of logs
 
 - expire old logs a month after testing if newer logs exists (except if the new log is fail
@@ -83,7 +87,9 @@ for 0.37:
 - write reportbug wrapper for mass bug filing (start simple, make it more sophisticated 
   in 0.38)
 
-- publish FAI classes to setup piuparts.$fqdn automatically
+- publish FAI classes to setup piuparts.$fqdn automatically 
+
+- release 0.37 before debconf9
 
 for 0.38 and on:
 
