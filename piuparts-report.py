@@ -122,6 +122,11 @@ HTML_HEADER = """
     $section_navigation
     <tr>
      <td class="contentcell">
+      <a href="/source/">by source package</a> 
+     </td>
+    </tr>     
+    <tr>
+     <td class="contentcell">
       <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?tag=piuparts;users=debian-qa@lists.debian.org&archive=both" target="_blank">Bugs filed</a> 
      </td>
     </tr>     
