@@ -9,7 +9,7 @@ master-host = localhost
 master-user = piupartsm
 master-directory = /org/piuparts.debian.org/master/
 output-directory = /org/piuparts.debian.org/htdocs/
-idle-sleep = 300
+idle-sleep = 1000
 
 [sid]
 description = Debian sid / main, installation and removal tests
