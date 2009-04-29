@@ -65,7 +65,7 @@ piupartss@piatti:/org/piuparts.debian.org$ ./update-piuparts-setup
 
 == Running piuparts
 
-=== Starting the slave
+=== Starting and stopping the slave
 
 Run the following script under *your* user account you will start piuparts-slave on piatti, piuparts-master will be started automatically by the slave.
 
@@ -74,6 +74,8 @@ holger@piatti:~$ sudo /home/piupartss/bin/slave_run
 ----
 
 There are several cronjobs installed via '~piupartsm/crontab' and '~piupartss/crontab') which monitor the slave and the host it's running on.
+
+It's possible to kill the slave any time by pressing CTRL-C, the currently done test will be redone.
 
 === Joining an existing slave session
 
