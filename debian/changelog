@@ -49,7 +49,8 @@ piuparts (0.36) UNRELEASED; urgency=low
     - provide links to logfiles in statistics page.
     - provide links to source packages pages from state pages and back, as well
       as links to the dependencies state.
-    - draw graphs of package states over time (if pypthon-rpy is installed).
+    - draw graphs of package states over time (if pypthon-rpy and gs are 
+      installed).
     - improve layout, generate navigation for all pages.
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
@@ -65,7 +66,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - depend on python (>>2.4), make dependency to python-debian unversioned
     - add build-dependencies on debhelper, asciidoc and xmlto.
     - remove build-dependencies on docbook2x and docbook-xml.
-    - suggest python-rpy as it improves piuparts-reports output.
+    - suggest python-rpy and gs to improve piuparts-report output.
     - set Homepage: to http://piuparts.debian.org
     - bump Standards-Version to 3.8.1, no changes neccessary.
   * Rewrite debian/rules from scratch using debhelper.

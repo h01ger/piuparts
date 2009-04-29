@@ -9,6 +9,7 @@ for 0.36:
  - do fancy R graphs with the data from $distro/counts.txt
   - refactor..! search for FIXME
   - also per state
+  - suggest gs
  - include links to http://qa.debian.org/developer.php?login=$maintainer_email 
    or probably better: create maintainer centric pages.
  - include uploaders in maintainer centric pages :-)
@@ -30,6 +31,8 @@ for 0.36:
 	/etc/piuparts/piuparts-master.conf
 	/etc/piuparts/piuparts-slave.conf
 
+- report_untestable_packages: moving to untestable/archive/ causes problems, so disabled for now.
+
 once 0.36 is released:
 
 - integration with packages.qa.debian.org
@@ -48,7 +51,8 @@ for 0.37:
   - installation hangs and uses all cpu when installing with 
     DEBIAN_FRONTEND="noninteractive"
   - owned and unowned files after purge (policy 6.8 + 10.7.3)
-   - should ignore dirs untils #NUMBER is fixed
+  - files owned by two or more packages are not removed by dpkg, these should be ignored.
+    eg, "/etc/php5	 owned by: php5-cgi, php5-common" from http://piuparts.debian.org/squeeze/fail/php5-cgi_5.2.6.dfsg.1-3.log
   - prompts without using debconf (#206684 is pending, will be in policy 3.8.2)
   - left-over processes (10.7.3)
   - "E: Broken packages" - often indicates a problem with the archive at the
