@@ -24,6 +24,35 @@ DAYS=5
 # find packages which have been in untestable for more than $DAYS days and reschedule them for testing
 #
 
+#
+# FIXME: piuparts-master and report break in unforseen ways if packages are in untestable/archive, so
+# 	 this code got disabled until I have time to fix it.
+# 
+# piuparts-report fails like this:
+#
+# 12:34 Copying log files
+# Traceback (most recent call last):
+#   File "/org/piuparts.debian.org/share/piuparts/piuparts-report", line 858, in <module>
+#     main()
+#   File "/org/piuparts.debian.org/share/piuparts/piuparts-report", line 845, in main
+#     section.generate_output(master_directory=global_config["master-directory"],output_directory=global_config["output-directory"],section_names=section_names)
+#   File "/org/piuparts.debian.org/share/piuparts/piuparts-report", line 822, in generate_output
+#     self.generate_html()
+#   File "/org/piuparts.debian.org/share/piuparts/piuparts-report", line 729, in generate_html
+#     copy_logs(logs_by_dir, self._output_directory)
+#   File "/org/piuparts.debian.org/share/piuparts/piuparts-report", line 467, in copy_logs
+#     update_file(source, target)
+#   File "/org/piuparts.debian.org/share/piuparts/piuparts-report", line 456, in update_file
+#     shutil.copyfile(source, target)
+#   File "/usr/lib/python2.5/shutil.py", line 46, in copyfile
+#     fsrc = open(src, 'rb')
+# IOError: [Errno 2] No such file or directory: 'untestable/dict-freedict-eng-swa_1.3-4.log'
+#
+#
+#
+# piuparts-master doesnt hand out reserved packages if there are some in untestable/archive...
+#
+
 LOGS=`mktemp`
 find $MASTER/*/untestable/ -mtime +$DAYS -name "*.log" 2>/dev/null > $LOGS
 if [ -s $LOGS ] ; then 
@@ -31,7 +60,7 @@ if [ -s $LOGS ] ; then
 		mkdir -p $MASTER/$distro/untestable/archive
         	for package_log in $(grep $distro $LOGS) ; do 
         		if [ ! -f $MASTER/$distro/untestable/archive/$(basename $package_log) ] ; then
-				mv $package_log $MASTER/$distro/untestable/archive/
+				#mv $package_log $MASTER/$distro/untestable/archive/
 		        fi
 			rm -f $package_log
 		done
@@ -39,8 +68,8 @@ if [ -s $LOGS ] ; then
 	echo "Untestable packages detected, which have been tested more than $DAYS days ago!"
 	echo "These packages have been rescheduling for piuparts testing."
 	echo
-	echo "If they continue to fail testing, you will be informed again in 10 days."
-	echo
+#	echo "If they continue to fail testing, you will be informed again in 10 days."
+#	echo
 	echo "This is usually because a package was reserverd with a specific version and then"
         echo "a higher version became available and the reserved version vanished. So it's good"
 	echo "to test them again."
