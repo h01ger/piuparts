@@ -50,6 +50,6 @@ if [ -s $LOGS ] ; then
 	echo
 	echo "This is quite unusual, please investigate, probably using http://edos.debian.net/edos-debcheck/"
 	echo
-	echo "$LOGS"
+	cat "$LOGS"
 fi
 rm $LOGS

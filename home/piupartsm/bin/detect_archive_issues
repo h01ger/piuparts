@@ -34,6 +34,7 @@ for distro in $DISTROS ; do
 done
 if [ -s $LOGS ] ; then 
 	echo "Broken packages detected!"
+	echo "(By grep'ing for 'E: Broken packages' in failed logs.)"
 	echo 
 	echo 'The following packages have been moved to $distro/untestable and will be'
 	echo "tested again in 5 days."

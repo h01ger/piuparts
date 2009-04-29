@@ -28,6 +28,7 @@ done
 
 if [ -s $FILE ] ; then 
 	echo "Network problems on piatti.debian.org detected!"
+	echo "(By grep'ing for 'Cannot initiate the connection to' in failed logs.)"
 	echo 
 	echo "Please review the following logfiles and most likely remove them." 
         echo

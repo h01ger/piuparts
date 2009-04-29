@@ -45,6 +45,6 @@ if [ -s $LOGS ] ; then
         echo "a higher version became available and the reserved version vanished. So it's good"
 	echo "to test them again."
 	echo
-	echo "$LOGS"
+	cat "$LOGS"
 fi
 rm $LOGS
