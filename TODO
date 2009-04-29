@@ -25,8 +25,6 @@ for 0.36:
   atm. (log is N/A, even though its there, even if empty) - http://piuparts.debian.org/sid/state-cannot-be-tested.html
   aint helpful neither.
 
-- confirm, that killing the slave results in retesting the currently tested package. 
-
 - take care of old conf files on upgrades
 	/etc/piuparts/piuparts-master.conf
 	/etc/piuparts/piuparts-slave.conf
