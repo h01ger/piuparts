@@ -31,7 +31,12 @@ import ConfigParser
 import urllib
 import shutil
 import string
-from rpy import *
+
+# if python-rpy ain't installed, we don't draw fancy graphs
+try:
+  from rpy import *
+except:
+  pass
 
 import piupartslib
 
@@ -744,16 +749,20 @@ class Section:
 
         # create and include graph
         # FIXME: refactor!  
-        countsfile = os.path.join(self._output_directory, "counts.txt")
-        pngfile = os.path.join(self._output_directory, "monthly-states.png")
-        r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
-        r('cname <- c("date",rep(colnames(t)))')
-        r('v <- t[(nrow(t)-28):nrow(t),0:12]')
-        r('palette(c("green4", "red", "green", "brown", "black", "skyblue4", "yellow", "darkred", "salmon", "purple", "lightgreen",  "blue","darkgray"))')
-        r('bitmap(file="'+pngfile+'",type="png16m",width=12,height=9,pointsize=10,res=100)')
-        r('barplot(t(v),col = 1:13, main="Packages per state in '+self._config.section+' (past 4 weeks)", xlab="", ylab="Number of packages",space=0.1,border=0)')
-        r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
-        tablerows += "<tr class=\"normalrow\"> <td class=\"contentcell\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"600\" alt=\"Package states in the 4 weeks\"></a></td></tr>\n" % ("monthly-states.png", self._config.section, "monthly-states.png")
+        # if python-rpy ain't installed, we don't draw fancy graphs
+        try:
+          countsfile = os.path.join(self._output_directory, "counts.txt")
+          pngfile = os.path.join(self._output_directory, "monthly-states.png")
+          r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
+          r('cname <- c("date",rep(colnames(t)))')
+          r('v <- t[(nrow(t)-28):nrow(t),0:12]')
+          r('palette(c("green4", "red", "green", "brown", "black", "skyblue4", "yellow", "darkred", "salmon", "purple", "lightgreen",  "blue","darkgray"))')
+          r('bitmap(file="'+pngfile+'",type="png16m",width=12,height=9,pointsize=10,res=100)')
+          r('barplot(t(v),col = 1:13, main="Packages per state in '+self._config.section+' (past 4 weeks)", xlab="", ylab="Number of packages",space=0.1,border=0)')
+          r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
+          tablerows += "<tr class=\"normalrow\"> <td class=\"contentcell\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"600\" alt=\"Package states in the 4 weeks\"></a></td></tr>\n" % ("monthly-states.png", self._config.section, "monthly-states.png")
+        except:
+          logging.debug("python-rpy not installed, disabled graphs.")
 
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
                           self._binary_db.get_total_packages()
