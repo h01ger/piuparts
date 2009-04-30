@@ -23,10 +23,10 @@
 #
 # monitor for problems once a day
 #
-45 0 * * * /home/piupartsm/bin/detect_stale_mounts
-50 0 * * * /home/piupartsm/bin/detect_tmp_cruft
-55 0 * * * /home/piupartsm/bin/detect_network_issues
-0  1 * * * /home/piupartsm/bin/detect_archive_issues
-05 1 * * * /home/piupartsm/bin/report_persistent_untestable_packages
-10 1 * * * /home/piupartsm/bin/report_untestable_packages
+45 22 * * * /home/piupartsm/bin/detect_stale_mounts
+50 22 * * * /home/piupartsm/bin/detect_tmp_cruft
+55 22 * * * /home/piupartsm/bin/detect_network_issues
+0  23 * * * /home/piupartsm/bin/detect_archive_issues
+05 23 * * * /home/piupartsm/bin/report_persistent_untestable_packages
+10 23 * * * /home/piupartsm/bin/report_untestable_packages
 

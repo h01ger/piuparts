@@ -61,7 +61,8 @@ if [ -s $LOGS ] ; then
         	for package_log in $(grep $distro $LOGS) ; do 
         		if [ ! -f $MASTER/$distro/untestable/archive/$(basename $package_log) ] ; then
 				#mv $package_log $MASTER/$distro/untestable/archive/
-		        fi
+				:
+			fi
 			rm -f $package_log
 		done
 	done
