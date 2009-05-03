@@ -30,3 +30,8 @@
 05 23 * * * /home/piupartsm/bin/report_persistent_untestable_packages
 10 23 * * * /home/piupartsm/bin/report_untestable_packages
 
+#
+# misc
+#
+55 11 * * * /home/piupartsm/bin/prepare_backup
+

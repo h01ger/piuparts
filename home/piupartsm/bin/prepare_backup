@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+#
+# backup statistiscs files to a single directory for DSA to backup
+# piuparts.d.o's state is not backupped 
+#	(currently it takes one month to run a full piuparts test on a suite
+#         which produces a gigabyte of logfiles to be saved, for basically 
+#         not much value)
+#
+BACKUPDIR=/org/piuparts.debian.org/backup
+DISTROS="sid squeeze"
+HTDOCS=/org/piuparts.debian.org/htdocs
+
+for distro in DISTROS ; do
+  mkdir -p $BACKUPDIR/$distro
+  cp $HTDOCS/$distro/*.txt $BACKUPDIR/$distro/
+done
+
