@@ -27,8 +27,8 @@ BACKUPDIR=/org/piuparts.debian.org/backup
 DISTROS="sid squeeze"
 HTDOCS=/org/piuparts.debian.org/htdocs
 
-for distro in DISTROS ; do
+for distro in $DISTROS ; do
   mkdir -p $BACKUPDIR/$distro
-  cp $HTDOCS/$distro/*.txt $BACKUPDIR/$distro/
+  cp $HTDOCS/$distro/counts.txt $BACKUPDIR/$distro/
 done
 
