@@ -9,11 +9,9 @@ for 0.36:
  - do fancy R graphs with the data from $distro/counts.txt
   - refactor..! search for FIXME
   - also per state
-  - suggest gs
  - include links to http://qa.debian.org/developer.php?login=$maintainer_email 
    or probably better: create maintainer centric pages.
- - include uploaders in maintainer centric pages :-)
- - include pts state (as an icon) in source summary pages
+  - include uploaders in maintainer centric pages
 
 - http://piuparts.debian.org/sid/state-dependency-does-not-exist.html#addresses-goodies-for-gnustep 
   links to http://goldwasser.athome/source/a/addresses-for-gnustep (0.4.7-1).html 
@@ -29,7 +27,7 @@ for 0.36:
 	/etc/piuparts/piuparts-master.conf
 	/etc/piuparts/piuparts-slave.conf
 
-- report_untestable_packages: moving to untestable/archive/ causes problems, so disabled for now.
+- ~piupartsm/bin/report_untestable_packages: moving to untestable/archive/ causes problems, so disabled for now.
 
 once 0.36 is released:
 
@@ -62,6 +60,7 @@ for 0.37:
  - write stats for total number of logs (when a package has more than a log 
    in fail/ or bugged/)
  - RSS feeds of logs
+ - include pts state (as an icon) in source summary pages
 
 - expire old logs a month after testing if newer logs exists (except if the new log is fail
   and the old is bugged, then the fail log should be moved to bugged first)

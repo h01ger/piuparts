@@ -90,7 +90,7 @@ HTML_HEADER = """
      </tr>     
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://bugs.debian.org/piuparts" target="_blank">Bugs</a> 
+      <a href="http://bugs.debian.org/piuparts" target="_blank">Bugs</a> / <a href="http://svn.debian.org/viewsvn/piuparts/trunk/TODO" target="_blank">ToDo</a>
      </td>
     </tr>     
     <tr class="titlerow">
@@ -330,6 +330,11 @@ INDEX_BODY_TEMPLATE = """
      <td class="titlecell">
       News
       <!-- This shall properly be included in future -->
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2009-05-01</b>All packages in squeeze and sid which can be tested have been tested. So it takes about one month to do a full piuparts run against one suite of the archive on this machine, that's almost 1000 packages tested per day.
      </td>
     </tr>
     <tr class="normalrow">
@@ -695,6 +700,7 @@ class Section:
             sourcerows = "<tr class=\"normalrow\"><td class=\"contentcell2\"><a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a></td><td class=\"contentcell2\" colspan=\"2\">%s</td></tr>" % (source, html_protect(source), html_protect(maintainer))
 
             filename = os.path.join(summary_page_path, (source + ".tpl_src"))
+            # don't write header if it already exists (=it was created in an previous section)
             if not os.path.isfile(filename):
                 f = file(filename, "w")
                 f.write(sourcerows)
