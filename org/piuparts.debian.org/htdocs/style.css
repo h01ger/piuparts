@@ -253,6 +253,13 @@ td.bluetitlecell {
     border-bottom: 1px solid #999;
 }
 td.labelcell {
+    vertical-align: top;
+    text-align: left;
+    padding: 0.2em 0.3em 0.2em 0.3em;
+    border-bottom: 1px dotted #999;
+    font-weight: bold;
+}
+td.labelcell2 {
     padding: 0.2em 0.2em 0.1em 0.2em;
     border-top: 1px solid black;
     border-right: 1px dotted black;
@@ -271,6 +278,7 @@ td.lastcell {
 }
 td.contentcell2 {
     text-align: left;
+    vertical-align: top;
     padding: 0.2em 0.3em 0.2em 0.3em;
     border-bottom: 1px dotted #999;
     border-right: 1px dotted #999;
