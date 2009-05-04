@@ -53,6 +53,8 @@ piuparts (0.36) UNRELEASED; urgency=low
       as links to the dependencies state.
     - draw graphs of package states over time (if pypthon-rpy and gs are 
       installed).
+    - create maintainer centric pages for each email address found in 
+      Maintainers or Uploaders
     - improve layout, generate navigation for all pages.
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.

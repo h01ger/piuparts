@@ -377,21 +377,30 @@ class PackagesDB:
         return self._packages
 
     def get_control_header(self, package_name, header):
-        return self._packages[package_name][header]
-
-    def get_source_package(self, package_name):
-        version = self._packages[package_name]["Version"]
-        try:
-          _source = self._packages[package_name]["Source"]
-          # for binNMU the Source header in Packages files hold the version too
-          if " " in _source:
-            source, version = _source.split(" ")
-          else:
-            source = _source
-        except:
-          source = self._packages[package_name]["Package"]
-        # we could return version here too, but it wont be used atm
-        return source
+        if header == "Source":
+          # binary packages build from the source package with the same name
+          # don't have a Source header, so let's try:
+          try:
+            _source = self._packages[package_name][header]
+            # for binNMU the Source header in Packages files holds the version 
+            # too, so we need to chop it of:
+            if " " in _source:
+              source, version = _source.split(" ")
+            else:
+              source = _source
+          except:
+            source = self._packages[package_name]["Package"]
+          return source
+        elif header == "Uploaders":
+          # not all (source) packages have an Uploaders header
+          uploaders = ""
+          try:
+            uploaders = self._packages[package_name][header]
+          except:
+            pass
+          return uploaders
+        else:
+          return self._packages[package_name][header]
 
     def get_package_state(self, package_name):
         return self._package_state[package_name]

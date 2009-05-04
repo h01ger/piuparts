@@ -5,15 +5,16 @@ for 0.36:
 
 - report:
  - refactor code, search for FIXME
+  - esp. these new maintainer packages...
+ - maintainer-pages: 
+  - if uploaders if empty, dont display it
+  - different background color for links to failed logs 
+  - assemble maintainer pages differently, to be able to sort them alphabetically + by section
  - sources.txt should not be calculated where it currently is (or maybe yes..)
  - packages.txt for binary packages
  - get rid of old log pages and put stats in the index page
  - do fancy R graphs with the data from $distro/counts.txt
   - also per state
- - create maintainer centric pages.
-  - also create pages for uploaders
-
-- udebs turn up as a state - see http://piuparts.debian.org/source/u/udev.html
 
 - take care of old conf files on upgrades
 	/etc/piuparts/piuparts-master.conf
@@ -85,6 +86,8 @@ for 0.37:
   in 0.38)
 
 - publish FAI classes to setup piuparts.$fqdn automatically 
+
+- a redirect of http://piuparts.d.o/foo to http://p.d.o/source/f/foo.html would be nice
 
 - release 0.37 before debconf9
 
