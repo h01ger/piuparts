@@ -380,10 +380,17 @@ class PackagesDB:
         return self._packages[package_name][header]
 
     def get_source_package(self, package_name):
+        version = self._packages[package_name]["Version"]
         try:
-          source = self._packages[package_name]["Source"]
+          _source = self._packages[package_name]["Source"]
+          # for binNMU the Source header in Packages files hold the version too
+          if " " in _source:
+            source, version = _source.split(" ")
+          else:
+            source = _source
         except:
           source = self._packages[package_name]["Package"]
+        # we could return version here too, but it wont be used atm
         return source
 
     def get_package_state(self, package_name):

@@ -4,24 +4,16 @@ Things to do for piuparts
 for 0.36:
 
 - report:
- - refactor code, sources.txt should not be calculated where it currently is
+ - refactor code, search for FIXME
+ - sources.txt should not be calculated where it currently is (or maybe yes..)
+ - packages.txt for binary packages
  - get rid of old log pages and put stats in the index page
  - do fancy R graphs with the data from $distro/counts.txt
-  - refactor..! search for FIXME
   - also per state
- - include links to http://qa.debian.org/developer.php?login=$maintainer_email 
-   or probably better: create maintainer centric pages.
-  - include uploaders in maintainer centric pages
-
-- http://piuparts.debian.org/sid/state-dependency-does-not-exist.html#addresses-goodies-for-gnustep 
-  links to http://goldwasser.athome/source/a/addresses-for-gnustep (0.4.7-1).html 
-  obviously doesnt exist.
+ - create maintainer centric pages.
+  - also create pages for uploaders
 
 - udebs turn up as a state - see http://piuparts.debian.org/source/u/udev.html
-
-- untestable packages are not recognicable as such, see http://piuparts.debian.org/source/a/apache2.html 
-  atm. (log is N/A, even though its there, even if empty) - http://piuparts.debian.org/sid/state-cannot-be-tested.html
-  aint helpful neither.
 
 - take care of old conf files on upgrades
 	/etc/piuparts/piuparts-master.conf
@@ -41,6 +33,10 @@ for 0.37:
 
 - master:
  - write stats about number of daily tests (-> report: create fancy graphs)
+
+- untestable packages are not recognicable as such, see http://piuparts.debian.org/source/a/apache2.html 
+  atm. (log is N/A, even though its there, even if empty) - http://piuparts.debian.org/sid/state-cannot-be-tested.html
+  aint helpful neither.
 
 - report:
  - write stats about the reasons for failures:
@@ -121,6 +117,11 @@ for 0.38 and on:
   the chroot might be a good idea because some packages might need this.
   Interestingly enough this currently seems to prevent start-stop-daemon
   from starting any daemons ;)
+
+- binary packages which have been binNMUed are shown with the wrong version 
+  number on the package pages. this is just a problem in reporting, not in 
+  testing. PackagesDB.get_source_package() gives back the right value, but 
+  piuparts-reports does not care.
 
 Low priority stuff (a.k.a. "nobody's said they must have it now")
 -----------------------------------------------------------------

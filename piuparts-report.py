@@ -305,8 +305,7 @@ INDEX_BODY_TEMPLATE = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      piuparts is meant as a quality assurance tool for people who create .deb packages to test them before they upload 
-      them to the Debian package archive.
+      piuparts is meant as a quality assurance tool for people who create .deb packages to test them before they upload them to the Debian package archive. See the <a href="/doc/README.html" target="_blank">piuparts README</a> for a quick intro and then read the <a href="/doc/piuparts.1.html" target="_blank">piuparts manpage</a> to learn about all the fancy options!
      </td>
     </tr>
     <tr class="normalrow">
@@ -318,8 +317,7 @@ INDEX_BODY_TEMPLATE = """
       the University of Helsinki, at the 
       <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a>
       in Finland.
-      This setup is currently still being polished. Better reports and statistics as well as PTS integration is
-      planned. Join #debian-qa if you want to help.
+      As this is still being polished, see the piuparts wiki page for more information on <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development and the piuparts setup on piatti</a>. Better reports and statistics as well as PTS integration is planned. Join #debian-qa if you want to help.
      </td>
     </tr>
     <tr class="normalrow">
@@ -334,7 +332,7 @@ INDEX_BODY_TEMPLATE = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-05-01</b>All packages in squeeze and sid which can be tested have been tested. So it takes about one month to do a full piuparts run against one suite of the archive on this machine, that's almost 1000 packages tested per day.
+      <b>2009-05-01</b>: All packages in squeeze and sid which can be tested have been tested. So it takes about one month to do a full piuparts run against one suite of the archive on this machine, that's almost 1000 packages tested per day.
      </td>
     </tr>
     <tr class="normalrow">
@@ -623,23 +621,25 @@ class Section:
         return links
 
     def link_to_source_summary(self, package_name):
-        source_name=self._binary_db.get_source_package(package_name)
+        source_name = self._binary_db.get_source_package(package_name)
         link = "<a href=\"/source/%s\">%s</a>" % (
                 source_subdir(source_name)+"/"+source_name+".html",
                 html_protect(package_name))
         return link
 
     def link_to_state_page(self, section, package_name, link_target):
-        link = html_protect(package_name)
-        try:
-          state = self._binary_db.state_by_name(package_name)
-          if state != "unknown-package":
+        state = self._binary_db.state_by_name(package_name)
+        if state != "unknown-package":
             link = "<a href=\"/%s/%s\">%s</a>" % (
                 section,
                 "state-"+state+".html"+"#"+package_name,
                 link_target)
-        finally:
-          return link
+        elif "-udeb" == package_name[len(package_name)-5:]:
+          link = "udeb-cannot-be-tested"
+        else:
+          link = html_protect("unknown package")
+
+        return link
 
     def links_to_logs(self, package_name, state, logs_by_dir):
         link = "N/A"
@@ -694,7 +694,7 @@ class Section:
                os.makedirs(summary_page_path)
 
             binaries = self._source_db.get_control_header(source, "Binary")
-            current_version = self._source_db.get_control_header(source, "Version")
+            current_source_version = self._source_db.get_control_header(source, "Version")
             maintainer = self._source_db.get_control_header(source, "Maintainer")
 
             sourcerows = "<tr class=\"normalrow\"><td class=\"contentcell2\"><a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a></td><td class=\"contentcell2\" colspan=\"2\">%s</td></tr>" % (source, html_protect(source), html_protect(maintainer))
@@ -711,7 +711,7 @@ class Section:
             binaryrows = "<tr class=\"titlerow\"><td class=\"bluetitlecell\" colspan=\"3\">Binary package(s) in "+self._config.section+"</td></tr>"
             for binary in binaries.split(", "):
               state = self._binary_db.state_by_name(binary)
-              binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s: %s</td><td class=\"contentcell2\">current: %s</td></tr>" % (binary, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), current_version)
+              binaryrows += "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s: %s</td><td class=\"contentcell2\">current: %s</td></tr>" % (binary, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), current_source_version)
               if state != "successfully-tested":
                 success = False
               if state == "failed-testing":

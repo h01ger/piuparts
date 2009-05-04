@@ -24,6 +24,8 @@ piuparts (0.36) UNRELEASED; urgency=low
       package is of priority "required", and not whether it's "Essential".
     - rename status "essential-required-important" to "essential-required" 
       as important packages can be tested like all the others.
+    - handle binNMUs where the Source header in the Packages file includes the 
+      Version and the Source package name in one line.
   * Install scripts for master-slave mode without .py extension.
   * piuparts-master.py: remove code to write statistics, that is done only in 
     piuparts-report.py now.
@@ -45,7 +47,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - generate sources.txt (per section) with a summary status per source
       package (for the PTS to display a source packages piuparts state)
     - generate html status pages for all source packages (to link from the PTS)
-      with links to state explaination and available logfiles.
+      with links to state explaination and available logfiles, handle udebs.
     - provide links to logfiles in statistics page.
     - provide links to source packages pages from state pages and back, as well
       as links to the dependencies state.
