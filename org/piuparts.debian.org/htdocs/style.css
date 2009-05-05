@@ -268,6 +268,15 @@ td.bluelabelcell {
     border-bottom: 1px dotted #999;
     font-weight: bold;
 }
+td.lightbluelabelcell {
+    color: white;
+    background-color: #a0a0ff;
+    vertical-align: top;
+    text-align: left;
+    padding: 0.2em 0.3em 0.2em 0.3em;
+    border-bottom: 1px dotted #999;
+    font-weight: bold;
+}
 td.labelcell2 {
     padding: 0.2em 0.2em 0.1em 0.2em;
     border-top: 1px solid black;
