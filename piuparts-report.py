@@ -128,7 +128,7 @@ HTML_HEADER = """
     </tr>     
     <tr>
      <td class="contentcell">
-      <a href="/maintainer/">by maintainer</a> 
+      <a href="/maintainer/">by maintainer / uploader</a> 
      </td>
     </tr>     
     <tr>
@@ -756,7 +756,12 @@ class Section:
             for binary in binaries.split(", "):
               state = self._binary_db.state_by_name(binary)
               current_version = self._source_db.get_control_header(source, "Version")
-              binaryrows += "<tr class=\"normalrow\"><td class=\"labelcell\">Binary:</td><td class=\"contentcell2\">%s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td><td class=\"labelcell\">piuparts result:</td><td class=\"contentcell2\">%s %s</td><td class=\"labelcell\">Uploaders:</td><td class=\"contentcell2\">%s</td></tr>" %  (binary, current_version, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir),html_protect(uploaders))
+              # FIXME: labelcell is not a good name here.... 
+              if "fail" in state:
+                labelcell="bluelabelcell"
+              else:
+                labelcell="labelcell"
+              binaryrows += "<tr class=\"normalrow\"><td class=\"labelcell\">Binary:</td><td class=\"contentcell2\">%s</td><td class=\"%s\">piuparts-result:</td><td class=\"contentcell2\">%s %s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" %  (binary, labelcell, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), html_protect(current_version))
               if state != "successfully-tested":
                 success = False
               if state == "failed-testing":
@@ -767,8 +772,11 @@ class Section:
             if failed:  source_state="failed"
             sources += "%s: %s\n" % (source, source_state)
 
-            sourcerows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"8\">%s in %s</td></tr>" % (source, self._config.section)
-            sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Source:</td><td class=\"contentcell2\"><a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a></td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td><td class=\"labelcell\">piuparts summary:</td><td class=\"contentcell2\">%s</td><td class=\"labelcell\">Maintainer:</td><td class=\"contentcell2\">%s</td></tr>" % (source, html_protect(source), html_protect(source_version),source_state,html_protect(maintainer))
+            sourcerows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"6\">%s in %s</td></tr>" % (source, self._config.section)
+            sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Source:</td><td class=\"contentcell2\"><a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a></td><td class=\"labelcell\">piuparts summary:</td><td class=\"contentcell2\">%s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" % (source, html_protect(source), source_state, html_protect(source_version))
+            sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Maintainer:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (html_protect(maintainer))
+            if uploaders:
+              sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Uploaders:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (html_protect(uploaders))
             
             filename = os.path.join(source_summary_page_path, (source + ".tpl_src"))
             if not os.path.isfile(filename):
