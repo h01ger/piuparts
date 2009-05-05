@@ -9,6 +9,7 @@ for 0.36:
  - maintainer-pages: 
   - assemble maintainer pages differently, to be able to sort them alphabetically + by section
   - http://piuparts.debian.org/source/a/awesome.html should display bugged logs
+  - split per section, do the same for source package, provide link to page in other section if existant
  - http://piuparts.debian.org/sid/state-dependency-does-not-exist.html:
    "dependency unknown package is unknown-package"
  - sources.txt should not be calculated where it currently is (or maybe yes..)
@@ -16,8 +17,7 @@ for 0.36:
  - get rid of old log pages and put stats in the index page
  - do fancy R graphs with the data from $distro/counts.txt
   - also per state
-
-- packagesdb.py: get_packages_in_state() returns each provided package too, so there is 3 times bonnie++ in the states 
+- PackagesDB: get rid of 50% of unique() :)
 
 - take care of old conf files on upgrades
 	/etc/piuparts/piuparts-master.conf

@@ -26,6 +26,8 @@ piuparts (0.36) UNRELEASED; urgency=low
       as important packages can be tested like all the others.
     - handle binNMUs where the Source header in the Packages file includes the 
       Version and the Source package name in one line.
+    - fix get_packages_in_state() to only return unique packages and not also 
+      the provided ones as exact copies.
   * Install scripts for master-slave mode without .py extension.
   * piuparts-master.py: remove code to write statistics, that is done only in 
     piuparts-report.py now.
@@ -72,7 +74,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - remove build-dependencies on docbook2x and docbook-xml.
     - suggest python-rpy and gs to improve piuparts-report output.
     - set Homepage: to http://piuparts.debian.org
-    - bump Standards-Version to 3.8.1, no changes neccessary.
+    - bump Standards-Version to 3.8.1, no changes necessary.
   * Rewrite debian/rules from scratch using debhelper.
   * Merge README, how-to-use-piuparts.txt and custom-scripts.txt into 
     README.txt, convert it to asciidoc and build pdf and html versions of it. 

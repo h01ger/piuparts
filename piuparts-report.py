@@ -333,6 +333,11 @@ INDEX_BODY_TEMPLATE = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2009-05-06</b>: Only believe statistics you faked yourself! Up until today piuparts used to include virtual packages (those only exist true the Provides: header) into the calculations of statistics of package states and the total number of packages. Suddenly, sid has 2444 packages less! 
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2009-05-01</b>: All packages in squeeze and sid which can be tested have been tested. So it takes about one month to do a full piuparts run against one suite of the archive on this machine, that's almost 1000 packages tested per day.
      </td>
     </tr>
@@ -711,11 +716,13 @@ class Section:
         header = "date"
         current_day = "%s" % time.strftime("%Y%m%d")
         counts = current_day
+        total = 0
         for state in self._binary_db.get_states():
             count = len(self._binary_db.get_packages_in_state(state))
             header += ", %s" % state
             counts += ", %s" % count
             logging.debug("%s: %s" % (state, count))
+            total += count
         header += "\n"       
         counts += "\n"       
 
@@ -728,6 +735,7 @@ class Section:
         if not current_day in last_line:
           append_file(countsfile, counts)
           logging.debug("appending line: %s" % counts) 
+        return total
 
     def prepare_package_summaries(self, logs_by_dir):
         logging.debug("Writing package templates in %s" % self._config.section)    
@@ -757,11 +765,13 @@ class Section:
               state = self._binary_db.state_by_name(binary)
               current_version = self._source_db.get_control_header(source, "Version")
               # FIXME: labelcell is not a good name here.... 
-              if "fail" in state:
-                labelcell="bluelabelcell"
+              if state != "circular-dependency" and not "waiting" in state and "dependency" in state:
+                state_style="lightbluelabelcell"
+              elif state == "failed-testing":
+                state_style="bluelabelcell"
               else:
-                labelcell="labelcell"
-              binaryrows += "<tr class=\"normalrow\"><td class=\"labelcell\">Binary:</td><td class=\"contentcell2\">%s</td><td class=\"%s\">piuparts-result:</td><td class=\"contentcell2\">%s %s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" %  (binary, labelcell, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), html_protect(current_version))
+                state_style="labelcell"
+              binaryrows += "<tr class=\"normalrow\"><td class=\"labelcell\">Binary:</td><td class=\"contentcell2\">%s</td><td class=\"%s\">piuparts-result:</td><td class=\"contentcell2\">%s %s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" %  (binary, state_style, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), html_protect(current_version))
               if state != "successfully-tested":
                 success = False
               if state == "failed-testing":
@@ -819,6 +829,11 @@ class Section:
         logging.debug("Writing per-dir HTML pages")
         self.print_by_dir(self._output_directory, logs_by_dir)
 
+        total_packages = self.write_counts_summary()
+
+        if self._config["sources-url"]:
+            self.prepare_package_summaries(logs_by_dir)
+
         logging.debug("Writing section statistics page")    
         tablerows = ""
         for state in self._binary_db.get_states():
@@ -845,12 +860,11 @@ class Section:
           r('bitmap(file="'+pngfile+'",type="png16m",width=12,height=9,pointsize=10,res=100)')
           r('barplot(t(v),col = 1:13, main="Packages per state in '+self._config.section+' (past 4 weeks)", xlab="", ylab="Number of packages",space=0.1,border=0)')
           r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
-          tablerows += "<tr class=\"normalrow\"> <td class=\"contentcell\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"600\" alt=\"Package states in the 4 weeks\"></a></td></tr>\n" % ("monthly-states.png", self._config.section, "monthly-states.png")
+          tablerows += "<tr class=\"normalrow\"> <td class=\"contentcell\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"600\" alt=\"Package states in the last 4 weeks\"></a></td></tr>\n" % ("monthly-states.png", self._config.section, "monthly-states.png")
         except:
           logging.debug("python-rpy not installed, disabled graphs.")
 
-        tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell\" colspan=\"2\">%d</td></tr>\n" % \
-                          self._binary_db.get_total_packages()
+        tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell2\" colspan=\"2\">%d</td></tr>\n" % total_packages
         htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)
         write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
             "section_navigation": create_section_navigation(self._section_names),
@@ -886,10 +900,6 @@ class Section:
                                         "section": html_protect(self._config.section),
                                         "list": list
                                        }))
-
-        self.write_counts_summary()
-        if self._config["sources-url"]:
-            self.prepare_package_summaries(logs_by_dir)
 
 
     def generate_output(self, master_directory, output_directory, section_names):
