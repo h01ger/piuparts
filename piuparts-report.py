@@ -660,7 +660,7 @@ class Section:
         links = []
         for dir in dirs:
           for basename in logs_by_dir[dir]:
-            if basename.startswith(package_name) and basename.endswith(".log"):
+            if basename.startswith(package_name+"_") and basename.endswith(".log"):
               package, version = basename[:-len(".log")].split("_")
               links.append("<a href=\"/%s\">%s</a>" % (os.path.join(self._config.section, dir, basename),html_protect(version)))
         links.sort()
