@@ -54,10 +54,13 @@ piuparts (0.36) UNRELEASED; urgency=low
     - provide links to source packages pages from state pages and back, as well
       as links to the dependencies state.
     - draw graphs of package states over time (if pypthon-rpy and gs are 
-      installed).
+      installed) - thanks to Thomas Viehmann and Dirk Eddelbüttel for
+      inspiration and support.
     - create maintainer centric pages for each email address found in 
       Maintainers or Uploaders
     - improve layout, generate navigation for all pages.
+    - use icons to provide a quick overview of a source packages status. 
+      (Thanks to tango.freedesktop.org for the icons!)
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
     Introduce a new global section in piuparts.conf which is shared among the

@@ -8,10 +8,7 @@ for 0.36:
   - esp. these new maintainer packages...
  - maintainer-pages: 
   - assemble maintainer pages differently, to be able to sort them alphabetically + by section
-  - http://piuparts.debian.org/source/a/awesome.html should display bugged logs
   - split per section, do the same for source package, provide link to page in other section if existant
- - http://piuparts.debian.org/sid/state-dependency-does-not-exist.html:
-   "dependency unknown package is unknown-package"
  - sources.txt should not be calculated where it currently is (or maybe yes..)
  - packages.txt for binary packages
  - get rid of old log pages and put stats in the index page
@@ -92,6 +89,10 @@ for 0.37:
 
 - publish FAI classes to setup piuparts.$fqdn automatically 
 
+- probably move svn/piatti to trunk/examples/piatti and include it into a new
+  binary package. when doing so keep in mind the two tango icons and credit 
+  those in debian/copyright.
+
 - a redirect of http://piuparts.d.o/foo to http://p.d.o/source/f/foo.html would be nice
 
 - release 0.37 before debconf9
@@ -119,7 +120,7 @@ for 0.38 and on:
 
 - piuparts can't currently test postfix, since installing postfix removes
   exim and removing postfix would require re-installing exim, and that
-  doesn't happen; there's other packages like that, too
+  doesn't happen; there are other packages like that, ie. debconf-english
 
 - mounting /proc and perhaps others (usbfs, sysfs, /dev/pts, etc.) in
   the chroot might be a good idea because some packages might need this.
@@ -130,6 +131,13 @@ for 0.38 and on:
   number on the package pages. this is just a problem in reporting, not in 
   testing. PackagesDB.get_source_package() gives back the right value, but 
   piuparts-reports does not care.
+
+- from the FAQ: Just by looking at the Packages and Sources files it's 
+  impossible to distinguish unknown packages (because they haven't build yet
+  are only available on certains archs) and udebs, so that's why the state is
+  so ambiguous. Future versions of piuparts-report are supposed to alse parse 
+  the Packages files in the debian-installer directories, making it possible
+  to properly detect udebs.
 
 Low priority stuff (a.k.a. "nobody's said they must have it now")
 -----------------------------------------------------------------

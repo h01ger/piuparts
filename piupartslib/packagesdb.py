@@ -442,7 +442,7 @@ class PackagesDB:
         if package_name in self._package_state:
             return self._package_state[package_name]
         else:
-            return "unknown-package"
+            return "unknown"
 
     def _find_packages_ready_for_testing(self):
         return self.get_packages_in_state("waiting-to-be-tested")

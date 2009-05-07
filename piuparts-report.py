@@ -120,6 +120,11 @@ HTML_HEADER = """
       Available reports
      </td>
     </tr>
+    <tr>
+     <td class="contentcell">
+      <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?tag=piuparts;users=debian-qa@lists.debian.org&archive=both" target="_blank">Bugs filed</a> 
+     </td>
+    </tr>     
     $section_navigation
     <tr>
      <td class="contentcell">
@@ -129,11 +134,6 @@ HTML_HEADER = """
     <tr>
      <td class="contentcell">
       <a href="/maintainer/">by maintainer / uploader</a> 
-     </td>
-    </tr>     
-    <tr>
-     <td class="contentcell">
-      <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?tag=piuparts;users=debian-qa@lists.debian.org&archive=both" target="_blank">Bugs filed</a> 
      </td>
     </tr>     
     <tr class="titlerow">
@@ -186,7 +186,9 @@ HTML_FOOTER = """
   <div>
    piuparts was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by 
    <a href="mailto:holger@debian.org">Holger Levsen</a>,  
-   <a href="mailto:luk@debian.org">Luk Claes</a> and <a href="http://qa.debian.org/" target="_blank">others</a>. GPL2 licenced.
+   <a href="mailto:luk@debian.org">Luk Claes</a> and <a href="http://qa.debian.org/" target="_blank">others</a>. 
+   GPL2 <a href="http://packages.debian.org/changelogs/pool/main/p/piuparts/current/copyright" target="_blank">licenced</a>.
+   Weather icons are from the <a href="http://tango.freedesktop.org/Tango_Icon_Library" target="_blank">Tango Icon Library</a>.
    <a href="http://validator.w3.org/check?uri=referer">
     <img border="0" src="/images/valid-html401.png" alt="Valid HTML 4.01!" height="15" width="80" valign="middle">
    </a>
@@ -440,7 +442,7 @@ def html_protect(str):
 
 
 def emphasize_reason(str):
-    if str == "unknown-package" or str == "failed-testing" or str == "circular-dependency" or str == "dependency-failed-testing":
+    if str == "unknown" or str == "failed-testing" or str == "circular-dependency" or str == "dependency-failed-testing" or str == "dependency-does-not-exist" or "cannot-be-tested" in str:
       str = "<em>" + str + "</em>"
     return str
 
@@ -451,17 +453,27 @@ def source_subdir(source):
     else:
       return source[:1]
 
+
 def maintainer_subdir(maintainer):
     return maintainer.lower()[:1]
 
+
 def find_files_with_suffix(dir,suffix):
-    name=[name for name in os.listdir(dir) if name.endswith(suffix)]
+    files=[name for name in os.listdir(dir) if name.endswith(suffix)]
     subdirs=os.listdir(dir)
     for subdir in subdirs:
       if os.path.isdir(os.path.join(dir,subdir)):
-        name+=[name for name in os.listdir(os.path.join(dir,subdir)) if name.endswith(suffix)]
-    return name
-
+        for name_in_subdir in os.listdir(os.path.join(dir,subdir)):
+          if name_in_subdir.endswith(suffix):
+            files += [os.path.join(dir,subdir, name_in_subdir)]
+    # sort by age
+    content = {}
+    for file in files:
+      content[file] = os.path.getmtime(os.path.join(dir,file))
+    # Sort keys, based on time stamps
+    files = content.keys()
+    files.sort(lambda x,y: cmp(content[x],content[y]))
+    return files
 
 def update_file(source, target):
     if os.path.exists(target):
@@ -668,7 +680,6 @@ class Section:
             if basename.startswith(package_name+"_") and basename.endswith(".log"):
               package, version = basename[:-len(".log")].split("_")
               links.append("<a href=\"/%s\">%s</a>" % (os.path.join(self._config.section, dir, basename),html_protect(version)))
-        links.sort()
         return links
 
     def link_to_source_summary(self, package_name):
@@ -680,15 +691,16 @@ class Section:
 
     def link_to_state_page(self, section, package_name, link_target):
         state = self._binary_db.state_by_name(package_name)
-        if state != "unknown-package":
+        if state != "unknown":
             link = "<a href=\"/%s/%s\">%s</a>" % (
                 section,
                 "state-"+state+".html"+"#"+package_name,
                 link_target)
-        elif "-udeb" == package_name[len(package_name)-5:]:
-          link = "udeb-cannot-be-tested"
         else:
-          link = html_protect("unknown package")
+          if link_target == package_name:
+            link = html_protect(package_name)
+          else:
+            link = "unknown-package-or-udeb"
 
         return link
 
@@ -705,8 +717,9 @@ class Section:
           links = self.find_links_to_logs (package_name, dirs, logs_by_dir)
           link = ", ".join(links)
 
+        # FIXME: css belongs into style.css
         if "/bugged/" in link:
-          link += " - <a href=\"http://bugs.debian.org/cgi-bin/pkgreport.cgi?package="+package_name+"\" target=\"_blank\">bug filed</a>"
+          link += " - <a href=\"http://bugs.debian.org/cgi-bin/pkgreport.cgi?package="+package_name+"\" target=\"_blank\" style=\"background-color:#e0c0d0;\">&nbsp;bug filed&nbsp;</a>"
 
         return link
 
@@ -772,14 +785,14 @@ class Section:
               else:
                 state_style="labelcell"
               binaryrows += "<tr class=\"normalrow\"><td class=\"labelcell\">Binary:</td><td class=\"contentcell2\">%s</td><td class=\"%s\">piuparts-result:</td><td class=\"contentcell2\">%s %s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" %  (binary, state_style, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), html_protect(current_version))
-              if state != "successfully-tested":
+              if state not in ("successfully-tested", "essential-required"):
                 success = False
-              if state == "failed-testing":
+              if state == "failed-testing" or state == "dependency-does-not-exist" or state == "cannot-be-tested":
                 failed = True
 
             source_state="unknown"
-            if success: source_state="success"
-            if failed:  source_state="failed"
+            if success: source_state="<img src=\"/images/sunny.png\">"
+            if failed:  source_state="<img src=\"/images/weather-severe-alert.png\">"
             sources += "%s: %s\n" % (source, source_state)
 
             sourcerows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"6\">%s in %s</td></tr>" % (source, self._config.section)
@@ -856,7 +869,8 @@ class Section:
           r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
           r('cname <- c("date",rep(colnames(t)))')
           r('v <- t[(nrow(t)-28):nrow(t),0:12]')
-          r('palette(c("green4", "red", "green", "brown", "black", "skyblue4", "yellow", "darkred", "salmon", "purple", "lightgreen",  "blue","darkgray"))')
+          # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
+          r('palette(c("#4e9a06", "#ef2929", "#73d216", "#d3d7cf", "#5c3566", "#c4a000", "#fce94f", "#a40000", "#555753", "#2e3436", "#8ae234",  "#729fcf","#204a87"))')
           r('bitmap(file="'+pngfile+'",type="png16m",width=12,height=9,pointsize=10,res=100)')
           r('barplot(t(v),col = 1:13, main="Packages per state in '+self._config.section+' (past 4 weeks)", xlab="", ylab="Number of packages",space=0.1,border=0)')
           r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
@@ -905,20 +919,18 @@ class Section:
     def generate_output(self, master_directory, output_directory, section_names):
         self._section_names = section_names
         self._master_directory = os.path.abspath(os.path.join(master_directory, self._config.section))
-        if os.path.exists(self._master_directory):
+        if not os.path.exists(self._master_directory):
+            logging.debug("Warning: %s does not exist. Did you ever let the slave work?" % (self._master_directory, self._config.section))
+            os.mkdir(self._master_directory)
 
-            self._output_directory = os.path.abspath(os.path.join(output_directory, self._config.section))
-            if not os.path.exists(self._output_directory):
-                os.mkdir(self._output_directory)
+        self._output_directory = os.path.abspath(os.path.join(output_directory, self._config.section))
+        if not os.path.exists(self._output_directory):
+            os.mkdir(self._output_directory)
 
-            oldcwd = os.getcwd()
-            os.chdir(self._master_directory)
-
-            self.generate_html()
-
-            os.chdir(oldcwd)
-        else:
-            logging.debug("Warning: %s does not exist. Did you ever let the slave work on %s?" % self._master_directory, self._config.section)
+        oldcwd = os.getcwd()
+        os.chdir(self._master_directory)
+        self.generate_html()
+        os.chdir(oldcwd)
 
 def main():
     setup_logging(logging.DEBUG, None)
@@ -933,22 +945,31 @@ def main():
         global_config = Config(section="global")
         global_config.read(CONFIG_FILE)
         section_names = global_config["sections"].split()
+        master_directory = global_config["master-directory"]
+        output_directory = global_config["output-directory"]
 
-    sections = []
-    for section_name in section_names:
-        section = Section(section_name)
-        section.generate_output(master_directory=global_config["master-directory"],output_directory=global_config["output-directory"],section_names=section_names)
-        sections.append(section)
 
-    assemble_source_pages(os.path.join(global_config["output-directory"],"source"),section_names)
-    assemble_maintainer_pages(os.path.join(global_config["output-directory"],"maintainer"),section_names)
+    if os.path.exists(master_directory):
+        sections = []
+        for section_name in section_names:
+            section = Section(section_name)
+            section.generate_output(master_directory=master_directory,output_directory=output_directory,section_names=section_names)
+            sections.append(section)
 
-    logging.debug("Writing index page")
-    htmlpage = string.Template(HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
-    write_file(os.path.join(global_config["output-directory"],"index.html"), htmlpage.safe_substitute( {
+        # FIXME
+        assemble_source_pages(os.path.join(output_directory,"source"),section_names)
+        assemble_maintainer_pages(os.path.join(output_directory,"maintainer"),section_names)
+
+        logging.debug("Writing index page")
+        htmlpage = string.Template(HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
+        write_file(os.path.join(output_directory,"index.html"), htmlpage.safe_substitute( {
                                  "section_navigation": create_section_navigation(section_names),
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                               }))
+    else:
+        logging.debug("Warning: %s does not exist!?! Creating it for you now." % master_directory)
+        os.mkdir(master_directory)
+
 
 if __name__ == "__main__":
     main()
