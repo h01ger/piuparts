@@ -23,25 +23,27 @@ FILE=`mktemp`
 
 for distro in $DISTROS ; do 
 	rgrep -l "Cannot initiate the connection to" $MASTER/$distro/fail >> $FILE
+	rgrep -l -e "W: Failed to fetch.*Could not resolve" $MASTER/$distro/fail >> $FILE
 done
 
 
 if [ -s $FILE ] ; then 
-	echo "Network problems on piatti.debian.org detected!"
-	echo "(By grep'ing for 'Cannot initiate the connection to' in failed logs.)"
+	echo "Network problems on detected!"
+	echo "(By grep'ing for 'Cannot initiate the connection to'"
+	echo " and 'W: Failed to fetch.*Could not resolve' in failed logs.)"
 	echo 
 	echo "Please review the following logfiles and most likely remove them." 
         echo
 	echo "If it is always the same package failing, it's likely to be an issue in the"
 	echo "package."
 	echo
-	cat $FILE | sed -e "s#/org/piuparts.debian.org/master/#http://piuparts.debian.org/#g"
+	sort -u $FILE | sed -e "s#/org/piuparts.debian.org/master/#http://piuparts.debian.org/#g"
 	echo
-	cat $FILE | sed -e "s#/org/piuparts.debian.org/master/#less /org/piuparts.debian.org/master/#"
+	sort -u $FILE | sed -e "s#/org/piuparts.debian.org/master/#less /org/piuparts.debian.org/master/#"
 	echo
 	echo "----------------------------------------------------------------------"
 	echo
-	cat $FILE | sed -e "s#/org/piuparts.debian.org/master/#rm /org/piuparts.debian.org/master/#"
+	sort -u $FILE | sed -e "s#/org/piuparts.debian.org/master/#rm /org/piuparts.debian.org/master/#"
 	echo
 fi
 rm $FILE
