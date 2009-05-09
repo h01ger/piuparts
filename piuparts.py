@@ -238,6 +238,7 @@ class Settings:
             "/var/lib/cvs(/.*)?",
             "/var/lib/dpkg/alternatives",
             "/var/lib/dpkg/triggers/.*",
+            "/var/lib/ldap(/.*)?",
             "/var/lib/maxdb(/.*)?",
             "/var/lib/onak(/.*)?",
             "/var/lib/papercut(/.*)?",
