@@ -35,6 +35,11 @@ if [ -s $LOGS ] ; then
 	echo 
 	echo "Please file bugs!"
 	echo
+        for distro in $DISTROS ; do 
+		COUNT=$(grep "/$distro/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
+		echo "Affected packages in $distro: " $COUNT
+        done
+	echo
 	cat $LOGS | sed -e "s#/org/piuparts.debian.org/master/#http://piuparts.debian.org/#g" 
 	echo
 fi
@@ -54,10 +59,14 @@ if [ -s $LOGS ] ; then
 	echo "see http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetails"
 	echo 
 	echo "Please file bugs!"
+	echo 
+        for distro in $DISTROS ; do 
+		COUNT=$(grep "/$distro/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
+		echo "Affected packages in $distro: " $COUNT
+        done
 	echo
 	cat $LOGS | sed -e "s#/org/piuparts.debian.org/master/#http://piuparts.debian.org/#g" 
 	echo
 fi
 rm $LOGS
-
 
