@@ -28,6 +28,7 @@
 55 22 * * * /home/piupartsm/bin/detect_network_issues
 0  23 * * * /home/piupartsm/bin/detect_archive_issues
 05 23 * * * /home/piupartsm/bin/report_untestable_packages
+10 23 * * * /home/piupartsm/bin/detect_well_known_errors
 
 #
 # misc
