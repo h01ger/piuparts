@@ -16,16 +16,26 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-MASTER=/org/piuparts.debian.org/master
-DISTROS="sid squeeze"
+#
+# parse config file
+#
+
+TEMPFILE=`mktemp`
+egrep "(^sections|^master-directory)" /etc/piuparts/piuparts.conf| sed -e "s# ##g" -e "s#sections#SECTIONS#" -e "s#master-directory#MASTER#" > $TEMPFILE
+source $TEMPFILE
+rm $TEMPFILE
+if [ -z $MASTER ] || [ -z $SECTIONS ] ; then
+	echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."
+	exit 1
+fi
 
 #
 # detect packages which leave stuff in /usr/local (see policy 9.1.2)
 #
 
 LOGS=`mktemp`
-for distro in $DISTROS ; do 
-	rgrep "not owned" $MASTER/$distro/fail|grep usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
+for SECTION in $SECTIONS ; do 
+	rgrep "not owned" $MASTER/$SECTION/fail|grep usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
 done
 if [ -s $LOGS ] ; then 
 	echo
@@ -35,12 +45,12 @@ if [ -s $LOGS ] ; then
 	echo 
 	echo "Please file bugs!"
 	echo
-        for distro in $DISTROS ; do 
-		COUNT=$(grep "/$distro/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
-		echo "Affected packages in $distro: " $COUNT
+        for SECTION in $SECTIONS ; do 
+		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
+		echo "Affected packages in $SECTION: " $COUNT
         done
 	echo
-	cat $LOGS | sed -e "s#/org/piuparts.debian.org/master/#http://piuparts.debian.org/#g" 
+	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
 	echo
 fi
 rm $LOGS
@@ -50,8 +60,8 @@ rm $LOGS
 #
 
 LOGS=`mktemp`
-for distro in $DISTROS ; do 
-	rgrep "not owned" $MASTER/$distro/fail|grep -v "/usr/share/mime/"|grep -v usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
+for SECTION in $SECTIONS ; do 
+	rgrep "not owned" $MASTER/$SECTION/fail|grep -v "/usr/share/mime/"|grep -v usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
 done
 if [ -s $LOGS ] ; then 
 	echo "WARNING: this list might contain false positives."
@@ -65,12 +75,12 @@ if [ -s $LOGS ] ; then
 	echo 
 	echo "Please file bugs!"
 	echo 
-        for distro in $DISTROS ; do 
-		COUNT=$(grep "/$distro/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
-		echo "Affected packages in $distro: " $COUNT
+        for SECTION in $SECTIONS ; do 
+		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
+		echo "Affected packages in $SECTION: " $COUNT
         done
 	echo
-	cat $LOGS | sed -e "s#/org/piuparts.debian.org/master/#http://piuparts.debian.org/#g" 
+	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
 	echo
 fi
 rm $LOGS

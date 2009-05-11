@@ -17,16 +17,30 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #
+# parse config file
+#
+
+TEMPFILE=`mktemp`
+egrep "(^sections|^master-directory)" /etc/piuparts/piuparts.conf| sed -e "s# ##g" -e "s#sections#SECTIONS#" -e "s#master-directory#MASTER#" > $TEMPFILE
+source $TEMPFILE
+rm $TEMPFILE
+if [ -z $MASTER ] || [ -z $SECTIONS ] ; then
+	echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."
+	exit 1
+fi
+
+#
 # this scripts monitors the output of piuparts-slave
 # when running in screen started by ~piupartss/bin/slave_run on piatti
 #
+
 HOSTNAME=`hostname`
 if [ "$HOSTNAME" != "piatti" ] ; then
 	exit 0
 fi
 
-SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
-MONITORDIR=/org/piuparts.debian.org/master/monitor-slave
+SCREENLOG=$MASTER/../slave/screenlog.0
+MONITORDIR=$MASTER/monitor-slave
 LOCKFILE="$MONITORDIR/slave-problems"
 
 mkdir -p $MONITORDIR
@@ -55,6 +69,7 @@ diff screenlog.old screenlog.new >/dev/null 2>&1 && {
 #
 # disabled, report should be enough to confirm the slave is still running...
 exit 0
+
 HOUR=`date +%H`
 if [ "$HOUR" = "00" ] ; then
 	touch screenlog.yesterday

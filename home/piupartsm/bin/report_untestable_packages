@@ -16,19 +16,29 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-MASTER=/org/piuparts.debian.org/master
-DISTROS="sid squeeze"
-DAYS=7
+#
+# parse config file
+#
+
+TEMPFILE=`mktemp`
+egrep "(^sections|^master-directory)" /etc/piuparts/piuparts.conf| sed -e "s# ##g" -e "s#sections#SECTIONS#" -e "s#master-directory#MASTER#" > $TEMPFILE
+source $TEMPFILE
+rm $TEMPFILE
+if [ -z $MASTER ] || [ -z $SECTIONS ] ; then
+	echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."
+	exit 1
+fi
 
 #
 # find packages which have been in untestable for more than $DAYS days and reschedule them for testing
 #
 
+DAYS=7
 LOGS=`mktemp`
 find $MASTER/*/untestable/ -mtime +$DAYS -name "*.log" 2>/dev/null > $LOGS
 if [ -s $LOGS ] ; then 
-	for distro in $DISTROS ; do
-        	for package_log in $(grep $distro $LOGS) ; do 
+	for SECTION in $SECTIONS ; do
+        	for package_log in $(grep $SECTION $LOGS) ; do 
 			rm -f $package_log
 		done
 	done

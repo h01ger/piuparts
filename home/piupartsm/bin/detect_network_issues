@@ -16,17 +16,28 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-MASTER=/org/piuparts.debian.org/master
-DISTROS="sid squeeze"
+#
+# parse config file
+#
+
+TEMPFILE=`mktemp`
+egrep "(^sections|^master-directory)" /etc/piuparts/piuparts.conf| sed -e "s# ##g" -e "s#sections#SECTIONS#" -e "s#master-directory#MASTER#" > $TEMPFILE
+source $TEMPFILE
+rm $TEMPFILE
+if [ -z $MASTER ] || [ -z $SECTIONS ] ; then
+	echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."
+	exit 1
+fi
+
+#
+# detect network/mirror problems
+#
 
 FILE=`mktemp`
-
-for distro in $DISTROS ; do 
-	rgrep -l "Cannot initiate the connection to" $MASTER/$distro/fail >> $FILE
-	rgrep -l -e "W: Failed to fetch.*Could not resolve" $MASTER/$distro/fail >> $FILE
+for SECTION in $SECTIONS ; do 
+	rgrep -l "Cannot initiate the connection to" $MASTER/$SECTION/fail >> $FILE
+	rgrep -l -e "W: Failed to fetch.*Could not resolve" $MASTER/$SECTION/fail >> $FILE
 done
-
-
 if [ -s $FILE ] ; then 
 	echo "Network problems on detected!"
 	echo "(By grep'ing for 'Cannot initiate the connection to'"
@@ -37,13 +48,13 @@ if [ -s $FILE ] ; then
 	echo "If it is always the same package failing, it's likely to be an issue in the"
 	echo "package."
 	echo
-	sort -u $FILE | sed -e "s#/org/piuparts.debian.org/master/#http://piuparts.debian.org/#g"
+	sort -u $FILE | sed -e "s#$MASTER#http://piuparts.debian.org/#g"
 	echo
-	sort -u $FILE | sed -e "s#/org/piuparts.debian.org/master/#less /org/piuparts.debian.org/master/#"
+	sort -u $FILE | sed -e "s#$MASTER#less $MASTER#"
 	echo
 	echo "----------------------------------------------------------------------"
 	echo
-	sort -u $FILE | sed -e "s#/org/piuparts.debian.org/master/#rm /org/piuparts.debian.org/master/#"
+	sort -u $FILE | sed -e "s#$MASTER#rm $MASTER#"
 	echo
 fi
 rm $FILE

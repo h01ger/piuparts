@@ -16,7 +16,24 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-MONITORDIR=/org/piuparts.debian.org/master/monitor-slave
+#
+# parse config file
+#
+
+TEMPFILE=`mktemp`
+egrep "(^sections|^master-directory)" /etc/piuparts/piuparts.conf| sed -e "s# ##g" -e "s#sections#SECTIONS#" -e "s#master-directory#MASTER#" > $TEMPFILE
+source $TEMPFILE
+rm $TEMPFILE
+if [ -z $MASTER ] || [ -z $SECTIONS ] ; then
+        echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."
+        exit 1
+fi
+
+#
+# find processes running in deleted chroots
+#
+
+MONITORDIR=$MASTER/monitor-slave
 LOCKFILE="$MONITORDIR/leftover_processes"
 
 OUTPUT=$(sudo ls  --color=never -lad /proc/*/root 2>/dev/null|grep "/org/piuparts.debian.org/tmp" | grep "(deleted)")

@@ -17,6 +17,18 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #
+# parse config file
+#
+TEMPFILE=`mktemp`
+egrep "(^sections|^master-directory)" /etc/piuparts/piuparts.conf| sed -e "s# ##g" -e "s#sections#SECTIONS#" -e "s#master-directory#MASTER#" > $TEMPFILE
+source $TEMPFILE
+rm $TEMPFILE
+if [ -z $MASTER ] || [ -z $SECTIONS ] ; then
+	echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."
+	exit 1
+fi
+
+#
 # backup statistiscs files to a single directory for DSA to backup
 # piuparts.d.o's state is not backupped 
 #	(currently it takes one month to run a full piuparts test on a suite
@@ -24,11 +36,10 @@
 #         not much value)
 #
 BACKUPDIR=/org/piuparts.debian.org/backup
-DISTROS="sid squeeze"
 HTDOCS=/org/piuparts.debian.org/htdocs
 
-for distro in $DISTROS ; do
-  mkdir -p $BACKUPDIR/$distro
-  cp $HTDOCS/$distro/counts.txt $BACKUPDIR/$distro/
+for SECTION in $SECTIONS ; do
+  mkdir -p $BACKUPDIR/$SECTION
+  cp $HTDOCS/$SECTION/counts.txt $BACKUPDIR/$SECTION/
 done
 
