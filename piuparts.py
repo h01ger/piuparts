@@ -252,7 +252,7 @@ class Settings:
             "/var/spool/squid(/.*)?",
             "/var/run/.*",
             "/var/www(/.*)?",
-            "/tmp/scripts(/.*)?"
+            "/tmp/.*"
             ]
 
 
