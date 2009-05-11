@@ -25,7 +25,7 @@ DISTROS="sid squeeze"
 
 LOGS=`mktemp`
 for distro in $DISTROS ; do 
-	rgrep "not owned" $MASTER/$distro/fail|grep -v "owned by"|grep usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
+	rgrep "not owned" $MASTER/$distro/fail|grep usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
 done
 if [ -s $LOGS ] ; then 
 	echo
@@ -51,9 +51,14 @@ rm $LOGS
 
 LOGS=`mktemp`
 for distro in $DISTROS ; do 
-	rgrep "not owned" $MASTER/$distro/fail|grep -v "owned by"|grep -v usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
+	rgrep "not owned" $MASTER/$distro/fail|grep -v "/usr/share/mime/"|grep -v usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
 done
 if [ -s $LOGS ] ; then 
+	echo "WARNING: this list might contain false positives."
+	echo "One group of them are packages with files in /usr/share/mime - those are"
+	echo "bugs from shared-mime-info (#527063) and have been ignored for this list."
+	echo "WARNING: there are probably others like this as well."
+	echo 
 	echo 
 	echo "Packages with unowned files after purge (violating policy 6.8)"
 	echo "see http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetails"
