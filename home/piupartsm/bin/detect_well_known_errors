@@ -85,3 +85,64 @@ if [ -s $LOGS ] ; then
 fi
 rm $LOGS
 
+#
+# detect packages with miss a depends or use non-essential in purge
+#
+
+LOGS=`mktemp`
+for SECTION in $SECTIONS ; do 
+	rgrep "command not found" $MASTER/$SECTION/fail|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
+done
+if [ -s $LOGS ] ; then 
+	echo 
+	echo "Packages with failed logs with the string 'command not found' in them."
+	echo "WARNING: it has not been verified that this error really caused the package to"
+	echo "fail the piuparts test."
+	echo "In fact, there are also successful logs with 'command not found' in them..."
+	echo 
+	echo "From the third paragraph about the meaning of the depends field in"
+	echo "http://www.debian.org/doc/debian-policy/ch-relationships.html#s-binarydeps"
+	echo
+	echo "The Depends field should also be used if the postinst, prerm or postrm scripts"
+	echo "require the package to be present in order to run. __Note, however, that the"
+	echo "postrm cannot rely on any non-essential packages to be present during the"
+	echo "purge phase__."
+	echo 
+	echo "Please file bugs!"
+	echo 
+        for SECTION in $SECTIONS ; do 
+		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
+		echo "Affected packages in $SECTION: " $COUNT
+        done
+	echo
+	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
+	echo
+fi
+rm $LOGS
+
+#
+# detect conffiles owned by two or more packages which are not removed by dpkg correctly
+#
+
+LOGS=`mktemp`
+for SECTION in $SECTIONS ; do 
+	rgrep "owned by" $MASTER/$SECTION/fail|grep "," |cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
+done
+if [ -s $LOGS ] ; then 
+	echo 
+	echo "Packages with failed logs which have conffiles owned by two or more packages"
+	echo "which are not removed by dpkg correctly. So these might be ok packages (or not,"
+	echo "as there might be other problems), but we cannot know until dpkg is fixed."
+	echo 
+	echo "Please file this important bug against dpkg!"
+	echo 
+        for SECTION in $SECTIONS ; do 
+		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
+		echo "Affected packages in $SECTION: " $COUNT
+        done
+	echo
+	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
+	echo
+fi
+rm $LOGS
+
