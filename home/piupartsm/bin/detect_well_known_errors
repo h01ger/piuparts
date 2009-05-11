@@ -105,7 +105,7 @@ if [ -s $LOGS ] ; then
 	echo "Packages with failed logs with the string 'command not found' in them."
 	echo "WARNING: it has not been verified that this error really caused the package to"
 	echo "fail the piuparts test."
-	echo "In fact, there are also successful logs with 'command not found' in them..."
+	echo "In fact, there are also successful logs with 'command not found' in them."
 	echo 
 	echo "From the third paragraph about the meaning of the depends field in"
 	echo "http://www.debian.org/doc/debian-policy/ch-relationships.html#s-binarydeps"

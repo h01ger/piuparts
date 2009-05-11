@@ -23,6 +23,7 @@
 #
 # monitor for problems once a day
 #
+0  22 * * 0 /home/piupartsm/bin/detect_well_known_issues
 45 22 * * * /home/piupartsm/bin/detect_stale_mounts
 50 22 * * * /home/piupartsm/bin/detect_tmp_cruft
 55 22 * * * /home/piupartsm/bin/detect_network_issues
