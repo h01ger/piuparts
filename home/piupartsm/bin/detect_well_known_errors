@@ -30,6 +30,11 @@ if [ -z $MASTER ] || [ -z $SECTIONS ] ; then
 fi
 
 #
+# detect unknown errors, continued at the end of this script
+#
+KNOWNLOGS=`mktemp`
+
+#
 # detect packages which leave stuff in /usr/local (see policy 9.1.2)
 #
 
@@ -53,6 +58,7 @@ if [ -s $LOGS ] ; then
 	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
 	echo
 fi
+cat $LOGS > $KNOWNLOGS
 rm $LOGS
 
 #
@@ -83,6 +89,7 @@ if [ -s $LOGS ] ; then
 	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
 	echo
 fi
+cat $LOGS >> $KNOWNLOGS
 rm $LOGS
 
 #
@@ -118,6 +125,7 @@ if [ -s $LOGS ] ; then
 	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
 	echo
 fi
+cat $LOGS >> $KNOWNLOGS
 rm $LOGS
 
 #
@@ -144,5 +152,29 @@ if [ -s $LOGS ] ; then
 	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
 	echo
 fi
+cat $LOGS >> $KNOWNLOGS
 rm $LOGS
 
+#
+# detect unknown errors, continued.
+#
+LOGS=`mktemp`
+UNKNOWNLOGS=`mktemp`
+find $MASTER/*/fail -name "*.log" > $LOGS
+for LOG in $(cat $KNOWNLOGS) ; do
+	grep -v $LOG $LOGS > $UNKNOWNLOGS
+	cp $UNKNOWNLOGS $LOGS
+done
+if [ -s $LOGS ] ; then
+	echo
+	echo "Packages with failures not yet well known detected. Please investigate!"
+	echo
+        for SECTION in $SECTIONS ; do 
+		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
+		echo "Affected packages in $SECTION: " $COUNT
+        done
+	echo
+	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
+	echo
+fi
+rm $LOGS $KNOWNLOGS $UNKNOWNLOGS
