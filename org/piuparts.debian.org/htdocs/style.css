@@ -169,6 +169,10 @@ td {
  padding-right: 6px;
 }
 
+a.bugged {
+ background-color:#e0c0d0;
+}
+
 a:link {
  color: #0000FF;
  text-decoration: none;
@@ -243,7 +247,7 @@ td.titlecell {
     border-top: 3px solid #999;
     border-bottom: 1px solid #999;
 }
-td.bluetitlecell { 
+td.alerttitlecell { 
     color: white; 
     background-color: #0755d7;
     font-weight: bold; 
@@ -259,7 +263,7 @@ td.labelcell {
     border-bottom: 1px dotted #999;
     font-weight: bold;
 }
-td.bluelabelcell {
+td.alertlabelcell {
     color: white;
     background-color: #0755d7;
     vertical-align: top;
@@ -268,7 +272,7 @@ td.bluelabelcell {
     border-bottom: 1px dotted #999;
     font-weight: bold;
 }
-td.lightbluelabelcell {
+td.lightalertlabelcell {
     color: white;
     background-color: #90c0ff;
     vertical-align: top;
