@@ -116,7 +116,7 @@ HTML_HEADER = """
      </td>
     </tr>
     <tr class="titlerow">
-     <td class="bluetitlecell">
+     <td class="alerttitlecell">
       Available reports
      </td>
     </tr>
@@ -128,12 +128,12 @@ HTML_HEADER = """
     $section_navigation
     <tr>
      <td class="contentcell">
-      <a href="/source/">by source package</a> 
+      <a href="/sid/source/">by source package</a> 
      </td>
     </tr>     
     <tr>
      <td class="contentcell">
-      <a href="/maintainer/">by maintainer / uploader</a> 
+      <a href="/sid/maintainer/">by maintainer / uploader</a> 
      </td>
     </tr>     
     <tr class="titlerow">
@@ -205,27 +205,17 @@ HTML_FOOTER = """
 LOG_LIST_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
-     <td class="titlecell">
+     <td class="$title_style" colspan="2">
       $title in $section
      </td>
     </tr>
     <tr class="normalrow">
-     <td class="contentcell2">
+     <td class="contentcell2" colspan="2">
       $preface
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
       The list has $count packages, with $versioncount total versions.
      </td>
     </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      <ul>
-       $loglist
-      </ul>
-     </td>
-    </tr>
+    $logrows
    </table>
 """
 
@@ -233,7 +223,7 @@ LOG_LIST_BODY_TEMPLATE = """
 STATE_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
-     <td class="bluetitlecell">
+     <td class="alerttitlecell">
       Packages in state "$state" in $section
      </td>
     </tr>
@@ -248,7 +238,7 @@ STATE_BODY_TEMPLATE = """
 """
 
 
-SECTION_STATS_BODY_TEMPLATE = """
+SECTION_INDEX_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
      <td class="titlecell" colspan="3">
@@ -261,7 +251,7 @@ SECTION_STATS_BODY_TEMPLATE = """
      </td>
     </tr>
     <tr class="titlerow">
-     <td class="bluetitlecell" colspan="3">
+     <td class="alerttitlecell" colspan="3">
       Packages per state
      </td>
     </tr>
@@ -331,6 +321,11 @@ INDEX_BODY_TEMPLATE = """
      <td class="titlecell">
       News
       <!-- This shall properly be included in future -->
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2009-05-11</b>: Filed #528266 and made piuparts ignore files in /tmp after purge. This got rid of 20 failures in sid and 14 in squeeze.
      </td>
     </tr>
     <tr class="normalrow">
@@ -441,10 +436,10 @@ def html_protect(str):
     return str
 
 
-def emphasize_reason(str):
-    if str == "unknown" or str == "failed-testing" or str == "circular-dependency" or str == "dependency-failed-testing" or str == "dependency-does-not-exist" or "cannot-be-tested" in str:
-      str = "<em>" + str + "</em>"
-    return str
+def emphasize_reason(reason):
+    if reason in ("unknown", "failed-testing", "circular-dependency", "dependency-failed-testing", "dependency-does-not-exist", "cannot-be-tested"):
+      reason = "<em>"+reason+"</em>"
+    return reason
 
 
 def source_subdir(source):
@@ -527,64 +522,6 @@ def create_section_navigation(section_names):
                           (html_protect(section), html_protect(section))
     return tablerows;
 
-def merge_source_templates(templates, section_names, source_pages_output_dir):
-    logging.debug("Merging package templates from %s" % section_names)
-    for src_tpl in templates:
-        source_tpl = os.path.join(source_pages_output_dir,source_subdir(src_tpl),src_tpl)
-        f = file(source_tpl, "r")
-        rows = file.read(f)
-        f.close()
-        os.unlink(source_tpl)
-        template_path = source_tpl[:-len(".tpl_src")]
-
-        for section in section_names:
-            section_tpl = os.path.join(template_path+".tpl_src"+section)
-            if os.path.isfile(section_tpl):
-                 f = file(section_tpl, "r")
-                 rows += file.read(f)
-                 f.close()
-                 os.unlink(section_tpl)
- 
-        htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
-        package = os.path.basename(src_tpl)[:-len(".tpl_src")]
-        filename = os.path.join(source_pages_output_dir,source_subdir(package),package+".html")
-        f = file(filename, "w")
-        f.write(htmlpage.safe_substitute( {
-           "section_navigation": create_section_navigation(section_names),
-           "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-           "rows": rows,
-         }))
-        f.close()
-
-def merge_maintainer_templates(templates, section_names, source_pages_output_dir):
-    logging.debug("Merging maintainer templates from %s" % section_names)
-    for src_tpl in templates:
-        source_tpl = os.path.join(source_pages_output_dir,maintainer_subdir(src_tpl),src_tpl)
-        f = file(source_tpl, "r")
-        rows = file.read(f)
-        f.close()
-        os.unlink(source_tpl)
-        template_path = source_tpl[:-len(".tpl_maint")]
-
-        for section in section_names:
-            section_tpl = os.path.join(template_path+".tpl_maint"+section)
-            if os.path.isfile(section_tpl):
-                 f = file(section_tpl, "r")
-                 rows += file.read(f)
-                 f.close()
-                 os.unlink(section_tpl)
- 
-        htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
-        package = os.path.basename(src_tpl)[:-len(".tpl_maint")]
-        filename = os.path.join(source_pages_output_dir,maintainer_subdir(package),package+".html")
-        f = file(filename, "w")
-        f.write(htmlpage.safe_substitute( {
-           "section_navigation": create_section_navigation(section_names),
-           "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-           "rows": rows,
-         }))
-        f.close()
-
 def get_email_address(maintainer):
     email = "INVALID maintainer address: %s" % (maintainer)
     try:
@@ -594,15 +531,6 @@ def get_email_address(maintainer):
       pass
     return email
 
-def assemble_source_pages(output_directory,section_names):
-    logging.debug("Assembling all source package summaries in %s" % output_directory)    
-    templates = find_files_with_suffix(output_directory, ".tpl_src")
-    merge_source_templates(templates, section_names, output_directory)
-
-def assemble_maintainer_pages(output_directory,section_names):
-    logging.debug("Assembling all maintainer summaries in %s" % output_directory)    
-    templates = find_files_with_suffix(output_directory, ".tpl_maint")
-    merge_maintainer_templates(templates, section_names, output_directory)
 
 class Section:
 
@@ -642,9 +570,15 @@ class Section:
                 versions.append("<a href=\"%s\">%s</a>" % 
                                 (html_protect(pathname), 
                                  html_protect(version)))
-            line = "<li>%s %s</li>\n" % (html_protect(package), 
-                                         ", ".join(versions))
+            line = "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % \
+                                (html_protect(package), 
+                                 ", ".join(versions))
             lines.append(line)
+
+        if "FAIL" in preface:
+          title_style="alerttitlecell"
+        else:
+          title_style="titlecell"
 
         htmlpage = string.Template(HTML_HEADER + LOG_LIST_BODY_TEMPLATE + HTML_FOOTER)
         f = file(filename, "w")
@@ -653,10 +587,11 @@ class Section:
                     "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                     "title": html_protect(title),
                     "section": html_protect(self._config.section),
+                    "title_style": title_style,
                     "preface": preface,
                     "count": len(packages),
                     "versioncount": version_count,
-                    "loglist": "".join(lines)
+                    "logrows": "".join(lines)
                 }))
         f.close()
 
@@ -682,9 +617,20 @@ class Section:
               links.append("<a href=\"/%s\">%s</a>" % (os.path.join(self._config.section, dir, basename),html_protect(version)))
         return links
 
+    def link_to_maintainer_summary(self, maintainer):
+	email = get_email_address(maintainer)
+        return "<a href=\"/%s/maintainer/%s/%s.html\">%s</a>" % (self._config.section,maintainer_subdir(email),email,html_protect(maintainer))
+
+    def link_to_uploaders(self, uploaders):
+        link = ""
+        for uploader in uploaders.split(", "):
+          link += self.link_to_maintainer_summary(uploader)+", "
+        return link[:-2]
+
     def link_to_source_summary(self, package_name):
         source_name = self._binary_db.get_control_header(package_name, "Source")
-        link = "<a href=\"/source/%s\">%s</a>" % (
+        link = "<a href=\"/%s/source/%s\">%s</a>" % (
+                self._config.section,
                 source_subdir(source_name)+"/"+source_name+".html",
                 html_protect(package_name))
         return link
@@ -717,12 +663,10 @@ class Section:
           links = self.find_links_to_logs (package_name, dirs, logs_by_dir)
           link = ", ".join(links)
 
-        # FIXME: css belongs into style.css
         if "/bugged/" in link:
-          link += " - <a href=\"http://bugs.debian.org/cgi-bin/pkgreport.cgi?package="+package_name+"\" target=\"_blank\" style=\"background-color:#e0c0d0;\">&nbsp;bug filed&nbsp;</a>"
+          link += " - <a href=\"http://bugs.debian.org/cgi-bin/pkgreport.cgi?package="+package_name+"\" target=\"_blank\" class=\"bugged\">&nbsp;bug filed&nbsp;</a>"
 
         return link
-
 
     def write_counts_summary(self):
         logging.debug("Writing counts.txt")    
@@ -750,136 +694,182 @@ class Section:
           logging.debug("appending line: %s" % counts) 
         return total
 
-    def prepare_package_summaries(self, logs_by_dir):
+
+    def merge_maintainer_templates(self, templates):
+        for maint_tpl in templates:
+            tpl = os.path.join(self._output_directory,"maintainer",maintainer_subdir(maint_tpl),maint_tpl)
+            lines = read_file(tpl)
+            rows = ""
+            for line in lines:
+              state, count, packages = line.split(",")
+              if packages == "none\n":
+                links = "&nbsp;"
+              else:
+                links = ""
+                for package in packages.split(" "):
+                  links += "<a href=\"#%s\">%s</a> " % (package,package)
+              rows += "<tr class=\"normalrow\"><td class=\"labelcell\">%s:</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\" colspan=\"4\">%s</td></tr>" % \
+                       (state, count, links)
+            os.unlink(tpl)
+            template_path = tpl[:-len("_tpl")]
+
+            for state in ("fail","unkn","pass"):
+                filename = template_path+"_"+state
+                if os.path.isfile(filename):
+                     f = file(filename, "r")
+                     rows += file.read(f)
+                     f.close()
+                     os.unlink(filename)
+     
+            htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
+            filename = template_path+".html"
+            f = file(filename, "w")
+            f.write(htmlpage.safe_substitute( {
+               "section_navigation": create_section_navigation(self._section_names),
+               "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+               "rows": rows,
+             }))
+            f.close()
+
+    def create_source_summary (self, source, logs_by_dir):
+        source_version = self._source_db.get_control_header(source, "Version")
+        binaries = self._source_db.get_control_header(source, "Binary")
+        maintainer = self._source_db.get_control_header(source, "Maintainer")
+        uploaders = self._source_db.get_control_header(source, "Uploaders")
+
+        success = True
+        failed = False
+        binaryrows = ""
+        for binary in binaries.split(", "):
+          state = self._binary_db.state_by_name(binary)
+          current_version = self._source_db.get_control_header(source, "Version")
+          if state != "circular-dependency" and not "waiting" in state and "dependency" in state:
+            state_style="lightalertlabelcell"
+          elif state == "failed-testing":
+            state_style="lightlabelcell"
+          else:
+            state_style="labelcell"
+          binaryrows += "<tr class=\"normalrow\"><td class=\"labelcell\">Binary:</td><td class=\"contentcell2\">%s</td><td class=\"%s\">piuparts-result:</td><td class=\"contentcell2\">%s %s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" %  (binary, state_style, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), html_protect(current_version))
+          if state not in ("successfully-tested", "essential-required"):
+            success = False
+          if state in ("failed-testing", "dependency-does-not-exist", "cannot-be-tested"):
+            failed = True
+
+        source_state="unknown"
+        if success: source_state="<img src=\"/images/sunny.png\">"
+        if failed:  source_state="<img src=\"/images/weather-severe-alert.png\">"
+
+        sourcerows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"6\" id=\"%s\">%s in %s</td></tr>" % (source, source, self._config.section)
+        sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Source:</td><td class=\"contentcell2\"><a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a></td><td class=\"labelcell\">piuparts summary:</td><td class=\"contentcell2\">%s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" % (source, html_protect(source), source_state, html_protect(source_version))
+        sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Maintainer:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (self.link_to_maintainer_summary(maintainer))
+        if uploaders:
+          sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Uploaders:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (self.link_to_uploaders(uploaders))
+        
+        source_summary_page_path = os.path.join(self._output_directory, "source", source_subdir(source))
+        if not os.path.exists(source_summary_page_path):
+           os.makedirs(source_summary_page_path)
+        filename = os.path.join(source_summary_page_path, (source + ".html"))
+        htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
+        f = file(filename, "w")
+        f.write(htmlpage.safe_substitute( {
+           "section_navigation": create_section_navigation(self._section_names),
+           "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+           "rows": sourcerows+binaryrows,
+        }))
+        f.close()
+
+        # return parsable values
+        if success: source_state = "pass"
+        if failed:  source_state = "fail"
+
+        return sourcerows, binaryrows, source_state, maintainer, uploaders
+
+    def create_maintainer_templates_for_source(self,source, source_state, sourcerows, binaryrows, maintainer, uploaders):
+        maintainer_pages = [] 
+        maintainer_pages.append(get_email_address(maintainer))
+        for uploader in uploaders.split(", "):
+          if uploader:
+            maintainer_pages.append(get_email_address(uploader))
+        for maintainer_page in maintainer_pages:
+          maintainer_summary_page_path = os.path.join(self._output_directory, "maintainer", maintainer_subdir(maintainer_page))
+
+          if not os.path.exists(maintainer_summary_page_path):
+            os.makedirs(maintainer_summary_page_path)
+          filename = os.path.join(maintainer_summary_page_path, (maintainer_page + "_tpl"))
+          m_c = {}
+          m_p = {}
+          if os.path.isfile(filename):
+            lines = read_file(filename)
+            for line in lines:
+              state, count, packages = line.split(",")
+              m_c[state]=int(count)
+              m_p[state]=packages[:-1]
+            if m_p[source_state] == "none":
+              m_p[source_state] = source
+            else:
+              m_p[source_state] = "%s %s" % (m_p[source_state],source)
+          else:
+            m_c["fail"] = 0
+            m_c["unknown"] = 0
+            m_c["pass"] = 0
+            for state in "fail", "unknown", "pass":
+              m_p[state] = "none"
+            m_p[source_state] = source
+          if source_state == "fail":
+            m_c["fail"]+=1
+          elif source_state == "unknown":
+            m_c["unknown"]+=1
+          else:
+            m_c["pass"]+=1
+          lines = ""
+          for state in "fail", "unknown", "pass":
+            lines +=  "%s,%s,%s\n" % (state,m_c[state],m_p[state])
+          write_file(filename,lines)
+          append_file(filename[:-4]+"_"+source_state[:4],sourcerows+binaryrows)
+
+    def create_package_summaries(self, logs_by_dir):
         logging.debug("Writing package templates in %s" % self._config.section)    
 
         sources = ""
         for source in self._source_db.get_all_packages():
-            # FIXME: ie those six next lines yell it (the whole logic below... :()
-            source_summary_page_path = os.path.join(self._output_directory, "../source", source_subdir(source))
-            if not os.path.exists(source_summary_page_path):
-               os.makedirs(source_summary_page_path)
-
-            source_version = self._source_db.get_control_header(source, "Version")
-            binaries = self._source_db.get_control_header(source, "Binary")
-            maintainer = self._source_db.get_control_header(source, "Maintainer")
-            uploaders = self._source_db.get_control_header(source, "Uploaders")
-
-            maintainer_pages = [] 
-            maintainer_pages.append(get_email_address(maintainer))
-            for uploader in uploaders.split(", "):
-              if uploader:
-                maintainer_pages.append(get_email_address(uploader))
-
-            success = True
-            failed = False
-            binaryrows = ""
-            for binary in binaries.split(", "):
-              state = self._binary_db.state_by_name(binary)
-              current_version = self._source_db.get_control_header(source, "Version")
-              # FIXME: labelcell is not a good name here.... 
-              if state != "circular-dependency" and not "waiting" in state and "dependency" in state:
-                state_style="lightbluelabelcell"
-              elif state == "failed-testing":
-                state_style="bluelabelcell"
-              else:
-                state_style="labelcell"
-              binaryrows += "<tr class=\"normalrow\"><td class=\"labelcell\">Binary:</td><td class=\"contentcell2\">%s</td><td class=\"%s\">piuparts-result:</td><td class=\"contentcell2\">%s %s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" %  (binary, state_style, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), html_protect(current_version))
-              if state not in ("successfully-tested", "essential-required"):
-                success = False
-              if state == "failed-testing" or state == "dependency-does-not-exist" or state == "cannot-be-tested":
-                failed = True
-
-            source_state="unknown"
-            if success: source_state="<img src=\"/images/sunny.png\">"
-            if failed:  source_state="<img src=\"/images/weather-severe-alert.png\">"
+            (sourcerows, binaryrows, source_state, maintainer, uploaders) = self.create_source_summary(source, logs_by_dir)
             sources += "%s: %s\n" % (source, source_state)
-
-            sourcerows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"6\">%s in %s</td></tr>" % (source, self._config.section)
-            sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Source:</td><td class=\"contentcell2\"><a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a></td><td class=\"labelcell\">piuparts summary:</td><td class=\"contentcell2\">%s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" % (source, html_protect(source), source_state, html_protect(source_version))
-            sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Maintainer:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (html_protect(maintainer))
-            if uploaders:
-              sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Uploaders:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (html_protect(uploaders))
-            
-            filename = os.path.join(source_summary_page_path, (source + ".tpl_src"))
-            if not os.path.isfile(filename):
-              write_file(filename, "")
-            for maintainer_page in maintainer_pages:
-              maintainer_summary_page_path = os.path.join(self._output_directory, "../maintainer", maintainer_subdir(maintainer_page))
-              if not os.path.exists(maintainer_summary_page_path):
-                os.makedirs(maintainer_summary_page_path)
-              filename = os.path.join(maintainer_summary_page_path, (maintainer_page + ".tpl_maint"))
-              # don't write header if it already exists (=it was created in an previous section)
-              if not os.path.isfile(filename):
-                write_file(filename, "")
-
-            for maintainer_page in maintainer_pages:
-              maintainer_summary_page_path = os.path.join(self._output_directory, "../maintainer", maintainer_subdir(maintainer_page))
-              append_file(os.path.join(maintainer_summary_page_path, (maintainer_page + ".tpl_maint"+self._config.section)), sourcerows)
-            append_file(os.path.join(source_summary_page_path, (source + ".tpl_src"+self._config.section)), sourcerows)
-
-            for maintainer_page in maintainer_pages:
-              maintainer_summary_page_path = os.path.join(self._output_directory, "../maintainer", maintainer_subdir(maintainer_page))
-              append_file(os.path.join(maintainer_summary_page_path, (maintainer_page + ".tpl_maint"+self._config.section)),binaryrows)
-            append_file(os.path.join(source_summary_page_path, (source + ".tpl_src"+self._config.section)), binaryrows)
+            self.create_maintainer_templates_for_source(source, source_state, sourcerows, binaryrows, maintainer, uploaders)
  
         write_file(os.path.join(self._output_directory, "sources.txt"), sources)
 
 
-    def generate_html(self):
-        logging.debug("Finding log files")
-        dirs = ["pass", "fail", "bugged", "fixed", "reserved", "untestable"]
-        logs_by_dir = {}
-        for dir in dirs:
-            logs_by_dir[dir] = find_files_with_suffix(dir, ".log")
+    def make_stats_graph(self):
+        countsfile = os.path.join(self._output_directory, "counts.txt")
+        pngfile = os.path.join(self._output_directory, "bimonthly-states.png")
+        r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
+        r('cname <- c("date",rep(colnames(t)))')
+        r('v <- t[(nrow(t)-40):nrow(t),0:12]')  # this should be 60, not 40..
+        # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
+        r('palette(c("#4e9a06", "#ef2929", "#73d216", "#d3d7cf", "#5c3566", "#c4a000", "#fce94f", "#a40000", "#888a85", "#2e3436", "#8ae234",  "#729fcf","#204a87"))')
+        r('bitmap(file="'+pngfile+'",type="png16m",width=16,height=9,pointsize=10,res=100)')
+        r('barplot(t(v),col = 1:13, main="Packages per state in '+self._config.section+' (past 2 months)", xlab="", ylab="Number of packages",space=0.1,border=0)')
+        r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
+        return "<tr class=\"normalrow\"> <td class=\"contentcell2\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"600\" alt=\"Package states in the last 2 months\"></a></td></tr>\n" % ("bimonthly-states.png", self._config.section, "bimonthly-states.png")
 
-        logging.debug("Copying log files")
-        copy_logs(logs_by_dir, self._output_directory)
-
-        logging.debug("Removing old log files")
-        remove_old_logs(logs_by_dir, self._output_directory)
-
-        logging.debug("Writing per-dir HTML pages")
-        self.print_by_dir(self._output_directory, logs_by_dir)
-
-        total_packages = self.write_counts_summary()
-
-        if self._config["sources-url"]:
-            self.prepare_package_summaries(logs_by_dir)
-
-        logging.debug("Writing section statistics page")    
+    def write_section_index_page(self,dirs,total_packages):
         tablerows = ""
         for state in self._binary_db.get_states():
             dir_link = ""
             for dir in dirs:
-              if state_by_dir[dir] == state:
+              if dir in ("pass","fail","bugged") and state_by_dir[dir] == state:
                 dir_link += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
             tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a></td>" +
                           "<td class=\"contentcell2\">%d</td><td class=\"contentcell2\">%s</td></tr>\n") % \
-                          (html_protect(state), html_protect(state),
-                          len(self._binary_db.get_packages_in_state(state)),
+                          (html_protect(state), html_protect(state), len(self._binary_db.get_packages_in_state(state)),
                           dir_link)
-
-        # create and include graph
-        # FIXME: refactor!  
-        # if python-rpy ain't installed, we don't draw fancy graphs
         try:
-          countsfile = os.path.join(self._output_directory, "counts.txt")
-          pngfile = os.path.join(self._output_directory, "monthly-states.png")
-          r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
-          r('cname <- c("date",rep(colnames(t)))')
-          r('v <- t[(nrow(t)-28):nrow(t),0:12]')
-          # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
-          r('palette(c("#4e9a06", "#ef2929", "#73d216", "#d3d7cf", "#5c3566", "#c4a000", "#fce94f", "#a40000", "#555753", "#2e3436", "#8ae234",  "#729fcf","#204a87"))')
-          r('bitmap(file="'+pngfile+'",type="png16m",width=12,height=9,pointsize=10,res=100)')
-          r('barplot(t(v),col = 1:13, main="Packages per state in '+self._config.section+' (past 4 weeks)", xlab="", ylab="Number of packages",space=0.1,border=0)')
-          r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
-          tablerows += "<tr class=\"normalrow\"> <td class=\"contentcell\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"600\" alt=\"Package states in the last 4 weeks\"></a></td></tr>\n" % ("monthly-states.png", self._config.section, "monthly-states.png")
+          tablerows += self.make_stats_graph();
         except:
           logging.debug("python-rpy not installed, disabled graphs.")
 
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell2\" colspan=\"2\">%d</td></tr>\n" % total_packages
-        htmlpage = string.Template(HTML_HEADER + SECTION_STATS_BODY_TEMPLATE + HTML_FOOTER)
+        htmlpage = string.Template(HTML_HEADER + SECTION_INDEX_BODY_TEMPLATE + HTML_FOOTER)
         write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
             "section_navigation": create_section_navigation(self._section_names),
             "time": time.strftime("%Y-%m-%d %H:%M %Z"),
@@ -889,6 +879,7 @@ class Section:
             "packagesurl": html_protect(self._config["packages-url"]), 
            }))
 
+    def write_state_pages(self):
         for state in self._binary_db.get_states():
             logging.debug("Writing page for %s" % state)
             list = "<ul>\n"
@@ -914,6 +905,36 @@ class Section:
                                         "section": html_protect(self._config.section),
                                         "list": list
                                        }))
+
+    def generate_html(self):
+        logging.debug("Finding log files")
+        dirs = ["pass", "fail", "bugged", "fixed", "reserved", "untestable"]
+        logs_by_dir = {}
+        for dir in dirs:
+            logs_by_dir[dir] = find_files_with_suffix(dir, ".log")
+
+        logging.debug("Copying log files")
+        copy_logs(logs_by_dir, self._output_directory)
+
+        logging.debug("Removing old log files")
+        remove_old_logs(logs_by_dir, self._output_directory)
+
+        logging.debug("Writing per-dir HTML pages")
+        self.print_by_dir(self._output_directory, logs_by_dir)
+
+        total_packages = self.write_counts_summary()
+
+        if self._config["sources-url"]:
+            self.create_package_summaries(logs_by_dir)
+
+            logging.debug("Merging maintainer summaries in %s" % self._output_directory)    
+            self.merge_maintainer_templates(find_files_with_suffix(self._output_directory+"/maintainer/", "_tpl"))
+
+        logging.debug("Writing section index page")    
+        self.write_section_index_page(dirs, total_packages)
+
+        logging.debug("Writing stats pages for %s" % self._config.section)
+        self.write_state_pages()
 
 
     def generate_output(self, master_directory, output_directory, section_names):
@@ -956,9 +977,6 @@ def main():
             section.generate_output(master_directory=master_directory,output_directory=output_directory,section_names=section_names)
             sections.append(section)
 
-        # FIXME
-        assemble_source_pages(os.path.join(output_directory,"source"),section_names)
-        assemble_maintainer_pages(os.path.join(output_directory,"maintainer"),section_names)
 
         logging.debug("Writing index page")
         htmlpage = string.Template(HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)

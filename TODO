@@ -3,24 +3,11 @@ Things to do for piuparts
 
 for 0.36:
 
-- report:
- - refactor code, search for FIXME
-  - esp. these new maintainer packages...
- - maintainer-pages: 
-  - assemble maintainer pages differently, to be able to sort them alphabetically + by section
-  - split per section, do the same for source package, provide link to page in other section if existant
- - sources.txt should not be calculated where it currently is (or maybe yes..)
- - packages.txt for binary packages
- - get rid of old log pages and put stats in the index page
- - do fancy R graphs with the data from $distro/counts.txt
-  - also per state
 - PackagesDB: get rid of 50% of unique() :)
 
 - take care of old conf files on upgrades
 	/etc/piuparts/piuparts-master.conf
 	/etc/piuparts/piuparts-slave.conf
-
-- ~piupartsm/bin/report_untestable_packages: moving to untestable/archive/ causes problems, so disabled for now.
 
 once 0.36 is released:
 
@@ -28,6 +15,7 @@ once 0.36 is released:
 - announcement on d-d-a
 
 for 0.37:
+
 
 - probably include patch for #523950
 - probably include patch for #519192 - not sure if i like that aproach
@@ -56,12 +44,12 @@ for 0.37:
   - "/var/lib/dpkg/info/.*.postrm: .* command not found" - missing depends or
     using non-essential packages in purge
   - unclassified
- - write stats for total number of logs (when a package has more than a log 
-   in fail/ or bugged/)
+ - include bugged status for packages on http://piuparts.debian.org/sid/state-failed-testing.html
  - RSS feeds of logs
  - include pts state (as an icon) in source summary pages
- - logs from binNMUs are sorted incorrectly in the source pages 
-   (see for exsample http://piuparts.debian.org/source/i/icewm.html)
+ - packages.txt for binary packages (like sources.txt)
+ - do more fancy R graphs, eg. also per state
+ - sort packages on maintainer pages alphabetically
 
 - expire old logs a month after testing if newer logs exists (except if the new log is fail
   and the old is bugged, then the fail log should be moved to bugged first)

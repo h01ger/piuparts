@@ -62,7 +62,7 @@ piuparts (0.36) UNRELEASED; urgency=low
       installed) - thanks to Thomas Viehmann and Dirk Eddelbüttel for
       inspiration and support.
     - create maintainer centric pages for each email address found in 
-      Maintainers or Uploaders
+      Maintainers or Uploaders.
     - improve layout, generate navigation for all pages.
     - use icons to provide a quick overview of a source packages status. 
       (Thanks to tango.freedesktop.org for the icons!)
