@@ -3,6 +3,8 @@ Things to do for piuparts
 
 for 0.36:
 
+- create pages for known problems
+
 - PackagesDB: get rid of 50% of unique() :)
 
 - take care of old conf files on upgrades
@@ -14,8 +16,7 @@ once 0.36 is released:
 - integration with packages.qa.debian.org
 - announcement on d-d-a
 
-for 0.37:
-
+for 0.37 and 0.38 (split this list):
 
 - probably include patch for #523950
 - probably include patch for #519192 - not sure if i like that aproach
@@ -85,7 +86,7 @@ for 0.37:
 
 - release 0.37 before debconf9
 
-for 0.38 and on:
+for 0.39 and on:
 
 - multi-arch:
  - piuparts-report should have a list of available arch and list packages 

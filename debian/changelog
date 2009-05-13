@@ -66,6 +66,9 @@ piuparts (0.36) UNRELEASED; urgency=low
     - improve layout, generate navigation for all pages.
     - use icons to provide a quick overview of a source packages status. 
       (Thanks to tango.freedesktop.org for the icons!)
+    - include index.tpl (if it exists) from output-directory into the
+      generated index page, so one can add news to the index page without
+      editing piuparts-report.py.
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
     Introduce a new global section in piuparts.conf which is shared among the

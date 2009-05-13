@@ -126,16 +126,6 @@ HTML_HEADER = """
      </td>
     </tr>     
     $section_navigation
-    <tr>
-     <td class="contentcell">
-      <a href="/sid/source/">by source package</a> 
-     </td>
-    </tr>     
-    <tr>
-     <td class="contentcell">
-      <a href="/sid/maintainer/">by maintainer / uploader</a> 
-     </td>
-    </tr>     
     <tr class="titlerow">
      <td class="titlecell">
       Other Debian QA efforts
@@ -275,11 +265,12 @@ SOURCE_PACKAGE_BODY_TEMPLATE = """
    </table>
 """
 
+# this template is normally replaced with from $htdocs
 INDEX_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
      <td class="titlecell">
-      piuparts.debian.org / piuparts.cs.helsinki.fi
+      piuparts
      </td>
     </tr>
     <tr class="normalrow">
@@ -299,63 +290,6 @@ INDEX_BODY_TEMPLATE = """
     <tr class="normalrow">
      <td class="contentcell2">
       piuparts is meant as a quality assurance tool for people who create .deb packages to test them before they upload them to the Debian package archive. See the <a href="/doc/README.html" target="_blank">piuparts README</a> for a quick intro and then read the <a href="/doc/piuparts.1.html" target="_blank">piuparts manpage</a> to learn about all the fancy options!
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      To make sure piuparts is run on all packages, piuparts.debian.org was set up as a service running on 
-      <a href="http://db.debian.org/machines.cgi?host=piatti" target="_blank">piatti.debian.org</a>. 
-      This machine was generously donated by <a href="http://hp.com/go/debian/" target="_blank">HP</a> 
-      to run piuparts on the Debian archive and is hosted as piuparts.cs.helsinki.fi by 
-      the University of Helsinki, at the 
-      <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a>
-      in Finland.
-      As this is still being polished, see the piuparts wiki page for more information on <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development and the piuparts setup on piatti</a>. Better reports and statistics as well as PTS integration is planned. Join #debian-qa if you want to help.
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      These pages are updated daily.
-     </td>
-    </tr>
-     <td class="titlecell">
-      News
-      <!-- This shall properly be included in future -->
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      <b>2009-05-11</b>: Filed #528266 and made piuparts ignore files in /tmp after purge. This got rid of 20 failures in sid and 14 in squeeze.
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      <b>2009-05-06</b>: Only believe statistics you faked yourself! Up until today piuparts used to include virtual packages (those only exist true the Provides: header) into the calculations of statistics of package states and the total number of packages. Suddenly, sid has 2444 packages less! 
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      <b>2009-05-01</b>: All packages in squeeze and sid which can be tested have been tested. So it takes about one month to do a full piuparts run against one suite of the archive on this machine, that's almost 1000 packages tested per day.
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      <b>2009-04-20</b>: Deleted 86 more failed logfiles (out of 692 failures in total atm) which were due to broken packages, which most likely are temporarily uninstallable issues - a good indicator for this is that all of those failures happened in sid and none in squeeze. For the future there is a cronjob now, to notify the admins daily of such problems. In more distant future those issues should be detected and avoided.
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      <b>2009-04-18</b>: Deleted all 14 failed logfiles which complained about <code>/var/games</code> being present after purge, as this ain't an issue, see #524461.
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      <b>2009-04-04</b>: Deleted all failed logfiles so far for two reasons: until now, only three out of ten failure types where logged with a pattern to search for in the logfiles, now this is done for all ten types of failures. And second, the way of breaking circular dependencies was not bulletproof, thus there were false positives in the failures. Now it should be fine, though maybe this will lead to lots of untestable packages... we'll see.
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      <b>2009-03-19</b>: lenny2squeeze is not needed, so all logs for squeeze (as well as lenny2squeeze) were deleted. (As squeeze now includes two kinds of tests: installation and removal in squeeze, and installation in lenny, upgrade to squeeze, removal in squeeze.)
      </td>
     </tr>
     </table>
@@ -515,11 +449,13 @@ def read_file(filename):
     f.close()
     return l
 
-def create_section_navigation(section_names):
+def create_section_navigation(section_names,section="sid"):
     tablerows = ""
     for section in section_names:
         tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell\"><a href='/%s'>%s</a></td></tr>\n") % \
                           (html_protect(section), html_protect(section))
+    tablerows += "<tr><td class=\"contentcell\"><a href=\"/%s/source/\">by source package</a></td></tr>" % section
+    tablerows += "<tr><td class=\"contentcell\"><a href=\"/%s/maintainer/\">by maintainer / uploader</a></td></tr>" % section
     return tablerows;
 
 def get_email_address(maintainer):
@@ -583,7 +519,7 @@ class Section:
         htmlpage = string.Template(HTML_HEADER + LOG_LIST_BODY_TEMPLATE + HTML_FOOTER)
         f = file(filename, "w")
         f.write(htmlpage.safe_substitute( {
-                    "section_navigation": create_section_navigation(self._section_names),
+                    "section_navigation": create_section_navigation(self._section_names,self._config.section),
                     "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                     "title": html_protect(title),
                     "section": html_protect(self._config.section),
@@ -725,7 +661,7 @@ class Section:
             filename = template_path+".html"
             f = file(filename, "w")
             f.write(htmlpage.safe_substitute( {
-               "section_navigation": create_section_navigation(self._section_names),
+               "section_navigation": create_section_navigation(self._section_names,self._config.section),
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": rows,
              }))
@@ -772,7 +708,7 @@ class Section:
         htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
         f = file(filename, "w")
         f.write(htmlpage.safe_substitute( {
-           "section_navigation": create_section_navigation(self._section_names),
+           "section_navigation": create_section_navigation(self._section_names,self._config.section),
            "time": time.strftime("%Y-%m-%d %H:%M %Z"),
            "rows": sourcerows+binaryrows,
         }))
@@ -796,34 +732,34 @@ class Section:
           if not os.path.exists(maintainer_summary_page_path):
             os.makedirs(maintainer_summary_page_path)
           filename = os.path.join(maintainer_summary_page_path, (maintainer_page + "_tpl"))
-          m_c = {}
-          m_p = {}
+          maintainer_package_count = {}
+          maintainer_packages = {}
           if os.path.isfile(filename):
             lines = read_file(filename)
             for line in lines:
               state, count, packages = line.split(",")
-              m_c[state]=int(count)
-              m_p[state]=packages[:-1]
-            if m_p[source_state] == "none":
-              m_p[source_state] = source
+              maintainer_package_count[state]=int(count)
+              maintainer_packages[state]=packages[:-1]
+            if maintainer_packages[source_state] == "none":
+              maintainer_packages[source_state] = source
             else:
-              m_p[source_state] = "%s %s" % (m_p[source_state],source)
+              maintainer_packages[source_state] = "%s %s" % (maintainer_packages[source_state],source)
           else:
-            m_c["fail"] = 0
-            m_c["unknown"] = 0
-            m_c["pass"] = 0
+            maintainer_package_count["fail"] = 0
+            maintainer_package_count["unknown"] = 0
+            maintainer_package_count["pass"] = 0
             for state in "fail", "unknown", "pass":
-              m_p[state] = "none"
-            m_p[source_state] = source
+              maintainer_packages[state] = "none"
+            maintainer_packages[source_state] = source
           if source_state == "fail":
-            m_c["fail"]+=1
+            maintainer_package_count["fail"]+=1
           elif source_state == "unknown":
-            m_c["unknown"]+=1
+            maintainer_package_count["unknown"]+=1
           else:
-            m_c["pass"]+=1
+            maintainer_package_count["pass"]+=1
           lines = ""
           for state in "fail", "unknown", "pass":
-            lines +=  "%s,%s,%s\n" % (state,m_c[state],m_p[state])
+            lines +=  "%s,%s,%s\n" % (state,maintainer_package_count[state],maintainer_packages[state])
           write_file(filename,lines)
           append_file(filename[:-4]+"_"+source_state[:4],sourcerows+binaryrows)
 
@@ -871,7 +807,7 @@ class Section:
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell2\" colspan=\"2\">%d</td></tr>\n" % total_packages
         htmlpage = string.Template(HTML_HEADER + SECTION_INDEX_BODY_TEMPLATE + HTML_FOOTER)
         write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
-            "section_navigation": create_section_navigation(self._section_names),
+            "section_navigation": create_section_navigation(self._section_names,self._config.section),
             "time": time.strftime("%Y-%m-%d %H:%M %Z"),
             "section": html_protect(self._config.section),
             "description": html_protect(self._config["description"]),
@@ -899,7 +835,7 @@ class Section:
             list += "</ul>\n"
             htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
             write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
-                                        "section_navigation": create_section_navigation(self._section_names),
+                                        "section_navigation": create_section_navigation(self._section_names,self._config.section),
                                         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                         "state": html_protect(state),
                                         "section": html_protect(self._config.section),
@@ -979,7 +915,11 @@ def main():
 
 
         logging.debug("Writing index page")
-        htmlpage = string.Template(HTML_HEADER + INDEX_BODY_TEMPLATE + HTML_FOOTER)
+        # FIXME: I'm sure the next 3 lines can be written more elegant..
+        INDEX_BODY = INDEX_BODY_TEMPLATE
+        if os.path.isfile(os.path.join(output_directory,"index.tpl")):
+          INDEX_BODY = "".join(read_file(os.path.join(output_directory,"index.tpl")))
+        htmlpage = string.Template(HTML_HEADER + INDEX_BODY + HTML_FOOTER)
         write_file(os.path.join(output_directory,"index.html"), htmlpage.safe_substitute( {
                                  "section_navigation": create_section_navigation(section_names),
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
