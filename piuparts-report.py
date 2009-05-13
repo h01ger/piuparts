@@ -449,13 +449,13 @@ def read_file(filename):
     f.close()
     return l
 
-def create_section_navigation(section_names,section="sid"):
+def create_section_navigation(section_names,current_section="sid"):
     tablerows = ""
     for section in section_names:
         tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell\"><a href='/%s'>%s</a></td></tr>\n") % \
                           (html_protect(section), html_protect(section))
-    tablerows += "<tr><td class=\"contentcell\"><a href=\"/%s/source/\">by source package</a></td></tr>" % section
-    tablerows += "<tr><td class=\"contentcell\"><a href=\"/%s/maintainer/\">by maintainer / uploader</a></td></tr>" % section
+    tablerows += "<tr><td class=\"contentcell\"><a href=\"/%s/source/\">by source package</a></td></tr>" % current_section
+    tablerows += "<tr><td class=\"contentcell\"><a href=\"/%s/maintainer/\">by maintainer / uploader</a></td></tr>" % current_section
     return tablerows;
 
 def get_email_address(maintainer):
