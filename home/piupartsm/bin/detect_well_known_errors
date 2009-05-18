@@ -50,6 +50,8 @@ if [ -s $LOGS ] ; then
 	echo 
 	echo "Please file bugs!"
 	echo
+	echo "MASTER=$MASTRE ; SECTION=$SECTION"
+	echo 'grep "not owned" $MASTER/$SECTION/fail|grep usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null '
         for SECTION in $SECTIONS ; do 
 		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
 		echo "Affected packages in $SECTION: " $COUNT
@@ -81,7 +83,9 @@ if [ -s $LOGS ] ; then
 	echo 
 	echo "Please file bugs!"
 	echo 
-        for SECTION in $SECTIONS ; do 
+       	echo "MASTER=$MASTRE ; SECTION=$SECTION"
+	echo 'rgrep "not owned" $MASTER/$SECTION/fail|grep -v "/usr/share/mime/"|grep -v usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null'
+	for SECTION in $SECTIONS ; do 
 		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
 		echo "Affected packages in $SECTION: " $COUNT
         done
@@ -117,7 +121,9 @@ if [ -s $LOGS ] ; then
 	echo 
 	echo "Please file bugs!"
 	echo 
-        for SECTION in $SECTIONS ; do 
+      	echo "MASTER=$MASTRE ; SECTION=$SECTION"
+	echo 'rgrep "command not found" $MASTER/$SECTION/fail|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null'
+	for SECTION in $SECTIONS ; do 
 		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
 		echo "Affected packages in $SECTION: " $COUNT
         done
@@ -144,7 +150,9 @@ if [ -s $LOGS ] ; then
 	echo 
 	echo "Please file this important bug against dpkg!"
 	echo 
-        for SECTION in $SECTIONS ; do 
+       	echo "MASTER=$MASTRE ; SECTION=$SECTION"
+	echo 'rgrep "owned by" $MASTER/$SECTION/fail|grep "," |cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null '
+	for SECTION in $SECTIONS ; do 
 		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
 		echo "Affected packages in $SECTION: " $COUNT
         done
