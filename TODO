@@ -23,6 +23,8 @@ for 0.37 and 0.38 (split this list):
 
 - piuparts-slave: if chroot.tgz is older than N hours, regenerate it
 
+- introduce a whitelist of packages where it it is ok to break circular dependencies, like perl + perl-modules and xserver-xorg-core + xserver-xorg 
+
 - master:
  - write stats about number of daily tests (-> report: create fancy graphs)
 
