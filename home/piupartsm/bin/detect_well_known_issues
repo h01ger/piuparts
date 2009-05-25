@@ -35,12 +35,15 @@ fi
 
 LOGS=`mktemp`
 for SECTION in $SECTIONS ; do 
-	rgrep "command not found" $MASTER/$SECTION/pass|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
+	rgrep "command not found" $MASTER/$SECTION/pass|grep -v "/var/lib/dpkg/info/openssh-client.postrm: line 34: delgroup: command not found" |cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
 done
 if [ -s $LOGS ] ; then 
 	echo 
 	echo "Packages which passed the piuparts test but have logs with the string"
 	echo "'command not found' in them."
+	echo
+	echo "Failures due to #530501 (/var/lib/dpkg/info/openssh-client.postrm: line 34:"
+	echo "delgroup: command not found) have been ignored."
 	echo 
 	echo "From the third paragraph about the meaning of the depends field in"
 	echo "http://www.debian.org/doc/debian-policy/ch-relationships.html#s-binarydeps"
@@ -52,6 +55,8 @@ if [ -s $LOGS ] ; then
 	echo 
 	echo "Please file bugs!"
 	echo 
+        echo "MASTER=$MASTER ; SECTION=$SECTION"
+        echo 'rgrep "command not found" $MASTER/$SECTION/pass|grep -v "/var/lib/dpkg/info/openssh-client.postrm: line 34: delgroup: command not found"|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null'
         for SECTION in $SECTIONS ; do 
 		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
 		echo "Affected packages in $SECTION: " $COUNT
