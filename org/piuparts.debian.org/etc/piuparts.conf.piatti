@@ -16,7 +16,7 @@ description = Debian sid / main, installation and removal tests
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master sid
 packages-url = http://piatti.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
 sources-url = http://piatti.debian.org/debian/dists/sid/main/source/Sources.bz2
-mirror = http://piatti.debian.org/debian/
+mirror = "http://piatti.debian.org/debian/ main"
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 distro = sid
 chroot-tgz = sid.tar.gz
@@ -30,7 +30,7 @@ description = Debian squeeze / main, installation and removal tests as well as i
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master squeeze
 packages-url = http://piatti.debian.org/debian/dists/squeeze/main/binary-amd64/Packages.bz2
 sources-url = http://piatti.debian.org/debian/dists/squeeze/main/source/Sources.bz2
-mirror = http://piatti.debian.org/debian/
+mirror = "http://piatti.debian.org/debian/ main"
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 distro = squeeze
 chroot-tgz = squeeze.tar.gz
