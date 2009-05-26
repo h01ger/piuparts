@@ -40,6 +40,7 @@ piuparts (0.36) UNRELEASED; urgency=low
       value "sections". Thanks to Frank Ploss for writing this patch with me 
       and helping me understand the code much better!
     - allow the user to stop the slave with control-C.
+    - call piuparts with --mirror when mirror is set in piuparts.conf.
   * Re-add piuparts-reports.py which got removed/lost between 0.14 and 0.20 
     without changelog entry.
   * piuparts-report.py: 

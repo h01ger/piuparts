@@ -340,8 +340,11 @@ def test_package(config, package, packages_files):
                 config
     if config["keep-sources-list"] in ["yes", "true"]:
         command += "--keep-sources-list "
-    command += package["Package"]
     
+    if config["mirror"]:
+        command += "--mirror %s" % config["mirror"]
+    command += package["Package"]
+
     logging.debug("Executing: %s" % command)
     output.write("Executing: %s\n" % command)
     f = os.popen("{ %s; } 2>&1" % command, "r")
