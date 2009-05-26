@@ -187,7 +187,6 @@ class Settings:
             "/etc/shells",
             "/etc/skel/.zshrc",
             "/home/ftp",
-            "/usr/local/share/texmf/ls-R",
             "/usr/sbin/policy-rc.d",
             "/usr/share/doc/base-config",
             "/usr/share/doc/base-config/README.Debian",
