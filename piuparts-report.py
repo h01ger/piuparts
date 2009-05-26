@@ -780,7 +780,7 @@ class Section:
         pngfile = os.path.join(self._output_directory, "bimonthly-states.png")
         r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
         r('cname <- c("date",rep(colnames(t)))')
-        r('v <- t[(nrow(t)-40):nrow(t),0:12]')  # this should be 60, not 40..
+        r('v <- t[(nrow(t)-60):nrow(t),0:12]')
         # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
         r('palette(c("#4e9a06", "#ef2929", "#73d216", "#d3d7cf", "#5c3566", "#c4a000", "#fce94f", "#a40000", "#888a85", "#2e3436", "#8ae234",  "#729fcf","#204a87"))')
         r('bitmap(file="'+pngfile+'",type="png16m",width=16,height=9,pointsize=10,res=100)')
