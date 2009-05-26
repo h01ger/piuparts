@@ -373,7 +373,7 @@ These settings are used for all sections. Except for the first two they are all 
  
 * "sources-url" is a URL to the Sources.bz2 file for your mirror. "sources-url" must match "packages-url", if it is not defined, piuparts-reports will not generate source centric html pages.
 
-* "mirror" tells the slave which mirror it is to use. The slave gives this to piuparts when it runs it.
+* "mirror" tells the slave which mirror it is to use. The slave gives this to piuparts when it runs it. Components must not be used here. "packages-url" defines which component to use. This setting is redundant and should go away.
   
 * "piuparts-cmd" is the command the slave uses to start piuparts. It should include 'sudo' if necessary so that piuparts runs with sufficient priviledges to do its testing (and that means root priviledges).
   

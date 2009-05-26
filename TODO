@@ -18,6 +18,8 @@ once 0.36 is released:
 
 for 0.37 and 0.38 (split this list):
 
+- remove configfile option "mirror" and use the mirror from "packages-url".
+
 - probably include patch for #523950
 - probably include patch for #519192 - not sure if i like that aproach
 
