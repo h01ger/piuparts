@@ -342,7 +342,7 @@ def test_package(config, package, packages_files):
         command += "--keep-sources-list "
     
     if config["mirror"]:
-        command += "--mirror %s" % config["mirror"]
+        command += "--mirror %s " % config["mirror"]
     command += package["Package"]
 
     logging.debug("Executing: %s" % command)
