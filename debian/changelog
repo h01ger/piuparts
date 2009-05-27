@@ -6,6 +6,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - added to self.ignored_files:
       - /etc/shadow and /etc/shadow- (just as /etc/passwd* and /etc/group*)
       - /var/games (see #524461)
+      - /etc/apt/trustdb.gpg~ (just as trustdb.gpg and other backup files)
     - added to self.ignored_patterns:
       -  /var/lib/dpkg/triggers/*
       -  /var/lib/ldap(/.*)? (see #527898)

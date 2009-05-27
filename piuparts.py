@@ -154,6 +154,7 @@ class Settings:
             "/etc/apt/apt.conf",
             "/etc/apt/secring.gpg",
             "/etc/apt/trustdb.gpg",
+            "/etc/apt/trustdb.gpg~",
             "/etc/crypttab",
             "/etc/exports",
             "/etc/group",
