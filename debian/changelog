@@ -1,5 +1,9 @@
 piuparts (0.36) UNRELEASED; urgency=low
 
+  * Break backwards compatibility of the configuration files for master-slave-
+    mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
+    Introduce a new global section in piuparts.conf which is shared among the
+    other sections there. 
   * piuparts.py:
     - add check whether scriptsdir exits, to fail gracefully if not. 
     - copy scriptsdir to chroot also when doing upgrade tests.
@@ -38,7 +42,7 @@ piuparts (0.36) UNRELEASED; urgency=low
   * piuparts-master.py: remove code to write statistics, that is done only in 
     piuparts-report.py now.
   * piuparts-slave.py:
-    - support looping trough multiple sections in slave.conf via new config 
+    - support looping trough multiple sections in piuparts.conf via new config 
       value "sections". Thanks to Frank Ploss for writing this patch with me 
       and helping me understand the code much better!
     - allow the user to stop the slave with control-C.
@@ -47,7 +51,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     without changelog entry.
   * piuparts-report.py: 
     - support sections in configuration file. 
-    - support looping trough multiple sections in report.conf via new config
+    - support looping trough multiple sections in piuparts.conf via new config
       value "sections". 
     - generate counts.txt (per section) with raw numbers of packages per state,
       include these stats in the debug output (so it gets included in the mails
@@ -71,10 +75,6 @@ piuparts (0.36) UNRELEASED; urgency=low
     - include index.tpl (if it exists) from output-directory into the
       generated index page, so one can add news to the index page without
       editing piuparts-report.py.
-  * Break backwards compatibility of the configuration files for master-slave-
-    mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
-    Introduce a new global section in piuparts.conf which is shared among the
-    other sections there.
   * Always use alphabetic time zone abbreviation in timestamps.
   * Makefile: 
     - add "~$date" to versionstring if building an unreleased version, thus
@@ -82,8 +82,9 @@ piuparts (0.36) UNRELEASED; urgency=low
     - split install target into install-doc, install-conf and install, to aid
       development and deployment from trunk.
   * debian/control: 
-    - depend on python (>>2.4), make dependency to python-debian unversioned
+    - depend on python (>>2.4), make dependency to python-debian unversioned.
     - add build-dependencies on debhelper, asciidoc and xmlto.
+    - dependency gs has been renamed to ghostcript
     - remove build-dependencies on docbook2x and docbook-xml.
     - suggest python-rpy and gs to improve piuparts-report output.
     - set Homepage: to http://piuparts.debian.org

@@ -7,10 +7,6 @@ for 0.36:
 
 - PackagesDB: get rid of 50% of unique() :)
 
-- take care of old conf files on upgrades
-	/etc/piuparts/piuparts-master.conf
-	/etc/piuparts/piuparts-slave.conf
-
 once 0.36 is released:
 
 - integration with packages.qa.debian.org
