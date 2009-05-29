@@ -9,6 +9,8 @@ NEWS file for piuparts
                 Detailed change information can be found in bzr commit
                 messages.
 
+This file is _deprecated_ now, see debian/NEWS.Debian instead!
+
 Version 0.20, September 22, 2006
 --------------------------------
 

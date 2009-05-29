@@ -93,7 +93,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     README.txt, convert it to asciidoc and build pdf and html versions of it. 
   * Restructure and update README.txt to reflect the configuration changes in 
     master-slave mode.
-  * Add NEWS file.
+  * Add debian/NEWS file.
   * Rewrite piuparts manpage in asciidoc.
   * Build and install html version of the piuparts manpage.
   * Update debian/copyright to reflect that piuparts is licenced under GPL2+.
