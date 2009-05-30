@@ -188,7 +188,7 @@ if [ -s $LOGS ] ; then
 	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
 	echo
 fi
-cat $LOGS > $KNOWNLOGS
+cat $LOGS >> $KNOWNLOGS
 rm $LOGS
 
 #
