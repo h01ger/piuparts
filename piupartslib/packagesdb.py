@@ -47,7 +47,7 @@ def rfc822_like_header_parse(input):
     return headers
  
 def unique (s):
-    # taken from http://code.activestate.com/recipes/52560/
+    # taken from http://code.activestate.com/recipes/52560/ - thanks to Tim Peters
     n = len(s)
     if n == 0:
       return []  
