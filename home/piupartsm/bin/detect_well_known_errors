@@ -196,6 +196,38 @@ cat $LOGS >> $KNOWNLOGS
 rm $LOGS
 
 #
+# detect packages which try to overwrite other packages files
+#
+
+LOGS=`mktemp`
+for SECTION in $SECTIONS ; do 
+	rgrep -E "trying to overwrite (.*) which is also in package" $MASTER/$SECTION/fail|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
+done
+if [ -s $LOGS ] ; then 
+	echo 
+	echo "Packages with failed logs because they tried to overwrite other packages files."
+	echo
+	echo "This is because the package tries to overwrite another packages files without"
+	echo "declaring a conflict or replaces relation."
+	echo "See policy 7.4 and 7.6 at http://www.debian.org/doc/debian-policy/ch-relationships.html#s-conflicts"
+	echo "and http://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces"
+	echo 
+	echo "Please file bugs!"
+	echo 
+       	echo "MASTER=$MASTER ; SECTION=$SECTION"
+	echo 'rgrep -E "trying to overwrite (.*) which is also in package" $MASTER/$SECTION/fail|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null '
+	for SECTION in $SECTIONS ; do 
+		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
+		echo "Affected packages in $SECTION: " $COUNT
+        done
+	echo
+	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
+	echo
+fi
+cat $LOGS >> $KNOWNLOGS
+rm $LOGS
+
+#
 # detect unknown errors, continued.
 #
 LOGS=`mktemp`
