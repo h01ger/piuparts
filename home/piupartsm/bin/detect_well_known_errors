@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright 2009 Holger Levsen (holger@layer-acht.org)
 # 
@@ -27,254 +27,60 @@ rm $TEMPFILE
 if [ -z "$MASTER" ] || [ -z "$SECTIONS" ] ; then
 	echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."
 	exit 1
-fi
+FI
 
 #
 # detect unknown errors, continued at the end of this script
 #
-KNOWNLOGS=`mktemp`
-
-#
-# detect packages with unowned files after purge (policy 6.8)
-#
-
-LOGS=`mktemp`
-for SECTION in $SECTIONS ; do 
-	rgrep "not owned" $MASTER/$SECTION/fail|grep -v "/usr/share/mime/"|grep -v usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
+for SECTION in $SECTIONS ; do
+	KNOWNLOGS[$SECTION]=`mktemp`
 done
-if [ -s $LOGS ] ; then 
-	echo "WARNING: this list might contain false positives."
-	echo "One group of them are packages with files in /usr/share/mime - those are"
-	echo "bugs from shared-mime-info (#527063) and have been ignored for this list."
-	echo "WARNING: there are probably others like this as well."
-	echo 
-	echo 
-	echo "Packages with unowned files after purge (violating policy 6.8)"
-	echo "see http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetails"
-	echo 
-	echo "Please file bugs!"
-	echo 
-       	echo "MASTER=$MASTER ; SECTION=$SECTION"
-	echo 'rgrep "not owned" $MASTER/$SECTION/fail|grep -v "/usr/share/mime/"|grep -v usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null'
+
+#
+# loop through all known problems
+#
+HTDOCS=/org/piuparts.debian.org/htdocs
+LOGS=`mktemp`
+
+for problem in `ls ~/bin/known_problems` ; do
+	# source files to get COMMAND, HELPTEXT and ISSUE
+	source $problem 				
 	for SECTION in $SECTIONS ; do 
-		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
-		echo "Affected packages in $SECTION: " $COUNT
+		cd $MASTER/$SECTION
+		$COMMAND > $LOGS
+		if [ -s $LOGS ] ; then 
+			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
+			echo $HELPTEXT > $OUTPUT
+			cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" >> $OUTPUT
+			echo $LOGS >> ${KNOWNLOGS[$SECTION]}
+			COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
+			echo "Affected packages in $SECTION: " $COUNT >> $OUTPUT
+		fi
         done
 	echo
-	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
 	echo
-fi
-cat $LOGS >> $KNOWNLOGS
-rm $LOGS
-
-#
-# detect packages with miss a depends or use non-essential in purge
-#
-
-LOGS=`mktemp`
-for SECTION in $SECTIONS ; do 
-	rgrep "command not found" $MASTER/$SECTION/fail|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
 done
-if [ -s $LOGS ] ; then 
-	echo 
-	echo "Packages with failed logs with the string 'command not found' in them."
-	echo "WARNING: it has not been verified that this error really caused the package to"
-	echo "fail the piuparts test."
-	echo "In fact, there are also successful logs with 'command not found' in them."
-	echo 
-	echo "From the third paragraph about the meaning of the depends field in"
-	echo "http://www.debian.org/doc/debian-policy/ch-relationships.html#s-binarydeps"
-	echo
-	echo "The Depends field should also be used if the postinst, prerm or postrm scripts"
-	echo "require the package to be present in order to run. __Note, however, that the"
-	echo "postrm cannot rely on any non-essential packages to be present during the"
-	echo "purge phase__."
-	echo 
-	echo "Please file bugs!"
-	echo 
-      	echo "MASTER=$MASTER ; SECTION=$SECTION"
-	echo 'rgrep "command not found" $MASTER/$SECTION/fail|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null'
-	for SECTION in $SECTIONS ; do 
-		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
-		echo "Affected packages in $SECTION: " $COUNT
-        done
-	echo
-	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
-	echo
-fi
-cat $LOGS >> $KNOWNLOGS
-rm $LOGS
-
-#
-# detect conffiles owned by two or more packages which are not removed by dpkg correctly
-#
-
-LOGS=`mktemp`
-for SECTION in $SECTIONS ; do 
-	rgrep "owned by" $MASTER/$SECTION/fail|grep "," |cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
-done
-if [ -s $LOGS ] ; then 
-	echo 
-	echo "Packages with failed logs which have conffiles owned by two or more packages"
-	echo "which are not removed by dpkg correctly. So these might be ok packages (or not,"
-	echo "as there might be other problems), but we cannot know until dpkg is fixed."
-	echo 
-	echo "Please file this important bug against dpkg!"
-	echo 
-       	echo "MASTER=$MASTER ; SECTION=$SECTION"
-	echo 'rgrep "owned by" $MASTER/$SECTION/fail|grep "," |cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null '
-	for SECTION in $SECTIONS ; do 
-		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
-		echo "Affected packages in $SECTION: " $COUNT
-        done
-	echo
-	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
-	echo
-fi
-cat $LOGS >> $KNOWNLOGS
-rm $LOGS
-
-#
-# detect packages with owned files after purge (policy 6.8)
-#
-
-LOGS=`mktemp`
-for SECTION in $SECTIONS ; do 
-	rgrep "owned by:" $MASTER/$SECTION/fail|grep -v ","|grep -v usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
-done
-if [ -s $LOGS ] ; then 
-	echo "WARNING: this list might contain false positives."
-	echo 
-	echo "Packages need to remove owned files after purge, see http://www.debian.org/doc/debian-policy/ch-files.html#s10.7.3"
-	echo 
-	echo "Please file bugs!"
-	echo 
-       	echo "MASTER=$MASTER ; SECTION=$SECTION"
-	echo 'rgrep "owned by:" $MASTER/$SECTION/fail|grep -v ","|grep -v usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null'
-	for SECTION in $SECTIONS ; do 
-		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
-		echo "Affected packages in $SECTION: " $COUNT
-        done
-	echo
-	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
-	echo
-fi
-cat $LOGS >> $KNOWNLOGS
-rm $LOGS
-
-#
-# detect packages which leave stuff in /usr/local (see policy 9.1.2)
-#
-
-LOGS=`mktemp`
-for SECTION in $SECTIONS ; do 
-	rgrep "not owned" $MASTER/$SECTION/fail|grep usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
-done
-if [ -s $LOGS ] ; then 
-	echo
-	echo "Packages with files and/or directories in /usr/local/ after purge," 
-	echo "which is a violation of policy 9.1.2:"
-	echo "see http://www.debian.org/doc/debian-policy/ch-opersys.html#s9.1.2"
-	echo 
-	echo "Please file bugs!"
-	echo
-	echo "MASTER=$MASTER ; SECTION=$SECTION"
-	echo 'grep "not owned" $MASTER/$SECTION/fail|grep usr/local/|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null '
-        for SECTION in $SECTIONS ; do 
-		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
-		echo "Affected packages in $SECTION: " $COUNT
-        done
-	echo
-	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
-	echo
-fi
-cat $LOGS >> $KNOWNLOGS
-rm $LOGS
-
-#
-# detect packages which failed because of processes are running inside chroot
-#
-
-LOGS=`mktemp`
-for SECTION in $SECTIONS ; do 
-	rgrep "ERROR: FAIL: Processes are running inside chroot" $MASTER/$SECTION/fail|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
-done
-if [ -s $LOGS ] ; then 
-	echo 
-	echo "Packages with failed logs because there were processes running inside the"
-	echo "chroot at the end of the piuparts run."
-	echo
-	echo "This is probably due to directly calling /etc/rc.d/ scripts in packages"
-	echo "maintainer scripts, which is a violation of policy 9.3.3.2 and must be"
-	echo "replaced by using policy-rc.d - see http://www.debian.org/doc/debian-policy/ch-opersys.html#s9.3.3"
-	echo 
-	echo "Please file bugs!"
-	echo 
-       	echo "MASTER=$MASTER ; SECTION=$SECTION"
-	echo 'rgrep "ERROR: FAIL: Processes are running inside chroot" $MASTER/$SECTION/fail|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null '
-	for SECTION in $SECTIONS ; do 
-		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
-		echo "Affected packages in $SECTION: " $COUNT
-        done
-	echo
-	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
-	echo
-fi
-cat $LOGS >> $KNOWNLOGS
-rm $LOGS
-
-#
-# detect packages which try to overwrite other packages files
-#
-
-LOGS=`mktemp`
-for SECTION in $SECTIONS ; do 
-	rgrep -E "trying to overwrite (.*) which is also in package" $MASTER/$SECTION/fail|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null >> $LOGS
-done
-if [ -s $LOGS ] ; then 
-	echo 
-	echo "Packages with failed logs because they tried to overwrite other packages files."
-	echo
-	echo "This is because the package tries to overwrite another packages files without"
-	echo "declaring a conflict or replaces relation."
-	echo "See policy 7.4 and 7.6 at http://www.debian.org/doc/debian-policy/ch-relationships.html#s-conflicts"
-	echo "and http://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces"
-	echo 
-	echo "Please file bugs!"
-	echo 
-       	echo "MASTER=$MASTER ; SECTION=$SECTION"
-	echo 'rgrep -E "trying to overwrite (.*) which is also in package" $MASTER/$SECTION/fail|cut -d " " -f1|sed -e "s#log:#log#"|sort -u 2>/dev/null '
-	for SECTION in $SECTIONS ; do 
-		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
-		echo "Affected packages in $SECTION: " $COUNT
-        done
-	echo
-	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
-	echo
-fi
-cat $LOGS >> $KNOWNLOGS
 rm $LOGS
 
 #
 # detect unknown errors, continued.
 #
-LOGS=`mktemp`
 UNKNOWNLOGS=`mktemp`
-find $MASTER/*/fail -name "*.log" > $LOGS
-for LOG in $(cat $KNOWNLOGS) ; do
+for SECTION in $SECTIONS ; do 
+	cd $MASTER/$SECTION
+	find fail -name "*.log" > $LOGS
+	for LOG in $(cat ${KNOWNLOGS[$SECTION]}) ; do
 	grep -v $LOG $LOGS > $UNKNOWNLOGS
 	cp $UNKNOWNLOGS $LOGS
-done
-if [ -s $LOGS ] ; then
-	echo
-	echo "Packages with failures not yet well known detected. Please investigate!"
-	echo
-        for SECTION in $SECTIONS ; do 
-		COUNT=$(grep "/$SECTION/" $LOGS | cut -d "_" -f1|sort -u|wc -l)
+	if [ -s $LOGS ] ; then
+		echo
+		echo "Packages with failures not yet well known detected. Please investigate!"
+		echo
+		COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
 		echo "Affected packages in $SECTION: " $COUNT
-        done
-	echo
-	cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
-	echo
-fi
-rm $LOGS $KNOWNLOGS $UNKNOWNLOGS
+        	echo
+		cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
+	fi
+	rm $LOGS ${KNOWNLOGS[$SECTION]} $UNKNOWNLOG
+done
+
