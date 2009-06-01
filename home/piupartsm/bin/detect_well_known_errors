@@ -27,7 +27,7 @@ rm $TEMPFILE
 if [ -z "$MASTER" ] || [ -z "$SECTIONS" ] ; then
 	echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."
 	exit 1
-FI
+fi
 
 #
 # detect unknown errors, continued at the end of this script
@@ -43,11 +43,11 @@ HTDOCS=/org/piuparts.debian.org/htdocs
 LOGS=`mktemp`
 
 for problem in `ls ~/bin/known_problems` ; do
-	# source files to get COMMAND, HELPTEXT and ISSUE
-	source $problem 				
 	for SECTION in $SECTIONS ; do 
 		cd $MASTER/$SECTION
-		$COMMAND > $LOGS
+		# source files to get COMMAND, HELPTEXT and ISSUE
+		source ~/bin/known_problems/$problem 				
+		echo $COMMAND > $LOGS
 		if [ -s $LOGS ] ; then 
 			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
 			echo $HELPTEXT > $OUTPUT
@@ -70,8 +70,9 @@ for SECTION in $SECTIONS ; do
 	cd $MASTER/$SECTION
 	find fail -name "*.log" > $LOGS
 	for LOG in $(cat ${KNOWNLOGS[$SECTION]}) ; do
-	grep -v $LOG $LOGS > $UNKNOWNLOGS
-	cp $UNKNOWNLOGS $LOGS
+		grep -v $LOG $LOGS > $UNKNOWNLOGS
+		cp $UNKNOWNLOGS $LOGS
+	done
 	if [ -s $LOGS ] ; then
 		echo
 		echo "Packages with failures not yet well known detected. Please investigate!"
