@@ -74,13 +74,14 @@ for SECTION in $SECTIONS ; do
 		cp $UNKNOWNLOGS $LOGS
 	done
 	if [ -s $LOGS ] ; then
-		echo
-		echo "Packages with failures not yet well known detected. Please investigate!"
-		echo
+		OUTPUT=$HTDOCS/$SECTION/unknown_issues.tpl
+		echo > $OUTPUT
+		echo "Packages with failures not yet well known detected. Please investigate!" >> $OUTPUT
+		echo >> $OUTPUT
 		COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
-		echo "Affected packages in $SECTION: " $COUNT
-        	echo
-		cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" 
+		echo "Affected packages in $SECTION: " $COUNT >> $OUTPUT
+        	echo >> $OUTPUT
+		cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g"  >> $OUTPUT
 	fi
 	rm $LOGS ${KNOWNLOGS[$SECTION]} $UNKNOWNLOG
 done
