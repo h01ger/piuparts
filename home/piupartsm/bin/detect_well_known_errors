@@ -50,9 +50,9 @@ for problem in `ls ~/bin/known_problems` ; do
 		echo $COMMAND > $LOGS
 		if [ -s $LOGS ] ; then 
 			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
-			echo $HELPTEXT > $OUTPUT
+			echo "$HELPTEXT" > $OUTPUT
 			cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" >> $OUTPUT
-			echo $LOGS >> ${KNOWNLOGS[$SECTION]}
+			echo "$LOGS" >> ${KNOWNLOGS[$SECTION]}
 			COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
 			echo "Affected packages in $SECTION: " $COUNT >> $OUTPUT
 		fi
@@ -81,7 +81,7 @@ for SECTION in $SECTIONS ; do
 		COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
 		echo "Affected packages in $SECTION: " $COUNT >> $OUTPUT
         	echo >> $OUTPUT
-		cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g"  >> $OUTPUT
+		cat "$LOGS" | sed -e "s#$MASTER#http://piuparts.debian.org/#g"  >> $OUTPUT
 	fi
 	rm $LOGS ${KNOWNLOGS[$SECTION]} $UNKNOWNLOG
 done
