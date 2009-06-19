@@ -47,7 +47,7 @@ for problem in `ls ~/bin/known_problems` ; do
 		cd $MASTER/$SECTION
 		# source files to get COMMAND, HELPTEXT and ISSUE
 		source ~/bin/known_problems/$problem 				
-		echo $COMMAND > $LOGS
+		echo "$COMMAND" > $LOGS
 		if [ -s $LOGS ] ; then 
 			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
 			echo "$HELPTEXT" > $OUTPUT
