@@ -30,35 +30,34 @@ if [ -z "$MASTER" ] || [ -z "$SECTIONS" ] ; then
 fi
 
 #
-# detect unknown errors, continued at the end of this script
-#
-for SECTION in $SECTIONS ; do
-	KNOWNLOGS[$SECTION]=`mktemp`
-done
-
-#
 # loop through all known problems
 #
 HTDOCS=/org/piuparts.debian.org/htdocs
 LOGS=`mktemp`
 
-for problem in `ls ~/bin/known_problems` ; do
-	for SECTION in $SECTIONS ; do 
-		cd $MASTER/$SECTION
+# bash has some severe limitations, like no named arrays... :/
+NR=0
+for SECTION in $SECTIONS ; do 
+	KNOWNLOGS[$NR]=`mktemp`
+	cd $MASTER/$SECTION
+	for problem in `ls ~/bin/known_problems` ; do
 		# source files to get COMMAND, HELPTEXT and ISSUE
 		source ~/bin/known_problems/$problem 				
 		echo "$COMMAND" > $LOGS
 		if [ -s $LOGS ] ; then 
 			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
 			echo "$HELPTEXT" > $OUTPUT
-			cat $LOGS | sed -e "s#$MASTER#http://piuparts.debian.org/#g" >> $OUTPUT
-			echo "$LOGS" >> ${KNOWNLOGS[$SECTION]}
+			echo >> $OUTPUT
 			COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
 			echo "Affected packages in $SECTION: " $COUNT >> $OUTPUT
+			echo >> $OUTPUT
+			cat $LOGS | sed -e "s#^#http://piuparts.debian.org/$SECTION/#g" >> $OUTPUT
+			echo "$LOGS" >> ${KNOWNLOGS[$NR]}
+		else
+			touch ${KNOWNLOGS[$NR]}
 		fi
         done
-	echo
-	echo
+	let "NR += 1"
 done
 rm $LOGS
 
@@ -66,10 +65,12 @@ rm $LOGS
 # detect unknown errors, continued.
 #
 UNKNOWNLOGS=`mktemp`
+
+NR=0
 for SECTION in $SECTIONS ; do 
 	cd $MASTER/$SECTION
 	find fail -name "*.log" > $LOGS
-	for LOG in $(cat ${KNOWNLOGS[$SECTION]}) ; do
+	for LOG in $(cat ${KNOWNLOGS[$NR]}) ; do
 		grep -v $LOG $LOGS > $UNKNOWNLOGS
 		cp $UNKNOWNLOGS $LOGS
 	done
@@ -79,10 +80,12 @@ for SECTION in $SECTIONS ; do
 		echo "Packages with failures not yet well known detected. Please investigate!" >> $OUTPUT
 		echo >> $OUTPUT
 		COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
+		echo >> $OUTPUT
 		echo "Affected packages in $SECTION: " $COUNT >> $OUTPUT
         	echo >> $OUTPUT
-		cat "$LOGS" | sed -e "s#$MASTER#http://piuparts.debian.org/#g"  >> $OUTPUT
+		cat "$LOGS" | sed -e "s#^#http://piuparts.debian.org/$SECTION/#g"  >> $OUTPUT
 	fi
-	rm $LOGS ${KNOWNLOGS[$SECTION]} $UNKNOWNLOG
+	rm $LOGS ${KNOWNLOGS[$NR]} $UNKNOWNLOGS
+	let "NR += 1"
 done
 
