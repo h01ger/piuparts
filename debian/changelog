@@ -75,6 +75,9 @@ piuparts (0.36) UNRELEASED; urgency=low
     - include index.tpl (if it exists) from output-directory into the
       generated index page, so one can add news to the index page without
       editing piuparts-report.py.
+    - generate pages for known issues, which are detected by bash helper
+      script, run by cron on piuparts.debian.org and available from 
+      svn/piuparts/piatti/home/piupartsm/bin/detect_well_known_errors
   * Always use alphabetic time zone abbreviation in timestamps.
   * Makefile: 
     - add "~$date" to versionstring if building an unreleased version, thus

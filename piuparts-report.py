@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
+# Copyright 2009 Holger Levsen (holger@layer-acht.org)
 # 
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -265,6 +266,12 @@ SOURCE_PACKAGE_BODY_TEMPLATE = """
    </table>
 """
 
+ANALYSIS_BODY_TEMPLATE = """
+   <table class="righttable">
+    $rows
+   </table>
+"""
+
 # this template is normally replaced with from $htdocs
 INDEX_BODY_TEMPLATE = """
    <table class="righttable">
@@ -327,6 +334,18 @@ state_by_dir = {
     "fixed": "fix-not-yet-tested",
     "reserved": "waiting-to-be-tested",
     "untestable": "dependency-cannot-be-tested",
+}
+
+linktarget_by_template = {
+    "command_not_found_error.tpl": "due to a 'command not found' error",
+    "files_in_usr_local_error.tpl": "due to files in /usr/local",
+    "overwrite_other_packages_files_error.tpl": "due to overwriting other packages files",
+    "owned_files_after_purge_error.tpl": "due to owned files existing after purge",
+    "owned_files_by_many_packages_error.tpl": "due to owned files by many packages",
+    "processes_running_error.tpl": "due to leaving processes running behind",
+    "unowned_files_after_purge_error.tpl": "due to unowned files after purge",
+    "unknown_failures.tpl": "unclassified failures",
+    "command_not_found_issue.tpl": "but logfile contains 'command not found'",
 }
 
 
@@ -788,16 +807,48 @@ class Section:
         r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
         return "<tr class=\"normalrow\"> <td class=\"contentcell2\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"800\" alt=\"Package states in the last 2 months\"></a></td></tr>\n" % ("bimonthly-states.png", self._config.section, "bimonthly-states.png")
 
+    def create_and_link_to_analysises(self,state):
+        link="<ul>"
+        print self._output_directory
+        templates = find_files_with_suffix(self._output_directory,".tpl")
+        print state
+        for template in templates:
+          if (state == "failed-testing" and template[-9:] != "issue.tpl") or (state == "successfully-tested" and template[-9:] == "issue.pl"):
+            print template
+
+            tpl = os.path.join(self._output_directory, template)
+            f = file(tpl, "r")
+            analysis = file.read(f)
+            f.close()
+            os.unlink(tpl)
+
+            htmlpage = string.Template(HTML_HEADER + ANALYSIS_BODY_TEMPLATE + HTML_FOOTER)
+            filename = os.path.join(self._output_directory, template[:-len(".tpl")]+".html")
+            f = file(filename, "w")
+            f.write(htmlpage.safe_substitute( {
+               "section_navigation": create_section_navigation(self._section_names,self._config.section),
+               "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+               "rows": analysis,
+             }))
+            f.close()
+
+            link += "<li><a href=%s>%s</a></li>" % (template[:-len(".tpl")]+".html", linktarget_by_template[template])
+        link += "</ul>"
+        return link
+
     def write_section_index_page(self,dirs,total_packages):
         tablerows = ""
         for state in self._binary_db.get_states():
             dir_link = ""
+            analysis = ""
             for dir in dirs:
               if dir in ("pass","fail","bugged") and state_by_dir[dir] == state:
                 dir_link += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
-            tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a></td>" +
+            if state in ("successfully-tested", "failed-testing"):
+              analysis = self.create_and_link_to_analysises(state)
+            tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a>%s</td>" +
                           "<td class=\"contentcell2\">%d</td><td class=\"contentcell2\">%s</td></tr>\n") % \
-                          (html_protect(state), html_protect(state), len(self._binary_db.get_packages_in_state(state)),
+                          (html_protect(state), html_protect(state), analysis, len(self._binary_db.get_packages_in_state(state)),
                           dir_link)
         try:
           tablerows += self.make_stats_graph();

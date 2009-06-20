@@ -3,9 +3,7 @@ Things to do for piuparts
 
 for 0.36:
 
-- create pages for known problems
-
-- PackagesDB: get rid of 50% of unique() :)
+- PackagesDB: get rid of 50% of unique() - done, Lars just needs to test and commit
 
 once 0.36 is released:
 
