@@ -46,13 +46,15 @@ for SECTION in $SECTIONS ; do
 		echo "$COMMAND" > $LOGS
 		if [ -s $LOGS ] ; then 
 			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
-			echo "$HELPTEXT" > $OUTPUT
-			echo >> $OUTPUT
+			echo "<p>$HELPTEXT</p>" > $OUTPUT
 			COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
-			echo "Affected packages in $SECTION: " $COUNT >> $OUTPUT
-			echo >> $OUTPUT
-			cat $LOGS | sed -e "s#^#http://piuparts.debian.org/$SECTION/#g" >> $OUTPUT
+			echo "<p>Affected packages in $SECTION: $COUNT</p>" >> $OUTPUT
+			echo "<ul>" >> $OUTPUT
+			for LOG in $(cat LOGS) ; do
+				echo "<li><a href='/$LOG'>$LOG</a></li>" >> $OUTPUT
+			done
 			echo "$LOGS" >> ${KNOWNLOGS[$NR]}
+			echo "</ul>" >> $OUTPUT
 		else
 			touch ${KNOWNLOGS[$NR]}
 		fi
@@ -76,14 +78,15 @@ for SECTION in $SECTIONS ; do
 	done
 	if [ -s $LOGS ] ; then
 		OUTPUT=$HTDOCS/$SECTION/unknown_failures.tpl
-		echo > $OUTPUT
-		echo "Packages with failures not yet well known detected. Please investigate!" >> $OUTPUT
-		echo >> $OUTPUT
+		echo "<h2>Packages with failures not yet well known detected</h2>
+		echo "<p>Please investigate and improve detection of known error types!</p>" >> $OUTPUT
 		COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
-		echo >> $OUTPUT
-		echo "Affected packages in $SECTION: " $COUNT >> $OUTPUT
-        	echo >> $OUTPUT
-		cat "$LOGS" | sed -e "s#^#http://piuparts.debian.org/$SECTION/#g"  >> $OUTPUT
+		echo "<p>Affected packages in $SECTION: $COUNT</p>" >> $OUTPUT
+		echo "<ul>" >> $OUTPUT
+		for LOG in $(cat LOGS) ; do
+			echo "<li><a href='/$LOG'>$LOG</a></li>" >> $OUTPUT
+		done
+		echo "</ul>" >> $OUTPUT
 	fi
 	rm $LOGS ${KNOWNLOGS[$NR]} $UNKNOWNLOGS
 	let "NR += 1"
