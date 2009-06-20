@@ -809,12 +809,9 @@ class Section:
 
     def create_and_link_to_analysises(self,state):
         link="<ul>"
-        print self._output_directory
         templates = find_files_with_suffix(self._output_directory,".tpl")
-        print state
         for template in templates:
-          if (state == "failed-testing" and template[-9:] != "issue.tpl") or (state == "successfully-tested" and template[-9:] == "issue.pl"):
-            print template
+          if (state == "failed-testing" and template[-9:] != "issue.tpl") or (state == "successfully-tested" and template[-9:] == "issue.tpl"):
 
             tpl = os.path.join(self._output_directory, template)
             f = file(tpl, "r")
