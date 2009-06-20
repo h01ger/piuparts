@@ -47,7 +47,7 @@ for SECTION in $SECTIONS ; do
 		if [ -s $LOGS ] ; then 
 			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
 			echo '<table class="righttable"><tr class="titlerow"><td class="titlecell">' > $OUTPUT
-			echo "$HEADER" >> $OUTPUT
+			echo "$HEADER in $SECTION" >> $OUTPUT
 			echo '</td></tr><tr class="normalrow"><td class="contentcell2">' >> $OUTPUT
 			echo "$HELPTEXT" >> $OUTPUT
 			echo '</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">' >> $OUTPUT
@@ -55,7 +55,7 @@ for SECTION in $SECTIONS ; do
 			echo "<p>Affected packages in $SECTION: $COUNT</p>" >> $OUTPUT
 			echo "<ul>" >> $OUTPUT
 			for LOG in $(cat $LOGS) ; do
-				echo "<li><a href='/$LOG'>$LOG</a></li>" >> $OUTPUT
+				echo "<li><a href='/$SECTION/$LOG'>$LOG</a></li>" >> $OUTPUT
 			done
 			echo "$LOGS" >> ${KNOWNLOGS[$NR]}
 			echo "</ul></td></tr></table>" >> $OUTPUT
@@ -83,7 +83,7 @@ for SECTION in $SECTIONS ; do
 	if [ -s $LOGS ] ; then
 		OUTPUT=$HTDOCS/$SECTION/unknown_failures.tpl
 		echo '<table class="righttable"><tr class="titlerow"><td class="titlecell">' > $OUTPUT
-		echo "Packages with failures not yet well known detected" >> $OUTPUT
+		echo "Packages with failures not yet well known detected in $SECTION" >> $OUTPUT
 		echo '</td></tr><tr class="normalrow"><td class="contentcell2">' >> $OUTPUT
 		echo "<p>Please investigate and improve detection of known error types!</p>" >> $OUTPUT
 		echo '</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">' >> $OUTPUT
@@ -91,7 +91,7 @@ for SECTION in $SECTIONS ; do
 		echo "<p>Affected packages in $SECTION: $COUNT</p>" >> $OUTPUT
 		echo "<ul>" >> $OUTPUT
 		for LOG in $(cat $LOGS) ; do
-			echo "<li><a href='/$LOG'>$LOG</a></li>" >> $OUTPUT
+			echo "<li><a href='/$SECTION/$LOG'>$LOG</a></li>" >> $OUTPUT
 		done
 		echo "</ul></td></tr></table>" >> $OUTPUT
 	fi
