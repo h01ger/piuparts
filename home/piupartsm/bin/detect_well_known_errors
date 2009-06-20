@@ -50,7 +50,7 @@ for SECTION in $SECTIONS ; do
 			COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
 			echo "<p>Affected packages in $SECTION: $COUNT</p>" >> $OUTPUT
 			echo "<ul>" >> $OUTPUT
-			for LOG in $(cat LOGS) ; do
+			for LOG in $(cat $LOGS) ; do
 				echo "<li><a href='/$LOG'>$LOG</a></li>" >> $OUTPUT
 			done
 			echo "$LOGS" >> ${KNOWNLOGS[$NR]}
@@ -83,7 +83,7 @@ for SECTION in $SECTIONS ; do
 		COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
 		echo "<p>Affected packages in $SECTION: $COUNT</p>" >> $OUTPUT
 		echo "<ul>" >> $OUTPUT
-		for LOG in $(cat LOGS) ; do
+		for LOG in $(cat $LOGS) ; do
 			echo "<li><a href='/$LOG'>$LOG</a></li>" >> $OUTPUT
 		done
 		echo "</ul>" >> $OUTPUT
