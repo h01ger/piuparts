@@ -78,7 +78,7 @@ for SECTION in $SECTIONS ; do
 	done
 	if [ -s $LOGS ] ; then
 		OUTPUT=$HTDOCS/$SECTION/unknown_failures.tpl
-		echo "<h2>Packages with failures not yet well known detected</h2>
+		echo "<h2>Packages with failures not yet well known detected</h2>"
 		echo "<p>Please investigate and improve detection of known error types!</p>" >> $OUTPUT
 		COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
 		echo "<p>Affected packages in $SECTION: $COUNT</p>" >> $OUTPUT
