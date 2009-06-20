@@ -46,7 +46,11 @@ for SECTION in $SECTIONS ; do
 		echo "$COMMAND" > $LOGS
 		if [ -s $LOGS ] ; then 
 			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
-			echo "<p>$HELPTEXT</p>" > $OUTPUT
+			echo '<table class="righttable"><tr class="titlerow"><td class="titlecell">' > $OUTPUT
+			echo "$HEADER" >> $OUTPUT
+			echo '</td></tr><tr class="normalrow"><td class="contentcell2">' >> $OUTPUT
+			echo "$HELPTEXT" >> $OUTPUT
+			echo '</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">' >> $OUTPUT
 			COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
 			echo "<p>Affected packages in $SECTION: $COUNT</p>" >> $OUTPUT
 			echo "<ul>" >> $OUTPUT
@@ -54,7 +58,7 @@ for SECTION in $SECTIONS ; do
 				echo "<li><a href='/$LOG'>$LOG</a></li>" >> $OUTPUT
 			done
 			echo "$LOGS" >> ${KNOWNLOGS[$NR]}
-			echo "</ul>" >> $OUTPUT
+			echo "</ul></td></tr></table>" >> $OUTPUT
 		else
 			touch ${KNOWNLOGS[$NR]}
 		fi
@@ -78,15 +82,18 @@ for SECTION in $SECTIONS ; do
 	done
 	if [ -s $LOGS ] ; then
 		OUTPUT=$HTDOCS/$SECTION/unknown_failures.tpl
-		echo "<h2>Packages with failures not yet well known detected</h2>"
+		echo '<table class="righttable"><tr class="titlerow"><td class="titlecell">' > $OUTPUT
+		echo "Packages with failures not yet well known detected" >> $OUTPUT
+		echo '</td></tr><tr class="normalrow"><td class="contentcell2">' >> $OUTPUT
 		echo "<p>Please investigate and improve detection of known error types!</p>" >> $OUTPUT
+		echo '</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">' >> $OUTPUT
 		COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
 		echo "<p>Affected packages in $SECTION: $COUNT</p>" >> $OUTPUT
 		echo "<ul>" >> $OUTPUT
 		for LOG in $(cat $LOGS) ; do
 			echo "<li><a href='/$LOG'>$LOG</a></li>" >> $OUTPUT
 		done
-		echo "</ul>" >> $OUTPUT
+		echo "</ul></td></tr></table>" >> $OUTPUT
 	fi
 	rm $LOGS ${KNOWNLOGS[$NR]} $UNKNOWNLOGS
 	let "NR += 1"
