@@ -62,7 +62,7 @@ done
 rm $LOGS
 
 #
-# detect unknown errors, continued.
+# report unknown failures
 #
 UNKNOWNLOGS=`mktemp`
 
@@ -75,7 +75,7 @@ for SECTION in $SECTIONS ; do
 		cp $UNKNOWNLOGS $LOGS
 	done
 	if [ -s $LOGS ] ; then
-		OUTPUT=$HTDOCS/$SECTION/unknown_issues.tpl
+		OUTPUT=$HTDOCS/$SECTION/unknown_failures.tpl
 		echo > $OUTPUT
 		echo "Packages with failures not yet well known detected. Please investigate!" >> $OUTPUT
 		echo >> $OUTPUT
