@@ -46,6 +46,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2009-06-20</b>: Failed logs are not grouped into (at the moment) seven types of known errors and one type of issues is detected in successful logs.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2009-06-06</b>: Reschedule testing for 163 successful and 27 failing packages in sid which were affected by #530501. Once openssh 1:5.1p1-6 has reached squeeze, this will be done again with 194 packages there.
      </td>
     </tr>
