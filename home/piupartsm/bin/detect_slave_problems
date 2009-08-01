@@ -52,18 +52,20 @@ chmod 775 $MONITORDIR
 mv screenlog.new screenlog.old || cp $SCREENLOG screenlog.old
 cp $SCREENLOG screenlog.new
 
-diff screenlog.old screenlog.new >/dev/null 2>&1 && {
-	if [ ! -f $LOCKFILE ] ; then
-		{
-			echo "Either piuparts-slave hangs or is not running at all or wasn't started with ~piupartss/bin/slave_run - please investigate and take appropriate measures!"
-			echo
-			tail screenlog.new 
-		} | mail -s "problem with piuparts-slave detected" piupartsm
-		touch $LOCKFILE
-		chmod 660 $LOCKFILE
-	fi
-}
-
+# dont complain if just started
+if [ -f screenlog.old ] && [ ! -s screenlog.old ] ; then
+	diff screenlog.old screenlog.new >/dev/null 2>&1 && {
+		if [ ! -f $LOCKFILE ] ; then
+			{
+				echo "Either piuparts-slave hangs or is not running at all or wasn't started with ~piupartss/bin/slave_run - please investigate and take appropriate measures!"
+				echo
+				tail screenlog.new 
+			} | mail -s "problem with piuparts-slave detected" piupartsm
+			touch $LOCKFILE
+			chmod 660 $LOCKFILE
+		fi
+	}
+fi
 #
 # send screenlog daily no matter what, but only once a day :)
 #
