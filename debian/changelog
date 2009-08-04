@@ -92,7 +92,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - remove build-dependencies on docbook2x and docbook-xml.
     - suggest python-rpy and gs to improve piuparts-report output.
     - set Homepage: to http://piuparts.debian.org
-    - bump Standards-Version to 3.8.1, no changes necessary.
+    - bump Standards-Version to 3.8.2, no changes necessary.
   * Rewrite debian/rules from scratch using debhelper.
   * Merge README, how-to-use-piuparts.txt and custom-scripts.txt into 
     README.txt, convert it to asciidoc and build pdf and html versions of it. 

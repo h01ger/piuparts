@@ -3,14 +3,18 @@ Things to do for piuparts
 
 for 0.36:
 
-- PackagesDB: get rid of 50% of unique()
+- svn mv piatti trunk/doc/examples
+- release
 
 once 0.36 is released:
 
-- integration with packages.qa.debian.org
 - announcement on d-d-a
 
 for 0.37 and 0.38 (split this list):
+
+- piuparts-report mail should include list of failed logs of the day
+
+- PackagesDB: get rid of 50% of unique()
 
 - remove configfile option "mirror" and use the mirror from "packages-url".
 

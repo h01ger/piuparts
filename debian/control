@@ -9,7 +9,7 @@ Uploaders: Lars Wirzenius <liw@iki.fi>,
     Lucas Nussbaum <lucas@lucas-nussbaum.net>
 Section: devel
 Priority: extra
-Standards-Version: 3.8.1
+Standards-Version: 3.8.2
 Build-Depends: debhelper (>=5.0.42), dpkg-dev (>=1.13.26)
 Build-Depends-Indep: python-support, asciidoc, xmlto
 Vcs-Svn: svn://svn.debian.org/svn/piuparts/trunk/
