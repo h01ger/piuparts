@@ -2022,6 +2022,11 @@ def main():
 
 
 if __name__ == "__main__":
+    # check if user has root privileges
+    if os.getuid():
+        print 'You need to be root to use piuparts.'
+        sys.exit(0)
+
     try:
         if sys.argv[1:] == ["unittest"]:
             del sys.argv[1]
