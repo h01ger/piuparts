@@ -8,7 +8,7 @@
 # create reports once a day
 #  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
 #
-5 0 * * * /home/piupartsm/bin/detect_well_known_errors ; PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages nice python /org/piuparts.debian.org/share/piuparts/piuparts-report  2>&1 | mail -s piuparts-report piupartsm
+0 0 * * * /home/piupartsm/bin/detect_well_known_errors ; PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages nice python /org/piuparts.debian.org/share/piuparts/piuparts-report  2>&1 | mail -s piuparts-report piupartsm
 
 #
 # monitor slave session every hour
@@ -32,5 +32,5 @@
 #
 # misc
 #
-55 11 * * * /home/piupartsm/bin/prepare_backup
+0 2 * * * /home/piupartsm/bin/prepare_backup
 
