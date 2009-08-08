@@ -51,18 +51,20 @@ for SECTION in $SECTIONS ; do
 			echo '</td></tr><tr class="normalrow"><td class="contentcell2">' >> $OUTPUT
 			echo "$HELPTEXT" >> $OUTPUT
 			echo '</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">' >> $OUTPUT
-			COUNT=$(cut -d "_" -f1 $LOGS|sort -u|wc -l)
-			echo "<p>Affected packages in $SECTION: $COUNT</p>" >> $OUTPUT
 			echo "<ul>" >> $OUTPUT
+			COUNT=0
 			for LOG in $(cat $LOGS|sort) ; do
 				PACKAGE=$(echo $LOG | cut -d "_" -f1|cut -d "/" -f2)
 				LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}* $MASTER/$SECTION/pass/${PACKAGE}* 2>/dev/null|tail -1|cut -d "/" -f7)
-				if [ "$LATEST" != "pass" ] ; then 
+				LATESTFAIL=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}*  2>/dev/null|tail -1|cut -d "/" -f7-8)
+				if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" == "$LOG" ] ; then 
 					echo "<li><a href='/$SECTION/$LOG'>$LOG</a></li>" >> $OUTPUT
 					echo "$LOG" >> ${KNOWNLOGS[$NR]}
+					let "COUNT += 1"
 				fi 
 			done
-			echo "</ul></td></tr></table>" >> $OUTPUT
+			echo "</ul>" >>$OUTPUT
+			echo "<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>" >> $OUTPUT
 		else
 			touch ${KNOWNLOGS[$NR]}
 		fi
@@ -88,17 +90,19 @@ for SECTION in $SECTIONS ; do
 		echo '</td></tr><tr class="normalrow"><td class="contentcell2">' >> $OUTPUT
 		echo "<p>Please investigate and improve detection of known error types!</p>" >> $OUTPUT
 		echo '</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">' >> $OUTPUT
-		COUNT=$(cut -d "_" -f1 $UNKNOWNLOGS|sort -u|wc -l)
-		echo "<p>Affected packages in $SECTION: $COUNT</p>" >> $OUTPUT
+		COUNT=0
 		echo "<ul>" >> $OUTPUT
 		for LOG in $(cat $UNKNOWNLOGS|sort) ; do
 			PACKAGE=$(echo $LOG | cut -d "_" -f1|cut -d "/" -f2)
 			LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}* $MASTER/$SECTION/pass/${PACKAGE}* 2>/dev/null|tail -1|cut -d "/" -f7)
-			if [ "$LATEST" != "pass" ] ; then 
+			LATESTFAIL=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}*  2>/dev/null|tail -1|cut -d "/" -f7-8)
+			if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" == "$LOG" ] ; then 
 				echo "<li><a href='/$SECTION/$LOG'>$LOG</a></li>" >> $OUTPUT
+				let "COUNT += 1"
 			fi
 		done
-		echo "</ul></td></tr></table>" >> $OUTPUT
+		echo "</ul>" >> $OUTPUT
+		echo "<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>" >> $OUTPUT
 	fi
 	rm $LOGS ${KNOWNLOGS[$NR]} $UNKNOWNLOGS
 	let "NR += 1"
