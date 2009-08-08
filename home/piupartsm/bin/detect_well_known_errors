@@ -56,7 +56,7 @@ for SECTION in $SECTIONS ; do
 			echo "<ul>" >> $OUTPUT
 			for LOG in $(cat $LOGS) ; do
 				PACKAGE=$(echo $LOG | cut -d "_" -f1|cut -d "/" -f2)
-				LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}* $MASTER/$SECTION/pass/${PACKAGE}* 2>/dev/null|tail -1|cut -d "/" -f2)
+				LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}* $MASTER/$SECTION/pass/${PACKAGE}* 2>/dev/null|tail -1|cut -d "/" -f1)
 				if [ "$LATEST" != "pass" ] ; then 
 					echo "<li><a href='/$SECTION/$LOG'>$LOG</a></li>" >> $OUTPUT
 					echo "$LOG" >> ${KNOWNLOGS[$NR]}
