@@ -344,7 +344,7 @@ linktarget_by_template = {
     "owned_files_by_many_packages_error.tpl": "due to owned files by many packages",
     "processes_running_error.tpl": "due to leaving processes running behind",
     "unowned_files_after_purge_error.tpl": "due to unowned files after purge",
-    "conffile_prompt_error.conf.tpl": "due to prompting due to modified conffiles"
+    "conffile_prompt_error.conf.tpl": "due to prompting due to modified conffiles",
     "unknown_failures.tpl": "unclassified failures",
     "command_not_found_issue.tpl": "but logfile contains 'command not found'",
 }
