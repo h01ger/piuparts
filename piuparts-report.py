@@ -613,7 +613,9 @@ class Section:
         if state == "successfully-tested":
           dirs = ["pass", "fixed"]
         elif state == "failed-testing":
-          dirs = ["fail", "bugged", "untestable"]
+          dirs = ["fail", "bugged"]
+        elif state == "cannot-be-tested":
+          dirs = ["untestable"]
 
         if dirs != "":
           links = self.find_links_to_logs (package_name, dirs, logs_by_dir)
