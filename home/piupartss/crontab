@@ -8,3 +8,8 @@
 # monitor for problems every two hours
 #
 23 */2 * * * /home/piupartss/bin/detect_leftover_processes
+
+#
+# delete chroot-tarballs once a month, so that new ones are created automatically
+#
+42 23 1 * * sudo rm -v /org/piuparts.debian.org/slave/*/*.tar.gz
