@@ -21,7 +21,8 @@ for 0.37 and 0.38 (split this list):
 - probably include patch for #523950
 - probably include patch for #519192 - not sure if i like that aproach
 
-- piuparts-slave: if chroot.tgz is older than N hours, regenerate it
+- piuparts-slave: if chroot.tgz is older than N days, regenerate it
+ - currently this is done via ~piupartss/crontab, but that's a hack
 
 - introduce a whitelist of packages where it it is ok to break circular dependencies, like perl + perl-modules and xserver-xorg-core + xserver-xorg 
 
