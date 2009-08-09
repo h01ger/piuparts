@@ -16,6 +16,7 @@ piuparts (0.36) UNRELEASED; urgency=low
     - added to self.ignored_patterns:
       -  /var/lib/dpkg/triggers/*
       -  /var/lib/ldap(/.*)? (see #527898)
+      -  /var/backups/.*
     - modified self.ignored_patters:
       - ignore everything in /tmp, not just in /tmp/scripts (see #528266)
     - configure apt in chroots to not install recommends and suggests.
