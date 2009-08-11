@@ -645,6 +645,7 @@ class Section:
         if not os.path.isfile(countsfile):
           logging.debug("writing new file: %s" % countsfile) 
           write_file(countsfile, header)
+          last_line = ""
         else:
           last_line = read_file(countsfile)[-1]
         if not current_day in last_line:
