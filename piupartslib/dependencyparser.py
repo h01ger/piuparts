@@ -178,7 +178,7 @@ class DependencyParser:
     in particular) use Provides: headers with bogus package names.
     
     Note: Added upper case letters to name pattern, since it some of the
-    Mozilla localization packageds use or used them.
+    Mozilla localization packages use or used them.
     
     """
 
