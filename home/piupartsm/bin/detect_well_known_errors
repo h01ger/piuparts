@@ -55,19 +55,24 @@ for SECTION in $SECTIONS ; do
 			COUNT=0
 			for LOG in $(cat $LOGS|sort) ; do
 				PACKAGE=$(echo $LOG | cut -d "_" -f1|cut -d "/" -f2)
-				LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}* $MASTER/$SECTION/pass/${PACKAGE}* 2>/dev/null|tail -1|cut -d "/" -f7)
+				LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}* $MASTER/$SECTION/pass/${PACKAGE}* 2>/dev/null|tail -1|cut -d "/" -f6)
 				if [ "${problem%_error.conf}_error.conf" == "$problem" ] ; then 
 					LATESTFAIL=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}*  2>/dev/null|tail -1|cut -d "/" -f7-8)
+					if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" == "$LOG" ] ; then 
+						echo "<li><a href='/$SECTION/$LOG'>$LOG</a></li>" >> $OUTPUT
+						echo "$LOG" >> ${KNOWNLOGS[$NR]}
+						let "COUNT += 1"
+					fi 
 				else
 					# LATESTFAIL is actually a misnomer now, because its LATESTSUCCESS
 					# maybe it should be renamed to LATESTRELEVANT
 					LATESTFAIL=$(ls -tr1 --color=none $MASTER/$SECTION/pass/${PACKAGE}* 2>/dev/null|tail -1|cut -d "/" -f7-8)
+					if [ "$LATEST" == "pass" ] && [ "$LATESTFAIL" == "$LOG" ] ; then 
+						echo "<li><a href='/$SECTION/$LOG'>$LOG</a></li>" >> $OUTPUT
+						echo "$LOG" >> ${KNOWNLOGS[$NR]}
+						let "COUNT += 1"
+					fi 
 				fi
-				if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" == "$LOG" ] ; then 
-					echo "<li><a href='/$SECTION/$LOG'>$LOG</a></li>" >> $OUTPUT
-					echo "$LOG" >> ${KNOWNLOGS[$NR]}
-					let "COUNT += 1"
-				fi 
 			done
 			echo "</ul>" >>$OUTPUT
 			echo "<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>" >> $OUTPUT
@@ -100,7 +105,7 @@ for SECTION in $SECTIONS ; do
 		echo "<ul>" >> $OUTPUT
 		for LOG in $(cat $UNKNOWNLOGS|sort) ; do
 			PACKAGE=$(echo $LOG | cut -d "_" -f1|cut -d "/" -f2)
-			LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}* $MASTER/$SECTION/pass/${PACKAGE}* 2>/dev/null|tail -1|cut -d "/" -f7)
+			LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}* $MASTER/$SECTION/pass/${PACKAGE}* 2>/dev/null|tail -1|cut -d "/" -f6)
 			LATESTFAIL=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}* $MASTER/$SECTION/bugged/${PACKAGE}*  2>/dev/null|tail -1|cut -d "/" -f7-8)
 			if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" == "$LOG" ] ; then 
 				echo "<li><a href='/$SECTION/$LOG'>$LOG</a></li>" >> $OUTPUT
