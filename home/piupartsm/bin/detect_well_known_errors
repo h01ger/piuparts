@@ -50,6 +50,9 @@ for SECTION in $SECTIONS ; do
 			echo "$HEADER in $SECTION" >> $OUTPUT
 			echo '</td></tr><tr class="normalrow"><td class="contentcell2">' >> $OUTPUT
 			echo "$HELPTEXT" >> $OUTPUT
+                        echo "<p>The commandline to find these logs is: <pre>" >> $OUTPUT
+			grep --color=never COMMAND ~/bin/known_problems/$problem >> $OUTPUT
+			echo "</pre></p>" >> $OUTPUT
 			echo '</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">' >> $OUTPUT
 			echo "<ul>" >> $OUTPUT
 			COUNT=0
