@@ -1,7 +1,6 @@
 Source: piuparts
 Maintainer: piuparts developers team <piuparts-devel@lists.alioth.debian.org>
-Uploaders: Lars Wirzenius <liw@iki.fi>, 
-    Bill Allombert <ballombe@debian.org>, 
+Uploaders: Bill Allombert <ballombe@debian.org>, 
     Ian Jackson <iwj@debian.org>, 
     John Wright <jsw@debian.org>, 
     Ana Beatriz Guerrero Lopez <ana@debian.org>, 

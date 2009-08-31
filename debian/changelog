@@ -1,5 +1,6 @@
 piuparts (0.36) UNRELEASED; urgency=low
 
+  [ Holger Levsen ]
   * The "For me. For you. For everybody." release.
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
@@ -109,7 +110,10 @@ piuparts (0.36) UNRELEASED; urgency=low
   * Update FSF address in all files referencing the GPL.
   * Remove unused file piuparts.css. 
 
- -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
+  [ Lars Wirzenius ]
+  * Removed Lars Wirzenius as uploader.
+
+ -- Lars Wirzenius <liw@liw.fi>  Mon, 31 Aug 2009 19:10:05 +0300
 
 piuparts (0.35) unstable; urgency=medium
 
