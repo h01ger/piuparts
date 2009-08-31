@@ -97,6 +97,8 @@ piuparts (0.36) UNRELEASED; urgency=low
     - suggest python-rpy and gs to improve piuparts-report output.
     - set Homepage: to http://piuparts.debian.org
     - remove Lucas Nussbaum from uploaders - Thanks for your work, Lucas!
+    - Replace Ians email address with one that doesn't give an errorcode when
+      sending mail to it
     - bump Standards-Version to 3.8.2, no changes necessary.
   * Rewrite debian/rules from scratch using debhelper.
   * Merge README, how-to-use-piuparts.txt and custom-scripts.txt into 
@@ -113,7 +115,7 @@ piuparts (0.36) UNRELEASED; urgency=low
   [ Lars Wirzenius ]
   * Removed Lars Wirzenius as uploader.
 
- -- Lars Wirzenius <liw@liw.fi>  Mon, 31 Aug 2009 19:10:05 +0300
+ -- Holger Levsen <holger@debian.org>  Tue, 10 Mar 2009 15:23:59 +0100
 
 piuparts (0.35) unstable; urgency=medium
 
