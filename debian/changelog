@@ -96,7 +96,8 @@ piuparts (0.36) UNRELEASED; urgency=low
     - remove build-dependencies on docbook2x and docbook-xml.
     - suggest python-rpy and gs to improve piuparts-report output.
     - set Homepage: to http://piuparts.debian.org
-    - remove Lucas Nussbaum from uploaders - Thanks for your work, Lucas!
+    - remove Lucas Nussbaum, Ana Guerrero, John Wright and Bill Allombert from
+      uploaders - thanks for your work!
     - Replace Ians email address with one that doesn't give an errorcode when
       sending mail to it
     - bump Standards-Version to 3.8.2, no changes necessary.
