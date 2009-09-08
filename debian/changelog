@@ -100,7 +100,7 @@ piuparts (0.36) UNRELEASED; urgency=low
       uploaders - thanks for your work!
     - Replace Ians email address with one that doesn't give an errorcode when
       sending mail to it
-    - bump Standards-Version to 3.8.2, no changes necessary.
+    - bump Standards-Version to 3.8.3, no changes necessary.
   * Rewrite debian/rules from scratch using debhelper.
   * Merge README, how-to-use-piuparts.txt and custom-scripts.txt into 
     README.txt, convert it to asciidoc and build pdf and html versions of it. 

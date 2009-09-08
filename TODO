@@ -1,12 +1,9 @@
 Things to do for piuparts
 =========================
 
-for 0.36:
+once 0.36 is released:
 
 - svn mv piatti trunk/doc/examples
-- release
-
-once 0.36 is released:
 
 - announcement on d-d-a
 
@@ -58,6 +55,8 @@ for 0.37 and 0.38 (split this list):
 - expire old logs a month after testing if newer logs exists (except if the new log is fail
   and the old is bugged, then the fail log should be moved to bugged first)
 
+- only throw away tarballs (and recreate them) after testing that they can be recreated 
+
 - create emacspeak-broken-dpkg-preconfigure package for broken repo. (then later
   put more broken packages in there and use that for testing piuparts)
 
@@ -107,7 +106,7 @@ for 0.39 and on:
 
 - support for extra-packages-url (for volatile, security, etc)
 
-- not sure if it's a sensible thing to to, but provide a way to turn of debugging
+- not sure if it's a sensible thing to to, but provide a way to turn off debugging
   output for piuparts.py
 
 - piuparts can't currently test postfix, since installing postfix removes
