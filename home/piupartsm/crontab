@@ -1,9 +1,5 @@
 # m h dom mon dow (0|7=sun,1=mon)    command
 
-# 
-# notify about reboots
-#
-@reboot ddate | mail -s "piatti rebooted, please restart the piuparts-slave screen session" piupartss
 #
 # create reports once a day
 #  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
