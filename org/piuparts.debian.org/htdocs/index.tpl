@@ -46,6 +46,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2009-09-16</b>: Reschedule testing for 233 failing packages in sid which were affected by #545949. No packages in squeeze were affected.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2009-06-20</b>: Failed logs are not grouped into (at the moment) seven types of known errors and one type of issues is detected in successful logs.
      </td>
     </tr>
