@@ -46,6 +46,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2009-09-18</b>: Reschedule testing for 17170 (successfully tested) packages in sid, to make sure they still install fine with dependency based booting enabled now in sid. Throwing away 42806 (successful) logfiles from those packages :-)
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2009-09-16</b>: Reschedule testing for 233 failing packages in sid which were affected by #545949. No packages in squeeze were affected.
      </td>
     </tr>
