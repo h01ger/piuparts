@@ -4,7 +4,7 @@ piuparts (0.36) unstable; urgency=low
     debian/changelog carefully.
   * Backwards compatibility of the configuration files for master-slave-mode 
     has been broken, as the three config files got merged into one: 
-    /etc/piuparts/piuparts/piuparts.conf
+    /etc/piuparts/piuparts.conf
   * piuparts-reports has been re-added and improved.
   * The documentation files have been merged and converted to asciidoc.
 

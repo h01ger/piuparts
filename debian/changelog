@@ -2,6 +2,8 @@ piuparts (0.37) UNRELEASED; urgency=low
 
   * piuparts-report.py: report packages failing due to insserv errors.
     (Closes: #546540) 
+  * Fix typo in NEWS.Debian, thanks to Justin Rye for spotting it. 
+    (Closes: #547439)
 
  -- Holger Levsen <holger@debian.org>  Sat, 19 Sep 2009 19:17:03 +0200
 
