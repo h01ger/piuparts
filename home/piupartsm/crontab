@@ -25,6 +25,7 @@
 0  23 * * * /home/piupartsm/bin/detect_archive_issues
 5  23 * * * /home/piupartsm/bin/detect_piuparts_issues
 10 23 * * * /home/piupartsm/bin/report_untestable_packages
+15 23 * * * /home/piupartsm/bin/archive_old_logs
 
 #
 # misc

@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+#
+# parse config file
+#
+
+TEMPFILE=`mktemp`
+egrep "(^sections|^master-directory)" /etc/piuparts/piuparts.conf| sed -e "s# =#=#g" -e "s#= #=#g" -e 's#=#="#' -e 's#$#"#' -e "s#sections#SECTIONS#" -e "s#master-directory#MASTER#" > $TEMPFILE
+source $TEMPFILE
+rm $TEMPFILE
+if [ -z "$MASTER" ] || [ -z "$SECTIONS" ] ; then
+	echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."
+	exit 1
+fi
+
+#
+# archive old log files
+#
+
+# bash has some severe limitations, like no named arrays... :/
+NR=0
+for SECTION in $SECTIONS ; do 
+	mkdir -o $MASTER/$SECTION/archive
+	cd $MASTER/$SECTION
+	for DIR in fail pass bugged ; do
+		cd $DIR
+		for LOG in $( for i in `ls -1 | cut -d "_" -f1|sort -u `; do ls -rt1 $i*|sed '$d' ; done ) ; do
+			[ -z "$LOG" ] || mv $LOG $MASTER/$SECTION/archive/$DIR
+		done
+        done
+	let "NR += 1"
+done
+
