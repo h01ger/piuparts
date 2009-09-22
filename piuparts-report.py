@@ -348,7 +348,7 @@ linktarget_by_template = {
     "unknown_purge_error.tpl": "dpkg --purge failed due to an unknown reason",
     "insserv_error.tpl": "due to a problem with insserv",
     "unknown_failures.tpl": "unclassified failures",
-    "initdscript_lsb_header_issue.tpl": "update-rc.d issue",
+    "initdscript_lsb_header_issue.tpl": "update-rc.d issues",
     "command_not_found_issue.tpl": "but logfile contains 'command not found'",
 }
 
