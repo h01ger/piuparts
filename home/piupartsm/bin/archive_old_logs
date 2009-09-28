@@ -36,7 +36,7 @@ fi
 # bash has some severe limitations, like no named arrays... :/
 NR=0
 for SECTION in $SECTIONS ; do 
-	mkdir -o $MASTER/$SECTION/archive
+	mkdir -p $MASTER/$SECTION/archive
 	cd $MASTER/$SECTION
 	for DIR in fail pass bugged ; do
 		cd $DIR
