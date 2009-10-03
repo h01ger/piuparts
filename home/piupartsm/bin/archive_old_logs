@@ -36,15 +36,15 @@ for SECTION in $SECTIONS ; do
 	mkdir -p $MASTER/$SECTION/archive
 	cd $MASTER/$SECTION
 	for DIR in fail pass bugged ; do
+		cd $DIR
 		LOGS=$( for i in `ls -1 | cut -d "_" -f1|sort -u `; do ls -rt1 $i*|sed '$d' ; done ) 
 		if [ ! -z "$LOGS" ] ; then
 			mkdir -p $MASTER/$SECTION/archive/$DIR
-			cd $DIR
 			for LOG in $LOGS ; do
 				mv $LOG $MASTER/$SECTION/archive/$DIR
 			done
-			cd ..
 		fi
-        done
+       		cd ..
+	done
 done
 
