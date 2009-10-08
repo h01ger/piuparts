@@ -53,7 +53,7 @@ mv screenlog.new screenlog.old 2>/dev/null
 cp $SCREENLOG screenlog.new
 
 # dont complain if just started
-if [ -f screenlog.old ] && [ ! -s screenlog.old ] ; then
+if [ -f screenlog.old ] && [ -s screenlog.old ] ; then
 	diff screenlog.old screenlog.new >/dev/null 2>&1 && {
 		if [ ! -f $LOCKFILE ] ; then
 			{
