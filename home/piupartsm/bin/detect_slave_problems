@@ -48,8 +48,8 @@ cd $MONITORDIR
 chown piupartsm.piuparts $MONITORDIR
 chmod 775 $MONITORDIR
 
-# ~piupartss/bin/slave_run deletes screenlog.old so we know piuparts-slave has just been started 
-mv screenlog.new screenlog.old 2>/dev/null || cp $SCREENLOG screenlog.old
+# ~piupartss/bin/slave_run deletes screenlog* and touches screenlog.new for detecting piuparts-slave has just been started 
+mv screenlog.new screenlog.old 2>/dev/null
 cp $SCREENLOG screenlog.new
 
 # dont complain if just started
