@@ -1,7 +1,7 @@
 piuparts (0.37) UNRELEASED; urgency=low
 
-  * piuparts-report.py: report packages failing due to insserv errors.
-    (Closes: #546540) 
+  * piuparts-report.py: report packages with update-rc.d warnings and those 
+    failing due to insserv errors. (Closes: #546540) 
   * Fix typo in NEWS.Debian, thanks to Justin Rye for spotting it. 
     (Closes: #547439)
 

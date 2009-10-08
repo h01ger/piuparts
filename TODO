@@ -9,8 +9,6 @@ once 0.36 is released:
 
 for 0.37 and 0.38 (split this list):
 
-- piuparts-report mail should include list of failed logs of the day
-
 - PackagesDB: get rid of 50% of unique()
 
 - remove configfile option "mirror" and use the mirror from "packages-url".
@@ -107,7 +105,8 @@ for 0.39 and on:
 - support for extra-packages-url (for volatile, security, etc)
 
 - not sure if it's a sensible thing to to, but provide a way to turn off debugging
-  output for piuparts.py
+  output for piuparts.py - see http://docs.python.org/library/logging.html
+- commandline-switches for all programms 
 
 - piuparts can't currently test postfix, since installing postfix removes
   exim and removing postfix would require re-installing exim, and that
