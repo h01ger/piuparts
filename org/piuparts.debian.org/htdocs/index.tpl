@@ -46,6 +46,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2009-10-08</b>: Reschedule testing for ~2000 failed packages in sid, which failed because of a problem when minimizing the chroot at the beginning of the piuparts tests. As of today, piuparts running on piuparts.debian.org does not minimize the chroots anymore.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2009-09-18</b>: Reschedule testing for 17170 (successfully tested) packages in sid, to make sure they still install fine with dependency based booting enabled now in sid. Throwing away 42806 (successful) logfiles from those packages :-)
      </td>
     </tr>
