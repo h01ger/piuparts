@@ -1,13 +1,15 @@
 Things to do for piuparts
 =========================
 
-once 0.36 is released:
+
+for 0.37 and 0.38 (split this list):
+
+- move logfiles from bugged to archived if a newer version exists in pass
+- move logfiles from fail to bugged if a lower version exists in bugged
 
 - svn mv piatti trunk/doc/examples
 
 - announcement on d-d-a
-
-for 0.37 and 0.38 (split this list):
 
 - PackagesDB: get rid of 50% of unique()
 
