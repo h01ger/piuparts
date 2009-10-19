@@ -244,6 +244,7 @@ class Settings:
             "/var/lib/maxdb(/.*)?",
             "/var/lib/onak(/.*)?",
             "/var/lib/papercut(/.*)?",
+            "/var/lib/insserv/run.*.log",
             "/var/log/exim/.*",
             "/var/log/exim4/.*",
             "/var/mail/.*",

@@ -7,6 +7,7 @@ piuparts (0.37) UNRELEASED; urgency=low
   * piuparts.py: 
     - added to self.ignored_patterns:
       - /var/cache/man(/.*)/index.db (Closes: #550953)
+      - /var/lib/insserv/run.*.log
     - removed from self.ignored_files:
       - /var/cache/man/index.db
 
