@@ -7,6 +7,12 @@ for 0.37 and 0.38 (split this list):
 - move logfiles from bugged to archived if a newer version exists in pass
 - move logfiles from fail to bugged if a lower version exists in bugged
 
+- dont test packages if indirect depends havent been tested successfully. (I think the code is there, but seems to be buggy). 
+
+- So it seems piuparts needs to get fixed to take into account packages
+  being removed due to Conflcits. And probably should purge those
+  packages which got removed, or reinstall them at the end of the run.
+
 - svn mv piatti trunk/doc/examples
 
 - announcement on d-d-a
