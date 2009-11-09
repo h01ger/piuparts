@@ -10,6 +10,8 @@ piuparts (0.37) UNRELEASED; urgency=low
       - /var/lib/insserv/run.*.log
     - removed from self.ignored_files:
       - /var/cache/man/index.db
+  * fix typo in -i option in manpage (Closes: #555202), thanks to James Vega
+    for spotting it.
 
  -- Holger Levsen <holger@debian.org>  Sat, 19 Sep 2009 19:17:03 +0200
 
