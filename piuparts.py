@@ -243,6 +243,7 @@ class Settings:
             "/var/lib/dpkg/triggers/.*",
             "/var/lib/ldap(/.*)?",
             "/var/lib/maxdb(/.*)?",
+            "/var/lib/mercurial-server(/.*)?",
             "/var/lib/onak(/.*)?",
             "/var/lib/papercut(/.*)?",
             "/var/lib/insserv/run.*.log",

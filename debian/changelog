@@ -8,6 +8,7 @@ piuparts (0.37) UNRELEASED; urgency=low
     - added to self.ignored_patterns:
       - /var/cache/man(/.*)/index.db (Closes: #550953)
       - /var/lib/insserv/run.*.log
+      - /var/lib/mercurial-server(/.*)?
     - removed from self.ignored_files:
       - /var/cache/man/index.db
   * fix typo in -i option in manpage (Closes: #555202), thanks to James Vega
