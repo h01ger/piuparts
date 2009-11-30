@@ -6,7 +6,7 @@ piuparts (0.37) UNRELEASED; urgency=low
     (Closes: #547439)
   * piuparts.py: 
     - added to self.ignored_patterns:
-      - /var/cache/man(/.*)/index.db (Closes: #550953)
+      - /var/cache/man(/.*)? (Closes: #550953)
       - /var/lib/insserv/run.*.log
       - /var/lib/mercurial-server(/.*)?
     - removed from self.ignored_files:
