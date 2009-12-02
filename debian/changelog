@@ -13,6 +13,8 @@ piuparts (0.37) UNRELEASED; urgency=low
       - /var/cache/man/index.db
   * fix typo in -i option in manpage (Closes: #555202), thanks to James Vega
     for spotting it.
+  * Make "lucid" the default Ubuntu distribution (Closes: #559047), thanks to
+    Krzysztof Klimonda.
 
  -- Holger Levsen <holger@debian.org>  Sat, 19 Sep 2009 19:17:03 +0200
 
