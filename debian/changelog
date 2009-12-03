@@ -1,4 +1,4 @@
-piuparts (0.37) UNRELEASED; urgency=low
+piuparts (0.37) unstable; urgency=low
 
   * piuparts-report.py: report packages with update-rc.d warnings and those 
     failing due to insserv errors. (Closes: #546540) 
@@ -16,7 +16,7 @@ piuparts (0.37) UNRELEASED; urgency=low
   * Make "lucid" the default Ubuntu distribution (Closes: #559047), thanks to
     Krzysztof Klimonda.
 
- -- Holger Levsen <holger@debian.org>  Sat, 19 Sep 2009 19:17:03 +0200
+ -- Holger Levsen <holger@debian.org>  Thu, 03 Dec 2009 12:50:35 +0100
 
 piuparts (0.36) unstable; urgency=low
 
