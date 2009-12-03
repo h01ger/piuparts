@@ -15,8 +15,10 @@ piuparts (0.37) unstable; urgency=low
     for spotting it.
   * Make "lucid" the default Ubuntu distribution (Closes: #559047), thanks to
     Krzysztof Klimonda.
+  * fix FTBFS by adding "-r /etc/asciidoc" to the a2x call in Makefile, thanks
+    to Michael Vogt. (Closes: #559299)
 
- -- Holger Levsen <holger@debian.org>  Thu, 03 Dec 2009 12:50:35 +0100
+ -- Holger Levsen <holger@debian.org>  Thu, 03 Dec 2009 13:25:43 +0000
 
 piuparts (0.36) unstable; urgency=low
 
