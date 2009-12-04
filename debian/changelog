@@ -1,3 +1,11 @@
+piuparts (0.38) UNRELEASED; urgency=low
+
+  * piuparts.py:
+    - Add support for using LVM snapshots. Thanks to
+      Patrick Schoenfeld for the patch. (Closes: #559449)
+
+ -- Holger Levsen <holger@debian.org>  Fri, 04 Dec 2009 15:55:42 +0100
+
 piuparts (0.37) unstable; urgency=low
 
   * piuparts-report.py: report packages with update-rc.d warnings and those 

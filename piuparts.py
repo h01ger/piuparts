@@ -49,6 +49,7 @@ import sets
 import subprocess
 import unittest
 import urllib
+import uuid
 from debian_bundle import deb822
 
 
@@ -137,6 +138,7 @@ class Settings:
         self.debian_distros = []
         self.bindmounts = []
         self.basetgz = None
+        self.lvm_volume = None
         self.savetgz = None
         self.endmeta = None
         self.saveendmeta = None
@@ -554,6 +556,8 @@ class Chroot:
 
         if settings.basetgz:
             self.unpack_from_tgz(settings.basetgz)
+        elif settings.lvm_volume:
+            self.setup_from_lvm(settings.lvm_volume)
         else:
             self.setup_minimal_chroot()
 
@@ -585,6 +589,10 @@ class Chroot:
         if not settings.keep_tmpdir and os.path.exists(self.name):
             self.unmount_proc()
             self.unmount_selinux()
+            if settings.lvm_volume:
+                logging.debug('Unmounting and removing LVM snapshot %s' % self.lvm_snapshot_name)
+                run(['umount', self.name])
+                run(['lvremove', '-f', self.lvm_snapshot])
             shutil.rmtree(self.name)
             logging.debug("Removed directory tree at %s" % self.name)
         elif settings.keep_tmpdir:
@@ -607,6 +615,18 @@ class Chroot:
         """Unpack a tarball to a chroot."""
         logging.debug("Unpacking %s into %s" % (tarball, self.name))
         run(["tar", "-C", self.name, "-zxf", tarball])
+
+    def setup_from_lvm(self, lvm_volume):
+        """Create a chroot by creating an LVM snapshot."""
+        self.lvm_base = os.path.dirname(lvm_volume)
+        self.lvm_vol_name = os.path.basename(lvm_volume)
+        self.lvm_snapshot_name = self.lvm_vol_name + "-" + str(uuid.uuid1());
+        self.lvm_snapshot = os.path.join(self.lvm_base, self.lvm_snapshot_name)
+
+        logging.debug("Creating LVM snapshot %s from %s" % (self.lvm_snapshot, lvm_volume))
+        run(['lvcreate', '-n', self.lvm_snapshot, '-s', lvm_volume, '-L', settings.lvm_snapshot_size])
+        logging.info("Mounting LVM snapshot to %s" % self.name); 
+        run(['mount', self.lvm_snapshot, self.name])
 
     def run(self, command, ignore_errors=False):
         return run(["chroot", self.name] + command,
@@ -1712,7 +1732,6 @@ def forget_ignores(option, opt, value, parser, *args, **kwargs):
 def set_basetgz_to_pbuilder(option, opt, value, parser, *args, **kwargs):
     parser.values.basetgz = "/var/cache/pbuilder/base.tgz"
 
-
 def parse_command_line():
     """Parse the command line, change global settings, return non-options."""
     
@@ -1731,7 +1750,16 @@ def parse_command_line():
                       help="Use TARBALL as the contents of the initial " +
                            "chroot, instead of building a new one with " +
                            "debootstrap.")
-    
+
+    parser.add_option("--lvm-volume", metavar="LVM-VOL", action="store",
+                      help="Use LVM-VOL as source for the chroot, instead of building " +
+                           "a new one with debootstrap. This creates a snapshot of the " +
+                           "given LVM volume and mounts it to the chroot path")
+
+    parser.add_option("--lvm-snapshot-size", metavar="SNAPSHOT-SIZE", action="store",
+                      default="1G", help="Use SNAPSHOT-SIZE as snapshot size when creating " +
+                      "a new LVM snapshot (default: 1G)")
+
     parser.add_option("-B", "--end-meta", metavar="FILE",
                       help="XXX")
     
@@ -1854,6 +1882,8 @@ def parse_command_line():
     settings.defaults = opts.defaults
     settings.args_are_package_files = not opts.apt
     settings.basetgz = opts.basetgz
+    settings.lvm_volume = opts.lvm_volume
+    settings.lvm_snapshot_size = opts.lvm_snapshot_size
     settings.bindmounts += opts.bindmount
     settings.debian_distros = opts.distribution
     settings.ignored_files += opts.ignore

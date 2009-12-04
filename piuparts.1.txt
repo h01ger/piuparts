@@ -47,6 +47,15 @@ Options must come before the other command line arguments.
 +
 The tarball can be created with the '-s' option, or you can use one that *pbuilder* has created (see '-p'). If you create one manually, make sure the root of the chroot is the root of the tarball.
 
+*--lvm-volume*='lvm-volume'::
+  Use the specified lvm-volume as source for the chroot, instead of building a
+  new one with debootstrap. This creates a snapshot of the given LVM volume and
+  mounts it to the chroot path.
+
+*--lvm-snapshot-size*='snapshot-size'::
+  Use the specified snapshot-size as snapshot size when creating a new LVM
+  snapshot (default: 1G)
+
 *-d* 'name', *--distribution*='name'::
   Which Debian distribution to use: a code name (etch, lenny, sid) or experimental. The default is sid (i.e, unstable).
 
