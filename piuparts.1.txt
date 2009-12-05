@@ -115,6 +115,9 @@ Note that file: addresses works if the directories are made accessible from with
 *-N, --no-symlinks*::
   Don't check for broken symlinks.
 
+*-W, --warn-symlinks*::
+  Check for broken symlinks, but warn only if found.
+
 *-p, --pbuilder*::
   Use _/var/cache/pbuilder/base.tgz_ as the base tarball. This is a shorthand so that you don't need to use '-b' for it.
 

@@ -149,7 +149,8 @@ class Settings:
         self.no_upgrade_test = False
         self.skip_cronfiles_test = False
         self.check_broken_symlinks = True
-	self.debfoster_options = None
+        self.warn_broken_symlinks = False
+        self.debfoster_options = None
         self.ignored_files = [
             "/dev/MAKEDEV",
             "/etc/aliases",
@@ -573,7 +574,7 @@ class Chroot:
         if settings.scriptsdir is not None:
             dest = self.relative("tmp/scripts/")
             if not os.path.exists(self.relative("tmp/scripts/")):
-              os.mkdir(dest)
+                os.mkdir(dest)
             logging.debug("Copying scriptsdir to %s" % dest)
             for file in os.listdir(settings.scriptsdir):
                 if (file.startswith("post_") or file.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), file)):
@@ -963,9 +964,13 @@ class Chroot:
                         target = "<unknown>"
                     broken.append("%s -> %s" % (name, target))
         if broken:
-            logging.error("FAIL: Broken symlinks:\n%s" % 
-                          indent_string("\n".join(broken)))
-	    panic()
+            if settings.warn_broken_symlinks:
+                logging.error("WARN: Broken symlinks:\n%s" %
+                              indent_string("\n".join(broken)))
+            else:
+                logging.error("FAIL: Broken symlinks:\n%s" %
+                              indent_string("\n".join(broken)))
+                panic()
         else:
             logging.debug("No broken symlinks as far as we can find.")
 	    
@@ -1872,6 +1877,10 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="No meaning anymore.")
 
+    parser.add_option("-W", "--warn-symlinks", action="store_true",
+                      default=False,
+                      help="Warn only for broken symlinks.")
+
     parser.add_option("--debfoster-options",
                       default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
 		      help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
@@ -1902,6 +1911,7 @@ def parse_command_line():
     settings.debian_mirrors = [parse_mirror_spec(x, defaults.get_components())
                                for x in opts.mirror]
     settings.check_broken_symlinks = not opts.no_symlinks
+    settings.warn_broken_symlinks = opts.warn_symlinks
     settings.savetgz = opts.save
     settings.warn_on_others = opts.warn_on_others
     settings.debfoster_options = opts.debfoster_options.split()
