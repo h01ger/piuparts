@@ -350,6 +350,7 @@ linktarget_by_template = {
     "unknown_failures.tpl": "unclassified failures",
     "initdscript_lsb_header_issue.tpl": "update-rc.d issues",
     "command_not_found_issue.tpl": "but logfile contains 'command not found'",
+    "broken_symlinks_issue.tpl": "logfile contains 'broken symlinks'",
 }
 
 
