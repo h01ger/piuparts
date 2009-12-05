@@ -5,6 +5,7 @@ piuparts (0.38) UNRELEASED; urgency=low
       Patrick Schoenfeld for the patch. (Closes: #559449)
     - Add support for warning on broken symlinks. Thanks to Carl Chenet for
       the patch. (Closes: #440151)  
+  * piuparts-report: report broken symlinks.
   * Makefile: workaround 559305 by calling a2x twice.  
 
  -- Holger Levsen <holger@debian.org>  Fri, 04 Dec 2009 15:55:42 +0100
