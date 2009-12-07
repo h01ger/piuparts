@@ -6,8 +6,15 @@ piuparts (0.38) UNRELEASED; urgency=low
     - Add support for warning on broken symlinks. Thanks to Carl Chenet for
       the patch. (Closes: #440151)  
     - Make --help usuable without needing to be run as root. (Closes: #547379)
+    - --skip-minimize is now the default. This is because debootstrap is called
+      with --variant=minbase instead of --resolv-deps now and because if a 
+      base.tgz or an lvm snapshot is specified, piuparts should not touch it.
+      (Closes: #539142)
+    * TODO: decide whether to add a --minimize option or to remove the
+      debfoster code. 
   * piuparts-report: report broken symlinks.
   * Makefile: workaround 559305 by calling a2x twice.   
+  * debian/NEWS
 
  -- Holger Levsen <holger@debian.org>  Fri, 04 Dec 2009 15:55:42 +0100
 

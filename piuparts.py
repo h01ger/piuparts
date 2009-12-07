@@ -144,7 +144,7 @@ class Settings:
         self.saveendmeta = None
         self.warn_on_others = False
         self.keep_sources_list = False
-        self.skip_minimize = False
+        self.skip_minimize = True
         self.list_installed_files = False
         self.no_upgrade_test = False
         self.skip_cronfiles_test = False
@@ -661,7 +661,7 @@ class Chroot:
         """Set up a minimal Debian system in a chroot."""
         logging.debug("Setting up minimal chroot for %s at %s." % 
               (settings.debian_distros[0], self.name))
-        run(["debootstrap", "--resolve-deps", settings.debian_distros[0], 
+        run(["debootstrap", "--variant=minbase", settings.debian_distros[0], 
              self.name, settings.debian_mirrors[0][0]])
 
     def minimize(self):
@@ -1812,7 +1812,7 @@ def parse_command_line():
                            "at a time.")
 			   
     parser.add_option("--skip-minimize", 
-                      action="store_true", default=False,
+                      action="store_true", default=True,
                       help="Skip minimize chroot step.")
     
     parser.add_option("--list-installed-files", 
