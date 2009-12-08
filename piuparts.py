@@ -1743,27 +1743,20 @@ def parse_command_line():
     parser = optparse.OptionParser(usage="%prog [options] package ...",
                                    version="piuparts %s" % VERSION)
     
-    parser.add_option("-D", "--defaults", action="store",
-                      help="Choose which set of defaults to use "
-                           "(debian/ubuntu).")
-    
+   
     parser.add_option("-a", "--apt", action="store_true", default=False,
                       help="Command line arguments are package names " +
                            "to be installed via apt.")
+
+    parser.add_option("--adt-virt",
+                      metavar='CMDLINE', default=None,
+                      help="Use CMDLINE via autopkgtest (adt-virt-*)"
+                           " protocol instead of managing a chroot.")
     
     parser.add_option("-b", "--basetgz", metavar="TARBALL",
                       help="Use TARBALL as the contents of the initial " +
                            "chroot, instead of building a new one with " +
                            "debootstrap.")
-
-    parser.add_option("--lvm-volume", metavar="LVM-VOL", action="store",
-                      help="Use LVM-VOL as source for the chroot, instead of building " +
-                           "a new one with debootstrap. This creates a snapshot of the " +
-                           "given LVM volume and mounts it to the chroot path")
-
-    parser.add_option("--lvm-snapshot-size", metavar="SNAPSHOT-SIZE", action="store",
-                      default="1G", help="Use SNAPSHOT-SIZE as snapshot size when creating " +
-                      "a new LVM snapshot (default: 1G)")
 
     parser.add_option("-B", "--end-meta", metavar="FILE",
                       help="XXX")
@@ -1776,6 +1769,14 @@ def parse_command_line():
                       help="Which Debian distribution to use: a code name " +
                            "(etch, lenny, sid) or experimental. The " +
                            "default is sid (i.e., unstable).")
+
+    parser.add_option("-D", "--defaults", action="store",
+                      help="Choose which set of defaults to use "
+                           "(debian/ubuntu).")
+ 
+    parser.add_option("--debfoster-options",
+                      default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
+		      help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
     
     parser.add_option("-i", "--ignore", action="append", metavar="FILENAME",
                       default=[],
@@ -1798,43 +1799,24 @@ def parse_command_line():
                       help="Don't modify the chroot's " +
                            "etc/apt/sources.list (only makes sense " +
                            "with --basetgz).")
-    
-    parser.add_option("--warn-on-others",
-                      action="store_true", default=False,
-                      help="Print a warning rather than failing if "
-                           "files are left behind, modified, or removed "
-                           "by a package that was not given on the "
-                           "command-line.  Behavior with multple packages "
-                           "given could be problematic, particularly if the "
-                           "dependency tree of one package in the list "
-                           "includes another in the list.  Therefore, it is "
-                           "recommended to use this option with one package "
-                           "at a time.")
-			   
-    parser.add_option("--skip-minimize", 
-                      action="store_true", default=True,
-                      help="Skip minimize chroot step.")
-    
+
+    parser.add_option("-l", "--log-file", metavar="FILENAME",
+                      help="Write log file to FILENAME in addition to " +
+                           "the standard output.")
+
     parser.add_option("--list-installed-files", 
                       action="store_true", default=False,
                       help="List files added to the chroot after the " +
 		      "installation of the package.")
-    
-    parser.add_option("--no-upgrade-test", 
-                      action="store_true", default=False,
-                      help="Skip testing the upgrade from an existing version " +
-		      "in the archive.")
 
-    parser.add_option("--skip-cronfiles-test", 
-                      action="store_true", default=False,
-                      help="Skip testing the output from the cron files.")
+    parser.add_option("--lvm-volume", metavar="LVM-VOL", action="store",
+                      help="Use LVM-VOL as source for the chroot, instead of building " +
+                           "a new one with debootstrap. This creates a snapshot of the " +
+                           "given LVM volume and mounts it to the chroot path")
 
-    parser.add_option("--scriptsdir", metavar="DIR",
-                      help="Directory where are placed the custom scripts.")
-    
-    parser.add_option("-l", "--log-file", metavar="FILENAME",
-                      help="Write log file to FILENAME in addition to " +
-                           "the standard output.")
+    parser.add_option("--lvm-snapshot-size", metavar="SNAPSHOT-SIZE", action="store",
+                      default="1G", help="Use SNAPSHOT-SIZE as snapshot size when creating " +
+                      "a new LVM snapshot (default: 1G)")
     
     parser.add_option("-m", "--mirror", action="append", metavar="URL",
                       default=[],
@@ -1848,43 +1830,62 @@ def parse_command_line():
     parser.add_option("-N", "--no-symlinks", action="store_true",
                       default=False,
                       help="Don't check for broken symlinks.")
+
+    parser.add_option("--no-upgrade-test", 
+                      action="store_true", default=False,
+                      help="Skip testing the upgrade from an existing version " +
+		      "in the archive.")
     
     parser.add_option("-p", "--pbuilder", action="callback",
                       callback=set_basetgz_to_pbuilder,
                       help="Use /var/cache/pbuilder/base.tgz as the base " +
                            "tarball.")
-    
-    parser.add_option('', "--adt-virt",
-                      metavar='CMDLINE', default=None,
-                      help="Use CMDLINE via autopkgtest (adt-virt-*)"
-                           " protocol instead of managing a chroot.")
-    
+ 
     parser.add_option("-s", "--save", metavar="FILENAME",
                       help="Save the chroot into FILENAME.")
 
     parser.add_option("-S", "--save-end-meta", metavar="FILE",
                       help="XXX")
 
-    parser.add_option("-t", "--tmpdir", metavar="DIR",
-                      help="Use DIR for temporary storage. Default is " +
-                           "$TMPDIR or /tmp.")
-
     parser.add_option("--single-changes-list", default=False,
                       action="store_true",
                       help="test all packages from all changes files together.")
+
+    parser.add_option("--skip-cronfiles-test", 
+                      action="store_true", default=False,
+                      help="Skip testing the output from the cron files.")
+		   
+    parser.add_option("--skip-minimize", 
+                      action="store_true", default=True,
+                      help="Skip minimize chroot step.")
+
+    parser.add_option("--scriptsdir", metavar="DIR",
+                      help="Directory where are placed the custom scripts.")
+   
+    
+    parser.add_option("-t", "--tmpdir", metavar="DIR",
+                      help="Use DIR for temporary storage. Default is " +
+                           "$TMPDIR or /tmp.")
 
     parser.add_option("-v", "--verbose", 
                       action="store_true", default=False,
                       help="No meaning anymore.")
 
+    parser.add_option("--warn-on-others",
+                      action="store_true", default=False,
+                      help="Print a warning rather than failing if "
+                           "files are left behind, modified, or removed "
+                           "by a package that was not given on the "
+                           "command-line.  Behavior with multple packages "
+                           "given could be problematic, particularly if the "
+                           "dependency tree of one package in the list "
+                           "includes another in the list.  Therefore, it is "
+                           "recommended to use this option with one package "
+                           "at a time.")
+
     parser.add_option("-W", "--warn-symlinks", action="store_true",
                       default=False,
                       help="Warn only for broken symlinks.")
-
-    parser.add_option("--debfoster-options",
-                      default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
-		      help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
-
     
     (opts, args) = parser.parse_args()
 
