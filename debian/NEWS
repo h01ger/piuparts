@@ -1,8 +1,12 @@
 piuparts (0.38) UNRELEASED; urgency=low
 
-  * --skip-minimize is now the default. This is because debootstrap is called
-    with --variant=minbase instead of --resolv-deps now and because if a 
-    base.tgz or an lvm snapshot is specified, piuparts should not touch it.
+  * New default behaviours in piuparts:
+   * --skip-minimize is now the default. This is because debootstrap is called
+     with --variant=minbase instead of --resolv-deps now and because if a 
+     base.tgz or an lvm snapshot is specified, piuparts should not touch it.
+   * Add two new options: --keyring to specify the keyring to use with
+     debootstrap (defaults to /usr/share/keyrings/debian-archive-keyring.gpg)
+     and --do-not-verify-signatures to not use --keyring with debootstrap.
 
  -- Holger Levsen <holger@debian.org>  Mon, 07 Dec 2009 19:18:07 +0100
 

@@ -11,7 +11,11 @@ piuparts (0.38) UNRELEASED; urgency=low
       base.tgz or an lvm snapshot is specified, piuparts should not touch it.
       (Closes: #539142)
     * TODO: decide whether to add a --minimize option or to remove the
-      debfoster code. 
+      debfoster code.
+    * Add two new options: --keyring to specify the keyring to use with
+      debootstrap (defaults to /usr/share/keyrings/debian-archive-keyring.gpg)
+      and --do-not-verify-signatures to not use --keyring with debootstrap.
+      (Closes: #545907)
   * piuparts-report: report broken symlinks.
   * Makefile: workaround 559305 by calling a2x twice.   
   * debian/NEWS

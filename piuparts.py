@@ -151,6 +151,8 @@ class Settings:
         self.check_broken_symlinks = True
         self.warn_broken_symlinks = False
         self.debfoster_options = None
+        self.keyring = "/usr/share/keyrings/debian-archive-keyring.gpg"
+        self.do_not_verify_signatures = False
         self.ignored_files = [
             "/dev/MAKEDEV",
             "/etc/aliases",
@@ -661,7 +663,9 @@ class Chroot:
         """Set up a minimal Debian system in a chroot."""
         logging.debug("Setting up minimal chroot for %s at %s." % 
               (settings.debian_distros[0], self.name))
-        run(["debootstrap", "--variant=minbase", settings.debian_distros[0], 
+        if settings.do_not_verify_signatures:
+          logging.info("Warning: not using --keyring option when running debootstrap!")
+        run(["debootstrap", "--variant=minbase", settings.keyringoption, settings.debian_distros[0], 
              self.name, settings.debian_mirrors[0][0]])
 
     def minimize(self):
@@ -1778,6 +1782,10 @@ def parse_command_line():
                       default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
 		      help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
     
+    parser.add_option("--do-not-verify-signatures",
+                      action="store_true", default=False,
+                      help="Do not verify signatures from the Release files when running debootstrap.")
+
     parser.add_option("-i", "--ignore", action="append", metavar="FILENAME",
                       default=[],
                       help="Add FILENAME to list of filenames to be " +
@@ -1793,6 +1801,10 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Don't remove the temporary directory for the " +
                            "chroot when the program ends.")
+
+    parser.add_option("-K", "--keyring", metavar="FILE",  
+                      action="store_true",
+                      help="Use FILE as the keyring to use with debootstrap when creating chroots.")
     
     parser.add_option("--keep-sources-list", 
                       action="store_true", default=False,
@@ -1905,6 +1917,13 @@ def parse_command_line():
     settings.list_installed_files = opts.list_installed_files
     settings.no_upgrade_test = opts.no_upgrade_test
     settings.skip_cronfiles_test = opts.skip_cronfiles_test
+    settings.keyring = opts.keyring
+    settings.do_not_verify_signatures = opts.do_not_verify_signatures
+    if settings.do_not_verify_signatures:
+      settings.keyringoption=""
+    else:
+      settings.keyringoption="--keyring %s" % settings.keyring
+    
     log_file_name = opts.log_file
 
     defaults = DefaultsFactory().new_defaults()

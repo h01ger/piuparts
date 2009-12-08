@@ -42,7 +42,7 @@ Options must come before the other command line arguments.
 *-a, --apt*::
   The package arguments on the command line are to be treated as package names and installed via *apt-get* instead  of  being  names  of  package  files, to be installed via *dpkg -i*.
 
-*-b tarball, --basetgz*='tarball'::
+*-b* tarball, *--basetgz*='tarball'::
   Use tarball as the contents of the initial chroot, instead of building a new one with debootstrap.
 +
 The tarball can be created with the '-s' option, or you can use one that *pbuilder* has created (see '-p'). If you create one manually, make sure the root of the chroot is the root of the tarball.
@@ -62,6 +62,9 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *-D* 'flavor', *--defaults* 'flavor'::
   Use default settings suitable for a particular flavor of Debian: either debian or ubuntu.
 
+*--do-not-verify-signatures*::
+  Do not verify signatures from the Release files when running debootstrap.
+
 *-i* 'filename', *--ignore*='filename'::
   Add a filename to the list of filenames to be ignored when comparing changes before and after installation. By default, piuparts ignores files that always change during a package installation and uninstallation, such as *dpkg* status files. The filename should be relative to the root of the chroot (e.g., _var/lib/dpkg/status_). This option can be used as many times as necessary.
 
@@ -70,6 +73,9 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 
 *-k, --keep-tmpdir*::
   Don't remove the temporary directory for the chroot when the program ends.
+
+*-K, --keyring*='filename'::
+ Use FILE as the keyring to use with debootstrap when creating chroots.
 
 *--keep-sources-list*::
   Don't modify the chroot's etc/apt/sources.list (only makes sense with '--basetgz').
