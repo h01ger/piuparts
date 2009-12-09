@@ -62,7 +62,7 @@ class Config(piupartslib.conf.Config):
             {
                 "sections": "slave",
                 "slave-directory": section,
-                "idle-sleep": "10",
+                "idle-sleep": "300",
                 "master-host": None,
                 "master-user": None,
                 "master-directory": ".",
@@ -281,10 +281,7 @@ class Section:
 
         self._slave.close()
 
-        if not self._slave.get_reserved():
-            logging.info("Nothing to do, sleeping for a bit")
-            time.sleep(int(self._idle_sleep))
-        else:
+        if self._slave.get_reserved():
             packages_files = {}
             if self._config["upgrade-test-distros"]:
                 distros = [self._config["distro"]] + self._config["upgrade-test-distros"].split()
@@ -449,6 +446,13 @@ def main():
     while True:
         for section in sections:
             section.run()
+        idle = True
+        for section_name in section_names:
+          if os.listdir(os.path.join(global_config["master-directory"],section_name,"reserved")):
+            idle = False
+        if idle:
+          logging.info("Nothing to do, sleeping for a bit")
+          time.sleep(int(self._idle_sleep))
 
 
 if __name__ == "__main__":

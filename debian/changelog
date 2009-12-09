@@ -21,9 +21,12 @@ piuparts (0.38) UNRELEASED; urgency=low
     * Create policy-rc.d in 2nd chroot when using -b. (Closes: #466049)
       Thanks again to Patrick Schoenfeld for his help.
   * piuparts-report: report broken symlinks.
-  * piuparts-slave: gracefully deal with upgrade-test-distros and 
-    upgrade-test-chroot-tgz not being set in the configuration. Thanks to Carl
-    Chenet and Patrick Schoenfeld for the patch. (Closes: #519192)
+  * piuparts-slave: 
+    - gracefully deal with upgrade-test-distros and upgrade-test-chroot-tgz 
+      not being set in the configuration. Thanks to Carl Chenet and Patrick 
+      Schoenfeld for the patch. (Closes: #519192)
+    - new default value for idle-sleep, 300 instead of 10 seconds. Also the
+      slave will now only sleep if there is nothing to do for any section.
   * Makefile: workaround 559305 by calling a2x twice.   
   * Update debian/NEWS.
 

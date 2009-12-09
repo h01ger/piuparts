@@ -10,7 +10,7 @@ site25 = $(libdir)/python2.5/site-packages
 etcdir = $(prefix)/etc
 distribution=${shell dpkg-parsechangelog | sed -n 's/^Distribution: *//p'}
 ifeq ($(distribution),UNRELEASED)
-version=${shell echo "`dpkg-parsechangelog | sed -n 's/^Version: *//p'`~`date +%Y%m%d`"}
+version=${shell echo "`dpkg-parsechangelog | sed -n 's/^Version: *//p'`~`date +%Y%m%d%H%M`"}
 else
 version=${shell dpkg-parsechangelog | sed -n 's/^Version: *//p'}
 endif
