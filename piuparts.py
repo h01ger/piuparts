@@ -151,7 +151,6 @@ class Settings:
         self.check_broken_symlinks = True
         self.warn_broken_symlinks = False
         self.debfoster_options = None
-        self.keyring = "/usr/share/keyrings/debian-archive-keyring.gpg"
         self.do_not_verify_signatures = False
         self.ignored_files = [
             "/dev/MAKEDEV",
@@ -647,10 +646,10 @@ class Chroot:
     def create_apt_conf(self):
         """Create /etc/apt/apt.conf inside the chroot."""
         create_file(self.relative("etc/apt/apt.conf"),
-                    'APT::Get::AllowUnauthenticated "%s";\n' + 
+                    'APT::Get::AllowUnauthenticated "%s";\n' % settings.apt_unauthenticated + 
                     'APT::Get::Assume-Yes "yes";\n' +
                     'APT::Install-Recommends "0";\n' +
-                    'APT::Install-Suggests "0";\n' % settings.apt_unauthenticated)
+                    'APT::Install-Suggests "0";\n')
 
     def create_policy_rc_d(self):
         """Create a policy-rc.d that prevents daemons from running."""
@@ -1782,8 +1781,7 @@ def parse_command_line():
                       default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
 		      help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
     
-    parser.add_option("--do-not-verify-signatures",
-                      action="store_true", default=False,
+    parser.add_option("--do-not-verify-signatures", default=False,
                       help="Do not verify signatures from the Release files when running debootstrap.")
 
     parser.add_option("-i", "--ignore", action="append", metavar="FILENAME",
@@ -1803,7 +1801,7 @@ def parse_command_line():
                            "chroot when the program ends.")
 
     parser.add_option("-K", "--keyring", metavar="FILE",  
-                      action="store_true",
+                      default = "/usr/share/keyrings/debian-archive-keyring.gpg", 
                       help="Use FILE as the keyring to use with debootstrap when creating chroots.")
     
     parser.add_option("--keep-sources-list", 
@@ -1873,7 +1871,6 @@ def parse_command_line():
 
     parser.add_option("--scriptsdir", metavar="DIR",
                       help="Directory where are placed the custom scripts.")
-   
     
     parser.add_option("-t", "--tmpdir", metavar="DIR",
                       help="Use DIR for temporary storage. Default is " +
@@ -1923,7 +1920,7 @@ def parse_command_line():
       settings.keyringoption=""
       settings.apt_unauthenticated="Yes"
     else:
-      settings.keyringoption="--keyring %s" % settings.keyring
+      settings.keyringoption="--keyring=%s" % settings.keyring
       settings.apt_unauthenticated="No"
     
     log_file_name = opts.log_file

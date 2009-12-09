@@ -231,10 +231,10 @@ class Section:
 
         oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
-        
+
         if not os.path.exists(self._config["chroot-tgz"]):
             create_chroot(self._config, self._config["chroot-tgz"], self._config["distro"])
-    
+
         if (self._config["upgrade-test-distros"] and self._config["upgrade-test-chroot-tgz"]
             and not os.path.exists(self._config["upgrade-test-chroot-tgz"])):
             create_chroot(self._config, self._config["upgrade-test-chroot-tgz"], 
