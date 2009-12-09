@@ -235,8 +235,8 @@ class Section:
         if not os.path.exists(self._config["chroot-tgz"]):
             create_chroot(self._config, self._config["chroot-tgz"], self._config["distro"])
     
-        if (self._config["upgrade-test-distros"] and not
-            os.path.exists(self._config["upgrade-test-chroot-tgz"])):
+        if (self._config["upgrade-test-distros"] and self._config["upgrade-test-chroot-tgz"]
+            and not os.path.exists(self._config["upgrade-test-chroot-tgz"])):
             create_chroot(self._config, self._config["upgrade-test-chroot-tgz"], 
                         self._config["upgrade-test-distros"].split()[0])
     
@@ -286,7 +286,11 @@ class Section:
             time.sleep(int(self._idle_sleep))
         else:
             packages_files = {}
-            distros = [self._config["distro"]] + self._config["upgrade-test-distros"].split()
+            if self._config["upgrade-test-distros"]:
+                distros = [self._config["distro"]] + self._config["upgrade-test-distros"].split()
+            else:
+                distros = [config["distro"]]
+
             for distro in distros:
                 if distro not in packages_files:
                     packages_files[distro] = fetch_packages_file(self._config, distro)
@@ -314,14 +318,17 @@ def log_name(package, version):
 
 
 def upgrade_testable(config, package, packages_files):
-    distros = config["upgrade-test-distros"].split()
-    if not distros:
-        return False
-    for distro in distros:
-        if not package["Package"] in packages_files[distro]:
+    if config["upgrade-test-distros"]:
+        distros = config["upgrade-test-distros"].split()
+        if not distros:
             return False
-    return True
 
+        for distro in distros:
+            if not package["Package"] in packages_files[distro]:
+                return False
+        return True
+    else:
+        return False
 
 def test_package(config, package, packages_files):
     logging.info("Testing package %s/%s %s" % (config.section, package["Package"], package["Version"]))
