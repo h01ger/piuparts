@@ -46,6 +46,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2009-12-09</b>: Reschedule testing for 14287 successfully tested packages in sid, those in squeeze will be rescheduled once all testable package in sid have been tested again. This is because piuparts now creates and maintains chroots securily (using gpg signed Release files for both debootstrap and apt-get) and because it warns if broken symlinks are found in a package. 
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2009-12-05</b>: Reschedule testing for ~400 failed packages in sid and ~600 in squeeze, to be followed by a rescheduling of all successful packages. This is because piuparts now warns if broken symlinks are found in a package. 
      </td>
     </tr>
