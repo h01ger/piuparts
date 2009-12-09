@@ -647,10 +647,10 @@ class Chroot:
     def create_apt_conf(self):
         """Create /etc/apt/apt.conf inside the chroot."""
         create_file(self.relative("etc/apt/apt.conf"),
-                    'APT::Get::AllowUnauthenticated "yes";\n' + 
+                    'APT::Get::AllowUnauthenticated "%s";\n' + 
                     'APT::Get::Assume-Yes "yes";\n' +
                     'APT::Install-Recommends "0";\n' +
-                    'APT::Install-Suggests "0";\n')
+                    'APT::Install-Suggests "0";\n' % settings.apt_unauthenticated)
 
     def create_policy_rc_d(self):
         """Create a policy-rc.d that prevents daemons from running."""
@@ -1921,8 +1921,10 @@ def parse_command_line():
     settings.do_not_verify_signatures = opts.do_not_verify_signatures
     if settings.do_not_verify_signatures:
       settings.keyringoption=""
+      settings.apt_unauthenticated="Yes"
     else:
       settings.keyringoption="--keyring %s" % settings.keyring
+      settings.apt_unauthenticated="No"
     
     log_file_name = opts.log_file
 

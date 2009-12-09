@@ -186,9 +186,9 @@ SEE ALSO
 
 AUTHOR
 ------
-Lars Wirzenius (liw@iki.fi)
+Lars Wirzenius (liw@iki.fi) and others
 
 DATE
 ----
-2005-07-10
+2009-12-08
 

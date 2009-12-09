@@ -2,7 +2,7 @@ Things to do for piuparts
 =========================
 
 
-for 0.37 and 0.38 (split this list):
+for 0.38 and later (split this list):
 
 - move logfiles from bugged to archived if a newer version exists in pass
 - move logfiles from fail to bugged if a lower version exists in bugged
@@ -82,7 +82,7 @@ for 0.37 and 0.38 (split this list):
   and not be included in the python source
 
 - write reportbug wrapper for mass bug filing (start simple, make it more sophisticated 
-  in 0.38)
+  later)
 
 - publish FAI classes to setup piuparts.$fqdn automatically 
 
@@ -92,7 +92,6 @@ for 0.37 and 0.38 (split this list):
 
 - a redirect of http://piuparts.d.o/foo to http://p.d.o/source/f/foo.html would be nice
 
-- release 0.37 before debconf9
 
 for 0.39 and on:
 
