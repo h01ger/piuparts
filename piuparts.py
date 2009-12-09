@@ -1670,9 +1670,8 @@ def install_and_upgrade_between_distros(filenames, packages):
         chroot.remove()
         dont_do_on_panic(id)
         chroot = get_chroot()
-        chroot.create_temp_dir()
+        chroot.create()
         id = do_on_panic(chroot.remove)
-        chroot.unpack_from_tgz(root_tgz)
 
     chroot.check_for_no_processes()
     

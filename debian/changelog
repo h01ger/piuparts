@@ -18,12 +18,14 @@ piuparts (0.38) UNRELEASED; urgency=low
       (Closes: #545907)
       In the chroots, APT::Get::AllowUnauthenticated is set accordingly in
       /etc/apt/apt.conf.
+    * Create policy-rc.d in 2nd chroot when using -b. (Closes: #466049)
+      Thanks again to Patrick Schoenfeld for his help.
   * piuparts-report: report broken symlinks.
   * piuparts-slave: gracefully deal with upgrade-test-distros and 
     upgrade-test-chroot-tgz not being set in the configuration. Thanks to Carl
     Chenet and Patrick Schoenfeld for the patch. (Closes: #519192)
   * Makefile: workaround 559305 by calling a2x twice.   
-  * debian/NEWS
+  * Update debian/NEWS.
 
  -- Holger Levsen <holger@debian.org>  Fri, 04 Dec 2009 15:55:42 +0100
 
