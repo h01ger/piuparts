@@ -113,6 +113,11 @@ HTML_HEADER = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
+      <a href="http://svn.debian.org/viewsvn/piuparts/piatti/org/piuparts.debian.org/etc/piuparts.conf.piatti" target="_blank">piuparts.d.o configuration</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
       <a href="http://www.debian.org/doc/debian-policy/" target="_blank">Debian policy</a>
      </td>
     </tr>
