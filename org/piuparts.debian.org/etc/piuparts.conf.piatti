@@ -1,5 +1,7 @@
 #
-# This is the configuration file for piuparts running in master-slave mode.
+# This is the configuration file for piuparts running in master-slave mode on piatti.debian.org
+# 
+# For more information on this setup see http://svn.debian.org/viewsvn/piuparts/piatti/README.txt
 #
 #
 
@@ -9,7 +11,7 @@ master-host = localhost
 master-user = piupartsm
 master-directory = /org/piuparts.debian.org/master/
 output-directory = /org/piuparts.debian.org/htdocs/
-idle-sleep = 1000
+idle-sleep = 1800
 
 [sid]
 description = Debian sid / main, installation and removal tests
