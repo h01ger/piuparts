@@ -130,6 +130,11 @@ piuparts: '--scriptsdir=/dir/with/the/scripts'
 
 The scripts can be run:
 
+After the *setup* of the chroot is finished. The name of the script must
+start with:
+
+'post_setup_'
+
 Before *installing* your package. The name of the script must
 start with:
 

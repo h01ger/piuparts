@@ -581,6 +581,10 @@ class Chroot:
                 if (file.startswith("post_") or file.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), file)):
                     shutil.copy(os.path.join((settings.scriptsdir), file), dest) 
 
+        # Run custom scripts after creating the chroot.
+        if settings.scriptsdir is not None: 
+            self.run_scripts("post_setup")
+
         if settings.savetgz:
             self.pack_into_tgz(settings.savetgz)
 
