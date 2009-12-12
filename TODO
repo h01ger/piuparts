@@ -7,27 +7,23 @@ for 0.38 and later (split this list):
 - move logfiles from bugged to archived if a newer version exists in pass
 - move logfiles from fail to bugged if a lower version exists in bugged
 
-- dont test packages if indirect depends havent been tested successfully. (I think the code is there, but seems to be buggy). 
-
 - So it seems piuparts needs to get fixed to take into account packages
-  being removed due to Conflcits. And probably should purge those
+  being removed due to Conflicts. And probably should purge those
   packages which got removed, or reinstall them at the end of the run.
 
-- svn mv piatti trunk/doc/examples
-
-- announcement on d-d-a
+- svn mv piatti trunk/doc/examples  and include it into a new binary package. 
+  when doing so keep in mind the two tango icons and credit those in 
+  debian/copyright.
 
 - PackagesDB: get rid of 50% of unique()
 
 - remove configfile option "mirror" and use the mirror from "packages-url".
 
-- probably include patch for #523950
-- probably include patch for #519192 - not sure if i like that aproach
-
 - piuparts-slave: if chroot.tgz is older than N days, regenerate it
  - currently this is done via ~piupartss/crontab, but that's a hack
+ - only throw away tarballs (and recreate them) after testing that they can be recreated 
 
-- introduce a whitelist of packages where it it is ok to break circular dependencies, like perl + perl-modules and xserver-xorg-core + xserver-xorg 
+- fix #526046: introduce a whitelist of packages where it it is ok to break circular dependencies, like perl + perl-modules and xserver-xorg-core + xserver-xorg 
 
 - master:
  - write stats about number of daily tests (-> report: create fancy graphs)
@@ -57,11 +53,10 @@ for 0.38 and later (split this list):
  - packages.txt for binary packages (like sources.txt)
  - do more fancy R graphs, eg. also per state
  - sort packages on maintainer pages alphabetically
+ - link (and target) to piuparts.d.o configuration is static to piatti. should refer to the actual hosts configuration, eg goldwassers
 
 - expire old logs a month after testing if newer logs exists (except if the new log is fail
   and the old is bugged, then the fail log should be moved to bugged first)
-
-- only throw away tarballs (and recreate them) after testing that they can be recreated 
 
 - create emacspeak-broken-dpkg-preconfigure package for broken repo. (then later
   put more broken packages in there and use that for testing piuparts)
@@ -85,10 +80,6 @@ for 0.38 and later (split this list):
   later)
 
 - publish FAI classes to setup piuparts.$fqdn automatically 
-
-- probably move svn/piatti to trunk/examples/piatti and include it into a new
-  binary package. when doing so keep in mind the two tango icons and credit 
-  those in debian/copyright.
 
 - a redirect of http://piuparts.d.o/foo to http://p.d.o/source/f/foo.html would be nice
 
@@ -115,9 +106,12 @@ for 0.39 and on:
   output for piuparts.py - see http://docs.python.org/library/logging.html
 - commandline-switches for all programms 
 
-- piuparts can't currently test postfix, since installing postfix removes
+- 539146: piuparts can't currently test postfix, since installing postfix removes
   exim and removing postfix would require re-installing exim, and that
   doesn't happen; there are other packages like that, ie. debconf-english
+
+- deal with packages that need to replace higher priority packages
+  (which then need to be put back when the package is removed)
 
 - mounting /proc and perhaps others (usbfs, sysfs, /dev/pts, etc.) in
   the chroot might be a good idea because some packages might need this.
@@ -158,11 +152,7 @@ Low priority stuff (a.k.a. "nobody's said they must have it now")
   when it has not) this is one kind of bugs I would really get rid of.
   h01ger: #466118 sounds like it does.
 
-* deal with packages that need to replace higher priority packages
-  (which then need to be put back when the package is removed)
-
 * piuparts-slave: keep track of reservations permanently
 * piuparts-master: keep track of whom a reservation is made
 * piuparts-slave: timestamps to log messages
-* piuparts-slave: make the chroot more minimial
 * piuparts: upgrade the chroot before taking a snapshot of its files
