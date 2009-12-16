@@ -657,6 +657,13 @@ class Chroot:
                     'APT::Install-Recommends "0";\n' +
                     'APT::Install-Suggests "0";\n')
 
+    def create_dpkg_conf(self):
+        """Create /etc/dpkg/dpkg.cfg.d/piuparts inside the chroot."""
+        if settings.dpkg_force_confdef:
+          create_file(self.relative("etc/dpkg/dpkg.cfg.d/piuparts"),
+                    'force-confdef')
+          logging.info("Warning: dpkg has been configured to use the force-confdef option. This will hide problems, see #466118.")
+
     def create_policy_rc_d(self):
         """Create a policy-rc.d that prevents daemons from running."""
 	full_name = os.path.join(self.name, "usr/sbin/policy-rc.d")
@@ -692,6 +699,7 @@ class Chroot:
         if not settings.keep_sources_list:
             self.create_apt_sources(settings.debian_distros[0])
         self.create_apt_conf()
+        self.create_dpkg_conf()
         self.create_policy_rc_d()
         for bindmount in settings.bindmounts:
             run(["mkdir", "-p", self.relative(bindmount)])
@@ -1785,7 +1793,11 @@ def parse_command_line():
     parser.add_option("--debfoster-options",
                       default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
 		      help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
-    
+
+    parser.add_option("--dpkg-force-confdef",
+                      default=False,
+		      help="Make dpkg use --force-confdev, which lets dpkg always choose the default action when a modified conffile is found. This options will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages.")
+     
     parser.add_option("--do-not-verify-signatures", default=False,
                       help="Do not verify signatures from the Release files when running debootstrap.")
 
@@ -1946,6 +1958,7 @@ def parse_command_line():
     settings.savetgz = opts.save
     settings.warn_on_others = opts.warn_on_others
     settings.debfoster_options = opts.debfoster_options.split()
+    settings.dpkg_force_confdef = opts.dpkg_force_confdef
 
     if opts.adt_virt is None:
         settings.adt_virt = None

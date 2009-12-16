@@ -22,10 +22,14 @@ piuparts (0.38) UNRELEASED; urgency=low
       Thanks again to Patrick Schoenfeld for his help.
     * Add another type of custom-scripts, post_setup_, which are executed after
       the chroot was setup. (Closes: #466043)
-    * Add another new option, --pedantic-purge-test, to tell piuparts to be 
-      pedantic when checking if a purged package leaves files behind. 
-      If this option is not set, files left in /tmp are ignored. 
-      (Closes: #528266)
+    * Add new option, --pedantic-purge-test, to tell piuparts to be pedantic 
+      when checking if a purged package leaves files behind. If this option is
+      not set, files left in /tmp are ignored. (Closes: #528266)
+    * Add new option, --dpkg-force-confdef, to make dpkg use --force-confdev,
+      which lets dpkg always choose the default action when a modified conffile
+      is found. This options will make piuparts ignore errors it was designed
+      to report and therefore should only be used to hide problems in
+      dependent packages. (Closes: #466118)
   * piuparts-report: report broken symlinks.
   * piuparts-slave: 
     - gracefully deal with upgrade-test-distros and upgrade-test-chroot-tgz 
