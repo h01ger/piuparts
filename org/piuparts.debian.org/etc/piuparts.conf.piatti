@@ -26,6 +26,8 @@ upgrade-test-distros =
 upgrade-test-chroot-tgz = 
 max-reserved = 100
 log-file = sid-master.log
+# Once there are no packages left which leave files on purge behind, 
+# --pedantic-purge-test should be added
 
 [squeeze]
 description = Debian squeeze / main, installation and removal tests as well as installation in lenny and upgrade to squeze and then removal tests
