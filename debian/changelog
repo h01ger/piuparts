@@ -40,6 +40,7 @@ piuparts (0.38) UNRELEASED; urgency=low
       slave will now only sleep if there is nothing to do for any section.
   * Makefile: workaround 559305 by calling a2x twice.   
   * Update debian/NEWS.
+  * Replace all references to sarge and etch with ones to lenny and squeeze.  
 
  -- Holger Levsen <holger@debian.org>  Fri, 04 Dec 2009 15:55:42 +0100
 

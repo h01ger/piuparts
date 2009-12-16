@@ -1778,8 +1778,8 @@ def parse_command_line():
     
     parser.add_option("-d", "--distribution", action="append", metavar="NAME",
                       help="Which Debian distribution to use: a code name " +
-                           "(etch, lenny, sid) or experimental. The " +
-                           "default is sid (i.e., unstable).")
+                           "(for example lenny, squeeze, sid) or experimental. The " +
+                           "default is sid (=unstable).")
 
     parser.add_option("-D", "--defaults", action="store",
                       help="Choose which set of defaults to use "

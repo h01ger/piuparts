@@ -51,7 +51,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   Bind-mount a directory inside the chroot.
 
 *-d* 'name', *--distribution*='name'::
-  Which Debian distribution to use: a code name (etch, lenny, sid) or experimental. The default is sid (i.e, unstable).
+  Which Debian distribution to use: a code name (for example lenny, squeeze or sid) or experimental. The default is sid (=unstable).
 
 *-D* 'flavor', *--defaults* 'flavor'::
   Use default settings suitable for a particular flavor of Debian: either debian or ubuntu.
@@ -176,10 +176,10 @@ piuparts ../foo_1.0-2_i386.changes
 piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.changes
 ----
 
-If you want to test that a package installs properly in the stable (etch) Debian release, then can be upgraded to the testing (lenny) and unstable (sid) versions, and then uninstalled without problems, you would give the following command:
+If you want to test that a package installs properly in the stable (currently lenny) Debian release, then can be upgraded to the testing (currently squeeze) and unstable (sid) versions, and then uninstalled without problems, you would give the following command:
 
 ----
-piuparts -a -d etch -d lenny -d sid foo
+piuparts -a -d lenny -d squeeze -d sid foo
 ----
 
 ENVIRONMENT

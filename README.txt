@@ -206,7 +206,7 @@ get more work.
 To set this up for yourself, the following steps should
 suffice:
 
-. Pick a machine to run the master. It cannot be a chroot, but a etch system is good enough.
+. Pick a machine to run the master. It cannot be a chroot, but basically any real (or properly virtualized) Debian system is good enough.
 . Install piuparts on it.
 . Create an account for the master.
 . Configure '/etc/piuparts/piuparts.conf' appropriately.
@@ -386,7 +386,7 @@ These settings are used for all sections. Except for the first two they are all 
   
 * "chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the basic install/purge testing. If the tarball doesn't exist, the slave creates it.
 
-* "upgrade-test-distros" is the space delimited list of distributions the slave should use for testing upgrades between distributions (i.e., Debian versions). Currently, "etch lenny sid" is a good choice.  Make this empty if you do not want to run upgrade tests.
+* "upgrade-test-distros" is the space delimited list of distributions the slave should use for testing upgrades between distributions (i.e., Debian versions). Currently, "lenny squeeze sid" is a good choice.  Make this empty if you do not want to run upgrade tests.
 
 * "upgrade-test-chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the first distribution in upgrade-test-distros. If the file does not exist, the slave creates it.
 
