@@ -259,6 +259,8 @@ class Settings:
             "/var/spool/squid(/.*)?",
             "/var/run/.*",
             "/var/www(/.*)?",
+            ]
+        self.non_pedantic_ignore_patterns = [
             "/tmp/.*"
             ]
 
@@ -1853,6 +1855,10 @@ def parse_command_line():
                       callback=set_basetgz_to_pbuilder,
                       help="Use /var/cache/pbuilder/base.tgz as the base " +
                            "tarball.")
+
+    parser.add_option("--pedantic-purge-test", 
+                      action="store_true", default=False,
+                      help="Be pedantic when checking if a purged package leaves files behind. If this option is not set, files left in /tmp are ignored.")
  
     parser.add_option("-s", "--save", metavar="FILENAME",
                       help="Save the chroot into FILENAME.")
@@ -1925,7 +1931,10 @@ def parse_command_line():
     else:
       settings.keyringoption="--keyring=%s" % settings.keyring
       settings.apt_unauthenticated="No"
-    
+    settings.pedantic_purge_test = opts.pedantic_purge_test
+    if not settings.pedantic_purge_test:
+      settings.ignored_patterns += settings.non_pedantic_ignore_patterns
+   
     log_file_name = opts.log_file
 
     defaults = DefaultsFactory().new_defaults()

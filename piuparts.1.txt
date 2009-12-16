@@ -47,14 +47,8 @@ Options must come before the other command line arguments.
 +
 The tarball can be created with the '-s' option, or you can use one that *pbuilder* has created (see '-p'). If you create one manually, make sure the root of the chroot is the root of the tarball.
 
-*--lvm-volume*='lvm-volume'::
-  Use the specified lvm-volume as source for the chroot, instead of building a
-  new one with debootstrap. This creates a snapshot of the given LVM volume and
-  mounts it to the chroot path.
-
-*--lvm-snapshot-size*='snapshot-size'::
-  Use the specified snapshot-size as snapshot size when creating a new LVM
-  snapshot (default: 1G)
+*--bindmount*='dir'::
+  Bind-mount a directory inside the chroot.
 
 *-d* 'name', *--distribution*='name'::
   Which Debian distribution to use: a code name (etch, lenny, sid) or experimental. The default is sid (i.e, unstable).
@@ -80,27 +74,17 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *--keep-sources-list*::
   Don't modify the chroot's etc/apt/sources.list (only makes sense with '--basetgz').
 
-*--warn-on-others*::
-  Print a warning rather than failing if files are left behind, modified, or removed by a package that was not given on the command-line.
-+
-This way, you can basically isolate the purge test to your own packages. If a package that is brought in as a dependency doesn't purge cleanly, the test will not fail because of it (but a warning message will be printed).
-+
-Behavior with multple packages given on the command-line could be problematic, particularly if the dependency tree of one package in the list includes another in the list. Therefore, it is recommended to use this option with one package at a time.
-
-*--skip-minimize*::
-  Allow skip minimize chroot step. This is useful when you want to test several packages with piuparts. You can prepare a tarball already minimized and skip this step in all the tests.
-
 *--list-installed-files*::
   List the files added to the chroot after the installation of the package and after the installation of the package dependencies.
 
-*--no-upgrade-test*::
-  Skip testing upgrade from an existing version in the archive.
+*--lvm-volume*='lvm-volume'::
+  Use the specified lvm-volume as source for the chroot, instead of building a
+  new one with debootstrap. This creates a snapshot of the given LVM volume and
+  mounts it to the chroot path.
 
-*--skip-cronfiles-test*::
-  Skip testing the output from the cron files left in the system after remove a package.
-
-*--scriptsdir*='DIR'::
-  Directory where are placed the custom scripts. For more information about this, read custom-scripts.txt
+*--lvm-snapshot-size*='snapshot-size'::
+  Use the specified snapshot-size as snapshot size when creating a new LVM
+  snapshot (default: 1G)
 
 *-l* 'filename', *--log-file*='filename'::
   Write log file to _filename_ in addition to the standard output.
@@ -112,35 +96,55 @@ The 'components' that are used for a mirror can also be set with this option: a 
 +
 Note that file: addresses works if the directories are made accessible from within the chroot with '--bindmount'.
 
-*--bindmount*='dir'::
-  Bind-mount a directory inside the chroot.
-
 *-n, --no-ignores*::
   Forget all built-in and other ignores that have been set so far. Any '-i' or '-I' arguments that come after this one will be obeyed, but none of the ones that come before.
 
 *-N, --no-symlinks*::
   Don't check for broken symlinks.
 
-*-W, --warn-symlinks*::
-  Check for broken symlinks, but warn only if found.
+*--no-upgrade-test*::
+  Skip testing upgrade from an existing version in the archive.
 
 *-p, --pbuilder*::
   Use _/var/cache/pbuilder/base.tgz_ as the base tarball. This is a shorthand so that you don't need to use '-b' for it.
 
+*--pedantic-purge-test*::
+  Be pedantic when checking if a purged package leaves files behind. If this option is not set, files left in _/tmp_ are ignored.")
+
 *-s* 'filename', *--save*='filename'::
   Save the chroot, after it has been set up, as a tarball into _filename_. It can then be used with '-b'.
 
-*-t directory, --tmpdir*='directory'::
-  Use directory as the place where temporary files and directories are created. The default is the environment variable *TMPDIR*, or _/tmp_ if not set.
+*--scriptsdir*='DIR'::
+  Directory where are placed the custom scripts. For more information about this, read custom-scripts.txt
 
 *--single-changes-list*::
   When processing changes files, piuparts will process the packages in each individual changes file seperately. This option will set piuparts to scan the packages of all changes files together along with any individual package files that may have been given on the command line.
+
+*--skip-minimize*::
+  Allow skip minimize chroot step. This is useful when you want to test several packages with piuparts. You can prepare a tarball already minimized and skip this step in all the tests.
+
+*--skip-cronfiles-test*::
+  Skip testing the output from the cron files left in the system after remove a package.
+
+*-t directory, --tmpdir*='directory'::
+  Use directory as the place where temporary files and directories are created. The default is the environment variable *TMPDIR*, or _/tmp_ if not set.
 
 *-v, --verbose*::
   This option no longer has any meaning, but it is still accepted for backwards compatibility.
 
 *-V, --version*::
   Write out the version number of the program.
+
+*-W, --warn-symlinks*::
+  Check for broken symlinks, but warn only if found.
+
+*--warn-on-others*::
+  Print a warning rather than failing if files are left behind, modified, or removed by a package that was not given on the command-line.
++
+This way, you can basically isolate the purge test to your own packages. If a package that is brought in as a dependency doesn't purge cleanly, the test will not fail because of it (but a warning message will be printed).
++
+Behavior with multple packages given on the command-line could be problematic, particularly if the dependency tree of one package in the list includes another in the list. Therefore, it is recommended to use this option with one package at a time.
+
 
 EXAMPLES
 --------
