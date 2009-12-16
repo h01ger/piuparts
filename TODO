@@ -139,6 +139,10 @@ Low priority stuff (a.k.a. "nobody's said they must have it now")
   allow to override the commandline arguments of the used program (to be 
   able to test with and without recommended packages or authentication).
 
+* Remove --minimize and related options/functionality? Since 0.38 --skip-minimize 
+  and --debfoster-options have become quite obsolete (--minimize has been added 
+  in 0.38) since debootstrap now creates a minimal chroot.
+
 * Kill children after a timeout to make sure the test doesn't run forever.
 
 * #522913: include a test to see which packages which modify their own conffiles 

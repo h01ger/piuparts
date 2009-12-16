@@ -124,7 +124,10 @@ Note that file: addresses works if the directories are made accessible from with
   When processing changes files, piuparts will process the packages in each individual changes file seperately. This option will set piuparts to scan the packages of all changes files together along with any individual package files that may have been given on the command line.
 
 *--skip-minimize*::
-  Allow skip minimize chroot step. This is useful when you want to test several packages with piuparts. You can prepare a tarball already minimized and skip this step in all the tests.
+  Allow skip minimize chroot step. This is useful when you want to test several packages with piuparts. You can prepare a tarball already minimized and skip this step in all the tests. This is the default now.
+
+*--minimize*::
+  Minimize the chroot with debfoster. This used to be the default until #539142 was fixed.
 
 *--skip-cronfiles-test*::
   Skip testing the output from the cron files left in the system after remove a package.

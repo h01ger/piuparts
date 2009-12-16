@@ -10,22 +10,23 @@ piuparts (0.38) UNRELEASED; urgency=low
       with --variant=minbase instead of --resolv-deps now and because if a 
       base.tgz or an lvm snapshot is specified, piuparts should not touch it.
       (Closes: #539142)
-    * TODO: decide whether to add a --minimize option or to remove the
-      debfoster code.
-    * Add two new options: --keyring to specify the keyring to use with
+      Introduce a new option, --minimize, to minimize a chroot with debfoster.
+      (This is the old default behaviour. In future versions the --minimize
+      option might be removed again.)
+    - Add two new options: --keyring to specify the keyring to use with
       debootstrap (defaults to /usr/share/keyrings/debian-archive-keyring.gpg)
       and --do-not-verify-signatures to not use --keyring with debootstrap.
       (Closes: #545907)
       In the chroots, APT::Get::AllowUnauthenticated is set accordingly in
       /etc/apt/apt.conf.
-    * Create policy-rc.d in 2nd chroot when using -b. (Closes: #466049)
+    - Create policy-rc.d in 2nd chroot when using -b. (Closes: #466049)
       Thanks again to Patrick Schoenfeld for his help.
-    * Add another type of custom-scripts, post_setup_, which are executed after
+    - Add another type of custom-scripts, post_setup_, which are executed after
       the chroot was setup. (Closes: #466043)
-    * Add new option, --pedantic-purge-test, to tell piuparts to be pedantic 
+    - Add new option, --pedantic-purge-test, to tell piuparts to be pedantic 
       when checking if a purged package leaves files behind. If this option is
       not set, files left in /tmp are ignored. (Closes: #528266)
-    * Add new option, --dpkg-force-confdef, to make dpkg use --force-confdev,
+    - Add new option, --dpkg-force-confdef, to make dpkg use --force-confdev,
       which lets dpkg always choose the default action when a modified conffile
       is found. This options will make piuparts ignore errors it was designed
       to report and therefore should only be used to hide problems in

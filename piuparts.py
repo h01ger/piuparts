@@ -682,13 +682,8 @@ class Chroot:
 
     def minimize(self):
         """Minimize a chroot by removing (almost all) unnecessary packages"""
-        if False:
-            logging.debug("NOT minimizing chroot because of dpkg bug")
-            return
-
-        if settings.skip_minimize:
+        if settings.skip_minimize or not settings.minimize:
              return
-
         self.run(["apt-get", "install", "debfoster"])
         self.run(["debfoster"] + settings.debfoster_options)
         remove_files([self.relative("var/lib/debfoster/keepers")])
@@ -1888,7 +1883,11 @@ def parse_command_line():
 		   
     parser.add_option("--skip-minimize", 
                       action="store_true", default=True,
-                      help="Skip minimize chroot step.")
+                      help="Skip minimize chroot step. This is the default now.")
+
+    parser.add_option("--minimize", 
+                      action="store_true", default=False,
+                      help="Minimize chroot with debfoster. This used to be the default until #539142 was fixed.")
 
     parser.add_option("--scriptsdir", metavar="DIR",
                       help="Directory where are placed the custom scripts.")
@@ -1932,6 +1931,7 @@ def parse_command_line():
     settings.single_changes_list = opts.single_changes_list
     settings.keep_sources_list = opts.keep_sources_list
     settings.skip_minimize = opts.skip_minimize
+    settings.minimize = opts.minimize
     settings.list_installed_files = opts.list_installed_files
     settings.no_upgrade_test = opts.no_upgrade_test
     settings.skip_cronfiles_test = opts.skip_cronfiles_test
