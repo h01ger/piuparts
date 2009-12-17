@@ -1,16 +1,23 @@
-piuparts (0.38) UNRELEASED; urgency=low
+piuparts (0.38) unstable; urgency=low
 
   * New default behaviours in piuparts:
    * --skip-minimize is now the default. This is because debootstrap is called
      with --variant=minbase instead of --resolv-deps now and because if a 
      base.tgz or an lvm snapshot is specified, piuparts should not touch it.
+     (Closes: #539142)
+     Introduce a new option, --minimize, to minimize a chroot with debfoster.
+     (This is the old default behaviour. In future versions the --minimize
+     option might be removed again.)
    * Add two new options: --keyring to specify the keyring to use with
      debootstrap (defaults to /usr/share/keyrings/debian-archive-keyring.gpg)
      and --do-not-verify-signatures to not use --keyring with debootstrap.
+     (Closes: #545907)
      In the chroots, APT::Get::AllowUnauthenticated is set accordingly in
      /etc/apt/apt.conf.
+   * Add another type of custom-scripts, post_setup_, which are executed after
+     the chroot was setup. (Closes: #466043)
 
- -- Holger Levsen <holger@debian.org>  Mon, 07 Dec 2009 19:18:07 +0100
+ -- Holger Levsen <holger@debian.org>  Thu, 17 Dec 2009 14:10:27 +0000
 
 piuparts (0.36) unstable; urgency=low
 
