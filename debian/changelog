@@ -1,4 +1,4 @@
-piuparts (0.38) UNRELEASED; urgency=low
+piuparts (0.38) unstable; urgency=low
 
   * piuparts.py:
     - Add support for using LVM snapshots. Thanks to
@@ -42,7 +42,7 @@ piuparts (0.38) UNRELEASED; urgency=low
   * Update debian/NEWS.
   * Replace all references to sarge and etch with ones to lenny and squeeze.  
 
- -- Holger Levsen <holger@debian.org>  Fri, 04 Dec 2009 15:55:42 +0100
+ -- Holger Levsen <holger@debian.org>  Thu, 17 Dec 2009 14:10:27 +0000
 
 piuparts (0.37) unstable; urgency=low
 
