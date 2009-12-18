@@ -32,7 +32,7 @@
       the University of Helsinki, at the 
       <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a>
       in Finland.
-      As this is still being polished, see the piuparts wiki page for more information on <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development and the piuparts setup on piatti</a>. Better reports and statistics as well as PTS integration is planned. Join #debian-qa if you want to help.
+      As this is still being polished, see the piuparts wiki page for more information on <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development and the piuparts setup on piatti</a>. Better reports, statistics, tools to report bugs as well as testing on other architectures is planned. Join #debian-qa if you want to help.
      </td>
     </tr>
     <tr class="normalrow">
