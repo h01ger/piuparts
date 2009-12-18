@@ -353,10 +353,14 @@ linktarget_by_template = {
     "unknown_purge_error.tpl": "dpkg --purge failed due to an unknown reason",
     "insserv_error.tpl": "due to a problem with insserv",
     "unknown_failures.tpl": "unclassified failures",
-    "initdscript_lsb_header_issue.tpl": "update-rc.d issues",
+    "initdscript_lsb_header_issue.tpl": "but update-rc.d issues",
     "command_not_found_issue.tpl": "but logfile contains 'command not found'",
     "broken_symlinks_issue.tpl": "but logfile contains 'broken symlinks'",
-    "broken_symlinks_error.tpl": "also logfile contains 'broken symlinks'",
+    "broken_symlinks_error.tpl": "...and logfile also contains 'broken symlinks'",
+    "pre_installation_script_error.tpl": "due to pre-installation maintainer script failed",
+    "post_installation_script_error.tpl": "due to post-installation maintainer script failed",
+    "pre_removal_script_error.tpl": "due to pre-removal maintainer script failed",
+    "post_removal_script_error.tpl": "due to post-removal maintainer script failed",
 }
 
 
