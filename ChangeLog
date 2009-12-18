@@ -1,3 +1,8 @@
+2009-12-18  Holger Levsen <holger@layer-acht.org>
+
+        * This changelog is obsolete since several years. See debian/changelog
+	  instead.
+
 2005-11-12  Lars Wirzenius  <liw@iki.fi>
 
         * Further detailed changes to be seen in the bzr commit message
