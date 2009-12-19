@@ -1,7 +1,8 @@
 piuparts (0.39) UNRELEASED; urgency=low
 
-  * piuparts-report.py: report packages which failed due to broken maintainer
-    scripts.
+  * piuparts-report.py: 
+     - report packages which failed due to broken maintainer scripts.
+     - visual improvements in the output.
 
  -- Holger Levsen <holger@debian.org>  Fri, 18 Dec 2009 13:32:16 +0100
 

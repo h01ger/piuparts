@@ -828,7 +828,7 @@ class Section:
 
     def create_and_link_to_analysises(self,state):
         link="<ul>"
-        templates = find_files_with_suffix(self._output_directory,".tpl")
+        templates = sorted(find_files_with_suffix(self._output_directory,".tpl"))
         for template in templates:
           if (state == "failed-testing" and template[-9:] != "issue.tpl") or (state == "successfully-tested" and template[-9:] == "issue.tpl"):
 
@@ -886,7 +886,7 @@ class Section:
         for state in self._binary_db.get_states():
             logging.debug("Writing page for %s" % state)
             list = "<ul>\n"
-            for package in self._binary_db.get_packages_in_state(state):
+            for package in sorted(self._binary_db.get_packages_in_state(state)):
                 list += "<li id=\"%s\">%s (%s)" % (
                                          package["Package"],
                                          self.link_to_source_summary(package["Package"]),
@@ -944,7 +944,7 @@ class Section:
         self._section_names = section_names
         self._master_directory = os.path.abspath(os.path.join(master_directory, self._config.section))
         if not os.path.exists(self._master_directory):
-            logging.debug("Warning: %s does not exist. Did you ever let the slave work?" % (self._master_directory, self._config.section))
+            logging.debug("Warning: %s did not exist, now created. Did you ever let the slave work?" % (self._master_directory, self._config.section))
             os.mkdir(self._master_directory)
 
         self._output_directory = os.path.abspath(os.path.join(output_directory, self._config.section))
