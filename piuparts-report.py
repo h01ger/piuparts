@@ -92,7 +92,7 @@ HTML_HEADER = """
      </tr>     
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://bugs.debian.org/piuparts" target="_blank">Bugs</a> / <a href="http://svn.debian.org/viewsvn/piuparts/trunk/TODO" target="_blank">ToDo</a>
+      <a href="http://bugs.debian.org/src:piuparts" target="_blank">Bugs</a> / <a href="http://svn.debian.org/viewsvn/piuparts/trunk/TODO" target="_blank">ToDo</a>
      </td>
     </tr>     
     <tr class="titlerow">
@@ -248,13 +248,13 @@ SECTION_INDEX_BODY_TEMPLATE = """
     </tr>
     <tr class="titlerow">
      <td class="alerttitlecell" colspan="3">
-      Packages per state
+      Binary packages per state
      </td>
     </tr>
     $tablerows
     <tr class="titlerow">
      <td class="titlecell" colspan="3">
-      URL to packages file(s)
+      URL to Packages file
      </td>
     </tr>
      <tr class="normalrow">
@@ -616,7 +616,7 @@ class Section:
           if link_target == package_name:
             link = html_protect(package_name)
           else:
-            link = "unknown-package-or-udeb"
+            link = "unknown-package"
 
         return link
 
@@ -715,6 +715,10 @@ class Section:
         binaryrows = ""
         for binary in binaries.split(", "):
           state = self._binary_db.state_by_name(binary)
+          if state == "unknown":
+            # Don't track udebs and binary packages on other archs. 
+            # The latter is a FIXME which needs parsing the Packages files from other archs too
+            continue
           current_version = self._source_db.get_control_header(source, "Version")
           if state != "circular-dependency" and not "waiting" in state and "dependency" in state:
             state_style="lightalertlabelcell"
@@ -728,32 +732,36 @@ class Section:
           if state in ("failed-testing", "dependency-does-not-exist", "cannot-be-tested"):
             failed = True
 
-        source_state="unknown"
-        if success: source_state="<img src=\"/images/sunny.png\">"
-        if failed:  source_state="<img src=\"/images/weather-severe-alert.png\">"
+        if binaryrows != "":
+          source_state="unknown"
+          if success: source_state="<img src=\"/images/sunny.png\">"
+          if failed:  source_state="<img src=\"/images/weather-severe-alert.png\">"
 
-        sourcerows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"6\" id=\"%s\">%s in %s</td></tr>" % (source, source, self._config.section)
-        sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Source:</td><td class=\"contentcell2\"><a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a></td><td class=\"labelcell\">piuparts summary:</td><td class=\"contentcell2\">%s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" % (source, html_protect(source), source_state, html_protect(source_version))
-        sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Maintainer:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (self.link_to_maintainer_summary(maintainer))
-        if uploaders:
-          sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Uploaders:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (self.link_to_uploaders(uploaders))
+          sourcerows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"6\" id=\"%s\">%s in %s</td></tr>" % (source, source, self._config.section)
+          sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Source:</td><td class=\"contentcell2\"><a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a></td><td class=\"labelcell\">piuparts summary:</td><td class=\"contentcell2\">%s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" % (source, html_protect(source), source_state, html_protect(source_version))
+          sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Maintainer:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (self.link_to_maintainer_summary(maintainer))
+          if uploaders:
+            sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Uploaders:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (self.link_to_uploaders(uploaders))
         
-        source_summary_page_path = os.path.join(self._output_directory, "source", source_subdir(source))
-        if not os.path.exists(source_summary_page_path):
-           os.makedirs(source_summary_page_path)
-        filename = os.path.join(source_summary_page_path, (source + ".html"))
-        htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
-        f = file(filename, "w")
-        f.write(htmlpage.safe_substitute( {
-           "section_navigation": create_section_navigation(self._section_names,self._config.section),
-           "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-           "rows": sourcerows+binaryrows,
-        }))
-        f.close()
+          source_summary_page_path = os.path.join(self._output_directory, "source", source_subdir(source))
+          if not os.path.exists(source_summary_page_path):
+             os.makedirs(source_summary_page_path)
+          filename = os.path.join(source_summary_page_path, (source + ".html"))
+          htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
+          f = file(filename, "w")
+          f.write(htmlpage.safe_substitute( {
+             "section_navigation": create_section_navigation(self._section_names,self._config.section),
+             "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+             "rows": sourcerows+binaryrows,
+          }))
+          f.close()
 
-        # return parsable values
-        if success: source_state = "pass"
-        if failed:  source_state = "fail"
+          # return parsable values
+          if success: source_state = "pass"
+          if failed:  source_state = "fail"
+        else:
+          source_state = "udeb"
+          sourcerows = ""
 
         return sourcerows, binaryrows, source_state, maintainer, uploaders
 
@@ -806,8 +814,9 @@ class Section:
         sources = ""
         for source in self._source_db.get_all_packages():
             (sourcerows, binaryrows, source_state, maintainer, uploaders) = self.create_source_summary(source, logs_by_dir)
-            sources += "%s: %s\n" % (source, source_state)
-            self.create_maintainer_templates_for_source(source, source_state, sourcerows, binaryrows, maintainer, uploaders)
+            if source_state != "udeb":
+              sources += "%s: %s\n" % (source, source_state)
+              self.create_maintainer_templates_for_source(source, source_state, sourcerows, binaryrows, maintainer, uploaders)
  
         write_file(os.path.join(self._output_directory, "sources.txt"), sources)
 
@@ -822,9 +831,9 @@ class Section:
         # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
         r('palette(c("#4e9a06", "#ef2929", "#73d216", "#d3d7cf", "#5c3566", "#c4a000", "#fce94f", "#a40000", "#888a85", "#2e3436", "#8ae234",  "#729fcf","#204a87"))')
         r('bitmap(file="'+pngfile+'",type="png16m",width=16,height=9,pointsize=10,res=100)')
-        r('barplot(t(v),col = 1:13, main="Packages per state in '+self._config.section+' (past half year)", xlab="", ylab="Number of packages",space=0.1,border=0)')
+        r('barplot(t(v),col = 1:13, main="Binary packages per state in '+self._config.section+' (past half year)", xlab="", ylab="Number of binary packages",space=0.1,border=0)')
         r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
-        return "<tr class=\"normalrow\"> <td class=\"contentcell2\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"800\" alt=\"Package states in the last half year\"></a></td></tr>\n" % ("states.png", self._config.section, "states.png")
+        return "<tr class=\"normalrow\"> <td class=\"contentcell2\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"800\" alt=\"Binary package states in the last half year\"></a></td></tr>\n" % ("states.png", self._config.section, "states.png")
 
     def create_and_link_to_analysises(self,state):
         link="<ul>"
@@ -886,7 +895,7 @@ class Section:
         for state in self._binary_db.get_states():
             logging.debug("Writing page for %s" % state)
             list = "<ul>\n"
-            for package in sorted(self._binary_db.get_packages_in_state(state)):
+            for package in self._binary_db.get_packages_in_state(state):
                 list += "<li id=\"%s\">%s (%s)" % (
                                          package["Package"],
                                          self.link_to_source_summary(package["Package"]),

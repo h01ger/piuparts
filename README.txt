@@ -374,7 +374,7 @@ These settings are used for all sections. Except for the first two they are all 
 
 ==== section specific configuration 
 
-* "packages-url" is a URL to the Packages.bz2 file for your mirror. It is usually best to use the Packages.bz2 for sid (unstable), unless you know what you're doing. For example, you might use 'http://ftp.debian.org/debian/dists/sid/main/binary-i386/Packages.bz2' but you really do want to replace "ftp.debian.org" with the name of your local mirror.
+* "packages-url" is a URL to the Packages.bz2 file specifying what packages should be tested. This needs to be a Packages.bz2 file, other compression methods are not supported. For example, you might use 'http://ftp.debian.org/debian/dists/sid/main/binary-i386/Packages.bz2' but you really do want to replace "ftp.debian.org" with the name of your local mirror.
  
 * "sources-url" is a URL to the Sources.bz2 file for your mirror. "sources-url" must match "packages-url", if it is not defined, piuparts-reports will not generate source centric html pages.
 
