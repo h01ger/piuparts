@@ -10,6 +10,10 @@ for 0.38 and later (split this list):
 - So it seems piuparts needs to get fixed to take into account packages
   being removed due to Conflicts. And probably should purge those
   packages which got removed, or reinstall them at the end of the run.
+  (#539146)
+- 539146: piuparts can't currently test postfix, since installing postfix removes
+  exim and removing postfix would require re-installing exim, and that
+  doesn't happen; there are other packages like that, ie. debconf-english
 
 - svn mv piatti trunk/doc/examples  and include it into a new binary package. 
   when doing so keep in mind the two tango icons and credit those in 
@@ -22,8 +26,6 @@ for 0.38 and later (split this list):
 - piuparts-slave: if chroot.tgz is older than N days, regenerate it
  - currently this is done via ~piupartss/crontab, but that's a hack
  - only throw away tarballs (and recreate them) after testing that they can be recreated 
-
-- fix #526046: introduce a whitelist of packages where it it is ok to break circular dependencies, like perl + perl-modules and xserver-xorg-core + xserver-xorg 
 
 - master:
  - write stats about number of daily tests (-> report: create fancy graphs)
@@ -71,7 +73,7 @@ for 0.38 and later (split this list):
 
 - slave_run: cleanup stale proc mountpoints
 
-- split the failed state into several problem-type failed states
+- split the failed state into several problem-type failed states?
 
 - the templates used by update-reports.py should be taken from /etc/piuparts/templates/
   and not be included in the python source
@@ -104,14 +106,8 @@ for 0.39 and on:
 
 - not sure if it's a sensible thing to to, but provide a way to turn off debugging
   output for piuparts.py - see http://docs.python.org/library/logging.html
+
 - commandline-switches for all programms 
-
-- 539146: piuparts can't currently test postfix, since installing postfix removes
-  exim and removing postfix would require re-installing exim, and that
-  doesn't happen; there are other packages like that, ie. debconf-english
-
-- deal with packages that need to replace higher priority packages
-  (which then need to be put back when the package is removed)
 
 - mounting /proc and perhaps others (usbfs, sysfs, /dev/pts, etc.) in
   the chroot might be a good idea because some packages might need this.
@@ -122,13 +118,6 @@ for 0.39 and on:
   number on the package pages. this is just a problem in reporting, not in 
   testing. PackagesDB.get_source_package() gives back the right value, but 
   piuparts-reports does not care.
-
-- from the FAQ: Just by looking at the Packages and Sources files it's 
-  impossible to distinguish unknown packages (because they haven't build yet
-  are only available on certains archs) and udebs, so that's why the state is
-  so ambiguous. Future versions of piuparts-report are supposed to alse parse 
-  the Packages files in the debian-installer directories, making it possible
-  to properly detect udebs.
 
 Low priority stuff (a.k.a. "nobody's said they must have it now")
 -----------------------------------------------------------------
@@ -144,17 +133,6 @@ Low priority stuff (a.k.a. "nobody's said they must have it now")
   in 0.38) since debootstrap now creates a minimal chroot.
 
 * Kill children after a timeout to make sure the test doesn't run forever.
-
-* #522913: include a test to see which packages which modify their own conffiles 
-  so the user is presented with a dpkg conffile changed dialogue during
-  the upgrade.  It would also be very interesting to see how many packages
-  leave behind orphaned conffiles after purging a newer version which does
-  not contain the files anymore.
-
-* Bill Allombert: Does piupart test whether packages trigger useless
-  conffiles handling ? (i.e. dpkg pretend you have modified a conffile
-  when it has not) this is one kind of bugs I would really get rid of.
-  h01ger: #466118 sounds like it does.
 
 * piuparts-slave: keep track of reservations permanently
 * piuparts-master: keep track of whom a reservation is made
