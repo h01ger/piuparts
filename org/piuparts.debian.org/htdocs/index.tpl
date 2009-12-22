@@ -46,6 +46,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2009-12-21</b>: So testing of 13398 in squeeze has taken 12 days, which is no big surprise as the squeeze tests are more complex. Today 499 failed packages from sid and 235 from squeeze have been rescheduled for testing, to catch broken symlinks in those too.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2009-12-12</b>: After testing 14416 packages in sid in three days, reschedule 15944 packages in squeeze... see previous entry for an explanation why.
      </td>
     </tr>
