@@ -4,6 +4,16 @@ piuparts (0.39) UNRELEASED; urgency=low
      - report packages which failed due to broken maintainer scripts.
      - visual improvements in the output.
      - ignore udebs and binaries from other archs too.
+  * piupartsib/packagesdb.py: automatically break circular dependencies when
+    there are only circular dependencies left, using a configurable list of
+    circular depdencies in piuparts.conf (Closes: #526046)
+    Note that the dependecy resovler is still buggy, the state
+    waiting-for-dependency-to-be-tested still contains some packages
+    which failed depends (due to them being dependent on packages with
+    circular depends). The effect of that is none, other than that
+    (=waiting-to-be-tested is calculated correctly). This bug was present
+    before this change.
+TODO: make packagesDB.py read config
 
  -- Holger Levsen <holger@debian.org>  Fri, 18 Dec 2009 13:32:16 +0100
 

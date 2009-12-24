@@ -59,7 +59,7 @@ def unique (s):
     except TypeError:
       del u  # move on to the next method
     else:
-      return u.keys()   
+      return u.keys()
 
     try:
       t = list(s)
@@ -240,8 +240,7 @@ class PackagesDB:
         "fix-not-yet-tested": "dependency-fix-not-yet-tested",
         "cannot-be-tested": "dependency-cannot-be-tested",
         "waiting-to-be-tested": "waiting-for-dependency-to-be-tested",
-        "waiting-for-dependency-to-be-tested": 
-            "waiting-for-dependency-to-be-tested",
+        "waiting-for-dependency-to-be-tested": "waiting-for-dependency-to-be-tested",
         "dependency-failed-testing": "dependency-failed-testing",
         "dependency-cannot-be-tested": "dependency-cannot-be-tested",
         "dependency-does-not-exist": "dependency-does-not-exist",
@@ -353,10 +352,27 @@ class PackagesDB:
             return state
 
         deps = self._get_recursive_dependencies(package, break_circles=False)
+        # ignore those packages:
+        known_circular_depends =  ['perl', 'perl-modules', 'openjdk-6-jre-headless', 'openjdk-6-jre-lib', 'ca-certificates-java', 'rhino', 'libjline-java', 'java-gcj-compat-headless', 'gij', 'gcj-jre-headless', 'fortune-mod', 'fortunes-min', 'kbd', 'console-common']
+        for pkg in known_circular_depends:
+            if pkg in deps:
+                deps.remove(pkg)
         if package["Package"] in deps:
-            return "circular-dependency"
-            
-        return "unknown"
+            return "circular-dependency" # actually, it's a unknown circular-dependency
+     
+        # treat circular-dependencies as testable (for the part of the circle)
+        state = "unknown" 
+        if package["Package"] in known_circular_depends:
+          for dep in package.dependencies():
+            if dep not in known_circular_depends and self._package_state[dep] not in \
+               ["successfully-tested", "essential-required"]:
+                state = "unknown"
+                break
+            if dep in known_circular_depends and self._package_state[dep] not in \
+               ["failed-testing","dependency-failed-testing"]:
+                state = "waiting-to-be-tested"
+                continue
+        return state
 
     def _compute_package_states(self):
         if self._in_state is not None:
