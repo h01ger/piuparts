@@ -357,7 +357,12 @@ class PackagesDB:
                                    'openjdk-6-jre-headless', 'openjdk-6-jre-lib', 'ca-certificates-java', 'rhino', 'libjline-java', 'java-gcj-compat-headless', 'gij', 'gcj-jre-headless', 
                                    'fortune-mod', 'fortunes-min', 
                                    'kbd', 'console-common',
-                                   'g++-4.4','libstdc++6-4.4-dev'
+                                   'g++-4.4','libstdc++6-4.4-dev',
+                                   'libsoprano4', 'soprano-daemon',
+                                   'gs-common', 'ghostscript',
+                                   'acheck', 'acheck-rules',
+                                   'libgamin0', 'gamin',
+                                   'odbcinst', 'odbcinst1debian1'
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
