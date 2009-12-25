@@ -46,6 +46,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2009-12-24</b>: Enable work-in-progress code to enable testing of packages with circular depends. This will allow testing of 5-6000 more packages in sid and squeeze, see #526046 and the 0.39 changelog for details. The list of packages with circular depends is currently hard-coded and will probably become a configuration option but not auto detected. But that's code yet to be written :-)
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2009-12-21</b>: So testing of 13398 in squeeze has taken 12 days, which is no big surprise as the squeeze tests are more complex. Today 499 failed packages from sid and 235 from squeeze have been rescheduled for testing, to catch broken symlinks in those too.
      </td>
     </tr>
