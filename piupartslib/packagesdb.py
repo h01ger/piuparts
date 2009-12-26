@@ -367,7 +367,10 @@ class PackagesDB:
                                    'odbcinst', 'odbcinst1debian1',
                                    'python-wxversion', 'python-wxgtk2.6',
                                    'ispell', 'iamerican',
-                                   'strongswan-starter', 'strongswan-ikev1'
+                                   'strongswan-starter', 'strongswan-ikev1',
+                                   'xserver-xorg', 'xserver-xorg-core',
+                                   'tasksel', 'tasksel-data',
+                                   'bootcd', 'bootcd-i386'
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
