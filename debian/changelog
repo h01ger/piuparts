@@ -1,7 +1,9 @@
 piuparts (0.39) UNRELEASED; urgency=low
 
   * piuparts-report.py: 
-     - report packages which failed due to broken maintainer scripts.
+     - report packages which failed due to broken maintainer scripts, 
+       due to output from cron after removal and due to not enough force being 
+       used.
      - visual improvements in the output.
      - ignore udebs and binaries from other archs too.
   * piupartsib/packagesdb.py: automatically break circular dependencies when

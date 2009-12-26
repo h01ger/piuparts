@@ -361,6 +361,8 @@ linktarget_by_template = {
     "post_installation_script_error.tpl": "due to post-installation maintainer script failed",
     "pre_removal_script_error.tpl": "due to pre-removal maintainer script failed",
     "post_removal_script_error.tpl": "due to post-removal maintainer script failed",
+    "output_from_cron_error.tpl": "due to output from cron after removal",
+    "problems_and_no_force_error.tpl": "due to not enough force being used"
 }
 
 
