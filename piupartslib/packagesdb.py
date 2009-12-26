@@ -358,11 +358,16 @@ class PackagesDB:
                                    'fortune-mod', 'fortunes-min', 
                                    'kbd', 'console-common',
                                    'g++-4.4','libstdc++6-4.4-dev',
+                                   'g++-4.3','libstdc++6-4.3-dev',
+                                   'g++-4.1','libstdc++6-4.1-dev',
                                    'libsoprano4', 'soprano-daemon',
                                    'gs-common', 'ghostscript',
                                    'acheck', 'acheck-rules',
                                    'libgamin0', 'gamin',
-                                   'odbcinst', 'odbcinst1debian1'
+                                   'odbcinst', 'odbcinst1debian1',
+                                   'python-wxversion', 'python-wxgtk2.6',
+                                   'ispell', 'iamerican',
+                                   'strongswan-starter', 'strongswan-ikev1'
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
