@@ -371,7 +371,7 @@ class PackagesDB:
                                    'xserver-xorg', 'xserver-xorg-core',
                                    'tasksel', 'tasksel-data',
                                    'bootcd', 'bootcd-i386',
-                                   'libhugs-base', 'libhugs-base-bundled',
+                                   'libhugs-base', 'libhugs-base-bundled', 'libhugs-haskell98-bundled',
                                    'mono-runtime', 'mono-2.0-gac', 'mono-gac',
                                    'gcj-4.3', 'libgcj9-dev',
                                    'abuse', 'abuse-frabs',
@@ -382,6 +382,9 @@ class PackagesDB:
                                    'mnogosearch-common',
                                    'caudium-modules', 'caudium',
                                    'phpgroupware', 'phpgroupware-0.9.16-core-base',
+                                   'pcb-gtk', 'pcb-common',
+                                   'tesseract-ocr', 'tesseract-ocr-eng',
+                                   'licq', 'licq-plugin-qt',
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
