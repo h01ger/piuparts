@@ -372,7 +372,16 @@ class PackagesDB:
                                    'tasksel', 'tasksel-data',
                                    'bootcd', 'bootcd-i386',
                                    'libhugs-base', 'libhugs-base-bundled',
-                                   'mono-runtime', 'mono-2.0-gac', 'mono-gac'
+                                   'mono-runtime', 'mono-2.0-gac', 'mono-gac',
+                                   'gcj-4.3', 'libgcj9-dev',
+                                   'abuse', 'abuse-frabs',
+                                   'heroes-sdl', 'heroes-common',
+                                   'libroot-io5.24', 'libroot-core5.24',
+                                   'aide', 'aide-common',
+                                   'aolserver4-daemon', 'aolserver4-core',
+                                   'mnogosearch-common',
+                                   'caudium-modules', 'caudium',
+                                   'phpgroupware', 'phpgroupware-0.9.16-core-base',
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
