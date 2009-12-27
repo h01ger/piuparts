@@ -370,7 +370,9 @@ class PackagesDB:
                                    'strongswan-starter', 'strongswan-ikev1',
                                    'xserver-xorg', 'xserver-xorg-core',
                                    'tasksel', 'tasksel-data',
-                                   'bootcd', 'bootcd-i386'
+                                   'bootcd', 'bootcd-i386',
+                                   'libhugs-base', 'libhugs-base-bundled',
+                                   'mono-runtime', 'mono-2.0-gac', 'mono-gac'
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
