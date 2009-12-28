@@ -370,7 +370,7 @@ class PackagesDB:
                                    'python-wxversion', 'python-wxgtk2.6',
                                    'ispell', 'iamerican',
                                    'strongswan-starter', 'strongswan-ikev1',
-                                   'xserver-xorg', 'xserver-xorg-core', 'xserver-xorg-video-all', 'xserver-xorg-input-all ', 'xserver-xorg-input-evdev',
+                                   'xserver-xorg', 'xserver-xorg-core', 'xserver-xorg-video-all', 'xserver-xorg-input-all ', 'xserver-xorg-input-evdev', 'xserver-xorg-input-synaptics', 'xserver-xorg-input-wacom',
                                    'tasksel', 'tasksel-data',
                                    'bootcd', 'bootcd-i386',
                                    'hugs', 'libhugs-base', 'libhugs-base-bundled', 'libhugs-haskell98-bundled', 'libhugs-haskell98',
@@ -383,7 +383,7 @@ class PackagesDB:
                                    'aolserver4-daemon', 'aolserver4-core',
                                    'mnogosearch-common', 'mnogosearch',
                                    'caudium-modules', 'caudium',
-                                   'phpgroupware', 'phpgroupware-0.9.16-core', 'phpgroupware-0.9.16-core-base',
+                                   'phpgroupware', 'phpgroupware-0.9.16-core', 'phpgroupware-0.9.16-core-base', 'phpgroupware-0.9.16-phpgwapi', 'phpgroupware-0.9.16-setup', 'phpgroupware-0.9.16-admin', 'phpgroupware-0.9.16-preferences', 
                                    'pcb-gtk', 'pcb-common',
                                    'tesseract-ocr', 'tesseract-ocr-language',
                                    'licq', 'licq-plugin-qt',
@@ -399,6 +399,7 @@ class PackagesDB:
                                    'lbreakout2', 'lbreakout2-data',
                                    'cowbuilder', 'cowdancer',
                                    'ggz-kde-games', 'ggz-kde-games-data',
+                                   'ggz-sdl-games', 'ggz-sdl-games-data',
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
