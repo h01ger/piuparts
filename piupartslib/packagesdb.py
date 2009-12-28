@@ -368,7 +368,7 @@ class PackagesDB:
                                    'python-wxversion', 'python-wxgtk2.6',
                                    'ispell', 'iamerican',
                                    'strongswan-starter', 'strongswan-ikev1',
-                                   'xserver-xorg', 'xserver-xorg-core',
+                                   'xserver-xorg', 'xserver-xorg-core', 'xserver-xorg-video-all',
                                    'tasksel', 'tasksel-data',
                                    'bootcd', 'bootcd-i386',
                                    'hugs', 'libhugs-base', 'libhugs-base-bundled', 'libhugs-haskell98-bundled', 'libhugs-haskell98',
@@ -381,10 +381,14 @@ class PackagesDB:
                                    'aolserver4-daemon', 'aolserver4-core',
                                    'mnogosearch-common', 'mnogosearch',
                                    'caudium-modules', 'caudium',
-                                   'phpgroupware', 'phpgroupware-0.9.16-core-base',
+                                   'phpgroupware', 'phpgroupware-0.9.16-core', 'phpgroupware-0.9.16-core-base',
                                    'pcb-gtk', 'pcb-common',
                                    'tesseract-ocr', 'tesseract-ocr-language',
                                    'licq', 'licq-plugin-qt',
+                                   'setroubleshoot-plugins', 'setroubleshoot',
+                                   'python-scientific', 'python-netcdf',
+                                   'audacious', 'audacious-plugins',
+                                   'sysklogd', 'klogd',
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
