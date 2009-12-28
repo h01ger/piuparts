@@ -354,12 +354,14 @@ class PackagesDB:
         deps = self._get_recursive_dependencies(package, break_circles=False)
         # ignore those packages:
         known_circular_depends =  ['perl', 'perl-modules', 
-                                   'openjdk-6-jre-headless', 'openjdk-6-jre-lib', 'ca-certificates-java', 'rhino', 'libjline-java', 'java-gcj-compat-headless', 'gij', 'gcj-jre-headless', 
+                                   'openjdk-6-jre-headless', 'openjdk-6-jre-lib', 'ca-certificates-java', 'rhino', 'libjline-java', 'java-gcj-compat-headless', 'gij', 'gcj-jre-headless', 'gcj-jdk',
+                                   'gcj-4.3', 'libgcj9-dev',
+                                   'gcj-4.4-jdk', 'libgcj10-dev'
                                    'fortune-mod', 'fortunes-min', 
                                    'kbd', 'console-common',
-                                   'g++-4.4','libstdc++6-4.4-dev',
-                                   'g++-4.3','libstdc++6-4.3-dev',
-                                   'g++-4.1','libstdc++6-4.1-dev',
+                                   'g++-4.4', 'libstdc++6-4.4-dev',
+                                   'g++-4.3', 'libstdc++6-4.3-dev',
+                                   'g++-4.1', 'libstdc++6-4.1-dev',
                                    'libsoprano4', 'soprano-daemon',
                                    'gs-common', 'ghostscript',
                                    'acheck', 'acheck-rules',
@@ -368,12 +370,11 @@ class PackagesDB:
                                    'python-wxversion', 'python-wxgtk2.6',
                                    'ispell', 'iamerican',
                                    'strongswan-starter', 'strongswan-ikev1',
-                                   'xserver-xorg', 'xserver-xorg-core', 'xserver-xorg-video-all',
+                                   'xserver-xorg', 'xserver-xorg-core', 'xserver-xorg-video-all', 'xserver-xorg-input-all ', 'xserver-xorg-input-evdev'
                                    'tasksel', 'tasksel-data',
                                    'bootcd', 'bootcd-i386',
                                    'hugs', 'libhugs-base', 'libhugs-base-bundled', 'libhugs-haskell98-bundled', 'libhugs-haskell98',
                                    'mono-runtime', 'mono-2.0-gac', 'mono-gac', 'libmono-system2.0-cil', 'libmono-security2.0-cil', 'libmono-system-web2.0-cil', 'libmono2.0-cil',
-                                   'gcj-4.3', 'libgcj9-dev',
                                    'abuse', 'abuse-frabs',
                                    'heroes-sdl', 'heroes-common',
                                    'libroot-io5.24', 'libroot-core5.24',
@@ -389,10 +390,11 @@ class PackagesDB:
                                    'python-scientific', 'python-netcdf',
                                    'audacious', 'audacious-plugins',
                                    'sysklogd', 'klogd',
-                                   'gdc-4.1', 'libphobos-4.1-dev ',
+                                   'gdc-4.1', 'libphobos-4.1-dev',
                                    'bochs', 'bochs-wx',
                                    'libcv-dev', 'libcvaux-dev',
                                    'libpoconetssl8', 'libpococrypto8',
+                                   'apt-watch', 'apt-watch-backend', 'apt-watch-backend',
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
