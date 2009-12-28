@@ -370,11 +370,12 @@ class PackagesDB:
                                    'python-wxversion', 'python-wxgtk2.6',
                                    'ispell', 'iamerican',
                                    'strongswan-starter', 'strongswan-ikev1',
-                                   'xserver-xorg', 'xserver-xorg-core', 'xserver-xorg-video-all', 'xserver-xorg-input-all ', 'xserver-xorg-input-evdev'
+                                   'xserver-xorg', 'xserver-xorg-core', 'xserver-xorg-video-all', 'xserver-xorg-input-all ', 'xserver-xorg-input-evdev',
                                    'tasksel', 'tasksel-data',
                                    'bootcd', 'bootcd-i386',
                                    'hugs', 'libhugs-base', 'libhugs-base-bundled', 'libhugs-haskell98-bundled', 'libhugs-haskell98',
                                    'mono-runtime', 'mono-2.0-gac', 'mono-gac', 'libmono-system2.0-cil', 'libmono-security2.0-cil', 'libmono-system-web2.0-cil', 'libmono2.0-cil',
+                                   'monodoc-manual', 'monodoc-browser',
                                    'abuse', 'abuse-frabs',
                                    'heroes-sdl', 'heroes-common',
                                    'libroot-io5.24', 'libroot-core5.24',
@@ -395,6 +396,9 @@ class PackagesDB:
                                    'libcv-dev', 'libcvaux-dev',
                                    'libpoconetssl8', 'libpococrypto8',
                                    'apt-watch', 'apt-watch-backend', 'apt-watch-backend',
+                                   'lbreakout2', 'lbreakout2-data',
+                                   'cowbuilder', 'cowdancer',
+                                   'ggz-kde-games', 'ggz-kde-games-data',
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
