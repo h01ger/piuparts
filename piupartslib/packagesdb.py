@@ -372,7 +372,7 @@ class PackagesDB:
                                    'tasksel', 'tasksel-data',
                                    'bootcd', 'bootcd-i386',
                                    'hugs', 'libhugs-base', 'libhugs-base-bundled', 'libhugs-haskell98-bundled', 'libhugs-haskell98',
-                                   'mono-runtime', 'mono-2.0-gac', 'mono-gac', 'libmono-system2.0-cil', 'libmono-security2.0-cil',
+                                   'mono-runtime', 'mono-2.0-gac', 'mono-gac', 'libmono-system2.0-cil', 'libmono-security2.0-cil', 'libmono-system-web2.0-cil', 'libmono2.0-cil',
                                    'gcj-4.3', 'libgcj9-dev',
                                    'abuse', 'abuse-frabs',
                                    'heroes-sdl', 'heroes-common',
@@ -389,6 +389,10 @@ class PackagesDB:
                                    'python-scientific', 'python-netcdf',
                                    'audacious', 'audacious-plugins',
                                    'sysklogd', 'klogd',
+                                   'gdc-4.1', 'libphobos-4.1-dev ',
+                                   'bochs', 'bochs-wx',
+                                   'libcv-dev', 'libcvaux-dev',
+                                   'libpoconetssl8', 'libpococrypto8',
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
