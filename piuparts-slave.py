@@ -452,7 +452,7 @@ def main():
             idle = False
         if idle:
           logging.info("Nothing to do, sleeping for a bit")
-          time.sleep(int(self._idle_sleep))
+          time.sleep(int(global_config["idle-sleep"]))
 
 
 if __name__ == "__main__":

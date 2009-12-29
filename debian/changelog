@@ -16,6 +16,7 @@ piuparts (0.39) UNRELEASED; urgency=low
     (=waiting-to-be-tested is calculated correctly). This bug was present
     before this change.
 TODO: make packagesDB.py read config
+  * piuparts-slave.py: fix crash when going into sleep when idle. 
 
  -- Holger Levsen <holger@debian.org>  Fri, 18 Dec 2009 13:32:16 +0100
 
