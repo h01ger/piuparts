@@ -448,7 +448,7 @@ def main():
             section.run()
         idle = True
         for section_name in section_names:
-          if len(os.listdir(os.path.join(global_config["master-directory"],section_name,"reserved"))) > 0:
+          if os.listdir(os.path.join(global_config["master-directory"],section_name,"reserved")):
             idle = False
         if idle:
           logging.info("Nothing to do, sleeping for a bit")
