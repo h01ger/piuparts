@@ -40,6 +40,7 @@
       These pages are updated daily.
      </td>
     </tr>
+    <tr class="titlerow">
      <td class="titlecell">
       News
      </td>
