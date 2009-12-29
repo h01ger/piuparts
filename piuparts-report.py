@@ -912,7 +912,7 @@ class Section:
     def write_state_pages(self):
         for state in self._binary_db.get_states():
             logging.debug("Writing page for %s" % state)
-            list = "<ul>\n"
+            list = ""
             for package in self._binary_db.get_packages_in_state(state):
                 list += "<li id=\"%s\">%s (%s)" % (
                                          package["Package"],
@@ -926,7 +926,6 @@ class Section:
                                   emphasize_reason(html_protect(self._binary_db.state_by_name(dep))))
                     list += "</ul>\n"
                 list += "</li>\n"
-            list += "</ul>\n"
             htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
             write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
                                         "section_navigation": create_section_navigation(self._section_names,self._config.section),
