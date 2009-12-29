@@ -860,8 +860,8 @@ class Section:
              }))
             f.close()
             if state == "failed-testing":
-              count_bugged = string.count(analysis,"/bugged/")-1 
-              count_failed = string.count(analysis,"/fail/")-1 
+              count_bugged = string.count(analysis,"/bugged/")
+              count_failed = string.count(analysis,"/fail/") 
               if count_bugged != 0 or count_failed != 0:
                 substats = ": "
               if count_bugged != 0:
