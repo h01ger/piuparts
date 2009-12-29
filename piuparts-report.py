@@ -33,6 +33,7 @@ import urllib
 import shutil
 import string
 import re
+import string
 
 # if python-rpy ain't installed, we don't draw fancy graphs
 try:
@@ -859,8 +860,8 @@ class Section:
              }))
             f.close()
             if state == "failed-testing":
-              count_bugged = count(analysis,"/bugged/")-1 
-              count_failed = count(analysis,"/fail/")-1 
+              count_bugged = string.count(analysis,"/bugged/")-1 
+              count_failed = string.count(analysis,"/fail/")-1 
               if count_bugged != 0 or count_failed != 0:
                 substats = ": "
               if count_bugged != 0:
