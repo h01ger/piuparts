@@ -867,7 +867,7 @@ class Section:
               substats = ""
             link += "<li><a href=%s>%s</a>%s</li>" % (
                                                                        template[:-len(".tpl")]+".html", 
-                                                                       linktarget_by_template[template]
+                                                                       linktarget_by_template[template],
                                                                        substats
                                                                       )
         link += "</ul>"
