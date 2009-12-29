@@ -859,6 +859,7 @@ class Section:
                "rows": rows,
              }))
             f.close()
+            substats = ""
             if state == "failed-testing":
               count_bugged = string.count(rows,"/bugged/")
               count_failed = string.count(rows,"/fail/") 
@@ -870,13 +871,11 @@ class Section:
                 substats += ", "
               if count_failed != 0:
                 substats += "%s failed" % count_failed 
-            else:
-              substats = ""
             link += "<li><a href=%s>%s</a>%s</li>" % (
                                                                        template[:-len(".tpl")]+".html", 
                                                                        linktarget_by_template[template],
                                                                        substats
-                                                                      )
+                                                     )
         link += "</ul>"
         return link
 
