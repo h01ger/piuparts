@@ -371,6 +371,7 @@ class PackagesDB:
                                    'ispell', 'iamerican',
                                    'strongswan-starter', 'strongswan-ikev1',
                                    'xserver-xorg', 'xserver-xorg-core', 'xserver-xorg-video-all', 'xserver-xorg-input-all ', 'xserver-xorg-input-evdev', 'xserver-xorg-input-synaptics', 'xserver-xorg-input-wacom',
+                                   'xserver-xorg-video-apm', 'xserver-xorg-video-ark', 'xserver-xorg-video-ati', 'xserver-xorg-video-chips', 'xserver-xorg-video-cirrus', 'xserver-xorg-video-fbdev', 'xserver-xorg-video-i128', 'xserver-xorg-video-intel', 'xserver-xorg-video-mga', 'xserver-xorg-video-neomagic', 'xserver-xorg-video-nv', 'xserver-xorg-video-radeonhd', 'xserver-xorg-video-rendition', 'xserver-xorg-video-s3', 'xserver-xorg-video-s3virge', 'xserver-xorg-video-savage', 'xserver-xorg-video-siliconmotion', 'xserver-xorg-video-sis', 'xserver-xorg-video-sisusb', 'xserver-xorg-video-tdfx', 'xserver-xorg-video-trident', 'xserver-xorg-video-tseng', 'xserver-xorg-video-vesa', 'xserver-xorg-video-openchrome', 'xserver-xorg-video-voodoo', 'xserver-xorg-video-v4l', 'xserver-xorg-video-vmware', 
                                    'tasksel', 'tasksel-data',
                                    'bootcd', 'bootcd-i386',
                                    'hugs', 'libhugs-base', 'libhugs-base-bundled', 'libhugs-haskell98-bundled', 'libhugs-haskell98',
