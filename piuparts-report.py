@@ -128,7 +128,7 @@ HTML_HEADER = """
     </tr>
     <tr>
      <td class="contentcell">
-      <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?tag=piuparts;users=debian-qa@lists.debian.org&archive=both" target="_blank">Bugs filed</a> 
+      <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?tag=piuparts;users=debian-qa@lists.debian.org&amp;archive=both" target="_blank">Bugs filed</a> 
      </td>
     </tr>     
     $section_navigation
@@ -859,9 +859,9 @@ class Section:
              }))
             f.close()
             if state == "failed-testing":
-              substats = "fail: %s bugged: %s</li>" % (
-                                                   len(analysis.split("/fail/"))/2 - 1,
-                                                   len(analysis.split("/bugged/"))/2 - 1,
+              substats = ": %s bugged, %s failed</li>" % (
+                                                   len(analysis.split("/bugged/")),
+                                                   len(analysis.split("/fail/")),
                                                   )
             else:
               substats = ""
