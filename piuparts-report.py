@@ -860,8 +860,8 @@ class Section:
             f.close()
             if state == "failed-testing":
               substats = "fail: %s bugged: %s</li>" % (
-                                                   analysis.split("/fail/").length/2 - 1,
-                                                   analysis.split("/bugged/").length/2 - 1,
+                                                   len(analysis.split("/fail/"))/2 - 1,
+                                                   len(analysis.split("/bugged/"))/2 - 1,
                                                   )
             else:
               substats = ""
