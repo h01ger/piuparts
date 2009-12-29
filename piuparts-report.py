@@ -186,10 +186,10 @@ HTML_FOOTER = """
    GPL2 <a href="http://packages.debian.org/changelogs/pool/main/p/piuparts/current/copyright" target="_blank">licenced</a>.
    Weather icons are from the <a href="http://tango.freedesktop.org/Tango_Icon_Library" target="_blank">Tango Icon Library</a>.
    <a href="http://validator.w3.org/check?uri=referer">
-    <img border="0" src="/images/valid-html401.png" alt="Valid HTML 4.01!" height="15" width="80" valign="middle">
+    <img border="0" src="/images/valid-html401.png" alt="Valid HTML 4.01!" height="15" width="80" align="middle">
    </a>
    <a href="http://jigsaw.w3.org/css-validator/check/referer">
-    <img border="0" src="/images/w3c-valid-css.png" alt="Valid CSS!"  height="15" width="80" valign="middle">
+    <img border="0" src="/images/w3c-valid-css.png" alt="Valid CSS!"  height="15" width="80" align="middle">
    </a>
   </div>
  </div>
@@ -859,10 +859,16 @@ class Section:
              }))
             f.close()
             if state == "failed-testing":
-              substats = ": %s bugged, %s failed</li>" % (
-                                                   len(analysis.split("/bugged/")),
-                                                   len(analysis.split("/fail/")),
-                                                  )
+              count_bugged = len(analysis.split("/bugged/"))-1 
+              count_failed = len(analysis.split("/fail/"))-1 
+              if count_bugged != 0 or count_failed != 0:
+                substats = ": "
+              if count_bugged != 0:
+                substats += "%s bugged" % count_bugged
+              if count_bugged != 0 and count_failed != 0:
+                substats += ", "
+              if count_failed != 0:
+                substats += "%s failed" % count_failed 
             else:
               substats = ""
             link += "<li><a href=%s>%s</a>%s</li>" % (
