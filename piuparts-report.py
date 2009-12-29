@@ -81,7 +81,8 @@ HTML_HEADER = """
       <a href="/">Overview</a>
      </td>
     </tr>
-      <td class="contentcell">
+    <tr class="normalrow">
+     <td class="contentcell">
       <a href="http://wiki.debian.org/piuparts" target="_blank">About</a>
      </td>
     </tr>
@@ -89,7 +90,7 @@ HTML_HEADER = """
      <td class="contentcell">
       <a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">FAQ</a> 
      </td>
-     </tr>     
+    </tr>     
     <tr class="normalrow">
      <td class="contentcell">
       <a href="http://bugs.debian.org/src:piuparts" target="_blank">Bugs</a> / <a href="http://svn.debian.org/viewsvn/piuparts/trunk/TODO" target="_blank">ToDo</a>
@@ -105,7 +106,6 @@ HTML_HEADER = """
       <a href="/doc/README.html" target="_blank">piuparts README</a>
      </td>
     </tr>
-    <tr class="titlerow">
     <tr class="normalrow">
      <td class="contentcell">
       <a href="/doc/piuparts.1.html" target="_blank">piuparts manpage</a>
