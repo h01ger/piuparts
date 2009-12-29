@@ -858,8 +858,18 @@ class Section:
                "rows": analysis,
              }))
             f.close()
-
-            link += "<li><a href=%s>%s</a></li>" % (template[:-len(".tpl")]+".html", linktarget_by_template[template])
+            if state == "failed-testing":
+              substats = "fail: %s bugged: %s</li>" % (
+                                                   analysis.split("/fail/").length - 1)
+                                                   analysis.split("/bugged/").length - 1)
+                                                  )
+            else:
+              substats = ""
+            link += "<li><a href=%s>%s</a>%s</li>" % (
+                                                                       template[:-len(".tpl")]+".html", 
+                                                                       linktarget_by_template[template]
+                                                                       substats
+                                                                      )
         link += "</ul>"
         return link
 
