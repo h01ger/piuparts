@@ -361,7 +361,7 @@ linktarget_by_template = {
     "post_installation_script_error.tpl": "due to post-installation maintainer script failed",
     "pre_removal_script_error.tpl": "due to pre-removal maintainer script failed",
     "post_removal_script_error.tpl": "due to post-removal maintainer script failed",
-    "output_from_cron_error.tpl": "due to output from cron after removal",
+    "cron_error_after_removal_error.tpl": "due to errors from cronjob after removal",
     "problems_and_no_force_error.tpl": "due to not enough force being used"
 }
 
@@ -859,8 +859,8 @@ class Section:
              }))
             f.close()
             if state == "failed-testing":
-              count_bugged = len(analysis.split("/bugged/"))-1 
-              count_failed = len(analysis.split("/fail/"))-1 
+              count_bugged = count(analysis,"/bugged/")-1 
+              count_failed = count(analysis,"/fail/")-1 
               if count_bugged != 0 or count_failed != 0:
                 substats = ": "
               if count_bugged != 0:
