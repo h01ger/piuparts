@@ -846,7 +846,7 @@ class Section:
 
             tpl = os.path.join(self._output_directory, template)
             f = file(tpl, "r")
-            analysis = file.read(f)
+            rows = file.read(f)
             f.close()
             os.unlink(tpl)
 
@@ -856,12 +856,12 @@ class Section:
             f.write(htmlpage.safe_substitute( {
                "section_navigation": create_section_navigation(self._section_names,self._config.section),
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-               "rows": analysis,
+               "rows": rows,
              }))
             f.close()
             if state == "failed-testing":
-              count_bugged = string.count(analysis,"/bugged/")
-              count_failed = string.count(analysis,"/fail/") 
+              count_bugged = string.count(rows,"/bugged/")
+              count_failed = string.count(rows,"/fail/") 
               if count_bugged != 0 or count_failed != 0:
                 substats = ": "
               if count_bugged != 0:
