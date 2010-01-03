@@ -42,18 +42,13 @@ if [ -s $FILE ] ; then
 	echo "(By grep'ing for 'tar: .*.tar.gz: Cannot open: No such file or directory'"
 	echo "in failed logs.)"
 	echo 
-	echo "Please review the following logfiles and most likely remove them." 
-        echo
-	echo "If it is always the same package failing, it's likely to be an issue in the"
+	echo "Please review the following logfiles/packages."
+        echo "If it is always the same package failing, it's likely to be an issue in the"
 	echo "package."
 	echo
-	sort -u $FILE | sed -e "s#$MASTER#http://piuparts.debian.org/#g"
+		sort -u $FILE | xargs rm -v
 	echo
-	sort -u $FILE | sed -e "s#$MASTER#less $MASTER#"
-	echo
-	echo "----------------------------------------------------------------------"
-	echo
-	sort -u $FILE | sed -e "s#$MASTER#rm $MASTER#"
+        echo "----------------------------------------------------------------------"
 	echo
 fi
 rm $FILE
