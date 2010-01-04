@@ -16,5 +16,6 @@
 
 #
 # delete chroot-tarballs once a month, so that new ones are created automatically
+# after that, kill and restart the slave session to recreate them
 #
-42 23 1 * * sudo rm -v /org/piuparts.debian.org/slave/*/*.tar.gz
+42 23 1 * * sudo rm -v /org/piuparts.debian.org/slave/*/*.tar.gz ; sudo screen -r piuparts-slave-screen -X quit ; sleep 60 ; sudo /home/piupartss/bin/slave_run
