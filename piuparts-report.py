@@ -906,7 +906,7 @@ class Section:
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell2\" colspan=\"2\">%d</td></tr>\n" % total_packages
         htmlpage = string.Template(HTML_HEADER + SECTION_INDEX_BODY_TEMPLATE + HTML_FOOTER)
         write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
-            "page_title": html_protect(self._config.section+" statistics");
+            "page_title": html_protect(self._config.section+" statistics"),
             "section_navigation": create_section_navigation(self._section_names,self._config.section),
             "time": time.strftime("%Y-%m-%d %H:%M %Z"),
             "section": html_protect(self._config.section),
