@@ -2072,7 +2072,7 @@ def main():
     # check if user has root privileges
     if os.getuid():
         print 'You need to be root to use piuparts.'
-        sys.exit(0)
+        sys.exit(1)
 
     logging.info("-" * 78)
     logging.info("To quickly glance what went wrong, scroll down to the bottom of this logfile.")
