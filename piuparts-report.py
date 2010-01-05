@@ -704,6 +704,7 @@ class Section:
             filename = template_path+".html"
             f = file(filename, "w")
             f.write(htmlpage.safe_substitute( {
+               "page_title": html_protect("Status for "+maintainer+" in "+self._config.section),               
                "section_navigation": create_section_navigation(self._section_names,self._config.section),
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": rows,
