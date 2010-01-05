@@ -50,7 +50,9 @@ CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 HTML_HEADER = """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
  <html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>About piuparts.d.o and News</title>
+  <title>
+   $page_title
+  </title>
   <link type="text/css" rel="stylesheet" href="/style.css">
   <link rel="shortcut icon" href="/favicon.ico">
  </head>
@@ -556,6 +558,7 @@ class Section:
         htmlpage = string.Template(HTML_HEADER + LOG_LIST_BODY_TEMPLATE + HTML_FOOTER)
         f = file(filename, "w")
         f.write(htmlpage.safe_substitute( {
+                    "page_title": html_protect(title+" in "+self._config.section),
                     "section_navigation": create_section_navigation(self._section_names,self._config.section),
                     "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                     "title": html_protect(title),
@@ -753,6 +756,7 @@ class Section:
           htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
           f = file(filename, "w")
           f.write(htmlpage.safe_substitute( {
+             "page_title": html_protect("Status of source package "+source),
              "section_navigation": create_section_navigation(self._section_names,self._config.section),
              "time": time.strftime("%Y-%m-%d %H:%M %Z"),
              "rows": sourcerows+binaryrows,
@@ -854,6 +858,7 @@ class Section:
             filename = os.path.join(self._output_directory, template[:-len(".tpl")]+".html")
             f = file(filename, "w")
             f.write(htmlpage.safe_substitute( {
+               "page_title": html_protect("Packages in state "+state+" "+linktarget_by_template[template]),
                "section_navigation": create_section_navigation(self._section_names,self._config.section),
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": rows,
@@ -901,6 +906,7 @@ class Section:
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell2\" colspan=\"2\">%d</td></tr>\n" % total_packages
         htmlpage = string.Template(HTML_HEADER + SECTION_INDEX_BODY_TEMPLATE + HTML_FOOTER)
         write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
+            "page_title": html_protect(self._config.section+" statistics");
             "section_navigation": create_section_navigation(self._section_names,self._config.section),
             "time": time.strftime("%Y-%m-%d %H:%M %Z"),
             "section": html_protect(self._config.section),
@@ -928,6 +934,7 @@ class Section:
                 list += "</li>\n"
             htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
             write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
+                                        "page_title": html_protect("Packages in state "+state+" in "+self._config.section),
                                         "section_navigation": create_section_navigation(self._section_names,self._config.section),
                                         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                         "state": html_protect(state),
@@ -1014,6 +1021,7 @@ def main():
           INDEX_BODY = "".join(read_file(os.path.join(output_directory,"index.tpl")))
         htmlpage = string.Template(HTML_HEADER + INDEX_BODY + HTML_FOOTER)
         write_file(os.path.join(output_directory,"index.html"), htmlpage.safe_substitute( {
+                                 "page_title": "About piuparts.d.o and News",
                                  "section_navigation": create_section_navigation(section_names),
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                               }))
