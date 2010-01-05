@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2010-01-05</b>: Reschedule testing for 319 failed packages in sid and 544 in squeeze, since --warn-on-others is now used.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2009-12-24</b>: Enable work-in-progress code to enable testing of packages with circular depends. This will allow testing of 5-6000 more packages in sid and squeeze, see #526046 and the 0.39 changelog for details. The list of packages with circular depends is currently hard-coded and will probably become a configuration option but not auto detected. But that's code yet to be written :-)
      </td>
     </tr>
