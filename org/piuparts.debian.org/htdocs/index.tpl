@@ -1,7 +1,7 @@
    <table class="righttable">
     <tr class="titlerow">
      <td class="titlecell">
-      piuparts.debian.org / piuparts.cs.helsinki.fi
+      About piuparts.d.o
      </td>
     </tr>
     <tr class="normalrow">
@@ -28,11 +28,11 @@
       To make sure piuparts is run on all packages, piuparts.debian.org was set up as a service running on 
       <a href="http://db.debian.org/machines.cgi?host=piatti" target="_blank">piatti.debian.org</a>. 
       This machine was generously donated by <a href="http://hp.com/go/debian/" target="_blank">HP</a> 
-      to run piuparts on the Debian archive and is hosted as piuparts.cs.helsinki.fi by 
-      the University of Helsinki, at the 
+      to run piuparts on the Debian archive and is hosted as 
+      <a href="http://piuparts.cs.helsinki.fi">piuparts.cs.helsinki.fi</a> by the University of Helsinki, at the 
       <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a>
       in Finland.
-      As this is still being polished, see the piuparts wiki page for more information on <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development and the piuparts setup on piatti</a>. Better reports, statistics, tools to report bugs as well as testing on other architectures is planned. Join #debian-qa if you want to help.
+      As this is still being polished, see the piuparts wiki page to get an overview about <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development and the piuparts setup on piatti</a>. Better reports, statistics, tools to report bugs as well as testing on other architectures is planned. Join #debian-qa if you want to help.
      </td>
     </tr>
     <tr class="normalrow">
