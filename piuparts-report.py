@@ -50,7 +50,7 @@ CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 HTML_HEADER = """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
  <html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>piuparts.debian.org / piuparts.cs.helsinki.fi</title>
+  <title>About piuparts.d.o and News</title>
   <link type="text/css" rel="stylesheet" href="/style.css">
   <link rel="shortcut icon" href="/favicon.ico">
  </head>
@@ -79,12 +79,12 @@ HTML_HEADER = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="/">Overview</a>
+      <a href="/">About + News</a>
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://wiki.debian.org/piuparts" target="_blank">About</a>
+      <a href="http://wiki.debian.org/piuparts" target="_blank">Overview</a>
      </td>
     </tr>
     <tr class="normalrow">
