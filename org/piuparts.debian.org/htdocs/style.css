@@ -173,6 +173,11 @@ a.bugged {
  background-color:#e0c0d0;
 }
 
+#bugged {
+ background-color:#e0c0d0;
+}
+
+
 a:link {
  color: #0000FF;
  text-decoration: none;
