@@ -872,7 +872,7 @@ class Section:
               if count_bugged != 0 or count_failed != 0:
                 substats = ": "
               if count_bugged != 0:
-                substats += "%s bugged" % count_bugged
+                substats += "<div id=\"bugged\">%s bugged</div>" % count_bugged
               if count_bugged != 0 and count_failed != 0:
                 substats += ", "
               if count_failed != 0:
