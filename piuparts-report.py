@@ -704,7 +704,7 @@ class Section:
             filename = template_path+".html"
             f = file(filename, "w")
             f.write(htmlpage.safe_substitute( {
-               "page_title": html_protect("Status for "+os.path.basename(maint_tpl[:-len("_tpl")])+" in "+self._config.section),               
+               "page_title": html_protect("Status of "+os.path.basename(maint_tpl[:-len("_tpl")])+" packages in "+self._config.section),               
                "section_navigation": create_section_navigation(self._section_names,self._config.section),
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": rows,
@@ -757,7 +757,7 @@ class Section:
           htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
           f = file(filename, "w")
           f.write(htmlpage.safe_substitute( {
-             "page_title": html_protect("Status of source package "+source),
+             "page_title": html_protect("Status of source package "+source+" in "+self._config.section),
              "section_navigation": create_section_navigation(self._section_names,self._config.section),
              "time": time.strftime("%Y-%m-%d %H:%M %Z"),
              "rows": sourcerows+binaryrows,
