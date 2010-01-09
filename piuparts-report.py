@@ -589,7 +589,7 @@ class Section:
         for dir in dirs:
           if dir == "fail":
             style = " class=\"needs-bugging\""
-          else
+          else:
             style = ""
           for basename in logs_by_dir[dir]:
             if basename.startswith(package_name+"_") and basename.endswith(".log"):
