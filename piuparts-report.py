@@ -587,10 +587,14 @@ class Section:
     def find_links_to_logs(self, package_name, dirs, logs_by_dir):
         links = []
         for dir in dirs:
+          if dir == "fail":
+            style = " class=\"needs-bugging\""
+          else
+            style = ""
           for basename in logs_by_dir[dir]:
             if basename.startswith(package_name+"_") and basename.endswith(".log"):
               package, version = basename[:-len(".log")].split("_")
-              links.append("<a href=\"/%s\">%s</a>" % (os.path.join(self._config.section, dir, basename),html_protect(version)))
+              links.append("<a href=\"/%s\"%s>%s</a>" % (os.path.join(self._config.section, dir, basename),style,html_protect(version)))
         return links
 
     def link_to_maintainer_summary(self, maintainer):
@@ -872,11 +876,11 @@ class Section:
               if count_bugged != 0 or count_failed != 0:
                 substats = ": "
               if count_bugged != 0:
-                substats += "<span id=\"bugged\">%s bugged</span>" % count_bugged
+                substats += "%s bugged" % count_bugged
               if count_bugged != 0 and count_failed != 0:
                 substats += ", "
               if count_failed != 0:
-                substats += "%s failed" % count_failed 
+                substats += "<span id=\"needs-bugging\">%s failed</span>" % count_failed
             link += "<li><a href=%s>%s</a>%s</li>" % (
                                                                        template[:-len(".tpl")]+".html", 
                                                                        linktarget_by_template[template],
