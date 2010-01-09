@@ -169,12 +169,16 @@ td {
  padding-right: 6px;
 }
 
-a.bugged {
+a.needs-bugging {
  background-color:#e0c0d0;
 }
 
-#bugged {
+#needs-bugging {
  background-color:#e0c0d0;
+}
+
+a.bugged {
+ background-color:#9090d0;
 }
 
 
