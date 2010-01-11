@@ -365,7 +365,8 @@ linktarget_by_template = {
     "pre_removal_script_error.tpl": "due to pre-removal maintainer script failed",
     "post_removal_script_error.tpl": "due to post-removal maintainer script failed",
     "cron_error_after_removal_error.tpl": "due to errors from cronjob after removal",
-    "problems_and_no_force_error.tpl": "due to not enough force being used"
+    "problems_and_no_force_error.tpl": "due to not enough force being used",
+    "needs_remove_but_remove_is_disabled_error.tpl": "due a problem with piuparts not well understood yet"
 }
 
 
