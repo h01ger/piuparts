@@ -5,8 +5,8 @@ mandir = $(sharedir)/man
 man1dir = $(mandir)/man1
 libdir = $(prefix)/lib
 docdir = $(prefix)/share/doc/piuparts/
-site24 = $(libdir)/python2.4/site-packages
 site25 = $(libdir)/python2.5/site-packages
+site26 = $(libdir)/python2.6/site-packages
 etcdir = $(prefix)/etc
 distribution=${shell dpkg-parsechangelog | sed -n 's/^Distribution: *//p'}
 ifeq ($(distribution),UNRELEASED)
@@ -49,10 +49,10 @@ install:
 	for file in piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
 	    install -m 0755 $$file.py $(sharedir)/piuparts/$$file ; done
 	
-	install -d $(site24)/piupartslib
 	install -d $(site25)/piupartslib
-	install -m 0644 piupartslib/*.py $(site24)/piupartslib
+	install -d $(site26)/piupartslib
 	install -m 0644 piupartslib/*.py $(site25)/piupartslib
+	install -m 0644 piupartslib/*.py $(site26)/piupartslib
 
 check:
 	python piuparts.py unittest

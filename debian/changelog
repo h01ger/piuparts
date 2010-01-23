@@ -17,7 +17,9 @@ piuparts (0.39) UNRELEASED; urgency=low
     before this change.
 TODO: make packagesDB.py read config
   * piuparts-slave.py: fix crash when going into sleep when idle. 
-  * Add ${misc:Depends} to Depends in debian/control.
+  * Add ${misc:Depends} to Depends in debian/control. 
+  * Makefile: support python 2.5 and 2.6 instead of 2.4 and 2.5, adjust
+    debian/control accordingly.
 
  -- Holger Levsen <holger@debian.org>  Fri, 18 Dec 2009 13:32:16 +0100
 
