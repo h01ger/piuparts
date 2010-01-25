@@ -39,7 +39,7 @@ crontab crontab
 svn up
 svn status
 grep -q PYTHONPATH .bashrc || {
-	echo PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages >> .bashrc
+	echo PYTHONPATH=/org/piuparts.debian.org/lib/python2.5/site-packages:/org/piuparts.debian.org/lib/python2.6/site-packages >> .bashrc
 	echo export PYTHONPATH >> .bashrc
 }
 
@@ -56,7 +56,7 @@ fi
 sudo su - piupartsm -c "pwd ; svn up ; svn status"
 sudo su - piupartsm -c "crontab crontab"
 grep -q PYTHONPATH ~piupartsm/.bashrc || {
-	echo PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages >> ~piupartsm/.bashrc
+	echo PYTHONPATH=/org/piuparts.debian.org/lib/python2.5/site-packages:/org/piuparts.debian.org/lib/python2.6/site-packages >> ~piupartsm/.bashrc
 	echo export PYTHONPATH >> ~piupartsm/.bashrc
 }
 
