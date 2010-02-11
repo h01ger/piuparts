@@ -6,6 +6,12 @@ for 0.38 and later (split this list):
 
 - move logfiles from bugged to archived if a newer version exists in pass
 - move logfiles from fail to bugged if a lower version exists in bugged
+- garbage collection: the best approach is probably to track bugginess 
+  status of packages via the bts and remove the "bugged" directory-status
+  altogether. Then failed and successful logs older then 4/8 weeks could 
+  just be deleted periodically. 
+  Another approch is for each logfile to check if the package still exist 
+  in $distro and if not, delete it.
 
 - So it seems piuparts needs to get fixed to take into account packages
   being removed due to Conflicts. And probably should purge those
