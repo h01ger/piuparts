@@ -339,24 +339,28 @@ def test_package(config, package, packages_files):
     output.write("\n")
     package.dump(output)
     output.write("\n")
+   
+    # omit distro test if chroot-tgz is not specified.
+    if config["chroot-tgz"]: 
+      command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s " % \
+                  config
+      if config["keep-sources-list"] in ["yes", "true"]:
+          command += "--keep-sources-list "
     
-    command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s " % \
-                config
-    if config["keep-sources-list"] in ["yes", "true"]:
-        command += "--keep-sources-list "
-    
-    if config["mirror"]:
-        command += "--mirror %s " % config["mirror"]
-    command += package["Package"]
+      if config["mirror"]:
+          command += "--mirror %s " % config["mirror"]
+      command += package["Package"]
 
-    logging.debug("Executing: %s" % command)
-    output.write("Executing: %s\n" % command)
-    f = os.popen("{ %s; } 2>&1" % command, "r")
-    for line in f:
-        output.write(line)
-    status = f.close()
-    if status is None:
-        status = 0
+      logging.debug("Executing: %s" % command)
+      output.write("Executing: %s\n" % command)
+      f = os.popen("{ %s; } 2>&1" % command, "r")
+      for line in f:
+          output.write(line)
+      status = f.close()
+      if status is None:
+          status = 0
+    else:
+          status = 0
 
     if status == 0 and upgrade_testable(config, package, packages_files):
         distros = config["upgrade-test-distros"].split()

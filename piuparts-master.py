@@ -55,8 +55,8 @@ class Config(piupartslib.conf.Config):
             {
                 "log-file": None,
                 "packages-url": None,
-            },
-            ["packages-url"])
+                "master-directory": ".",
+            }, "")
 
 
 class CommandSyntaxError(Exception):
@@ -181,11 +181,18 @@ class Master(Protocol):
 def main():
     # piuparts-master is always called by the slave with a section as argument
     if len(sys.argv) == 2:
+        global_config = Config(section="global")
+        global_config.read(CONFIG_FILE)
+        master_directory = global_config["master-directory"]
+
         section = sys.argv[1]
         config = Config(section=section)
         config.read(CONFIG_FILE)
     
         setup_logging(logging.DEBUG, config["log-file"])
+
+        if not os.path.exists(os.path.join(master_directory, section)):
+          os.makedirs(os.path.join(master_directory, section))
     
         logging.info("Fetching %s" % config["packages-url"])
         packages_file = piupartslib.open_packages_url(config["packages-url"])
@@ -193,7 +200,9 @@ def main():
         packages_file.close()
         while m.do_transaction():
             pass
-
+    else:
+        print 'piuparts-master needs to be called with a valid sectionname as argument, exiting...'
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

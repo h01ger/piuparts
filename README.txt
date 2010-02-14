@@ -382,13 +382,13 @@ These settings are used for all sections. Except for the first two they are all 
   
 * "piuparts-cmd" is the command the slave uses to start piuparts. It should include 'sudo' if necessary so that piuparts runs with sufficient priviledges to do its testing (and that means root priviledges).
   
-* "distro" is the distribution the slave should tell piuparts to use for basic install/purge testing.
+* "distro" is the distribution the slave should tell piuparts to use for basic install/purge testing. This can be left empty if only upgrade tests should be run.
   
-* "chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the basic install/purge testing. If the tarball doesn't exist, the slave creates it.
+* "chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the basic install/purge testing. If the tarball doesn't exist, the slave creates it. This can be left empty if only upgrade tests should be run.
 
-* "upgrade-test-distros" is the space delimited list of distributions the slave should use for testing upgrades between distributions (i.e., Debian versions). Currently, "lenny squeeze sid" is a good choice.  Make this empty if you do not want to run upgrade tests.
+* "upgrade-test-distros" is the space delimited list of distributions the slave should use for testing upgrades between distributions (i.e., Debian versions). Currently, "lenny squeeze sid" is a good choice.  Leave this unset if you do not want to run upgrade tests.
 
-* "upgrade-test-chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the first distribution in upgrade-test-distros. If the file does not exist, the slave creates it.
+* "upgrade-test-chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the first distribution in upgrade-test-distros. If the file does not exist, the slave creates it. This can be left empty if only basic tests should be run.
 
 * "max-reserved" is the maximum number of packages the slave will reserve at once. It should be large enough that the host that runs master is not unduly stressed by frequent ssh logins and running master (both of which take quite a bit of CPU cycles), yet at the same time it should not be so large that one slave grabs so many packages all other slaves just sit idle. The number obviously depends on the speed of the slave. A good value seems to be enough to let the slave test packages for about an hour before reporting results and reserving more. For a contemporary AMD64 machine with a reasonably fast disk subsystem the value 50 seems to work fine.
 
