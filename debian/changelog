@@ -7,6 +7,7 @@ piuparts (0.39) UNRELEASED; urgency=low
      - report packages which failed due to a problem with pre-depends.
      - visual improvements in the output.
      - ignore udebs and binaries from other archs too.
+     - graph is generated using all the available data points.
   * piupartsib/packagesdb.py: automatically break circular dependencies when
     there are only circular dependencies left, using a configurable list of
     circular depdencies in piuparts.conf (Closes: #526046)

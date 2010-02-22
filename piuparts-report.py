@@ -841,13 +841,15 @@ class Section:
         r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
         r('cname <- c("date",rep(colnames(t)))')
         # here we define how many days we wants stats for (163=half a year)
-        r('v <- t[(nrow(t)-163):nrow(t),0:12]')
+        #r('v <- t[(nrow(t)-163):nrow(t),0:12]')
+        # make graph since day 1  
+        r('v <- t[0:nrow(t),0:12]')
         # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
         r('palette(c("#4e9a06", "#ef2929", "#73d216", "#d3d7cf", "#5c3566", "#c4a000", "#fce94f", "#a40000", "#888a85", "#2e3436", "#8ae234",  "#729fcf","#204a87"))')
         r('bitmap(file="'+pngfile+'",type="png16m",width=16,height=9,pointsize=10,res=100)')
-        r('barplot(t(v),col = 1:13, main="Binary packages per state in '+self._config.section+' (past half year)", xlab="", ylab="Number of binary packages",space=0.1,border=0)')
+        r('barplot(t(v),col = 1:13, main="Binary packages per state in '+self._config.section+'", xlab="", ylab="Number of binary packages",space=0.1,border=0)')
         r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
-        return "<tr class=\"normalrow\"> <td class=\"contentcell2\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"800\" alt=\"Binary package states in the last half year\"></a></td></tr>\n" % ("states.png", self._config.section, "states.png")
+        return "<tr class=\"normalrow\"> <td class=\"contentcell2\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"800\" alt=\"Binary package states in %s\"></a></td></tr>\n" % ("states.png", self._config.section, "states.png", self._config.section)
 
     def create_and_link_to_analysises(self,state):
         link="<ul>"
@@ -908,7 +910,7 @@ class Section:
         try:
           tablerows += self.make_stats_graph();
         except:
-          logging.debug("python-rpy not installed, disabled graphs.")
+          logging.debug("Error generating the graph images, probably python-rpy is not installed, disabling graphs.")
 
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell2\" colspan=\"2\">%d</td></tr>\n" % total_packages
         htmlpage = string.Template(HTML_HEADER + SECTION_INDEX_BODY_TEMPLATE + HTML_FOOTER)
@@ -1020,7 +1022,7 @@ def main():
             section.generate_output(master_directory=master_directory,output_directory=output_directory,section_names=section_names)
             sections.append(section)
 
-
+        # main page
         logging.debug("Writing index page")
         # FIXME: I'm sure the next 3 lines can be written more elegant..
         INDEX_BODY = INDEX_BODY_TEMPLATE
@@ -1032,6 +1034,13 @@ def main():
                                  "section_navigation": create_section_navigation(section_names),
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                               }))
+        # daily report
+        #generate_daily_report();
+
+        # run-parts 
+        # move the scripts to /usr/share/piuparts/sm-tools (or such)
+        # (what is now started via piupartsm/crontab
+
     else:
         logging.debug("Warning: %s does not exist!?! Creating it for you now." % master_directory)
         os.mkdir(master_directory)
