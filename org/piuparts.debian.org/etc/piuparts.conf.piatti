@@ -6,7 +6,7 @@
 #
 
 [global]
-sections = sid squeeze lenny2squeeze
+sections = squeeze sid lenny2squeeze
 master-host = localhost
 master-user = piupartsm
 master-directory = /org/piuparts.debian.org/master/
