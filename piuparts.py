@@ -1975,7 +1975,7 @@ def parse_command_line():
                            "recommended to use this option with one package "
                            "at a time.")
 
-    parser.add_option("warn-on-leftovers-after-purge",
+    parser.add_option("--warn-on-leftovers-after-purge",
                       action="store_true", default=False,
                       help="Print a warning rather than failing if "
                            "files are left behind after purge.")
