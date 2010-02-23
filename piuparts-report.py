@@ -268,6 +268,19 @@ SECTION_INDEX_BODY_TEMPLATE = """
    </table>
 """
 
+MAINTAINER_BODY_TEMPLATE = """
+   <table class="righttable">
+    <tr class="titlerow">
+     <td class="titlecell" colspan="6">
+      $maintainer
+     </td>
+    </tr>
+    $distrolinks
+    $rows
+   </table>
+"""
+
+
 SOURCE_PACKAGE_BODY_TEMPLATE = """
    <table class="righttable">
     $rows
@@ -705,12 +718,22 @@ class Section:
                      rows += file.read(f)
                      f.close()
                      os.unlink(filename)
-     
-            htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
+
+            maintainer = os.path.basename(maint_tpl[:-len("_tpl")])
+
+            distrolinks = "<tr class=\"normalrow\"><td class=\"labelcell\">other distributions: </td><td class=\"contentcell2\" colspan=\"5\">"
+            for section in self._section_names:
+              if section != self._config.section:
+                distrolinks += "<a href=\"/"+section+"/maintainer/"+maintainer_subdir(maintainer)+"/"+maintainer+".html\">"+html_protect(section)+"</a> "
+            distrolinks += "</td></tr>"
+
+            htmlpage = string.Template(HTML_HEADER + MAINTAINER_BODY_TEMPLATE + HTML_FOOTER)
             filename = template_path+".html"
             f = file(filename, "w")
             f.write(htmlpage.safe_substitute( {
-               "page_title": html_protect("Status of "+os.path.basename(maint_tpl[:-len("_tpl")])+" packages in "+self._config.section),               
+               "page_title": html_protect("Status of "+maintainer+" packages in "+self._config.section),
+               "maintainer": html_protect(maintainer+" in "+self._config.section),
+               "distrolinks": distrolinks,
                "section_navigation": create_section_navigation(self._section_names,self._config.section),
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": rows,
