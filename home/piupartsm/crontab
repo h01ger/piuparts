@@ -4,7 +4,7 @@
 # create reports once a day
 #  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
 #
-0 0 * * * ( /home/piupartsm/bin/detect_well_known_errors ; find /org/piuparts.debian.org/master/*/fail  -type f -mtime 1 -exec ls -rt1 {} \;|sed s#^/org/#http://#g | sed s#/master/#/#g ; PYTHONPATH=/org/piuparts.debian.org/lib/python2.5/site-packages:/org/piuparts.debian.org/lib/python2.6/site-packages nice python /org/piuparts.debian.org/share/piuparts/piuparts-report  2>&1 )  | mail -s piuparts-report piupartsm
+0 0 * * * ( /home/piupartsm/bin/detect_well_known_errors ; find /org/piuparts.debian.org/master/*/fail  -type f -mtime 1 -exec ls -rt1 {} \;|sed s#^/org/#http://#g | sed s#/master/#/#g ; PYTHONPATH=/org/piuparts.debian.org/lib/python2.5/site-packages:/org/piuparts.debian.org/lib/python2.6/site-packages nice python /org/piuparts.debian.org/share/piuparts/piuparts-report  2>&1 ) > /org/piuparts.debian.org/htdocs/dailyreport.txt ; cat /org/piuparts.debian.org/htdocs/dailyreport.txt | mail -s piuparts-report piupartsm # failures of the day it should be, the rest is boring.
 
 #
 # monitor slave session every hour
@@ -19,13 +19,15 @@
 #
 # monitor for problems once a day
 #
+# FIXME now: use run-parts
 45 22 * * * /home/piupartsm/bin/detect_stale_mounts
 50 22 * * * /home/piupartsm/bin/detect_tmp_cruft
 55 22 * * * /home/piupartsm/bin/detect_network_issues
 0  23 * * * /home/piupartsm/bin/detect_archive_issues
 5  23 * * * /home/piupartsm/bin/detect_piuparts_issues
 10 23 * * * /home/piupartsm/bin/report_untestable_packages
-15 23 * * * /home/piupartsm/bin/archive_old_logs
+20 23 * * * /home/piupartsm/bin/report_stale_reserved_packages
+25 23 * * * /home/piupartsm/bin/archive_old_logs
 
 #
 # misc
