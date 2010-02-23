@@ -23,8 +23,11 @@ TODO: make packagesDB.py read config
     - fix crash when going into sleep when idle. 
     - add support for only doing upgrade tests (without the basic test in the
       upgrade target distro). 
-  * piuparts.py: new option --log-level to specify the verbosity of piuparts
-    output. Thanks to Fabrice Coutadeur for the patch! (Closes: #567190)
+  * piuparts.py: 
+    - new option: --log-level to specify the verbosity of piuparts
+      output. Thanks to Fabrice Coutadeur for the patch! (Closes: #567190)
+    - new option: --warn-on-leftovers-after-purge to not fail if a package
+      leaves files behind after purge. (Closes: #566599)
   * Add ${misc:Depends} to Depends in debian/control. 
   * Makefile: support python 2.5 and 2.6 instead of 2.4 and 2.5, adjust
     debian/control accordingly.

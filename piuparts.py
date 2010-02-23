@@ -143,6 +143,7 @@ class Settings:
         self.endmeta = None
         self.saveendmeta = None
         self.warn_on_others = False
+        self.warn_on_leftovers_after_purge = False
         self.keep_sources_list = False
         self.skip_minimize = True
         self.list_installed_files = False
@@ -1552,9 +1553,13 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
 
     ok = True
     if new:
-        logging.error("FAIL: Package purging left files on system:\n" +
+        if settings.warn_on_leftovers_after_purge:
+          logging.info("Warning: Package purging left files on system:\n" +
                        file_list(new, file_owners))
-        ok = False
+        else:
+          logging.error("FAIL: Package purging left files on system:\n" +
+                       file_list(new, file_owners))
+          ok = False
     if removed:
         logging.error("FAIL: After purging files have disappeared:\n" +
                       file_list(removed, file_owners))
@@ -1566,7 +1571,7 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
 
     if ok and settings.warn_on_others and deps_info is not None:
         if warnnew:
-            msg = ("Warning: Package puring left files on system:\n" +
+            msg = ("Warning: Package purging left files on system:\n" +
                    file_list(warnnew, file_owners) + \
                    "These files seem to have been left by dependencies rather "
                    "than by packages\nbeing explicitly tested.\n")
@@ -1963,12 +1968,17 @@ def parse_command_line():
                       help="Print a warning rather than failing if "
                            "files are left behind, modified, or removed "
                            "by a package that was not given on the "
-                           "command-line.  Behavior with multple packages "
+                           "command-line.  Behavior with multiple packages "
                            "given could be problematic, particularly if the "
                            "dependency tree of one package in the list "
                            "includes another in the list.  Therefore, it is "
                            "recommended to use this option with one package "
                            "at a time.")
+
+    parser.add_option("warn-on-leftovers-after-purge",
+                      action="store_true", default=False,
+                      help="Print a warning rather than failing if "
+                           "files are left behind after purge.")
 
     parser.add_option("-W", "--warn-symlinks", action="store_true",
                       default=False,
@@ -2020,6 +2030,7 @@ def parse_command_line():
     settings.warn_broken_symlinks = opts.warn_symlinks
     settings.savetgz = opts.save
     settings.warn_on_others = opts.warn_on_others
+    settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
     settings.debfoster_options = opts.debfoster_options.split()
     settings.dpkg_force_confdef = opts.dpkg_force_confdef
 
