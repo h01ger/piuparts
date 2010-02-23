@@ -1,5 +1,6 @@
 piuparts (0.39) UNRELEASED; urgency=low
 
+  [ Holger Levsen ]
   * piuparts-report.py: 
      - report packages which failed due to broken maintainer scripts, 
        due to output from cron after removal and due to not enough force being 
@@ -26,7 +27,12 @@ TODO: make packagesDB.py read config
   * Makefile: support python 2.5 and 2.6 instead of 2.4 and 2.5, adjust
     debian/control accordingly.
 
- -- Holger Levsen <holger@debian.org>  Fri, 18 Dec 2009 13:32:16 +0100
+  [ Evgeni Golov ]
+  * piuparts.py:
+    - Check for remaining logrotate files which produce output after the
+      package was removed. (Closes: #566597)
+
+ -- Holger Levsen <holger@debian.org>  Sun, 24 Jan 2010 15:27:50 +0100
 
 piuparts (0.38) unstable; urgency=low
 

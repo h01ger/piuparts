@@ -132,6 +132,9 @@ Note that file: addresses works if the directories are made accessible from with
 *--skip-cronfiles-test*::
   Skip testing the output from the cron files left in the system after remove a package.
 
+*--skip-logrotatefiles-test*::
+  Skip testing the output from the logrotate files left in the system after remove a package.
+
 *-t directory, --tmpdir*='directory'::
   Use directory as the place where temporary files and directories are created. The default is the environment variable *TMPDIR*, or _/tmp_ if not set.
 

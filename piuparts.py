@@ -148,6 +148,7 @@ class Settings:
         self.list_installed_files = False
         self.no_upgrade_test = False
         self.skip_cronfiles_test = False
+        self.skip_logrotatefiles_test = False
         self.check_broken_symlinks = True
         self.warn_broken_symlinks = False
         self.debfoster_options = None
@@ -850,6 +851,12 @@ class Chroot:
         if not settings.skip_cronfiles_test and cronfiles:
             self.check_output_cronfiles(cronfiles_list)
 
+        if not settings.skip_logrotatefiles_test:
+            logrotatefiles, logrotatefiles_list = self.check_if_logrotatefiles(packages)
+	
+        if not settings.skip_logrotatefiles_test and logrotatefiles:
+            self.check_output_logrotatefiles(logrotatefiles_list)
+
         # Then purge all packages being depended on.
         self.remove_or_purge("purge", deps_to_purge)
 
@@ -1029,6 +1036,51 @@ class Chroot:
             if output:
                 failed = True
                 logging.error("FAIL: Cron file %s has output with package removed" % file)
+
+        if failed:
+            panic()
+
+    def check_if_logrotatefiles(self, packages):
+        """Check if the packages have logrotate files under /etc/logrotate.d and in case positive, 
+        it returns the list of files. """
+
+        dir = self.relative("var/lib/dpkg/info")
+        list = []
+        has_logrotatefiles  = False
+        for p in packages:
+            basename = p + ".list"
+
+	    if not os.path.exists(os.path.join(dir,basename)):
+                continue
+
+            f = file(os.path.join(dir,basename), "r")
+            for line in f:
+                pathname = line.strip()
+                if pathname.startswith("/etc/logrotate.d/"):
+                    if os.path.isfile(self.relative(pathname.strip("/"))):
+                        if not has_logrotatefiles:
+                            has_logrotatefiles = True
+                        list.append(pathname)
+                        logging.info("Package " + p + " contains logrotate file: " + pathname)
+            f.close()
+
+        return has_logrotatefiles, list
+
+    def check_output_logrotatefiles (self, list):
+        """Check if a given list of logrotatefiles has any output. Executes 
+        logrotate file as logrotate would do from cron (except for SHELL)"""
+        failed = False
+        # XXX That's a crude hack. Can't we define a set of needed packages differently?
+        (a,b) = self.run(['apt-get','install', '-y', 'logrotate'])
+        for file in list:
+
+            if not os.path.exists(self.relative(file.strip("/"))):
+                continue 
+
+            (retval, output) = self.run(['/usr/sbin/logrotate', file])
+            if output:
+                failed = True
+                logging.error("FAIL: Logrotate file %s has output with package removed" % file)
 
         if failed:
             panic()
@@ -1881,6 +1933,10 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Skip testing the output from the cron files.")
 		   
+    parser.add_option("--skip-logrotatefiles-test", 
+                      action="store_true", default=False,
+                      help="Skip testing the output from the logrotate files.")
+
     parser.add_option("--skip-minimize", 
                       action="store_true", default=True,
                       help="Skip minimize chroot step. This is the default now.")
@@ -1935,6 +1991,7 @@ def parse_command_line():
     settings.list_installed_files = opts.list_installed_files
     settings.no_upgrade_test = opts.no_upgrade_test
     settings.skip_cronfiles_test = opts.skip_cronfiles_test
+    settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test
     settings.keyring = opts.keyring
     settings.do_not_verify_signatures = opts.do_not_verify_signatures
     if settings.do_not_verify_signatures:
