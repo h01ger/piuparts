@@ -794,6 +794,8 @@ class Chroot:
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
                 self.run(["apt-get", "-yf", "--no-remove", "install"])
 
+            logging.info ("Installation of %s ok", tmp_files)
+
             if settings.scriptsdir is not None:
                 self.run_scripts("post_install")
 
@@ -1972,6 +1974,10 @@ def parse_command_line():
                       default=False,
                       help="Warn only for broken symlinks.")
     
+    parser.add_option("--log-level", action="store",metavar='LEVEL',
+                      default="dump",
+                      help="Displays messages from LEVEL level, possible values are: error, info, dump, debug. The default is dump.")
+
     (opts, args) = parser.parse_args()
 
     settings.defaults = opts.defaults
@@ -2029,7 +2035,14 @@ def parse_command_line():
                           settings.tmpdir)
             panic()
 
-    setup_logging(DUMP, log_file_name)
+    if opts.log_level == "error":
+        setup_logging(logging.ERROR, log_file_name)
+    elif opts.log_level == "info":
+        setup_logging(logging.INFO, log_file_name)
+    elif opts.log_level == "debug":
+        setup_logging(logging.DEBUG, log_file_name)
+    else:
+        setup_logging(DUMP, log_file_name)
 
     exit = None
 
