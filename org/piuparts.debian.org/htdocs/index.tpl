@@ -47,6 +47,16 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2010-02-23</b>: Since today, piuparts is able to detect broken logrotate scripts after purge, which will need retesting of all successfully tested packages eventually. The failed packages in squeeze also needs retesting, due to split into squeeze and lenny2squeeze last week.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2010-02-16</b>: The squeeze test has been split into squeeze and lenny2squeeze, where squeeze means package installation in squeeze, removal and purge test, while lenny2squeeze means package installation in lenny, then upgrade to squeeze, then removal and purge test. This allows more issues to be found in squeeze since (potential) brokeness in lenny is not blurring the results in squeeze. 
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2010-01-05</b>: Reschedule testing for 319 failed packages in sid and 544 in squeeze, since --warn-on-others is now used.
      </td>
     </tr>
