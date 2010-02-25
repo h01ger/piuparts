@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2010-02-25</b>: Since yesterday, squeeze and lenny2squeeze are being tested with "-warn-on-leftovers-after-purge" making piuparts only warn about leftover files after purge. This has two effects: an decrease in the number of failed logs to process, to better focus on more important problems and second, more packages will be tested, as less packages are (seen as) buggy. Today all failed packages in squeeze and lenny2squeeze have been rescheduled for testing.
+     </td>
+    </tr>
+     <tr class="normalrow">
+     <td class="contentcell2">
       <b>2010-02-23</b>: Since today, piuparts is able to detect broken logrotate scripts after purge, which will need retesting of all successfully tested packages eventually. The failed packages in squeeze also needs retesting, due to split into squeeze and lenny2squeeze last week.
      </td>
     </tr>
