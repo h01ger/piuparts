@@ -10,9 +10,9 @@
 @reboot sudo /home/piupartss/bin/slave_run
 
 #
-# monitor for problems every two hours
+# monitor for problems every six hours
 #
-23 */2 * * * /home/piupartss/bin/detect_leftover_processes
+23 */6 * * * /home/piupartss/bin/detect_leftover_processes
 
 #
 # delete chroot-tarballs once a month, so that new ones are created automatically
