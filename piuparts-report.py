@@ -921,7 +921,9 @@ class Section:
             except:
               logging.debug("analysis template %s does not exist." % template)
 
-          link += "</ul>"
+        link += "</ul>"
+        if link == "<ul></ul>": 
+          link = ""
         return link
 
     def write_section_index_page(self,dirs,total_packages):
