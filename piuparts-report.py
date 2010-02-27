@@ -877,46 +877,51 @@ class Section:
 
     def create_and_link_to_analysises(self,state):
         link="<ul>"
-        templates = sorted(find_files_with_suffix(self._output_directory,".tpl"))
-        for template in templates:
+        for template, linktarget in linktarget_by_template.iteritems():
           if (state == "failed-testing" and template[-9:] != "issue.tpl") or (state == "successfully-tested" and template[-9:] == "issue.tpl"):
+            substats = ""
 
             tpl = os.path.join(self._output_directory, template)
-            f = file(tpl, "r")
-            rows = file.read(f)
-            f.close()
-            os.unlink(tpl)
+            try:
+              f = file(tpl, "r")
+              rows = file.read(f)
+              f.close()
+              os.unlink(tpl)
 
-            htmlpage = string.Template(HTML_HEADER + ANALYSIS_BODY_TEMPLATE + HTML_FOOTER)
-            filename = os.path.join(self._output_directory, template[:-len(".tpl")]+".html")
-            f = file(filename, "w")
-            f.write(htmlpage.safe_substitute( {
-               "page_title": html_protect("Packages in state "+state+" "+linktarget_by_template[template]),
-               "section_navigation": create_section_navigation(self._section_names,self._config.section),
-               "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-               "rows": rows,
-             }))
-            f.close()
-            substats = ""
-            if state == "failed-testing":
-              count_bugged = string.count(rows,"/bugged/")
-              count_failed = string.count(rows,"/fail/") 
-              if count_bugged != 0 or count_failed != 0:
-                substats = ": "
-              if count_bugged != 0:
-                substats += "%s bugged" % count_bugged
-              if count_bugged != 0 and count_failed != 0:
-                substats += ", "
-              if count_failed != 0:
-                substats += "<span id=\"needs-bugging\">%s failed</span>" % count_failed
-            else:
-                substats += "%s passed" % string.count(rows,"/pass/")
-            link += "<li><a href=%s>%s</a>%s</li>" % (
+              htmlpage = string.Template(HTML_HEADER + ANALYSIS_BODY_TEMPLATE + HTML_FOOTER)
+              filename = os.path.join(self._output_directory, template[:-len(".tpl")]+".html")
+              f = file(filename, "w")
+              f.write(htmlpage.safe_substitute( {
+                 "page_title": html_protect("Packages in state "+state+" "+linktarget),
+                 "section_navigation": create_section_navigation(self._section_names,self._config.section),
+                 "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+                 "rows": rows,
+               }))
+              f.close()
+              if state == "failed-testing":
+                count_bugged = string.count(rows,"/bugged/")
+                count_failed = string.count(rows,"/fail/") 
+                if count_bugged > 0 or count_failed > 0:
+                  substats = ": "
+                if count_bugged > 0:
+                  substats += "%s bugged" % count_bugged
+                if count_bugged > 0 and count_failed > 0:
+                  substats += ", "
+                if count_failed > 0:
+                  substats += "<span id=\"needs-bugging\">%s failed</span>" % count_failed
+              else:
+                  count_passed = string.count(rows,"/pass/")
+                  if count_passed > 0:
+                    substats += ": %s passed" % count_passed
+              link += "<li><a href=%s>%s</a>%s</li>" % (
                                                                        template[:-len(".tpl")]+".html", 
-                                                                       linktarget_by_template[template],
+                                                                       linktarget,
                                                                        substats
-                                                     )
-        link += "</ul>"
+                                                       )
+            except:
+              logging.debug("analysis template %s does not exist." % template)
+
+          link += "</ul>"
         return link
 
     def write_section_index_page(self,dirs,total_packages):
