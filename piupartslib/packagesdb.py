@@ -354,7 +354,7 @@ class PackagesDB:
         deps = self._get_recursive_dependencies(package, break_circles=False)
         # ignore those packages:
         known_circular_depends =  ['perl', 'perl-modules', 
-                                   'openjdk-6-jre-headless', 'openjdk-6-jre-lib', 'ca-certificates-java', 'rhino', 'libjline-java', 'java-gcj-compat-headless', 'gij', 'gcj-jre-headless', 'gcj-jdk',
+                                   'openjdk-6-jre-headless', 'openjdk-6-jre-lib', 'ca-certificates-java', 'rhino', 'libjline-java', 'java-gcj-compat-headless', 'gij', 'gcj-jre-headless', 'gcj-jdk', 'default-jre', 'openjdk-6-jdk', 'openjdk-6-jre',
                                    'gcj-4.3', 'libgcj9-dev',
                                    'gcj-4.4-jdk', 'libgcj10-dev'
                                    'fortune-mod', 'fortunes-min', 
