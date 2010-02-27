@@ -909,6 +909,8 @@ class Section:
                 substats += ", "
               if count_failed != 0:
                 substats += "<span id=\"needs-bugging\">%s failed</span>" % count_failed
+            else:
+                substats += "%s passed" % string.count(rows,"/pass/")
             link += "<li><a href=%s>%s</a>%s</li>" % (
                                                                        template[:-len(".tpl")]+".html", 
                                                                        linktarget_by_template[template],
