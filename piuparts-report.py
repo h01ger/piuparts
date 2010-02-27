@@ -380,7 +380,7 @@ linktarget_by_template = {
     "cron_error_after_removal_error.tpl": "due to errors from cronjob after removal",
     "logrotate_error_after_removal_error.tpl": "due to errors from logrotate after removal",
     "problems_and_no_force_error.tpl": "due to not enough force being used",
-    "needs_remove_but_remove_is_disabled_error.tpl": "due a problem with piuparts not well understood yet",
+    "needs_remove_but_remove_is_disabled_error.tpl": "due to a problem with piuparts not well understood yet",
     "pre_depends_error.tpl": "due to a problem with pre-depends",
 }
 
