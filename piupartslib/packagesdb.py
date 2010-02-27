@@ -356,7 +356,7 @@ class PackagesDB:
         known_circular_depends =  ['perl', 'perl-modules', 
                                    'openjdk-6-jre-headless', 'openjdk-6-jre-lib', 'ca-certificates-java', 'rhino', 'libjline-java', 'java-gcj-compat-headless', 'gij', 'gcj-jre-headless', 'gcj-jdk', 'default-jre', 'openjdk-6-jdk', 'openjdk-6-jre', 'java6-runtime', 'libaccess-bridge-java', 'libaccess-bridge-java-jni',
                                    'gcj-4.3', 'libgcj9-dev',
-                                   'gcj-4.4-jdk', 'libgcj10-dev'
+                                   'gcj-4.4-jdk', 'libgcj10-dev',
                                    'fortune-mod', 'fortunes-min', 
                                    'kbd', 'console-common',
                                    'g++-4.4', 'libstdc++6-4.4-dev',
@@ -387,7 +387,7 @@ class PackagesDB:
                                    'phpgroupware', 'phpgroupware-0.9.16-core', 'phpgroupware-0.9.16-core-base', 'phpgroupware-0.9.16-phpgwapi', 'phpgroupware-0.9.16-setup', 'phpgroupware-0.9.16-admin', 'phpgroupware-0.9.16-preferences', 
                                    'pcb-gtk', 'pcb-common',
                                    'tesseract-ocr', 'tesseract-ocr-language',
-                                   'licq', 'licq-plugin-qt',
+                                   'licq', 'licq-plugin-qt', 'licq-plugin-qt4',
                                    'setroubleshoot-plugins', 'setroubleshoot',
                                    'python-scientific', 'python-netcdf',
                                    'audacious', 'audacious-plugins',
@@ -401,6 +401,7 @@ class PackagesDB:
                                    'cowbuilder', 'cowdancer',
                                    'ggz-kde-games', 'ggz-kde-games-data',
                                    'ggz-sdl-games', 'ggz-sdl-games-data',
+                                   'gnuift-perl', 'gnuift'
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
