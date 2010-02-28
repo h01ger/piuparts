@@ -386,6 +386,8 @@ linktarget_by_template = {
     "problems_and_no_force_error.tpl": "due to not enough force being used",
     "needs_remove_but_remove_is_disabled_error.tpl": "due to a problem with piuparts not well understood yet",
     "pre_depends_error.tpl": "due to a problem with pre-depends",
+    "modified_files_after_purge_error.conf": "due to files having been modified after purge",
+    "disappeared_files_after_purge_error.conf": "due to files having disappeared after purge",
 }
 
 
