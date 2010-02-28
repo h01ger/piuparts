@@ -34,6 +34,7 @@ TODO: make packagesDB.py read config
     - new option: --warn-on-leftovers-after-purge to not fail if a package
       leaves files behind after purge. (Closes: #566599)
     - add to self.ignored_files: /var/lib/apt/lists/partial/.delete-me-later
+    - add to self.ignored_patterns: /etc/init.d/.depend.*
   * Add ${misc:Depends} to Depends in debian/control. 
   * Makefile: support python 2.5 and 2.6 instead of 2.4 and 2.5, adjust
     debian/control accordingly.
