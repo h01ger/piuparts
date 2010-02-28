@@ -6,6 +6,8 @@ piuparts (0.39) UNRELEASED; urgency=low
        due to output from cron after removal and due to not enough force being 
        used.
      - report packages which failed due to a problem with pre-depends.
+     - only report about (un)owned files and directories and symlink issues in
+       sid
      - visual improvements in the output.
      - ignore udebs and binaries from other archs too.
      - graph is generated using all the available data points.
