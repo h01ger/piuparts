@@ -43,8 +43,8 @@ log-file = squeeze.log
 [lenny2squeeze]
 description = Debian main: package installation in lenny and upgrade to squeeze, then removal and purge test.
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.4/site-packages:/org/piuparts.debian.org/lib/python2.5/site-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master lenny2squeeze
-packages-url = http://ftp.de.debian.org/debian/dists/lenny/main/binary-amd64/Packages.bz2
-sources-url = http://ftp.de.debian.org/debian/dists/lenny/main/source/Sources.bz2
+packages-url = http://ftp.de.debian.org/debian/dists/squeeze/main/binary-amd64/Packages.bz2
+sources-url = http://ftp.de.debian.org/debian/dists/squeeze/main/source/Sources.bz2
 mirror = http://ftp.de.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-symlinks --warn-on-others --warn-on-leftovers-after-purge --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 upgrade-test-distros = lenny squeeze
