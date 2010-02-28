@@ -357,6 +357,10 @@ state_by_dir = {
     "untestable": "dependency-cannot-be-tested",
 }
 
+# maybe better to use a list here to be able to use a defined order
+# see http://docs.python.org/library/bisect.html 2nd example
+# or use XX_name.tpl and get the linktarget from the template 
+# (its a substring of the <title> of the that template
 linktarget_by_template = {
     "command_not_found_error.tpl": "due to a 'command not found' error",
     "files_in_usr_local_error.tpl": "due to files in /usr/local",
