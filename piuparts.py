@@ -240,7 +240,7 @@ class Settings:
         self.ignored_patterns = [
             "/dev/",
             "/etc/ssl/certs(/.*)?",
-            "/etc/init.d/.depend.*",
+            "/etc/init.d/\.depend.*",
             "/lib/modules/.*/modules.*",
             "/usr/lib/python2\../site-packages/debconf.py[co]",
             "/var/backups/.*",
