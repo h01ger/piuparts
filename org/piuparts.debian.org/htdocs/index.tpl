@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2010-02-28</b>: Due to <a href="http://bugs.debian.org/571925" target="_blank">#571925</a> testing of sid had to be disabled temporarily. As an unrelated note, as you can see testing of lenny2squeeze still has some issues atm...
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2010-02-25</b>: Since yesterday, squeeze and lenny2squeeze are being tested with "-warn-on-leftovers-after-purge" making piuparts only warn about leftover files after purge. This has two effects: an decrease in the number of failed logs to process, to better focus on more important problems and second, more packages will be tested, as less packages are (seen as) buggy. Today all failed packages in squeeze and lenny2squeeze have been rescheduled for testing.
      </td>
     </tr>
