@@ -878,7 +878,10 @@ class Section:
     def create_and_link_to_analysises(self,state):
         link="<ul>"
         for template, linktarget in linktarget_by_template.iteritems():
+          # sucessful logs only have issues and failed logs only have errors
+          # and "(un)owned (files/directories)" and symlink issues should only be reported in sid
           if (state == "failed-testing" and template[-9:] != "issue.tpl") or (state == "successfully-tested" and template[-9:] == "issue.tpl"):
+           if self._config.section == "sid" or ("owned" not in linktarget and "symlink" not in linktarget):
             substats = ""
 
             tpl = os.path.join(self._output_directory, template)
