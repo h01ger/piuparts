@@ -361,6 +361,7 @@ state_by_dir = {
 # see http://docs.python.org/library/bisect.html 2nd example
 # or use XX_name.tpl and get the linktarget from the template 
 # (its a substring of the <title> of the that template
+# the 2nd option should be preferend, maintaining this list is errorprone and tiresome
 linktarget_by_template = {
     "command_not_found_error.tpl": "due to a 'command not found' error",
     "files_in_usr_local_error.tpl": "due to files in /usr/local",
@@ -386,8 +387,8 @@ linktarget_by_template = {
     "problems_and_no_force_error.tpl": "due to not enough force being used",
     "needs_remove_but_remove_is_disabled_error.tpl": "due to a problem with piuparts not well understood yet",
     "pre_depends_error.tpl": "due to a problem with pre-depends",
-    "modified_files_after_purge_error.conf": "due to files having been modified after purge",
-    "disappeared_files_after_purge_error.conf": "due to files having disappeared after purge",
+    "modified_files_after_purge_error.tpl": "due to files having been modified after purge",
+    "disappeared_files_after_purge_error.tpl": "due to files having disappeared after purge",
 }
 
 

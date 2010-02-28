@@ -2,7 +2,7 @@ piuparts (0.39) UNRELEASED; urgency=low
 
   [ Holger Levsen ]
   * piuparts-report.py: 
-     - report packages which failed,
+     - report packages which failed
        - due to broken maintainer scripts, 
        - due to output from cron after removal
        - due to not enough force being 
