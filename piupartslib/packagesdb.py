@@ -401,7 +401,8 @@ class PackagesDB:
                                    'cowbuilder', 'cowdancer',
                                    'ggz-kde-games', 'ggz-kde-games-data',
                                    'ggz-sdl-games', 'ggz-sdl-games-data',
-                                   'gnuift-perl', 'gnuift'
+                                   'gnuift-perl', 'gnuift',
+                                   'bible-kjv', 'bible-kjv-text',
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
