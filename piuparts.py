@@ -214,6 +214,7 @@ class Settings:
             "/var/cache/ldconfig/aux-cache",
             "/var/games",
             "/var/lib/apt/extended_states",
+            "/var/lib/apt/lists/partial/.delete-me-later",
             "/var/lib/dpkg/available",
             "/var/lib/dpkg/available-old", 
             "/var/lib/dpkg/diversions",
