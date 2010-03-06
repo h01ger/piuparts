@@ -403,6 +403,7 @@ class PackagesDB:
                                    'ggz-sdl-games', 'ggz-sdl-games-data',
                                    'gnuift-perl', 'gnuift',
                                    'bible-kjv', 'bible-kjv-text',
+                                   'kdelibs-bin', 'kdelibs5',
                                   ]
         for pkg in known_circular_depends:
             if pkg in deps:
