@@ -46,18 +46,13 @@ if [ -s $FILE ] ; then
 	echo "fetch.*Could not resolve' and 'E: Some index files failed to download'"
 	echo "in failed logs.)"
 	echo 
-	echo "Please review the following logfiles and most likely remove them." 
-        echo
-	echo "If it is always the same package failing, it's likely to be an issue in the"
-	echo "package."
-	echo
-	sort -u $FILE | sed -e "s#$MASTER#http://piuparts.debian.org/#g"
-	echo
-	sort -u $FILE | sed -e "s#$MASTER#less $MASTER#"
+	echo "The following logfiles have been deleted:" 
 	echo
 	echo "----------------------------------------------------------------------"
 	echo
-	sort -u $FILE | sed -e "s#$MASTER#rm $MASTER#"
+	for LOG in $(sort -u $FILE) ; do
+		rm -v $MASTER/$LOG
+	done
 	echo
 fi
 rm $FILE
