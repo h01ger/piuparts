@@ -427,7 +427,9 @@ def make_metapackage(name, depends, conflicts):
     # Inspired by pbuilder's pbuilder-satisfydepends-aptitude
 
     tmpdir = tempfile.mkdtemp(dir=settings.tmpdir)
+    old_umask = os.umask(0)
     os.makedirs(os.path.join(tmpdir, name, 'DEBIAN'), mode = 0755)
+    os.umask(old_umask)
     control = deb822.Deb822()
     control['Package'] = name
     control['Version'] = '0.invalid.0'
