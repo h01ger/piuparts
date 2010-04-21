@@ -50,7 +50,7 @@ import subprocess
 import unittest
 import urllib
 import uuid
-from debian_bundle import deb822
+from debian import deb822
 
 
 class Defaults:
@@ -365,6 +365,7 @@ def shellquote(str):
 def run(command, ignore_errors=False):
     """Run an external command and die with error message if it fails."""
     assert type(command) == type([])
+    command = [x for x in command if x] # Delete any empty argument
     logging.debug("Starting command: %s" % command)
     env = os.environ.copy()
     env["LC_ALL"] = "C"
@@ -1855,6 +1856,7 @@ def parse_command_line():
 		      help="Make dpkg use --force-confdev, which lets dpkg always choose the default action when a modified conffile is found. This options will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages.")
      
     parser.add_option("--do-not-verify-signatures", default=False,
+                      action='store_true',
                       help="Do not verify signatures from the Release files when running debootstrap.")
 
     parser.add_option("-i", "--ignore", action="append", metavar="FILENAME",

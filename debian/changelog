@@ -38,6 +38,8 @@ TODO: make packagesDB.py read config
     - create temporary DEBIAN directory for the piuparts-depends-dummy package
       with 0755 perms regardless of the umask of the calling shell. 
       (Closes: #573904)
+    - fix --do-not-verify-signatures option (Closes: #574936) - thanks to
+      Cleto Martin Angelina for the patch.
   * Add ${misc:Depends} to Depends in debian/control. 
   * Makefile: support python 2.5 and 2.6 instead of 2.4 and 2.5, adjust
     debian/control accordingly.
