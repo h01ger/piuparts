@@ -51,7 +51,7 @@ if [ -s $FILE ] ; then
 	echo "----------------------------------------------------------------------"
 	echo
 	for LOG in $(sort -u $FILE) ; do
-		rm -v $MASTER/$LOG
+		rm -v $LOG
 	done
 	echo
 fi
