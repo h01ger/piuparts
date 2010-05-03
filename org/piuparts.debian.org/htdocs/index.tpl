@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2010-03-05</b>: Finally enabled testing of sid again.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2010-02-28</b>: Due to <a href="http://bugs.debian.org/571925" target="_blank">#571925</a> testing of sid had to be disabled temporarily. On an unrelated note, testing of lenny2squeeze still has some issues atm...
      </td>
     </tr>
