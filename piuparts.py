@@ -50,7 +50,7 @@ import subprocess
 import unittest
 import urllib
 import uuid
-from debian import deb822
+from debian_bundle import deb822
 
 
 class Defaults:
