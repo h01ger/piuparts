@@ -46,6 +46,7 @@ TODO: make packagesDB.py read config
   * piuparts.1.txt: update the pointer to custom-scripts.txt to point to
     README.txt, as those two files have been merged. Thanks to Gregor Hermann
     for spotting this. (Closes: #574504)
+  *
 
   [ Evgeni Golov ]
   * piuparts.py:

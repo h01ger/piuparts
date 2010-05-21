@@ -1086,9 +1086,9 @@ class Chroot:
                 continue 
 
             (retval, output) = self.run(['/usr/sbin/logrotate', file])
-            if output:
+            if output or retval != 0:
                 failed = True
-                logging.error("FAIL: Logrotate file %s has output with package removed" % file)
+                logging.error("FAIL: Logrotate file %s exits with error or has output with package removed" % file)
 
         if failed:
             panic()
