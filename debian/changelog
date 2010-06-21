@@ -53,6 +53,11 @@ TODO: make packagesDB.py read config
     - Check for remaining logrotate files which produce output after the
       package was removed. (Closes: #566597)
 
+  [ John Wright ]
+  * Use debian module when available, else debian_bundle module. (Closes:
+    #586443)
+  * Use built-in set type, available since python-2.4
+
  -- Holger Levsen <holger@debian.org>  Sun, 24 Jan 2010 15:27:50 +0100
 
 piuparts (0.38) unstable; urgency=low

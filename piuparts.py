@@ -45,13 +45,15 @@ import tarfile
 import stat
 import re
 import pickle
-import sets
 import subprocess
 import unittest
 import urllib
 import uuid
-from debian_bundle import deb822
 
+try:
+    from debian import deb822
+except ImportError:
+    from debian_bundle import deb822
 
 class Defaults:
 
@@ -1445,7 +1447,7 @@ def file_list(meta_infos, file_owners):
 
 def offending_packages(meta_infos, file_owners):
     """Return a Set of offending packages."""
-    pkgset = sets.Set()
+    pkgset = set()
     for name, data in meta_infos:
         if name in file_owners:
             for pkg in file_owners[name]:
