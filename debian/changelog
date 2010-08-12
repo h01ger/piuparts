@@ -33,7 +33,9 @@ TODO: make packagesDB.py read config
       output. Thanks to Fabrice Coutadeur for the patch! (Closes: #567190)
     - new option: --warn-on-leftovers-after-purge to not fail if a package
       leaves files behind after purge. (Closes: #566599)
-    - add to self.ignored_files: /var/lib/apt/lists/partial/.delete-me-later
+    - add to self.ignored_files: 
+      - /var/lib/apt/lists/partial/.delete-me-later
+      - /var/log/alternatives.log (Closes: #591966)
     - add to self.ignored_patterns: /etc/init.d/.depend.*
     - create temporary DEBIAN directory for the piuparts-depends-dummy package
       with 0755 perms regardless of the umask of the calling shell. 
@@ -46,7 +48,6 @@ TODO: make packagesDB.py read config
   * piuparts.1.txt: update the pointer to custom-scripts.txt to point to
     README.txt, as those two files have been merged. Thanks to Gregor Hermann
     for spotting this. (Closes: #574504)
-  *
 
   [ Evgeni Golov ]
   * piuparts.py:
