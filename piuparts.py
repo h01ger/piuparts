@@ -234,6 +234,7 @@ class Settings:
             "/var/lib/logrotate/status",
             "/var/lib/rbldns",
             "/var/log/alternatives.log",
+            "/var/log/apt/history.log",
             "/var/log/apt/term.log",
             "/var/log/dpkg.log",
             "/var/log/faillog",

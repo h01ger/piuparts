@@ -36,6 +36,7 @@ TODO: make packagesDB.py read config
     - add to self.ignored_files: 
       - /var/lib/apt/lists/partial/.delete-me-later
       - /var/log/alternatives.log (Closes: #591966)
+      - /var/log/apt/history.log (Closes: #594964)
     - add to self.ignored_patterns: /etc/init.d/.depend.*
     - create temporary DEBIAN directory for the piuparts-depends-dummy package
       with 0755 perms regardless of the umask of the calling shell. 
