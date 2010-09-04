@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2010-04-09</b>: Schedule all 27438 passed packages in squeeze for re-testing now that squeeze is frozen.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2010-18-05</b>: From today on, broken logrotate scripts after purge are only reported in sid.
      </td>
     </tr>
