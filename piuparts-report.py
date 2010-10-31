@@ -541,7 +541,7 @@ class Section:
 	
         new_list = [ ord(x) for x in self._config["known_circular_depends"] ]
         for pkg in new_list:
-          logging.debug("kcd: " + pkg)
+          logging.debug("circular depends: " + pkg)
 
         logging.debug("Loading and parsing Packages file")
         logging.info("Fetching %s" % self._config["packages-url"])
