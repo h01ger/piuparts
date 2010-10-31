@@ -39,7 +39,7 @@ distro = squeeze
 chroot-tgz = squeeze.tar.gz
 max-reserved = 100
 log-file = squeeze.log
-known_circular_depends =  [
+known_circular_depends =  (
 				'libc6', 'libgcc1', 
 				'debconf', 'debconf-english', 'debconf-i18n', 
 				'abuse', 'abuse-frabs', 'abuse-lib', 
@@ -85,7 +85,7 @@ known_circular_depends =  [
 				'kchart', 'koffice-libs', 
 				'strongswan-ikev1', 'strongswan-ikev2', 'strongswan-nm', 'strongswan-starter', 
 				'cli-uno-bridge', 'libuno-cli-cppuhelper1.0-cil', 
-				'klogd', 'sysklogd' ]
+				'klogd', 'sysklogd' )
                                   
 
 [lenny2squeeze]
