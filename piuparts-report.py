@@ -540,6 +540,7 @@ class Section:
         logging.debug("Running section " + self._config.section)
 	
         new_list = [ ord(x) for x in self._config["known_circular_depends"] ]
+        logging.debug("circular depends: " + self._config["known_circular_depends"])
         for pkg in new_list:
           logging.debug("circular depends: " + pkg)
 
