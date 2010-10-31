@@ -404,6 +404,7 @@ class Config(piupartslib.conf.Config):
                 "sources-url": None,
                 "master-directory": ".",
                 "description": "",
+                "known_circular_depends": "",
             }, "")
 
 
@@ -538,10 +539,9 @@ class Section:
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
 	
-	logging.debug("known circular depends " + self.config.known_circular_depends)
+        logging.debug("known circular depends " + self.config.known_circular_depends)
 
         logging.debug("Loading and parsing Packages file")
-
         logging.info("Fetching %s" % self._config["packages-url"])
         packages_file = piupartslib.open_packages_url(self._config["packages-url"])
         self._binary_db = piupartslib.packagesdb.PackagesDB()
