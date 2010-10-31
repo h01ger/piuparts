@@ -5,7 +5,7 @@ Uploaders: Ian Jackson <ian@davenant.greenend.org.uk>,
 Section: devel
 Priority: extra
 Standards-Version: 3.8.3
-Build-Depends: debhelper (>=5.0.42), dpkg-dev (>=1.13.26)
+Build-Depends: debhelper, dpkg-dev
 Build-Depends-Indep: python-support, asciidoc, xmlto
 Vcs-Svn: svn://svn.debian.org/svn/piuparts/trunk/
 Vcs-Browser: http://svn.debian.org/wsvn/piuparts/trunk/
@@ -13,7 +13,7 @@ Homepage: http://piuparts.debian.org
 
 Package: piuparts
 Architecture: all
-Depends: apt, python (>> 2.5), debootstrap (>= 0.3.3), lsof, lsb-release, 
+Depends: apt, python (>> 2.5), debootstrap, lsof, lsb-release, 
     python-debian, ${misc:Depends}
 Suggests: python-rpy, ghostscript
 Description: .deb package installation, upgrading, and removal testing tool
