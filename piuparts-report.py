@@ -540,6 +540,8 @@ class Section:
         logging.debug("Running section " + self._config.section)
 	
         logging.debug("known circular depends " + self._config["known_circular_depends"])
+        for pkg in self._config["known_circular_depends"]:
+          logging.debug("kcd: " + pkg)
 
         logging.debug("Loading and parsing Packages file")
         logging.info("Fetching %s" % self._config["packages-url"])
