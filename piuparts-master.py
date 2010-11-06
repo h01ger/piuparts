@@ -114,7 +114,7 @@ class Master(Protocol):
         "successfully-tested",
     )
 
-    def __init__(self, input, output, packages_file, section=None):
+    def __init__(self, input, output, packages_file, section=None, known_circular_depends):
         Protocol.__init__(self, input, output)
         self._commands = {
             "reserve": self._reserve,
@@ -126,6 +126,7 @@ class Master(Protocol):
         self._db = piupartslib.packagesdb.PackagesDB(prefix=section)
         self._db.create_subdirs()
         self._db.read_packages_file(packages_file)
+        self._db.set_known_circular_depends(known_circular_depends)
         self._writeline("hello")
 
     def do_transaction(self):
@@ -196,7 +197,8 @@ def main():
     
         logging.info("Fetching %s" % config["packages-url"])
         packages_file = piupartslib.open_packages_url(config["packages-url"])
-        m = Master(sys.stdin, sys.stdout, packages_file, section=section)
+        known_circular_depends = config["known_circular_depends"])
+        m = Master(sys.stdin, sys.stdout, packages_file, section=section, known_circular_depends)
         packages_file.close()
         while m.do_transaction():
             pass

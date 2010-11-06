@@ -249,6 +249,7 @@ class PackagesDB:
     }
 
     def __init__(self, logdb=None, prefix=None):
+        #FIXME: I think the prefix code is unused...
         self.prefix = prefix
         self._packages_files = []
         self._ready_for_testing = None
@@ -291,6 +292,9 @@ class PackagesDB:
     def read_packages_file(self, input):
         self._packages_files.append(PackagesFile(input))
         self._packages = None
+
+    def set_known_circular_depends(self, known_circular_depends):
+        self._known_circular_depends = known_circular_depends
 
     def _find_all_packages(self):
         if self._packages is None:
@@ -353,55 +357,7 @@ class PackagesDB:
 
         deps = self._get_recursive_dependencies(package, break_circles=False)
         # ignore those packages:
-        known_circular_depends =  [ 
-				'libc6', 'libgcc1', 
-				'debconf', 'debconf-english', 'debconf-i18n', 
-				'abuse', 'abuse-frabs', 'abuse-lib', 
-				'perl', 'perl-modules', 
-				'odbcinst', 'odbcinst1debian2', 
-				'g++-4.4', 'libstdc++6-4.4-dev', 
-				'xserver-xorg', 'xserver-xorg-core', 'xserver-xorg-input-all', 'xserver-xorg-input-evdev', 'xserver-xorg-input-synaptics', 'xserver-xorg-input-wacom', 'xserver-xorg-video-all', 'xserver-xorg-video-apm', 'xserver-xorg-video-ark', 'xserver-xorg-video-ati', 'xserver-xorg-video-chips', 'xserver-xorg-video-cirrus', 'xserver-xorg-video-fbdev', 'xserver-xorg-video-geode', 'xserver-xorg-video-i128', 'xserver-xorg-video-i740', 'xserver-xorg-video-intel', 'xserver-xorg-video-mach64', 'xserver-xorg-video-mga', 'xserver-xorg-video-neomagic', 'xserver-xorg-video-nouveau', 'xserver-xorg-video-nv', 'xserver-xorg-video-openchrome', 'xserver-xorg-video-r128', 'xserver-xorg-video-radeon', 'xserver-xorg-video-rendition', 'xserver-xorg-video-s3', 'xserver-xorg-video-s3virge', 'xserver-xorg-video-savage', 'xserver-xorg-video-siliconmotion', 'xserver-xorg-video-sis', 'xserver-xorg-video-sisusb', 'xserver-xorg-video-tdfx', 'xserver-xorg-video-trident', 'xserver-xorg-video-tseng', 'xserver-xorg-video-vesa', 'xserver-xorg-video-vmware', 'xserver-xorg-video-voodoo', 
-				'fglrx-driver', 'fglrx-glx', 
-				'ca-certificates-java', 'openjdk-6-jre-headless', 'openjdk-6-jre-lib', 
-				'sun-java6-bin', 'sun-java6-jre', 
-				'default-jre', 'libaccess-bridge-java', 'libaccess-bridge-java-jni', 'openjdk-6-jre', 
-				'dmsetup', 'libdevmapper1.02.1', 
-				'uqm', 'uqm-content', 
-				'acheck', 'acheck-rules', 
-				'console-common', 'kbd', 
-				'aide', 'aide-common', 
-				'exim4', 'exim4-base', 'exim4-daemon-heavy', 'exim4-daemon-light', 'fcron', 
-				'libmono-corlib2.0-cil', 'libmono-posix2.0-cil', 'libmono-security2.0-cil', 'libmono-system2.0-cil', 'mono-2.0-gac', 'mono-gac', 'mono-runtime', 
-				'libmono-sqlite2.0-cil', 'libmono-system-data2.0-cil', 'libmono-system-web2.0-cil', 'libmono-wcf3.0-cil', 'libmono2.0-cil', 
-				'gamin', 'libgamin0', 
-				'xemacs21', 'xemacs21-bin', 'xemacs21-mule', 'xemacs21-mule-canna-wnn', 'xemacs21-nomule', 'xemacs21-support', 
-				'python-imaging', 'python-imaging-tk', 
-				'monodoc-browser', 'monodoc-http', 'monodoc-manual', 
-				'iamerican', 'ispell', 
-				'bible-kjv', 'bible-kjv-text', 
-				'bochs', 'bochs-wx', 
-				'g++-4.3', 'libstdc++6-4.3-dev', 
-				'bootcd', 'bootcd-hppa', 'bootcd-i386', 'bootcd-ia64',  
-				'cl-asdf', 'common-lisp-controller', 
-				'libcherokee-config0', 'libcherokee-server0', 
-				'cowbuilder', 'cowdancer', 
-				'tasksel', 'tasksel-data', 
-				'python-netcdf', 'python-scientific', 
-				'gcj-4.4-jdk', 'libgcj10-dev', 
-				'gdc-4.3', 'libphobos-4.3-dev', 
-				'pcb-common', 'pcb-gtk', 'pcb-lesstif', 
-				'ggz-gtk-games', 'ggz-gtk-games-data', 
-				'ggz-kde-games', 'ggz-kde-games-data', 
-				'ggz-sdl-games', 'ggz-sdl-games-data', 
-				'gnuift', 'gnuift-perl', 
-				'heroes-common', 'heroes-ggi', 'heroes-sdl', 
-				'kopete', 'libkopete4', 
-				'kchart', 'koffice-libs', 
-				'strongswan-ikev1', 'strongswan-ikev2', 'strongswan-nm', 'strongswan-starter', 
-				'cli-uno-bridge', 'libuno-cli-cppuhelper1.0-cil', 
-				'klogd', 'sysklogd'
-                                  ]
-        for pkg in known_circular_depends:
+        for pkg in self._known_circular_depends:
             if pkg in deps:
                 deps.remove(pkg)
         if package["Package"] in deps:
@@ -409,13 +365,13 @@ class PackagesDB:
      
         # treat circular-dependencies as testable (for the part of the circle)
         state = "unknown" 
-        if package["Package"] in known_circular_depends:
+        if package["Package"] in self._known_circular_depends:
           for dep in package.dependencies():
-            if dep not in known_circular_depends and self._package_state[dep] not in \
+            if dep not in self._known_circular_depends and self._package_state[dep] not in \
                ["successfully-tested", "essential-required"]:
                 state = "unknown"
                 break
-            if dep in known_circular_depends and self._package_state[dep] not in \
+            if dep in self._known_circular_depends and self._package_state[dep] not in \
                ["failed-testing","dependency-failed-testing"]:
                 state = "waiting-to-be-tested"
                 continue

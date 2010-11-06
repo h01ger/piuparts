@@ -538,17 +538,17 @@ class Section:
         self._config.read(CONFIG_FILE)
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
-	
-        new_list = [ ord(x) for x in self._config["known_circular_depends"] ]
-        logging.debug("circular depends: " + self._config["known_circular_depends"])
-        for pkg in new_list:
-          logging.debug("circular depends: " + pkg)
+
+        logging.debug("Circular depends: " + self._config["known_circular_depends"])
+        #for pkg in self._config["known_circular_depends"].split(" "):
+        #  logging.debug("circular depends: " + pkg)
 
         logging.debug("Loading and parsing Packages file")
         logging.info("Fetching %s" % self._config["packages-url"])
         packages_file = piupartslib.open_packages_url(self._config["packages-url"])
         self._binary_db = piupartslib.packagesdb.PackagesDB()
         self._binary_db.read_packages_file(packages_file)
+        self._binary_db.set_known_circular_depends(self._config["known_circular_depends"])
         packages_file.close()
 
         if self._config["sources-url"]:
