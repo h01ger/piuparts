@@ -197,7 +197,12 @@ def main():
     
         logging.info("Fetching %s" % config["packages-url"])
         packages_file = piupartslib.open_packages_url(config["packages-url"])
-        known_circular_depends = config["known_circular_depends"]
+
+        known_circular_depends = []
+        for kcd in self._config["known_circular_depends"].split():
+          known_circular_depends.append(kcd)
+          #logging.debug("circular depends: " + kcd)
+
         m = Master(sys.stdin, sys.stdout, packages_file, section=section, known_circular_depends)
         packages_file.close()
         while m.do_transaction():
