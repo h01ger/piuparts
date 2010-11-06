@@ -114,7 +114,7 @@ class Master(Protocol):
         "successfully-tested",
     )
 
-    def __init__(self, input, output, packages_file, section=None, known_circular_depends):
+    def __init__(self, input, output, packages_file, known_circular_depends, section=None):
         Protocol.__init__(self, input, output)
         self._commands = {
             "reserve": self._reserve,
@@ -199,11 +199,11 @@ def main():
         packages_file = piupartslib.open_packages_url(config["packages-url"])
 
         known_circular_depends = []
-        for kcd in self._config["known_circular_depends"].split():
+        for kcd in config["known_circular_depends"].split():
           known_circular_depends.append(kcd)
           #logging.debug("circular depends: " + kcd)
 
-        m = Master(sys.stdin, sys.stdout, packages_file, section=section, known_circular_depends)
+        m = Master(sys.stdin, sys.stdout, packages_file, known_circular_depends, section=section)
         packages_file.close()
         while m.do_transaction():
             pass
