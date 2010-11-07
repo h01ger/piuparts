@@ -17,13 +17,15 @@ piuparts (0.39) UNRELEASED; urgency=low
   * piupartsib/packagesdb.py: automatically break circular dependencies when
     there are only circular dependencies left, using a configurable list of
     circular depdencies in piuparts.conf (Closes: #526046)
-    Note that the dependecy resovler is still buggy, the state
+      The list of circular depends is taken from a script written by Robert
+    Lemmen available at http://debian.semistable.com/debgraph.out.html -
+    obviously it would be better to merge this into piuparts directly.
+      Note that the dependecy resovler is still buggy, the state
     waiting-for-dependency-to-be-tested still contains some packages
     which failed depends (due to them being dependent on packages with
     circular depends). The effect of that is none, other than that
     (=waiting-to-be-tested is calculated correctly). This bug was present
     before this change.
-TODO: make packagesDB.py read config
   * piuparts-slave.py: 
     - fix crash when going into sleep when idle. 
     - add support for only doing upgrade tests (without the basic test in the
