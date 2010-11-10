@@ -1,6 +1,6 @@
 #!/bin/sh 
 
-# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
 # 
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -20,5 +20,14 @@
 # reattach to an existing slave session
 #
 set -e
-screen -R -S piuparts-slave-screen
 
+SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
+
+if [ -f $SCREENLOG ] ; then 
+  screen -R -S piuparts-slave-screen
+else
+  echo "$SCREENLOG does not exist, slave not running!"
+  echo 
+  echo "ps faxu | grep piuparts"
+  ps faxu | grep piuparts 
+fi
