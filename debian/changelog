@@ -49,6 +49,9 @@ piuparts (0.39) UNRELEASED; urgency=low
       /etc/rc.\.d/[SK])[0-9]{2}(.*)$ so that piuparts doesn't complain about
       initscripts renamed by insserv. Thanks to by Andreas Beckmann for the
       patch! (Closes: #586793)
+    - remove logrotate and depended packages after the test. (Closes: #602409)
+      This is a fix for the incomplete patch for #566597. Again, this is a
+      hardcoded list. :-(
   * Add ${misc:Depends} to Depends in debian/control. 
   * Remove versioned dependencies on debhelper, dpkg-dev and debootstrap as
     the versions available in Etch are sufficient.

@@ -875,6 +875,14 @@ class Chroot:
         # Finally, purge actual packages.
         self.remove_or_purge("purge", nondeps_to_purge)
 
+        # remove logrotate and it's depends 
+        #    (this is a fix for #602409 introduced by #566597 
+        #    - search for the latter bug number in this file)
+        # XXX: another crude hack: ^^^
+        if not settings.skip_logrotatefiles_test:
+          self.remove_or_purge("remove", "adduser cron libpopt0 logrotate")
+          self.remove_or_purge("purge", "adduser cron libpopt0 logrotate")
+
         # Run custom scripts after purge all packages.
         if settings.scriptsdir is not None: 
             self.run_scripts("post_purge")
@@ -1082,7 +1090,8 @@ class Chroot:
         """Check if a given list of logrotatefiles has any output. Executes 
         logrotate file as logrotate would do from cron (except for SHELL)"""
         failed = False
-        # XXX That's a crude hack. Can't we define a set of needed packages differently?
+        # XXX That's a crude hack (to fix #602409). Can't we define a set of needed packages differently?
+        #     It also introduces the need for hack to fix #602409 in piuparts.py
         (a,b) = self.run(['apt-get','install', '-y', 'logrotate'])
         for file in list:
 
