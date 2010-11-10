@@ -29,7 +29,7 @@ cd /org/piuparts.debian.org/slave
 rm -f $SCREENLOG					# used by ~piupartsm/bin/detect_slave_problems
 rm -f $MONITORDIR/*					# used by several scripts to only warn once a day 
 
-trap "cat $SCREENLOG | mail -s "slave abnormaly ended" piupartsm ; rm $SCREENLOG; exit" TERM EXIT
+trap "cat $SCREENLOG | mail -s 'slave abnormaly ended' piupartsm ; rm $SCREENLOG; exit" TERM EXIT
 screen -L -d -m -S piuparts-slave-screen su - piupartss -c "cd /org/piuparts.debian.org/slave && python ../share/piuparts/piuparts-slave"
 trap - TERM EXIT
 
