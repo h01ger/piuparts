@@ -48,34 +48,27 @@ cd $MONITORDIR
 chown piupartsm.piuparts $MONITORDIR
 chmod 775 $MONITORDIR
 
-# ~piupartss/bin/slave_run deletes screenlog* and touches screenlog.new for detecting piuparts-slave has just been started 
-mv screenlog.new screenlog.old 2>/dev/null
-cp $SCREENLOG screenlog.new
+stamptime=$(/usr/bin/stat -c %Z $SCREENLOG)
+unixtime=$(date +%s)
+difference=$(( $unixtime - $stamptime ))
 
-# dont complain if just started
-if [ -f screenlog.old ] && [ -s screenlog.old ] ; then
-	diff screenlog.old screenlog.new >/dev/null 2>&1 && {
-		if [ ! -f $LOCKFILE ] ; then
-			{
-				echo "Either piuparts-slave hangs or is not running at all or wasn't started with ~piupartss/bin/slave_run - please investigate and take appropriate measures!"
-				echo
-				tail screenlog.new 
-			} | mail -s "problem with piuparts-slave detected" piupartsm
-			touch $LOCKFILE
-			chmod 660 $LOCKFILE
-		fi
-	}
+# dont complain, if already complained and screenlog is younger than 15 min (=900 sec) 
+if [ ! -f $LOCKFILE ] || [ ${difference} -ge 900 ] ; then
+	{
+		echo "Either piuparts-slave hangs or is not running at all or wasn't started with ~piupartss/bin/slave_run - please investigate and take appropriate measures!"
+		echo
+		tail $SCREENLOG
+	} | mail -s "problem with piuparts-slave detected" piupartsm
+	touch $LOCKFILE
+	chmod 660 $LOCKFILE
 fi
+
 #
-# send screenlog daily no matter what, but only once a day :)
+# cleanup $LOCKFILE once a day to remind daily
 #
-# disabled, report should be enough to confirm the slave is still running...
-exit 0
 
 HOUR=`date +%H`
 if [ "$HOUR" = "00" ] ; then
-	touch screenlog.yesterday
-	diff screenlog.yesterday screenlog.new | mail -s "piuparts-slave screenlog yesterday" piupartsm
-	cp screenlog.new screenlog.yesterday
+	rm -f $LOCKFILE
 fi
 

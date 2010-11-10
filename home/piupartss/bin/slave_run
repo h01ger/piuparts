@@ -31,7 +31,4 @@ rm -f $MONITORDIR/*					# used by several scripts to only warn once a day
 
 screen -L -d -m -S piuparts-slave-screen su - piupartss -c "cd /org/piuparts.debian.org/slave && python ../share/piuparts/piuparts-slave"
 
-rm -f $MONITORDIR/screenlog.new $MONITORDIR/screenlog.old
-touch $MONITORDIR/screenlog.new
-chmod 775 $MONITORDIR/screenlog.new
 echo "piuparts-slave has been started."
