@@ -47,17 +47,17 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-04-09</b>: Schedule all 27438 passed packages in squeeze for re-testing now that squeeze is frozen.
+      <b>2010-09-04</b>: Schedule all 27438 passed packages in squeeze for re-testing now that squeeze is frozen.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-18-05</b>: From today on, broken logrotate scripts after purge are only reported in sid.
+      <b>2010-05-18</b>: From today on, broken logrotate scripts after purge are only reported in sid.
      </td>
     </tr>
      <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-16-05</b>: Finally enabled testing of sid again. (Actually, sid was enabled on 2010-03-05, but piuparts.d.o was broken until today.)
+      <b>2010-05-16</b>: Finally enabled testing of sid again. (Actually, sid was enabled on 2010-03-05, but piuparts.d.o was broken until today.)
      </td>
     </tr>
     <tr class="normalrow">
