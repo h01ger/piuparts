@@ -45,6 +45,10 @@ piuparts (0.39) UNRELEASED; urgency=low
       (Closes: #573904)
     - fix --do-not-verify-signatures option (Closes: #574936) - thanks to
       Cleto Martin Angelina for the patch.
+    - make Chroot.diff_meta_data() special case and ignore files matching 
+      /etc/rc.\.d/[SK])[0-9]{2}(.*)$ so that piuparts doesn't complain about
+      initscripts renamed by insserv. Thanks to by Andreas Beckmann for the
+      patch! (Closes: #586793)
   * Add ${misc:Depends} to Depends in debian/control. 
   * Remove versioned dependencies on debhelper, dpkg-dev and debootstrap as
     the versions available in Etch are sufficient.

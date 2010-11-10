@@ -1429,6 +1429,24 @@ def diff_meta_data(tree1, tree2):
     removed = [x for x in tree1.iteritems()]
     new = [x for x in tree2.iteritems()]
 
+    # fix for #586793 by Andreas Beckmann <debian@abeckmann.de>
+    # prune rc?.d symlinks renamed by insserv
+    pat1 = re.compile(r"^(/etc/rc.\.d/[SK])[0-9]{2}(.*)$")
+    for name1, data1 in removed[:]:
+        m = pat1.search(name1)
+        if m:
+            pat2 = re.compile(r"^" + m.group(1) + r"[0-9]{2}" + m.group(2) + 
+r"$")
+            for name2, data2 in new[:]:
+                m = pat2.search(name2)
+                if m:
+                    logging.debug("File was renamed: %s\t=> %s" % (name1, 
+name2))
+                    removed.remove((name1, data1))
+                    new.remove((name2, data2))
+    # this is again special casing due to the behaviour of a single package :(
+    # general tracking of moved files would be the better approach, probably.
+
     return new, removed, modified
 
 
