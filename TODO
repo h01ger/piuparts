@@ -2,7 +2,7 @@ Things to do for piuparts
 =========================
 
 
-for 0.38 and later (split this list):
+for 0.39 and later (split this list):
 
 - move logfiles from bugged to archived if a newer version exists in pass
 - move logfiles from fail to bugged if a lower version exists in bugged
@@ -12,6 +12,7 @@ for 0.38 and later (split this list):
   just be deleted periodically. 
   Another approch is for each logfile to check if the package still exist 
   in $distro and if not, delete it.
+- also discard logs for packages which have been removed from distro.
 
 - So it seems piuparts needs to get fixed to take into account packages
   being removed due to Conflicts. And probably should purge those
@@ -84,7 +85,7 @@ for 0.38 and later (split this list):
 - a redirect of http://piuparts.d.o/foo to http://p.d.o/source/f/foo.html would be nice
 
 
-for 0.39 and on:
+for 0.40 and on:
 
 - multi-arch:
  - piuparts-report should have a list of available arch and list packages 
