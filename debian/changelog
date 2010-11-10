@@ -4,11 +4,12 @@ piuparts (0.39) UNRELEASED; urgency=low
   * piuparts-report.py: 
      - report packages which failed
        - due to broken maintainer scripts, 
-       - due to output from cron after removal
-       - due to not enough force being 
-       - due to a problem with pre-depends.
-       - due to files having been modified after purge.
-       - due to files having disappeared after purge.
+       - due to output from cron after removal,
+       - due to not enough force being,
+       - due to a problem with pre-depends,
+       - due to files having been modified after purge,
+       - due to files having disappeared after purge and
+       - due to problems configuring a database.
      - only report about (un)owned files and directories and symlink issues in
        sid
      - visual improvements in the output.
