@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2010-11-06</b>: The lists of known circular depends is now taken from http://debian.semistable.com/debgraph.out.html and maintained seperatedly (and maually) for each tested distribution in piuparts.conf - this is not optimal (which would be piuparts detecting them automatically) but much better than the hardcoded list which we had in the piuparts library since December 2009.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2010-09-04</b>: Schedule all 27438 passed packages in squeeze for re-testing now that squeeze is frozen.
      </td>
     </tr>
