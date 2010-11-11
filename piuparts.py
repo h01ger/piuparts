@@ -202,6 +202,7 @@ class Settings:
             "/usr/share/doc/base-config/README.Debian",
             "/usr/share/doc/base-config/changelog.gz",
             "/usr/share/doc/base-config/copyright",
+            "/usr/share/fonts/X11/misc/fonts.alias",
             "/usr/share/info/dir",
             "/usr/share/info/dir.old",
             "/var/cache/apt/archives/lock",
