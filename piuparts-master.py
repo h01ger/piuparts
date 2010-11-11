@@ -202,7 +202,7 @@ def main():
         known_circular_depends = []
         for kcd in config["known_circular_depends"].split():
           known_circular_depends.append(kcd)
-          #logging.debug("circular depends: " + kcd)
+          logging.debug("circular depends: " + kcd)
 
         m = Master(sys.stdin, sys.stdout, packages_file, known_circular_depends, section=section)
         packages_file.close()
