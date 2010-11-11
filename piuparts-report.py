@@ -389,7 +389,7 @@ linktarget_by_template = {
     "pre_depends_error.tpl": "due to a problem with pre-depends",
     "modified_files_after_purge_error.tpl": "due to files having been modified after purge",
     "disappeared_files_after_purge_error.tpl": "due to files having disappeared after purge",
-    "error_configuring_db_error.tpl": "due to problems configuring a database",
+    "db_setup_error.tpl": "due to failing to setup a database",
 }
 
 
