@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
 # 
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -35,16 +35,16 @@ fi
 for SECTION in $SECTIONS ; do 
 	mkdir -p $MASTER/$SECTION/archive
 	cd $MASTER/$SECTION
-	for DIR in fail pass bugged ; do
-		cd $DIR
-		LOGS=$( for i in `ls -1 | cut -d "_" -f1|sort -u `; do ls -rt1 ${i}_*|sed '$d' ; done ) 
-		if [ ! -z "$LOGS" ] ; then
-			mkdir -p $MASTER/$SECTION/archive/$DIR
-			for LOG in $LOGS ; do
-				mv $LOG $MASTER/$SECTION/archive/$DIR
+	mkdir -p archive/pass archive/bugged archive/fail
+	# loop through all packages logs 
+	for PACKAGE in $(find pass/ fail/ bugged/|cut -d "_" -f1|cut -d"/" -f2|sort -u|sed '1d') ; do 
+		# all logs except the last one (|sed '$d' deletes the last line)
+		OLDLOGS=$( ls -tr1 --color=none bugged/${PACKAGE}_* fail/${PACKAGE}_* pass/${PACKAGE}_* 2>/dev/null|sed '$d' )
+		if [ ! -z "$OLDLOGS" ] ; then
+			for LOG in $OLDLOGS ; do
+				echo mv $LOG archive/$(echo $LOG|cut -d"/" -f1)/
 			done
 		fi
-       		cd ..
 	done
 done
 
