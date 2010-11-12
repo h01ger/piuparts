@@ -550,7 +550,7 @@ class Section:
         packages_file = piupartslib.open_packages_url(self._config["packages-url"])
         self._binary_db = piupartslib.packagesdb.PackagesDB()
         self._binary_db.read_packages_file(packages_file)
-        self._binary_db.set_known_circular_depends(self._config["known_circular_depends"])
+        self._binary_db.set_known_circular_depends(known_circular_depends)
         packages_file.close()
 
         if self._config["sources-url"]:
