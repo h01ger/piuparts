@@ -42,8 +42,13 @@ for SECTION in $SECTIONS ; do
 		OLDLOGS=$( ls -tr1 --color=none bugged/${PACKAGE}_* fail/${PACKAGE}_* pass/${PACKAGE}_* 2>/dev/null|sed '$d' )
 		if [ ! -z "$OLDLOGS" ] ; then
 			for LOG in $OLDLOGS ; do
-				echo mv $LOG archive/$(echo $LOG|cut -d"/" -f1)/
+				echo mv -v $LOG archive/$(echo $LOG|cut -d"/" -f1)/
 			done
+			# ptyhon-bts is really the way to go
+			if $(echo $OLDLOGS | grep -q "bugged/" 2>/dev/null) ; then
+				echo keeping bugged state:
+				echo mv -v fail/${PACKAGE}_* bugged/ 2>/dev/null
+			fi
 		fi
 	done
 done
