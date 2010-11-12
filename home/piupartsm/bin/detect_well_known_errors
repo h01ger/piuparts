@@ -65,13 +65,11 @@ for SECTION in $SECTIONS ; do
 						echo "<li><a href='/$SECTION/$LOG'>$LOG</a></li>" >> $OUTPUT
 						echo "$LOG" >> ${KNOWNLOGS[$NR]}
 						let "COUNT += 1"
-					fi 
+					fi
 				else
-					# this is an issue, not an error:
-					# so LATESTFAIL is actually a misnomer now, because its LATESTSUCCESS
-					# maybe it should be renamed to LATESTRELEVANT
-					LATESTFAIL=$(ls -tr1 --color=none $MASTER/$SECTION/pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f7-8)
-					if [ "$LATEST" == "pass" ] && [ "$LATESTFAIL" == "$LOG" ] ; then 
+					# this is an issue, not an error
+					LATESTSUCCESS=$(ls -tr1 --color=none $MASTER/$SECTION/pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f7-8)
+					if [ "$LATEST" == "pass" ] && [ "$LATESTSUCCESS" == "$LOG" ] ; then 
 						echo "<li><a href='/$SECTION/$LOG'>$LOG</a></li>" >> $OUTPUT
 						echo "$LOG" >> ${KNOWNLOGS[$NR]}
 						let "COUNT += 1"
