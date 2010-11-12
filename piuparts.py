@@ -883,6 +883,7 @@ class Chroot:
         if not settings.skip_logrotatefiles_test:
           self.remove_or_purge("remove", ["adduser", "cron", "libpopt0", "logrotate"])
           self.remove_or_purge("purge", ["adduser", "cron", "libpopt0", "logrotate"])
+          self.run(["apt-get", "clean"])
 
         # Run custom scripts after purge all packages.
         if settings.scriptsdir is not None: 
