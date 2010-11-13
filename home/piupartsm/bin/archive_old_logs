@@ -33,6 +33,7 @@ fi
 # archive old log files
 #
 for SECTION in $SECTIONS ; do 
+	echo $SECTION
 	mkdir -p $MASTER/$SECTION/archive
 	cd $MASTER/$SECTION
 	mkdir -p archive/pass archive/bugged archive/fail
@@ -51,5 +52,8 @@ for SECTION in $SECTIONS ; do
 			fi
 		fi
 	done
+	echo "======================================================================="
+	echo
+	echo
 done
 
