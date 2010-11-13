@@ -245,7 +245,6 @@ class PackagesDB:
     }
 
     def __init__(self, logdb=None, prefix=None):
-        #FIXME: I think the prefix code is unused...
         self.prefix = prefix
         self._packages_files = []
         self._ready_for_testing = None

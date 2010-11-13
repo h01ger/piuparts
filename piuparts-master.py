@@ -113,7 +113,7 @@ class Master(Protocol):
         "successfully-tested",
     )
 
-    def __init__(self, input, output, packages_file, known_circular_depends=[], section=None):
+    def __init__(self, input, output, packages_file, known_circular_depends="", section=None):
         Protocol.__init__(self, input, output)
         self._commands = {
             "reserve": self._reserve,
@@ -125,7 +125,12 @@ class Master(Protocol):
         self._binary_db = piupartslib.packagesdb.PackagesDB(prefix=section)
         self._binary_db.create_subdirs()
         self._binary_db.read_packages_file(packages_file)
-        self._binary_db.set_known_circular_depends(known_circular_depends)
+        my_known_circular_depends = []
+        for kcd in known_circular_depends.split():
+          my_known_circular_depends.append(kcd)
+          logging.debug("circular depends: " + kcd)
+
+        self._binary_db.set_known_circular_depends(my_known_circular_depends)
         self._writeline("hello")
 
     def do_transaction(self):
@@ -197,12 +202,7 @@ def main():
         logging.info("Fetching %s" % config["packages-url"])
         packages_file = piupartslib.open_packages_url(config["packages-url"])
 
-        known_circular_depends = []
-        for kcd in config["known_circular_depends"].split():
-          known_circular_depends.append(kcd)
-          logging.debug("circular depends: " + kcd)
-
-        m = Master(sys.stdin, sys.stdout, packages_file, known_circular_depends, section=section)
+        m = Master(sys.stdin, sys.stdout, packages_file, config["known_circular_depends"], section=section)
         packages_file.close()
         while m.do_transaction():
             pass
