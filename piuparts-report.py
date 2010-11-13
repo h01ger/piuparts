@@ -401,7 +401,7 @@ class Config(piupartslib.conf.Config):
                 "sources-url": None,
                 "master-directory": ".",
                 "description": "",
-                "known_circular_depends": [],
+                "known_circular_depends": "",
             }, "")
 
 

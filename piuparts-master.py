@@ -55,7 +55,7 @@ class Config(piupartslib.conf.Config):
                 "log-file": None,
                 "packages-url": None,
                 "master-directory": ".",
-                "known_circular_depends": [],
+                "known_circular_depends": "",
             }, "")
 
 
@@ -113,7 +113,7 @@ class Master(Protocol):
         "successfully-tested",
     )
 
-    def __init__(self, input, output, packages_file, known_circular_depends, section=None):
+    def __init__(self, input, output, packages_file, known_circular_depends=[], section=None):
         Protocol.__init__(self, input, output)
         self._commands = {
             "reserve": self._reserve,
