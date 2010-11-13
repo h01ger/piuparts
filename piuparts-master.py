@@ -56,7 +56,7 @@ class Config(piupartslib.conf.Config):
                 "log-file": None,
                 "packages-url": None,
                 "master-directory": ".",
-                 "known_circular_depends": [],
+                "known_circular_depends": [],
             }, "")
 
 
