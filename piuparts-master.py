@@ -132,7 +132,7 @@ class Master(Protocol):
         try:
           self._binary_db.set_known_circular_depends(my_known_circular_depends)
         except:
-          pass
+          logging.debug("A fine dose of WTF. I'm looking forward to the day I understand this. This shouldnt happen and only happens for the lenny2squeeze section, never for squeeze or sid. ")
         self._writeline("hello")
 
     def do_transaction(self):
