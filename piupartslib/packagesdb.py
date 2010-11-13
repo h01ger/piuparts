@@ -283,6 +283,7 @@ class PackagesDB:
         self._packages = None
 
     def set_known_circular_depends(self, known_circular_depends=[]):
+        self._known_circular_depends = []
         self._known_circular_depends.list(known_circular_depends)
 
     def _find_all_packages(self):
