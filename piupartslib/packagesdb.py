@@ -261,7 +261,6 @@ class PackagesDB:
             format = self.prefix + "/%s"
         else:
             format = "%s"
-
         if ok:
             self._ok = format % ok
         if fail:
@@ -284,8 +283,7 @@ class PackagesDB:
         self._packages = None
 
     def set_known_circular_depends(self, known_circular_depends=[]):
-        self._known_circular_depends = []
-        self._known_circular_depends = known_circular_depends
+        self._known_circular_depends.list(known_circular_depends)
 
     def _find_all_packages(self):
         if self._packages is None:
