@@ -29,7 +29,6 @@ import urllib
 import ConfigParser
 import os
 import tempfile
-import str
 
 import piupartslib
 
