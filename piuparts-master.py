@@ -204,7 +204,7 @@ def main():
 
         logging.debug("circular depends: ".join(["%s " % kcd for kcd in known_circular_depends]))
 
-        m = Master(sys.stdin, sys.stdout, packages_file, known_circular_depends, section=section)
+        m = Master(sys.stdin, sys.stdout, packages_file, known_circular_depends=known_circular_depends, section=section)
         packages_file.close()
         while m.do_transaction():
             pass
