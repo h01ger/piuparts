@@ -328,7 +328,6 @@ title_by_dir = {
     "pass": "PASSED piuparts logs",
     "fail": "Failed UNREPORTED piuparts logs",
     "bugged": "Failed REPORTED piuparts logs",
-    "fixed": "Failed and FIXED packages",
     "reserved": "RESERVED packages",
     "untestable": "UNTESTABLE packages",
 }
@@ -340,8 +339,6 @@ desc_by_dir = {
             "Bugs have not yet been reported.",
     "bugged": "Log files for packages that have FAILED testing. " +
               "Bugs have been reported, but not yet fixed.",
-    "fixed": "Log files for packages that have FAILED testing, but for " +
-             "which a fix has been made.",
     "reserved": "Packages that are RESERVED for testing on a node in a " +
                 "distributed piuparts network.",
     "untestable": "Log files for packages that have are UNTESTABLE with " +
@@ -352,7 +349,6 @@ state_by_dir = {
     "pass": "successfully-tested",
     "fail": "failed-testing",
     "bugged": "failed-testing",
-    "fixed": "fix-not-yet-tested",
     "reserved": "waiting-to-be-tested",
     "untestable": "dependency-cannot-be-tested",
 }

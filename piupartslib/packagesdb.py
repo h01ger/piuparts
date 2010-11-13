@@ -222,7 +222,6 @@ class PackagesDB:
     _states = [
         "successfully-tested",
         "failed-testing",
-        "fix-not-yet-tested",
         "cannot-be-tested",
         "essential-required",
         "waiting-to-be-tested",
@@ -230,14 +229,12 @@ class PackagesDB:
         "dependency-failed-testing",
         "dependency-cannot-be-tested",
         "dependency-does-not-exist",
-        "dependency-fix-not-yet-tested",
         "circular-dependency",
         "unknown",
     ]
     
     _dep_state_to_state = {
         "failed-testing": "dependency-failed-testing",
-        "fix-not-yet-tested": "dependency-fix-not-yet-tested",
         "cannot-be-tested": "dependency-cannot-be-tested",
         "waiting-to-be-tested": "waiting-for-dependency-to-be-tested",
         "waiting-for-dependency-to-be-tested": "waiting-for-dependency-to-be-tested",
@@ -245,7 +242,6 @@ class PackagesDB:
         "dependency-cannot-be-tested": "dependency-cannot-be-tested",
         "dependency-does-not-exist": "dependency-does-not-exist",
         "circular-dependency": "circular-dependency",
-        "dependency-fix-not-yet-tested": "dependency-fix-not-yet-tested",
     }
 
     def __init__(self, logdb=None, prefix=None):
@@ -258,11 +254,9 @@ class PackagesDB:
         self._in_state = None
         self._package_state = {}
         self.set_subdirs(ok="pass", fail="fail", evil="untestable",
-                         reserved="reserved", moreok=["fixed"],
-                         morefail=["bugged"])
+                         reserved="reserved", morefail=["bugged"])
         
-    def set_subdirs(self, ok=None, fail=None, evil=None, reserved=None,
-                    moreok=None, morefail=None):
+    def set_subdirs(self, ok=None, fail=None, evil=None, reserved=None, morefail=None):
         # Prefix all the subdirs with the prefix
         if self.prefix:
             format = self.prefix + "/%s"
@@ -277,12 +271,9 @@ class PackagesDB:
             self._evil = format % evil
         if reserved:
             self._reserved = format % reserved
-        if moreok:
-            self._moreok = [format % s for s in moreok]
         if morefail:
             self._morefail = [format % s for s in morefail]
-        self._all = [self._ok, self._fail, self._evil, self._reserved] + \
-                    self._moreok + self._morefail
+        self._all = [self._ok, self._fail, self._evil, self._reserved] + self._morefail
            
     def create_subdirs(self):
         for dir in self._all:
@@ -330,8 +321,6 @@ class PackagesDB:
             return "successfully-tested"
         if self._logdb.log_exists(package, [self._fail] + self._morefail):
             return "failed-testing"
-        if self._logdb.log_exists(package, self._moreok):
-            return "fix-not-yet-tested"
         if self._logdb.any_log_exists(package, [self._evil]):
             return "cannot-be-tested"
         if not package.is_testable():

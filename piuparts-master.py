@@ -108,7 +108,6 @@ class Master(Protocol):
 
     _failed_states = (
         "failed-testing",
-        "fix-not-yet-tested",
     )
     _passed_states = (
         "successfully-tested",
