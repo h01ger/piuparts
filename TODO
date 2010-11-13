@@ -4,15 +4,13 @@ Things to do for piuparts
 
 for 0.39 and later (split this list):
 
-- move logfiles from bugged to archived if a newer version exists in pass
-- move logfiles from fail to bugged if a lower version exists in bugged
 - garbage collection: the best approach is probably to track bugginess 
   status of packages via the bts and remove the "bugged" directory-status
   altogether. Then failed and successful logs older then 4/8 weeks could 
   just be deleted periodically. 
   Another approch is for each logfile to check if the package still exist 
   in $distro and if not, delete it.
-- also discard logs for packages which have been removed from distro.
+- discard logs for packages which have been removed from distro.
 
 - So it seems piuparts needs to get fixed to take into account packages
   being removed due to Conflicts. And probably should purge those
@@ -21,6 +19,7 @@ for 0.39 and later (split this list):
 - 539146: piuparts can't currently test postfix, since installing postfix removes
   exim and removing postfix would require re-installing exim, and that
   doesn't happen; there are other packages like that, ie. debconf-english
+  (note: postfix can be tested today. debconf-english still not)
 
 - svn mv piatti trunk/doc/examples  and include it into a new binary package. 
   when doing so keep in mind the two tango icons and credit those in 
@@ -42,22 +41,12 @@ for 0.39 and later (split this list):
   aint helpful neither.
 
 - report:
- - write stats page for failed+bugged maintainers and uploaders, as a hall of shame list ;)
- - write stats about the reasons for failures:
-  - installation hangs and uses all cpu when installing with 
-    DEBIAN_FRONTEND="noninteractive"
-  - "E: Broken packages" - often indicates a problem with the archive at the
-    time of testing, not with the package being tested
- - include bugged status for packages on http://piuparts.debian.org/sid/state-failed-testing.html
+ - write stats about the reasons for failures, as its done with shell scripts now
  - RSS feeds of logs
- - include pts state (as an icon) in source summary pages
- - packages.txt for binary packages (like sources.txt)
+ - maybe packages.txt for binary packages (like sources.txt)
  - do more fancy R graphs, eg. also per state
  - sort packages on maintainer pages alphabetically
  - link (and target) to piuparts.d.o configuration is static to piatti. should refer to the actual hosts configuration, eg goldwassers
-
-- expire old logs a month after testing if newer logs exists (except if the new log is fail
-  and the old is bugged, then the fail log should be moved to bugged first)
 
 - create emacspeak-broken-dpkg-preconfigure package for broken repo. (then later
   put more broken packages in there and use that for testing piuparts)
@@ -85,7 +74,7 @@ for 0.39 and later (split this list):
 - a redirect of http://piuparts.d.o/foo to http://p.d.o/source/f/foo.html would be nice
 
 
-for 0.40 and on:
+for 0.50 and later:
 
 - multi-arch:
  - piuparts-report should have a list of available arch and list packages 
