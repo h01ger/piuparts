@@ -113,7 +113,7 @@ class Master(Protocol):
         "successfully-tested",
     )
 
-    def __init__(self, input, output, packages_file, known_circular_depends=[], section=None):
+    def __init__(self, input, output, packages_file, known_circular_depends, section=None):
         Protocol.__init__(self, input, output)
         self._commands = {
             "reserve": self._reserve,
@@ -122,10 +122,10 @@ class Master(Protocol):
             "fail": self._fail,
             "untestable": self._untestable,
         }
-        self._db = piupartslib.packagesdb.PackagesDB(prefix=section)
-        self._db.create_subdirs()
-        self._db.read_packages_file(packages_file)
-        self._db.set_known_circular_depends(known_circular_depends)
+        self._binary_db = piupartslib.packagesdb.PackagesDB(prefix=section)
+        self._binary_db.create_subdirs()
+        self._binary_db.read_packages_file(packages_file)
+        self._binary_db.set_known_circular_depends(known_circular_depends)
         self._writeline("hello")
 
     def do_transaction(self):
@@ -147,7 +147,7 @@ class Master(Protocol):
 
     def _reserve(self, command, args):
         self._check_args(0, command, args)
-        package = self._db.reserve_package()
+        package = self._binary_db.reserve_package()
         if package is None:
             self._short_response("error")
         else:
@@ -157,25 +157,25 @@ class Master(Protocol):
 
     def _unreserve(self, command, args):
         self._check_args(2, command, args)
-        self._db.unreserve_package(args[0], args[1])
+        self._binary_db.unreserve_package(args[0], args[1])
         self._short_response("ok")
 
     def _pass(self, command, args):
         self._check_args(2, command, args)
         log = self._read_long_part()
-        self._db.pass_package(args[0], args[1], log)
+        self._binary_db.pass_package(args[0], args[1], log)
         self._short_response("ok")
 
     def _fail(self, command, args):
         self._check_args(2, command, args)
         log = self._read_long_part()
-        self._db.fail_package(args[0], args[1], log)
+        self._binary_db.fail_package(args[0], args[1], log)
         self._short_response("ok")
 
     def _untestable(self, command, args):
         self._check_args(2, command, args)
         log = self._read_long_part()
-        self._db.make_package_untestable(args[0], args[1], log)
+        self._binary_db.make_package_untestable(args[0], args[1], log)
         self._short_response("ok")
 
 def main():
@@ -202,9 +202,7 @@ def main():
           known_circular_depends.append(kcd)
           logging.debug("circular depends: " + kcd)
 
-        logging.debug("circular depends: ".join(["%s " % kcd for kcd in known_circular_depends]))
-
-        m = Master(sys.stdin, sys.stdout, packages_file, known_circular_depends=known_circular_depends, section=section)
+        m = Master(sys.stdin, sys.stdout, packages_file, known_circular_depends, section=section)
         packages_file.close()
         while m.do_transaction():
             pass
