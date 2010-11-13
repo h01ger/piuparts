@@ -129,7 +129,10 @@ class Master(Protocol):
         for kcd in known_circular_depends.split():
           my_known_circular_depends.append(kcd)
           logging.debug("circular depends: " + kcd)
-        self._binary_db.set_known_circular_depends(my_known_circular_depends)
+        try:
+          self._binary_db.set_known_circular_depends(my_known_circular_depends)
+        except:
+          pass
         self._writeline("hello")
 
     def do_transaction(self):
