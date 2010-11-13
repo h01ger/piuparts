@@ -41,7 +41,9 @@ piuparts (0.39) UNRELEASED; urgency=low
       - /var/log/alternatives.log (Closes: #591966)
       - /var/log/apt/history.log (Closes: #594964)
       - /usr/share/fonts/X11/misc/fonts.alias (Closes: #576321)
-    - add to self.ignored_patterns: /etc/init.d/.depend.*
+    - add to self.ignored_patterns: 
+      - /etc/init.d/.depend.*
+      - /var/mail(/.*)? - this used to be just /var/mail/.*
     - create temporary DEBIAN directory for the piuparts-depends-dummy package
       with 0755 perms regardless of the umask of the calling shell. 
       (Closes: #573904)

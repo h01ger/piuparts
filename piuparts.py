@@ -261,7 +261,7 @@ class Settings:
             "/var/lib/insserv/run.*.log",
             "/var/log/exim/.*",
             "/var/log/exim4/.*",
-            "/var/mail/.*",
+            "/var/mail(/.*)?",
             "/var/spool/exim/.*",
             "/var/spool/exim4/.*",
             "/var/spool/news(/.*)?",
