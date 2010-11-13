@@ -115,7 +115,7 @@ class Master(Protocol):
         "successfully-tested",
     )
 
-    def __init__(self, input, output, packages_file, known_circular_depends, section=None):
+    def __init__(self, input, output, packages_file, known_circular_depends=[], section=None):
         Protocol.__init__(self, input, output)
         self._commands = {
             "reserve": self._reserve,
@@ -204,6 +204,7 @@ def main():
           known_circular_depends.append(kcd)
           logging.debug("circular depends: " + kcd)
 
+        logging.debug("circular depends: " + known_circular_depends)
         m = Master(sys.stdin, sys.stdout, packages_file, known_circular_depends, section=section)
         packages_file.close()
         while m.do_transaction():
