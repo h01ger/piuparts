@@ -31,7 +31,6 @@ import logging
 import ConfigParser
 import urllib
 import shutil
-import string
 import re
 import string
 

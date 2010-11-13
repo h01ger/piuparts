@@ -203,9 +203,9 @@ def main():
         known_circular_depends = config["known_circular_depends"]
 
         m = Master(sys.stdin, sys.stdout, packages_file, known_circular_depends, section=section)
-        packages_file.close()
         while m.do_transaction():
             pass
+        packages_file.close()
     else:
         print 'piuparts-master needs to be called with a valid sectionname as argument, exiting...'
         sys.exit(1)
