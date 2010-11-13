@@ -53,7 +53,7 @@ unixtime=$(date +%s)
 difference=$(( $unixtime - $stamptime ))
 
 # dont complain, if already complained and screenlog is younger than 15 min (=900 sec) 
-if [ ! -f $LOCKFILE ] || [ ${difference} -ge 900 ] ; then
+if [ ! -f $LOCKFILE ] && [ ${difference} -ge 900 ] ; then
 	{
 		echo "Either piuparts-slave hangs or is not running at all or wasn't started with ~piupartss/bin/slave_run - please investigate and take appropriate measures!"
 		echo
