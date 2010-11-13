@@ -42,9 +42,10 @@ for SECTION in $SECTIONS ; do
 done
 if [ -s $FILE ] ; then 
 	echo "Network problems on detected!"
-	echo "(By grep'ing for 'Cannot initiate the connection to' and 'W: Failed to"
-	echo "fetch.*Could not resolve' and 'E: Some index files failed to download'"
-	echo "in failed logs.)"
+	echo "(By grep'ing for 'Cannot initiate the connection to', 'Failed to"
+	echo "fetch.*Could not resolve', 'Failed to fetch.*Something wicked"
+        echo " happened resolving' 'Some index files failed to download' in"
+	echo "failed logs.)"
 	echo 
 	echo "The following logfiles have been deleted:" 
 	echo
