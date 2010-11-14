@@ -52,7 +52,6 @@ for SECTION in $SECTIONS ; do
 			fi
 		fi
 	done
-	echo "======================================================================="
 	echo
 	echo
 done
