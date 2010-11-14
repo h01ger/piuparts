@@ -47,6 +47,10 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2010-11-14</b>: Schedule all 429 failed packages in sid for re-testing.
+     </td>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2010-11-12</b>: Schedule all 108 failed packages in squeeze for re-testing. (Followup on 2010-09-04.)
      </td>
     </tr>
