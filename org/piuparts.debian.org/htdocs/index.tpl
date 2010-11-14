@@ -47,7 +47,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-11-14</b>: Schedule all 429 failed packages in sid for re-testing.
+      <b>2010-11-14</b>: Schedule all 402 failed packages in sid for re-testing.
      </td>
     <tr class="normalrow">
      <td class="contentcell2">
