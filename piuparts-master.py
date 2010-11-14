@@ -131,8 +131,10 @@ class Master(Protocol):
           logging.debug("circular depends: " + kcd)
         try:
           self._binary_db.set_known_circular_depends(my_known_circular_depends)
-          logging.debug("Even more WTF should this ever be logged...!")
+          logging.debug("section: "+section)
+          logging.debug("Even more WTF should this ever be logged with section lenny2squeeze...!")
         except:
+          logging.debug("section: "+section)
           logging.debug("A fine dose of WTF. I'm looking forward to the day I understand this. This shouldnt happen and only happens for the lenny2squeeze section, never for squeeze or sid. ")
         self._writeline("hello")
 
