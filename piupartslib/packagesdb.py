@@ -493,6 +493,8 @@ class PackagesDB:
     def make_package_untestable(self, package, version, log):
         self._check_for_acceptability_as_filename(package)
         self._check_for_acceptability_as_filename(version)
-        if not self._logdb.create(self._evil, package, version, log):
+        if self._logdb.create(self._evil, package, version, log):
+            self._logdb.remove(self._reserved, package, version)
+        else:
             raise Exception("Log file exists already: %s (%s)" %
                                 (package, version))

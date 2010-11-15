@@ -30,10 +30,11 @@ piuparts (0.39) UNRELEASED; urgency=low
       before this change.
     - get rid of the long unused states "fixed" and "fix-not-yet-tested"
       (also in piuparts-master and piuparts-report).
+    - forget reservations of untestable packages.
   * piuparts-slave.py: 
     - fix crash when going into sleep when idle. 
     - add support for only doing upgrade tests (without the basic test in the
-      upgrade target distro). 
+      upgrade target distro).
   * piuparts.py: 
     - new option: --log-level to specify the verbosity of piuparts
       output. Thanks to Fabrice Coutadeur for the patch! (Closes: #567190)
