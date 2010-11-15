@@ -52,8 +52,9 @@ stamptime=$(/usr/bin/stat -c %Z $SCREENLOG 2>/dev/null || echo 0)
 unixtime=$(date +%s)
 difference=$(( $unixtime - $stamptime ))
 
-# dont complain, if already complained and screenlog is younger than 15 min (=900 sec) 
-if [ ! -f $LOCKFILE ] && [ ${difference} -ge 900 ] ; then
+# dont complain, if already complained and screenlog is younger than 31 min (=1800 sec) - the slave likes to sleep that long
+# FIXME: parse config file for duration...
+if [ ! -f $LOCKFILE ] && [ ${difference} -ge 1860 ] ; then
 	{
 		echo "Either piuparts-slave hangs or is not running at all or wasn't started with ~piupartss/bin/slave_run - please investigate and take appropriate measures!"
 		echo
