@@ -63,6 +63,8 @@ piuparts (0.39) UNRELEASED; urgency=low
   * Add ${misc:Depends} to Depends in debian/control. 
   * Remove versioned dependencies on debhelper, dpkg-dev and debootstrap as
     the versions available in Etch are sufficient.
+  * Bump Standards-Version to 3.9.1, no changes necessary.
+  * Remove Ian Jackson from uploaders - thanks for your work, Ian!
   * Makefile: support python 2.5 and 2.6 instead of 2.4 and 2.5, adjust
     debian/control accordingly.
   * piuparts.1.txt: update the pointer to custom-scripts.txt to point to
