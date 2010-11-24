@@ -7,7 +7,7 @@ piuparts - .deb installation, upgrade, and removal testing suite
 
 SYNOPSIS
 --------
-*piuparts* ['-apvV'] ['-d' _distro_] ['-i' _filename_] ['-I' _regexp_] ['-l' _logfile_] ['-m' _url_] ['--bindmount' _dir_] [_package_] [_changes_file_]
+*piuparts* ['-apvV'] ['-d' _distro_] ['-i' _filename_] ['-I' _regexp_] ['-l' _logfile_] ['-m' _url_] ['--bindmount' _dir_] [_package_]... [_changes_file_]...
 
 DESCRIPTION
 -----------
