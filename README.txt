@@ -174,18 +174,25 @@ Python or Perl. The chroot where piuparts is run is minized and does not
 include Perl.
 
 
-It would be interesting to declare some piuparts variables like the name
-of the current testing packages, and be able to use this variable in the 
-custom scripts. But this option is not available yet.
+The variable PIUPARTS_OBJECTS is set to the packages currently being tested
+(seperated by spaces, if applicable) or the .changes file(s) being used.
 
-=== Example custom script:
+=== Example custom scripts:
 
-'$ cat post_install_number.sh'
+'$ cat post_install_numbers'
 ----
 #!/bin/bash
 
 number=`dpkg -l | wc -l`
 echo "There are $number packages installed."
+exit 0
+----
+
+'$ cat post_setup_package'
+----
+#!/bin/sh
+
+echo "$PIUPARTS_OBJECT will now get tested."
 exit 0
 ----
 

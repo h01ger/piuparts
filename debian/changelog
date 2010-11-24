@@ -60,6 +60,8 @@ piuparts (0.39) UNRELEASED; urgency=low
     - remove logrotate and depended packages after the test. (Closes: #602409)
       This is a fix for the incomplete patch for #566597. Again, this is a
       hardcoded list. :-(
+    - set environment variable PIUPARTS_OBJECTS in custom scripts to a space
+      seperated list of packages / changes files being tested.
   * Add ${misc:Depends} to Depends in debian/control. 
   * Remove versioned dependencies on debhelper, dpkg-dev and debootstrap as
     the versions available in Etch are sufficient.
