@@ -375,7 +375,7 @@ def run(command, ignore_errors=False):
     env = os.environ.copy()
     env["LC_ALL"] = "C"
     env["LANGUAGES"] = ""
-    env["PIUPARTS_OBJECTS"] = settings.testobjects
+    env["PIUPARTS_OBJECTS"] = ' '.join(str(object) for object in settings.testobjects )
     p = subprocess.Popen(command, env=env, stdin=subprocess.PIPE, 
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     (output, _) = p.communicate()
