@@ -1,21 +1,17 @@
 #!/bin/sh
 
-echo "DebugXXX: running $0"
-echo "DebugXXX: PIUPARTS_OBJECTS = \"$PIUPARTS_OBJECTS\""
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+echo "Debug: running script $0"
 case $PIUPARTS_OBJECTS in 
-	sudo) 	echo "DebugXXX: hurray, sudo package being tested"
+	sudo) 	log_debug		
 		export SUDO_FORCE_REMOVE=yes 
 		;;
-	*)	echo "DebugXXX: hurray, something else tested" ;;
+	fai-nfsroot)	log_debug
+			;;
 esac
 
 exit 0
 
-apt-get update 
-cat /etc/apt/sources.list
-dpkg -l tzdata && { 
-	apt-get -y --force-yes install libstdc++6
-	apt-get upgrade
-	apt-get dist-upgrade
-}
-	
