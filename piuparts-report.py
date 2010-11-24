@@ -115,7 +115,9 @@ HTML_HEADER = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://svn.debian.org/viewsvn/piuparts/piatti/org/piuparts.debian.org/etc/piuparts.conf.piatti" target="_blank">piuparts.d.o configuration</a>
+      piuparts.d.o configuration:<br>
+      <a href="http://svn.debian.org/viewsvn/piuparts/piatti/org/piuparts.debian.org/etc/piuparts.conf.piatti" target="_blank">piuparts.conf.piatti</a><br>
+      <a href="http://svn.debian.org/viewsvn/piuparts/piatti/org/piuparts.debian.org/etc/scripts/" target="_blank">scripts</a>
      </td>
     </tr>
     <tr class="normalrow">
