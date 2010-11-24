@@ -1,0 +1,15 @@
+#!/bin/sh
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+echo "Debug: running script $0"
+case $PIUPARTS_OBJECTS in 
+	fai-nfsroot)	log_debug
+			rm -f /.THIS_IS_THE_FAI_NFSROOT
+			;;
+esac
+
+exit 0
+
