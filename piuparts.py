@@ -1122,7 +1122,7 @@ class Chroot:
         for file in list_scripts:
             if file.startswith(step):
                 script = os.path.join("tmp/scripts", file)
-                self.run([script) 
+                self.run([script]) 
 
 
 class VirtServ(Chroot):
