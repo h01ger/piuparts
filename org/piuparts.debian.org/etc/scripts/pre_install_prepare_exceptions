@@ -6,14 +6,18 @@ log_debug() {
 
 echo "Debug: running script $0"
 case $PIUPARTS_OBJECTS in 
-	sudo) 		log_debug	
-			# sudo refuses removal if no root password is set	
-			yes "yes" | passwd 
-			;;
-	fai-nfsroot)	log_debug
-			# fai-nfsroot refuses installation unless this file exist
-			touch /.THIS_IS_THE_FAI_NFSROOT
-			;;
+	sudo) 			log_debug	
+				# sudo refuses removal if no root password is set	
+				yes "yes" | passwd 
+				;;
+	fai-nfsroot)		log_debug
+				# fai-nfsroot refuses installation unless this file exist
+				touch /.THIS_IS_THE_FAI_NFSROOT
+				;;
+	ltsp-client-core)	log_debug
+				# ltsp-client-core refuses installation unless this file exist
+				touch /etc/ltsp_chroot
+				;;
 esac
 
 exit 0

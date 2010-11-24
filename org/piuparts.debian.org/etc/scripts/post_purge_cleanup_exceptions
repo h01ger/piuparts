@@ -6,9 +6,12 @@ log_debug() {
 
 echo "Debug: running script $0"
 case $PIUPARTS_OBJECTS in 
-	fai-nfsroot)	log_debug
-			rm -f /.THIS_IS_THE_FAI_NFSROOT
-			;;
+	fai-nfsroot)		log_debug
+				rm -f /.THIS_IS_THE_FAI_NFSROOT
+				;;
+	ltsp-client-core)	log_debug
+				rm -f /etc/ltsp_chroot
+				;;
 esac
 
 exit 0
