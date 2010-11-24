@@ -47,8 +47,14 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2010-11-24</b>: Disable the logrotate test until <a href="http://bugs.debian.org/582630" target="_blank">#582630</a> is fixed and reschedule all 51 packages in sid failed due to it.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2010-11-14</b>: Schedule all 402 failed packages in sid for re-testing.
      </td>
+    </tr>
     <tr class="normalrow">
      <td class="contentcell2">
       <b>2010-11-12</b>: Schedule all 108 failed packages in squeeze for re-testing. (Followup on 2010-09-04.)
