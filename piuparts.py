@@ -375,6 +375,7 @@ def run(command, ignore_errors=False):
     env = os.environ.copy()
     env["LC_ALL"] = "C"
     env["LANGUAGES"] = ""
+    env["PIUPARTS_OBJECTS"] = settings.testobjects
     p = subprocess.Popen(command, env=env, stdin=subprocess.PIPE, 
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     (output, _) = p.communicate()
@@ -1121,7 +1122,7 @@ class Chroot:
         for file in list_scripts:
             if file.startswith(step):
                 script = os.path.join("tmp/scripts", file)
-                self.run([script, settings.testobjects]) 
+                self.run([script) 
 
 
 class VirtServ(Chroot):
