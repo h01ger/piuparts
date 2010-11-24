@@ -1121,7 +1121,7 @@ class Chroot:
         for file in list_scripts:
             if file.startswith(step):
                 script = os.path.join("tmp/scripts", file)
-                self.run([script]) 
+                self.run([script, settings.testobjects]) 
 
 
 class VirtServ(Chroot):
@@ -2127,6 +2127,7 @@ def parse_command_line():
         logging.error("Need command line arguments: " +
                       "names of packages or package files")
         exit = 1
+    settings.testobjects = args
 
     if exit is not None:
         sys.exit(exit)
