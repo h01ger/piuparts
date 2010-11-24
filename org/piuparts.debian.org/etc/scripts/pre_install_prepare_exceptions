@@ -1,6 +1,11 @@
 #!/bin/sh
 
 echo "DebugXXX: running $0 $1"
+case $1 in 
+	sudo) 	echo "DebugXXX: hurray, sudo package being tested" ;;
+	*)	echo "DebugXXX: hurray, something else tested" ;;
+esac
+
 exit 0
 
 apt-get update 
