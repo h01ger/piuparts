@@ -1,7 +1,7 @@
 #!/bin/sh
 
-exit 0
 echo "DebugXXX: running $0"
+exit 0
 
 apt-get update 
 cat /etc/apt/sources.list
