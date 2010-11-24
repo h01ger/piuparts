@@ -6,10 +6,11 @@ log_debug() {
 
 echo "Debug: running script $0"
 case $PIUPARTS_OBJECTS in 
-	sudo) 	log_debug		
-		export SUDO_FORCE_REMOVE=yes 
-		;;
+	sudo) 		log_debug		
+			export SUDO_FORCE_REMOVE=yes 
+			;;
 	fai-nfsroot)	log_debug
+			touch /.THIS_IS_THE_FAI_NFSROOT
 			;;
 esac
 
