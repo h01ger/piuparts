@@ -1,9 +1,11 @@
 #!/bin/sh
 
-echo "DebugXXX: running $0 $1"
+echo "DebugXXX: running $0"
 echo "DebugXXX: PIUPARTS_OBJECTS = \"$PIUPARTS_OBJECTS\""
-case $1 in 
-	sudo) 	echo "DebugXXX: hurray, sudo package being tested" ;;
+case $PIUPARTS_OBJECTS in 
+	sudo) 	echo "DebugXXX: hurray, sudo package being tested"
+		export SUDO_FORCE_REMOVE=yes 
+		;;
 	*)	echo "DebugXXX: hurray, something else tested" ;;
 esac
 
