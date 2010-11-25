@@ -5,11 +5,13 @@ log_debug() {
 }
 
 echo "Debug: running script $0"
+
+# sudo refuses removal if no root password is set, so set one
+# do this unconditionally, as there are packages depending on sudo 
+# (and since its harmless and fast)
+yes "yes" | passwd 
+
 case $PIUPARTS_OBJECTS in 
-	sudo) 			log_debug	
-				# sudo refuses removal if no root password is set	
-				yes "yes" | passwd 
-				;;
 	fai-nfsroot)		log_debug
 				# fai-nfsroot refuses installation unless this file exist
 				touch /.THIS_IS_THE_FAI_NFSROOT
