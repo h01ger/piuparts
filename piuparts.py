@@ -937,6 +937,9 @@ class Chroot:
 
     def install_packages_by_name(self, packages):
         if packages:
+            if settings.scriptsdir is not None:
+                self.run_scripts("pre_install")
+
 	    if settings.list_installed_files:
                 pre_info = self.save_meta_data()
                 self.run(["apt-get", "-y", "install"] + packages)
@@ -1781,9 +1784,12 @@ def install_and_upgrade_between_distros(filenames, packages):
         id = do_on_panic(chroot.remove)
 
     chroot.check_for_no_processes()
-    
+
     chroot.run(["apt-get", "update"])
     chroot.install_packages_by_name(packages)
+
+    if settings.scriptsdir is not None:
+        chroot.run_scripts("pre_upgrade")
 
     chroot.check_for_no_processes()
 
