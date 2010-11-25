@@ -7,9 +7,10 @@ log_debug() {
 echo "Debug: running script $0"
 case $PIUPARTS_OBJECTS in 
 	apt-listbugs)		log_debug
-				# apt-listbugs installs this file which will 
-				# make upgrades fail if packages have RC bugs
-				mv /etc/apt/apt.conf.d/10apt-listbugs /tmp/
+				# apt-listbugs is run on installations / upgrades 
+				# and will them fail if packages have RC bugs
+				# (which is good and sensible) 
+				echo -e "#/bin/sh\nexit 0" > /usr/sbin/apt-listbugs
 				;;
 esac
 
