@@ -5,6 +5,22 @@ log_debug() {
 }
 
 echo "Debug: running script $0"
+
+#
+# deal with packages depending on exceptions:
+#
+case $PIUPARTS_OBJECTS in
+	netscript-2.4-upstart)  log_debug
+				PIUPARTS_OBJECT=upstart
+				;;
+	live-config-upstart)    log_debug
+				PIUPARTS_OBJECT=upstart
+				;;
+esac
+
+#
+# deal with exceptions:
+#
 case $PIUPARTS_OBJECTS in 
 	fai-nfsroot)		log_debug
 				rm -f /.THIS_IS_THE_FAI_NFSROOT
@@ -28,6 +44,3 @@ case $PIUPARTS_OBJECTS in
 esac
 
 exit 0
-
-
-
