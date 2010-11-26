@@ -20,6 +20,14 @@ case $PIUPARTS_OBJECTS in
 				# ltsp-client-core refuses installation unless this file exist
 				touch /etc/ltsp_chroot
 				;;
+	upstart)		log_debug
+				# force installation and removal of essential package sysvinit
+				apt-get -y --force-yes install upstart
+				;;
+	file-rc)		log_debug
+				# force installation and removal of essential package sysv-rc
+				apt-get -y --force-yes install file-rc
+				;;
 esac
 
 exit 0
