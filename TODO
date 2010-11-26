@@ -61,8 +61,6 @@ for 0.39 and later (split this list):
 
 - slave_run: cleanup stale proc mountpoints
 
-- split the failed state into several problem-type failed states?
-
 - the templates used by update-reports.py should be taken from /etc/piuparts/templates/
   and not be included in the python source
 
