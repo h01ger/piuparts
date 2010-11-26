@@ -45,6 +45,17 @@
       News
      </td>
     </tr>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2010-11-26</b>: Schedule all 159 failed packages in lenny2squeeze for re-testing.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2010-11-25</b>: Treat six packages specially: sudo (sensibly refuses removal if no root password is set), apt-listbugs (is called by apt and exists if there are rc buggy packages being upgraded), fai-nfsroot, ltsp-client-core (these two packages modify the installed system heavily and thus will only install if conditions are met), file-rc and upstart (these two replace essential packages and therefore apt needs to be told to do this). 
+     </td>
+    </tr>
     <tr class="normalrow">
      <td class="contentcell2">
       <b>2010-11-24</b>: Disable the logrotate test until <a href="http://bugs.debian.org/582630" target="_blank">#582630</a> is fixed and reschedule all 51 packages in sid failed due to it.
