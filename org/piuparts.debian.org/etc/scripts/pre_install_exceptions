@@ -16,10 +16,10 @@ yes "yes" | passwd
 #
 case $PIUPARTS_OBJECTS in
 	netscript-2.4-upstart)	log_debug
-				PIUPARTS_OBJECT=upstart
+				PIUPARTS_OBJECTS=upstart
 				;;
 	live-config-upstart)	log_debug
-				PIUPARTS_OBJECT=upstart
+				PIUPARTS_OBJECTS=upstart
 				;;
 esac
 
