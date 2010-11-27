@@ -53,7 +53,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-11-25</b>: Treat six packages specially: sudo (sensibly refuses removal if no root password is set), apt-listbugs (is called by apt and exists if there are rc buggy packages being upgraded), fai-nfsroot, ltsp-client-core (these two packages modify the installed system heavily and thus will only install if conditions are met), file-rc and upstart (these two replace essential packages and therefore apt needs to be told to do this). 
+      <b>2010-11-25</b>: Treat six packages specially: sudo (sensibly refuses removal if no root password is set), apt-listbugs (is called by apt and exists if there are RC buggy packages being upgraded), fai-nfsroot, ltsp-client-core (these two packages modify the installed system heavily and thus will only install if conditions are met), file-rc and upstart (these two replace essential packages and therefore apt needs to be told to do this). 
      </td>
     </tr>
     <tr class="normalrow">
