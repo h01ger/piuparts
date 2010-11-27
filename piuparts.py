@@ -799,12 +799,12 @@ class Chroot:
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
                 self.list_installed_files (pre_info, self.save_meta_data())
 
-                self.run(["apt-get", "-yf", "--no-remove", "install"])
+                self.run(["apt-get", "-yf", "install"])
                 self.list_installed_files (pre_info, self.save_meta_data())
 
             else:
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
-                self.run(["apt-get", "-yf", "--no-remove", "install"])
+                self.run(["apt-get", "-yf", "install"])
 
             logging.info ("Installation of %s ok", tmp_files)
 
