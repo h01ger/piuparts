@@ -34,16 +34,18 @@ fi
 #
 
 LOGS=`mktemp`
-find $MASTER/*/reserved/ -mtime +2 -name "*.log" 2>/dev/null > $LOGS
-if [ -s $LOGS ] ; then 
-	for SECTION in $SECTIONS ; do
-        	for package_log in $(grep $SECTION $LOGS) ; do 
-			rm -f $package_log
+for dir in $MASTER $MASTER/../slave ; do
+	find $dir/*/reserved/ -mtime +2 -name "*.log" 2>/dev/null > $LOGS
+	if [ -s $LOGS ] ; then 
+		for SECTION in $SECTIONS ; do
+        		for package_log in $(grep $SECTION $LOGS) ; do 
+				rm -f $package_log
+			done
 		done
-	done
-	echo "Stale reserved packages detected, which have been reserved more then 2 days ago!"
-	echo "These packages have been unscheduled."
-	echo
-	cat "$LOGS"
-fi
+		echo "Stale reserved packages detected, which have been reserved more then 2 days ago!"
+		echo "These packages have been unscheduled."
+		echo
+		cat "$LOGS"
+	fi
+done
 rm $LOGS
