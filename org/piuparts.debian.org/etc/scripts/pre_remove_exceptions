@@ -15,6 +15,7 @@ case $PIUPARTS_OBJECTS in
 				# package debconf-i18n and piuparts has no way
 				# to know this.
 				apt-get -y install debconf-i18n
+				apt-get clean
 				;;
 esac
 
