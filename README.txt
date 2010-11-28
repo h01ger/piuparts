@@ -128,58 +128,42 @@ You can specify several custom scripts to be run inside piuparts.
 You have to store them in a directory and give it as argument to
 piuparts: '--scriptsdir=/dir/with/the/scripts'
 
-The scripts can be run:
-
-After the *setup* of the chroot is finished. The name of the script must
-start with:
-
-'post_setup_'
-
-Before *installing* your package. The name of the script must
-start with:
-
-'pre_install_'
-
-After *installing* your package and its deps. In the case of the 
-upgrade test, it is after install and upgrade. The name of the 
-script must start with:
-
-'post_install_'
-
-Before *removing* your package, The name of the script must start with:
-
-'pre_remove_'
-
-After *removing* your package, The name of the script must start with:
-
-'post_remove_'
-
-After *purging* your package, The name of the script must start with:
-
-'post_purge_'
-
-Before *upgrading* your package, once the current version in the archive
-has been installed (this is done in the second test, "Installation, 
-upgrade and purging test"). The name of the script must start with:
-
-'pre_upgrade_'
-
-Before upgrading the chroot to another distro and after upgrading:
-
-'pre_distupgrade_'
-'post_distupgrade_'
-
-You can run several scripts in every step, they are run in alphabetical 
-order.
+The script prefix determines in which step it is executed. You can run 
+several scripts in every step, they are run in alphabetical order.
 
 The scripts are run *inside* the piuparts chroot and only can be shell 
 scripts, if you want to run Python or Perl scripts, you have to install 
 Python or Perl. The chroot where piuparts is run is minized and does not 
 include Perl.
 
-
 The variable PIUPARTS_OBJECTS is set to the packages currently being tested
-(seperated by spaces, if applicable) or the .changes file(s) being used.
+(seperated by spaces, if applicable) or the .changes file(s) being used. 
+So when running in master-slave mode, it will be set to the (one) package 
+being tested at a time.
+
+The following prefixes for scripts are recognized:
+
+'post_setup_' - after the *setup* of the chroot is finished.
+
+'pre_install_' - before *installing* your package.
+
+'post_install_' - after *installing* your package and its dependencies. 
+In the case of the upgrade test, it is after install and upgrade.
+
+'pre_remove_' - before *removing* your package.
+
+'post_remove_' - after *removing* your package.
+
+'post_purge_' - after *purging* your package.
+
+'pre_upgrade_' - before *upgrading* your package, once the current version in the archive
+has been installed (this is done in the second test, "Installation, upgrade and 
+purging test").
+
+'pre_distupgrade_' - before *upgrading* the chroot to the *next distribution*.
+
+'post_distupgrade_' - after *upgrading* the chroot to the *next distribution*.
+
 
 === Example custom scripts:
 
@@ -201,7 +185,7 @@ exit 0
 ----
 
 
-== Distrubuted testing
+== Distributed testing
 
 As part of the quality assurance effort of Debian, 
 piuparts is run on the Debian package archive. This requires a

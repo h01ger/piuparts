@@ -78,6 +78,8 @@ piuparts (0.39) UNRELEASED; urgency=low
       spotting this. (Closes: #574504)
     - indicate that it's possible to check several packages or .changes files
       at once.
+  * README.txt
+    - better documentation of custom scripts.
 
   [ Evgeni Golov ]
   * piuparts.py:
