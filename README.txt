@@ -146,6 +146,10 @@ script must start with:
 
 'post_install_'
 
+Before *removing* your package, The name of the script must start with:
+
+'pre_remove_'
+
 After *removing* your package, The name of the script must start with:
 
 'post_remove_'

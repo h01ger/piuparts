@@ -852,10 +852,14 @@ class Chroot:
         nondeps_to_purge = [name for name, state in nondeps.iteritems()
                             if state == "purge"]
     
+        # Run custom scripts before removing all packages. 
+	if settings.scriptsdir is not None:
+            self.run_scripts("pre_remove")	
+
         # First remove all packages.
         self.remove_or_purge("remove", deps_to_remove + deps_to_purge +
                                         nondeps_to_remove + nondeps_to_purge)
-        # Run custom scripts after remove all packages. 
+        # Run custom scripts after removing all packages. 
 	if settings.scriptsdir is not None:
             self.run_scripts("post_remove")	
 
