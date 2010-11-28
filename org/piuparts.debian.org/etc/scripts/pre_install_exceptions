@@ -15,6 +15,9 @@ yes "yes" | passwd
 # deal with packages depending on exceptions:
 #
 case $PIUPARTS_OBJECTS in
+	ltsp-client)		log_debug
+				PIUPARTS_OBJECTS=ltsp-client-core
+				;;
 	netscript-2.4-upstart)	log_debug
 				PIUPARTS_OBJECTS=upstart
 				;;
