@@ -1,0 +1,21 @@
+#!/bin/sh
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+echo "Debug: running script $0"
+
+#
+# deal with exceptions:
+#
+case $PIUPARTS_OBJECTS in 
+	debconf-english)	log_debug
+				# install debconf-english removed the required
+				# package debconf-i18n and piuparts has no way
+				# to know this.
+				apt-get -y install debconf-i18n
+				;;
+esac
+
+exit 0

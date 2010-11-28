@@ -48,6 +48,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2010-11-28</b>: debconf-english is the seventh package getting special treatment by piuparts: before removal, debconf-i18n is installed (see <a href="http://bugs.debian.org/539146" target="_blank">#539146</a> has the details and the news entry for 2010-11-25 lists the other six packages.)
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2010-11-26</b>: Schedule all 159 failed packages in lenny2squeeze for re-testing.
      </td>
     </tr>
