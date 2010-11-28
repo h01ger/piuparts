@@ -12,15 +12,6 @@ for 0.39 and later (split this list):
   in $distro and if not, delete it.
 - discard logs for packages which have been removed from distro.
 
-- So it seems piuparts needs to get fixed to take into account packages
-  being removed due to Conflicts. And probably should purge those
-  packages which got removed, or reinstall them at the end of the run.
-  (#539146)
-- 539146: piuparts can't currently test postfix, since installing postfix removes
-  exim and removing postfix would require re-installing exim, and that
-  doesn't happen; there are other packages like that, ie. debconf-english
-  (note: postfix can be tested today. debconf-english still not)
-
 - svn mv piatti trunk/doc/examples  and include it into a new binary package. 
   when doing so keep in mind the two tango icons and credit those in 
   debian/copyright.
@@ -100,10 +91,6 @@ for 0.50 and later:
   Interestingly enough this currently seems to prevent start-stop-daemon
   from starting any daemons ;)
 
-- binary packages which have been binNMUed are shown with the wrong version 
-  number on the package pages. this is just a problem in reporting, not in 
-  testing. PackagesDB.get_source_package() gives back the right value, but 
-  piuparts-reports does not care.
 
 Low priority stuff (a.k.a. "nobody's said they must have it now")
 -----------------------------------------------------------------
