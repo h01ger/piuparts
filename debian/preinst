@@ -2,23 +2,25 @@
 
 set -e
 
-# copied and paste from http://www.dpkg.org/dpkg/ConffileHandling - thanks!
+# copied and pasted from http://wiki.debian.org/DpkgConffileHandling - thanks!
 
 # Remove a no-longer used conffile
 rm_conffile() {
-    CONFFILE="$1"
+    local PKGNAME="$1"
+    local CONFFILE="$2"
 
-    if [ -e "$CONFFILE" ]; then
-        md5sum="`md5sum \"$CONFFILE\" | sed -e \"s/ .*//\"`"
-        old_md5sum="`sed -n -e \"/^Conffiles:/,/^[^ ]/{\\\\' $CONFFILE'{s/.* //;p}}\" /var/lib/dpkg/status`"
-        if [ "$md5sum" != "$old_md5sum" ]; then
-            echo "Obsolete conffile $CONFFILE has been modified by you."
-            echo "Saving as $CONFFILE.dpkg-bak ..."
-            mv -f "$CONFFILE" "$CONFFILE".dpkg-bak
-        else
-            echo "Removing obsolete conffile $CONFFILE ..."
-            rm -f "$CONFFILE"
-        fi
+    [ -e "$CONFFILE" ] || return 0
+
+    local md5sum="$(md5sum $CONFFILE | sed -e 's/ .*//')"
+    local old_md5sum="$(dpkg-query -W -f='${Conffiles}' $PKGNAME | \
+            sed -n -e "\' $CONFFILE ' { s/ obsolete$//; s/.* //; p }")"
+    if [ "$md5sum" != "$old_md5sum" ]; then
+        echo "Obsolete conffile $CONFFILE has been modified by you."
+        echo "Saving as $CONFFILE.dpkg-bak ..."
+        mv -f "$CONFFILE" "$CONFFILE".dpkg-bak
+    else
+        echo "Removing obsolete conffile $CONFFILE ..."
+        rm -f "$CONFFILE"
     fi
 }
 

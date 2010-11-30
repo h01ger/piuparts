@@ -4,7 +4,7 @@ Uploaders: Holger Levsen <holger@debian.org>
 Section: devel
 Priority: extra
 Standards-Version: 3.9.1
-Build-Depends: debhelper, dpkg-dev
+Build-Depends: debhelper (>=5)
 Build-Depends-Indep: python-support, asciidoc, xmlto
 Vcs-Svn: svn://svn.debian.org/svn/piuparts/trunk/
 Vcs-Browser: http://svn.debian.org/wsvn/piuparts/trunk/
