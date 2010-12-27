@@ -1914,7 +1914,7 @@ def parse_command_line():
     parser.add_option("--dpkg-force-confdef",
                       default=False,
                       action='store_true',
-		      help="Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This options will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages.")
+		      help="Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This option will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages.")
      
     parser.add_option("--do-not-verify-signatures", default=False,
                       action='store_true',
