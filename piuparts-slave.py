@@ -367,7 +367,12 @@ def test_package(config, package, packages_files):
         distros = ["-d " + distro.strip() for distro in distros]
         distros = " ".join(distros)
         command = "%(piuparts-cmd)s -ab %(upgrade-test-chroot-tgz)s " % config
-        command += distros + " " + package["Package"]
+        command += distros
+
+        if config["mirror"]:
+          command += "--mirror %s " % config["mirror"]
+
+        command += " " + package["Package"]
 
         logging.debug("Executing: %s" % command)
         output.write("\nExecuting: %s\n" % command)
