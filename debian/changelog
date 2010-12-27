@@ -67,6 +67,10 @@ piuparts (0.39) UNRELEASED; urgency=low
       separated list of packages / changes files being tested.
     - do not call apt-get with --no-remove when installing packages. 
       (Closes: #603453)
+    - apply patch by Andres Mejia to fix parsing of the --force-confdef option
+      and also to configure apt to use that option. Thanks, Andres. 
+      (Closes: #605475)
+
   * piuparts.1.txt: 
     - update the pointer to custom-scripts.txt to point to README.txt, as
       those two files have been merged. Thanks to Gregor Hermann for 

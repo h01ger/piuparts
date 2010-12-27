@@ -413,6 +413,17 @@ def create_file(name, contents):
         panic()
 
 
+def append_to_file(name, contents):
+    """Append contents to an existing file."""
+    try:
+        f = file(name, "a")
+        f.write(contents)
+        f.close()
+    except IOError, detail:
+        logging.error("Couldn't append to file %s: %s" % (name, detail))
+        panic()
+
+
 def remove_files(filenames):
     """Remove some files."""
     for filename in filenames:
@@ -669,12 +680,15 @@ class Chroot:
                     'APT::Get::Assume-Yes "yes";\n' +
                     'APT::Install-Recommends "0";\n' +
                     'APT::Install-Suggests "0";\n')
+        if settings.dpkg_force_confdef:
+          append_to_file(self.relative("etc/apt/apt.conf"),
+                         'Dpkg::Options {"--force-confdef";};\n')
 
     def create_dpkg_conf(self):
         """Create /etc/dpkg/dpkg.cfg.d/piuparts inside the chroot."""
         if settings.dpkg_force_confdef:
           create_file(self.relative("etc/dpkg/dpkg.cfg.d/piuparts"),
-                    'force-confdef')
+                    'force-confdef\n')
           logging.info("Warning: dpkg has been configured to use the force-confdef option. This will hide problems, see #466118.")
 
     def create_policy_rc_d(self):
@@ -1899,7 +1913,8 @@ def parse_command_line():
 
     parser.add_option("--dpkg-force-confdef",
                       default=False,
-		      help="Make dpkg use --force-confdev, which lets dpkg always choose the default action when a modified conffile is found. This options will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages.")
+                      action='store_true',
+		      help="Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This options will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages.")
      
     parser.add_option("--do-not-verify-signatures", default=False,
                       action='store_true',
