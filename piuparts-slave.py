@@ -342,14 +342,14 @@ def test_package(config, package, packages_files):
    
     # omit distro test if chroot-tgz is not specified.
     if config["chroot-tgz"]: 
-      command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s " % \
+      command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s" % \
                   config
       if config["keep-sources-list"] in ["yes", "true"]:
-          command += "--keep-sources-list "
+          command += " --keep-sources-list "
     
       if config["mirror"]:
-          command += "--mirror %s " % config["mirror"]
-      command += package["Package"]
+          command += " --mirror %s " % config["mirror"]
+      command += " " + package["Package"]
 
       logging.debug("Executing: %s" % command)
       output.write("Executing: %s\n" % command)
@@ -370,7 +370,7 @@ def test_package(config, package, packages_files):
         command += distros
 
         if config["mirror"]:
-          command += "--mirror %s " % config["mirror"]
+          command += " --mirror %s " % config["mirror"]
 
         command += " " + package["Package"]
 
