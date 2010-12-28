@@ -751,14 +751,11 @@ class Chroot:
     
     def apt_get_knows(self, package_names):
         """Does apt-get (or apt-cache) know about a set of packages?"""
+
         for name in package_names:
             (status, output) = self.run(["apt-cache", "show", name],
                                         ignore_errors=True)
-            if not os.WIFEXITED(status):
-                logging.error("Error occurred when running apt-cache " +
-                              " in chroot:\n" + output)
-                panic()
-            if os.WEXITSTATUS(status) != 0 or not output.strip():
+            if status != 0:
                 return False
         return True
 

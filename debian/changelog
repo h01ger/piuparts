@@ -73,7 +73,9 @@ piuparts (0.39) UNRELEASED; urgency=low
     - apply patch by Andres Mejia to fix parsing of the --force-confdef option
       and also to configure apt to use that option. Thanks, Andres. 
       (Closes: #605475)
-
+    - don't panic if package is not known by apt-get, this probably just means
+      someone is testing a package not yet in the archive. (Closes: #566672)
+      Thanks to Cleto Martin Angelina for the patch!
   * piuparts.1.txt: 
     - update the pointer to custom-scripts.txt to point to README.txt, as
       those two files have been merged. Thanks to Gregor Hermann for 
