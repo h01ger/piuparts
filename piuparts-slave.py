@@ -296,7 +296,7 @@ class Section:
             for package_name, version in self._slave.get_reserved():
                 if package_name in packages_file:
                     package = packages_file[package_name]
-                    if version == package["Version"]:
+                    if version == package["Version"] or self._config["upgrade-test-distros"]:
                         test_package(self._config, package, packages_files)
                     else:
                         create_file(os.path.join("untestable", 

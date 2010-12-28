@@ -36,7 +36,10 @@ piuparts (0.39) UNRELEASED; urgency=low
     - fix crash when going into sleep when idle. 
     - add support for only doing upgrade tests (without the basic test in the
       upgrade target distro).
-    - bugfix: support mirror configuration option also for upgrade-tests.
+    - honor mirror configuration option also for upgrade-tests.
+    - also do upgrade tests if the version of a package being tested (the one 
+      in the upgraded distro) is not available in the distro being upgraded 
+      from.
   * piuparts.py: 
     - new option: --log-level to specify the verbosity of piuparts
       output. Thanks to Fabrice Coutadeur for the patch! (Closes: #567190)
