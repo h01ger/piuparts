@@ -142,8 +142,8 @@ class Settings:
         self.basetgz = None
         self.lvm_volume = None
         self.savetgz = None
-        self.endmeta = None
-        self.saveendmeta = None
+        self.end_meta = None
+        self.save_end_meta = None
         self.warn_on_others = False
         self.warn_on_leftovers_after_purge = False
         self.keep_sources_list = False
@@ -1781,8 +1781,8 @@ def install_and_upgrade_between_distros(filenames, packages):
         root_tgz = chroot.create_temp_tgz_file()
         chroot.pack_into_tgz(root_tgz)
         
-    if settings.endmeta:
-        root_info, selections = load_meta_data(settings.endmeta)
+    if settings.end_meta:
+        root_info, selections = load_meta_data(settings.end_meta)
     else:
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
         chroot.run(["apt-get", "clean"])
@@ -1790,8 +1790,8 @@ def install_and_upgrade_between_distros(filenames, packages):
         root_info = chroot.save_meta_data()
         selections = chroot.get_selections()
         
-        if settings.saveendmeta:
-            save_meta_data(settings.saveendmeta, root_info, selections)
+        if settings.save_end_meta:
+            save_meta_data(settings.save_end_meta, root_info, selections)
     
         chroot.remove()
         dont_do_on_panic(id)

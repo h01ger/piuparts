@@ -77,6 +77,7 @@ piuparts (0.39) UNRELEASED; urgency=low
     - don't panic if package is not known by apt-get, this probably just means
       someone is testing a package not yet in the archive. (Closes: #566672)
       Thanks to Cleto Martin Angelina for the patch!
+    - fix parsing of the options --end-meta and --save-end-meta.
   * piuparts.1.txt: 
     - update the pointer to custom-scripts.txt to point to README.txt, as
       those two files have been merged. Thanks to Gregor Hermann for 
