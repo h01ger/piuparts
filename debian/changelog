@@ -53,6 +53,7 @@ piuparts (0.39) UNRELEASED; urgency=low
     - add to self.ignored_patterns: 
       - /etc/init.d/.depend.*
       - /var/mail(/.*)? - this used to be just /var/mail/.*
+      - /var/lib//update-rc.d(/.*)? (Closes: #605127)
     - create temporary DEBIAN directory for the piuparts-depends-dummy package
       with 0755 perms regardless of the umask of the calling shell. 
       (Closes: #573904)
