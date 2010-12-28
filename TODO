@@ -13,6 +13,10 @@ for 0.40:
   Another approch is for each logfile to check if the package still exist 
   in $distro and if not, delete it.
 
+- provide mail templates for bugreports (which ideally only should need manual
+  logfile trimming) at http://$piuparts/$distro/fail/$packages_$version.bug
+  for usage by a then to be written tool.
+
 for 0.41:
 
 - discard logs for packages which have been removed from distro.
