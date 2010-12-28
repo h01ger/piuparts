@@ -2,14 +2,19 @@ Things to do for piuparts
 =========================
 
 
-for 0.39 and later (split this list):
+for 0.40:
 
+- use python-debianbts for piuparts-report.py
+ 
 - garbage collection: the best approach is probably to track bugginess 
   status of packages via the bts and remove the "bugged" directory-status
   altogether. Then failed and successful logs older then 4/8 weeks could 
   just be deleted periodically. 
   Another approch is for each logfile to check if the package still exist 
   in $distro and if not, delete it.
+
+for 0.41:
+
 - discard logs for packages which have been removed from distro.
 
 - svn mv piatti trunk/doc/examples  and include it into a new binary package. 
@@ -27,12 +32,15 @@ for 0.39 and later (split this list):
 - master:
  - write stats about number of daily tests (-> report: create fancy graphs)
 
+for 0.45 and later:
+
 - untestable packages are not recognicable as such, see http://piuparts.debian.org/source/a/apache2.html 
   atm. (log is N/A, even though its there, even if empty) - http://piuparts.debian.org/sid/state-cannot-be-tested.html
   aint helpful neither.
 
 - report:
  - write stats about the reasons for failures, as its done with shell scripts now
+   (piuparts-analyze.py is an existing "fragment".)
  - RSS feeds of logs
  - maybe packages.txt for binary packages (like sources.txt)
  - do more fancy R graphs, eg. also per state
