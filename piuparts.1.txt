@@ -60,7 +60,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   Do not verify signatures from the Release files when running debootstrap.
 
 *--dpkg-force-confdef*::
-  Make dpkg use --force-confdev, which lets dpkg always choose the default action when a modified conffile is found. This options will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages. 'This option shall normally not be used.' (See #466118.)
+  Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This option will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages. 'This option shall normally not be used.' (See #466118.)
 
 *-i* 'filename', *--ignore*='filename'::
   Add a filename to the list of filenames to be ignored when comparing changes before and after installation. By default, piuparts ignores files that always change during a package installation and uninstallation, such as *dpkg* status files. The filename should be relative to the root of the chroot (e.g., _var/lib/dpkg/status_). This option can be used as many times as necessary.
@@ -119,6 +119,12 @@ Note that file: addresses works if the directories are made accessible from with
 
 *-s* 'filename', *--save*='filename'::
   Save the chroot, after it has been set up, as a tarball into _filename_. It can then be used with '-b'.
+
+*-B* 'FILE', *--end-meta*='FILE'::
+  Save chroot package selection and file meta data in FILE for later use. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.
+
+*-S* 'FILE', *--save-end-meta*='FILE'::
+  Load chroot package selection and file meta data from FILE. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.
 
 *--scriptsdir*='DIR'::
   Directory where are placed the custom scripts. For more information about this, read README.txt

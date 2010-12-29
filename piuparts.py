@@ -1771,6 +1771,28 @@ def install_and_upgrade_between_distros(filenames, packages):
     """Install package and upgrade it between distributions, then remove.
        Return True if successful, False if not."""
 
+    # this function is a bit confusing at first, because of what it does by default:
+    # 1. create chroot with source distro
+    # 2. upgrade chroot to target distro
+    # 3. remove chroot and recreate chroot with source distro
+    # 4. install depends in chroot
+    # 5. install package in chroot
+    # 6. upgrade chroot to target distro
+    # 7. remove package and depends
+    # 8. compare results
+    #
+    # sounds silly, or?
+    # well, it is is a reasonable default (see below for why), but 
+    #
+    # step 2+3 can be done differently by using --save-end-meta once and 
+    # then --end-meta for all following runs - until the target distro
+    # changes again... 
+    # 
+    # Under normal circumstances the target distro can change anytime, ie. at
+    # the next mirror pulse, so unless the target distro is frozen, this is
+    # a reasonable default behaviour for distro upgrade tests, which are not 
+    # done by default anyway.
+
     chroot = get_chroot()
     chroot.create()
     id = do_on_panic(chroot.remove)
@@ -1782,15 +1804,18 @@ def install_and_upgrade_between_distros(filenames, packages):
         chroot.pack_into_tgz(root_tgz)
         
     if settings.end_meta:
+        # load root_info and selections
         root_info, selections = load_meta_data(settings.end_meta)
     else:
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
         chroot.run(["apt-get", "clean"])
 
+        # set root_info and selections
         root_info = chroot.save_meta_data()
         selections = chroot.get_selections()
         
         if settings.save_end_meta:
+            # save root_info and selections
             save_meta_data(settings.save_end_meta, root_info, selections)
     
         chroot.remove()
@@ -1798,6 +1823,9 @@ def install_and_upgrade_between_distros(filenames, packages):
         chroot = get_chroot()
         chroot.create()
         id = do_on_panic(chroot.remove)
+
+    # leave indication in logfile why we do what we do
+    logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta nad --end-meta to learn why this is neccessary and how to possibly avoid it.")
 
     chroot.check_for_no_processes()
 
@@ -1820,6 +1848,7 @@ def install_and_upgrade_between_distros(filenames, packages):
 
     file_owners = chroot.get_files_owned_by_packages()
 
+    # use root_info and selections
     changes = diff_selections(chroot, selections)
     chroot.restore_selections(changes, packages)
     result = check_results(chroot, root_info, file_owners)
@@ -1889,9 +1918,6 @@ def parse_command_line():
                            "chroot, instead of building a new one with " +
                            "debootstrap.")
 
-    parser.add_option("-B", "--end-meta", metavar="FILE",
-                      help="XXX")
-    
     parser.add_option("--bindmount", action="append", metavar="DIR",
                       default=[],
                       help="Directory to be bind-mounted inside the chroot.")
@@ -1912,7 +1938,7 @@ def parse_command_line():
     parser.add_option("--dpkg-force-confdef",
                       default=False,
                       action='store_true',
-		      help="Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This option will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages.")
+		      help="Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This option will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages.  (See #466118.)")
      
     parser.add_option("--do-not-verify-signatures", default=False,
                       action='store_true',
@@ -1992,8 +2018,11 @@ def parse_command_line():
     parser.add_option("-s", "--save", metavar="FILENAME",
                       help="Save the chroot into FILENAME.")
 
+    parser.add_option("-B", "--end-meta", metavar="FILE",
+                      help="Save chroot package selection and file meta data in FILE for later use. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
+ 
     parser.add_option("-S", "--save-end-meta", metavar="FILE",
-                      help="XXX")
+                      help="Load chroot package selection and file meta data from FILE. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
 
     parser.add_option("--single-changes-list", default=False,
                       action="store_true",

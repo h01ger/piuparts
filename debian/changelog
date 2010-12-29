@@ -78,12 +78,19 @@ piuparts (0.39) UNRELEASED; urgency=low
       someone is testing a package not yet in the archive. (Closes: #566672)
       Thanks to Cleto Martin Angelina for the patch!
     - fix parsing of the options --end-meta and --save-end-meta.
+    - supply help texts for --end-meta and --save-end-meta options, also add
+      comments to install_and_upgrade_between_distros() to make the code
+      easier to understand and hopefully improve in future. (Closes: #560050).
+    - add logging to install_and_upgrade_between_distros() to point people to
+      read the functions source code if they wonder why the log (for distro 
+      upgrade tests) looks like it looks.
   * piuparts.1.txt: 
     - update the pointer to custom-scripts.txt to point to README.txt, as
       those two files have been merged. Thanks to Gregor Hermann for 
       spotting this. (Closes: #574504)
     - indicate that it's possible to check several packages or .changes files
       at once.
+    - update several options descritpions.
   * README.txt
     - better documentation of custom scripts.
   * Add ${misc:Depends} to Depends in debian/control. 
