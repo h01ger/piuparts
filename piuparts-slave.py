@@ -283,20 +283,15 @@ class Section:
 
         if self._slave.get_reserved():
             packages_files = {}
-            if self._config["upgrade-test-distros"]:
-                distros = [self._config["distro"]] + self._config["upgrade-test-distros"].split()
-            else:
+            if self._config["distro"]:
                 distros = [self._config["distro"]]
+            if self._config["upgrade-test-distros"]:
+                distros += self._config["upgrade-test-distros"].split()
 
             for distro in distros:
                 if distro not in packages_files:
                     packages_files[distro] = fetch_packages_file(self._config, distro)
-            # don't use the packages_file from the default distro (sid) for upgrade-tests
-            # if no distro is given, rather use the last one of the tested distros
-            if self._config["upgrade-test-distros"] and self._config["distro"] is not None:
-              packages_file = packages_files[distro]
-            else:
-              packages_file = packages_files[self._config["distro"]]
+            packages_file = packages_files[distro]
 
             for package_name, version in self._slave.get_reserved():
                 if package_name in packages_file:
