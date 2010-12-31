@@ -70,7 +70,7 @@ class Config(piupartslib.conf.Config):
                 "log-file": "piuparts-master.log",
                 "mirror": None,
                 "piuparts-cmd": "sudo piuparts",
-                "distro": "sid",
+                "distro": None,
                 "chroot-tgz": None,
                 "upgrade-test-distros": None,
                 "upgrade-test-chroot-tgz": None,
