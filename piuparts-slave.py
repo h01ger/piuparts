@@ -70,7 +70,7 @@ class Config(piupartslib.conf.Config):
                 "log-file": "piuparts-master.log",
                 "mirror": None,
                 "piuparts-cmd": "sudo piuparts",
-                "distro": None,
+                "distro": "sid",
                 "chroot-tgz": None,
                 "upgrade-test-distros": None,
                 "upgrade-test-chroot-tgz": None,
@@ -283,16 +283,15 @@ class Section:
 
         if self._slave.get_reserved():
             packages_files = {}
-            distros = ""
-            if self._config["distro"]:
-                distros = [self._config["distro"]]
             if self._config["upgrade-test-distros"]:
-                distros += " " + self._config["upgrade-test-distros"]
+                distros = [self._config["distro"]] + self._config["upgrade-test-distros"].split()
+            else:
+                distros = [self._config["distro"]]
 
             for distro in distros:
                 if distro not in packages_files:
                     packages_files[distro] = fetch_packages_file(self._config, distro)
-            packages_file = packages_files[distro]
+            packages_file = packages_files[self._config["distro"]]
 
             for package_name, version in self._slave.get_reserved():
                 if package_name in packages_file:
