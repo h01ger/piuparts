@@ -293,7 +293,7 @@ class Section:
                     packages_files[distro] = fetch_packages_file(self._config, distro)
             # don't use the packages_file from the default distro (sid) for upgrade-tests
             # if no distro is given, rather use the last one of the tested distros
-            if self._config["upgrade-test-distros"] and not self._config["distro"]:
+            if self._config["upgrade-test-distros"] and self._config["distro"] is not None:
               packages_file = packages_files[distro]
             else:
               packages_file = packages_files[self._config["distro"]]
