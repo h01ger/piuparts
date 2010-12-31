@@ -40,6 +40,9 @@ piuparts (0.39) UNRELEASED; urgency=low
     - also do upgrade tests if the version of a package being tested (the one 
       in the upgraded distro) is not available in the distro being upgraded 
       from.
+    - don't use the packages file from the default distro (sid) for 
+      upgrade-tests if no distro is given, rather use the last one of the tested
+      distros (ie. squeeze in the current setup on piatti.d.o)
   * piuparts.py: 
     - new option: --log-level to specify the verbosity of piuparts
       output. Thanks to Fabrice Coutadeur for the patch! (Closes: #567190)
