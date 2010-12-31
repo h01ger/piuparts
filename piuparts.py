@@ -1825,7 +1825,7 @@ def install_and_upgrade_between_distros(filenames, packages):
         id = do_on_panic(chroot.remove)
 
     # leave indication in logfile why we do what we do
-    logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta nad --end-meta to learn why this is neccessary and how to possibly avoid it.")
+    logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
 
     chroot.check_for_no_processes()
 
