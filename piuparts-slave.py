@@ -287,7 +287,7 @@ class Section:
             if self._config["distro"]:
                 distros = [self._config["distro"]]
             if self._config["upgrade-test-distros"]:
-                distros += self._config["upgrade-test-distros"].split()
+                distros += " " + self._config["upgrade-test-distros"]
 
             for distro in distros:
                 if distro not in packages_files:
