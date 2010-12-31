@@ -283,6 +283,7 @@ class Section:
 
         if self._slave.get_reserved():
             packages_files = {}
+            distros = ""
             if self._config["distro"]:
                 distros = [self._config["distro"]]
             if self._config["upgrade-test-distros"]:
