@@ -13,6 +13,7 @@ for 0.40:
   Another approch is for each logfile to check if the package still exist 
   in $distro and if not, delete it.
 
+- piuparts-report.py: fix those 2 FIXMEs in main()
 
 for 0.41:
 
