@@ -70,7 +70,7 @@ class Config(piupartslib.conf.Config):
                 "log-file": "piuparts-master.log",
                 "mirror": None,
                 "piuparts-cmd": "sudo piuparts",
-                "distro": "sid",
+                "distro": None,
                 "chroot-tgz": None,
                 "upgrade-test-distros": None,
                 "upgrade-test-chroot-tgz": None,
@@ -232,6 +232,9 @@ class Section:
         oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
 
+        if self._config["chroot-tgz"] and not self._config["distro"]:
+          logging.info("The option --chroot-tgz needs --distro.")
+
         if self._config["chroot-tgz"] and not os.path.exists(self._config["chroot-tgz"]):
             create_chroot(self._config, self._config["chroot-tgz"], self._config["distro"])
 
@@ -283,15 +286,21 @@ class Section:
 
         if self._slave.get_reserved():
             packages_files = {}
-            if self._config["upgrade-test-distros"]:
-                distros = [self._config["distro"]] + self._config["upgrade-test-distros"].split()
-            else:
+            if self._config["distro"]:
                 distros = [self._config["distro"]]
+            else:
+                distros = []
+
+            if self._config["upgrade-test-distros"]:
+                distros += self._config["upgrade-test-distros"].split()
 
             for distro in distros:
                 if distro not in packages_files:
                     packages_files[distro] = fetch_packages_file(self._config, distro)
-            packages_file = packages_files[self._config["distro"]]
+            if self._config["distro"]:
+              packages_file = packages_files[self._config["distro"]]
+            else:
+              packages_file = packages_files[distro]
 
             for package_name, version in self._slave.get_reserved():
                 if package_name in packages_file:
