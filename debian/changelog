@@ -12,24 +12,26 @@ piuparts (0.39) UNRELEASED; urgency=low
        - due to files having disappeared after purge and
        - due to problems configuring a database.
      - only report about (un)owned files and directories and symlink issues in
-       sid
+       sid - that's hardcoded as it's not practical to track them anywhere else 
+       anyway. And at least for broken symlinks this will also stay like this
+       for a long time.
      - visual improvements in the output.
      - ignore udebs and binaries from other archs too.
      - graph is generated using all the available data points.
-  * piupartsib/packagesdb.py: 
+  * piupartslib/packagesdb.py: 
     - automatically break circular dependencies when there are only circular
       dependencies left, using a configurable list of circular depdencies in 
       piuparts.conf (Closes: #526046)
         The list of circular depends is taken from a script written by Robert
       Lemmen available at http://debian.semistable.com/debgraph.out.html -
       obviously it would be better to merge this into piuparts directly.
-        Note that the dependecy resovler is still buggy, the state
+        Note that the dependency resovler is still buggy, the state
       waiting-for-dependency-to-be-tested still contains some packages
-      which failed depends (due to them being dependent on packages with
-      circular depends). The effect of that is none, other than that
-      (=waiting-to-be-tested is calculated correctly). This bug was present
-      before this change.
-    - get rid of the long unused states "fixed" and "fix-not-yet-tested"
+      with failed depends (due to them being dependent on packages with
+      circular depends). This bug has no effect other than that (so the state 
+      waiting-to-be-tested is calculated correctly). This bug is also no 
+      regression.
+    - get rid of the longtime unused states "fixed" and "fix-not-yet-tested"
       (also in piuparts-master and piuparts-report).
     - forget reservations of untestable packages.
   * piuparts-slave.py: 
@@ -39,7 +41,7 @@ piuparts (0.39) UNRELEASED; urgency=low
     - honor mirror configuration option also for upgrade-tests.
     - also do upgrade tests if the version of a package being tested (the one 
       in the upgraded distro) is not available in the distro being upgraded 
-      from.
+      from. (This is a very short test, but a successfully one.)
     - make configuration setting "distro" to not default to any distro.
   * piuparts.py: 
     - new option: --log-level to specify the verbosity of piuparts
@@ -61,7 +63,7 @@ piuparts (0.39) UNRELEASED; urgency=low
     - fix --do-not-verify-signatures option (Closes: #574936) - thanks to
       Cleto Martin Angelina for the patch.
     - make Chroot.diff_meta_data() special case and ignore files matching 
-      /etc/rc.\.d/[SK])[0-9]{2}(.*)$ so that piuparts doesn't complain about
+      (/etc/rc.\.d/)[SK][0-9]{2}(.*)$ so that piuparts doesn't complain about
       initscripts renamed by insserv. Thanks to by Andreas Beckmann for the
       patch! (Closes: #586793)
     - remove logrotate and depended packages after the test. (Closes: #602409)
@@ -76,7 +78,7 @@ piuparts (0.39) UNRELEASED; urgency=low
       and also to configure apt to use that option. Thanks, Andres. 
       (Closes: #605475)
     - don't panic if package is not known by apt-get, this probably just means
-      someone is testing a package not yet in the archive. (Closes: #566672)
+      a package not yet in the archive is being tested. (Closes: #566672)
       Thanks to Cleto Martin Angelina for the patch!
     - fix parsing of the options --end-meta and --save-end-meta.
     - supply help texts for --end-meta and --save-end-meta options, also add
