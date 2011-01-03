@@ -94,6 +94,7 @@ piuparts (0.39) UNRELEASED; urgency=low
     - update several options descritpions.
   * README.txt
     - better documentation of custom scripts.
+    - reformat to achieve consistent width.
   * Add ${misc:Depends} to Depends in debian/control. 
   * Remove versioned dependencies on debootstrap as the version available 
     in Etch is sufficient. Drop build-depends on dpkg-dev as it's in

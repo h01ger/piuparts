@@ -4,7 +4,9 @@ piuparts README
 Author: Lars Wirzenius 
 Email: <liw@iki.fi>
 
-After reading this README you probably also want to have a look at the piuparts manpage, to learn about the available options. But read this document first! 
+After reading this README you probably also want to have a look
+at the piuparts manpage, to learn about the available options.
+But read this document first! 
 
 == Introduction
 
@@ -22,27 +24,29 @@ License, version 2, or (at your option) any later version.
 
 === Basic Usage
 
-Testing your packages with piuparts is as easy as typing at the console prompt:
+Testing your packages with piuparts is as easy as typing at the
+console prompt:
 
 ---- 
 # piuparts sm_0.6-1_i386.deb
 ---- 
 
-Note that in order to work, piuparts has to be executed as user root, so you 
-need to be logged as root or use 'sudo'.
+Note that in order to work, piuparts has to be executed as user
+root, so you need to be logged as root or use 'sudo'.
 
-This will create a sid chroot with debootstrap, where it'll test your package.
+This will create a sid chroot with debootstrap, where it'll test
+your package.
 
-If you want to test your package in another release, for example, lenny, you can
-do so with:
+If you want to test your package in another release, for example,
+lenny, you can do so with:
 
 ---- 
 # piuparts sm_0.6-1_i386.deb -d lenny
 ---- 
 
-By default, this will read the first mirror from your '/etc/apt/sources.list '
-file. If you want to specify a different mirror you can do it with the option 
-'-m':
+By default, this will read the first mirror from your
+'/etc/apt/sources.list ' file. If you want to specify a different
+mirror you can do it with the option '-m':
 
 ---- 
 # piuparts sm_0.6-1_i386.deb -m http://ftp.de.debian.org/debian
@@ -51,14 +55,15 @@ file. If you want to specify a different mirror you can do it with the option
 
 === Some tips
 
-If you use piuparts on a regular basis, waiting for it to create a chroot every 
-time takes too much time, even if you are using a local mirror or a caching tool 
-such as approx. 
+If you use piuparts on a regular basis, waiting for it to create
+a chroot every time takes too much time, even if you are using a
+local mirror or a caching tool such as approx. 
 
-Piuparts has the option of using a tarball as the contents of the initial chroot, 
-instead of building a new one with debootstrap. A easy way to use this option 
-is use a tarball created with pbuilder. If you are not a pbuilder user, you can 
-create this tarball with the command (again, as root):
+Piuparts has the option of using a tarball as the contents of the
+initial chroot, instead of building a new one with debootstrap. A
+easy way to use this option is use a tarball created with
+pbuilder. If you are not a pbuilder user, you can create this
+tarball with the command (again, as root):
 
 ---- 
 # pbuilder create
@@ -82,10 +87,11 @@ If you want to use your own pre-made tarball:
 # piuparts --basetgz=/path/to/my/tarball.tgz sm_0.6-1_i386.deb
 ---- 
 
-Piuparts also has the option of using a tarball as the contents of the initial
-chroot, instead of building a new one with pbuilder. You can save a tarball
-for later use with the '-s' ('--save') piuparts option. Some people like this, 
-others prefer to only have to maintain one tarball. Read the piuparts manpage 
+Piuparts also has the option of using a tarball as the contents
+of the initial chroot, instead of building a new one with
+pbuilder. You can save a tarball for later use with the '-s'
+('--save') piuparts option. Some people like this, others prefer
+to only have to maintain one tarball. Read the piuparts manpage
 about the '-p', '-b' and '-s' options
 
 piuparts has a manpage too.
@@ -97,30 +103,33 @@ By default, piuparts does two tests:
 . Installation and purging test.
 . Installation, upgrade and purging tests.
 
-The first test installs the package in a minimal chroot, removes it and purges
-it. The second test installs the current version in the archive of the given 
-packages, then upgrades to the new version (deb files given to piuparts in the
-input), removes and purges.
+The first test installs the package in a minimal chroot, removes
+it and purges it. The second test installs the current version in
+the archive of the given packages, then upgrades to the new
+version (deb files given to piuparts in the input), removes and
+purges.
 
-If you only want to perfom the first test, you can use the option: 
-'--no-upgrade-test'  
+If you only want to perfom the first test, you can use the
+option: '--no-upgrade-test'  
 
 
 === Analyzing piuparts results
 
-When piuparts finishes all the tests satisfactorily, you will get these lines
-as final output:
+When piuparts finishes all the tests satisfactorily, you will get
+these lines as final output:
 
 ---- 
 0m39.5s INFO: PASS: All tests.
 0m39.5s INFO: piuparts run ends.
 ---- 
 
-Anyway, it is a good idea to read the whole log in order to discover possible 
-problems that did not stop the piuparts execution.
+Anyway, it is a good idea to read the whole log in order to
+discover possible problems that did not stop the piuparts
+execution.
 
-If you do not get those lines, piuparts has failed during a test. The latest 
-lines should give you a pointer to the problem with your package.
+If you do not get those lines, piuparts has failed during a test.
+The latest lines should give you a pointer to the problem with
+your package.
 
 == Custom scripts with piuparts
 
@@ -128,18 +137,19 @@ You can specify several custom scripts to be run inside piuparts.
 You have to store them in a directory and give it as argument to
 piuparts: '--scriptsdir=/dir/with/the/scripts'
 
-The script prefix determines in which step it is executed. You can run 
-several scripts in every step, they are run in alphabetical order.
+The script prefix determines in which step it is executed. You
+can run several scripts in every step, they are run in
+alphabetical order.
 
-The scripts are run *inside* the piuparts chroot and only can be shell 
-scripts, if you want to run Python or Perl scripts, you have to install 
-Python or Perl. The chroot where piuparts is run is minized and does not 
-include Perl.
+The scripts are run *inside* the piuparts chroot and only can be
+shell scripts, if you want to run Python or Perl scripts, you
+have to install Python or Perl. The chroot where piuparts is run
+is minized and does not include Perl.
 
-The variable PIUPARTS_OBJECTS is set to the packages currently being tested
-(seperated by spaces, if applicable) or the .changes file(s) being used. 
-So when running in master-slave mode, it will be set to the (one) package 
-being tested at a time.
+The variable PIUPARTS_OBJECTS is set to the packages currently
+being tested (seperated by spaces, if applicable) or the .changes
+file(s) being used.  So when running in master-slave mode, it
+will be set to the (one) package being tested at a time.
 
 The following prefixes for scripts are recognized:
 
@@ -147,8 +157,9 @@ The following prefixes for scripts are recognized:
 
 'pre_install_' - before *installing* your package.
 
-'post_install_' - after *installing* your package and its dependencies. 
-In the case of the upgrade test, it is after install and upgrade.
+'post_install_' - after *installing* your package and its
+dependencies.  In the case of the upgrade test, it is after
+install and upgrade.
 
 'pre_remove_' - before *removing* your package.
 
@@ -156,13 +167,15 @@ In the case of the upgrade test, it is after install and upgrade.
 
 'post_purge_' - after *purging* your package.
 
-'pre_upgrade_' - before *upgrading* your package, once the current version in the archive
-has been installed (this is done in the second test, "Installation, upgrade and 
-purging test").
+'pre_upgrade_' - before *upgrading* your package, once the
+current version in the archive has been installed (this is done
+in the second test, "Installation, upgrade and purging test").
 
-'pre_distupgrade_' - before *upgrading* the chroot to the *next distribution*.
+'pre_distupgrade_' - before *upgrading* the chroot to the *next
+distribution*.
 
-'post_distupgrade_' - after *upgrading* the chroot to the *next distribution*.
+'post_distupgrade_' - after *upgrading* the chroot to the *next
+distribution*.
 
 
 === Example custom scripts:
@@ -187,19 +200,17 @@ exit 0
 
 == Distributed testing
 
-As part of the quality assurance effort of Debian, 
-piuparts is run on the Debian package archive. This requires a
-lot of processing power, and so the work can be distributed
-over several hosts.
+As part of the quality assurance effort of Debian, piuparts is
+run on the Debian package archive. This requires a lot of
+processing power, and so the work can be distributed over several
+hosts.
 
-There is one central machine, the master, and any number
-of slave machines. Each slave machine connects to the
-master, via ssh, and runs the piuparts-master program to
-report results of packages it has tested already, and to
-get more work.
+There is one central machine, the master, and any number of slave
+machines. Each slave machine connects to the master, via ssh, and
+runs the piuparts-master program to report results of packages it
+has tested already, and to get more work.
 
-To set this up for yourself, the following steps should
-suffice:
+To set this up for yourself, the following steps should suffice:
 
 . Pick a machine to run the master. It cannot be a chroot, but basically any real (or properly virtualized) Debian system is good enough.
 . Install piuparts on it.
@@ -215,42 +226,38 @@ suffice:
 . Run '/usr/share/piuparts/piuparts-slave' on the slave accounts. Packages that are installed want to use '/dev/tty', so you can't do this from cron. Also, you'll want to keep an eye on what is happening, to catch runaway processes and stuff.
 . The logs go into the master account, into subdirectories.
 
-Please note that running piuparts this way is somewhat
-risky, to say the least. There are security implications
-that you want to consider. It's best to do it on
-machines that you don't mind wiping clean at a moment's
-notice, and preferably so that they don't have direct
-network access.
+Please note that running piuparts this way is somewhat risky, to
+say the least. There are security implications that you want to
+consider. It's best to do it on machines that you don't mind
+wiping clean at a moment's notice, and preferably so that they
+don't have direct network access.
 
 
 === Distributed piuparts testing protocol
                 
-The slave machine and the piuparts-master program
-communicate using a simplistic line based protocol. SSH
-takes care of authentication, so there is nothing in the
-protocol for that. The protocol is transaction based:
-the slave gives a command, the master program responds.
-Commands and responses can be simple (a single line) or
-long (a status line plus additional data lines). Simple
-commands and responses are of the following format:
+The slave machine and the piuparts-master program communicate
+using a simplistic line based protocol. SSH takes care of
+authentication, so there is nothing in the protocol for that. The
+protocol is transaction based: the slave gives a command, the
+master program responds.  Commands and responses can be simple (a
+single line) or long (a status line plus additional data lines).
+Simple commands and responses are of the following format:
 
     'keyword arg1 arg2 arg3 ... argN'
     
-The keyword is a command or status code ("ok"), and it
-and the arguments are separated by spaces. An argument
-may not contain a space.
+The keyword is a command or status code ("ok"), and it and the
+arguments are separated by spaces. An argument may not contain a
+space.
 
-A long command or response is deduced from the context:
-certain commands always include additional data, and
-certain commands always get a long response, if
-successful (error responses are always simple). The
-first line of a long command or response is the same as
-for a simple one, the additional lines are prefixed with
-a space, and followed by a line containing only a
-period.
+A long command or response is deduced from the context: certain
+commands always include additional data, and certain commands
+always get a long response, if successful (error responses are
+always simple). The first line of a long command or response is
+the same as for a simple one, the additional lines are prefixed
+with a space, and followed by a line containing only a period.
 
-A sample session (">>" indicates what the slave sends,
-"<<" what the master responds with):
+A sample session (">>" indicates what the slave sends, "<<" what
+the master responds with):
 
 ----                
 << hello
@@ -264,14 +271,13 @@ A sample session (">>" indicates what the slave sends,
 << ok vorbisgain 2.3-4
 ----
                 
-Here the slave first reports a successful test of
-package liwc, version 1.2.3-4, and sends the piuparts
-log file for it. Then it reserves a new package to test
-and the master gives it vorbisgain, version 2.3-4.
+Here the slave first reports a successful test of package liwc,
+version 1.2.3-4, and sends the piuparts log file for it. Then it
+reserves a new package to test and the master gives it
+vorbisgain, version 2.3-4.
 
-The communication always starts with the master saying
-"hello". The slave shall not speak until the master has
-spoken.
+The communication always starts with the master saying "hello".
+The slave shall not speak until the master has spoken.
 
 Commands and responses in this protocol:
 
@@ -280,21 +286,19 @@ Command: reserve
 Success: ok <packagename> <packageversion>
 Failure: error
 ----                    
-Slave asks master to reserve a package (a
-particular version of it) for the slave to test.
-The slave may reserve any number of packages to
-test. If the transaction fails, there are no
-more packages to test, and the slave should
-disconnect, wait some time and try again.
+Slave asks master to reserve a package (a particular version of
+it) for the slave to test.  The slave may reserve any number of
+packages to test. If the transaction fails, there are no more
+packages to test, and the slave should disconnect, wait some time
+and try again.
 
 ---- 
 Command: unreserve <packagename> <packageversion>
 Success: ok
 ---- 
 
-Slave informs master it cannot test the desired
-version of a package (perhaps it went away from
-the mirror?).
+Slave informs master it cannot test the desired version of a
+package (perhaps it went away from the mirror?).
 
 ---- 
 Command: pass <packagename> <packageversion>
@@ -303,10 +307,9 @@ Command: pass <packagename> <packageversion>
 Success: ok
 ---- 
 
-Slave reports that it has tested a particular
-version of a package and that the package passed
-all tests. Master records this and stores the
-log file somewhere suitable.
+Slave reports that it has tested a particular version of a
+package and that the package passed all tests. Master records
+this and stores the log file somewhere suitable.
 
 ---- 
 Command: fail <packagename> <packageversion>
@@ -324,25 +327,23 @@ Command: untestable <packagename> <packageversion>
 Success: ok
 ---- 
                     
-Slave reports that a particular package is
-untestable, possibly because it insists on
-interacting with the user.
+Slave reports that a particular package is untestable, possibly
+because it insists on interacting with the user.
 
-In all cases, if the master cannot respond with "ok"
-(e.g., because of a disk error storing a log file), it
-aborts and the connection fails. The slave may only
-assume the command has succeeded if the master responds
-with "ok".
+In all cases, if the master cannot respond with "ok" (e.g.,
+because of a disk error storing a log file), it aborts and the
+connection fails. The slave may only assume the command has
+succeeded if the master responds with "ok".
 
-The master may likewise abort, without an error message,
-if the slave sends garbage, or sends too much data.
+The master may likewise abort, without an error message, if the
+slave sends garbage, or sends too much data.
 
 
 === piuparts.conf configuration file
 
-piuparts-master, piuparts-slave and piuparts-report share the configuration file
-'/etc/piuparts/piuparts.conf'. The syntax is defined
-by the Python ConfigParser class, and is, briefly, like
+piuparts-master, piuparts-slave and piuparts-report share the
+configuration file '/etc/piuparts/piuparts.conf'. The syntax is
+defined by the Python ConfigParser class, and is, briefly, like
 this:
 ----
     [master]
@@ -351,7 +352,8 @@ this:
 
 ==== global configuration
 
-These settings are used for all sections. Except for the first two they are all mandatory:
+These settings are used for all sections. Except for the first
+two they are all mandatory:
 
 * "sections" defaults to sid and defines which sections should be processed in master-slave mode. Each section defined here has to have a section with the section specific settings explained below. The first section defined should always be sid, because the data from first section a package is in is used for the source package html report.
 
@@ -391,9 +393,14 @@ These settings are used for all sections. Except for the first two they are all 
 
 * "debug" tells the slave whether to log debug level messages. The value should be "yes" or "no", with the default being "no". piuparts itself currently always produces debug output and there is no way to disable that.
 
-Some of the configuration items are not required, but it is best to set them all to be sure what the configuration actually is.
+Some of the configuration items are not required, but it is best
+to set them all to be sure what the configuration actually is.
 
 
 === Running piuparts in master-slave mode, piuparts-report and the setup on piuparts.debian.org
 
-If you want to run piuparts-report (which is only+very useful if you run piuparts in master-slave mode), you need to 'apt-get install python-rpy r-recommended r-base-dev'. For more information see link:http://svn.debian.org/viewsvn/piuparts/piatti/README.txt?view=markup[svn://svn.debian.org/svn/piuparts/piatti/README.txt].
+If you want to run piuparts-report (which is only+very useful if
+you run piuparts in master-slave mode), you need to 'apt-get
+install python-rpy r-recommended r-base-dev'. For more
+information see
+link:http://svn.debian.org/viewsvn/piuparts/piatti/README.txt?view=markup[svn://svn.debian.org/svn/piuparts/piatti/README.txt].
