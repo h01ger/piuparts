@@ -129,7 +129,7 @@ piuparts (0.38) unstable; urgency=low
     - --skip-minimize is now the default. This is because debootstrap is called
       with --variant=minbase instead of --resolv-deps now and because if a 
       base.tgz or an lvm snapshot is specified, piuparts should not touch it.
-      (Closes: #539142)
+      (Closes: #539142, #559048)
       Introduce a new option, --minimize, to minimize a chroot with debfoster.
       (This is the old default behaviour. In future versions the --minimize
       option might be removed again.)
