@@ -1,37 +1,52 @@
 Things to do for piuparts
 =========================
 
+Please also check the BTS, especially the bugs with a severity
+higher than wishlist!
+
 
 for 0.40:
 
-- use python-debianbts for piuparts-report.py
- 
-- garbage collection: the best approach is probably to track bugginess 
-  status of packages via the bts and remove the "bugged" directory-status
-  altogether. Then failed and successful logs older then 4/8 weeks could 
-  just be deleted periodically. 
-  Another approch is for each logfile to check if the package still exist 
-  in $distro and if not, delete it.
+- use python-debianbts to track bugginess status of packages via
+  the bts and remove the "bugged" directory-status tracking
+  altogether.  also remove "fixed".
+
+- with that it's possible to just delete any logs older than
+  $time (4/8/12 weeks?) periodically. Probably worth a new config
+  option.  Another approch would be for each logfile to check if
+  the package still exist in $distro and if not, delete it. But
+  that uses way more CPU+IO, also it's (almost always) useful to
+  retest packages anyway.
 
 - piuparts-report.py: fix those 2 FIXMEs in main()
 
+- warn about files in */reserved older than 24h
+
 for 0.41:
 
-- provide mail templates for bugreports (which ideally only should need manual
-  logfile trimming) at http://$piuparts/$distro/fail/$packages_$version.bug
-  for usage by a then to be written tool.
+- provide mail templates for bugreports (which ideally only
+  should need manual logfile trimming) at
+  http://$piuparts/$distro/fail/$packages_$version.bug for usage 
+  by a then to be written tool.
 
-- write reportbug(-like) wrapper for mass bug filing (start simple, make it 
-  more sophisticated later). 
+- write reportbug(-like) wrapper for mass bug filing (start
+  simple, make it more sophisticated later). 
+
+- use libeatmydata - either install it in all chroots or find a
+  better way to use it.
+
+- generate piuparts.1.txt automatically from piuparts.py - see
+  this blog post for a nice howto:
+  http://andialbrecht.wordpress.com/2009/03/17/creating-a-man-page-with-distutils-and-optparse/
 
 
 for 0.42:
 
 - discard logs for packages which have been removed from distro.
 
-- svn mv piatti trunk/doc/examples  and include it into a new binary package. 
-  when doing so keep in mind the two tango icons and credit those in 
-  debian/copyright.
+- svn mv piatti trunk/doc/examples  and include it into a new
+  binary package.  when doing so keep in mind the two tango icons
+  and credit those in debian/copyright.
 
 - publish FAI classes to setup piuparts.$fqdn automatically 
 
@@ -40,95 +55,117 @@ for 0.43:
 
 - PackagesDB: get rid of 50% of unique()
 
-- remove configfile option "mirror" and use the mirror from "packages-url".
+- remove configfile option "mirror" and use the mirror from
+  "packages-url".
 
-- piuparts-slave: if chroot.tgz is older than N days, regenerate it
- - currently this is done via ~piupartss/crontab, but that's a hack
- - only throw away tarballs (and recreate them) after testing that they can be recreated 
+- piuparts-slave: if chroot.tgz is older than N days, regenerate
+  it
+  - currently this is done via ~piupartss/crontab, but that's a
+    hack
+  - only throw away tarballs (and recreate them) after testing
+    that they can be recreated 
 
 - master:
- - write stats about number of daily tests (-> report: create fancy graphs)
+  - write stats about number of daily tests (-> report: create
+    fancy graphs)
 
 
 for 0.44:
 
-- untestable packages are not recognicable as such, see http://piuparts.debian.org/source/a/apache2.html 
-  atm. (log is N/A, even though its there, even if empty) - http://piuparts.debian.org/sid/state-cannot-be-tested.html
-  aint helpful neither.
+- untestable packages are not recognicable as such, see
+  http://piuparts.debian.org/source/a/apache2.html atm. (log is
+  N/A, even though its there, even if empty) -
+  http://piuparts.debian.org/sid/state-cannot-be-tested.html aint
+  helpful neither.
 
 - slave_run: cleanup stale proc mountpoints
 
-- the templates used by update-reports.py should be taken from /etc/piuparts/templates/
-  and not be included in the python source
+- the templates used by update-reports.py should be taken from
+  /etc/piuparts/templates/ and not be included in the python
+  source
 
-- mounting /proc and perhaps others (usbfs, sysfs, /dev/pts, etc.) in
-  the chroot might be a good idea because some packages might need this.
-  Interestingly enough this currently seems to prevent start-stop-daemon
-  from starting any daemons ;)
+- mounting /proc and perhaps others (usbfs, sysfs, /dev/pts,
+  etc.) in the chroot might be a good idea because some packages
+  might need this.  Interestingly enough this currently seems to
+  prevent start-stop-daemon from starting any daemons ;)
 
 
 for 0.45 and later:
 
 - report:
- - write stats about the reasons for failures, as its done with shell scripts now
-   (piuparts-analyze.py is an existing "fragment".)
- - RSS feeds of logs
- - do more fancy R graphs, eg. also per state
- - sort packages on maintainer pages alphabetically
- - link (and target) to piuparts.d.o configuration is static to piatti. should refer to the actual hosts configuration, eg goldwassers
+  - write stats about the reasons for failures, as its done with
+    shell scripts now (piuparts-analyze.py is an existing
+    "fragment".)
+  - RSS feeds of logs
+  - do more fancy R graphs, eg. also per state
+  - sort packages on maintainer pages alphabetically
+  - link (and target) to piuparts.d.o configuration is static to
+    piatti. should refer to the actual hosts configuration, eg
+    goldwassers
 
-- a redirect of http://piuparts.d.o/foo to http://p.d.o/source/f/foo.html would be nice
+- a redirect of http://piuparts.d.o/foo to
+  http://p.d.o/source/f/foo.html would be nice
 
 
 for 0.50 and later:
 
 - multi-arch:
- - piuparts-report should have a list of available arch and list packages 
-   only available on untested archs in a new state "(depends-)not-available-on-tested-archs"
- - master should (per default) only schedule packages which are not available 
-   on the master arch to slaves of different archs -> "schedule-evenly-to-slaves = no"
+  - piuparts-report should have a list of available arch and list
+    packages only available on untested archs in a new state
+    "(depends-)not-available-on-tested-archs"
+  - master should (per default) only schedule packages which are
+    not available on the master arch to slaves of different archs
+  -> "schedule-evenly-to-slaves = no"
 
-- piuparts can't currently test upgrades of required packages. (Because they
-  cannot be removed, it assumes these are untestable, which is only true for
-  removal tests...
+- piuparts can't currently test upgrades of required packages.
+  (Because they cannot be removed, it assumes these are
+  untestable, which is only true for removal tests...
 
 
 Low priority stuff (a.k.a. "nobody's said they must have it now")
 -----------------------------------------------------------------
 
-- create emacspeak-broken-dpkg-preconfigure package for broken repo. (then later
-  put more broken packages in there and use that for testing piuparts)
+- create emacspeak-broken-dpkg-preconfigure package for broken
+  repo. (then later put more broken packages in there and use
+  that for testing piuparts)
 
 - monitor:
- - write slave-watcher to monitor hanging processes, eg. looping dpkg-preconfigure
- - Check for and kill extraneous processes afterwards. Perhaps by checking
-   whether their working directory is in the chroot.
-   Introduce a whitelist of processes to wait for and assume it's an error 
-   if those haven't been killed after $time=10min. see #387428
- - master.log grows to fast and there is no mechanism to stop it
+  - write slave-watcher to monitor hanging processes, eg. 
+    looping dpkg-preconfigure
+  - Check for and kill extraneous processes afterwards. Perhaps 
+    by checking whether their working directory is in the 
+    chroot.
+    Introduce a whitelist of processes to wait for and assume
+    it's an error if those haven't been killed after $time, ie 
+    10min. see #387428
+  - master.log grows to fast and there is no mechanism to stop it
 
 - find_default_debian_mirrors: if parts[2] contains a / (think
-  stable/updates for security.d.o), you can't ignore this, it will break
-  later...
+  stable/updates for security.d.o), you can't ignore this, it
+  will break later...
 
 - support for extra-packages-url (for backports, security, etc)
 
-- not sure if it's a sensible thing to to, but provide a way to turn off debugging
-  output for piuparts.py - see http://docs.python.org/library/logging.html
+- not sure if it's a sensible thing to to, but provide a way to
+  turn off debugging output for piuparts.py - see
+  http://docs.python.org/library/logging.html
 
 - commandline-switches for all programms 
 
 - move shell cronjobs functionality into master, slave & report
 
-- make it possible to call aptitude (or similar) instead of apt-get and 
-  allow to override the commandline arguments of the used program (to be 
-  able to test with and without recommended packages or authentication).
+- make it possible to call aptitude (or similar) instead of
+  apt-get and allow to override the commandline arguments of the
+  used program (to be able to test with and without recommended
+  packages or authentication).
 
-- Remove --minimize and related options/functionality? Since 0.38 --skip-minimize 
-  and --debfoster-options have become quite obsolete (--minimize has been added 
-  in 0.38) since debootstrap now creates a minimal chroot.
+- Remove --minimize and related options/functionality? Since 0.38
+  --skip-minimize and --debfoster-options have become quite
+  obsolete (--minimize has been added in 0.38) since debootstrap
+  now creates a minimal chroot.
 
-- Kill children after a timeout to make sure the test doesn't run forever.
+- Kill children after a timeout to make sure the test doesn't run
+  forever.
 
 - piuparts-master: keep track of whom a reservation is made
 
