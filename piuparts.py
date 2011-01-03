@@ -1462,11 +1462,11 @@ def diff_meta_data(tree1, tree2):
 
     # fix for #586793 by Andreas Beckmann <debian@abeckmann.de>
     # prune rc?.d symlinks renamed by insserv
-    pat1 = re.compile(r"^(/etc/rc.\.d/[SK])[0-9]{2}(.*)$")
+    pat1 = re.compile(r"^(/etc/rc.\.d/)[SK][0-9]{2}(.*)$")
     for name1, data1 in removed[:]:
         m = pat1.search(name1)
         if m:
-            pat2 = re.compile(r"^" + m.group(1) + r"[0-9]{2}" + m.group(2) + 
+            pat2 = re.compile(r"^" + m.group(1) + r"[SK][0-9]{2}" + m.group(2) + 
 r"$")
             for name2, data2 in new[:]:
                 m = pat2.search(name2)
