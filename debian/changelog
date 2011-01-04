@@ -1,4 +1,4 @@
-piuparts (0.39) UNRELEASED; urgency=low
+piuparts (0.39) unstable; urgency=low
 
   [ Holger Levsen ]
   * The vintage of 2010 release!
@@ -120,7 +120,7 @@ piuparts (0.39) UNRELEASED; urgency=low
     (Closes: #586443)
   * Use built-in set type, available since python-2.4.
 
- -- Holger Levsen <holger@debian.org>  Sun, 24 Jan 2010 15:27:50 +0100
+ -- Holger Levsen <holger@debian.org>  Tue, 04 Jan 2011 14:12:30 +0100
 
 piuparts (0.38) unstable; urgency=low
 
