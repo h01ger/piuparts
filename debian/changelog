@@ -1,6 +1,9 @@
 piuparts (0.40) UNRELEASED; urgency=low
 
-  * Make "natty" the default Ubuntu distribution.
+  * piuparts.py: 
+    - make "natty" the default Ubuntu distribution.
+    - add to self.ignored_files: 
+      - /var/log/bootstrap.log 
 
  -- Holger Levsen <holger@debian.org>  Tue, 04 Jan 2011 14:50:24 +0100
 

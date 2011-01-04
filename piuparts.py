@@ -237,6 +237,7 @@ class Settings:
             "/var/log/alternatives.log",
             "/var/log/apt/history.log",
             "/var/log/apt/term.log",
+            "/var/log/bootstrap.log",
             "/var/log/dpkg.log",
             "/var/log/faillog",
             "/var/log/lastlog",
