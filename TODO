@@ -22,6 +22,7 @@ for 0.40:
 
 - warn about files in */reserved older than 24h
 
+
 for 0.41:
 
 - provide mail templates for bugreports (which ideally only
@@ -39,8 +40,9 @@ for 0.41:
   this blog post for a nice howto:
   http://andialbrecht.wordpress.com/2009/03/17/creating-a-man-page-with-distutils-and-optparse/
 
-- somes a chroot doesnt get removed on piatti - find out why and
-  fix it.
+- sometimes a chroot doesn't get removed on piatti - find out
+  why and fix it.
+
 
 for 0.42:
 
