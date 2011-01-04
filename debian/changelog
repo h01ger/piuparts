@@ -1,3 +1,9 @@
+piuparts (0.40) UNRELEASED; urgency=low
+
+  * Make "natty" the default Ubuntu distribution.
+
+ -- Holger Levsen <holger@debian.org>  Tue, 04 Jan 2011 14:50:24 +0100
+
 piuparts (0.39) unstable; urgency=low
 
   [ Holger Levsen ]
