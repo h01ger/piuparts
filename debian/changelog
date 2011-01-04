@@ -101,6 +101,7 @@ piuparts (0.39) UNRELEASED; urgency=low
   * Remove versioned dependencies on debootstrap as the version available 
     in Etch is sufficient. Drop build-depends on dpkg-dev as it's in
     build-essential.
+  * Build-depend on debhelper>=7 and use dh_prep instead of dh_clean -k.
   * Bump Standards-Version to 3.9.1, no changes necessary.
   * Remove Ian Jackson from uploaders - thanks for your work, Ian!
   * Makefile: support python 2.5 and 2.6 instead of 2.4 and 2.5, adjust
