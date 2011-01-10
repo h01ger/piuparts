@@ -19,7 +19,7 @@
 FILE=`mktemp`
 cp /proc/mounts $FILE
 
-if [ "$(grep -c /org/piuparts.debian.org/tmp $FILE)" -gt 1 ] ; then 
+if [ "$(grep -v trash $FILE | grep -c /org/piuparts.debian.org/tmp )" -gt 1 ] ; then 
 	echo "More than one mountpoint below /org/piuparts.debian.org/tmp detected!"
 	echo
 	grep /org/piuparts.debian.org/tmp $FILE
