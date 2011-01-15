@@ -48,6 +48,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2011-01-15</b>: Reschedule 10123 successful and failed logs in lenny2squeeze for re-testing. Those are logs which have been tested before Squeeze was deep frozen or while there was still a bug in piuparts-slave, see last news entry for details.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2011-01-03</b>: Reschedule 12306 successful and 8 bugged logs in lenny2squeeze for re-testing. Those are logs older than 148 days, which refers to when Squeeze was initially frozen (2010-08-06). Deep freeze was announced on 2010-12-13 and there are 3800 logs older then that too, but for future deletions it's better to use 2010-01-03 (=commit r857), which fixes a bug in piuparts-slave resulting in using the sid packages file for lenny2squeeze tests.
      </td>
     </tr>
