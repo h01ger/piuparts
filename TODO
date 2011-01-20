@@ -46,6 +46,10 @@ for 0.41:
 
 for 0.42:
 
+- piuparts-report should keep state, ie cache the results of the log 
+  analysis and generated html pages. Thus, a piuparts-report run could
+  take minutes instead of hours...
+
 - discard logs for packages which have been removed from distro.
 
 - svn mv piatti trunk/doc/examples  and include it into a new
