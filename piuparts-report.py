@@ -539,7 +539,7 @@ class Section:
         known_circular_depends = []
         for kcd in self._config["known_circular_depends"].split():
           known_circular_depends.append(kcd)
-          #logging.debug("circular depends: " + kcd)
+          logging.debug("circular depends: " + kcd)
 
         logging.debug("Loading and parsing Packages file")
         logging.info("Fetching %s" % self._config["packages-url"])
