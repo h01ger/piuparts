@@ -48,6 +48,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2011-01-25</b>: Reschedule 27655 successfully tested packages in Squeeze, since they were tested before the deep freeze. Yesterday all 70 failed and bugged packages were rescheduled too, which surprisingly led to 6 successful tests, followed by a few more dependent packages also being tested.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2011-01-15</b>: Reschedule 10123 successful and failed logs in lenny2squeeze for re-testing. Those are logs which have been tested before Squeeze was deep frozen or while there was still a bug in piuparts-slave, see last news entry for details.
      </td>
     </tr>
