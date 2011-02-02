@@ -103,6 +103,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2009-07-24</b>: <a href="http://bugs.debian.org/531349" target="_blank">#531349</a> has been fixed, piuparts results are now displayed in the <a href="http://packages.qa.debian.org/">PTS</a>.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2010-05-18</b>: From today on, broken logrotate scripts after purge are only reported in sid.
      </td>
     </tr>
