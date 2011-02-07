@@ -7,6 +7,20 @@ higher than wishlist!
 
 for 0.40:
 
+- piuparts-report should keep state, ie cache the results of the log 
+  analysis and generated html pages. Thus, a piuparts-report run could
+  take minutes instead of hours... this is now (with four distros tested 
+  instead of three) more needed than ever.
+
+- discard logs for packages which have been removed from distro.
+
+- piuparts-report.py: fix those 2 FIXMEs in main()
+
+- warn about files in */reserved older than 24h
+
+
+for 0.41:
+
 - use python-debianbts to track bugginess status of packages via
   the bts and remove the "bugged" directory-status tracking
   altogether.  also remove "fixed".
@@ -17,21 +31,6 @@ for 0.40:
   the package still exist in $distro and if not, delete it. But
   that uses way more CPU+IO, also it's (almost always) useful to
   retest packages anyway.
-
-- piuparts-report.py: fix those 2 FIXMEs in main()
-
-- warn about files in */reserved older than 24h
-
-
-for 0.41:
-
-- provide mail templates for bugreports (which ideally only
-  should need manual logfile trimming) at
-  http://$piuparts/$distro/fail/$packages_$version.bug for usage 
-  by a then to be written tool.
-
-- write reportbug(-like) wrapper for mass bug filing (start
-  simple, make it more sophisticated later). 
 
 - use libeatmydata - either install it in all chroots or find a
   better way to use it.
@@ -46,11 +45,13 @@ for 0.41:
 
 for 0.42:
 
-- piuparts-report should keep state, ie cache the results of the log 
-  analysis and generated html pages. Thus, a piuparts-report run could
-  take minutes instead of hours...
+- provide mail templates for bugreports (which ideally only
+  should need manual logfile trimming) at
+  http://$piuparts/$distro/fail/$packages_$version.bug for usage 
+  by a then to be written tool.
 
-- discard logs for packages which have been removed from distro.
+- write reportbug(-like) wrapper for mass bug filing (start
+  simple, make it more sophisticated later). 
 
 - svn mv piatti trunk/doc/examples  and include it into a new
   binary package.  when doing so keep in mind the two tango icons
