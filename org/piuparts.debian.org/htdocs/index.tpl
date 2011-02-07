@@ -48,7 +48,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2011-02-07</b>: Add <b>wheezy</b>! Whoohoo!
+      <b>2011-02-07</b>: Add <b>wheezy</b>! Whoohoo!<br>For now, the Wheezy distribution has just been added with the same testing options as Squeeze. In future, squeeze and lenny2squeeze will not be tested anymore, and squeeze2wheezy will also be added...
      </td>
     </tr>
     <tr class="normalrow">
