@@ -25,6 +25,7 @@ fi
 # parse config file
 #
 
+[ -e /etc/piuparts/piuparts.conf ] || exit 0
 TEMPFILE=`mktemp`
 egrep "(^sections|^master-directory)" /etc/piuparts/piuparts.conf| sed -e "s# =#=#g" -e "s#= #=#g" -e 's#=#="#' -e 's#$#"#' -e "s#sections#SECTIONS#" -e "s#master-directory#MASTER#" > $TEMPFILE
 source $TEMPFILE
