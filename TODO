@@ -18,6 +18,7 @@ for 0.40:
 
 - warn about files in */reserved older than 24h
 
+- fix scripts for dash as default shell
 
 for 0.41:
 
