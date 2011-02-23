@@ -12,7 +12,7 @@ Homepage: http://piuparts.debian.org
 
 Package: piuparts
 Architecture: all
-Depends: apt, python (>> 2.5), debootstrap, lsof, lsb-release, 
+Depends: apt, ${python:Depends}, debootstrap, lsof, lsb-release, 
     python-debian, ${misc:Depends}
 Suggests: python-rpy, ghostscript
 Description: .deb package installation, upgrading, and removal testing tool
