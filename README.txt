@@ -30,7 +30,8 @@ piupartss       ALL=(ALL) NOPASSWD: ALL
 
 * sudo apt-get install apt python debootstrap lsof lsb-release python-debian make dpkg-dev python-support asciidoc xmlto python-rpy r-recommended r-base-dev gs
 * you need a webserver too, if you run the master
-* Copy 'svn://svn.debian.org/svn/piuparts/piatti/home/piupartss/bin/update-piuparts-setup' on the host and run it. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further svn checkouts as well as source code installation. It needs the piupartss and piupartsm user set up as described below, though.
+* Copy 'svn://svn.debian.org/svn/piuparts/piatti/home/piupartss/bin/update-piuparts-setup' on the host and run it under the 'piupartss' user. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further svn checkouts as well as source code installation. It needs the piupartss and piupartsm user set up as described below, though.
+* mkdir /org/piuparts.debian.org
 * sudo ln -s /org/piuparts.debian.org/etc/ /etc/piuparts
 	
 === Apache configuration
@@ -60,7 +61,7 @@ piupartss       ALL=(ALL) NOPASSWD: ALL
 == Updating the piuparts installtion
 
 ----
-piupartss@piatti:/org/piuparts.debian.org$ ./update-piuparts-setup
+piupartss@piatti:/org/piuparts.debian.org$ ~/bin/update-piuparts-setup
 ----
 
 == Running piuparts
@@ -110,7 +111,7 @@ More checks should be added as we become aware of them.
 
 == Authors
 
-March+April 2009
+Last updated: February 2011
 
 Holger Levsen <holger@debian.org>
 Luk Claes <luk@debian.org>
