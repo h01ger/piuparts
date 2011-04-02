@@ -39,7 +39,7 @@ for SECTION in $SECTIONS ; do
 		cd $MASTER/$SECTION
 		# we ignore bugged here - ptyhon-bts is really the way to go
 	        find pass fail -name "*.log" -mtime +180 | xargs -n99999 -s999999 ls -dtl |tail -200
-		find pass fail -name "*.log" -mtime +180 | xargs -n99999 -s999999 ls -dt |tail -200 | xargs rm 2 > /dev/null
+		find pass fail -name "*.log" -mtime +180 | xargs -n99999 -s999999 ls -dt |tail -200 | xargs rm 2> /dev/null
 		echo
 		echo "#########################################################"
 		echo
