@@ -48,6 +48,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2011-04-02</b>: New daily cronjob to reschedule the oldest 200 logfiles of each sid and wheezy, if they are older then 180 days. IOW: make sure no logfile for sid and wheezy is older than half a year.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2011-02-22</b>: piatti.debian.org has been upgraded to squeeze.
      </td>
     </tr>

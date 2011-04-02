@@ -30,16 +30,19 @@ if [ -z "$MASTER" ] || [ -z "$SECTIONS" ] ; then
 fi
 
 #
-# reschedule 100 oldest log files, if they are older then 120 days
+# reschedule 200 oldest log files, if they are older then 180 days
 #
-for SECTION in $SECTIONS ; do 
-	echo $SECTION
-	cd $MASTER/$SECTION
-	# we ignore bugged here - ptyhon-bts is really the way to go
-        find pass fail -name "*.log" -mtime +120 | xargs -n99999 -s999999 ls -dtl |tail -100
-	find pass fail -name "*.log" -mtime +120 | xargs -n99999 -s999999 ls -dt |tail -100 | xargs rm 2 > /dev/null
-	echo
-	echo "#########################################################"
-	echo
+for SECTION in $SECTIONS ; do
+	# only for sid and wheezy
+        if [ "$SECTION" == "sid" ] || [ "$SECTION" == "wheezy" ] ; then
+		echo $SECTION
+		cd $MASTER/$SECTION
+		# we ignore bugged here - ptyhon-bts is really the way to go
+	        find pass fail -name "*.log" -mtime +180 | xargs -n99999 -s999999 ls -dtl |tail -200
+		find pass fail -name "*.log" -mtime +180 | xargs -n99999 -s999999 ls -dt |tail -200 | xargs rm 2 > /dev/null
+		echo
+		echo "#########################################################"
+		echo
+	fi
 done
 
