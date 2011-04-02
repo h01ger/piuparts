@@ -28,6 +28,7 @@
 10 23 * * * /home/piupartsm/bin/report_untestable_packages
 20 23 * * * /home/piupartsm/bin/report_stale_reserved_packages
 25 23 * * * /home/piupartsm/bin/archive_old_logs
+25  5 * * * /home/piupartsm/bin/reschedule_oldest_logs
 
 #
 # misc
