@@ -285,10 +285,10 @@ counter = 0
 
 def do_on_panic(hook):
     global counter
-    id = counter
+    cid = counter
     counter += 1
-    on_panic_hooks[id] = hook
-    return id
+    on_panic_hooks[cid] = hook
+    return cid
 
 
 def dont_do_on_panic(id):
@@ -303,9 +303,9 @@ class TimeOffsetFormatter(logging.Formatter):
 
     def formatTime(self, record, datefmt):
         t = time.time() - self.startup_time
-        min = int(t / 60)
-        s = t % 60.0
-        return "%dm%.1fs" % (min, s)
+        t_min = int(t / 60)
+        t_sec = t % 60.0
+        return "%dm%.1fs" % (t_min, t_sec)
 
 
 DUMP = logging.DEBUG - 1
@@ -377,7 +377,7 @@ def run(command, ignore_errors=False):
     env = os.environ.copy()
     env["LC_ALL"] = "C"
     env["LANGUAGES"] = ""
-    env["PIUPARTS_OBJECTS"] = ' '.join(str(object) for object in settings.testobjects )
+    env["PIUPARTS_OBJECTS"] = ' '.join(str(vobject) for vobject in settings.testobjects )
     p = subprocess.Popen(command, env=env, stdin=subprocess.PIPE, 
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     (output, _) = p.communicate()
@@ -582,7 +582,7 @@ class Chroot:
     def create(self):
         """Create a chroot according to user's wishes."""
         self.create_temp_dir()
-        id = do_on_panic(self.remove)
+        cid = do_on_panic(self.remove)
 
         if settings.basetgz:
             self.unpack_from_tgz(settings.basetgz)
@@ -605,9 +605,9 @@ class Chroot:
             if not os.path.exists(self.relative("tmp/scripts/")):
                 os.mkdir(dest)
             logging.debug("Copying scriptsdir to %s" % dest)
-            for file in os.listdir(settings.scriptsdir):
-                if (file.startswith("post_") or file.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), file)):
-                    shutil.copy(os.path.join((settings.scriptsdir), file), dest) 
+            for sfile in os.listdir(settings.scriptsdir):
+                if (sfile.startswith("post_") or sfile.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), sfile)):
+                    shutil.copy(os.path.join((settings.scriptsdir), sfile), dest) 
 
         # Run custom scripts after creating the chroot.
         if settings.scriptsdir is not None: 
@@ -616,7 +616,7 @@ class Chroot:
         if settings.savetgz:
             self.pack_into_tgz(settings.savetgz)
 
-        dont_do_on_panic(id)
+        dont_do_on_panic(cid)
 
     def remove(self):
         """Remove a chroot and all its contents."""
@@ -831,11 +831,11 @@ class Chroot:
     def get_selections(self):
         """Get current package selections in a chroot."""
         (status, output) = self.run(["dpkg", "--get-selections", "*"])
-        list = [line.split() for line in output.split("\n") if line.strip()]
-        dict = {}
-        for name, status in list:
-            dict[name] = status
-        return dict
+        vlist = [line.split() for line in output.split("\n") if line.strip()]
+        vdict = {}
+        for name, status in vlist:
+            vdict[name] = status
+        return vdict
 
     def remove_or_purge(self, operation, packages):
         """Remove or purge packages in a chroot."""
@@ -914,7 +914,7 @@ class Chroot:
     def save_meta_data(self):
         """Return the filesystem meta data for all objects in the chroot."""
         root = os.path.join(self.name, ".")
-        dict = {}
+        vdict = {}
         proc = os.path.join(root, "proc")
         for dirpath, dirnames, filenames in os.walk(root):
             assert dirpath[:len(root)] == root
@@ -927,8 +927,8 @@ class Chroot:
                     target = os.readlink(name)
                 else:
                     target = None
-                dict[name[len(root):]] = (st, target)
-        return dict
+                vdict[name[len(root):]] = (st, target)
+        return vdict
 
     def relative(self, pathname):
         if pathname.startswith('/'):
@@ -937,20 +937,20 @@ class Chroot:
 
     def get_files_owned_by_packages(self):
         """Return dict[filename] = [packagenamelist]."""
-        dir = self.relative("var/lib/dpkg/info")
-        dict = {}
-        for basename in os.listdir(dir):
+        vdir = self.relative("var/lib/dpkg/info")
+        vdict = {}
+        for basename in os.listdir(vdir):
             if basename.endswith(".list"):
                 pkg = basename[:-len(".list")]
-                f = file(os.path.join(dir, basename), "r")
+                f = file(os.path.join(vdir, basename), "r")
                 for line in f:
                     pathname = line.strip()
-                    if pathname in dict:
-                        dict[pathname].append(pkg)
+                    if pathname in vdict:
+                        vdict[pathname].append(pkg)
                     else:
-                        dict[pathname] = [pkg]
+                        vdict[pathname] = [pkg]
                 f.close()
-        return dict
+        return vdict
 
     def install_packages_by_name(self, packages):
         if packages:
@@ -963,8 +963,7 @@ class Chroot:
                 self.list_installed_files (pre_info, self.save_meta_data())
             else:
                 self.run(["apt-get", "-y", "install"] + packages)
-	    
-	    
+
     def check_for_no_processes(self):
         """Check there are no processes running inside the chroot."""
         (status, output) = run(["lsof", "-w", "+D", self.name], ignore_errors=True)
@@ -1040,16 +1039,16 @@ class Chroot:
         """Check if the packages have cron files under /etc/cron.d and in case positive, 
         it returns the list of files. """
 
-        dir = self.relative("var/lib/dpkg/info")
-        list = []
+        vdir = self.relative("var/lib/dpkg/info")
+        vlist = []
         has_cronfiles  = False
         for p in packages:
             basename = p + ".list"
 
-	    if not os.path.exists(os.path.join(dir,basename)):
+	    if not os.path.exists(os.path.join(vdir,basename)):
                 continue
 
-            f = file(os.path.join(dir,basename), "r")
+            f = file(os.path.join(vdir,basename), "r")
             for line in f:
                 pathname = line.strip()
                 if pathname.startswith("/etc/cron."):
@@ -1060,25 +1059,25 @@ class Chroot:
                         if (mode & stat.S_IEXEC): 
                             if not has_cronfiles:
                                 has_cronfiles = True
-                            list.append(pathname)
+                            vlist.append(pathname)
                             logging.info("Package " + p + " contains cron file: " + pathname)
             f.close()
 
-        return has_cronfiles, list
+        return has_cronfiles, vlist
 
     def check_output_cronfiles (self, list):
         """Check if a given list of cronfiles has any output. Executes 
 	cron file as cron would do (except for SHELL)"""
         failed = False
-        for file in list:
+        for vfile in list:
 
-            if not os.path.exists(self.relative(file.strip("/"))):
+            if not os.path.exists(self.relative(vfile.strip("/"))):
                 continue 
 
-            (retval, output) = self.run([file])
+            (retval, output) = self.run([vfile])
             if output:
                 failed = True
-                logging.error("FAIL: Cron file %s has output with package removed" % file)
+                logging.error("FAIL: Cron file %s has output with package removed" % vfile)
 
         if failed:
             panic()
@@ -1087,27 +1086,27 @@ class Chroot:
         """Check if the packages have logrotate files under /etc/logrotate.d and in case positive, 
         it returns the list of files. """
 
-        dir = self.relative("var/lib/dpkg/info")
-        list = []
+        vdir = self.relative("var/lib/dpkg/info")
+        vlist = []
         has_logrotatefiles  = False
         for p in packages:
             basename = p + ".list"
 
-	    if not os.path.exists(os.path.join(dir,basename)):
+	    if not os.path.exists(os.path.join(vdir,basename)):
                 continue
 
-            f = file(os.path.join(dir,basename), "r")
+            f = file(os.path.join(vdir,basename), "r")
             for line in f:
                 pathname = line.strip()
                 if pathname.startswith("/etc/logrotate.d/"):
                     if os.path.isfile(self.relative(pathname.strip("/"))):
                         if not has_logrotatefiles:
                             has_logrotatefiles = True
-                        list.append(pathname)
+                        vlist.append(pathname)
                         logging.info("Package " + p + " contains logrotate file: " + pathname)
             f.close()
 
-        return has_logrotatefiles, list
+        return has_logrotatefiles, vlist
 
     def check_output_logrotatefiles (self, list):
         """Check if a given list of logrotatefiles has any output. Executes 
@@ -1116,12 +1115,12 @@ class Chroot:
         # XXX That's a crude hack (to fix #602409). Can't we define a set of needed packages differently?
         #     It also introduces the need for hack to fix #602409 in piuparts.py
         (a,b) = self.run(['apt-get','install', '-y', 'logrotate'])
-        for file in list:
+        for vfile in list:
 
-            if not os.path.exists(self.relative(file.strip("/"))):
+            if not os.path.exists(self.relative(vfile.strip("/"))):
                 continue 
 
-            (retval, output) = self.run(['/usr/sbin/logrotate', file])
+            (retval, output) = self.run(['/usr/sbin/logrotate', vfile])
             if output or retval != 0:
                 failed = True
                 logging.error("FAIL: Logrotate file %s exits with error or has output with package removed" % file)
@@ -1139,9 +1138,9 @@ class Chroot:
             panic()
         list_scripts = os.listdir(basepath)
         list_scripts.sort()
-        for file in list_scripts:
-            if file.startswith(step):
-                script = os.path.join("tmp/scripts", file)
+        for vfile in list_scripts:
+            if vfile.startswith(step):
+                script = os.path.join("tmp/scripts", vfile)
                 self.run([script]) 
 
 
@@ -1321,7 +1320,7 @@ class VirtServ(Chroot):
             'p': stat.S_IFIFO,
         }
 
-        dict = {}
+        vdict = {}
 
         tf = self._execute_getoutput(['find','/','-xdev','-printf',
                 "%y %m %U %G %s %p %l \\n".replace(' ','\\0')])
@@ -1348,13 +1347,13 @@ class VirtServ(Chroot):
                 st.st_mode = mode_map[splut[0]] | int(splut[1],8)
                 (st.st_uid, st.st_gid, st.st_size) = map(int, splut[2:5])
 
-                dict[splut[5]] = (st, splut[6])
+                vdict[splut[5]] = (st, splut[6])
 
             f.close()
         finally:
             os.remove(tf)
 
-        return dict     
+        return vdict     
 
     def get_files_owned_by_packages(self):
         tf = self._execute_getoutput(['bash','-ec','''
@@ -1363,22 +1362,22 @@ class VirtServ(Chroot):
                     xargs -r0 egrep . /dev/null
                 test "${PIPESTATUS[*]}" = "0 0"
             '''])
-        dict = {}
+        vdict = {}
         try:
             f = file(tf)
             for l in f:
                 (lf,pathname) = l.rstrip('\n').split(':',1)
                 assert lf.endswith('.list')
                 pkg = lf[:-5]
-                if pathname in dict:
-                    dict[pathname].append(pkg)
+                if pathname in vdict:
+                    vdict[pathname].append(pkg)
                 else:
-                    dict[pathname] = [pkg]
+                    vdict[pathname] = [pkg]
 
             f.close()
         finally:
             os.remove(tf)
-        return dict
+        return vdict
 
     def check_for_broken_symlinks(self):
         if not settings.check_broken_symlinks:
@@ -1486,15 +1485,15 @@ def file_list(meta_infos, file_owners):
     """Return list of indented filenames."""
     meta_infos = meta_infos[:]
     meta_infos.sort()
-    list = []
+    vlist = []
     for name, data in meta_infos:
-        list.append("  %s\t" % name)
+        vlist.append("  %s\t" % name)
         if name in file_owners:
-            list.append(" owned by: %s\n" % ", ".join(file_owners[name]))
+            vlist.append(" owned by: %s\n" % ", ".join(file_owners[name]))
 	else:
-            list.append(" not owned\n")	
+            vlist.append(" not owned\n")	
 
-    return "".join(list)
+    return "".join(vlist)
 
 
 def offending_packages(meta_infos, file_owners):
@@ -1512,10 +1511,10 @@ def prune_files_list(files, depsfiles):
     list of removed elements.
     """
     warn = []
-    for file in depsfiles:
-        if file in files:
-            files.remove(file)
-            warn.append(file)
+    for vfile in depsfiles:
+        if vfile in files:
+            files.remove(vfile)
+            warn.append(vfile)
     return warn
 
 
@@ -1537,13 +1536,13 @@ def diff_selections(chroot, selections):
 
 def get_package_names_from_package_files(filenames):
     """Return list of package names given list of package file names."""
-    list = []
+    vlist = []
     for filename in filenames:
         (status, output) = run(["dpkg", "--info", filename])
         for line in [line.lstrip() for line in output.split("\n")]:
             if line[:len("Package:")] == "Package:":
-                list.append(line.split(":", 1)[1].strip())
-    return list
+                vlist.append(line.split(":", 1)[1].strip())
+    return vlist
 
 # Method to process a changes file, returning a list of all the .deb packages
 # from the 'Files' stanza.
@@ -1796,7 +1795,7 @@ def install_and_upgrade_between_distros(filenames, packages):
 
     chroot = get_chroot()
     chroot.create()
-    id = do_on_panic(chroot.remove)
+    cid = do_on_panic(chroot.remove)
 
     if settings.basetgz:
         root_tgz = settings.basetgz
@@ -1820,10 +1819,10 @@ def install_and_upgrade_between_distros(filenames, packages):
             save_meta_data(settings.save_end_meta, root_info, selections)
     
         chroot.remove()
-        dont_do_on_panic(id)
+        dont_do_on_panic(cid)
         chroot = get_chroot()
         chroot.create()
-        id = do_on_panic(chroot.remove)
+        cid = do_on_panic(chroot.remove)
 
     # leave indication in logfile why we do what we do
     logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
@@ -1859,7 +1858,7 @@ def install_and_upgrade_between_distros(filenames, packages):
     if root_tgz != settings.basetgz:
         remove_files([root_tgz])
     chroot.remove()
-    dont_do_on_panic(id)
+    dont_do_on_panic(cid)
 
     return result
 
@@ -2148,7 +2147,7 @@ def parse_command_line():
     else:
         setup_logging(DUMP, log_file_name)
 
-    exit = None
+    exitcode = None
 
     if not settings.tmpdir:
         if "TMPDIR" in os.environ:
@@ -2175,16 +2174,16 @@ def parse_command_line():
        (not settings.basetgz or len(settings.debian_distros) > 1):
         logging.error("--keep-sources-list only makes sense with --basetgz "
                       "and only one distribution")
-        exit = 1
+        exitcode = 1
 
     if not args:
         logging.error("Need command line arguments: " +
                       "names of packages or package files")
-        exit = 1
+        exitcode = 1
     settings.testobjects = args
 
-    if exit is not None:
-        sys.exit(exit)
+    if exitcode is not None:
+        sys.exit(exitcode)
 
     return args
     
@@ -2205,7 +2204,7 @@ def process_packages(package_list):
     if len(settings.debian_distros) == 1:
         chroot = get_chroot()
         chroot.create()
-        id = do_on_panic(chroot.remove)
+        cid = do_on_panic(chroot.remove)
 
         root_info = chroot.save_meta_data()
         selections = chroot.get_selections()
@@ -2229,7 +2228,7 @@ def process_packages(package_list):
                 panic()
     
         chroot.remove()
-        dont_do_on_panic(id)
+        dont_do_on_panic(cid)
     else:
         if install_and_upgrade_between_distros(package_list, packages):
             logging.info("PASS: Upgrading between Debian distributions.")

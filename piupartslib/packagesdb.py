@@ -105,18 +105,18 @@ class Package(UserDict.UserDict):
         return depends
 
     def dependencies(self):
-        list = []
+        vlist = []
         for header in ["Depends", "Pre-Depends"]:
             if header in self:
-                list += self._parse_dependencies(header)
-        return list
+                vlist += self._parse_dependencies(header)
+        return vlist
 
     def provides(self):
-        list = []
+        vlist = []
         for header in ["Provides"]:
             if header in self:
-                list += self._parse_dependencies(header)
-        return list
+                vlist += self._parse_dependencies(header)
+        return vlist
 
     def is_testable(self):
         """Are we testable at all? Required aren't."""
@@ -258,25 +258,25 @@ class PackagesDB:
     def set_subdirs(self, ok=None, fail=None, evil=None, reserved=None, morefail=None):
         # Prefix all the subdirs with the prefix
         if self.prefix:
-            format = self.prefix + "/%s"
+            pformat = self.prefix + "/%s"
         else:
-            format = "%s"
+            pformat = "%s"
         if ok:
-            self._ok = format % ok
+            self._ok = pformat % ok
         if fail:
-            self._fail = format % fail
+            self._fail = pformat % fail
         if evil:
-            self._evil = format % evil
+            self._evil = pformat % evil
         if reserved:
-            self._reserved = format % reserved
+            self._reserved = pformat % reserved
         if morefail:
-            self._morefail = [format % s for s in morefail]
+            self._morefail = [pformat % s for s in morefail]
         self._all = [self._ok, self._fail, self._evil, self._reserved] + self._morefail
            
     def create_subdirs(self):
-        for dir in self._all:
-            if not os.path.exists(dir):
-                os.makedirs(dir)
+        for sdir in self._all:
+            if not os.path.exists(sdir):
+                os.makedirs(sdir)
         
     def read_packages_file(self, input):
         self._packages_files.append(PackagesFile(input))
@@ -455,9 +455,9 @@ class PackagesDB:
         return self.get_packages_in_state("waiting-to-be-tested")
 
     def reserve_package(self):
-        list = self._find_packages_ready_for_testing()
-        random.shuffle(list)
-        for p in list:
+        plist = self._find_packages_ready_for_testing()
+        random.shuffle(plist)
+        for p in plist:
             if self._logdb.create(self._reserved, p["Package"],
                                   p["Version"], ""):
                 return p

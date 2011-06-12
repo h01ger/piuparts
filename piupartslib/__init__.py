@@ -30,12 +30,12 @@ def open_packages_url(url):
     assert url.endswith(".bz2")
     socket = urllib.urlopen(url)
     decompressor = bz2.BZ2Decompressor()
-    file = cStringIO.StringIO()
+    bzfile = cStringIO.StringIO()
     while True:
         data = socket.read(1024)
         if not data:
             break
-        file.write(decompressor.decompress(data))
+        bzfile.write(decompressor.decompress(data))
     socket.close()
-    file.seek(0)
-    return file
+    bzfile.seek(0)
+    return bzfile

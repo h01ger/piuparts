@@ -201,12 +201,12 @@ class Slave:
         create_file(self._reserved_filename(name, version), "")
 
     def get_reserved(self):
-        list = []
+        vlist = []
         for basename in os.listdir("reserved"):
             if "_" in basename and basename.endswith(".log"):
                 name, version = basename[:-len(".log")].split("_", 1)
-                list.append((name, version))
-        return list
+                vlist.append((name, version))
+        return vlist
 
     def forget_reserved(self, name, version):
         try:
@@ -243,10 +243,10 @@ class Section:
             create_chroot(self._config, self._config["upgrade-test-chroot-tgz"], 
                         self._config["upgrade-test-distros"].split()[0])
     
-        for dir in ["new", "pass", "fail"]:
-            dir = os.path.join(self._slave_directory, dir)
-            if not os.path.exists(os.path.join(self._slave_directory, dir)):
-                os.mkdir(dir)
+        for rdir in ["new", "pass", "fail"]:
+            rdir = os.path.join(self._slave_directory, rdir)
+            if not os.path.exists(rdir):
+                os.mkdir(rdir)
 
         self._slave = Slave()
         self._slave.set_master_host(master_host)
@@ -256,10 +256,10 @@ class Section:
         self._idle_sleep=idle_sleep
         self._log_file=self._config["log-file"]
 
-        for dir in ["pass", "fail", "untestable", "reserved"]:
-            dir = os.path.join(self._slave_directory, dir)
-            if not os.path.exists(dir):
-                os.makedirs(dir)
+        for rdir in ["pass", "fail", "untestable", "reserved"]:
+            rdir = os.path.join(self._slave_directory, rdir)
+            if not os.path.exists(rdir):
+                os.makedirs(rdir)
         os.chdir(oldcwd)
 
     def run(self):
@@ -422,8 +422,8 @@ def fetch_packages_file(config, distro):
     arch = config["arch"]
     if not arch:
         # Try to figure it out ourselves, using dpkg
-        input, output = os.popen2("dpkg --print-architecture")
-        arch = output.read().rstrip()
+        vin, vout = os.popen2("dpkg --print-architecture")
+        arch = vout.read().rstrip()
     packages_url = \
         "%s/dists/%s/main/binary-%s/Packages.bz2" % (mirror, distro, arch)
 

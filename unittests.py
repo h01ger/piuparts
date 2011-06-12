@@ -63,18 +63,18 @@ class FakeLogDB(piupartslib.packagesdb.LogDB):
         return os.path.dirname(pathname), os.path.basename(pathname)
     
     def exists(self, pathname):
-        dir, base = self._parse(pathname)
-        return base in self.dict[dir]
+        vdir, base = self._parse(pathname)
+        return base in self.dict[vdir]
     
     def open_file(self, pathname, mode):
-        dir, base = self._parse(pathname)
-        self.dict[dir].append(base)
+        vdir, base = self._parse(pathname)
+        self.dict[vdir].append(base)
         return StringIO.StringIO()
         
     def remove_file(self, pathname):
-        dir, base = self._parse(pathname)
-        if base in self.dict[dir]:
-            del self.dict[dir]
+        vdir, base = self._parse(pathname)
+        if base in self.dict[vdir]:
+            del self.dict[vdir]
 
     def create(self, subdir, package, version, contents):
         return True

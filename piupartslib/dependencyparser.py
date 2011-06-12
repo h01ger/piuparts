@@ -205,28 +205,28 @@ class DependencyParser:
         return self._list
 
     def _parse_dependencies(self):
-        list = []
+        vlist = []
         dep = self._parse_dependency()
         while dep:
-            list.append(dep)
+            vlist.append(dep)
             self._cursor.skip_whitespace()
             if self._cursor.at_end():
                 break
             if not self._cursor.match_literal(","):
                 raise DependencySyntaxError("Expected comma", self._cursor)
             dep = self._parse_dependency()
-        return list
+        return vlist
 
     def _parse_dependency(self):
-        list = []
+        vlist = []
         dep = self._parse_possible_dependency()
         while dep:
-            list.append(dep)
+            vlist.append(dep)
             self._cursor.skip_whitespace()
             if not self._cursor.match_literal("|"):
                 break
             dep = self._parse_possible_dependency()
-        return list
+        return vlist
         
     def _parse_possible_dependency(self):
         name = self._parse_package_name()
@@ -291,7 +291,7 @@ class DependencyParser:
         if self._cursor.get_char() == "[":
             self._cursor.next()
             
-            list = []
+            vlist = []
             while True:
                 self._cursor.skip_whitespace()
                 if self._cursor.get_char() == "]":
@@ -301,8 +301,8 @@ class DependencyParser:
                 if not m:
                     raise DependencySyntaxError("Expected architecture name",
                                                 self._cursor)
-                list.append(m.group())
+                vlist.append(m.group())
                     
-            return list
+            return vlist
         else:
             return None

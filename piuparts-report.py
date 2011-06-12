@@ -421,13 +421,13 @@ def setup_logging(log_level, log_file_name):
         logger.addHandler(handler)
 
 
-def html_protect(str):
-    str = "&amp;".join(str.split("&"))
-    str = "&lt;".join(str.split("<"))
-    str = "&gt;".join(str.split(">"))
-    str = "&#34;".join(str.split('"'))
-    str = "&#39;".join(str.split("'"))
-    return str
+def html_protect(vstr):
+    vstr = "&amp;".join(str.split("&"))
+    vstr = "&lt;".join(str.split("<"))
+    vstr = "&gt;".join(str.split(">"))
+    vstr = "&#34;".join(str.split('"'))
+    vstr = "&#39;".join(str.split("'"))
+    return vstr
 
 
 def emphasize_reason(reason):
@@ -457,8 +457,8 @@ def find_files_with_suffix(dir,suffix):
             files += [os.path.join(dir,subdir, name_in_subdir)]
     # sort by age
     content = {}
-    for file in files:
-      content[file] = os.path.getmtime(os.path.join(dir,file))
+    for vfile in files:
+      content[vfile] = os.path.getmtime(os.path.join(dir,vfile))
     # Sort keys, based on time stamps
     files = content.keys()
     files.sort(lambda x,y: cmp(content[x],content[y]))
@@ -474,21 +474,21 @@ def update_file(source, target):
 
 
 def copy_logs(logs_by_dir, output_dir):
-    for dir in logs_by_dir:
-        fulldir = os.path.join(output_dir, dir)
+    for vdir in logs_by_dir:
+        fulldir = os.path.join(output_dir, vdir)
         if not os.path.exists(fulldir):
             os.makedirs(fulldir)
-        for basename in logs_by_dir[dir]:
-            source = os.path.join(dir, basename)
+        for basename in logs_by_dir[vdir]:
+            source = os.path.join(vdir, basename)
             target = os.path.join(fulldir, basename)
             update_file(source, target)
 
 def remove_old_logs(logs_by_dir, output_dir):
-    for dir in logs_by_dir:
-        fulldir = os.path.join(output_dir, dir)
+    for vdir in logs_by_dir:
+        fulldir = os.path.join(output_dir, vdir)
         if os.path.exists(fulldir):
             for basename in os.listdir(fulldir):
-                if basename not in logs_by_dir[dir]:
+                if basename not in logs_by_dir[vdir]:
                     os.remove(os.path.join(fulldir, basename))
 
 
@@ -600,28 +600,28 @@ class Section:
 
 
     def print_by_dir(self, output_directory, logs_by_dir):
-        for dir in logs_by_dir:
-            list = []
-            for basename in logs_by_dir[dir]:
+        for vdir in logs_by_dir:
+            vlist = []
+            for basename in logs_by_dir[vdir]:
                 assert basename.endswith(".log")
                 assert "_" in basename
                 package, version = basename[:-len(".log")].split("_")
-                list.append((os.path.join(dir, basename), package, version))
-            self.write_log_list_page(os.path.join(output_directory, dir + ".html"),
-                                title_by_dir[dir], 
-                                desc_by_dir[dir], list)
+                vlist.append((os.path.join(vdir, basename), package, version))
+            self.write_log_list_page(os.path.join(output_directory, vdir + ".html"),
+                                title_by_dir[vdir], 
+                                desc_by_dir[vdir], vlist)
 
     def find_links_to_logs(self, package_name, dirs, logs_by_dir):
         links = []
-        for dir in dirs:
-          if dir == "fail":
+        for vdir in dirs:
+          if vdir == "fail":
             style = " class=\"needs-bugging\""
           else:
             style = ""
-          for basename in logs_by_dir[dir]:
+          for basename in logs_by_dir[vdir]:
             if basename.startswith(package_name+"_") and basename.endswith(".log"):
               package, version = basename[:-len(".log")].split("_")
-              links.append("<a href=\"/%s\"%s>%s</a>" % (os.path.join(self._config.section, dir, basename),style,html_protect(version)))
+              links.append("<a href=\"/%s\"%s>%s</a>" % (os.path.join(self._config.section, vdir, basename),style,html_protect(version)))
         return links
 
     def link_to_maintainer_summary(self, maintainer):
@@ -945,9 +945,9 @@ class Section:
         for state in self._binary_db.get_states():
             dir_link = ""
             analysis = ""
-            for dir in dirs:
-              if dir in ("pass","fail","bugged") and state_by_dir[dir] == state:
-                dir_link += "<a href='%s.html'>%s</a> logs<br>" % (dir, html_protect(dir))
+            for vdir in dirs:
+              if vdir in ("pass","fail","bugged") and state_by_dir[vdir] == state:
+                dir_link += "<a href='%s.html'>%s</a> logs<br>" % (vdir, html_protect(vdir))
             if state in ("successfully-tested", "failed-testing"):
               analysis = self.create_and_link_to_analysises(state)
             tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a>%s</td>" +
@@ -974,20 +974,20 @@ class Section:
     def write_state_pages(self):
         for state in self._binary_db.get_states():
             logging.debug("Writing page for %s" % state)
-            list = ""
+            vlist = ""
             for package in self._binary_db.get_packages_in_state(state):
-                list += "<li id=\"%s\">%s (%s)" % (
+                vlist += "<li id=\"%s\">%s (%s)" % (
                                          package["Package"],
                                          self.link_to_source_summary(package["Package"]),
                                          html_protect(package["Maintainer"]))
                 if package.dependencies():
-                    list += "\n<ul>\n"
+                    vlist += "\n<ul>\n"
                     for dep in package.dependencies():
-                        list += "<li>dependency %s is %s</li>\n" % \
+                        vlist += "<li>dependency %s is %s</li>\n" % \
                                   (self.link_to_state_page(self._config.section,dep,dep), 
                                   emphasize_reason(html_protect(self._binary_db.state_by_name(dep))))
-                    list += "</ul>\n"
-                list += "</li>\n"
+                    vlist += "</ul>\n"
+                vlist += "</li>\n"
             htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
             write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
                                         "page_title": html_protect("Packages in state "+state+" in "+self._config.section),
@@ -995,15 +995,15 @@ class Section:
                                         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                         "state": html_protect(state),
                                         "section": html_protect(self._config.section),
-                                        "list": list
+                                        "list": vlist
                                        }))
 
     def generate_html(self):
         logging.debug("Finding log files")
         dirs = ["pass", "fail", "bugged", "reserved", "untestable"]
         logs_by_dir = {}
-        for dir in dirs:
-            logs_by_dir[dir] = find_files_with_suffix(dir, ".log")
+        for vdir in dirs:
+            logs_by_dir[vdir] = find_files_with_suffix(vdir, ".log")
 
         logging.debug("Copying log files")
         copy_logs(logs_by_dir, self._output_directory)
