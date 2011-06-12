@@ -20,6 +20,7 @@ for 0.40:
 
 - fix scripts for dash as default shell
 
+
 for 0.41:
 
 - use python-debianbts to track bugginess status of packages via
