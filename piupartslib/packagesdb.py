@@ -111,6 +111,20 @@ class Package(UserDict.UserDict):
                 vlist += self._parse_dependencies(header)
         return vlist
 
+    def depends_with_alts(self, header_name):
+        vlist = []
+        if header_name in self:
+            parser = DependencyParser(self[header_name])
+            vlist += parser.get_dependencies()
+        return vlist
+
+    def prefer_alt_depends(self, header_name,dep_idx,dep):
+        if header_name in self:
+            if header_name not in self._parsed_deps:
+                  self._parse_dependencies(header_name)
+            if self._parsed_deps[header_name][dep_idx]:
+                self._parsed_deps[header_name][dep_idx] = dep.name
+
     def provides(self):
         vlist = []
         for header in ["Provides"]:
@@ -231,6 +245,8 @@ class PackagesDB:
         "dependency-does-not-exist",
         "circular-dependency",
         "unknown",
+        "unknown-preferred-alternative",
+        "no-dependency-from-alternatives-exists",
     ]
     
     _dep_state_to_state = {
@@ -242,6 +258,8 @@ class PackagesDB:
         "dependency-cannot-be-tested": "dependency-cannot-be-tested",
         "dependency-does-not-exist": "dependency-does-not-exist",
         "circular-dependency": "circular-dependency",
+        "unknown-preferred-alternative": "unknown-preferred-alternative",
+        "no-dependency-from-alternatives-exists": "dependency-cannot-be-tested",
     }
 
     def __init__(self, logdb=None, prefix=None):
@@ -325,6 +343,71 @@ class PackagesDB:
         if not package.is_testable():
             return "essential-required"
 
+        # First attempt to resolve (still-unresolved) multiple alternative depends
+        # Definitely sub-optimal, but improvement over blindly selecting first one
+        # 1) Prefer first alternative = "essential-required", prefer it
+        # 2) If no "essential-required", prefer first alternative = "successfully-tested"
+        # 3) Otherwise, prefer first alternative =  "waiting-to-be-tested" IF NO REMAINING
+        #    are "unknown/fail"
+        #
+        # Problems:
+        #   a) We will test and fail when >=1 "successfully-tested" but another
+        #      that failed is selected by apt during test run
+        #   b) False positive "Dependency failed/cannot be tested"; however
+        #       more accurately "waiting-for-dependency-to-be-tested"
+
+        state = None
+        for header in ["Depends", "Pre-Depends"]:
+            alt_deps=package.depends_with_alts(header)
+            for d in range(len(alt_deps)):
+                if len(alt_deps[d]) > 1:
+                    alt_found = 0
+                    alt_fails = 0
+                    alt_unknowns = 0
+                    alt_state = None
+                    prefer_alt_score = 0
+                    prefer_alt_idx = 0
+                    prefer_alt = None
+                    for alternative in alt_deps[d]:
+                        dep = alternative.name
+                        if dep in self._package_state:
+                            alt_found += 1
+                            altdep_state = self._package_state[dep]
+                            if prefer_alt_score < 3 and altdep_state == "essential-required":
+                                prefer_alt = alternative
+                                prefer_alt_idx = d
+                                prefer_alt_score = 3
+                            elif prefer_alt_score < 2 and altdep_state == "successfully-tested":
+                                prefer_alt = alternative
+                                prefer_alt_idx = d
+                                prefer_alt_score = 2
+                            elif prefer_alt_score < 1 and \
+                                 altdep_state in ["waiting-to-be-tested", "waiting-for-dependency-to-be-tested"]:
+                                prefer_alt = alternative
+                                prefer_alt_idx = d
+                                prefer_alt_score = 1
+                            elif altdep_state == "unknown":
+                                alt_unknowns += 1
+                            else:
+                                alt_fails += 1
+                                if alt_state is None:
+                                    alt_state = altdep_state
+
+                    if prefer_alt_score >= 2:
+                        package.prefer_alt_depends(header,prefer_alt_idx,prefer_alt)
+                    elif prefer_alt_score == 1 and ((alt_unknowns + alt_fails) == 0):
+                        package.prefer_alt_depends(header,prefer_alt_idx,prefer_alt)
+                    elif alt_found == 0:
+                        return "no-dependency-from-alternatives-exists"
+                    else:
+                        if alt_state is not None and alt_unknowns == 0:
+                            state = alt_state
+                        elif state is None:
+                            state = "unknown-preferred-alternative"
+
+        if state is not None:
+             return state
+
         for dep in package.dependencies():
             if dep not in self._package_state:
                 return "dependency-does-not-exist"
@@ -369,6 +452,9 @@ class PackagesDB:
         if self._in_state is not None:
             return
     
+        todo = []
+        unpreferred_alt = []
+
         self._find_all_packages()
         package_names = self._packages.keys()
 
@@ -383,13 +469,17 @@ class PackagesDB:
         while package_names:
             todo = []
             done = []
+            unpreferred_alt = []
             for package_name in package_names:
                 package = self._packages[package_name]
-                if self._package_state[package_name] == "unknown":
+                if self._package_state[package_name] in \
+                   [ "unknown", "unknown-preferred-alternative" ]:
                     state = self._compute_package_state(package)
                     assert state in self._states
                     if state == "unknown":
                         todo.append(package_name)
+                    elif state == "unknown-preferred-alternative":
+                        unpreferred_alt.append(package_name)
                     else:
                         self._in_state[state].append(package_name)
                         self._package_state[package_name] = state
@@ -399,8 +489,10 @@ class PackagesDB:
                 # to do anything the next time either.
                 break
             package_names = todo
+            package_names.extend(unpreferred_alt)
 
-        self._in_state["unknown"] = package_names
+        self._in_state["unknown"] = todo
+        self._in_state["unknown-preferred-alternative"] = unpreferred_alt
         
         for state in self._states:
             self._in_state[state].sort()
@@ -408,6 +500,10 @@ class PackagesDB:
     def get_states(self):
         return self._states
 
+    def get_pkg_names_in_state(self, state):
+        self._compute_package_states()
+        return self._in_state[state]
+    
     def get_packages_in_state(self, state):
       self._compute_package_states()
       return unique([self._packages[name] for name in self._in_state[state]])

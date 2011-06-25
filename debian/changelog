@@ -1,3 +1,10 @@
+piuparts (0.41) UNRELEASED; urgency=low
+
+  * Apply patch by Scott Schaefer to fix (Closes: 526045) ...
+    needs proper changelog entry...
+
+ -- Holger Levsen <holger@debian.org>  Sat, 25 Jun 2011 23:33:49 +0200
+
 piuparts (0.40) unstable; urgency=low
 
   * piuparts.py: 

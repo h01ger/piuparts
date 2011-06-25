@@ -25,10 +25,8 @@ Lars Wirzenius <liw@iki.fi>
 
 import sys
 import logging
-import urllib
 import ConfigParser
 import os
-import tempfile
 
 import piupartslib
 
@@ -152,6 +150,10 @@ class Master(Protocol):
         if len(args) != count:
             raise CommandSyntaxError("Need exactly %d args: %s %s" %
                                      (count, command, " ".join(args)))
+    def dump_pkgs(self):
+         for st in self._binary_db.get_states():
+            for pkg in self._binary_db.get_pkg_names_in_state(st):
+                logging.debug("%s : %s\n" % (st,pkg))
 
     def _reserve(self, command, args):
         self._check_args(0, command, args)
