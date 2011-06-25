@@ -5,7 +5,7 @@ Please also check the BTS, especially the bugs with a severity
 higher than wishlist!
 
 
-for 0.40:
+for 0.41:
 
 - piuparts-report should keep state, ie cache the results of the log 
   analysis and generated html pages. Thus, a piuparts-report run could
@@ -21,7 +21,7 @@ for 0.40:
 - fix scripts for dash as default shell
 
 
-for 0.41:
+for 0.42:
 
 - use python-debianbts to track bugginess status of packages via
   the bts and remove the "bugged" directory-status tracking
@@ -45,7 +45,7 @@ for 0.41:
   why and fix it.
 
 
-for 0.42:
+for 0.43:
 
 - provide mail templates for bugreports (which ideally only
   should need manual logfile trimming) at
@@ -62,7 +62,7 @@ for 0.42:
 - publish FAI classes to setup piuparts.$fqdn automatically 
 
 
-for 0.43:
+for 0.44:
 
 - PackagesDB: get rid of 50% of unique()
 
@@ -81,7 +81,7 @@ for 0.43:
     fancy graphs)
 
 
-for 0.44:
+for 0.45:
 
 - untestable packages are not recognicable as such, see
   http://piuparts.debian.org/source/a/apache2.html atm. (log is
@@ -101,7 +101,7 @@ for 0.44:
   prevent start-stop-daemon from starting any daemons ;)
 
 
-for 0.45 and later:
+for 0.46 and later:
 
 - report:
   - write stats about the reasons for failures, as its done with

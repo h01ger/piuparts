@@ -3,7 +3,7 @@ Maintainer: piuparts developers team <piuparts-devel@lists.alioth.debian.org>
 Uploaders: Holger Levsen <holger@debian.org>
 Section: devel
 Priority: extra
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Build-Depends: debhelper (>=7)
 Build-Depends-Indep: python-support, asciidoc, xmlto
 Vcs-Svn: svn://svn.debian.org/svn/piuparts/trunk/

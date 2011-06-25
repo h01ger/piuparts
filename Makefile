@@ -21,9 +21,7 @@ all: install-conf install-doc install
 
 install-doc:
 	# build and install manual 
-	# the first a2x call is to workaround 559305 in sid, while the 2nd is for lenny
-	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README.txt || \
-	  a2x --copy -a toc -a toclevels=3 -f xhtml README.txt
+	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README.txt
 	install -d $(docdir)/
 	for file in README.txt README.html docbook-xsl.css ; do \
 	    install -m 0755 $$file $(docdir)/ ; done

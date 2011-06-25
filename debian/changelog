@@ -1,4 +1,4 @@
-piuparts (0.40) UNRELEASED; urgency=low
+piuparts (0.40) unstable; urgency=low
 
   * piuparts.py: 
     - make "natty" the default Ubuntu distribution.
@@ -9,8 +9,11 @@ piuparts (0.40) UNRELEASED; urgency=low
   * *.py: do not use Python built-in function names as variable name. Thanks
     to Carl Chenet for a first patch and Scott Schaefer for the applied one.
     (Closes: #523950)
+  * Bump Standards-Version to 3.9.2, no changes necessary.
+  * debian/rules: add empty build-arch and build-indep to appease lintian.
+  * Makefile: drop workaround for #559305 in lenny.
 
- -- Holger Levsen <holger@debian.org>  Tue, 04 Jan 2011 14:50:24 +0100
+ -- Holger Levsen <holger@debian.org>  Sat, 25 Jun 2011 21:20:31 +0000
 
 piuparts (0.39) unstable; urgency=low
 
