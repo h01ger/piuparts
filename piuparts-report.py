@@ -422,11 +422,11 @@ def setup_logging(log_level, log_file_name):
 
 
 def html_protect(vstr):
-    vstr = "&amp;".join(str.split("&"))
-    vstr = "&lt;".join(str.split("<"))
-    vstr = "&gt;".join(str.split(">"))
-    vstr = "&#34;".join(str.split('"'))
-    vstr = "&#39;".join(str.split("'"))
+    vstr = "&amp;".join(vstr.split("&"))
+    vstr = "&lt;".join(vstr.split("<"))
+    vstr = "&gt;".join(vstr.split(">"))
+    vstr = "&#34;".join(vstr.split('"'))
+    vstr = "&#39;".join(vstr.split("'"))
     return vstr
 
 
