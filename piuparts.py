@@ -677,14 +677,32 @@ class Chroot:
 
     def create_apt_conf(self):
         """Create /etc/apt/apt.conf inside the chroot."""
-        create_file(self.relative("etc/apt/apt.conf"),
-                    'APT::Get::AllowUnauthenticated "%s";\n' % settings.apt_unauthenticated + 
-                    'APT::Get::Assume-Yes "yes";\n' +
-                    'APT::Install-Recommends "0";\n' +
-                    'APT::Install-Suggests "0";\n')
+        lines = [
+            'APT::Get::Assume-Yes "yes";\n',
+            'APT::Install-Recommends "0";\n',
+            'APT::Install-Suggests "0";\n',
+            ]
+        lines.append('APT::Get::AllowUnauthenticated "%s";\n' % settings.apt_unauthenticated) 
+        if "HTTP_PROXY" in os.environ:
+            proxy = os.environ["HTTP_PROXY"]
+        else:
+            proxy = None;
+            pat = re.compile(r"^Acquire::http::Proxy\s+\"([^\"]+)\"", re.I);
+            p = subprocess.Popen(["apt-config", "dump"], 
+                             stdout=subprocess.PIPE)
+            stdout, _ = p.communicate()
+            if stdout:
+                for line in stdout.split("\n"):
+                    m = re.match(pat, line)
+                    if proxy is None and m:
+                        proxy = m.group(1)
+        if proxy:
+            lines.append('Acquire::http::Proxy "%s";\n' % proxy)
         if settings.dpkg_force_confdef:
-          append_to_file(self.relative("etc/apt/apt.conf"),
-                         'Dpkg::Options {"--force-confdef";};\n')
+            lines.append('Dpkg::Options {"--force-confdef";};\n')
+
+        create_file(self.relative("etc/apt/apt.conf"),
+            "".join(lines))
 
     def create_dpkg_conf(self):
         """Create /etc/dpkg/dpkg.cfg.d/piuparts inside the chroot."""

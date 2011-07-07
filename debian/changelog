@@ -3,6 +3,9 @@ piuparts (0.41) UNRELEASED; urgency=low
   * Apply patch by Scott Schaefer to fix (Closes: 526045) ...
     needs proper changelog entry...
   * piuparts-report.py: correct a typo from the patch for #523950.
+  * Make piuparts use proxy settings either from apt configuration or
+    http_proxy environment variable, the latter overwriting the former (if
+    present) - Thanks to Scott Schaefer for the patch. (Closes: #632046) 
 
  -- Holger Levsen <holger@debian.org>  Sat, 25 Jun 2011 23:33:49 +0200
 
