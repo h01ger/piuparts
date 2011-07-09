@@ -880,9 +880,9 @@ class Section:
         # make graph since day 1  
         r('v <- t[0:nrow(t),0:10]')
         # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
-        r('palette(c("#4e9a06", "#ef2929", "#d3d7cf", "#5c3566", "#c4a000", "#fce94f", "#a40000", "#888a85", "#2e3436", "#729fcf", "#204a87"))')
+        r('palette(c("#4e9a06", "#ef2929", "#d3d7cf", "#5c3566", "#c4a000", "#fce94f", "#a40000", "#888a85", "#2e3436", "#729fcf", "3465a4", "#204a87", "555753"))')
         r('bitmap(file="'+pngfile+'",type="png16m",width=16,height=9,pointsize=10,res=100)')
-        r('barplot(t(v),col = 1:11, main="Binary packages per state in '+self._config.section+'", xlab="", ylab="Number of binary packages",space=0.1,border=0)')
+        r('barplot(t(v),col = 1:13, main="Binary packages per state in '+self._config.section+'", xlab="", ylab="Number of binary packages",space=0.1,border=0)')
         r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:11,xjust=0.5,yjust=0,bty="n")')
         return "<tr class=\"normalrow\"> <td class=\"contentcell2\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"800\" alt=\"Binary package states in %s\"></a></td></tr>\n" % ("states.png", self._config.section, "states.png", self._config.section)
 

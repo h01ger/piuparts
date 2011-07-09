@@ -18,10 +18,12 @@ piuparts (0.41) UNRELEASED; urgency=low
      b) "no-dependency-from-alternatives-exists": if none of the alternatives 
         can be found in the archive.
     (Closes: #526045)
-  * piuparts-report.py: correct a typo from the patch for #523950.
+  * piuparts-report.py: 
+    - correct a typo from the patch for #523950.
+    - make_stats_graph: draw the two new states as well.
   * Make piuparts use proxy settings either from apt configuration or
     http_proxy environment variable, the latter overwriting the former (if
-    present) - Thanks to Scott Schaefer for the patch. (Closes: #632046) 
+    present) - Thanks to Scott Schaefer for the patch. (Closes: #632046)  
 
  -- Holger Levsen <holger@debian.org>  Sat, 25 Jun 2011 23:33:49 +0200
 
