@@ -1,21 +1,22 @@
 piuparts (0.41) UNRELEASED; urgency=low
 
   * piupartslib/packagesdb.py: Apply patch by Scott Schaefer to also consider
-    alternative depends: the algorithm used to select the "best" alternative is:
+    alternative depends: the algorithm used to select the "best" alternative 
+    is:
      1) Prefer first alternative in state "essential-required"
-     2) If no "essential-required" alternatives, prefer first alternative 
+     2) If no "essential-required" alternatives, prefer first alternative
         in state "successfully-tested"
      3) Otherwise, prefer first alternative in state 
-        "waiting-to-be-tested" IF NO REMAINING alternatives are in one of the 
+        "waiting-to-be-tested" IF NO REMAINING alternatives are in one of the
         "unknown/fail" states
     For this two new states have been introduced:
-     a) "unknown-preferred-alternative": equivalent of "unknown", this defers 
+     a) "unknown-preferred-alternative": equivalent of "unknown", this defers
         calculation of this package's state, since one or more of its 
-        alternative depends are "unknown" (or "unknown-preferred-alternative"), 
-        and no alternative is either "essential-required" or 
-        "successfully-tested".  The alternatives will be re-tested on subsequest 
-        pass.
-     b) "no-dependency-from-alternatives-exists": if none of the alternatives 
+        alternative depends are "unknown" (or 
+        "unknown-preferred-alternative"), and no alternative is either 
+        "essential-required" or "successfully-tested".  The alternatives will
+        be re-tested on subsequest pass.
+     b) "no-dependency-from-alternatives-exists": if none of the alternatives
         can be found in the archive.
     (Closes: #526045)
   * piuparts-report.py: 
