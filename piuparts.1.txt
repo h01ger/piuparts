@@ -111,6 +111,9 @@ Note that file: addresses works if the directories are made accessible from with
 *--no-upgrade-test*::
   Skip testing upgrade from an existing version in the archive.
 
+*--no-install-purge-test*::
+  Skip the install and purge test.
+
 *-p, --pbuilder*::
   Use _/var/cache/pbuilder/base.tgz_ as the base tarball. This is a shorthand so that you don't need to use '-b' for it.
 

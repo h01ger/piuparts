@@ -149,6 +149,7 @@ class Settings:
         self.keep_sources_list = False
         self.skip_minimize = True
         self.list_installed_files = False
+        self.no_install_purge_test = False
         self.no_upgrade_test = False
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
@@ -2024,6 +2025,10 @@ def parse_command_line():
                       help="Skip testing the upgrade from an existing version " +
 		      "in the archive.")
     
+    parser.add_option("--no-install-purge-test", 
+                      action="store_true", default=False,
+                      help="Skip install and purge test.")
+
     parser.add_option("-p", "--pbuilder", action="callback",
                       callback=set_basetgz_to_pbuilder,
                       help="Use /var/cache/pbuilder/base.tgz as the base " +
@@ -2115,6 +2120,7 @@ def parse_command_line():
     settings.skip_minimize = opts.skip_minimize
     settings.minimize = opts.minimize
     settings.list_installed_files = opts.list_installed_files
+    settings.no_install_purge_test = opts.no_install_purge_test
     settings.no_upgrade_test = opts.no_upgrade_test
     settings.skip_cronfiles_test = opts.skip_cronfiles_test
     settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test
@@ -2227,11 +2233,12 @@ def process_packages(package_list):
         root_info = chroot.save_meta_data()
         selections = chroot.get_selections()
 
-        if not install_purge_test(chroot, root_info, selections,
-                  package_list, packages):
-            logging.error("FAIL: Installation and purging test.")
-            panic()
-        logging.info("PASS: Installation and purging test.")
+        if not settings.no_install_purge_test:
+            if not install_purge_test(chroot, root_info, selections,
+                      package_list, packages):
+                logging.error("FAIL: Installation and purging test.")
+                panic()
+            logging.info("PASS: Installation and purging test.")
 
         if not settings.no_upgrade_test:
             if not settings.args_are_package_files:
