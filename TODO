@@ -32,7 +32,8 @@ for 0.43:
   altogether.  also remove "fixed".
 
 - use libeatmydata - either install it in all chroots or find a
-  better way to use it.
+  better way to use it. Since 0.41 there is --force-unsafe-io 
+  but libeatmydata should be even faster.
 
 - generate piuparts.1.txt automatically from piuparts.py - see
   this blog post for a nice howto:

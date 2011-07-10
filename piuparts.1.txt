@@ -62,6 +62,9 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *--dpkg-force-confdef*::
   Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This option will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages. 'This option shall normally not be used.' (See #466118.)
 
+*--dpkg-noforce-unsafe-io*::
+  Prevent running dpkg with --force-unsafe-io.  --force-unsafe-io causes dpkg to skip certain file system syncs known to cause substantial performance degradation on some filesystems.  Thus, including this option reverts to safe but slower behavior.
+
 *-i* 'filename', *--ignore*='filename'::
   Add a filename to the list of filenames to be ignored when comparing changes before and after installation. By default, piuparts ignores files that always change during a package installation and uninstallation, such as *dpkg* status files. The filename should be relative to the root of the chroot (e.g., _var/lib/dpkg/status_). This option can be used as many times as necessary.
 

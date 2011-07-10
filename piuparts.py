@@ -699,6 +699,8 @@ class Chroot:
                         proxy = m.group(1)
         if proxy:
             lines.append('Acquire::http::Proxy "%s";\n' % proxy)
+        if settings.dpkg_force_unsafe_io:
+            lines.append('Dpkg::Options {"--force-unsafe-io";};\n')
         if settings.dpkg_force_confdef:
             lines.append('Dpkg::Options {"--force-confdef";};\n')
 
@@ -707,10 +709,15 @@ class Chroot:
 
     def create_dpkg_conf(self):
         """Create /etc/dpkg/dpkg.cfg.d/piuparts inside the chroot."""
+        lines = []
+        if settings.dpkg_force_unsafe_io:
+            lines.append('force-unsafe-io\n')
         if settings.dpkg_force_confdef:
+            lines.append('force-confdef\n')
+            logging.info("Warning: dpkg has been configured to use the force-confdef option. This will hide problems, see #466118.")
+        if lines:
           create_file(self.relative("etc/dpkg/dpkg.cfg.d/piuparts"),
-                    'force-confdef\n')
-          logging.info("Warning: dpkg has been configured to use the force-confdef option. This will hide problems, see #466118.")
+            "".join(lines))
 
     def create_policy_rc_d(self):
         """Create a policy-rc.d that prevents daemons from running."""
@@ -1954,6 +1961,11 @@ def parse_command_line():
                       default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
 		      help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
 
+    parser.add_option("--dpkg-noforce-unsafe-io",
+                      default=False,
+                      action='store_true',
+		      help="Default is to run dpkg with --force-unsafe-io option, which causes dpkg to skip certain file system syncs known to cause substantial performance degradation on some filesystems.  This option turns that off and dpkg will use safe I/O operations.")
+
     parser.add_option("--dpkg-force-confdef",
                       default=False,
                       action='store_true',
@@ -2148,6 +2160,7 @@ def parse_command_line():
     settings.warn_on_others = opts.warn_on_others
     settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
     settings.debfoster_options = opts.debfoster_options.split()
+    settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
     settings.dpkg_force_confdef = opts.dpkg_force_confdef
 
     if opts.adt_virt is None:

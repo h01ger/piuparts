@@ -28,6 +28,9 @@ piuparts (0.41) UNRELEASED; urgency=low
       - Thanks to Scott Schaefer for the patch. (Closes: #632046)
     - new option "--no-install-purge-test" to only do upgrade tests
       - Thanks to Andreas Bergmann for the patch (Closes: #588482)
+    - run dpkg with --force-unsafe-io by default and introduce new option
+      "--dpkg-noforce-unsafe-io" to disable this feature. (Closes: #633033)
+      Thanks to Scott once more!
   * piuparts-slave: 
     - check if chroot-tgz is older than MAX_TGZ_AGE (currently
       hardcoded to 30) and recreate it, if it is. Keep backup and put in back
