@@ -24,6 +24,8 @@ piuparts (0.41) UNRELEASED; urgency=low
   * Make piuparts use proxy settings either from apt configuration or
     http_proxy environment variable, the latter overwriting the former (if
     present) - Thanks to Scott Schaefer for the patch. (Closes: #632046)  
+  * debian/control and rules: use dh_python2 instead of python-support to 
+    build the package, require python >= 2.6.6-3~
 
  -- Holger Levsen <holger@debian.org>  Sat, 25 Jun 2011 23:33:49 +0200
 
