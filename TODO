@@ -27,13 +27,6 @@ for 0.42:
   the bts and remove the "bugged" directory-status tracking
   altogether.  also remove "fixed".
 
-- with that it's possible to just delete any logs older than
-  $time (4/8/12 weeks?) periodically. Probably worth a new config
-  option.  Another approch would be for each logfile to check if
-  the package still exist in $distro and if not, delete it. But
-  that uses way more CPU+IO, also it's (almost always) useful to
-  retest packages anyway.
-
 - use libeatmydata - either install it in all chroots or find a
   better way to use it.
 
@@ -59,7 +52,9 @@ for 0.43:
   binary package.  when doing so keep in mind the two tango icons
   and credit those in debian/copyright.
 
-- publish FAI classes to setup piuparts.$fqdn automatically 
+- once that is done, move to git.
+
+- publish FAI classes to setup piuparts.$fqdn automatically.
 
 
 for 0.44:
@@ -82,12 +77,6 @@ for 0.44:
 
 
 for 0.45:
-
-- untestable packages are not recognicable as such, see
-  http://piuparts.debian.org/source/a/apache2.html atm. (log is
-  N/A, even though its there, even if empty) -
-  http://piuparts.debian.org/sid/state-cannot-be-tested.html aint
-  helpful neither.
 
 - slave_run: cleanup stale proc mountpoints
 
@@ -178,7 +167,7 @@ Low priority stuff (a.k.a. "nobody's said they must have it now")
 - Kill children after a timeout to make sure the test doesn't run
   forever.
 
-- piuparts-master: keep track of whom a reservation is made
+- piuparts-master: keep track of to whom a reservation was given
 
 - piuparts-slave: timestamps to log messages
 
