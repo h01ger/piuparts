@@ -45,6 +45,10 @@
       News
      </td>
     </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2011-07-10</b>: Since today dpkg is run with --force-unsafe-io by for all suites except lenny2squeeze, as dpkg from lenny doesn't support this option.
+     </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
