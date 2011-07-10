@@ -7,6 +7,7 @@ higher than wishlist!
 for 0.41
 
 - piuparts-slave: make MAX_TGZ_AGE configurable
+- fix "DeprecationWarning: os.popen2 is deprecated.  Use the subprocess module."
 
 for 0.42:
 
