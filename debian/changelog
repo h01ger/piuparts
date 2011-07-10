@@ -26,7 +26,7 @@ piuparts (0.41) UNRELEASED; urgency=low
     http_proxy environment variable, the latter overwriting the former (if
     present) - Thanks to Scott Schaefer for the patch. (Closes: #632046)  
   * debian/control:
-    - require python >= 2.6.6-3~
+    - require python >= 2.6.6-3~, get rid of python-support build-depends.
     - add X-Python-Version: pseudo-header
   * debian/rules: use dh_python2 instead of python-support to build the 
     package
