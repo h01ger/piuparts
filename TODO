@@ -4,8 +4,11 @@ Things to do for piuparts
 Please also check the BTS, especially the bugs with a severity
 higher than wishlist!
 
+for 0.41
 
-for 0.41:
+- piuparts-slave: make MAX_TGZ_AGE configurable
+
+for 0.42:
 
 - piuparts-report should keep state, ie cache the results of the log 
   analysis and generated html pages. Thus, a piuparts-report run could
@@ -21,7 +24,7 @@ for 0.41:
 - fix scripts for dash as default shell
 
 
-for 0.42:
+for 0.43:
 
 - use python-debianbts to track bugginess status of packages via
   the bts and remove the "bugged" directory-status tracking
@@ -38,7 +41,7 @@ for 0.42:
   why and fix it.
 
 
-for 0.43:
+for 0.44:
 
 - provide mail templates for bugreports (which ideally only
   should need manual logfile trimming) at
@@ -57,26 +60,19 @@ for 0.43:
 - publish FAI classes to setup piuparts.$fqdn automatically.
 
 
-for 0.44:
+for 0.45:
 
 - PackagesDB: get rid of 50% of unique()
 
 - remove configfile option "mirror" and use the mirror from
   "packages-url".
 
-- piuparts-slave: if chroot.tgz is older than N days, regenerate
-  it
-  - currently this is done via ~piupartss/crontab, but that's a
-    hack
-  - only throw away tarballs (and recreate them) after testing
-    that they can be recreated 
-
 - master:
   - write stats about number of daily tests (-> report: create
     fancy graphs)
 
 
-for 0.45:
+for 0.46:
 
 - slave_run: cleanup stale proc mountpoints
 
@@ -90,7 +86,7 @@ for 0.45:
   prevent start-stop-daemon from starting any daemons ;)
 
 
-for 0.46 and later:
+for 0.47 and later:
 
 - report:
   - write stats about the reasons for failures, as its done with

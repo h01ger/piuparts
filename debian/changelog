@@ -28,12 +28,20 @@ piuparts (0.41) UNRELEASED; urgency=low
       - Thanks to Scott Schaefer for the patch. (Closes: #632046)
     - new option "--no-install-purge-test" to only do upgrade tests
       - Thanks to Andreas Bergmann for the patch (Closes: #588482)
+  * piuparts-slave: 
+    - check if chroot-tgz is older than MAX_TGZ_AGE (currently
+      hardcoded to 30) and recreate it, if it is. Keep backup and put in back
+      in place when debootstrapping a new chroot-tgz fails. Thanks to Scott
+      Schaefer for the patch. (Closes: #632924)
+    - fix bug in piuparts-slave which prevented running a single section by 
+      including section name as command-line argument - thanks again to Scott
+      and see 632924 too.
   * debian/control:
     - require python >= 2.6.6-3~, get rid of python-support build-depends.
     - add X-Python-Version: pseudo-header
   * debian/rules: use dh_python2 instead of python-support to build the 
     package
-  * Makefile: build for python 2.6 and 2.7 instead of 2.5 and 2.6 
+  * Makefile: build for python 2.6 and 2.7 instead of 2.5 and 2.6  
 
  -- Holger Levsen <holger@debian.org>  Sat, 25 Jun 2011 23:33:49 +0200
 

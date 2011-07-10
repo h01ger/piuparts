@@ -25,17 +25,17 @@ Lars Wirzenius <liw@iki.fi>
 
 import os
 import sys
+import stat
 import time
 import logging
 import ConfigParser
-import urllib
-
 
 import piupartslib.conf
 import piupartslib.packagesdb
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
+MAX_TGZ_AGE = 60*60*24*30
 
 
 def setup_logging(log_level, log_file_name):
@@ -235,13 +235,15 @@ class Section:
         if self._config["chroot-tgz"] and not self._config["distro"]:
           logging.info("The option --chroot-tgz needs --distro.")
 
-        if self._config["chroot-tgz"] and not os.path.exists(self._config["chroot-tgz"]):
-            create_chroot(self._config, self._config["chroot-tgz"], self._config["distro"])
+        tarball = self._config["chroot-tgz"]
+        if tarball:
+            create_or_replace_chroot_tgz(self._config, tarball,
+                       MAX_TGZ_AGE, self._config["distro"])
 
-        if (self._config["upgrade-test-distros"] and self._config["upgrade-test-chroot-tgz"]
-            and not os.path.exists(self._config["upgrade-test-chroot-tgz"])):
-            create_chroot(self._config, self._config["upgrade-test-chroot-tgz"], 
-                        self._config["upgrade-test-distros"].split()[0])
+        tarball = self._config["upgrade-test-chroot-tgz"]
+        if self._config["upgrade-test-distros"] and tarball: 
+            create_or_replace_chroot_tgz(self._config, tarball,
+                       MAX_TGZ_AGE, self._config["upgrade-test-distros"].split()[0])
     
         for rdir in ["new", "pass", "fail"]:
             rdir = os.path.join(self._slave_directory, rdir)
@@ -416,6 +418,21 @@ def create_chroot(config, tarball, distro):
     f.close()
     os.rename(tarball + ".new", tarball)
 
+def create_or_replace_chroot_tgz(config, tgz, max_age, distro):
+    age = 0 
+    if os.path.exists(tgz):
+        age = time.time() - os.stat(tgz)[stat.ST_CTIME]
+        if age > max_age:
+            os.rename(tgz, tgz + ".old")
+            logging.info("%s too old.  Renaming to force re-creation" % tgz)
+    if not os.path.exists(tgz):
+        create_chroot(config, tgz, distro)
+        if not os.path.exists(tgz) and age > 0 and age > max_age:
+            os.rename(tgz + ".old", tgz)
+            logging.info("Failed to create ... reverting to old %s" % tgz)
+            create_chroot(config, tgz, distro)
+        else:
+            os.unlink(tgz + ".old")
 
 def fetch_packages_file(config, distro):
     mirror = config["mirror"]
@@ -448,11 +465,11 @@ def main():
     # argument referring to a section in configuration file.  
     # If no argument is given, the "global" section is assumed.
     section_names = []
+    global_config = Config(section="global")
+    global_config.read(CONFIG_FILE)
     if len(sys.argv) > 1:
         section_names = sys.argv[1:]
     else:
-        global_config = Config(section="global")
-        global_config.read(CONFIG_FILE)
         section_names = global_config["sections"].split()
 
     sections = []
