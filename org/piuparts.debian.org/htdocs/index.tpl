@@ -48,6 +48,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2011-07-10</b>: systemd-sysv is the eighth package getting special treatment by piuparts as it needs removal of sysvinit before installation and installation of that package before removal...
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2011-04-02</b>: New daily cronjob to reschedule the oldest 200 logfiles of each sid and wheezy, if they are older then 180 days. IOW: make sure no logfile for sid and wheezy is older than half a year.
      </td>
     </tr>

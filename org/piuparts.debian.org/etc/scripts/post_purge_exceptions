@@ -46,6 +46,11 @@ case $PIUPARTS_OBJECTS in
 				rm -fv /var/lib/update-rc.d/*
 				apt-get clean
 				;;
+	systemd-sysv)		log_debug
+				#  removal wont work if sysvinit isn't reinstalled
+				apt-get -y install sysvinit
+				apt-get clean
+				;;
 esac
 
 exit 0
