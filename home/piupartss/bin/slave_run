@@ -23,7 +23,7 @@ set -e
 
 SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
 MONITORDIR=/org/piuparts.debian.org/master/monitor-slave
-export PYTHONPATH=/org/piuparts.debian.org/lib/python2.5/site-packages:/org/piuparts.debian.org/lib/python2.6/site-packages
+export PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.6/dist-packages
 
 cd /org/piuparts.debian.org/slave
 (ps fax|grep -v grep| grep piuparts-slave ) && exit 0
