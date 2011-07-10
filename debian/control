@@ -9,6 +9,7 @@ Build-Depends-Indep: python (>=2.6.6-3~), asciidoc, xmlto
 Vcs-Svn: svn://svn.debian.org/svn/piuparts/trunk/
 Vcs-Browser: http://svn.debian.org/wsvn/piuparts/trunk/
 Homepage: http://piuparts.debian.org
+X-Python-Version: >= 2.6
 
 Package: piuparts
 Architecture: all
