@@ -35,7 +35,6 @@ import piupartslib.packagesdb
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
-MAX_TGZ_AGE = 60*60*24*30
 
 
 def setup_logging(log_level, log_file_name):
@@ -63,6 +62,7 @@ class Config(piupartslib.conf.Config):
                 "sections": "slave",
                 "slave-directory": section,
                 "idle-sleep": "300",
+                "max-tgz-age": "2592000",
                 "master-host": None,
                 "master-user": None,
                 "master-directory": ".",
@@ -224,7 +224,7 @@ class Section:
         if not os.path.exists(self._slave_directory):
             os.mkdir(self._slave_directory)
 
-    def setup(self, master_host, master_user, master_directory, idle_sleep):
+    def setup(self, master_host, master_user, master_directory, max_tgz_age):
         if self._config["debug"] in ["yes", "true"]:
             self._logger = logging.getLogger()
             self._logger.setLevel(logging.DEBUG)
@@ -238,12 +238,12 @@ class Section:
         tarball = self._config["chroot-tgz"]
         if tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
-                       MAX_TGZ_AGE, self._config["distro"])
+                       max_tgz_age, self._config["distro"])
 
         tarball = self._config["upgrade-test-chroot-tgz"]
         if self._config["upgrade-test-distros"] and tarball: 
             create_or_replace_chroot_tgz(self._config, tarball,
-                       MAX_TGZ_AGE, self._config["upgrade-test-distros"].split()[0])
+                       max_tgz_age, self._config["upgrade-test-distros"].split()[0])
     
         for rdir in ["new", "pass", "fail"]:
             rdir = os.path.join(self._slave_directory, rdir)
@@ -255,7 +255,6 @@ class Section:
         self._slave.set_master_user(master_user)
         self._slave.set_master_directory(master_directory)
         self._slave.set_master_command(self._config["master-command"])
-        self._idle_sleep=idle_sleep
         self._log_file=self._config["log-file"]
 
         for rdir in ["pass", "fail", "untestable", "reserved"]:
@@ -475,7 +474,7 @@ def main():
     sections = []
     for section_name in section_names:
         section = Section(section_name)
-        section.setup(master_host=global_config["master-host"],master_user=global_config["master-user"],master_directory=global_config["master-directory"],idle_sleep=global_config["idle-sleep"])
+        section.setup(master_host=global_config["master-host"],master_user=global_config["master-user"],master_directory=global_config["master-directory"],max_tgz_age=global_config["max-tgz-age"])
         sections.append(section)
 
     while True:

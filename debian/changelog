@@ -32,10 +32,11 @@ piuparts (0.41) UNRELEASED; urgency=low
       "--dpkg-noforce-unsafe-io" to disable this feature. (Closes: #633033)
       Thanks to Scott once more!
   * piuparts-slave: 
-    - check if chroot-tgz is older than MAX_TGZ_AGE (currently
-      hardcoded to 30) and recreate it, if it is. Keep backup and put in back
+    - check if chroot-tgz is older than max-tgz-age (defaulting to 30 days)
+      and recreate it, if it is. Keep backup and put in back
       in place when debootstrapping a new chroot-tgz fails. Thanks to Scott
       Schaefer for the patch. (Closes: #632924)
+    - document new configuration option max-tgz-age in README.txt.
     - fix bug in piuparts-slave which prevented running a single section by 
       including section name as command-line argument - thanks again to Scott
       and see 632924 too.
@@ -44,7 +45,7 @@ piuparts (0.41) UNRELEASED; urgency=low
     - add X-Python-Version: pseudo-header
   * debian/rules: use dh_python2 instead of python-support to build the 
     package
-  * Makefile: build for python 2.6 and 2.7 instead of 2.5 and 2.6  
+  * Makefile: build for python 2.6 and 2.7 instead of 2.5 and 2.6.
 
  -- Holger Levsen <holger@debian.org>  Sat, 25 Jun 2011 23:33:49 +0200
 
