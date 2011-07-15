@@ -33,10 +33,11 @@ piuparts (0.41) UNRELEASED; urgency=low
       Thanks to Scott once more!
   * piuparts-slave: 
     - check if chroot-tgz is older than max-tgz-age (defaulting to 30 days)
-      and recreate it, if it is. Keep backup and put in back
-      in place when debootstrapping a new chroot-tgz fails. Thanks to Scott
-      Schaefer for the patch. (Closes: #632924)
-    - document new configuration option max-tgz-age in README.txt.
+      and recreate it, if it is. Keep backup and put in back in place when 
+      debootstrapping a new chroot-tgz fails. Retry after min-tgz-retry-delay
+      seconds. Thanks to Scott Schaefer for the patch. (Closes: #632924)
+    - document new configuration options max-tgz-age and min-tgz-retry-delay
+      in README.txt.
     - fix bug in piuparts-slave which prevented running a single section by 
       including section name as command-line argument - thanks again to Scott
       and see 632924 too.

@@ -361,6 +361,8 @@ three they are all mandatory:
 
 * "max-tgz-age" is used to specify the maximum age (in seconds) after which basesystem tarballs will be recreated. If recreation fails, the old tarball will be used again. The default is 2592000 seconds, which is 30 days.
   
+* "min-tgz-retry-delay" is used to specify the minimum time (in seconds) between attempts to recreate a tarball which was created more than "max-tgz-age" seconds ago. The default is 21600 seconds, which is 6h.
+
 * "master-host" is the host where the master exists. The slave will give this host to ssh.
   
 * "master-user" is the username of the master. The slave will log in using this username.

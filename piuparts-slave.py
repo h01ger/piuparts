@@ -61,8 +61,9 @@ class Config(piupartslib.conf.Config):
             {
                 "sections": "slave",
                 "slave-directory": section,
-                "idle-sleep": "300",
-                "max-tgz-age": "2592000",
+                "idle-sleep": 300,
+                "max-tgz-age": 2592000,
+                "min-tgz-retry-delay": 21600,
                 "master-host": None,
                 "master-user": None,
                 "master-directory": ".",
@@ -74,7 +75,7 @@ class Config(piupartslib.conf.Config):
                 "chroot-tgz": None,
                 "upgrade-test-distros": None,
                 "upgrade-test-chroot-tgz": None,
-                "max-reserved": "1",
+                "max-reserved": 1,
                 "debug": "no",
                 "keep-sources-list": "no",
                 "arch": None,
@@ -224,7 +225,7 @@ class Section:
         if not os.path.exists(self._slave_directory):
             os.mkdir(self._slave_directory)
 
-    def setup(self, master_host, master_user, master_directory, max_tgz_age):
+    def setup(self, master_host, master_user, master_directory, base_tgz_ctrl):
         if self._config["debug"] in ["yes", "true"]:
             self._logger = logging.getLogger()
             self._logger.setLevel(logging.DEBUG)
@@ -238,12 +239,12 @@ class Section:
         tarball = self._config["chroot-tgz"]
         if tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
-                       max_tgz_age, self._config["distro"])
+                      base_tgz_ctrl, self._config["distro"])
 
         tarball = self._config["upgrade-test-chroot-tgz"]
         if self._config["upgrade-test-distros"] and tarball: 
             create_or_replace_chroot_tgz(self._config, tarball,
-                       max_tgz_age, self._config["upgrade-test-distros"].split()[0])
+                      base_tgz_ctrl, self._config["upgrade-test-distros"].split()[0])
     
         for rdir in ["new", "pass", "fail"]:
             rdir = os.path.join(self._slave_directory, rdir)
@@ -415,23 +416,32 @@ def create_chroot(config, tarball, distro):
     for line in f:
         logging.debug(">> " + line.rstrip())
     f.close()
-    os.rename(tarball + ".new", tarball)
+    if os.path.exists(tarball + ".new"):
+        os.rename(tarball + ".new", tarball)
 
-def create_or_replace_chroot_tgz(config, tgz, max_age, distro):
-    age = 0 
+def create_or_replace_chroot_tgz(config, tgz, tgz_ctrl, distro):
+    forced = 0 
     if os.path.exists(tgz):
-        age = time.time() - os.stat(tgz)[stat.ST_CTIME]
-        if age > max_age:
-            os.rename(tgz, tgz + ".old")
-            logging.info("%s too old.  Renaming to force re-creation" % tgz)
+        max_tgz_age = tgz_ctrl[0]
+        min_tgz_retry_delay = tgz_ctrl[1]
+        now = time.time()
+        statobj = os.stat(tgz)
+        # stat.ST_MTIME is actually time file was initially created
+        age = now - statobj[stat.ST_MTIME]
+        if age > max_tgz_age:
+            # stat.ST_CTIME is time created OR last renamed
+            if min_tgz_retry_delay is None or now - statobj[stat.ST_CTIME] > min_tgz_retry_delay:
+                os.rename(tgz, tgz + ".old")
+                forced = 1 
+                logging.info("%s too old.  Renaming to force re-creation" % tgz)
     if not os.path.exists(tgz):
         create_chroot(config, tgz, distro)
-        if not os.path.exists(tgz) and age > 0 and age > max_age:
-            os.rename(tgz + ".old", tgz)
-            logging.info("Failed to create ... reverting to old %s" % tgz)
-            create_chroot(config, tgz, distro)
-        else:
-            os.unlink(tgz + ".old")
+        if forced:
+            if not os.path.exists(tgz):
+                os.rename(tgz + ".old", tgz)
+                logging.info("Failed to create ... reverting to old %s" % tgz)
+            else:
+                os.unlink(tgz + ".old")
 
 def fetch_packages_file(config, distro):
     mirror = config["mirror"]
@@ -474,7 +484,11 @@ def main():
     sections = []
     for section_name in section_names:
         section = Section(section_name)
-        section.setup(master_host=global_config["master-host"],master_user=global_config["master-user"],master_directory=global_config["master-directory"],max_tgz_age=global_config["max-tgz-age"])
+        section.setup(
+               master_host=global_config["master-host"],
+               master_user=global_config["master-user"],
+               master_directory=global_config["master-directory"],
+               base_tgz_ctrl=[global_config["max-tgz-age"],global_config["min-tgz-retry-delay"]])
         sections.append(section)
 
     while True:
