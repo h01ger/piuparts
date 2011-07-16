@@ -36,7 +36,7 @@ fi
 
 LOGS=`mktemp`
 for SECTION in $SECTIONS ; do 
-	rgrep -l "E: Broken packages" $MASTER/$SECTION/fail 2>/dev/null >> $LOGS
+	rgrep -l -e "(E: Broken packages|E: Error, pkgProblemResolver::Resolve generated breaks)" $MASTER/$SECTION/fail 2>/dev/null >> $LOGS
         if [ -s $LOGS ] ; then 
           for package_log in $(grep $SECTION $LOGS) ; do 
 		mv $package_log $MASTER/$SECTION/untestable/
@@ -45,7 +45,8 @@ for SECTION in $SECTIONS ; do
 done
 if [ -s $LOGS ] ; then 
 	echo "Broken packages detected!"
-	echo "(By grep'ing for 'E: Broken packages' in failed logs.)"
+	echo "(By grep'ing for 'E: Broken packages' and 'E: Error, pkgProblemResolver::Resolve"
+        echo "generated breaks' in failed logs.)"
 	echo 
 	echo 'The following packages have been moved to $section/untestable and will be'
 	echo "tested again in 7 days."
