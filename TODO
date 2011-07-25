@@ -6,8 +6,11 @@ higher than wishlist!
 
 for 0.41
 
-- the slave should only try to recreate the tarball once a day
 - fix "DeprecationWarning: os.popen2 is deprecated.  Use the subprocess module."
+
+- send logs to mailing lists
+
+- share templates for filing bugs
 
 for 0.42:
 
