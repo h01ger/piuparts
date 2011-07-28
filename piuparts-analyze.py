@@ -74,21 +74,13 @@ def extract_errors(log):
         whole += text
     return whole
 
+
 def extract_headers(log):
-    f = file(log, "r")
+    f = open(log)
     data = f.read()
     f.close()
     headers = []
-    cont = False
-    for line in data.split("\n\n", 1)[0].split("\n"):
-        if line.startswith("Start:"):
-            cont = True
-        elif cont and line[:1].isspace():
-            pass
-        else:
-            headers.append(line)
-            cont = False
-    headers = "\n".join(headers)
+    headers = data.partition("\nExecuting:")[0]
     if headers and not headers.endswith("\n"):
         headers += "\n"
     return headers
