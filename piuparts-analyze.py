@@ -34,7 +34,8 @@ import shutil
 import sys
 
 
-error_pattern = re.compile(r"(?<=\n)(\d+m\d+\.\d+s ERROR: .*\n(  .*\n)*\n?)+")
+error_pattern = re.compile(r"(?<=\n).*error.*\n?", flags=re.IGNORECASE)
+chroot_pattern = re.compile(r"tmp/tmp.*?'")
 
 
 def find_logs(dir):
@@ -53,23 +54,25 @@ def find_bugged_logs(failed_log):
 
 
 def extract_errors(log):
-    f = file(log, "r")
+    """This pretty stupid implementation is basically just 'grep -i error', and then
+    removing the timestamps and the name of the chroot and the package version itself."""
+    f = open(log)
     data = f.read()
     f.close()
-    m = error_pattern.search(data)
-    if m:
-        text = m.group()
+    whole = ''
+    pversion = package_version(log)
+    for match in error_pattern.finditer(data):
+        text = match.group()
         # Get rid of timestamps
-        text2 = []
-        for line in text.split("\n"):
-            if line[:1].isdigit():
-                text2.append(line.split(" ", 1)[1])
-            else:
-                text2.append(line)
-        return "\n".join(text2)
-    else:
-        return None
-
+        if text[:1].isdigit():
+            text = text.split(" ", 1)[1]
+        # Get rid of chroot names
+        if 'tmp/tmp' in text:
+            text = re.sub(chroot_pattern, "chroot'", text)
+        # Get rid of the package version
+        text = text.replace(pversion, '')
+        whole += text
+    return whole
 
 def extract_headers(log):
     f = file(log, "r")
