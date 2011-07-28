@@ -1,6 +1,8 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
+# Copyright 2011 Mika Pflüger (debian@mikapflueger.de)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -19,11 +21,12 @@
 
 """Analyze failed piuparts logs and move them around when the errors are known.
 
-This program looks at piuparts log files in ./fail, and compares them to
-log files in ./bugged. If it finds one in ./fail that has the same
-error messages as one in ./bugged, it copies the headers to the one in ./fail
-and moves it to ./bugged. This is useful for repetitive uploads of the
-same package that do not fix the problem.
+This program looks at piuparts log files in ./fail, and queries the bts to find
+out if bugs have been filed already. If so, it moves them to ./bugged.
+It tries to detect if new versions of bugged packages are uploaded without solving
+the bug and will then update the bts with the new found versions, and copy the
+headers of the log in ./fail to the one in ./bugged and vice versa. It will then
+move the failed log to ./bugged as well.
 
 """
 
@@ -31,26 +34,34 @@ same package that do not fix the problem.
 import os
 import re
 import shutil
-import sys
+import subprocess
 
+import debianbts
+import apt_pkg
+
+apt_pkg.init_system()
 
 error_pattern = re.compile(r"(?<=\n).*error.*\n?", flags=re.IGNORECASE)
 chroot_pattern = re.compile(r"tmp/tmp.*?'")
 
 
-def find_logs(dir):
-    return [os.path.join(dir, x) 
-                for x in os.listdir(dir) if x.endswith(".log")]
-
-
-def package_name(log):
-    return os.path.basename(log).split("_", 1)[0]
+def find_logs(directory):
+    return [os.path.join(directory, x)
+            for x in os.listdir(directory) if x.endswith(".log")]
 
 
 def find_bugged_logs(failed_log):
     package = package_name(failed_log)
     pat = "/" + package + "_"
     return [x for x in find_logs("bugged") if pat in x]
+
+
+def package_name(log):
+    return os.path.basename(log).split("_", 1)[0]
+
+
+def package_version(log):
+    return os.path.basename(log).split("_", 1)[1].rstrip('.log')
 
 
 def extract_errors(log):
@@ -90,7 +101,6 @@ def prepend_to_file(filename, data):
     f = file(filename, "r")
     old_data = f.read()
     f.close()
-
     f = file(filename + ".tmp", "w")
     f.write(data)
     f.write(old_data)
@@ -103,27 +113,65 @@ def prepend_to_file(filename, data):
     os.remove(filename + "~")
 
 
-def mark_bugged(failed_log, bugged_log):
-    print "Moving", failed_log, "to bugged"
-
-    headers = extract_headers(bugged_log)
-    prepend_to_file(failed_log, headers)
-    if os.path.isdir(".bzr"):
-        assert "'" not in failed_log
-        os.system("bzr move '%s' bugged" % failed_log)
-    else:
-        os.rename(failed_log, 
-                  os.path.join("bugged", os.path.basename(failed_log)))
+def get_bug_versions(bug):
+    """Gets a list of only the version numbers for which the bug is found."""
+    # debianbts returns it in the format package/1.2.3 which will become 1.2.3
+    return [x.split('/', 1)[1] for x in debianbts.get_status((bug,))[0].found_versions]
 
 
-def mark_logs_with_known_bugs():        
+def move_to_bugged(failed_log):
+    print("Moving %s to bugged" % failed_log)
+    os.rename(failed_log, os.path.join("bugged", os.path.basename(failed_log)))
+
+
+def mark_bugged_version(failed_log, bugged_log):
+    """Copies the headers from the old log to the new log and vice versa and
+    moves the new log to bugged. Removes the old log in bugged."""
+    bugged_headers = extract_headers(bugged_log)
+    failed_headers = extract_headers(failed_log)
+    prepend_to_file(failed_log, bugged_headers)
+    prepend_to_file(bugged_log, failed_headers)
+    move_to_bugged(failed_log)
+
+
+def bts_update_found(bugnr, newversion):
+    # Disabled for now as I'm not sure automatic bug updating is wanted
+    #subprocess.check_call(('bts', 'found', bugnr, newversion))
+    print(' '.join(('bts', 'found', str(bugnr), newversion)))
+
+
+def mark_logs_with_reported_bugs():
     for failed_log in find_logs("fail"):
+        pname = package_name(failed_log)
+        pversion = package_version(failed_log)
         failed_errors = extract_errors(failed_log)
-        for bugged_log in find_bugged_logs(failed_log):
-            bugged_errors = extract_errors(bugged_log)
-            if failed_errors == bugged_errors:
-                mark_bugged(failed_log, bugged_log)
-                break
+        moved = False
+        for bug in piuparts_bugs_in(pname):
+            for bug_version in get_bug_versions(bug):
+
+                if apt_pkg.version_compare(pversion, bug_version) == 0: # pversion == bug_version
+                    if not moved:
+                        move_to_bugged(failed_log)
+                        moved = True
+                    break
+
+                elif apt_pkg.version_compare(pversion, bug_version) > 0: # pversion > bug_version
+                    bugged_logs = find_bugged_logs(failed_log)
+                    if not bugged_logs:
+                        print('%s/%s: Maybe the bug was filed earlier: %d against %s/%s'
+                              % (pname, pversion, bug, pname, bug_version))
+                    for bugged_log in bugged_logs:
+                        old_pversion = package_version(bugged_log)
+                        bugged_errors = extract_errors(bugged_log)
+                        if (apt_pkg.version_compare(old_pversion, bug_version) == 0 # old_pversion == bug_version
+                            and
+                            failed_errors == bugged_errors):
+                            # a bug was filed for an old version of the package,
+                            # and the errors were the same back then - assume it is the same bug.
+                            if not moved:
+                                mark_bugged_version(failed_log, bugged_log)
+                                moved = True
+                            bts_update_found(bug, pversion)
 
 
 def report_packages_with_many_logs():
@@ -149,8 +197,20 @@ def report_packages_with_many_logs():
             print
 
 
+piuparts_usertags_cache = None
+def all_piuparts_bugs():
+    global piuparts_usertags_cache
+    if piuparts_usertags_cache is None:
+        piuparts_usertags_cache = debianbts.get_usertag("debian-qa@lists.debian.org", 'piuparts')['piuparts']
+    return piuparts_usertags_cache
+
+
+def piuparts_bugs_in(package):
+    return debianbts.get_bugs('package', package, 'bugs', all_piuparts_bugs())
+
+
 def main():
-    mark_logs_with_known_bugs()
+    mark_logs_with_reported_bugs()
     report_packages_with_many_logs()
 
 
