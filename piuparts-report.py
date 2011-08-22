@@ -95,7 +95,7 @@ HTML_HEADER = """
     </tr>     
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://bugs.debian.org/src:piuparts" target="_blank">Bugs</a> / <a href="http://svn.debian.org/viewsvn/piuparts/trunk/TODO" target="_blank">ToDo</a>
+      <a href="http://bugs.debian.org/src:piuparts" target="_blank">Bugs</a> / <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;a=blob;f=TODO" target="_blank">ToDo</a>
      </td>
     </tr>     
     <tr class="titlerow">
@@ -116,8 +116,8 @@ HTML_HEADER = """
     <tr class="normalrow">
      <td class="contentcell">
       piuparts.d.o configuration:<br>
-      <a href="http://svn.debian.org/viewsvn/piuparts/piatti/org/piuparts.debian.org/etc/piuparts.conf.piatti" target="_blank">piuparts.conf.piatti</a><br>
-      <a href="http://svn.debian.org/viewsvn/piuparts/piatti/org/piuparts.debian.org/etc/scripts/" target="_blank">scripts</a>
+      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=blob;f=org/piuparts.debian.org/etc/piuparts.conf.piatti" target="_blank">piuparts.conf.piatti</a><br>
+      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=tree;f=org/piuparts.debian.org/etc/scripts" target="_blank">scripts</a>
      </td>
     </tr>
     <tr class="normalrow">

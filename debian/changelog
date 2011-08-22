@@ -22,6 +22,7 @@ piuparts (0.41) UNRELEASED; urgency=low
   * piuparts-report.py: 
     - correct a typo from the patch for #523950.
     - make_stats_graph: draw the two new states as well.
+    - point to source code in git instead of svn.
   * piuparts.py: 
     - use proxy settings either from apt configuration or http_proxy 
       environment variable, the latter overwriting the former (if present) 
@@ -47,6 +48,14 @@ piuparts (0.41) UNRELEASED; urgency=low
   * debian/rules: use dh_python2 instead of python-support to build the 
     package
   * Makefile: build for python 2.6 and 2.7 instead of 2.5 and 2.6.
+  * Source code is now stored in git.
+    http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
+    git clone git+ssh://git.debian.org/git/piuparts/piuparts.git
+    Thanks to Thomas Koch for setting those up and keeping history!
+  * The configuration and scripts used on piatti.debian.org have also been
+    moved to git, the URLs are the same, just s#piuparts#piatti#. 
+  * Add entry about git to NEWS.
+  * Update Vcs-*-Headers in control to reflect move to git.
 
  -- Holger Levsen <holger@debian.org>  Sat, 25 Jun 2011 23:33:49 +0200
 
