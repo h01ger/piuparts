@@ -1,7 +1,7 @@
 piuparts (0.41) unstable; urgency=low
 
   * Source code is now stored in git.
- 
+
     http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
     git clone git+ssh://git.debian.org/git/piuparts/piuparts.git
 

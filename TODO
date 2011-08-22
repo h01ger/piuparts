@@ -4,15 +4,13 @@ Things to do for piuparts
 Please also check the BTS, especially the bugs with a severity
 higher than wishlist!
 
-for 0.41
+for 0.42:
 
 - fix "DeprecationWarning: os.popen2 is deprecated.  Use the subprocess module."
 
 - send logs to mailing lists
 
 - share templates for filing bugs
-
-for 0.42:
 
 - piuparts-report should keep state, ie cache the results of the log 
   analysis and generated html pages. Thus, a piuparts-report run could

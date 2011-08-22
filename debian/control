@@ -9,7 +9,6 @@ Build-Depends-Indep: python (>=2.6.6-3~), asciidoc, xmlto
 Homepage: http://piuparts.debian.org
 Vcs-Git: git://anonscm.debian.org/piuparts/piuparts.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
-
 X-Python-Version: >= 2.6
 
 Package: piuparts

@@ -1,4 +1,4 @@
-piuparts (0.41) UNRELEASED; urgency=low
+piuparts (0.41) unstable; urgency=low
 
   * piupartslib/packagesdb.py: Apply patch by Scott Schaefer to also consider
     alternative depends: the algorithm used to select the "best" alternative 
@@ -59,7 +59,7 @@ piuparts (0.41) UNRELEASED; urgency=low
   * Add entry about git to NEWS.
   * Update Vcs-*-Headers in control to reflect move to git.
 
- -- Holger Levsen <holger@debian.org>  Sat, 25 Jun 2011 23:33:49 +0200
+ -- Holger Levsen <holger@debian.org>  Wed, 24 Aug 2011 13:47:07 +0200
 
 piuparts (0.40) unstable; urgency=low
 
