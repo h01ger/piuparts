@@ -27,6 +27,8 @@ for 0.42:
 
 - fix scripts for dash as default shell
 
+- preserve two uncommited scripts from my svn working copy: home/piupartsm/bin/biggest_blocker.sh and home/piupartss/bin/update-piuparts-snapshot
+
 
 for 0.43:
 

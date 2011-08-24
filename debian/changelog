@@ -32,6 +32,8 @@ piuparts (0.41) UNRELEASED; urgency=low
     - run dpkg with --force-unsafe-io by default and introduce new option
       "--dpkg-noforce-unsafe-io" to disable this feature. (Closes: #633033)
       Thanks to Scott once more!
+    - new option: "--fail-on-broken-symlinks". Remove option "--warn-symlinks"
+      as this is the default now.
   * piuparts-slave: 
     - check if chroot-tgz is older than max-tgz-age (defaulting to 30 days)
       and recreate it, if it is. Keep backup and put in back in place when 

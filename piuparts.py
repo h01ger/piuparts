@@ -23,7 +23,7 @@ This program sets up a minimal Debian system in a chroot, and installs
 and uninstalls packages and their dependencies therein, looking for
 problems.
 
-See the manual page (piuparts.1, generated from piuparts.docbook) for
+See the manual page (piuparts.1, generated from piuparts.1.txt) for 
 more usage information.
 
 Lars Wirzenius <liw@iki.fi>
@@ -154,7 +154,7 @@ class Settings:
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
         self.check_broken_symlinks = True
-        self.warn_broken_symlinks = False
+        self.warn_broken_symlinks = True
         self.debfoster_options = None
         self.do_not_verify_signatures = False
         self.ignored_files = [
@@ -2107,9 +2107,9 @@ def parse_command_line():
                       help="Print a warning rather than failing if "
                            "files are left behind after purge.")
 
-    parser.add_option("-W", "--warn-symlinks", action="store_true",
+    parser.add_option("--fail-on-broken-symlinks", action="store_true",
                       default=False,
-                      help="Warn only for broken symlinks.")
+                      help="Fail if broken symlinks are detected.")
     
     parser.add_option("--log-level", action="store",metavar='LEVEL',
                       default="dump",
@@ -2155,7 +2155,7 @@ def parse_command_line():
     settings.debian_mirrors = [parse_mirror_spec(x, defaults.get_components())
                                for x in opts.mirror]
     settings.check_broken_symlinks = not opts.no_symlinks
-    settings.warn_broken_symlinks = opts.warn_symlinks
+    settings.warn_broken_symlinks = not opts.fail_on_broken_symlinks
     settings.savetgz = opts.save
     settings.warn_on_others = opts.warn_on_others
     settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
