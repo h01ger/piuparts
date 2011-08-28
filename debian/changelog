@@ -9,6 +9,11 @@ piuparts (0.42) UNRELEASED; urgency=low
     are filed already.
   * debian/control: Add python-apt and python-debianbts to piuparts depends.
 
+  [ Stefano Rivera ]
+  * piuparts.py: use eatmydata by default, add option --no-eatmydata. (This
+    was discussed in #633033.)
+  * debian/control: Add eatmydata to depends.
+
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 
 piuparts (0.41) unstable; urgency=low

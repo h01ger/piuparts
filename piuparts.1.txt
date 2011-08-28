@@ -65,6 +65,9 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *--dpkg-noforce-unsafe-io*::
   Prevent running dpkg with --force-unsafe-io.  --force-unsafe-io causes dpkg to skip certain file system syncs known to cause substantial performance degradation on some filesystems.  Thus, including this option reverts to safe but slower behavior.
 
+*--no-eatmydata*::
+  Prevent use of eatmydata.
+
 *-i* 'filename', *--ignore*='filename'::
   Add a filename to the list of filenames to be ignored when comparing changes before and after installation. By default, piuparts ignores files that always change during a package installation and uninstallation, such as *dpkg* status files. The filename should be relative to the root of the chroot (e.g., _var/lib/dpkg/status_). This option can be used as many times as necessary.
 
