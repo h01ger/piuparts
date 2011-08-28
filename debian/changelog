@@ -1,7 +1,13 @@
 piuparts (0.42) UNRELEASED; urgency=low
 
+  [ Holger Levsen ]
   * piuparts.py:
     - add to self.ignored_files: /etc/blkid.tab (Closes: #638831)
+
+  [ Mika Pflüger ]
+  * piuparts-analyze.py: Rewrite to use python-debianbts to analyze if bugs
+    are filed already.
+  * debian/control: Add python-apt and python-debianbts to piuparts depends.
 
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 
