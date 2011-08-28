@@ -1,3 +1,10 @@
+piuparts (0.42) UNRELEASED; urgency=low
+
+  * piuparts.py:
+    - add to self.ignored_files: /etc/blkid.tab (Closes: #638831)
+
+ -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
+
 piuparts (0.41) unstable; urgency=low
 
   * piupartslib/packagesdb.py: Apply patch by Scott Schaefer to also consider

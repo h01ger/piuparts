@@ -165,6 +165,7 @@ class Settings:
             "/etc/apt/trustdb.gpg",
             "/etc/apt/trusted.gpg",
             "/etc/apt/trusted.gpg~",
+            "/etc/blkid.tab",
             "/etc/crypttab",
             "/etc/exports",
             "/etc/group",
