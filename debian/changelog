@@ -12,6 +12,16 @@ piuparts (0.42) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * piuparts.py: apply patch by Stefano Rivera to properly install and remove
     logrotate. Thanks Stefano! (Closes: #638832)
+ 
+  [ Scott Schaefer ]
+  * piupartslib/packagesdb.py: rewrite uniqe() function by using the set type
+    in place of a list and unique(),and then using set.pop() method in place 
+    of random.shuffle().
+    Also modified the class to no longer pass large "package" objects around, 
+    but rather to just pass list/set of package names (since I was "forced to", 
+    since you cannot add a non-hashable object to a set). This required a new 
+    function to return package object, given name as input.  This required one 
+    change to piuparts-report and several to piuparts-master. (Closes: 640648)
 
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 

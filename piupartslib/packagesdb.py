@@ -26,7 +26,6 @@ Lars Wirzenius <liw@iki.fi>
 
 import dircache
 import os
-import random
 import tempfile
 import UserDict
 
@@ -46,43 +45,6 @@ def rfc822_like_header_parse(input):
             headers.append(line)
     return headers
  
-def unique (s):
-    # taken from http://code.activestate.com/recipes/52560/ - thanks to Tim Peters
-    n = len(s)
-    if n == 0:
-      return []  
-
-    u = {}
-    try:
-      for x in s:
-          u[x] = 1
-    except TypeError:
-      del u  # move on to the next method
-    else:
-      return u.keys()
-
-    try:
-      t = list(s)
-      t.sort()
-    except TypeError:
-      del t  # move on to the next method
-    else:
-      assert n > 0
-      last = t[0]
-      lasti = i = 1
-      while i < n:
-          if t[i] != last:
-              t[lasti] = last = t[i]
-              lasti += 1
-          i += 1
-      return t[:lasti]
-
-    # Brute force is all that's left.
-    u = []
-    for x in s:
-      if x not in u:
-          u.append(x)
-    return u
 
 class Package(UserDict.UserDict):
 
@@ -502,11 +464,10 @@ class PackagesDB:
 
     def get_pkg_names_in_state(self, state):
         self._compute_package_states()
-        return self._in_state[state]
+        return set(self._in_state[state])
     
-    def get_packages_in_state(self, state):
-      self._compute_package_states()
-      return unique([self._packages[name] for name in self._in_state[state]])
+    def get_package(self, name):
+        return self._packages[name]
     
     def get_all_packages(self):
         self._find_all_packages()
@@ -548,14 +509,13 @@ class PackagesDB:
             return "unknown"
 
     def _find_packages_ready_for_testing(self):
-        return self.get_packages_in_state("waiting-to-be-tested")
+        return self.get_pkg_names_in_state("waiting-to-be-tested")
 
     def reserve_package(self):
-        plist = self._find_packages_ready_for_testing()
-        random.shuffle(plist)
-        for p in plist:
-            if self._logdb.create(self._reserved, p["Package"],
-                                  p["Version"], ""):
+        pset = self._find_packages_ready_for_testing()
+        while (len(pset)):
+            p = self.get_package(pset.pop())
+            if self._logdb.create(self._reserved, p["Package"], p["Version"], ""):
                 return p
         return None
 

@@ -152,8 +152,8 @@ class Master(Protocol):
                                      (count, command, " ".join(args)))
     def dump_pkgs(self):
          for st in self._binary_db.get_states():
-            for pkg in self._binary_db.get_pkg_names_in_state(st):
-                logging.debug("%s : %s\n" % (st,pkg))
+            for name in self._binary_db.get_pkg_names_in_state(st):
+                logging.debug("%s : %s\n" % (st,name))
 
     def _reserve(self, command, args):
         self._check_args(0, command, args)
