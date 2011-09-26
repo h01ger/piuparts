@@ -6,8 +6,6 @@ higher than wishlist!
 
 for 0.42:
 
-- fix "DeprecationWarning: os.popen2 is deprecated.  Use the subprocess module."
-
 - send logs to mailing lists
 
 - share templates for filing bugs
@@ -22,8 +20,6 @@ for 0.42:
 - piuparts-report.py: fix those 2 FIXMEs in main()
 
 - warn about files in */reserved older than 24h
-
-- fix scripts for dash as default shell
 
 - preserve two uncommited scripts from my svn working copy: home/piupartsm/bin/biggest_blocker.sh and home/piupartss/bin/update-piuparts-snapshot
 
@@ -66,8 +62,6 @@ for 0.44:
 
 
 for 0.45:
-
-- PackagesDB: get rid of 50% of unique()
 
 - remove configfile option "mirror" and use the mirror from
   "packages-url".
@@ -164,9 +158,6 @@ Low priority stuff (a.k.a. "nobody's said they must have it now")
   --skip-minimize and --debfoster-options have become quite
   obsolete (--minimize has been added in 0.38) since debootstrap
   now creates a minimal chroot.
-
-- Kill children after a timeout to make sure the test doesn't run
-  forever.
 
 - piuparts-master: keep track of to whom a reservation was given
 
