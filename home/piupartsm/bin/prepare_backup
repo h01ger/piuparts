@@ -21,7 +21,7 @@
 #
 TEMPFILE=`mktemp`
 egrep "(^sections|^master-directory)" /etc/piuparts/piuparts.conf| sed -e "s# =#=#g" -e "s#= #=#g" -e 's#=#="#' -e 's#$#"#' -e "s#sections#SECTIONS#" -e "s#master-directory#MASTER#" > $TEMPFILE
-source $TEMPFILE
+. $TEMPFILE
 rm $TEMPFILE
 if [ -z "$MASTER" ] || [ -z "$SECTIONS" ] ; then
 	echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."

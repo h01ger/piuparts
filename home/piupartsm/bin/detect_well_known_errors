@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
 # 
@@ -23,7 +23,7 @@
 [ -e /etc/piuparts/piuparts.conf ] || exit 0
 TEMPFILE=`mktemp`
 egrep "(^sections|^master-directory)" /etc/piuparts/piuparts.conf| sed -e "s# =#=#g" -e "s#= #=#g" -e 's#=#="#' -e 's#$#"#' -e "s#sections#SECTIONS#" -e "s#master-directory#MASTER#" > $TEMPFILE
-source $TEMPFILE
+. $TEMPFILE
 rm $TEMPFILE
 if [ -z "$MASTER" ] || [ -z "$SECTIONS" ] ; then
 	echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."
@@ -43,8 +43,8 @@ for SECTION in $SECTIONS ; do
 	cd $MASTER/$SECTION
 	for problem in `ls ~/bin/known_problems` ; do
 		# source files to get COMMAND, HELPTEXT and ISSUE
-		source ~/bin/known_problems/$problem 				
-		echo -n "$COMMAND" > $LOGS
+		. ~/bin/known_problems/$problem 				
+		printf "%b" "$COMMAND" > $LOGS
 		if [ -s $LOGS ] ; then 
 			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
 			echo '<table class="righttable"><tr class="titlerow"><td class="titlecell">' > $OUTPUT
@@ -60,20 +60,20 @@ for SECTION in $SECTIONS ; do
 			for LOG in $(cat $LOGS|sort) ; do
 				PACKAGE=$(echo $LOG | cut -d "_" -f1|cut -d "/" -f2)
 				LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}_* $MASTER/$SECTION/bugged/${PACKAGE}_* $MASTER/$SECTION/pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f7)
-				if [ "${problem%_error.conf}_error.conf" == "$problem" ] ; then 
+				if [ "${problem%_error.conf}_error.conf" = "$problem" ] ; then 
 					LATESTFAIL=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}_* $MASTER/$SECTION/bugged/${PACKAGE}_*  2>/dev/null|tail -1|cut -d "/" -f7-8)
-					if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" == "$LOG" ] ; then 
+					if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
 						echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
 						echo "$LOG" >> ${KNOWNLOGS[$NR]}
-						let "COUNT += 1"
+						COUNT=$((COUNT+1))
 					fi
 				else
 					# this is an issue, not an error
 					LATESTSUCCESS=$(ls -tr1 --color=none $MASTER/$SECTION/pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f7-8)
-					if [ "$LATEST" == "pass" ] && [ "$LATESTSUCCESS" == "$LOG" ] ; then 
+					if [ "$LATEST" = "pass" ] && [ "$LATESTSUCCESS" = "$LOG" ] ; then 
 						echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
 						echo "$LOG" >> ${KNOWNLOGS[$NR]}
-						let "COUNT += 1"
+						COUNT=$((COUNT+1))
 					fi 
 				fi
 			done
@@ -83,7 +83,7 @@ for SECTION in $SECTIONS ; do
 			touch ${KNOWNLOGS[$NR]}
 		fi
         done
-	let "NR += 1"
+	NR=$((NR+1))
 done
 rm $LOGS
 
@@ -110,15 +110,15 @@ for SECTION in $SECTIONS ; do
 			PACKAGE=$(echo $LOG | cut -d "_" -f1|cut -d "/" -f2)
 			LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}_* $MASTER/$SECTION/bugged/${PACKAGE}_* $MASTER/$SECTION/pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f7)
 			LATESTFAIL=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}_* $MASTER/$SECTION/bugged/${PACKAGE}_*  2>/dev/null|tail -1|cut -d "/" -f7-8)
-			if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" == "$LOG" ] ; then 
+			if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
 				echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
-				let "COUNT += 1"
+				COUNT=$((COUNT+1))
 			fi
 		done
 		echo "</ul>" >> $OUTPUT
 		echo "<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>" >> $OUTPUT
 	fi
 	rm $LOGS ${KNOWNLOGS[$NR]} $UNKNOWNLOGS
-	let "NR += 1"
+	NR=$((NR+1))
 done
 

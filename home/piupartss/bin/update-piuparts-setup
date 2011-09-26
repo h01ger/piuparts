@@ -73,6 +73,7 @@ sudo chown piupartsm.piuparts master htdocs
 sudo chmod 775 master slave htdocs
 cd /org/piuparts.debian.org/etc
 # to support multiple host with this setup
+HOSTNAME=`hostname`
 ln -sf piuparts.conf.$HOSTNAME piuparts.conf
 
 #
