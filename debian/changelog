@@ -9,6 +9,10 @@ piuparts (0.42) UNRELEASED; urgency=low
     are filed already.
   * debian/control: Add python-apt and python-debianbts to piuparts depends.
 
+  [ Holger Levsen ]
+  * piuparts.py: apply patch by Stefano Rivera to properly install and remove
+    logrotate. Thanks Stefano! (Closes: #638832)
+
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 
 piuparts (0.41) unstable; urgency=low

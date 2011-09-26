@@ -913,22 +913,16 @@ class Chroot:
             logrotatefiles, logrotatefiles_list = self.check_if_logrotatefiles(packages)
 	
         if not settings.skip_logrotatefiles_test and logrotatefiles:
+            installed = self.install_logrotate()
             self.check_output_logrotatefiles(logrotatefiles_list)
+            for pkg in installed:
+                self.remove_or_purge("purge", installed)
 
         # Then purge all packages being depended on.
         self.remove_or_purge("purge", deps_to_purge)
 
         # Finally, purge actual packages.
         self.remove_or_purge("purge", nondeps_to_purge)
-
-        # remove logrotate and it's depends 
-        #    (this is a fix for #602409 introduced by #566597 
-        #    - search for the latter bug number in this file)
-        # XXX: another crude hack: ^^^
-        if not settings.skip_logrotatefiles_test:
-          self.remove_or_purge("remove", ["adduser", "cron", "libpopt0", "logrotate"])
-          self.remove_or_purge("purge", ["adduser", "cron", "libpopt0", "logrotate"])
-          self.run(["apt-get", "clean"])
 
         # Run custom scripts after purge all packages.
         if settings.scriptsdir is not None: 
@@ -1135,13 +1129,19 @@ class Chroot:
 
         return has_logrotatefiles, vlist
 
+    def install_logrotate(self):
+        """Install logrotate for check_output_logrotatefiles, and return the
+        list of packages that were installed"""
+        old_selections = self.get_selections()
+        self.run(['apt-get', 'install', '-y', 'logrotate'])
+        self.run(['apt-get', 'clean'])
+        diff = diff_selections(self, old_selections)
+        return diff.keys()
+
     def check_output_logrotatefiles (self, list):
         """Check if a given list of logrotatefiles has any output. Executes 
         logrotate file as logrotate would do from cron (except for SHELL)"""
         failed = False
-        # XXX That's a crude hack (to fix #602409). Can't we define a set of needed packages differently?
-        #     It also introduces the need for hack to fix #602409 in piuparts.py
-        (a,b) = self.run(['apt-get','install', '-y', 'logrotate'])
         for vfile in list:
 
             if not os.path.exists(self.relative(vfile.strip("/"))):
