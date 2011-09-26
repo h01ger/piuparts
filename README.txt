@@ -11,7 +11,7 @@ Notes about the piuparts installation on piatti.debian.org
 === User setup
 
 A piupartss and a piupartsm user is need. Both are members of the group piuparts and /org/piuparts.debian.org is 774 piupartss.piuparts.
-Both user have some files in $HOME which are kept in svn, including hidden files.
+Both user have some files in $HOME which are kept in git, including hidden files.
 
 Create an SSH keypair for piupartss and put it into ~/.ssh/authorized_keys of the piupartsm user, so the piupartss can login with ssh to localhost as piupartsm.
 
@@ -26,11 +26,11 @@ piupartss       ALL=(ALL) NOPASSWD: ALL
 %piuparts       ALL=(piupartsm) ALL
 ---
 
-=== piuparts installation from svn source
+=== piuparts installation from source
 
 * sudo apt-get install apt python debootstrap lsof lsb-release python-debian make dpkg-dev python-support asciidoc xmlto python-rpy r-recommended r-base-dev gs
 * you need a webserver too, if you run the master
-* Copy 'svn://svn.debian.org/svn/piuparts/piatti/home/piupartss/bin/update-piuparts-setup' on the host and run it under the 'piupartss' user. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further svn checkouts as well as source code installation. It needs the piupartss and piupartsm user set up as described below, though.
+* Copy 'http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=blob;f=home/piupartss/bin/update-piuparts-setup' on the host and run it under the 'piupartss' user. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further updates from git as well as the initial installation. It needs the piupartss and piupartsm user set up as described below, though.
 * mkdir /org/piuparts.debian.org
 * sudo ln -s /org/piuparts.debian.org/etc/ /etc/piuparts
 	
