@@ -651,7 +651,7 @@ class Chroot:
         """Unpack a tarball to a chroot."""
         logging.debug("Unpacking %s into %s" % (tarball, self.name))
         prefix = []
-        if settings.eatmydata:
+        if settings.eatmydata and os.path.isfile('/usr/bin/eatmydata'):
             prefix.append('eatmydata')
         run(prefix + ["tar", "-C", self.name, "-zxf", tarball])
 
@@ -738,14 +738,15 @@ class Chroot:
         """Set up a minimal Debian system in a chroot."""
         logging.debug("Setting up minimal chroot for %s at %s." % 
               (settings.debian_distros[0], self.name))
+        prefix = []
+        if settings.eatmydata and os.path.isfile('/usr/bin/eatmydata'):
+            prefix.append('eatmydata')
         if settings.do_not_verify_signatures:
           logging.info("Warning: not using --keyring option when running debootstrap!")
-        prefix = []
         options = [settings.keyringoption]
         if settings.eatmydata:
             options.append('--include=eatmydata')
             options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
-            prefix.append('eatmydata')
         run(prefix + ["debootstrap", "--variant=minbase"] + options +
             [settings.debian_distros[0], self.name, settings.debian_mirrors[0][0]])
 
