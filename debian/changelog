@@ -13,6 +13,10 @@ piuparts (0.42) UNRELEASED; urgency=low
   * piuparts.py: apply patch by Stefano Rivera to properly install and remove
     logrotate. Thanks Stefano! (Closes: #638832)
 
+  [ Scott Schaefer ]
+  * piuparts-slave.py: Replace deprecated os.popen2 with subprocess.Popen.
+    (Closes: 640646)
+
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 
 piuparts (0.41) unstable; urgency=low

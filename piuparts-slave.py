@@ -28,6 +28,7 @@ import sys
 import stat
 import time
 import logging
+import subprocess
 import ConfigParser
 
 import piupartslib.conf
@@ -140,18 +141,16 @@ class Slave:
     def connect_to_master(self, log_file):
         logging.info("Connecting to %s" % self._master_host)
         if self._master_user:
-            user = "-l " + self._master_user
+            user = self._master_user + "@"
         else:
             user = ""
-        (self._to_master, self._from_master) = \
-            os.popen2("ssh %s %s 'cd %s; %s 2> %s.$$ && rm %s.$$'" %
-                                    (self._master_host,
-                                     user,
-                                     self._master_directory or ".",
-                                     self._master_command,
-                                     log_file,
-                                     log_file))
-
+        ssh_cmdline = "cd %s; %s 2> %s.$$ && rm %s.$$" % \
+                      (self._master_directory or ".", 
+                      self._master_command, log_file, log_file)
+        p = subprocess.Popen(["ssh", user + self._master_host, ssh_cmdline], 
+                       stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        self._to_master = p.stdin
+        self._from_master = p.stdout
         line = self._readline()
         if line != "hello\n":
             raise MasterDidNotGreet()
@@ -448,8 +447,9 @@ def fetch_packages_file(config, distro):
     arch = config["arch"]
     if not arch:
         # Try to figure it out ourselves, using dpkg
-        vin, vout = os.popen2("dpkg --print-architecture")
-        arch = vout.read().rstrip()
+        p = subprocess.Popen(["dpkg", "--print-architecture"], 
+                             stdout=subprocess.PIPE)
+        arch = p.stdout.read().rstrip()
     packages_url = \
         "%s/dists/%s/main/binary-%s/Packages.bz2" % (mirror, distro, arch)
 
