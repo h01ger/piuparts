@@ -14,14 +14,12 @@ piuparts (0.42) UNRELEASED; urgency=low
     logrotate. Thanks Stefano! (Closes: #638832)
  
   [ Scott Schaefer ]
-  * piupartslib/packagesdb.py: rewrite uniqe() function by using the set type
-    in place of a list and unique(),and then using set.pop() method in place 
-    of random.shuffle().
-    Also modified the class to no longer pass large "package" objects around, 
-    but rather to just pass list/set of package names (since I was "forced to", 
-    since you cannot add a non-hashable object to a set). This required a new 
-    function to return package object, given name as input.  This required one 
-    change to piuparts-report and several to piuparts-master. (Closes: 640648)
+  * piupartslib/packagesdb.py: Modify several functions in PackagesDB class
+    to use python 'set' type, instead of a list.  This permitted replacing 
+    inefficient combination of unique() function and random.shuffle() with
+    python set.pop() method.  Since python prohibits storing non-hashable
+    object in a set, minor modifications to piuparts-report and to
+    piuparts-master required. (Closes: 640648)
 
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 
