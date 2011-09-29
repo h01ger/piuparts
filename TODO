@@ -48,6 +48,9 @@ for 0.43:
 - sometimes a chroot doesn't get removed on piatti - find out
   why and fix it.
 
+- Adjust report scripts to detect this condition;
+          text in log="*** Process KILLED - exceed maximum run time ***"
+
 
 for 0.44:
 
@@ -112,16 +115,8 @@ for 0.47 and later:
 - a redirect of http://piuparts.d.o/foo to
   http://p.d.o/source/f/foo.html would be nice
 
-- monitor:
-  - write slave-watcher to monitor hanging processes, eg. 
-    looping dpkg-preconfigure
-  - Check for and kill extraneous processes afterwards. Perhaps 
-    by checking whether their working directory is in the 
-    chroot.
-    Introduce a whitelist of processes to wait for and assume
-    it's an error if those haven't been killed after $time, ie 
-    10min. see #387428
-  - master.log grows to fast and there is no mechanism to stop it
+- monitor: master.log grows to fast and there is no mechanism to stop it
+  - use logrotate
 
 
 for 0.50 and later:

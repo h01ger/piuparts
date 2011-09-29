@@ -36,6 +36,8 @@ piuparts (0.42) UNRELEASED; urgency=low
       a) Existing diversions removed/modified, and/or
       b) Installed diversions not removed by purge:
     (Closes: #588313)
+  * Kill children (hard-coded value, 45 minutes) to insure test doesn't
+    run "forever" (Closes: #640647)
 
   [ Andreas Beckmann ]
   * *.py: Add vim modeline.
