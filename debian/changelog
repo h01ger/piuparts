@@ -9,6 +9,8 @@ piuparts (0.42) UNRELEASED; urgency=low
   * piuparts-slave.py: Replace deprecated os.popen2 with subprocess.Popen,
     thanks to Scott Schaefer and Evgeni Golov for their patches. 
     (Closes: #640646)
+  * piuparty.py: kill (via SIGTERM, then if that fails, via SIGKILL), leftover
+    processes. (Closes: #522918) Thanks to Scott Schaefer for the patch.
 
   [ Mika Pflüger ]
   * piuparts-analyze.py: Rewrite to use python-debianbts to analyze if bugs

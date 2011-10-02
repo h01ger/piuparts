@@ -49,6 +49,7 @@ import subprocess
 import unittest
 import urllib
 import uuid
+from signal import signal, SIGTERM, SIGKILL
 
 try:
     from debian import deb822
@@ -992,6 +993,21 @@ class Chroot:
         if count > 0:
             logging.error("FAIL: Processes are running inside chroot:\n%s" % 
                           indent_string(output))
+            for signo in [ 15, 9 ]:
+                p = subprocess.Popen(["lsof", "-t", "+D", self.name],
+                               stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                stdout, _ = p.communicate()
+                if stdout:
+                    pidlist = [int(pidstr) for pidstr in stdout.split("\n") if len(pidstr)]
+                    for pid in pidlist:
+                        if pid > 0:
+                            try:
+                                if signo == 15:
+                                    os.kill(pid, SIGTERM)
+                                else:
+                                    os.kill(pid, SIGKILL)
+                            except OSError:
+                                pass
             panic()
 
 
