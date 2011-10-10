@@ -9,6 +9,8 @@ piuparts (0.42) UNRELEASED; urgency=low
   * piuparts-slave.py: Replace deprecated os.popen2 with subprocess.Popen,
     thanks to Scott Schaefer and Evgeni Golov for their patches. 
     (Closes: #640646)
+  * debian/copyright: apply patch by Scott Schaefer to make it compliant with 
+    DEP-5. Thanks Scott!
 
   [ Mika Pflüger ]
   * piuparts-analyze.py: Rewrite to use python-debianbts to analyze if bugs

@@ -1,17 +1,35 @@
-This is piuparts, packaged for Debian by Lars Wirzenius <liw@iki.fi>.
-Original author is also Lars Wirzenius.
+Format: http://dep.debian.net/deps/dep5
+Upstream-Name: piuparts 
+Upstream-Contact: Holger Levsen <holger@debian.org> 
+Source: http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
+Copyright: 2005-2008 Lars Wirzenius 
+           2008-2011 Holger Levsen 
+Comment: Original author is also Lars Wirzenius <liw@iki.fi>
+ Upstream is bunch of lunatics who don't make release tarballs publicly
+ available. The Debian .orig.tar.gz is what would be released, though.
 
-Upstream source repository: http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
-Upstream is bunch of lunatics who don't make release tarballs publicly
-available. The Debian .orig.tar.gz is what would be released, though.
+Files: *
+Copyright: 2005-2008 Lars Wirzenius <liw@iki.fi> 
+           2008-2011 Holger Levsen <holger@debian.org> 
+License: GPL-2+
+ This program is free software; you can redistribute it
+ and/or modify it under the terms of the GNU General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later
+ version.
+ .
+ This program is distributed in the hope that it will be
+ useful, but WITHOUT ANY WARRANTY; without even the implied
+ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ PURPOSE.  See the GNU General Public License for more
+ details.
+ .
+ You should have received a copy of the GNU General Public
+ License along with this package; if not, write to the Free
+ Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ Boston, MA  02110-1301 USA
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ '/usr/share/common-licenses/GPL-2'.
 
-Copyright (C) 2005-2008 Lars Wirzenius and others
-
-piuparts is free software.  You may copy it according to the
-GNU General Public License, version 2, or at your option, any
-later version. A copy of the license is not included, but you
-can get one from most FTP sites that have GNU software, for 
-example, prep.ai.mit.edu.
-
-On a Debian GNU/Linux system, the GPL version 2 can be found in
-/usr/share/common-licenses/GPL-2.
