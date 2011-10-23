@@ -43,6 +43,11 @@ if [ ! -d piatti ] ; then
 	cd ..
 fi
 
+# git checkout branch if $1 is given
+if [ ! -z "$1" ] ; then
+	git checkout $1
+fi
+
 cd piatti
 git pull
 cd
@@ -109,6 +114,11 @@ if [ ! -d /org/piuparts.debian.org/src/ ] ; then
 fi
 cd  /org/piuparts.debian.org/src/piuparts
 pwd
+# git checkout branch if $1 is given
+if [ ! -z "$1" ] ; then
+	git checkout $1
+fi
+
 git pull
 sudo make prefix=/org/piuparts.debian.org docdir=/org/piuparts.debian.org/htdocs/doc/ install install-doc
 
