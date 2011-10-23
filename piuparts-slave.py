@@ -28,9 +28,8 @@ import sys
 import stat
 import time
 import logging
-import ConfigParser
-import shlex
 import subprocess
+import ConfigParser
 
 import piupartslib.conf
 import piupartslib.packagesdb
@@ -145,18 +144,13 @@ class Slave:
             user = self._master_user + "@"
         else:
             user = ""
-        cmd = "ssh %s %s 'cd %s; %s 2> %s.$$ && rm %s.$$'" %
-                                    (self._master_host,
-                                     user,
-                                     self._master_directory or ".",
-                                     self._master_command,
-                                     log_file,
-                                     log_file)
-        cmd = shlex.split(cmd)
-        f = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=PIPE,
-                             close_fds=True)
-        (self._to_master, self._from_master) = (f.stdin, f.stdout)
-
+        ssh_cmdline = "cd %s; %s 2> %s.$$ && rm %s.$$" % \
+                      (self._master_directory or ".", 
+                      self._master_command, log_file, log_file)
+        p = subprocess.Popen(["ssh", user + self._master_host, ssh_cmdline], 
+                       stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        self._to_master = p.stdin
+        self._from_master = p.stdout
         line = self._readline()
         if line != "hello\n":
             raise MasterDidNotGreet()
@@ -369,10 +363,10 @@ def test_package(config, package, packages_files):
 
       logging.debug("Executing: %s" % command)
       output.write("Executing: %s\n" % command)
-      f = execute_command(command)
-      for line in f.communicate()[0].splitlines():
+      f = os.popen("{ %s; } 2>&1" % command, "r")
+      for line in f:
           output.write(line)
-      status = f.returncode
+      status = f.close()
       if status is None:
           status = 0
     else:
@@ -392,11 +386,11 @@ def test_package(config, package, packages_files):
 
         logging.debug("Executing: %s" % command)
         output.write("\nExecuting: %s\n" % command)
-        f = execute_command(command)
-        for line in f.communicate()[0].splitlines():
+        f = os.popen("{ %s; } 2>&1" % command, "r")
+        for line in f:
             output.write(line)
             output.flush()
-        status = f.returncode
+        status = f.close()
         if status is None:
             status = 0
 
@@ -417,8 +411,8 @@ def create_chroot(config, tarball, distro):
     command = "%s -ad %s -s %s.new -m %s hello" % \
                 (config["piuparts-cmd"], distro, tarball, config["mirror"])
     logging.debug("Executing: " + command)
-    f = execute_command(command)
-    for line in f.communicate()[0].splitlines():
+    f = os.popen("{ %s; } 2>&1" % command, "r")
+    for line in f:
         logging.debug(">> " + line.rstrip())
     f.close()
     if os.path.exists(tarball + ".new"):
@@ -453,8 +447,9 @@ def fetch_packages_file(config, distro):
     arch = config["arch"]
     if not arch:
         # Try to figure it out ourselves, using dpkg
-        vout = execute_command("dpkg --print-architecture").communicate()[0]
-        arch = vout.strip()
+        p = subprocess.Popen(["dpkg", "--print-architecture"], 
+                             stdout=subprocess.PIPE)
+        arch = p.stdout.read().rstrip()
     packages_url = \
         "%s/dists/%s/main/binary-%s/Packages.bz2" % (mirror, distro, arch)
 
@@ -471,10 +466,6 @@ def create_file(filename, contents):
     f.write(contents)
     f.close()
 
-def execute_command(cmd):
-    cmd = shlex.split(cmd)
-    f = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    return f
 
 def main():
     setup_logging(logging.INFO, None)
