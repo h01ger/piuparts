@@ -4,7 +4,7 @@
 #  update piuparts setup on piatti.debian.org
 #
 
-# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2011 Holger Levsen (holger@layer-acht.org)
 # 
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -31,13 +31,24 @@ set -e
 # update slave home, mostly scripts
 #
 cd 
-if [ ! -d .svn ] ; then
-	svn co svn://svn.debian.org/svn/piuparts/piatti/home/piupartss .
+# get rid of svn
+if [ -d .svn ] ; then
+	rm .svn -r
 fi
+
+if [ ! -d piatti ] ; then
+	git clone git://git.debian.org/git/piuparts/piatti.git
+        cd piatti
+        git checkout piatti
+	cd ..
+fi
+
+cd piatti
+git pull
+cd
+cp -ax piatti/home/piupartss/.* .
 pwd
 crontab crontab
-svn up
-svn status
 
 #
 # update master home, that's mostly crontab to run piuparts-reports
@@ -46,27 +57,30 @@ svn status
 # by the group, which prevents ssh logins...
 #
 cd ~piupartsm
-if [ ! -d .svn ] ; then
-	sudo su - piupartsm -c "cd ; svn co svn://svn.debian.org/svn/piuparts/piatti/home/piupartsm ."
+# rm .svn
+if [ -d .svn ] ; then
+	rm .svn -r
 fi
-sudo su - piupartsm -c "pwd ; svn up ; svn status"
+
+sudo su - piupartsm -c "cp -ax ~piupartss/piatti/home/piupartsm/.* ."
 sudo su - piupartsm -c "crontab crontab"
 
 
 #
 # update /org/piuparts.debian.org
 #
-if [ ! -d /org/piuparts.debian.org/.svn ] ; then
+# rm .svn
+if [ -d /org/piuparts.debian.org/.svn ] ; then
+	rm -r /org/piuparts.debian.org/.svn
+fi
+if [ ! -d /org/piuparts.debian.org/ ] ; then
         sudo mkdir -p /org/piuparts.debian.org/
 	sudo chown piupartss.piuparts /org/piuparts.debian.org/
 	sudo chmod 775 /org/piuparts.debian.org/
-	cd /org/piuparts.debian.org/
-	svn co svn://svn.debian.org/svn/piuparts/piatti/org/piuparts.debian.org/ .
 fi
 cd /org/piuparts.debian.org/
 pwd
-svn up
-svn status
+cp -ax ~piupartss/piatti/org/piuparts.debian.org/.* .
 mkdir -p master slave
 sudo chown piupartss.piuparts slave
 sudo chown piupartsm.piuparts master htdocs
@@ -79,17 +93,21 @@ ln -sf piuparts.conf.$HOSTNAME piuparts.conf
 #
 # update source
 #
-if [ ! -d /org/piuparts.debian.org/src/.svn ] ; then
+# rm .svn
+if [ -d /org/piuparts.debian.org/src/.svn ] ; then
+	rm /org/piuparts.debian.org/src/ -r
+fi
+if [ ! -d /org/piuparts.debian.org/src/ ] ; then
         sudo mkdir -p /org/piuparts.debian.org/src/
-	cd  /org/piuparts.debian.org/src/
+	cd /org/piuparts.debian.org/src/
         sudo chown piupartss.piuparts /org/piuparts.debian.org/src
         sudo chmod 755 /org/piuparts.debian.org/src
-	svn co svn://svn.debian.org/svn/piuparts/trunk .
+	git clone git://git.debian.org/git/piuparts/piuparts.git
+	git checkout piatti
 fi
-cd  /org/piuparts.debian.org/src/
+cd  /org/piuparts.debian.org/src/piuparts
 pwd
-svn up
-svn status
+git pull
 sudo make prefix=/org/piuparts.debian.org docdir=/org/piuparts.debian.org/htdocs/doc/ install install-doc
 
 #
