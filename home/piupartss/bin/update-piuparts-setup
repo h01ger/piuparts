@@ -42,13 +42,13 @@ if [ ! -d piatti ] ; then
         git checkout piatti
 	cd ..
 fi
+cd piatti
 
 # git checkout branch if $1 is given
 if [ ! -z "$1" ] ; then
 	git checkout $1
 fi
 
-cd piatti
 git pull
 cd
 cp -r piatti/home/piupartss/* .
