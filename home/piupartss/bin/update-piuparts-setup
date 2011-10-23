@@ -33,7 +33,7 @@ set -e
 cd 
 # get rid of svn
 if [ -d .svn ] ; then
-	rm .svn -r
+	rm .svn -rf
 fi
 
 if [ ! -d piatti ] ; then
@@ -46,7 +46,8 @@ fi
 cd piatti
 git pull
 cd
-cp -ax piatti/home/piupartss/.* .
+cp -r piatti/home/piupartss/* .
+cp -r piatti/home/piupartss/.forward .
 pwd
 crontab crontab
 
@@ -59,10 +60,10 @@ crontab crontab
 cd ~piupartsm
 # rm .svn
 if [ -d .svn ] ; then
-	rm .svn -r
+	sudo rm .svn -rf
 fi
 
-sudo su - piupartsm -c "cp -ax ~piupartss/piatti/home/piupartsm/.* ."
+sudo su - piupartsm -c "cp -r ~piupartss/piatti/home/piupartsm/* . ; cp -ax ~piupartss/piatti/home/piupartsm/.forward ."
 sudo su - piupartsm -c "crontab crontab"
 
 
@@ -71,7 +72,7 @@ sudo su - piupartsm -c "crontab crontab"
 #
 # rm .svn
 if [ -d /org/piuparts.debian.org/.svn ] ; then
-	rm -r /org/piuparts.debian.org/.svn
+	rm /org/piuparts.debian.org/.svn -rf
 fi
 if [ ! -d /org/piuparts.debian.org/ ] ; then
         sudo mkdir -p /org/piuparts.debian.org/
@@ -80,7 +81,7 @@ if [ ! -d /org/piuparts.debian.org/ ] ; then
 fi
 cd /org/piuparts.debian.org/
 pwd
-cp -ax ~piupartss/piatti/org/piuparts.debian.org/.* .
+cp -r ~piupartss/piatti/org/piuparts.debian.org/* .
 mkdir -p master slave
 sudo chown piupartss.piuparts slave
 sudo chown piupartsm.piuparts master htdocs
@@ -95,7 +96,7 @@ ln -sf piuparts.conf.$HOSTNAME piuparts.conf
 #
 # rm .svn
 if [ -d /org/piuparts.debian.org/src/.svn ] ; then
-	rm /org/piuparts.debian.org/src/ -r
+	rm /org/piuparts.debian.org/src/ -rf
 fi
 if [ ! -d /org/piuparts.debian.org/src/ ] ; then
         sudo mkdir -p /org/piuparts.debian.org/src/
@@ -103,6 +104,7 @@ if [ ! -d /org/piuparts.debian.org/src/ ] ; then
         sudo chown piupartss.piuparts /org/piuparts.debian.org/src
         sudo chmod 755 /org/piuparts.debian.org/src
 	git clone git://git.debian.org/git/piuparts/piuparts.git
+	cd piuparts
 	git checkout piatti
 fi
 cd  /org/piuparts.debian.org/src/piuparts
