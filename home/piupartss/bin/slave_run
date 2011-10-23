@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2011 Holger Levsen (holger@layer-acht.org)
 # 
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -31,7 +31,7 @@ rm -f $SCREENLOG					# used by ~piupartsm/bin/detect_slave_problems
 rm -f $MONITORDIR/*					# used by several scripts to only warn once a day 
 
 trap "cat $SCREENLOG | mail -s 'slave abnormaly ended' piupartsm ; rm $SCREENLOG; exit" TERM EXIT
-screen -L -d -m -S piuparts-slave-screen su - piupartss -c "cd /org/piuparts.debian.org/slave && python ../share/piuparts/piuparts-slave"
+screen -L -d -m -S piuparts-slave-screen su - piupartss -c "cd /org/piuparts.debian.org/slave && PYTHONPATH=$PYTHONPATH python ../share/piuparts/piuparts-slave"
 trap - TERM EXIT
 
 echo "piuparts-slave has been started."
