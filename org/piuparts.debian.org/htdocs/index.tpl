@@ -47,6 +47,16 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2011-10-31</b>: Re-create base.tgz's every week now, as they will only be replaced if the recreation was successful.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2011-10-23</b>: piuparts.debian.org is now maintained in git, using the piatti branch.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2011-07-10</b>: Since today dpkg is run with --force-unsafe-io by for all suites except lenny2squeeze, as dpkg from lenny doesn't support this option.
      </td>
     </tr>

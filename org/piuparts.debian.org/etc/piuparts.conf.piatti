@@ -13,8 +13,8 @@ master-directory = /org/piuparts.debian.org/master/
 output-directory = /org/piuparts.debian.org/htdocs/
 # 30*60
 idle-sleep = 1800
-# 60*60*24*30
-max-tgz-age = 2592000
+# 60*60*24*7
+max-tgz-age = 604800
 
 [sid]
 description = Debian sid / main: package installation, removal and purge test.
