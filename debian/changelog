@@ -18,8 +18,9 @@ piuparts (0.42) UNRELEASED; urgency=low
   * debian/control: Add python-apt and python-debianbts to piuparts depends.
 
   [ Scott Schaefer ]
-  * piuparts-slave.py: Replace deprecated os.popen2 with subprocess.Popen.
-    (Closes: #640646)
+  * piuparts-slave.py: 
+    - Replace deprecated os.popen2 with subprocess.Popen. (Closes: #640646)
+    - add some more logging.
 
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 
