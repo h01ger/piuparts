@@ -1055,8 +1055,7 @@ class Chroot:
         if not settings.skip_logrotatefiles_test and logrotatefiles:
             installed = self.install_logrotate()
             self.check_output_logrotatefiles(logrotatefiles_list)
-            for pkg in installed:
-                self.remove_or_purge("purge", installed)
+            self.remove_or_purge("purge", installed)
 
         # Then purge all packages being depended on.
         self.remove_or_purge("purge", deps_to_purge)
