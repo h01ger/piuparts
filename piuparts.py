@@ -742,8 +742,7 @@ class Chroot:
                     shutil.copy(os.path.join((settings.scriptsdir), sfile), dest) 
 
         # Run custom scripts after creating the chroot.
-        if settings.scriptsdir is not None: 
-            self.run_scripts("post_setup")
+        self.run_scripts("post_setup")
 
         if settings.savetgz:
             self.pack_into_tgz(settings.savetgz)
@@ -893,8 +892,7 @@ class Chroot:
             logging.debug("Upgrading %s to %s" % (self.name, distro))
             self.create_apt_sources(distro)
             # Run custom scripts before upgrade
-            if settings.scriptsdir is not None:
-                self.run_scripts("pre_distupgrade")
+            self.run_scripts("pre_distupgrade")
             self.run(["apt-get", "update"])
             self.run(["apt-get", "-yf", "dist-upgrade"])
             # Sometimes dist-upgrade won't upgrade the packages we want
@@ -904,8 +902,7 @@ class Chroot:
             # packages. So, we force the installation like this.
             self.install_packages_by_name(packages)
             # Run custom scripts after upgrade
-            if settings.scriptsdir is not None:
-                self.run_scripts("post_distupgrade")
+            self.run_scripts("post_distupgrade")
             self.check_for_no_processes()
 
     def apt_get_knows(self, packages):
@@ -960,8 +957,7 @@ class Chroot:
             tmp_files = [os.path.basename(a) for a in package_files]
             tmp_files = [os.path.join("tmp", name) for name in tmp_files]
 
-            if settings.scriptsdir is not None:
-                self.run_scripts("pre_install")
+            self.run_scripts("pre_install")
 
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
@@ -978,8 +974,7 @@ class Chroot:
 
             logging.info ("Installation of %s ok", tmp_files)
 
-            if settings.scriptsdir is not None:
-                self.run_scripts("post_install")
+            self.run_scripts("post_install")
 
             self.run(["apt-get", "clean"])
             remove_files([os.path.join(self.name, name) 
@@ -1024,15 +1019,13 @@ class Chroot:
                             if state == "purge"]
 
         # Run custom scripts before removing all packages. 
-        if settings.scriptsdir is not None:
-            self.run_scripts("pre_remove")      
+        self.run_scripts("pre_remove")
 
         # First remove all packages.
         self.remove_or_purge("remove", deps_to_remove + deps_to_purge +
                                         nondeps_to_remove + nondeps_to_purge)
         # Run custom scripts after removing all packages. 
-        if settings.scriptsdir is not None:
-            self.run_scripts("post_remove")     
+        self.run_scripts("post_remove")
 
         if not settings.skip_cronfiles_test:
             cronfiles, cronfiles_list = self.check_if_cronfiles(packages)
@@ -1056,8 +1049,7 @@ class Chroot:
         self.remove_or_purge("purge", nondeps_to_purge)
 
         # Run custom scripts after purge all packages.
-        if settings.scriptsdir is not None: 
-            self.run_scripts("post_purge")
+        self.run_scripts("post_purge")
 
         # Now do a final run to see that everything worked.
         self.run(["dpkg", "--purge", "--pending"])
@@ -1106,8 +1098,7 @@ class Chroot:
 
     def install_packages_by_name(self, packages):
         if packages:
-            if settings.scriptsdir is not None:
-                self.run_scripts("pre_install")
+            self.run_scripts("pre_install")
 
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
@@ -1292,6 +1283,8 @@ class Chroot:
     def run_scripts (self, step):
         """ Run custom scripts to given step post-install|remove|purge"""
 
+        if settings.scriptsdir is None:
+            return
         logging.info("Running scripts "+ step)
         basepath = self.relative("tmp/scripts/")
         if not os.path.exists(basepath):
@@ -1887,8 +1880,7 @@ def install_upgrade_test(chroot, root_info, selections, package_files, packages)
     # First install via apt-get.
     chroot.install_packages_by_name(packages)
 
-    if settings.scriptsdir is not None:
-        chroot.run_scripts("pre_upgrade")
+    chroot.run_scripts("pre_upgrade")
 
     chroot.check_for_broken_symlinks()
 
@@ -1988,8 +1980,7 @@ def install_and_upgrade_between_distros(package_files, packages):
     chroot.run(["apt-get", "update"])
     chroot.install_packages_by_name(packages)
 
-    if settings.scriptsdir is not None:
-        chroot.run_scripts("pre_upgrade")
+    chroot.run_scripts("pre_upgrade")
 
     chroot.check_for_no_processes()
 
