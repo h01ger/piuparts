@@ -773,6 +773,12 @@ class Chroot:
         (fd, temp_tgz) = create_temp_file()
         return temp_tgz
 
+    def remove_temp_tgz_file(self, temp_tgz):
+        """Remove the file that was used as a temporary tgz file"""
+        # Yes, remove_files() would work just as well, but putting it in
+        # the interface for Chroot allows the VirtServ hack to work.
+        remove_files([temp_tgz])
+
     def pack_into_tgz(self, result):
         """Tar and compress all files in the chroot."""
         self.run(["apt-get", "clean"])
@@ -1423,6 +1429,9 @@ class VirtServ(Chroot):
     #  adt-virt revert
     def create_temp_tgz_file(self):
         return self
+    def remove_temp_tgz_file(self, tgz):
+        if tgz is not self: self._fail('removing a tgz not supported')
+        # FIXME: anything else to do here?
     def pack_into_tgz(self, tgz):
         if tgz is not self: self._fail('packing into tgz not supported')
         if not 'revert' in self._caps: self._fail('testbed cannot revert')
@@ -2066,7 +2075,7 @@ def install_and_upgrade_between_distros(package_files, packages):
     chroot.check_for_no_processes()
 
     if root_tgz != settings.basetgz:
-        remove_files([root_tgz])
+        chroot.remove_temp_tgz_file(root_tgz)
     chroot.remove()
     dont_do_on_panic(cid)
 
