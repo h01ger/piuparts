@@ -810,7 +810,7 @@ class Chroot:
         for mirror, components in settings.debian_mirrors:
             lines.append("deb %s %s %s\n" % 
                          (mirror, distro, " ".join(components)))
-        create_file(os.path.join(self.name, "etc/apt/sources.list"), 
+        create_file(self.relative("etc/apt/sources.list"), 
                     "".join(lines))
 
     def create_apt_conf(self):
@@ -860,7 +860,7 @@ class Chroot:
 
     def create_policy_rc_d(self):
         """Create a policy-rc.d that prevents daemons from running."""
-        full_name = os.path.join(self.name, "usr/sbin/policy-rc.d")
+        full_name = self.relative("usr/sbin/policy-rc.d")
         create_file(full_name, "#!/bin/sh\nexit 101\n")
         os.chmod(full_name, 0777)
         logging.debug("Created policy-rc.d and chmodded it.")
@@ -934,7 +934,7 @@ class Chroot:
     def copy_files(self, source_names, target_name):
         """Copy files in 'source_name' to file/dir 'target_name', relative
         to the root of the chroot."""
-        target_name = os.path.join(self.name, target_name)
+        target_name = self.relative(target_name)
         logging.debug("Copying %s to %s" % 
                       (", ".join(source_names), target_name))
         for source_name in source_names:
@@ -993,8 +993,7 @@ class Chroot:
             self.run_scripts("post_install")
 
             self.run(["apt-get", "clean"])
-            remove_files([os.path.join(self.name, name) 
-                            for name in tmp_files])
+            remove_files([self.relative(name) for name in tmp_files])
 
     def get_selections(self):
         """Get current package selections in a chroot."""
@@ -1072,7 +1071,7 @@ class Chroot:
 
     def save_meta_data(self):
         """Return the filesystem meta data for all objects in the chroot."""
-        root = os.path.join(self.name, ".")
+        root = self.relative(".")
         vdict = {}
         proc = os.path.join(root, "proc")
         for dirpath, dirnames, filenames in os.walk(root):
