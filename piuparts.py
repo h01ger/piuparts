@@ -1880,6 +1880,7 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
     # Remove all packages from the chroot that weren't there initially.    
     chroot.restore_selections(selections, packages)
 
+    chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
     return check_results(chroot, root_info, file_owners, deps_info=deps_info)
@@ -1894,10 +1895,14 @@ def install_upgrade_test(chroot, root_info, selections, package_files, packages)
 
     chroot.run_scripts("pre_upgrade")
 
+    chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
     # Then from the package files.
     chroot.install_package_files(package_files)
+
+    chroot.check_for_no_processes()
+    chroot.check_for_broken_symlinks()
 
     file_owners = chroot.get_files_owned_by_packages()
 
@@ -1968,6 +1973,8 @@ def install_and_upgrade_between_distros(package_files, packages):
         root_info, selections = load_meta_data(settings.end_meta)
     else:
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
+
+        chroot.check_for_no_processes()
 
         # set root_info and selections
         root_info = chroot.save_meta_data()
