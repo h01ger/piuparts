@@ -1017,20 +1017,11 @@ class Chroot:
         (status, output) = self.run(["dpkg-divert", "--list"])
         return output.split("\n")
 
-    def check_for_broken_diversions(self):
+    def get_modified_diversions(self, pre_install_diversions, post_install_diversions):
         """Check that diversions in chroot are identical (though potentially reordered)."""
-        if not settings.check_broken_diversions:
-            return
-        if self.pre_install_diversions and self.post_install_diversions:
-            added = [ln for ln in self.pre_install_diversions if not ln in self.post_install_diversions]
-            removed = [ln for ln in self.post_install_diversions if not ln in self.pre_install_diversions]
-            if added:
-                logging.error("Error: Installed diversions (dpkg-divert) not removed by purge:\n%s" %  
-                              indent_string("\n".join(added)))
-            if removed:
-                logging.error("Error: Existing diversions (dpkg-divert) removed/modified:\n%s" %
-                              indent_string("\n".join(removed)))
-    	
+        removed = [ln for ln in pre_install_diversions if not ln in post_install_diversions]
+        added = [ln for ln in post_install_diversions if not ln in pre_install_diversions]
+        return (removed, added)
 
     def remove_or_purge(self, operation, packages):
         """Remove or purge packages in a chroot."""
@@ -1807,6 +1798,18 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     installed.)
     """
 
+    ok = True
+    if settings.check_broken_diversions and chroot.pre_install_diversions and chroot.post_install_diversions:
+        (removed, added) = chroot.get_modified_diversions(chroot.pre_install_diversions, chroot.post_install_diversions)
+        if added:
+            logging.error("FAIL: Installed diversions (dpkg-divert) not removed by purge:\n%s" %
+                          indent_string("\n".join(added)))
+            ok = False
+        if removed:
+            logging.error("FAIL: Existing diversions (dpkg-divert) removed/modified:\n%s" %
+                          indent_string("\n".join(removed)))
+            ok = False
+
     current_info = chroot.save_meta_data()
     if settings.warn_on_others and deps_info is not None:
         (new, removed, modified) = diff_meta_data(root_info, current_info)
@@ -1820,7 +1823,6 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     else:
         (new, removed, modified) = diff_meta_data(root_info, current_info)
 
-    ok = True
     if new:
         if settings.warn_on_leftovers_after_purge:
           logging.info("Warning: Package purging left files on system:\n" +
@@ -1925,8 +1927,6 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
 
     # Remove all packages from the chroot that weren't there initially.    
     chroot.restore_selections(selections, packages)
-
-    chroot.check_for_broken_diversions()
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
