@@ -708,7 +708,6 @@ class Chroot:
         self.name = None
 
         self.pre_install_diversions = None
-        self.post_install_diversions = None
 
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
@@ -1017,8 +1016,10 @@ class Chroot:
         (status, output) = self.run(["dpkg-divert", "--list"])
         return output.split("\n")
 
-    def get_modified_diversions(self, pre_install_diversions, post_install_diversions):
+    def get_modified_diversions(self, pre_install_diversions, post_install_diversions = None):
         """Check that diversions in chroot are identical (though potentially reordered)."""
+        if post_install_diversions is None:
+            post_install_diversions = self.get_diversions()
         removed = [ln for ln in pre_install_diversions if not ln in post_install_diversions]
         added = [ln for ln in post_install_diversions if not ln in pre_install_diversions]
         return (removed, added)
@@ -1080,8 +1081,6 @@ class Chroot:
 
         # Finally, purge actual packages.
         self.remove_or_purge("purge", nondeps_to_purge)
-
-        self.post_install_diversions = self.get_diversions()
 
         # Run custom scripts after purge all packages.
         self.run_scripts("post_purge")
@@ -1799,8 +1798,8 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     """
 
     ok = True
-    if settings.check_broken_diversions and chroot.pre_install_diversions and chroot.post_install_diversions:
-        (removed, added) = chroot.get_modified_diversions(chroot.pre_install_diversions, chroot.post_install_diversions)
+    if settings.check_broken_diversions and chroot.pre_install_diversions:
+        (removed, added) = chroot.get_modified_diversions(chroot.pre_install_diversions)
         if added:
             logging.error("FAIL: Installed diversions (dpkg-divert) not removed by purge:\n%s" %
                           indent_string("\n".join(added)))
