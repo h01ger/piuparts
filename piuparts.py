@@ -828,10 +828,10 @@ class Chroot:
                 self.run_scripts("post_distupgrade")
             self.check_for_no_processes()
 
-    def apt_get_knows(self, package_names):
+    def apt_get_knows(self, packages):
         """Does apt-get (or apt-cache) know about a set of packages?"""
 
-        for name in package_names:
+        for name in packages:
             (status, output) = self.run(["apt-cache", "show", name],
                                         ignore_errors=True)
             if status != 0:
@@ -874,10 +874,10 @@ class Chroot:
             logging.debug("The package did not modify any file.\n")     
 
 
-    def install_package_files(self, filenames):
-        if filenames:
-            self.copy_files(filenames, "tmp")
-            tmp_files = [os.path.basename(a) for a in filenames]
+    def install_package_files(self, package_files):
+        if package_files:
+            self.copy_files(package_files, "tmp")
+            tmp_files = [os.path.basename(a) for a in package_files]
             tmp_files = [os.path.join("tmp", name) for name in tmp_files]
 
             if settings.scriptsdir is not None:
@@ -1609,10 +1609,10 @@ def diff_selections(chroot, selections):
     return changes
 
 
-def get_package_names_from_package_files(filenames):
+def get_package_names_from_package_files(package_files):
     """Return list of package names given list of package file names."""
     vlist = []
-    for filename in filenames:
+    for filename in package_files:
         (status, output) = run(["dpkg", "--info", filename])
         for line in [line.lstrip() for line in output.split("\n")]:
             if line[:len("Package:")] == "Package:":
@@ -1725,7 +1725,7 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     return ok
 
 
-def install_purge_test(chroot, root_info, selections, package_list, packages):
+def install_purge_test(chroot, root_info, selections, package_files, packages):
     """Do an install-purge test. Return True if successful, False if not.
        Assume 'root' is a directory already populated with a working
        chroot, with packages in states given by 'selections'."""
@@ -1734,11 +1734,11 @@ def install_purge_test(chroot, root_info, selections, package_list, packages):
 
     if settings.warn_on_others:
         # Create a metapackage with dependencies from the given packages
-        if package_list:
+        if package_files:
             control_infos = []
             # We were given package files, so let's get the Depends and
             # Conflicts directly from the .debs
-            for deb in package_list:
+            for deb in package_files:
                 returncode, output = run(["dpkg", "-f", deb])
                 control = deb822.Deb822(output)
                 control_infos.append(control)
@@ -1776,8 +1776,8 @@ def install_purge_test(chroot, root_info, selections, package_list, packages):
     else:
         deps_info = None
 
-    if package_list:
-        chroot.install_package_files(package_list)
+    if package_files:
+        chroot.install_package_files(package_files)
     else:
         chroot.install_packages_by_name(packages)
         chroot.run(["apt-get", "clean"])
@@ -1797,12 +1797,12 @@ def install_purge_test(chroot, root_info, selections, package_list, packages):
     return check_results(chroot, root_info, file_owners, deps_info=deps_info)
 
 
-def install_upgrade_test(chroot, root_info, selections, package_list, package_names):
+def install_upgrade_test(chroot, root_info, selections, package_files, packages):
     """Install package via apt-get, then upgrade from package files.
     Return True if successful, False if not."""
 
     # First install via apt-get.
-    chroot.install_packages_by_name(package_names)
+    chroot.install_packages_by_name(packages)
 
     if settings.scriptsdir is not None:
         chroot.run_scripts("pre_upgrade")
@@ -1810,14 +1810,14 @@ def install_upgrade_test(chroot, root_info, selections, package_list, package_na
     chroot.check_for_broken_symlinks()
 
     # Then from the package files.
-    chroot.install_package_files(package_list)
+    chroot.install_package_files(package_files)
 
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't there
     # initially.
     changes = diff_selections(chroot, selections)
-    chroot.restore_selections(changes, package_names)
+    chroot.restore_selections(changes, packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -1842,7 +1842,7 @@ def load_meta_data(filename):
     return root_info, selections
 
 
-def install_and_upgrade_between_distros(filenames, packages):
+def install_and_upgrade_between_distros(package_files, packages):
     """Install package and upgrade it between distributions, then remove.
        Return True if successful, False if not."""
 
@@ -1916,7 +1916,7 @@ def install_and_upgrade_between_distros(filenames, packages):
 
     chroot.check_for_no_processes()
 
-    chroot.install_package_files(filenames)
+    chroot.install_package_files(package_files)
     chroot.run(["apt-get", "clean"])
 
     chroot.check_for_no_processes()
@@ -2285,9 +2285,10 @@ def process_packages(package_list):
     # Find the names of packages.
     if settings.args_are_package_files:
         packages = get_package_names_from_package_files(package_list)
+        package_files = package_list
     else:
         packages = package_list
-        package_list = []
+        package_files = []
 
     if len(settings.debian_distros) == 1:
         chroot = get_chroot()
@@ -2299,7 +2300,7 @@ def process_packages(package_list):
 
         if not settings.no_install_purge_test:
             if not install_purge_test(chroot, root_info, selections,
-                      package_list, packages):
+                      package_files, packages):
                 logging.error("FAIL: Installation and purging test.")
                 panic()
             logging.info("PASS: Installation and purging test.")
@@ -2309,7 +2310,7 @@ def process_packages(package_list):
                 logging.info("Can't test upgrades: -a or --apt option used.")
             elif not chroot.apt_get_knows(packages):
                 logging.info("Can't test upgrade: packages not known by apt-get.")
-            elif install_upgrade_test(chroot, root_info, selections, package_list, 
+            elif install_upgrade_test(chroot, root_info, selections, package_files,
                                   packages):
                 logging.info("PASS: Installation, upgrade and purging tests.")
             else:
@@ -2319,7 +2320,7 @@ def process_packages(package_list):
         chroot.remove()
         dont_do_on_panic(cid)
     else:
-        if install_and_upgrade_between_distros(package_list, packages):
+        if install_and_upgrade_between_distros(package_files, packages):
             logging.info("PASS: Upgrading between Debian distributions.")
         else:
             logging.error("FAIL: Upgrading between Debian distributions.")
