@@ -1011,18 +1011,14 @@ class Chroot:
         return vdict
 
     def get_diversions(self):
-    	"""Get current dpkg-divert --list in a chroot."""
+        """Get current dpkg-divert --list in a chroot."""
         if not settings.check_broken_diversions:
             return
         (status, output) = self.run(["dpkg-divert", "--list"])
-        lines = []
-        for line in output.split("\n"):
-            lines.append(line)
-        return lines
-
+        return output.split("\n")
 
     def check_for_broken_diversions(self):
-        """Check that diversions in chroot are identical (though potenttially reordered)."""
+        """Check that diversions in chroot are identical (though potentially reordered)."""
         if not settings.check_broken_diversions:
             return
         if self.pre_install_diversions and self.post_install_diversions:
