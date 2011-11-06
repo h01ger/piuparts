@@ -2016,17 +2016,16 @@ def install_and_upgrade_between_distros(package_files, packages):
     chroot.create()
     cid = do_on_panic(chroot.remove)
 
-    if settings.basetgz:
-        root_tgz = settings.basetgz
-    else:
-        root_tgz = chroot.create_temp_tgz_file()
-        chroot.pack_into_tgz(root_tgz)
-
     if settings.end_meta:
         # load root_info and selections
         root_info, selections = load_meta_data(settings.end_meta)
         chroot.pre_install_diversions = []  # FIXME: diversion info needs to be restored
     else:
+        if not settings.basetgz:
+            temp_tgz = chroot.create_temp_tgz_file()
+            # FIXME: on panic remove temp_tgz
+            chroot.pack_into_tgz(temp_tgz)
+
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
 
         chroot.check_for_no_processes()
@@ -2043,12 +2042,18 @@ def install_and_upgrade_between_distros(package_files, packages):
 
         chroot.remove()
         dont_do_on_panic(cid)
-        chroot = get_chroot()
-        chroot.create()
-        cid = do_on_panic(chroot.remove)
 
-    # leave indication in logfile why we do what we do
-    logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
+        # leave indication in logfile why we do what we do
+        logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
+
+        chroot = get_chroot()
+        if settings.basetgz:
+            chroot.create()
+        else:
+            # FIXME: restore from temp_tgz
+            chroot.remove_temp_tgz_file(temp_tgz)
+            chroot.create()
+        cid = do_on_panic(chroot.remove)
 
     chroot.check_for_no_processes()
 
@@ -2074,8 +2079,6 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     chroot.check_for_no_processes()
 
-    if root_tgz != settings.basetgz:
-        chroot.remove_temp_tgz_file(root_tgz)
     chroot.remove()
     dont_do_on_panic(cid)
 
