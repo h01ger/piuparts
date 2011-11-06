@@ -715,21 +715,23 @@ class Chroot:
         os.chmod(self.name, 0755)
         logging.debug("Created temporary directory %s" % self.name)
 
-    def create(self):
+    def create(self, temp_tgz = None):
         """Create a chroot according to user's wishes."""
         self.create_temp_dir()
         cid = do_on_panic(self.remove)
 
-        if settings.basetgz:
+        if temp_tgz:
+            self.unpack_from_tgz(temp_tgz)
+        elif settings.basetgz:
             self.unpack_from_tgz(settings.basetgz)
         elif settings.lvm_volume:
             self.setup_from_lvm(settings.lvm_volume)
         else:
             self.setup_minimal_chroot()
 
-        self.configure_chroot()
         self.mount_proc()
         self.mount_selinux()
+        self.configure_chroot()
         if settings.basetgz:
             self.run(["apt-get", "-yf", "upgrade"])
         self.minimize()
@@ -747,7 +749,7 @@ class Chroot:
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
 
-        if settings.savetgz:
+        if settings.savetgz and not temp_tgz:
             self.pack_into_tgz(settings.savetgz)
 
         dont_do_on_panic(cid)
@@ -2050,9 +2052,8 @@ def install_and_upgrade_between_distros(package_files, packages):
         if settings.basetgz:
             chroot.create()
         else:
-            # FIXME: restore from temp_tgz
+            chroot.create(temp_tgz)
             chroot.remove_temp_tgz_file(temp_tgz)
-            chroot.create()
         cid = do_on_panic(chroot.remove)
 
     chroot.check_for_no_processes()
