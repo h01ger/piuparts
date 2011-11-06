@@ -253,6 +253,7 @@ class Settings:
             "/usr/lib/python2\../site-packages/debconf.py[co]",
             "/var/backups/.*",
             "/var/cache/man/(/.*)?",
+            "/var/lib/apt/lists/.*",
             "/var/lib/cvs(/.*)?",
             "/var/lib/dpkg/alternatives",
             "/var/lib/dpkg/triggers/.*",
