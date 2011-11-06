@@ -744,8 +744,6 @@ class Chroot:
                 if (sfile.startswith("post_") or sfile.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), sfile)):
                     shutil.copy(os.path.join((settings.scriptsdir), sfile), dest) 
 
-        self.pre_install_diversions = self.get_diversions()
-
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
 
@@ -1798,7 +1796,7 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     """
 
     ok = True
-    if settings.check_broken_diversions and chroot.pre_install_diversions:
+    if settings.check_broken_diversions:
         (removed, added) = chroot.get_modified_diversions(chroot.pre_install_diversions)
         if added:
             logging.error("FAIL: Installed diversions (dpkg-divert) not removed by purge:\n%s" %
@@ -2018,6 +2016,7 @@ def install_and_upgrade_between_distros(package_files, packages):
     if settings.end_meta:
         # load root_info and selections
         root_info, selections = load_meta_data(settings.end_meta)
+        chroot.pre_install_diversions = []  # FIXME: diversion info needs to be restored
     else:
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
 
@@ -2026,10 +2025,12 @@ def install_and_upgrade_between_distros(package_files, packages):
         # set root_info and selections
         root_info = chroot.save_meta_data()
         selections = chroot.get_selections()
+        chroot.pre_install_diversions = chroot.get_diversions()
 
         if settings.save_end_meta:
             # save root_info and selections
             save_meta_data(settings.save_end_meta, root_info, selections)
+            # FIXME: diversion info needs to be stored
 
         chroot.remove()
         dont_do_on_panic(cid)
@@ -2441,6 +2442,7 @@ def process_packages(package_list):
         cid = do_on_panic(chroot.remove)
 
         root_info = chroot.save_meta_data()
+        chroot.pre_install_diversions = chroot.get_diversions()
         selections = chroot.get_selections()
 
         if not settings.no_install_purge_test:
