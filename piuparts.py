@@ -778,7 +778,7 @@ class Chroot:
         self.run(["apt-get", "clean"])
         logging.debug("Saving %s to %s." % (self.name, result))
 
-        run(['tar', '--exclude', './proc/*', '-czf', result, '--exclude', 'tmp/scripts', '-C', self.name, './'])
+        run(['tar', '-czf', result, '--one-file-system', '--exclude', 'tmp/scripts', '-C', self.name, './'])
 
     def unpack_from_tgz(self, tarball):
         """Unpack a tarball to a chroot."""
