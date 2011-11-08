@@ -633,7 +633,7 @@ class Chroot:
             shutil.rmtree(self.name)
             logging.debug("Removed directory tree at %s" % self.name)
         elif settings.keep_tmpdir:
-            logging.debug("Keeping directory tree at %s" % self.name)	
+            logging.debug("Keeping directory tree at %s" % self.name)   
 
     def create_temp_tgz_file(self):
         """Return the path to a file to be used as a temporary tgz file"""
@@ -723,10 +723,10 @@ class Chroot:
 
     def create_policy_rc_d(self):
         """Create a policy-rc.d that prevents daemons from running."""
-	full_name = os.path.join(self.name, "usr/sbin/policy-rc.d")
+        full_name = os.path.join(self.name, "usr/sbin/policy-rc.d")
         create_file(full_name, "#!/bin/sh\nexit 101\n")
-	os.chmod(full_name, 0777)
-	logging.debug("Created policy-rc.d and chmodded it.")
+        os.chmod(full_name, 0777)
+        logging.debug("Created policy-rc.d and chmodded it.")
 
     def setup_minimal_chroot(self):
         """Set up a minimal Debian system in a chroot."""
@@ -763,7 +763,7 @@ class Chroot:
         for distro in distros:
             logging.debug("Upgrading %s to %s" % (self.name, distro))
             self.create_apt_sources(distro)
-	    # Run custom scripts before upgrade
+            # Run custom scripts before upgrade
             if settings.scriptsdir is not None:
                 self.run_scripts("pre_distupgrade")
             self.run(["apt-get", "update"])
@@ -802,7 +802,7 @@ class Chroot:
                 logging.error("Error copying %s to %s: %s" % 
                       (source_name, target_name, detail))
                 panic()
-		
+                
     def list_installed_files (self, pre_info, post_info):
         """List the new files installed, removed and modified between two dir trees.
         Actually, it is a nice output of the funcion diff_meta_dat."""
@@ -812,7 +812,7 @@ class Chroot:
         if new:
             logging.debug("New installed files on system:\n" + file_list(new, file_owners))
         else:
-            logging.debug("The package did not install any new file.\n")		    
+            logging.debug("The package did not install any new file.\n")                    
 
         if removed:
             logging.debug("The following files have disappeared:\n" +
@@ -822,7 +822,7 @@ class Chroot:
             logging.debug("The following files have been modified:\n" +
                           file_list(modified, file_owners))
         else:
-            logging.debug("The package did not modify any file.\n")	
+            logging.debug("The package did not modify any file.\n")     
 
 
     def install_package_files(self, filenames):
@@ -894,25 +894,25 @@ class Chroot:
                             if state == "purge"]
     
         # Run custom scripts before removing all packages. 
-	if settings.scriptsdir is not None:
-            self.run_scripts("pre_remove")	
+        if settings.scriptsdir is not None:
+            self.run_scripts("pre_remove")      
 
         # First remove all packages.
         self.remove_or_purge("remove", deps_to_remove + deps_to_purge +
                                         nondeps_to_remove + nondeps_to_purge)
         # Run custom scripts after removing all packages. 
-	if settings.scriptsdir is not None:
-            self.run_scripts("post_remove")	
+        if settings.scriptsdir is not None:
+            self.run_scripts("post_remove")     
 
         if not settings.skip_cronfiles_test:
             cronfiles, cronfiles_list = self.check_if_cronfiles(packages)
-	
+        
         if not settings.skip_cronfiles_test and cronfiles:
             self.check_output_cronfiles(cronfiles_list)
 
         if not settings.skip_logrotatefiles_test:
             logrotatefiles, logrotatefiles_list = self.check_if_logrotatefiles(packages)
-	
+        
         if not settings.skip_logrotatefiles_test and logrotatefiles:
             installed = self.install_logrotate()
             self.check_output_logrotatefiles(logrotatefiles_list)
@@ -979,7 +979,7 @@ class Chroot:
             if settings.scriptsdir is not None:
                 self.run_scripts("pre_install")
 
-	    if settings.list_installed_files:
+            if settings.list_installed_files:
                 pre_info = self.save_meta_data()
                 self.run(["apt-get", "-y", "install"] + packages)
                 self.list_installed_files (pre_info, self.save_meta_data())
@@ -1056,7 +1056,7 @@ class Chroot:
                 panic()
         else:
             logging.debug("No broken symlinks as far as we can find.")
-	    
+            
     def check_if_cronfiles(self, packages):
         """Check if the packages have cron files under /etc/cron.d and in case positive, 
         it returns the list of files. """
@@ -1067,7 +1067,7 @@ class Chroot:
         for p in packages:
             basename = p + ".list"
 
-	    if not os.path.exists(os.path.join(vdir,basename)):
+            if not os.path.exists(os.path.join(vdir,basename)):
                 continue
 
             f = file(os.path.join(vdir,basename), "r")
@@ -1089,7 +1089,7 @@ class Chroot:
 
     def check_output_cronfiles (self, list):
         """Check if a given list of cronfiles has any output. Executes 
-	cron file as cron would do (except for SHELL)"""
+        cron file as cron would do (except for SHELL)"""
         failed = False
         for vfile in list:
 
@@ -1114,7 +1114,7 @@ class Chroot:
         for p in packages:
             basename = p + ".list"
 
-	    if not os.path.exists(os.path.join(vdir,basename)):
+            if not os.path.exists(os.path.join(vdir,basename)):
                 continue
 
             f = file(os.path.join(vdir,basename), "r")
@@ -1518,8 +1518,8 @@ def file_list(meta_infos, file_owners):
         vlist.append("  %s\t" % name)
         if name in file_owners:
             vlist.append(" owned by: %s\n" % ", ".join(file_owners[name]))
-	else:
-            vlist.append(" not owned\n")	
+        else:
+            vlist.append(" not owned\n")        
 
     return "".join(vlist)
 
@@ -1961,17 +1961,17 @@ def parse_command_line():
  
     parser.add_option("--debfoster-options",
                       default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
-		      help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
+                      help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
 
     parser.add_option("--dpkg-noforce-unsafe-io",
                       default=False,
                       action='store_true',
-		      help="Default is to run dpkg with --force-unsafe-io option, which causes dpkg to skip certain file system syncs known to cause substantial performance degradation on some filesystems.  This option turns that off and dpkg will use safe I/O operations.")
+                      help="Default is to run dpkg with --force-unsafe-io option, which causes dpkg to skip certain file system syncs known to cause substantial performance degradation on some filesystems.  This option turns that off and dpkg will use safe I/O operations.")
 
     parser.add_option("--dpkg-force-confdef",
                       default=False,
                       action='store_true',
-		      help="Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This option will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages.  (See #466118.)")
+                      help="Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This option will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages.  (See #466118.)")
      
     parser.add_option("--do-not-verify-signatures", default=False,
                       action='store_true',
@@ -2010,7 +2010,7 @@ def parse_command_line():
     parser.add_option("--list-installed-files", 
                       action="store_true", default=False,
                       help="List files added to the chroot after the " +
-		      "installation of the package.")
+                      "installation of the package.")
 
     parser.add_option("--lvm-volume", metavar="LVM-VOL", action="store",
                       help="Use LVM-VOL as source for the chroot, instead of building " +
@@ -2037,7 +2037,7 @@ def parse_command_line():
     parser.add_option("--no-upgrade-test", 
                       action="store_true", default=False,
                       help="Skip testing the upgrade from an existing version " +
-		      "in the archive.")
+                      "in the archive.")
     
     parser.add_option("--no-install-purge-test", 
                       action="store_true", default=False,
@@ -2068,7 +2068,7 @@ def parse_command_line():
     parser.add_option("--skip-cronfiles-test", 
                       action="store_true", default=False,
                       help="Skip testing the output from the cron files.")
-		   
+                   
     parser.add_option("--skip-logrotatefiles-test", 
                       action="store_true", default=False,
                       help="Skip testing the output from the logrotate files.")
@@ -2196,7 +2196,7 @@ def parse_command_line():
 
     if opts.scriptsdir is not None:
         settings.scriptsdir = opts.scriptsdir
-	if not os.path.isdir(settings.scriptsdir):
+        if not os.path.isdir(settings.scriptsdir):
             logging.error("Scripts directory is not a directory: %s" % 
                           settings.scriptsdir)
             panic()
