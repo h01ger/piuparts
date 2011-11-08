@@ -625,7 +625,7 @@ class Section:
         return links
 
     def link_to_maintainer_summary(self, maintainer):
-	email = get_email_address(maintainer)
+        email = get_email_address(maintainer)
         return "<a href=\"/%s/maintainer/%s/%s.html\">%s</a>" % (self._config.section,maintainer_subdir(email),email,html_protect(maintainer))
 
     def link_to_uploaders(self, uploaders):
