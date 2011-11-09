@@ -1116,6 +1116,9 @@ class Chroot:
             else:
                 self.run(["apt-get", "-y", "install"] + packages)
 
+            self.run_scripts("post_install")
+
+
     def check_for_no_processes(self):
         """Check there are no processes running inside the chroot."""
         (status, output) = run(["lsof", "-w", "+D", self.name], ignore_errors=True)
