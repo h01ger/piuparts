@@ -11,23 +11,23 @@
 2005-10-17  Lars Wirzenius  <liw@iki.fi>
 
         * Version 0.12.
-        
+
         * /var/log/faillog ignored by default.
-        
+
         * Documented that upgrade testing to experimental doesn't work.
 
 2005-10-14  Lars Wirzenius  <liw@iki.fi>
 
         * Version 0.11.
-        
+
         * Summary of changes:
-        
+
             - Checks for missing package names on command line immediately,
               not after creating chroot.
-              
+
             - apt-get in the chroot gets configured to allow unauthenticated
               repositories.
-              
+
             - Tweaks to list of files ignored by default.
 
 2005-09-15  Lars Wirzenius  <liw@iki.fi>
@@ -37,9 +37,9 @@
 2005-09-15  Lars Wirzenius  <liw@iki.fi>
 
         * piuparts.py: When creating policy-rc.d, make it executable.
-        
+
         * piuparts.docbook: Added missing "if". Thanks, Jonas Meurer.
-        
+
         * run-piuparts.py: Wrote.
 
 2005-09-09  Lars Wirzenius  <liw@iki.fi>
@@ -72,7 +72,7 @@
         code. Also, log everything identically to stdout and log file,
         since the old behavior was confusing to many people, as observed
         on IRC and at Debconf5. This also obsoletes -v (--verbose).
-        
+
         * piuparts.docbook: Document that -v (--verbose) is obsolete.
 
 2005-08-30  Lars Wirzenius  <liw@iki.fi>
@@ -90,10 +90,10 @@
         of requiring that they match everything. This is less surprising
         to users and they can still use ^ and $ to anchor a match to the
         ends, if they need it.
-        
+
         * Makefile: Ignore the fdmount temp files that cause upgrades to
         etch/sid fail at the moments, and re-enable upgrade tests.
-        
+
         * piuparts.py, piuparts.docbook: Added option -t and changed the
         default location for temporary files and directorys (including
         the chroot) to be $TMPDIR (or /tmp if not set).
@@ -102,15 +102,15 @@
 
         * Makefile: Upgrade testing from sarge to etch fails for me, because
         of something to do with fdutils, so I have disabled it for now.
-        
+
         * piuparts.py: Only use the first mirror found in sources.list,
         which is anyway what the manual page claims we are doing. This
         should reduce the problems people have been having with piuparts
         creating broken source.lists in the chroot when people have more
         than a canonical Debian repository listed.
-        
+
         * piuparts.py: Remove temporary files upon error exit.
-        
+
         * piuparts.docbook: Use code names instead of
         stable/testing/unstable in the example.
 
@@ -127,9 +127,9 @@
 
         * piuparts.py: Create a /usr/sbin/policy-rc.d inside the chroot
         when it is created. Suggested by Frank Lichtenheld.
-        
+
         * piuparts.py: Fixed a message from "FAIL:" to "PASS:". Oops.
-        
+
         * Makefile: Commented out an explicit mirror definition so it
         should now use sources.list defaults.
 
@@ -138,7 +138,7 @@
         * piuparts.py: Suggested by Frank Lichtenheld: don't run dpkg
         and do other work if there are no files (cleans up log file,
         saves a couple of seconds).
-        
+
         * piuparts.py, piuparts.docbook: Implemented and documented a
         limit on the size of outputs of command piuparts runs.
 
@@ -213,7 +213,7 @@
 	
         * piuparts.py: Report version and command line arguments at
         startup.
-        
+
         * piuparts.py: When calling install_purge_test, report package
         list when command line args are package names, instead of empty
         list.
@@ -290,7 +290,7 @@
         * piuparts.py: Added /var/cache/debconf and
         /var/cache/debconf/passwords.dat to the list of filenames that
         are automatically ignored.
-        
+
         * piuparts.py: After unpacking a base tarball, run apt-get update
         and clean on it, to be sure everything is up to date.
 

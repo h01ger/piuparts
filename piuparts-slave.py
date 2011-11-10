@@ -48,7 +48,7 @@ def setup_logging(log_level, log_file_name):
     handler = logging.StreamHandler(sys.stderr)
     handler.setFormatter(formatter)
     logger.addHandler(handler)
-    
+
     if log_file_name:
         handler = logging.FileHandler(log_file_name)
         logger.addHandler(handler)
@@ -110,12 +110,12 @@ class Slave:
         self._master_user = None
         self._master_directory = "."
         self._master_command = None
-        
+
     def _readline(self):
         line = self._from_master.readline()
         logging.debug("<< " + line.rstrip())
         return line
-        
+
     def _writeline(self, *words):
         line = " ".join(words)
         logging.debug(">> " + line)
@@ -125,19 +125,19 @@ class Slave:
     def set_master_host(self, host):
         logging.debug("Setting master host to %s" % host)
         self._master_host = host
-        
+
     def set_master_user(self, user):
         logging.debug("Setting master user to %s" % user)
         self._master_user = user
-        
+
     def set_master_directory(self, dir):
         logging.debug("Setting master directory to %s" % dir)
         self._master_directory = dir
-        
+
     def set_master_command(self, cmd):
         logging.debug("Setting master command to %s" % cmd)
         self._master_command = cmd
-    
+
     def connect_to_master(self, log_file):
         logging.info("Connecting to %s" % self._master_host)
         if self._master_user:
@@ -244,7 +244,7 @@ class Section:
         if self._config["upgrade-test-distros"] and tarball: 
             create_or_replace_chroot_tgz(self._config, tarball,
                       base_tgz_ctrl, self._config["upgrade-test-distros"].split()[0])
-    
+
         for rdir in ["new", "pass", "fail"]:
             rdir = os.path.join(self._slave_directory, rdir)
             if not os.path.exists(rdir):
@@ -349,14 +349,14 @@ def test_package(config, package, packages_files):
     output.write("\n")
     package.dump(output)
     output.write("\n")
-   
+
     # omit distro test if chroot-tgz is not specified.
     if config["chroot-tgz"]: 
       command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s" % \
                   config
       if config["keep-sources-list"] in ["yes", "true"]:
           command += " --keep-sources-list "
-    
+
       if config["mirror"]:
           command += " --mirror %s " % config["mirror"]
       command += " " + package["Package"]
@@ -459,7 +459,7 @@ def fetch_packages_file(config, distro):
     f = piupartslib.open_packages_url(packages_url)
     packages_file = piupartslib.packagesdb.PackagesFile(f)
     f.close()
-    
+
     return packages_file
 
 
@@ -471,7 +471,7 @@ def create_file(filename, contents):
 
 def main():
     setup_logging(logging.INFO, None)
-    
+
     # For supporting multiple architectures and suites, we take a command-line
     # argument referring to a section in configuration file.  
     # If no argument is given, the "global" section is assumed.

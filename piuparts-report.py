@@ -415,7 +415,7 @@ def setup_logging(log_level, log_file_name):
     handler = logging.StreamHandler(sys.stderr)
     handler.setFormatter(formatter)
     logger.addHandler(handler)
-    
+
     if log_file_name:
         handler = logging.FileHandler(log_file_name)
         logger.addHandler(handler)
@@ -790,7 +790,7 @@ class Section:
           sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Maintainer:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (self.link_to_maintainer_summary(maintainer))
           if uploaders:
             sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Uploaders:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (self.link_to_uploaders(uploaders))
-        
+
           source_summary_page_path = os.path.join(self._output_directory, "source", source_subdir(source))
           if not os.path.exists(source_summary_page_path):
              os.makedirs(source_summary_page_path)
@@ -866,7 +866,7 @@ class Section:
             if source_state != "udeb":
               sources += "%s: %s\n" % (source, source_state)
               self.create_maintainer_templates_for_source(source, source_state, sourcerows, binaryrows, maintainer, uploaders)
- 
+
         write_file(os.path.join(self._output_directory, "sources.txt"), sources)
 
 

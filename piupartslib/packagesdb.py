@@ -45,7 +45,7 @@ def rfc822_like_header_parse(input):
         else:
             headers.append(line)
     return headers
- 
+
 def unique (s):
     # taken from http://code.activestate.com/recipes/52560/ - thanks to Tim Peters
     n = len(s)
@@ -93,7 +93,7 @@ class Package(UserDict.UserDict):
             name, value = header.split(":", 1)
             self[name.strip()] = value.strip()
         self._parsed_deps = {}
-        
+
     def _parse_dependencies(self, header_name):
         if header_name in self._parsed_deps:
             depends = self._parsed_deps[header_name]
@@ -160,7 +160,7 @@ class LogDB:
 
     def listdir(self, dirname):
         return dircache.listdir(dirname)
-        
+
     def exists(self, pathname):
         try:
             cache = self.exists_cache
@@ -170,10 +170,10 @@ class LogDB:
         if pathname not in cache:
             cache[pathname] = os.path.exists(pathname)
         return cache[pathname]
-        
+
     def open_file(self, pathname, mode):
         return file(pathname, mode)
-        
+
     def remove_file(self, pathname):
         os.remove(pathname)
 
@@ -186,7 +186,7 @@ class LogDB:
             if self.exists(os.path.join(subdir, log_name)):
                 return True
         return False
-    
+
     def any_log_exists(self, package, subdirs):
         try:
             cache = self.basename_cache
@@ -202,11 +202,11 @@ class LogDB:
                 if len(parts) == 2 and parts[0] == package_name:
                     return True
         return False
-        
+
     def create(self, subdir, package, version, contents):
         (fd, temp_name) = tempfile.mkstemp(dir=subdir)
         os.close(fd)
-        
+
         # tempfile.mkstemp sets the file mode to be readable only by owner.
         # Let's make it follow the umask.
         umask = os.umask(0)
@@ -229,7 +229,7 @@ class LogDB:
         full_name = os.path.join(subdir, self._log_name(package, version))
         if self.exists(full_name):
             self.remove_file(full_name)
-            
+
 
 class PackagesDB:
 
@@ -248,7 +248,7 @@ class PackagesDB:
         "unknown-preferred-alternative",
         "no-dependency-from-alternatives-exists",
     ]
-    
+
     _dep_state_to_state = {
         "failed-testing": "dependency-failed-testing",
         "cannot-be-tested": "dependency-cannot-be-tested",
@@ -272,7 +272,7 @@ class PackagesDB:
         self._package_state = {}
         self.set_subdirs(ok="pass", fail="fail", evil="untestable",
                          reserved="reserved", morefail=["bugged"])
-        
+
     def set_subdirs(self, ok=None, fail=None, evil=None, reserved=None, morefail=None):
         # Prefix all the subdirs with the prefix
         if self.prefix:
@@ -290,12 +290,12 @@ class PackagesDB:
         if morefail:
             self._morefail = [pformat % s for s in morefail]
         self._all = [self._ok, self._fail, self._evil, self._reserved] + self._morefail
-           
+
     def create_subdirs(self):
         for sdir in self._all:
             if not os.path.exists(sdir):
                 os.makedirs(sdir)
-        
+
     def read_packages_file(self, input):
         self._packages_files.append(PackagesFile(input))
         self._packages = None
@@ -326,13 +326,13 @@ class PackagesDB:
                 deps.append(dep)
                 if dep in self._packages:
                     more += self._packages[dep].dependencies()
-    
+
         # Break circular dependencies
         if break_circles and package["Package"] in deps:
             deps.remove(package["Package"])
 
         return deps
-    
+
     def _compute_package_state(self, package):
         if self._logdb.log_exists(package, [self._ok]):
             return "successfully-tested"
@@ -433,7 +433,7 @@ class PackagesDB:
                 deps.remove(pkg)
         if package["Package"] in deps:
             return "circular-dependency" # actually, it's a unknown circular-dependency
-     
+
         # treat circular-dependencies as testable (for the part of the circle)
         state = "unknown" 
         if package["Package"] in self._known_circular_depends:
@@ -451,7 +451,7 @@ class PackagesDB:
     def _compute_package_states(self):
         if self._in_state is not None:
             return
-    
+
         todo = []
         unpreferred_alt = []
 
@@ -493,7 +493,7 @@ class PackagesDB:
 
         self._in_state["unknown"] = todo
         self._in_state["unknown-preferred-alternative"] = unpreferred_alt
-        
+
         for state in self._states:
             self._in_state[state].sort()
 
@@ -503,11 +503,11 @@ class PackagesDB:
     def get_pkg_names_in_state(self, state):
         self._compute_package_states()
         return self._in_state[state]
-    
+
     def get_packages_in_state(self, state):
       self._compute_package_states()
       return unique([self._packages[name] for name in self._in_state[state]])
-    
+
     def get_all_packages(self):
         self._find_all_packages()
         return self._packages

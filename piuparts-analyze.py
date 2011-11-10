@@ -105,9 +105,9 @@ def prepend_to_file(filename, data):
     f.write(data)
     f.write(old_data)
     f.close()
-    
+
     shutil.copymode(filename, filename + ".tmp")
-    
+
     os.rename(filename, filename + "~")
     os.rename(filename + ".tmp", filename)
     os.remove(filename + "~")

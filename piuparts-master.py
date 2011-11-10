@@ -79,7 +79,7 @@ class Protocol:
         line = self._input.readline()
         logging.debug(">> " + line.rstrip())
         return line
-        
+
     def _writeline(self, line):
         logging.debug("<< " + line)
         self._output.write(line + "\n")
@@ -198,12 +198,12 @@ def main():
         section = sys.argv[1]
         config = Config(section=section)
         config.read(CONFIG_FILE)
-    
+
         setup_logging(logging.DEBUG, config["log-file"])
 
         if not os.path.exists(os.path.join(master_directory, section)):
           os.makedirs(os.path.join(master_directory, section))
-    
+
         logging.info("Fetching %s" % config["packages-url"])
         packages_file = piupartslib.open_packages_url(config["packages-url"])
         known_circular_depends = config["known_circular_depends"]

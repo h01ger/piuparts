@@ -58,13 +58,13 @@ except ImportError:
 class Defaults:
 
     """Default settings which depend on flavor of Debian.
-    
+
     Some settings, such as the default mirror and distribution, depend on
     which flavor of Debian we run under: Debian itself, or a derived
     distribution such as Ubuntu. This class abstracts away the defaults
     so that the rest of the code can just refer to the values defined
     herein.
-    
+
     """
 
     def get_components(self):
@@ -72,10 +72,10 @@ class Defaults:
 
     def get_mirror(self):
         """Return default mirror."""
-    
+
     def get_distribution(self):
         """Return default distribution."""
-        
+
 
 class DebianDefaults(Defaults):
 
@@ -104,13 +104,13 @@ class UbuntuDefaults(Defaults):
 class DefaultsFactory:
 
     """Instantiate the right defaults class."""
-    
+
     def guess_flavor(self):
         p = subprocess.Popen(["lsb_release", "-i", "-s"], 
                              stdout=subprocess.PIPE)
         stdout, stderr = p.communicate()
         return stdout.strip().lower()
-    
+
     def new_defaults(self):
         if not settings.defaults:
             settings.defaults = self.guess_flavor()
@@ -126,7 +126,7 @@ class DefaultsFactory:
 class Settings:
 
     """Global settings for this program."""
-    
+
     def __init__(self):
         self.defaults = None
         self.tmpdir = None
@@ -325,7 +325,7 @@ def setup_logging(log_level, log_file_name):
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     HANDLERS.append(handler)
-    
+
     if log_file_name:
         handler = logging.FileHandler(log_file_name)
         handler.setFormatter(formatter)
@@ -442,7 +442,7 @@ def remove_files(filenames):
 
 def make_metapackage(name, depends, conflicts):
     """Return the path to a .deb created just for satisfying dependencies
-    
+
     Caller is responsible for removing the temporary directory containing the
     .deb when finished.
     """
@@ -476,7 +476,7 @@ def make_metapackage(name, depends, conflicts):
 
 def is_broken_symlink(root, dirpath, filename):
     """Is symlink dirpath+filename broken?
-    
+
     When resolving the symlink, pretend (similar to chroot) that root is
     the root of the filesystem. Note that this does NOT work completely
     correctly if the symlink target contains .. path components. This is
@@ -523,10 +523,10 @@ class IsBrokenSymlinkTests(unittest.TestCase):
         self.symlink("absolute-broken", "absolute-broken-to-symlink")
         self.symlink("/", "absolute-works")
         self.symlink("/absolute-works", "absolute-works-to-symlink")
-        
+
     def tearDown(self):
         shutil.rmtree(self.testdir)
-        
+
     def testRelativeBroken(self):
         self.failUnless(is_broken_symlink(self.testdir, self.testdir, 
                                           "relative-broken"))
@@ -542,7 +542,7 @@ class IsBrokenSymlinkTests(unittest.TestCase):
     def testAbsoluteBrokenToSymlink(self):
         self.failUnless(is_broken_symlink(self.testdir, self.testdir, 
                                           "absolute-broken-to-symlink"))
-        
+
     def testRelativeWorks(self):
         self.failIf(is_broken_symlink(self.testdir, self.testdir, 
                                       "relative-works"))
@@ -572,10 +572,10 @@ class IsBrokenSymlinkTests(unittest.TestCase):
 class Chroot:
 
     """A chroot for testing things in."""
-    
+
     def __init__(self):
         self.name = None
-        
+
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
         self.name = tempfile.mkdtemp(dir=settings.tmpdir)
@@ -778,7 +778,7 @@ class Chroot:
             if settings.scriptsdir is not None:
                 self.run_scripts("post_distupgrade")
             self.check_for_no_processes()
-    
+
     def apt_get_knows(self, package_names):
         """Does apt-get (or apt-cache) know about a set of packages?"""
 
@@ -802,7 +802,7 @@ class Chroot:
                 logging.error("Error copying %s to %s: %s" % 
                       (source_name, target_name, detail))
                 panic()
-                
+
     def list_installed_files (self, pre_info, post_info):
         """List the new files installed, removed and modified between two dir trees.
         Actually, it is a nice output of the funcion diff_meta_dat."""
@@ -871,11 +871,11 @@ class Chroot:
             self.run(["dpkg", "--" + operation, name], ignore_errors=True)
         self.run(["dpkg", "--remove", "--pending"], ignore_errors=True)
 
- 
+
     def restore_selections(self, changes, packages):
         """Restore package selections in a chroot by applying 'changes'.
            'changes' is a return value from diff_selections."""
- 
+
         deps = {}
         nondeps = {}
         for name, state in changes.iteritems():
@@ -883,7 +883,7 @@ class Chroot:
                 nondeps[name] = state
             else:
                 deps[name] = state
-    
+
         deps_to_remove = [name for name, state in deps.iteritems()
                           if state == "remove"]
         deps_to_purge = [name for name, state in deps.iteritems()
@@ -892,7 +892,7 @@ class Chroot:
                              if state == "remove"]
         nondeps_to_purge = [name for name, state in nondeps.iteritems()
                             if state == "purge"]
-    
+
         # Run custom scripts before removing all packages. 
         if settings.scriptsdir is not None:
             self.run_scripts("pre_remove")      
@@ -906,13 +906,13 @@ class Chroot:
 
         if not settings.skip_cronfiles_test:
             cronfiles, cronfiles_list = self.check_if_cronfiles(packages)
-        
+
         if not settings.skip_cronfiles_test and cronfiles:
             self.check_output_cronfiles(cronfiles_list)
 
         if not settings.skip_logrotatefiles_test:
             logrotatefiles, logrotatefiles_list = self.check_if_logrotatefiles(packages)
-        
+
         if not settings.skip_logrotatefiles_test and logrotatefiles:
             installed = self.install_logrotate()
             self.check_output_logrotatefiles(logrotatefiles_list)
@@ -1056,7 +1056,7 @@ class Chroot:
                 panic()
         else:
             logging.debug("No broken symlinks as far as we can find.")
-            
+
     def check_if_cronfiles(self, packages):
         """Check if the packages have cron files under /etc/cron.d and in case positive, 
         it returns the list of files. """
@@ -1615,7 +1615,7 @@ def process_changes(changes):
 
 def check_results(chroot, root_info, file_owners, deps_info=None):
     """Check that current chroot state matches 'root_info'.
-    
+
     If settings.warn_on_others is True and deps_info is not None, then only
     print a warning rather than failing if the current chroot contains files
     that are in deps_info but not in root_info.  (In this case, deps_info
@@ -1702,7 +1702,7 @@ def install_purge_test(chroot, root_info, selections, package_list, packages):
             apt_cache_args.extend(packages)
             returncode, output = chroot.run(apt_cache_args)
             control_infos = deb822.Deb822.iter_paragraphs(output.splitlines())
-            
+
         depends = []
         conflicts = []
         for control in control_infos:
@@ -1714,7 +1714,7 @@ def install_purge_test(chroot, root_info, selections, package_list, packages):
         all_conflicts = ", ".join(conflicts)
         metapackage = make_metapackage("piuparts-depends-dummy",
                                        all_depends, all_conflicts)
-        
+
         # Install the metapackage
         chroot.install_package_files([metapackage])
         # Now remove it
@@ -1744,7 +1744,7 @@ def install_purge_test(chroot, root_info, selections, package_list, packages):
     # Remove all packages from the chroot that weren't there initially.    
     changes = diff_selections(chroot, selections)
     chroot.restore_selections(changes, packages)
-    
+
     chroot.check_for_broken_symlinks()
 
     return check_results(chroot, root_info, file_owners, deps_info=deps_info)
@@ -1756,7 +1756,7 @@ def install_upgrade_test(chroot, root_info, selections, package_list, package_na
 
     # First install via apt-get.
     chroot.install_packages_by_name(package_names)
-    
+
     if settings.scriptsdir is not None:
         chroot.run_scripts("pre_upgrade")
 
@@ -1764,14 +1764,14 @@ def install_upgrade_test(chroot, root_info, selections, package_list, package_na
 
     # Then from the package files.
     chroot.install_package_files(package_list)
-    
+
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't there
     # initially.
     changes = diff_selections(chroot, selections)
     chroot.restore_selections(changes, package_names)
-    
+
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
@@ -1830,7 +1830,7 @@ def install_and_upgrade_between_distros(filenames, packages):
     else:
         root_tgz = chroot.create_temp_tgz_file()
         chroot.pack_into_tgz(root_tgz)
-        
+
     if settings.end_meta:
         # load root_info and selections
         root_info, selections = load_meta_data(settings.end_meta)
@@ -1841,11 +1841,11 @@ def install_and_upgrade_between_distros(filenames, packages):
         # set root_info and selections
         root_info = chroot.save_meta_data()
         selections = chroot.get_selections()
-        
+
         if settings.save_end_meta:
             # save root_info and selections
             save_meta_data(settings.save_end_meta, root_info, selections)
-    
+
         chroot.remove()
         dont_do_on_panic(cid)
         chroot = get_chroot()
@@ -1871,7 +1871,7 @@ def install_and_upgrade_between_distros(filenames, packages):
 
     chroot.install_package_files(filenames)
     chroot.run(["apt-get", "clean"])
-    
+
     chroot.check_for_no_processes()
 
     file_owners = chroot.get_files_owned_by_packages()
@@ -1882,7 +1882,7 @@ def install_and_upgrade_between_distros(filenames, packages):
     result = check_results(chroot, root_info, file_owners)
 
     chroot.check_for_no_processes()
-    
+
     if root_tgz != settings.basetgz:
         remove_files([root_tgz])
     chroot.remove()
@@ -1927,11 +1927,11 @@ def set_basetgz_to_pbuilder(option, opt, value, parser, *args, **kwargs):
 
 def parse_command_line():
     """Parse the command line, change global settings, return non-options."""
-    
+
     parser = optparse.OptionParser(usage="%prog [options] package ...",
                                    version="piuparts %s" % VERSION)
-    
-   
+
+
     parser.add_option("-a", "--apt", action="store_true", default=False,
                       help="Command line arguments are package names " +
                            "to be installed via apt.")
@@ -1940,7 +1940,7 @@ def parse_command_line():
                       metavar='CMDLINE', default=None,
                       help="Use CMDLINE via autopkgtest (adt-virt-*)"
                            " protocol instead of managing a chroot.")
-    
+
     parser.add_option("-b", "--basetgz", metavar="TARBALL",
                       help="Use TARBALL as the contents of the initial " +
                            "chroot, instead of building a new one with " +
@@ -1949,7 +1949,7 @@ def parse_command_line():
     parser.add_option("--bindmount", action="append", metavar="DIR",
                       default=[],
                       help="Directory to be bind-mounted inside the chroot.")
-    
+
     parser.add_option("-d", "--distribution", action="append", metavar="NAME",
                       help="Which Debian distribution to use: a code name " +
                            "(for example lenny, squeeze, sid) or experimental. The " +
@@ -1958,7 +1958,7 @@ def parse_command_line():
     parser.add_option("-D", "--defaults", action="store",
                       help="Choose which set of defaults to use "
                            "(debian/ubuntu).")
- 
+
     parser.add_option("--debfoster-options",
                       default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
                       help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
@@ -1972,7 +1972,7 @@ def parse_command_line():
                       default=False,
                       action='store_true',
                       help="Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This option will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages.  (See #466118.)")
-     
+
     parser.add_option("--do-not-verify-signatures", default=False,
                       action='store_true',
                       help="Do not verify signatures from the Release files when running debootstrap.")
@@ -1981,13 +1981,13 @@ def parse_command_line():
                       default=[],
                       help="Add FILENAME to list of filenames to be " +
                            "ignored when comparing changes to chroot.")
-    
+
     parser.add_option("-I", "--ignore-regex", action="append", 
                       metavar="REGEX", default=[],
                       help="Add REGEX to list of Perl compatible regular " +
                            "expressions for filenames to be " +
                            "ignored when comparing changes to chroot.")
-    
+
     parser.add_option("-k", "--keep-tmpdir", 
                       action="store_true", default=False,
                       help="Don't remove the temporary directory for the " +
@@ -1996,7 +1996,7 @@ def parse_command_line():
     parser.add_option("-K", "--keyring", metavar="FILE",  
                       default = "/usr/share/keyrings/debian-archive-keyring.gpg", 
                       help="Use FILE as the keyring to use with debootstrap when creating chroots.")
-    
+
     parser.add_option("--keep-sources-list", 
                       action="store_true", default=False,
                       help="Don't modify the chroot's " +
@@ -2020,16 +2020,16 @@ def parse_command_line():
     parser.add_option("--lvm-snapshot-size", metavar="SNAPSHOT-SIZE", action="store",
                       default="1G", help="Use SNAPSHOT-SIZE as snapshot size when creating " +
                       "a new LVM snapshot (default: 1G)")
-    
+
     parser.add_option("-m", "--mirror", action="append", metavar="URL",
                       default=[],
                       help="Which Debian mirror to use.")
-    
+
     parser.add_option("-n", "--no-ignores", action="callback",
                       callback=forget_ignores,
                       help="Forget all ignores set so far, including " +
                            "built-in ones.")
-    
+
     parser.add_option("-N", "--no-symlinks", action="store_true",
                       default=False,
                       help="Don't check for broken symlinks.")
@@ -2038,7 +2038,7 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Skip testing the upgrade from an existing version " +
                       "in the archive.")
-    
+
     parser.add_option("--no-install-purge-test", 
                       action="store_true", default=False,
                       help="Skip install and purge test.")
@@ -2051,13 +2051,13 @@ def parse_command_line():
     parser.add_option("--pedantic-purge-test", 
                       action="store_true", default=False,
                       help="Be pedantic when checking if a purged package leaves files behind. If this option is not set, files left in /tmp are ignored.")
- 
+
     parser.add_option("-s", "--save", metavar="FILENAME",
                       help="Save the chroot into FILENAME.")
 
     parser.add_option("-B", "--end-meta", metavar="FILE",
                       help="Save chroot package selection and file meta data in FILE for later use. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
- 
+
     parser.add_option("-S", "--save-end-meta", metavar="FILE",
                       help="Load chroot package selection and file meta data from FILE. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
 
@@ -2068,7 +2068,7 @@ def parse_command_line():
     parser.add_option("--skip-cronfiles-test", 
                       action="store_true", default=False,
                       help="Skip testing the output from the cron files.")
-                   
+
     parser.add_option("--skip-logrotatefiles-test", 
                       action="store_true", default=False,
                       help="Skip testing the output from the logrotate files.")
@@ -2083,7 +2083,7 @@ def parse_command_line():
 
     parser.add_option("--scriptsdir", metavar="DIR",
                       help="Directory where are placed the custom scripts.")
-    
+
     parser.add_option("-t", "--tmpdir", metavar="DIR",
                       help="Use DIR for temporary storage. Default is " +
                            "$TMPDIR or /tmp.")
@@ -2112,7 +2112,7 @@ def parse_command_line():
     parser.add_option("--fail-on-broken-symlinks", action="store_true",
                       default=False,
                       help="Fail if broken symlinks are detected.")
-    
+
     parser.add_option("--log-level", action="store",metavar='LEVEL',
                       default="dump",
                       help="Displays messages from LEVEL level, possible values are: error, info, dump, debug. The default is dump.")
@@ -2149,11 +2149,11 @@ def parse_command_line():
     settings.pedantic_purge_test = opts.pedantic_purge_test
     if not settings.pedantic_purge_test:
       settings.ignored_patterns += settings.non_pedantic_ignore_patterns
-   
+
     log_file_name = opts.log_file
 
     defaults = DefaultsFactory().new_defaults()
-    
+
     settings.debian_mirrors = [parse_mirror_spec(x, defaults.get_components())
                                for x in opts.mirror]
     settings.check_broken_symlinks = not opts.no_symlinks
@@ -2225,7 +2225,7 @@ def parse_command_line():
         sys.exit(exitcode)
 
     return args
-    
+
 
 def get_chroot():
     if settings.adt_virt is None: return Chroot()
@@ -2266,7 +2266,7 @@ def process_packages(package_list):
             else:
                 logging.error("FAIL: Installation, upgrade and purging tests.")
                 panic()
-    
+
         chroot.remove()
         dont_do_on_panic(cid)
     else:

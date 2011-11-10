@@ -37,10 +37,10 @@ class DependencySyntaxError(Exception):
         self._msg = "Error: %s: %s (text at error: '%s', full text being parsed: '%s')" % \
                     (cursor.get_position(), msg, cursor.get_text(10),
                      cursor.get_full_text())
-        
+
     def __str__(self):
         return self._msg
-    
+
     def __repr__(self):
         return self._msg
 
@@ -48,7 +48,7 @@ class DependencySyntaxError(Exception):
 class _Cursor:
 
     """Store an input string and a movable location in it"""
-    
+
     def __init__(self, input):
         self._input = input
         self._len = len(self._input)
@@ -62,7 +62,7 @@ class _Cursor:
         """Are we at the end of the input?"""
         self.skip_whitespace()
         return self._pos >= self._len
-        
+
     def next(self):
         """Move to the next character"""
         if self._pos < self._len:
@@ -87,9 +87,9 @@ class _Cursor:
 
     def match(self, regexp):
         """Match a regular expression against the current position
-        
+
         The cursor is advanced by the length of the match, if any.
-        
+
         """
         m = regexp.match(self._input[self._pos:])
         if m:
@@ -98,10 +98,10 @@ class _Cursor:
 
     def match_literal(self, literal):
         """Match a literal string against the current position.
-        
+
         Return True and move position if there is a match, else return
         False.
-        
+
         """
         if self.get_text(len(literal)) == literal:
             self._pos += len(literal)
@@ -132,17 +132,17 @@ class SimpleDependency:
 class DependencyParser:
 
     """Parse Debian package relationship strings
-    
+
     Debian packages have a rich language for expressing their
     relationships. See the Debian Policy Manual, chapter 7 ("Declaring
     relationships between packages"). This Python module implements a
     parser for strings expressing such relationships.
-    
+
     Syntax of dependency fields (Pre-Depends, Depends, Recommends,
     Suggests, Conflicts, Provides, Replaces, Enhances, Build-Depends,
     Build-Depends-Indep, Build-Conflicts, Build-Conflicts-Indep), in a
     BNF-like form:
-    
+
         depends-field ::= EMPTY | dependency ("," dependency)*
         dependency ::= possible-dependency ("|" possible-dependency)*
         possible-dependency ::= package-name version-dependency? 
@@ -168,18 +168,18 @@ class DependencyParser:
         name-char ::= alphanumeric | "+" | "-" | "." | "_"
         version-char ::= alphanumeric | "." | "+" | "-" | ":" | "~"
         debian-version-char ::= alphanumeric | "." | "+"
-    
+
     White space can occur between any tokens except inside package-name,
     version-number, or arch-name. Some of the headers restrict the syntax
     somewhat, e.g., Provides does not allow version-dependency, but this is
     not included in the syntax for simplicity. 
-    
+
     Note: Added "_" to name-char, because some packages (type-handling
     in particular) use Provides: headers with bogus package names.
-    
+
     Note: Added upper case letters to name pattern, since it some of the
     Mozilla localization packages use or used them.
-    
+
     """
 
     def __init__(self, input_string):
@@ -188,19 +188,19 @@ class DependencyParser:
 
     def get_dependencies(self):
         """Return parsed dependencies
-        
+
         The result is a list of lists of SimpleDependency objects.
         Let's try that again.
-        
+
         The result is a list of dependencies, corresponding to
         the comma-separated items in the dependency list. Each dependency
         is also a list, or SimpleDependency objects, representing
         alternative ways to fulfill the dependency; in other words,
         items separated by the vertical bar (|).
-        
+
         For example, "foo, bar | foobar" would result in the following
         list: [[foo], [bar, foobar]].
-        
+
         """
         return self._list
 
@@ -227,7 +227,7 @@ class DependencyParser:
                 break
             dep = self._parse_possible_dependency()
         return vlist
-        
+
     def _parse_possible_dependency(self):
         name = self._parse_package_name()
         if not name:
@@ -290,7 +290,7 @@ class DependencyParser:
         self._cursor.skip_whitespace()
         if self._cursor.get_char() == "[":
             self._cursor.next()
-            
+
             vlist = []
             while True:
                 self._cursor.skip_whitespace()
@@ -302,7 +302,7 @@ class DependencyParser:
                     raise DependencySyntaxError("Expected architecture name",
                                                 self._cursor)
                 vlist.append(m.group())
-                    
+
             return vlist
         else:
             return None
