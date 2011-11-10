@@ -41,10 +41,10 @@ class DependencyParserTests(unittest.TestCase):
 class FakeLogDB(piupartslib.packagesdb.LogDB):
 
     """A fake version of the LogDB class, for testing
-    
+
     This version simulates filesystem actions so that there is no need
     to do actual I/O. Cleaner, although not quite as thorough.
-    
+
     """
 
     def __init__(self):
@@ -55,22 +55,22 @@ class FakeLogDB(piupartslib.packagesdb.LogDB):
             "reserved": [],
             "bugged": [],
         }
-        
+
     def listdir(self, dirname):
         return self.dict[dirname]
-    
+
     def _parse(self, pathname):
         return os.path.dirname(pathname), os.path.basename(pathname)
-    
+
     def exists(self, pathname):
         vdir, base = self._parse(pathname)
         return base in self.dict[vdir]
-    
+
     def open_file(self, pathname, mode):
         vdir, base = self._parse(pathname)
         self.dict[vdir].append(base)
         return StringIO.StringIO()
-        
+
     def remove_file(self, pathname):
         vdir, base = self._parse(pathname)
         if base in self.dict[vdir]:

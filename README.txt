@@ -68,7 +68,7 @@ tarball with the command (again, as root):
 ---- 
 # pbuilder create
 ---- 
- 
+
 then you only have to remember to update this tarball with:
 
 ---- 
@@ -234,7 +234,7 @@ don't have direct network access.
 
 
 === Distributed piuparts testing protocol
-                
+
 The slave machine and the piuparts-master program communicate
 using a simplistic line based protocol. SSH takes care of
 authentication, so there is nothing in the protocol for that. The
@@ -244,7 +244,7 @@ single line) or long (a status line plus additional data lines).
 Simple commands and responses are of the following format:
 
     'keyword arg1 arg2 arg3 ... argN'
-    
+
 The keyword is a command or status code ("ok"), and it and the
 arguments are separated by spaces. An argument may not contain a
 space.
@@ -270,7 +270,7 @@ the master responds with):
 >> reserve
 << ok vorbisgain 2.3-4
 ----
-                
+
 Here the slave first reports a successful test of package liwc,
 version 1.2.3-4, and sends the piuparts log file for it. Then it
 reserves a new package to test and the master gives it
@@ -317,16 +317,16 @@ Command: fail <packagename> <packageversion>
          .
 Success: ok
 ---- 
-                    
+
 Same as "pass", but package failed one or more tests.
-                        
+
 ---- 
 Command: untestable <packagename> <packageversion>
           log file contents
          .
 Success: ok
 ---- 
-                    
+
 Slave reports that a particular package is untestable, possibly
 because it insists on interacting with the user.
 
@@ -360,31 +360,31 @@ three they are all mandatory:
 * "idle-sleep" is the length of time the slave should wait before querying the master again if the master didn't have any new packages to test. In seconds, so a value of 300 would mean five minutes, and that seems to be a good value when there are fairly few slaves per master. The default is 300 seconds.
 
 * "max-tgz-age" is used to specify the maximum age (in seconds) after which basesystem tarballs will be recreated. If recreation fails, the old tarball will be used again. The default is 2592000 seconds, which is 30 days.
-  
+
 * "min-tgz-retry-delay" is used to specify the minimum time (in seconds) between attempts to recreate a tarball which was created more than "max-tgz-age" seconds ago. The default is 21600 seconds, which is 6h.
 
 * "master-host" is the host where the master exists. The slave will give this host to ssh.
-  
+
 * "master-user" is the username of the master. The slave will log in using this username.
 
 * "master-directory" is the directory where the master keeps its files. Can be relative to the master's home directory.
-  
+
 * "master-command" is the command to run on master-host to start the master. When the master has been installed from the Debian package, the command is 'python /usr/share/piuparts/piuparts-master'.  If you want to use a section in the master configuration file other than "master", append the section name to this command.  For example, if the master configuration file has a "sid-ia64" section that you want to use, the command should be 'python /usr/share/piuparts/piuparts-master sid-ia64'.
- 
+
 * "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "/dev/null", that is, log messages are not put in a file.
 
 ==== section specific configuration 
 
 * "packages-url" is a URL to the Packages.bz2 file specifying what packages should be tested. This needs to be a Packages.bz2 file, other compression methods are not supported. For example, you might use 'http://ftp.debian.org/debian/dists/sid/main/binary-i386/Packages.bz2' but you really do want to replace "ftp.debian.org" with the name of your local mirror.
- 
+
 * "sources-url" is a URL to the Sources.bz2 file for your mirror. "sources-url" must match "packages-url", if it is not defined, piuparts-reports will not generate source centric html pages.
 
 * "mirror" tells the slave which mirror it is to use. The slave gives this to piuparts when it runs it. Components must not be used here. "packages-url" defines which component to use. This setting is redundant and should go away.
-  
+
 * "piuparts-cmd" is the command the slave uses to start piuparts. It should include 'sudo' if necessary so that piuparts runs with sufficient priviledges to do its testing (and that means root priviledges).
-  
+
 * "distro" is the distribution the slave should tell piuparts to use for basic install/purge testing. This can be left empty if only upgrade tests should be run.
-  
+
 * "chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the basic install/purge testing. If the tarball doesn't exist, the slave creates it. This can be left empty if only upgrade tests should be run.
 
 * "upgrade-test-distros" is the space delimited list of distributions the slave should use for testing upgrades between distributions (i.e., Debian versions). Currently, "lenny squeeze sid" is a good choice.  Leave this unset if you do not want to run upgrade tests.

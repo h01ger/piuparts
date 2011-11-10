@@ -40,7 +40,7 @@ class Config(UserDict.UserDict):
         for key, value in defaults.iteritems():
             self[key] = value
         self._mandatory = mandatory
-    
+
     def read(self, filename):
         cp = ConfigParser.ConfigParser()
         cp.read(filename)
