@@ -1948,8 +1948,6 @@ def install_upgrade_test(chroot, root_info, selections, package_files, packages)
     os.environ["PIUPARTS_PHASE"] = "install"
     chroot.install_packages_by_name(packages)
 
-    chroot.run_scripts("pre_upgrade")
-
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
@@ -2059,8 +2057,6 @@ def install_and_upgrade_between_distros(package_files, packages):
     os.environ["PIUPARTS_PHASE"] = "install"
 
     chroot.install_packages_by_name(packages)
-
-    chroot.run_scripts("pre_upgrade")
 
     chroot.check_for_no_processes()
 

@@ -187,10 +187,6 @@ to distinguish the cases.
 
 'post_purge_' - after *purging* your package.
 
-'pre_upgrade_' - before *upgrading* your package, once the
-current version in the archive has been installed (this is done
-in the second test, "Installation, upgrade and purging test").
-
 'pre_distupgrade_' - before *upgrading* the chroot to the *next
 distribution*. The next distribution is available in the variable
 PIUPARTS_DISTRIBUTION_NEXT.
