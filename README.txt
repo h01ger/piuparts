@@ -171,6 +171,10 @@ PIUPARTS_DISTRIBUTION.
 The following prefixes for scripts are recognized:
 
 'post_setup_' - after the *setup* of the chroot is finished.
+Before metadata of the chroot is recorded for later comparison.
+
+'pre_test_' - at the beginning of each test. After metadata of
+the chroot was recorded for later comparison.
 
 'pre_install_' - before *installing* your package. Depending on
 the test, this may be run multiple times. The PIUPARTS_TEST and
@@ -185,7 +189,8 @@ to distinguish the cases.
 
 'post_remove_' - after *removing* your package.
 
-'post_purge_' - after *purging* your package.
+'post_purge_' - after *purging* your package. Right before
+comparing the chroot with the initially recorded metadata.
 
 'pre_distupgrade_' - before *upgrading* the chroot to the *next
 distribution*. The next distribution is available in the variable

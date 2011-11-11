@@ -1870,6 +1870,7 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
        chroot, with packages in states given by 'selections'."""
 
     os.environ["PIUPARTS_TEST"] = "install"
+    chroot.run_scripts("pre_test")
 
     # Install packages into the chroot.
     os.environ["PIUPARTS_PHASE"] = "install"
@@ -1943,6 +1944,7 @@ def install_upgrade_test(chroot, root_info, selections, package_files, packages)
     Return True if successful, False if not."""
 
     os.environ["PIUPARTS_TEST"] = "upgrade"
+    chroot.run_scripts("pre_test")
 
     # First install via apt-get.
     os.environ["PIUPARTS_PHASE"] = "install"
@@ -2053,6 +2055,8 @@ def install_and_upgrade_between_distros(package_files, packages):
     logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
 
     chroot.check_for_no_processes()
+
+    chroot.run_scripts("pre_test")
 
     os.environ["PIUPARTS_PHASE"] = "install"
 
