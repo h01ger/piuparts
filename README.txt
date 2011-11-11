@@ -165,6 +165,9 @@ PIUPARTS_PHASE is set to one of the following values:
 During the 'install' test, the PIUPARTS_PHASE variable is set to
 'install'.
 
+The current distribution is available in the variable
+PIUPARTS_DISTRIBUTION.
+
 The following prefixes for scripts are recognized:
 
 'post_setup_' - after the *setup* of the chroot is finished.
@@ -189,10 +192,12 @@ current version in the archive has been installed (this is done
 in the second test, "Installation, upgrade and purging test").
 
 'pre_distupgrade_' - before *upgrading* the chroot to the *next
-distribution*.
+distribution*. The next distribution is available in the variable
+PIUPARTS_DISTRIBUTION_NEXT.
 
 'post_distupgrade_' - after *upgrading* the chroot to the *next
-distribution*.
+distribution*. The previous distribution is available in the
+variable PIUPARTS_DISTRIBUTION_PREV.
 
 
 === Example custom scripts:
