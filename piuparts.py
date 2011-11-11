@@ -729,7 +729,6 @@ class Chroot:
         if settings.basetgz:
             self.run(["apt-get", "-yf", "upgrade"])
         self.minimize()
-        self.run(["apt-get", "clean"])
 
         #copy scripts dir into the chroot
         if settings.scriptsdir is not None:
@@ -772,6 +771,7 @@ class Chroot:
 
     def pack_into_tgz(self, result):
         """Tar and compress all files in the chroot."""
+        self.run(["apt-get", "clean"])
         logging.debug("Saving %s to %s." % (self.name, result))
 
         run(['tar', '--exclude', './proc/*', '-czf', result, '-C', self.name, './'])
@@ -992,7 +992,6 @@ class Chroot:
 
             self.run_scripts("post_install")
 
-            self.run(["apt-get", "clean"])
             remove_files([self.relative(name) for name in tmp_files])
 
     def get_selections(self):
@@ -1071,6 +1070,7 @@ class Chroot:
 
     def save_meta_data(self):
         """Return the filesystem meta data for all objects in the chroot."""
+        self.run(["apt-get", "clean"])
         root = self.relative(".")
         vdict = {}
         proc = os.path.join(root, "proc")
@@ -1273,7 +1273,6 @@ class Chroot:
         list of packages that were installed"""
         old_selections = self.get_selections()
         self.run(['apt-get', 'install', '-y', 'logrotate'])
-        self.run(['apt-get', 'clean'])
         diff = diff_selections(self, old_selections)
         return diff.keys()
 
@@ -1871,7 +1870,6 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
         chroot.install_package_files(package_files)
     else:
         chroot.install_packages_by_name(packages)
-        chroot.run(["apt-get", "clean"])
 
 
     chroot.check_for_no_processes()
@@ -1970,7 +1968,6 @@ def install_and_upgrade_between_distros(package_files, packages):
         root_info, selections = load_meta_data(settings.end_meta)
     else:
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
-        chroot.run(["apt-get", "clean"])
 
         # set root_info and selections
         root_info = chroot.save_meta_data()
@@ -1991,7 +1988,6 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     chroot.check_for_no_processes()
 
-    chroot.run(["apt-get", "update"])
     chroot.install_packages_by_name(packages)
 
     chroot.run_scripts("pre_upgrade")
@@ -2003,7 +1999,6 @@ def install_and_upgrade_between_distros(package_files, packages):
     chroot.check_for_no_processes()
 
     chroot.install_package_files(package_files)
-    chroot.run(["apt-get", "clean"])
 
     chroot.check_for_no_processes()
 
