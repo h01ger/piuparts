@@ -106,3 +106,5 @@ Version: 1.0-1
 
 if __name__ == "__main__":
     unittest.main()
+
+# vi:set et ts=4 sw=4 :

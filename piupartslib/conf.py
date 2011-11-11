@@ -49,3 +49,5 @@ class Config(UserDict.UserDict):
                 self[key] = cp.get(self._section, key)
             elif key in self._mandatory:
                 raise MissingMandatorySetting(filename, key)
+
+# vi:set et ts=4 sw=4 :

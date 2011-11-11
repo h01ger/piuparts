@@ -1096,3 +1096,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# vi:set et ts=4 sw=4 :
