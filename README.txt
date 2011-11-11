@@ -136,6 +136,9 @@ your package.
 You can specify several custom scripts to be run inside piuparts.
 You have to store them in a directory and give it as argument to
 piuparts: '--scriptsdir=/dir/with/the/scripts'
+This option can be given multiple times. The scripts from all
+directories will be merged together (and later ones may overwrite
+earlier scripts with the same filename).
 
 The script prefix determines in which step it is executed. You
 can run several scripts in every step, they are run in

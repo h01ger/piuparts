@@ -131,7 +131,7 @@ class Settings:
     def __init__(self):
         self.defaults = None
         self.tmpdir = None
-        self.scriptsdir = None
+        self.scriptsdirs = []
         self.keep_tmpdir = False
         self.single_changes_list = False
         # limit output of logfiles to the last megabyte:
@@ -734,15 +734,17 @@ class Chroot:
             self.run(["apt-get", "-yf", "upgrade"])
         self.minimize()
 
-        #copy scripts dir into the chroot
-        if settings.scriptsdir is not None:
+        # Copy scripts dirs into the chroot, merging all dirs together,
+        # later files overwriting earlier ones.
+        if settings.scriptsdirs:
             dest = self.relative("tmp/scripts/")
             if not os.path.exists(self.relative("tmp/scripts/")):
                 os.mkdir(dest)
-            logging.debug("Copying scriptsdir to %s" % dest)
-            for sfile in os.listdir(settings.scriptsdir):
-                if (sfile.startswith("post_") or sfile.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), sfile)):
-                    shutil.copy(os.path.join((settings.scriptsdir), sfile), dest) 
+            for sdir in settings.scriptsdirs:
+                logging.debug("Copying scriptsdir %s to %s" % (sdir, dest))
+                for sfile in os.listdir(sdir):
+                    if (sfile.startswith("post_") or sfile.startswith("pre_")) and os.path.isfile(os.path.join(sdir, sfile)):
+                        shutil.copy(os.path.join(sdir, sfile), dest)
 
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
@@ -1334,7 +1336,7 @@ class Chroot:
     def run_scripts (self, step):
         """ Run custom scripts to given step post-install|remove|purge"""
 
-        if settings.scriptsdir is None:
+        if not settings.scriptsdirs:
             return
         logging.info("Running scripts "+ step)
         basepath = self.relative("tmp/scripts/")
@@ -2292,7 +2294,8 @@ def parse_command_line():
                       help="Minimize chroot with debfoster. This used to be the default until #539142 was fixed.")
 
     parser.add_option("--scriptsdir", metavar="DIR",
-                      help="Directory where are placed the custom scripts.")
+                      action="append", default=[],
+                      help="Directory where are placed the custom scripts. Can be given multiple times.")
 
     parser.add_option("-t", "--tmpdir", metavar="DIR",
                       help="Use DIR for temporary storage. Default is " +
@@ -2408,11 +2411,10 @@ def parse_command_line():
         else:
             settings.tmpdir = "/tmp"
 
-    if opts.scriptsdir is not None:
-        settings.scriptsdir = opts.scriptsdir
-        if not os.path.isdir(settings.scriptsdir):
-            logging.error("Scripts directory is not a directory: %s" % 
-                          settings.scriptsdir)
+    settings.scriptsdirs = opts.scriptsdir
+    for sdir in settings.scriptsdirs:
+        if not os.path.isdir(sdir):
+            logging.error("Scripts directory is not a directory: %s" % sdir)
             panic()
 
     if not settings.debian_distros:
