@@ -1865,7 +1865,10 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
        Assume 'root' is a directory already populated with a working
        chroot, with packages in states given by 'selections'."""
 
+    os.environ["PIUPARTS_TEST"] = "install"
+
     # Install packages into the chroot.
+    os.environ["PIUPARTS_PHASE"] = "install"
 
     if settings.warn_on_others:
         # Create a metapackage with dependencies from the given packages
@@ -1935,7 +1938,10 @@ def install_upgrade_test(chroot, root_info, selections, package_files, packages)
     """Install package via apt-get, then upgrade from package files.
     Return True if successful, False if not."""
 
+    os.environ["PIUPARTS_TEST"] = "upgrade"
+
     # First install via apt-get.
+    os.environ["PIUPARTS_PHASE"] = "install"
     chroot.install_packages_by_name(packages)
 
     chroot.run_scripts("pre_upgrade")
@@ -1944,6 +1950,7 @@ def install_upgrade_test(chroot, root_info, selections, package_files, packages)
     chroot.check_for_broken_symlinks()
 
     # Then from the package files.
+    os.environ["PIUPARTS_PHASE"] = "upgrade"
     chroot.install_package_files(package_files)
 
     chroot.check_for_no_processes()
@@ -2003,6 +2010,8 @@ def install_and_upgrade_between_distros(package_files, packages):
     # a reasonable default behaviour for distro upgrade tests, which are not 
     # done by default anyway.
 
+    os.environ["PIUPARTS_TEST"] = "distupgrade"
+
     chroot = get_chroot()
     chroot.create()
     cid = do_on_panic(chroot.remove)
@@ -2043,15 +2052,21 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     chroot.check_for_no_processes()
 
+    os.environ["PIUPARTS_PHASE"] = "install"
+
     chroot.install_packages_by_name(packages)
 
     chroot.run_scripts("pre_upgrade")
 
     chroot.check_for_no_processes()
 
+    os.environ["PIUPARTS_PHASE"] = "distupgrade"
+
     chroot.upgrade_to_distros(settings.debian_distros[1:], packages)
 
     chroot.check_for_no_processes()
+
+    os.environ["PIUPARTS_PHASE"] = "upgrade"
 
     chroot.install_package_files(package_files)
 

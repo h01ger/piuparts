@@ -151,15 +151,32 @@ being tested (seperated by spaces, if applicable) or the .changes
 file(s) being used.  So when running in master-slave mode, it
 will be set to the (one) package being tested at a time.
 
+Depending on the current test, the variable PIUPARTS_TEST is set
+to
+. 'install' (installation and purging test),
+. 'upgrade' (installation, upgrade and purging tests) or
+. 'distupgrade'.
+
+During the 'upgrade' and 'distupgrade' tests, the variable
+PIUPARTS_PHASE is set to one of the following values:
+. 'install' while initially installing the packages from the repository,
+. 'upgrade' when upgrading to the .debs,
+. 'distupgrade' while reinstalling the packages after 'apt-get dist-upgrade' to ensure they were not removed accidently
+During the 'install' test, the PIUPARTS_PHASE variable is set to
+'install'.
+
 The following prefixes for scripts are recognized:
 
 'post_setup_' - after the *setup* of the chroot is finished.
 
-'pre_install_' - before *installing* your package.
+'pre_install_' - before *installing* your package. Depending on
+the test, this may be run multiple times. The PIUPARTS_TEST and
+PIUPARTS_PHASE variables can be used to distinguish the cases.
 
 'post_install_' - after *installing* your package and its
-dependencies.  In the case of the upgrade test, it is after
-install and upgrade.
+dependencies.  Depending on the test, this may be run multiple
+times. The PIUPARTS_TEST and PIUPARTS_PHASE variables can be used
+to distinguish the cases.
 
 'pre_remove_' - before *removing* your package.
 
