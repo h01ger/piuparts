@@ -921,10 +921,11 @@ class Chroot:
         self.run(["dpkg", "--remove", "--pending"], ignore_errors=True)
 
 
-    def restore_selections(self, changes, packages):
-        """Restore package selections in a chroot by applying 'changes'.
-           'changes' is a return value from diff_selections."""
+    def restore_selections(self, selections, packages):
+        """Restore package selections in a chroot to the state in
+        'selections'."""
 
+        changes = diff_selections(self, selections)
         deps = {}
         nondeps = {}
         for name, state in changes.iteritems():
@@ -1789,8 +1790,7 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't there initially.    
-    changes = diff_selections(chroot, selections)
-    chroot.restore_selections(changes, packages)
+    chroot.restore_selections(selections, packages)
 
     chroot.check_for_broken_symlinks()
 
@@ -1814,10 +1814,8 @@ def install_upgrade_test(chroot, root_info, selections, package_files, packages)
 
     file_owners = chroot.get_files_owned_by_packages()
 
-    # Remove all packages from the chroot that weren't there
-    # initially.
-    changes = diff_selections(chroot, selections)
-    chroot.restore_selections(changes, packages)
+    # Remove all packages from the chroot that weren't there initially.
+    chroot.restore_selections(selections, packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -1924,8 +1922,7 @@ def install_and_upgrade_between_distros(package_files, packages):
     file_owners = chroot.get_files_owned_by_packages()
 
     # use root_info and selections
-    changes = diff_selections(chroot, selections)
-    chroot.restore_selections(changes, packages)
+    chroot.restore_selections(selections, packages)
     result = check_results(chroot, root_info, file_owners)
 
     chroot.check_for_no_processes()
