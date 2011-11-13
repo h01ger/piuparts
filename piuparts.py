@@ -2131,6 +2131,8 @@ def parse_command_line():
     settings.keep_sources_list = opts.keep_sources_list
     settings.skip_minimize = opts.skip_minimize
     settings.minimize = opts.minimize
+    if settings.minimize:
+      settings.skip_minimize = False
     settings.list_installed_files = opts.list_installed_files
     settings.no_install_purge_test = opts.no_install_purge_test
     settings.no_upgrade_test = opts.no_upgrade_test
