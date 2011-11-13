@@ -427,7 +427,7 @@ def create_or_replace_chroot_tgz(config, tgz, tgz_ctrl, distro):
         statobj = os.stat(tgz)
         # stat.ST_MTIME is actually time file was initially created
         age = now - statobj[stat.ST_MTIME]
-        logging.info("Check-replace tgz: age (%d-%d=%d) vs. max(%d)\n" % (now, statobj[stat.ST_MTIME], now - statobj[stat.ST_MTIME], age,max_tgz_age))
+        logging.info("Check-replace tgz: age (%d-%d=%d) vs. max(%d)\n" % (now, statobj[stat.ST_MTIME], age, max_tgz_age))
         if age > max_tgz_age:
             logging.info("Limit-replace tgz: retry-time (%d-%d=%d) vs. min(%d)\n" % (now, statobj[stat.ST_CTIME], now - statobj[stat.ST_CTIME], min_tgz_retry_delay))
             # stat.ST_CTIME is time created OR last renamed
