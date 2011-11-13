@@ -42,11 +42,11 @@ install:
 	echo $(version)
 	sed -e 's/__PIUPARTS_VERSION__/$(version)/g' piuparts.py > piuparts
 	install piuparts $(sbindir)/piuparts
-	
+
 	install -d $(sharedir)/piuparts
 	for file in piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
 	    install -m 0755 $$file.py $(sharedir)/piuparts/$$file ; done
-	
+
 	install -d $(site26)/piupartslib
 	install -d $(site27)/piupartslib
 	install -m 0644 piupartslib/*.py $(site26)/piupartslib

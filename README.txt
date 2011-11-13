@@ -218,7 +218,7 @@ To set this up for yourself, the following steps should suffice:
 . Configure '/etc/piuparts/piuparts.conf' appropriately.
 . Pick one or more slaves to run the slave. You can use the machine running the master also as a slave. Etch is fine, it can even be in a chroot.
 . Install piuparts on it.
-. Configure '/etc/piuparts/piuparts.conf' appropriately - if master and slave share the machine, they also share the config file.	
+. Configure '/etc/piuparts/piuparts.conf' appropriately - if master and slave share the machine, they also share the config file.
 . Create an account for the slave. This must be different from the master account.
 . Create an ssh keypair for the slave. No passphrase.
 . Add the slave's public key to the master's '.ssh/authorized_keys'

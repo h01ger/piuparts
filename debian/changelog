@@ -12,7 +12,7 @@ piuparts (0.42) UNRELEASED; urgency=low
     (Closes: #640646)
   * debian/copyright: apply patch by Scott Schaefer to make it compliant with 
     DEP-5. Thanks Scott!
-  * piuparts.py and piuparts-report.py: Expand tabs to spaces.
+  * piuparts.py, piuparts-report.py, ChangeLog: Expand tabs to spaces.
   * Remove whitespaces from whitespace-only lines.
   * *.py: Add vim modeline.
 
