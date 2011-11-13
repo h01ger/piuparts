@@ -2337,3 +2337,5 @@ if __name__ == "__main__":
         print ''
         print 'Piuparts interrupted by the user, exiting...'
         sys.exit(1)
+
+# vi:set et ts=4 sw=4 :

@@ -512,3 +512,5 @@ if __name__ == "__main__":
      print ''
      print 'Slave interrupted by the user, exiting... manual cleanup still neccessary.'
      sys.exit(1)  
+
+# vi:set et ts=4 sw=4 :

@@ -306,3 +306,5 @@ class DependencyParser:
             return vlist
         else:
             return None
+
+# vi:set et ts=4 sw=4 :

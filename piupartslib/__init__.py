@@ -39,3 +39,5 @@ def open_packages_url(url):
     socket.close()
     bzfile.seek(0)
     return bzfile
+
+# vi:set et ts=4 sw=4 :

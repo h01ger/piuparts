@@ -14,6 +14,7 @@ piuparts (0.42) UNRELEASED; urgency=low
     DEP-5. Thanks Scott!
   * piuparts.py and piuparts-report.py: Expand tabs to spaces.
   * Remove whitespaces from whitespace-only lines.
+  * *.py: Add vim modeline.
 
   [ Mika Pflüger ]
   * piuparts-analyze.py: Rewrite to use python-debianbts to analyze if bugs

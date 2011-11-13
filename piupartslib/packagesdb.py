@@ -594,3 +594,5 @@ class PackagesDB:
         else:
             raise Exception("Log file exists already: %s (%s)" %
                                 (package, version))
+
+# vi:set et ts=4 sw=4 :

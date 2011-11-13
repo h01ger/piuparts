@@ -185,8 +185,11 @@ HTML_FOOTER = """
  <div id="footer">
   <div>
    piuparts was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by 
-   <a href="mailto:holger@debian.org">Holger Levsen</a>,  
-   <a href="mailto:luk@debian.org">Luk Claes</a> and <a href="http://qa.debian.org/" target="_blank">others</a>. 
+   <a href="mailto:holger@debian.org">Holger Levsen</a> and
+   <a href="mailto:piuparts-devel@lists.alioth.debian.org">others</a> using
+   <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">piuparts.git</a> and
+   <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git" target="_blank">piatti.git</a> and the
+   <a href="http://packages.qa.debian.org/piuparts" target="_blank">PTS</a>.
    GPL2 <a href="http://packages.debian.org/changelogs/pool/main/p/piuparts/current/copyright" target="_blank">licenced</a>.
    Weather icons are from the <a href="http://tango.freedesktop.org/Tango_Icon_Library" target="_blank">Tango Icon Library</a>.
    <a href="http://validator.w3.org/check?uri=referer">
@@ -1096,3 +1099,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# vi:set et ts=4 sw=4 :
