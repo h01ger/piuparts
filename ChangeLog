@@ -1,7 +1,7 @@
 2009-12-18  Holger Levsen <holger@layer-acht.org>
 
         * This changelog is obsolete since several years. See debian/changelog
-	  instead.
+          instead.
 
 2005-11-12  Lars Wirzenius  <liw@iki.fi>
 
@@ -53,12 +53,12 @@
 
 2005-09-05  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py, piuparts.docbook: Added -k (--keep-tmpdir) option.
+        * piuparts.py, piuparts.docbook: Added -k (--keep-tmpdir) option.
 
-	* piuparts.py: Added some more default ignores.
+        * piuparts.py: Added some more default ignores.
 
-	* piuparts.py: Remember which packages own which files before
-	removing packages.
+        * piuparts.py: Remember which packages own which files before
+        removing packages.
 
 2005-08-31  Lars Wirzenius  <liw@iki.fi>
 
@@ -116,7 +116,7 @@
 
 2005-07-15  Lars Wirzenius  <liw@iki.fi>
 
-	* Version 0.7.
+        * Version 0.7.
 
 2005-07-15  Lars Wirzenius  <liw@iki.fi>
 
@@ -159,58 +159,58 @@
 
 2005-07-05  Lars Wirzenius  <liw@iki.fi>
 
-	* Version 0.6.
+        * Version 0.6.
 
 2005-07-05  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py: Bugfix: when removing packages from the chroot,
-	don't remove packages being depended on before the packages doing
-	the depending. That won't work. Any fool would know it, except me.
-	
-	* piuparts.py: Implemented saving of meta data for the upgrade
-	testing between Debian releases.
+        * piuparts.py: Bugfix: when removing packages from the chroot,
+        don't remove packages being depended on before the packages doing
+        the depending. That won't work. Any fool would know it, except me.
+
+        * piuparts.py: Implemented saving of meta data for the upgrade
+        testing between Debian releases.
 
 2005-07-04  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py: Made it possible to specify components to use for
-	a mirror.
-	
-	* piuparts.docbook: Documented the user visible changes.
+        * piuparts.py: Made it possible to specify components to use for
+        a mirror.
+
+        * piuparts.docbook: Documented the user visible changes.
 
 2005-06-27  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py: Remove and purge dependencies before the packages
-	that were installed, so that problems with postrm scripts using
-	non-essential packages upon purge become evident.
+        * piuparts.py: Remove and purge dependencies before the packages
+        that were installed, so that problems with postrm scripts using
+        non-essential packages upon purge become evident.
 
 2005-06-27  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py, piuparts.docbook: Added -n / --no-ignores option.
+        * piuparts.py, piuparts.docbook: Added -n / --no-ignores option.
 
 2005-06-27  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py: Made mirrors mentioned in /etc/apt/sources.list be
-	the default mirrors. Also, --mirror can be used multiple times
-	now.
-	
-	* piuparts.docbook: Documented this.
-	
-	* Makefile: log to tmp3.log instead of twice to tmp2.log.
+        * piuparts.py: Made mirrors mentioned in /etc/apt/sources.list be
+        the default mirrors. Also, --mirror can be used multiple times
+        now.
+
+        * piuparts.docbook: Documented this.
+
+        * Makefile: log to tmp3.log instead of twice to tmp2.log.
 
 2005-06-27  Lars Wirzenius  <liw@iki.fi>
 
-	* Makefile: Use -f with gzip so it doesn't complain when installing
-	new version on top of old.
+        * Makefile: Use -f with gzip so it doesn't complain when installing
+        new version on top of old.
 
 2005-06-27  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py: Added /etc/ld.so.conf to list of ignored files
-	and changed exim related ignore patterns (adding exim4, for
-	example).
-	
+        * piuparts.py: Added /etc/ld.so.conf to list of ignored files
+        and changed exim related ignore patterns (adding exim4, for
+        example).
+
         * piuparts.py: When purging, use --purge and not --remove to
         dpkg.
-	
+
         * piuparts.py: Report version and command line arguments at
         startup.
 
@@ -220,57 +220,57 @@
 
 2005-06-23  Lars Wirzenius  <liw@iki.fi>
 
-	* Version 0.5.
+        * Version 0.5.
 
 2005-06-23  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py: Check symlink targets as well.
+        * piuparts.py: Check symlink targets as well.
 
 2005-06-23  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.docbook: Added --ignore-regexp to manual page.
+        * piuparts.docbook: Added --ignore-regexp to manual page.
 
 2005-06-23  Lars Wirzenius  <liw@iki.fi>
 
-	* TODO: Added.
-	
-	* Makefile: Added test case for upgrading between distros.
-	
-	* piuparts.docbook: Rewrote DESCRIPTION and EXAMPLES sections.
-	
-	* piuparts.py: Added /var/cache/man/index.db and
-	/var/log/dpkg.log to ignored files. Added regexps for more
-	versatile ignoring and -I option.
-	
-	* piuparts.py: Disabled comparison of mtimes of files for now.
-	
-	* piuparts.py: File listings are now sorted.
-	
-	* piuparts.py: Added upgrade tests between Debian releases.
+        * TODO: Added.
+
+        * Makefile: Added test case for upgrading between distros.
+
+        * piuparts.docbook: Rewrote DESCRIPTION and EXAMPLES sections.
+
+        * piuparts.py: Added /var/cache/man/index.db and
+        /var/log/dpkg.log to ignored files. Added regexps for more
+        versatile ignoring and -I option.
+
+        * piuparts.py: Disabled comparison of mtimes of files for now.
+
+        * piuparts.py: File listings are now sorted.
+
+        * piuparts.py: Added upgrade tests between Debian releases.
 
 2005-06-20  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py: Refactored things more than a bit in preparation
-	for new functionality.
+        * piuparts.py: Refactored things more than a bit in preparation
+        for new functionality.
 
 2005-06-19  Lars Wirzenius  <liw@iki.fi>
 
-	* Version 0.4.
+        * Version 0.4.
 
 2005-06-19  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.docbook, piuparts.py: Added -p option.
-	
-	* piuparts.docbook: Updated a description of what the program
-	does.
+        * piuparts.docbook, piuparts.py: Added -p option.
+
+        * piuparts.docbook: Updated a description of what the program
+        does.
 
 2005-06-19  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.docbook: Documented upgrade testing.
+        * piuparts.docbook: Documented upgrade testing.
 
 2005-06-19  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py: Added a simple form of upgrade testing.
+        * piuparts.py: Added a simple form of upgrade testing.
 
 2005-06-19  Lars Wirzenius  <liw@iki.fi>
 
@@ -278,12 +278,12 @@
         do package purginging in two steps: first remove, then purge.
         This helps find postrm scripts that use things they aren't
         allowed to use.
-	
-	* README: Added naming credit to Tollef Fog Heen.
+
+        * README: Added naming credit to Tollef Fog Heen.
 
 2005-06-18  Lars Wirzenius  <liw@iki.fi>
 
-	* Version 0.3.
+        * Version 0.3.
 
 2005-06-18  Lars Wirzenius  <liw@iki.fi>
 
@@ -296,26 +296,26 @@
 
 2005-06-18  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py: Added option -a (--apt) that lets the user install
-	the packages to be tested via apt-get, instead of by specifying
-	package files.
-	
-	* piuparts.docbook: Documented -a (--apt).
+        * piuparts.py: Added option -a (--apt) that lets the user install
+        the packages to be tested via apt-get, instead of by specifying
+        package files.
+
+        * piuparts.docbook: Documented -a (--apt).
 
 2005-06-17  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.docbook: Added a note that piuparts is meant for people
-	making Debian packages before they upload them.
+        * piuparts.docbook: Added a note that piuparts is meant for people
+        making Debian packages before they upload them.
 
 2005-06-17  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py, piuparts.docbook: Added -V (--version) option.
+        * piuparts.py, piuparts.docbook: Added -V (--version) option.
 
 2005-06-17  Lars Wirzenius  <liw@iki.fi>
 
-	* piuparts.py, README: Removed notice about python-apt / apt_pkg
-	since it wasn't actually used.
-	
+        * piuparts.py, README: Removed notice about python-apt / apt_pkg
+        since it wasn't actually used.
+
         * piuparts.py: Changed things so that we us os.walk and os.stat
         to find filesystem object meta data, instead of creating a
         tarball and then scanning that. This makes things quite a bit
