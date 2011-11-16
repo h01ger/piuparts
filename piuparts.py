@@ -568,6 +568,17 @@ class IsBrokenSymlinkTests(unittest.TestCase):
         self.failIf(is_broken_symlink(self.testdir, self.testdir,
                                       "target/first-link"))
 
+    def testMultiLevelNestedAbsoluteSymlinks(self):
+        # first-link -> /second-link/final-target
+        # second-link -> /target-dir
+
+        os.mkdir(os.path.join(self.testdir, "final-dir"))
+        os.mkdir(os.path.join(self.testdir, "final-dir/final-target"))
+        self.symlink("/second-link/final-target", "first-link")
+        self.symlink("/final-dir", "second-link")
+        self.failIf(is_broken_symlink(self.testdir, self.testdir,
+                                      "first-link"))
+
 
 class Chroot:
 
