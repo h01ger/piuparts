@@ -36,6 +36,11 @@ piuparts (0.42) UNRELEASED; urgency=low
   [ Andreas Beckmann ]
   * piuparts-slave.py: fix triggering tarball recreation, check tarball age
     regularily, log tarball creation in *.tgz.log.
+  * piuparts.py:
+    - Fix resolving absolute symlinks of intermediate directory components,
+      i.e. /var/run -> /run while checking /etc/motd -> /var/run/motd.
+      Solves about 30000 false positives of
+      'Broken symlinks: /etc/motd -> /var/run/motd'.  (Closes: #648784)
 
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 
