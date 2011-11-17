@@ -64,6 +64,16 @@ def package_version(log):
     return os.path.basename(log).split("_", 1)[1].rstrip('.log')
 
 
+def package_source_version(log):
+    version = package_version(log)
+    possible_binnmu_part = version.rsplit('+',1)[-1]
+    if possible_binnmu_part.startswith('b') and possible_binnmu_part[1:].isdigit():
+        # the package version contains a binnmu-part which is not part of the source version
+        # and therefore not accepted/tracked by the bts. Remove it.
+        version = version.rsplit('+',1)[0]
+    return version
+
+
 def extract_errors(log):
     """This pretty stupid implementation is basically just 'grep -i error', and then
     removing the timestamps and the name of the chroot and the package version itself."""
@@ -143,7 +153,7 @@ def bts_update_found(bugnr, newversion):
 def mark_logs_with_reported_bugs():
     for failed_log in find_logs("fail"):
         pname = package_name(failed_log)
-        pversion = package_version(failed_log)
+        pversion = package_source_version(failed_log)
         failed_errors = extract_errors(failed_log)
         moved = False
         for bug in piuparts_bugs_in(pname):
@@ -161,7 +171,7 @@ def mark_logs_with_reported_bugs():
                         print('%s/%s: Maybe the bug was filed earlier: %d against %s/%s'
                               % (pname, pversion, bug, pname, bug_version))
                     for bugged_log in bugged_logs:
-                        old_pversion = package_version(bugged_log)
+                        old_pversion = package_source_version(bugged_log)
                         bugged_errors = extract_errors(bugged_log)
                         if (apt_pkg.version_compare(old_pversion, bug_version) == 0 # old_pversion == bug_version
                             and

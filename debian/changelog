@@ -18,8 +18,10 @@ piuparts (0.42) UNRELEASED; urgency=low
   * *.py: Add vim modeline.
 
   [ Mika Pflüger ]
-  * piuparts-analyze.py: Rewrite to use python-debianbts to analyze if bugs
-    are filed already.
+  * piuparts-analyze.py:
+    - Rewrite to use python-debianbts to analyze if bugs are filed already.
+    - The BTS only tracks source versions, so remove binNMU-part from
+      package versions when comparing with versions from the BTS
   * debian/control: Add python-apt and python-debianbts to piuparts depends.
 
   [ Scott Schaefer ]
