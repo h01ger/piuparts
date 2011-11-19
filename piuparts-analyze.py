@@ -124,9 +124,10 @@ def prepend_to_file(filename, data):
 
 
 def get_bug_versions(bug):
-    """Gets a list of only the version numbers for which the bug is found."""
+    """Gets a list of only the version numbers for which the bug is found.
+    Newest versions are returned first."""
     # debianbts returns it in the format package/1.2.3 which will become 1.2.3
-    return [x.split('/', 1)[1] for x in debianbts.get_status((bug,))[0].found_versions]
+    return reversed(sorted([x.split('/', 1)[1] for x in debianbts.get_status((bug,))[0].found_versions], cmp=apt_pkg.version_compare))
 
 
 def move_to_bugged(failed_log):
@@ -167,9 +168,10 @@ def mark_logs_with_reported_bugs():
 
                 elif apt_pkg.version_compare(pversion, bug_version) > 0: # pversion > bug_version
                     bugged_logs = find_bugged_logs(failed_log)
-                    if not bugged_logs:
+                    if not bugged_logs and not moved:
                         print('%s/%s: Maybe the bug was filed earlier: %d against %s/%s'
                               % (pname, pversion, bug, pname, bug_version))
+                        break
                     for bugged_log in bugged_logs:
                         old_pversion = package_source_version(bugged_log)
                         bugged_errors = extract_errors(bugged_log)
@@ -181,7 +183,8 @@ def mark_logs_with_reported_bugs():
                             if not moved:
                                 mark_bugged_version(failed_log, bugged_log)
                                 moved = True
-                            bts_update_found(bug, pversion)
+                                bts_update_found(bug, pversion)
+                                break
 
 
 def report_packages_with_many_logs():
