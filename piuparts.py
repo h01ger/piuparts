@@ -381,9 +381,11 @@ def run(command, ignore_errors=False):
     env["LC_ALL"] = "C"
     env["LANGUAGES"] = ""
     env["PIUPARTS_OBJECTS"] = ' '.join(str(vobject) for vobject in settings.testobjects )
-    p = subprocess.Popen(command, env=env, stdin=subprocess.PIPE, 
+    devnull = open('/dev/null', 'r')
+    p = subprocess.Popen(command, env=env, stdin=devnull, 
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     (output, _) = p.communicate()
+    devnull.close()
 
     if output:
         dump("\n" + indent_string(output.rstrip("\n")))
