@@ -381,9 +381,30 @@ def run(command, ignore_errors=False):
     env["LC_ALL"] = "C"
     env["LANGUAGES"] = ""
     env["PIUPARTS_OBJECTS"] = ' '.join(str(vobject) for vobject in settings.testobjects )
-    p = subprocess.Popen(command, env=env, stdin=subprocess.PIPE, 
+    devnull = open('/dev/null', 'r')
+    p = subprocess.Popen(command, env=env, stdin=devnull, 
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    (output, _) = p.communicate()
+    output = ""
+    excessive_output = False
+    while p.poll() is None:
+        """Read 64 KB chunks, but depending on the output buffering behavior
+        of the command we may get less even if more output is coming later.
+        Abort after reading 2 MB."""
+        output += p.stdout.read(1 << 16)
+        if (len(output) > (1 << 21)):
+            excessive_output = True
+            logging.error("Terminating command due to excessive output")
+            p.terminate()
+            for i in range(10):
+                time.sleep(0.5)
+                if p.poll() is not None:
+                    break
+            else:
+                logging.error("Killing command due to excessive output")
+                p.kill()
+            p.wait()
+            break
+    devnull.close()
 
     if output:
         dump("\n" + indent_string(output.rstrip("\n")))
@@ -396,6 +417,8 @@ def run(command, ignore_errors=False):
     else:
         logging.error("Command failed (status=%d): %s\n%s" % 
               (p.returncode, repr(command), indent_string(output)))
+        if excessive_output:
+            logging.error("Command was terminated while producing excessive output")
         panic()
     return p.returncode, output
 
