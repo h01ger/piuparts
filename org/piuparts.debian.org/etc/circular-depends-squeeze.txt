@@ -46,3 +46,21 @@ kchart koffice-libs
 strongswan-ikev1 strongswan-ikev2 strongswan-nm strongswan-starter
 cli-uno-bridge libuno-cli-cppuhelper1.0-cil
 klogd sysklogd
+
+# apt-watch-interface is a virtual package provided by apt-watch-gnome
+apt-watch-backend apt-watch-interface
+
+# coq-theories depends on the virtual package coq-$VERSION provided by coq
+coq coq-theories
+
+# libhugs-base and libhugs-haskell98 are virtual packages provided by
+# libhugs-base-bundled and libhugs-haskell98-bundled
+hugs libhugs-base libhugs-haskell98
+
+# openoffice.org-style-default is a virtual package provided by several
+# openoffice.org-style-* packages
+openoffice.org-core openoffice.org-common openoffice.org-style-default
+
+# opendnssec-enforcer-backend is a wirtual package provided by
+# opendnssec-enforcer-{mysql,sqlite3}
+opendnssec-enforcer opendnssec-enforcer-backend

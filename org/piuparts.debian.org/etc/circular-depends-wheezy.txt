@@ -40,3 +40,24 @@ heroes-common heroes-ggi heroes-sdl
 cli-uno-bridge libuno-cli-cppuhelper1.0-cil
 strongswan-ikev1 strongswan-ikev2 strongswan-nm strongswan-starter
 klogd sysklogd
+
+# apt-watch-interface is a virtual package provided by apt-watch-gnome
+apt-watch-backend apt-watch-interface
+
+# coq-theories depends on the virtual package coq-$VERSION provided by coq
+coq coq-theories
+
+# fuse-emulator is a virtual package provided by fuse-emulator-sdl
+fuse-emulator fuse-emulator-common
+
+# libhugs-base and libhugs-haskell98 are virtual packages provided by
+# libhugs-base-bundled and libhugs-haskell98-bundled
+hugs libhugs-base libhugs-haskell98
+
+# libreoffice-style-default is a virtual package provided by several
+# libreoffice-style-* packages
+libreoffice-core libreoffice-common libreoffice-style-default
+
+# opendnssec-enforcer-backend is a wirtual package provided by
+# opendnssec-enforcer-{mysql,sqlite3}
+opendnssec-enforcer opendnssec-enforcer-backend
