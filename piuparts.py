@@ -561,6 +561,18 @@ class IsBrokenSymlinkTests(unittest.TestCase):
         self.symlink("absolute-broken", "absolute-broken-to-symlink")
         self.symlink("/", "absolute-works")
         self.symlink("/absolute-works", "absolute-works-to-symlink")
+        os.mkdir(os.path.join(self.testdir, "dir"))
+        self.symlink("dir", "dir-link")
+        os.mkdir(os.path.join(self.testdir, "dir/subdir"))
+        self.symlink("subdir", "dir/subdir-link")
+        self.symlink("selfloop", "selfloop")
+        self.symlink("/absolute-selfloop", "absolute-selfloop")
+        self.symlink("../dir/selfloop", "dir/selfloop")
+        self.symlink("../dir-link/selfloop", "dir/selfloop1")
+        self.symlink("../../dir/subdir/selfloop", "dir/subdir/selfloop")
+        self.symlink("../../dir-link/subdir/selfloop", "dir/subdir/selfloop1")
+        self.symlink("../../link/subdir-link/selfloop", "dir/subdir/selfloop2")
+        self.symlink("../../dir-link/subdir-link/selfloop", "dir/subdir/selfloop3")
 
     def tearDown(self):
         shutil.rmtree(self.testdir)
@@ -580,6 +592,28 @@ class IsBrokenSymlinkTests(unittest.TestCase):
     def testAbsoluteBrokenToSymlink(self):
         self.failUnless(is_broken_symlink(self.testdir, self.testdir, 
                                           "absolute-broken-to-symlink"))
+
+    def testSelfLoopBroken(self):
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "selfloop"))
+
+    def testAbsoluteSelfLoopBroken(self):
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "absolute-selfloop"))
+
+    def testSubdirSelfLoopBroken(self):
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/selfloop"))
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/selfloop1"))
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/subdir/selfloop"))
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/subdir/selfloop1"))
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/subdir/selfloop2"))
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/subdir/selfloop3"))
 
     def testRelativeWorks(self):
         self.failIf(is_broken_symlink(self.testdir, self.testdir, 
