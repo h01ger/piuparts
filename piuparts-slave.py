@@ -235,15 +235,8 @@ class Section:
         if self._config["chroot-tgz"] and not self._config["distro"]:
           logging.info("The option --chroot-tgz needs --distro.")
 
-        tarball = self._config["chroot-tgz"]
-        if tarball:
-            create_or_replace_chroot_tgz(self._config, tarball,
-                      base_tgz_ctrl, self._config["distro"])
-
-        tarball = self._config["upgrade-test-chroot-tgz"]
-        if self._config["upgrade-test-distros"] and tarball: 
-            create_or_replace_chroot_tgz(self._config, tarball,
-                      base_tgz_ctrl, self._config["upgrade-test-distros"].split()[0])
+        self._base_tgz_ctrl = base_tgz_ctrl
+        self._check_tarball()
 
         for rdir in ["new", "pass", "fail"]:
             rdir = os.path.join(self._slave_directory, rdir)
@@ -262,6 +255,17 @@ class Section:
             if not os.path.exists(rdir):
                 os.makedirs(rdir)
         os.chdir(oldcwd)
+
+    def _check_tarball(self):
+        tarball = self._config["chroot-tgz"]
+        if tarball:
+            create_or_replace_chroot_tgz(self._config, tarball,
+                      self._base_tgz_ctrl, self._config["distro"])
+
+        tarball = self._config["upgrade-test-chroot-tgz"]
+        if self._config["upgrade-test-distros"] and tarball:
+            create_or_replace_chroot_tgz(self._config, tarball,
+                      self._base_tgz_ctrl, self._config["upgrade-test-distros"].split()[0])
 
     def run(self):
         logging.info("-------------------------------------------")
@@ -286,6 +290,7 @@ class Section:
         self._slave.close()
 
         if self._slave.get_reserved():
+            self._check_tarball()
             packages_files = {}
             if self._config["distro"]:
                 distros = [self._config["distro"]]
