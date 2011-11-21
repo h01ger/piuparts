@@ -126,8 +126,8 @@ def prepend_to_file(filename, data):
 def get_bug_versions(bug):
     """Gets a list of only the version numbers for which the bug is found.
     Newest versions are returned first."""
-    # debianbts returns it in the format package/1.2.3 which will become 1.2.3
-    return reversed(sorted([x.split('/', 1)[1] for x in debianbts.get_status((bug,))[0].found_versions], cmp=apt_pkg.version_compare))
+    # debianbts returns it in the format package/1.2.3 or 1.2.3 which will become 1.2.3
+    return reversed(sorted([x.rsplit('/', 1)[-1] for x in debianbts.get_status((bug,))[0].found_versions], cmp=apt_pkg.version_compare))
 
 
 def move_to_bugged(failed_log):
