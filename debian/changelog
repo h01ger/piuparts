@@ -33,6 +33,10 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Replace deprecated os.popen2 with subprocess.Popen. (Closes: #640646)
     - add some more logging.
 
+  [ Andreas Beckmann ]
+  * piuparts-slave.py: fix triggering tarball recreation, check tarball age
+    regularily, log tarball creation in *.tgz.log.
+
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 
 piuparts (0.41) unstable; urgency=low
