@@ -573,6 +573,7 @@ class IsBrokenSymlinkTests(unittest.TestCase):
         self.symlink("../../dir-link/subdir/selfloop", "dir/subdir/selfloop1")
         self.symlink("../../link/subdir-link/selfloop", "dir/subdir/selfloop2")
         self.symlink("../../dir-link/subdir-link/selfloop", "dir/subdir/selfloop3")
+        self.symlink("explode/bomb", "explode")
 
     def tearDown(self):
         shutil.rmtree(self.testdir)
@@ -596,6 +597,10 @@ class IsBrokenSymlinkTests(unittest.TestCase):
     def testSelfLoopBroken(self):
         self.failUnless(is_broken_symlink(self.testdir, self.testdir,
                                           "selfloop"))
+
+    def testExpandingSelfLoopBroken(self):
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "explode"))
 
     def testAbsoluteSelfLoopBroken(self):
         self.failUnless(is_broken_symlink(self.testdir, self.testdir,
