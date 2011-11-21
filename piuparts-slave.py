@@ -235,15 +235,8 @@ class Section:
         if self._config["chroot-tgz"] and not self._config["distro"]:
           logging.info("The option --chroot-tgz needs --distro.")
 
-        tarball = self._config["chroot-tgz"]
-        if tarball:
-            create_or_replace_chroot_tgz(self._config, tarball,
-                      base_tgz_ctrl, self._config["distro"])
-
-        tarball = self._config["upgrade-test-chroot-tgz"]
-        if self._config["upgrade-test-distros"] and tarball: 
-            create_or_replace_chroot_tgz(self._config, tarball,
-                      base_tgz_ctrl, self._config["upgrade-test-distros"].split()[0])
+        self._base_tgz_ctrl = base_tgz_ctrl
+        self._check_tarball()
 
         for rdir in ["new", "pass", "fail"]:
             rdir = os.path.join(self._slave_directory, rdir)
@@ -262,6 +255,17 @@ class Section:
             if not os.path.exists(rdir):
                 os.makedirs(rdir)
         os.chdir(oldcwd)
+
+    def _check_tarball(self):
+        tarball = self._config["chroot-tgz"]
+        if tarball:
+            create_or_replace_chroot_tgz(self._config, tarball,
+                      self._base_tgz_ctrl, self._config["distro"])
+
+        tarball = self._config["upgrade-test-chroot-tgz"]
+        if self._config["upgrade-test-distros"] and tarball:
+            create_or_replace_chroot_tgz(self._config, tarball,
+                      self._base_tgz_ctrl, self._config["upgrade-test-distros"].split()[0])
 
     def run(self):
         logging.info("-------------------------------------------")
@@ -286,6 +290,7 @@ class Section:
         self._slave.close()
 
         if self._slave.get_reserved():
+            self._check_tarball()
             packages_files = {}
             if self._config["distro"]:
                 distros = [self._config["distro"]]
@@ -407,14 +412,24 @@ def test_package(config, package, packages_files):
 
 
 def create_chroot(config, tarball, distro):
+    output_name = tarball + ".log"
+    logging.debug("Opening log file %s" % output_name)
     logging.info("Creating new tarball %s" % tarball)
     command = "%s -ad %s -s %s.new -m %s hello" % \
                 (config["piuparts-cmd"], distro, tarball, config["mirror"])
+    output = file(output_name, "w")
+    output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n\n",
+                               time.gmtime()))
+    output.write("Executing: " + command)
     logging.debug("Executing: " + command)
     f = os.popen("{ %s; } 2>&1" % command, "r")
     for line in f:
+        output.write(line)
         logging.debug(">> " + line.rstrip())
     f.close()
+    output.write(time.strftime("\nEnd: %Y-%m-%d %H:%M:%S %Z\n",
+                               time.gmtime()))
+    output.close()
     if os.path.exists(tarball + ".new"):
         os.rename(tarball + ".new", tarball)
 
@@ -427,9 +442,9 @@ def create_or_replace_chroot_tgz(config, tgz, tgz_ctrl, distro):
         statobj = os.stat(tgz)
         # stat.ST_MTIME is actually time file was initially created
         age = now - statobj[stat.ST_MTIME]
-        logging.info("Check-replace tgz: age (%d-%d=%d) vs. max(%s)\n" % (now, statobj[stat.ST_MTIME], age, max_tgz_age))
+        logging.info("Check-replace %s: age=%d vs. max=%d" % (tgz, age, max_tgz_age))
         if age > max_tgz_age:
-            logging.info("Limit-replace tgz: retry-time (%d-%d=%d) vs. min(%s)\n" % (now, statobj[stat.ST_CTIME], now - statobj[stat.ST_CTIME], min_tgz_retry_delay))
+            logging.info("Limit-replace %s: last-retry=%d vs. min=%d" % (now - statobj[stat.ST_CTIME], min_tgz_retry_delay))
             # stat.ST_CTIME is time created OR last renamed
             if min_tgz_retry_delay is None or now - statobj[stat.ST_CTIME] > min_tgz_retry_delay:
                 os.rename(tgz, tgz + ".old")
@@ -490,7 +505,8 @@ def main():
                master_host=global_config["master-host"],
                master_user=global_config["master-user"],
                master_directory=global_config["master-directory"],
-               base_tgz_ctrl=[global_config["max-tgz-age"],global_config["min-tgz-retry-delay"]])
+               base_tgz_ctrl=[int(global_config["max-tgz-age"]),
+                              int(global_config["min-tgz-retry-delay"])])
         sections.append(section)
 
     while True:

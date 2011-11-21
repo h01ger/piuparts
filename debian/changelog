@@ -18,14 +18,34 @@ piuparts (0.42) UNRELEASED; urgency=low
   * *.py: Add vim modeline.
 
   [ Mika Pflüger ]
-  * piuparts-analyze.py: Rewrite to use python-debianbts to analyze if bugs
-    are filed already.
+  * piuparts-analyze.py:
+    - Rewrite to use python-debianbts to analyze if bugs are filed already.
+    - The BTS only tracks source versions, so remove binNMU-part from
+      package versions when comparing with versions from the BTS.
+    - Reduce noise in the output by only printing one action/advise per
+      package.
+    - Fix extraction of package versions from bug reports. Thanks to
+      Andreas Beckmann for catching and solving the error.
   * debian/control: Add python-apt and python-debianbts to piuparts depends.
 
   [ Scott Schaefer ]
   * piuparts-slave.py: 
     - Replace deprecated os.popen2 with subprocess.Popen. (Closes: #640646)
     - add some more logging.
+
+  [ Andreas Beckmann ]
+  * piuparts-slave.py: fix triggering tarball recreation, check tarball age
+    regularily, log tarball creation in *.tgz.log.
+  * piuparts.py:
+    - Fix resolving absolute symlinks of intermediate directory components,
+      i.e. /var/run -> /run while checking /etc/motd -> /var/run/motd.
+      Solves about 30000 false positives of
+      'Broken symlinks: /etc/motd -> /var/run/motd'.  (Closes: #648784)
+  * piuparts-report.py: 
+    - sort binary packages by name
+    - sort package lists by name
+    - resolve virtual packages when linking
+    - update list of error states
 
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 

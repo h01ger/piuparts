@@ -474,8 +474,8 @@ def make_metapackage(name, depends, conflicts):
     return os.path.join(tmpdir, name) + '.deb'
 
 
-def is_broken_symlink(root, dirpath, filename):
-    """Is symlink dirpath+filename broken?
+def canonicalize_path(root, pathname):
+    """Canonicalize a path name, simulating chroot at 'root'.
 
     When resolving the symlink, pretend (similar to chroot) that root is
     the root of the filesystem. Note that this does NOT work completely
@@ -486,17 +486,32 @@ def is_broken_symlink(root, dirpath, filename):
 
     """
 
-    pathname = os.path.join(dirpath, filename)
+    #print "CANONICALIZE: %s %s" % (root, pathname)
     i = 0
     while os.path.islink(pathname):
         if i >= 10: # let's avoid infinite loops...
             return True
         i += 1
         target = os.readlink(pathname)
+        #print "LINK: %s -> %s" % (pathname, target)
         if os.path.isabs(target):
             pathname = os.path.join(root, target[1:]) # Assume Unix filenames
         else:
             pathname = os.path.join(os.path.dirname(pathname), target)
+        #print "FOLLOW: %s" % pathname
+    (dn, bn) = os.path.split(pathname)
+    #print "DN: %s  BN: %s" % (dn, bn)
+    if pathname != root and dn != root:
+        dn = canonicalize_path(root, dn)
+    pathname = os.path.join(dn, bn)
+    #print "RETURN: %s EXISTS: %s" % (pathname, os.path.exists(pathname))
+    return pathname
+
+
+def is_broken_symlink(root, dirpath, filename):
+    """Is symlink dirpath+filename broken?"""
+
+    pathname = canonicalize_path(root, os.path.join(dirpath, filename))
 
     # The symlink chain, if any, has now been resolved. Does the target
     # exist?
@@ -567,6 +582,17 @@ class IsBrokenSymlinkTests(unittest.TestCase):
         self.symlink("../target/second-link", "target/first-link")
         self.failIf(is_broken_symlink(self.testdir, self.testdir,
                                       "target/first-link"))
+
+    def testMultiLevelNestedAbsoluteSymlinks(self):
+        # first-link -> /second-link/final-target
+        # second-link -> /target-dir
+
+        os.mkdir(os.path.join(self.testdir, "final-dir"))
+        os.mkdir(os.path.join(self.testdir, "final-dir/final-target"))
+        self.symlink("/second-link/final-target", "first-link")
+        self.symlink("/final-dir", "second-link")
+        self.failIf(is_broken_symlink(self.testdir, self.testdir,
+                                      "first-link"))
 
 
 class Chroot:

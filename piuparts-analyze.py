@@ -64,6 +64,16 @@ def package_version(log):
     return os.path.basename(log).split("_", 1)[1].rstrip('.log')
 
 
+def package_source_version(log):
+    version = package_version(log)
+    possible_binnmu_part = version.rsplit('+',1)[-1]
+    if possible_binnmu_part.startswith('b') and possible_binnmu_part[1:].isdigit():
+        # the package version contains a binnmu-part which is not part of the source version
+        # and therefore not accepted/tracked by the bts. Remove it.
+        version = version.rsplit('+',1)[0]
+    return version
+
+
 def extract_errors(log):
     """This pretty stupid implementation is basically just 'grep -i error', and then
     removing the timestamps and the name of the chroot and the package version itself."""
@@ -114,9 +124,10 @@ def prepend_to_file(filename, data):
 
 
 def get_bug_versions(bug):
-    """Gets a list of only the version numbers for which the bug is found."""
-    # debianbts returns it in the format package/1.2.3 which will become 1.2.3
-    return [x.split('/', 1)[1] for x in debianbts.get_status((bug,))[0].found_versions]
+    """Gets a list of only the version numbers for which the bug is found.
+    Newest versions are returned first."""
+    # debianbts returns it in the format package/1.2.3 or 1.2.3 which will become 1.2.3
+    return reversed(sorted([x.rsplit('/', 1)[-1] for x in debianbts.get_status((bug,))[0].found_versions], cmp=apt_pkg.version_compare))
 
 
 def move_to_bugged(failed_log):
@@ -143,7 +154,7 @@ def bts_update_found(bugnr, newversion):
 def mark_logs_with_reported_bugs():
     for failed_log in find_logs("fail"):
         pname = package_name(failed_log)
-        pversion = package_version(failed_log)
+        pversion = package_source_version(failed_log)
         failed_errors = extract_errors(failed_log)
         moved = False
         for bug in piuparts_bugs_in(pname):
@@ -157,11 +168,12 @@ def mark_logs_with_reported_bugs():
 
                 elif apt_pkg.version_compare(pversion, bug_version) > 0: # pversion > bug_version
                     bugged_logs = find_bugged_logs(failed_log)
-                    if not bugged_logs:
+                    if not bugged_logs and not moved:
                         print('%s/%s: Maybe the bug was filed earlier: %d against %s/%s'
                               % (pname, pversion, bug, pname, bug_version))
+                        break
                     for bugged_log in bugged_logs:
-                        old_pversion = package_version(bugged_log)
+                        old_pversion = package_source_version(bugged_log)
                         bugged_errors = extract_errors(bugged_log)
                         if (apt_pkg.version_compare(old_pversion, bug_version) == 0 # old_pversion == bug_version
                             and
@@ -171,7 +183,8 @@ def mark_logs_with_reported_bugs():
                             if not moved:
                                 mark_bugged_version(failed_log, bugged_log)
                                 moved = True
-                            bts_update_found(bug, pversion)
+                                bts_update_found(bug, pversion)
+                                break
 
 
 def report_packages_with_many_logs():

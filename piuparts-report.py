@@ -434,7 +434,22 @@ def html_protect(vstr):
 
 
 def emphasize_reason(reason):
-    if reason in ("unknown", "failed-testing", "circular-dependency", "dependency-failed-testing", "dependency-does-not-exist", "cannot-be-tested"):
+    bad_states = [
+        #"successfully-tested",
+        "failed-testing",
+        "cannot-be-tested",
+        #"essential-required",
+        #"waiting-to-be-tested",
+        #"waiting-for-dependency-to-be-tested",
+        "dependency-failed-testing",
+        "dependency-cannot-be-tested",
+        "dependency-does-not-exist",
+        "circular-dependency",
+        "unknown",
+        "unknown-preferred-alternative",
+        "no-dependency-from-alternatives-exists",
+    ]
+    if reason in bad_states:
       reason = "<em>"+reason+"</em>"
     return reason
 
@@ -650,7 +665,7 @@ class Section:
         if state != "unknown":
             link = "<a href=\"/%s/%s\">%s</a>" % (
                 section,
-                "state-"+state+".html"+"#"+package_name,
+                "state-"+state+".html"+"#"+self._binary_db._packages[package_name]["Package"],
                 link_target)
         else:
           if link_target == package_name:
@@ -764,7 +779,7 @@ class Section:
         success = True
         failed = False
         binaryrows = ""
-        for binary in binaries.split(", "):
+        for binary in sorted(binaries.split(", ")):
           state = self._binary_db.state_by_name(binary)
           if state == "unknown":
             # Don't track udebs and binary packages on other archs. 
@@ -978,7 +993,8 @@ class Section:
         for state in self._binary_db.get_states():
             logging.debug("Writing page for %s" % state)
             vlist = ""
-            for package in self._binary_db.get_packages_in_state(state):
+            for package in sorted(self._binary_db.get_packages_in_state(state),
+                                  key=lambda pkg: pkg["Package"]):
                 vlist += "<li id=\"%s\">%s (%s)" % (
                                          package["Package"],
                                          self.link_to_source_summary(package["Package"]),
