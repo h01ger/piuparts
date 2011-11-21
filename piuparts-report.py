@@ -650,7 +650,7 @@ class Section:
         if state != "unknown":
             link = "<a href=\"/%s/%s\">%s</a>" % (
                 section,
-                "state-"+state+".html"+"#"+package_name,
+                "state-"+state+".html"+"#"+self._binary_db._packages[package_name]["Package"],
                 link_target)
         else:
           if link_target == package_name:
