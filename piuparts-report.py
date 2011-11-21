@@ -764,7 +764,7 @@ class Section:
         success = True
         failed = False
         binaryrows = ""
-        for binary in binaries.split(", "):
+        for binary in sorted(binaries.split(", ")):
           state = self._binary_db.state_by_name(binary)
           if state == "unknown":
             # Don't track udebs and binary packages on other archs. 
