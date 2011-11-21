@@ -37,11 +37,15 @@ fi
 FILE=`mktemp`
 for SECTION in $SECTIONS ; do 
 	rgrep -l -e "tar: .*.tar.gz: Cannot open: No such file or directory" $MASTER/$SECTION/fail >> $FILE
+	rgrep -l -e "ERROR:.*:Temporary directory is not a directory" $MASTER/$SECTION/fail >> $FILE
+	rgrep -l -e "^RuntimeError: maximum recursion depth exceeded while calling a Python object" $MASTER/$SECTION/fail >> $FILE
+	rgrep -l -e "^Traceback" $MASTER/$SECTION/fail >> $FILE
+	rgrep -l -e "^OSError:" $MASTER/$SECTION/fail >> $FILE
 done
 if [ -s $FILE ] ; then 
 	echo "piuparts problem detected!"
 	echo "(By grep'ing for 'tar: .*.tar.gz: Cannot open: No such file or directory'"
-	echo "in failed logs.)"
+	echo "and for some python errors and tracebacks in failed logs.)"
 	echo 
 	echo "Please review the following logfiles/packages."
         echo "If it is always the same package failing, it's likely to be an issue in the"
