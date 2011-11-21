@@ -412,14 +412,24 @@ def test_package(config, package, packages_files):
 
 
 def create_chroot(config, tarball, distro):
+    output_name = tarball + ".log"
+    logging.debug("Opening log file %s" % output_name)
     logging.info("Creating new tarball %s" % tarball)
     command = "%s -ad %s -s %s.new -m %s hello" % \
                 (config["piuparts-cmd"], distro, tarball, config["mirror"])
+    output = file(output_name, "w")
+    output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n\n",
+                               time.gmtime()))
+    output.write("Executing: " + command)
     logging.debug("Executing: " + command)
     f = os.popen("{ %s; } 2>&1" % command, "r")
     for line in f:
+        output.write(line)
         logging.debug(">> " + line.rstrip())
     f.close()
+    output.write(time.strftime("\nEnd: %Y-%m-%d %H:%M:%S %Z\n",
+                               time.gmtime()))
+    output.close()
     if os.path.exists(tarball + ".new"):
         os.rename(tarball + ".new", tarball)
 
