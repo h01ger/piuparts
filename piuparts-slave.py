@@ -444,7 +444,7 @@ def create_or_replace_chroot_tgz(config, tgz, tgz_ctrl, distro):
         age = now - statobj[stat.ST_MTIME]
         logging.info("Check-replace %s: age=%d vs. max=%d" % (tgz, age, max_tgz_age))
         if age > max_tgz_age:
-            logging.info("Limit-replace %s: last-retry=%d vs. min=%d" % (now - statobj[stat.ST_CTIME], min_tgz_retry_delay))
+            logging.info("Limit-replace %s: last-retry=%d vs. min=%d" % (tgz, now - statobj[stat.ST_CTIME], min_tgz_retry_delay))
             # stat.ST_CTIME is time created OR last renamed
             if min_tgz_retry_delay is None or now - statobj[stat.ST_CTIME] > min_tgz_retry_delay:
                 os.rename(tgz, tgz + ".old")
