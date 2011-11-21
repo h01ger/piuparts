@@ -434,7 +434,22 @@ def html_protect(vstr):
 
 
 def emphasize_reason(reason):
-    if reason in ("unknown", "failed-testing", "circular-dependency", "dependency-failed-testing", "dependency-does-not-exist", "cannot-be-tested"):
+    bad_states = [
+        #"successfully-tested",
+        "failed-testing",
+        "cannot-be-tested",
+        #"essential-required",
+        #"waiting-to-be-tested",
+        #"waiting-for-dependency-to-be-tested",
+        "dependency-failed-testing",
+        "dependency-cannot-be-tested",
+        "dependency-does-not-exist",
+        "circular-dependency",
+        "unknown",
+        "unknown-preferred-alternative",
+        "no-dependency-from-alternatives-exists",
+    ]
+    if reason in bad_states:
       reason = "<em>"+reason+"</em>"
     return reason
 
