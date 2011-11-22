@@ -6,8 +6,6 @@ higher than wishlist!
 
 for 0.42:
 
-- send logs to mailing lists
-
 - share templates for filing bugs
 
 - piuparts-report should keep state, ie cache the results of the log 
@@ -15,20 +13,29 @@ for 0.42:
   take minutes instead of hours... this is now (with four distros tested 
   instead of three) more needed than ever.
 
+- use python-debianbts to track bugginess status of packages via
+  the bts and remove the "bugged" directory-status tracking
+  altogether.  also remove "fixed".
+
 - discard logs for packages which have been removed from distro.
 
 - piuparts-report.py: fix those 2 FIXMEs in main()
 
-- warn about files in */reserved older than 24h
+- warn/remove about files in */reserved older than 24h
 
-- preserve two uncommited scripts from my svn working copy: home/piupartsm/bin/biggest_blocker.sh and home/piupartss/bin/update-piuparts-snapshot
+- merge script from my svn working copy: home/piupartsm/bin/biggest_blocker.sh 
+  with a similar one Dave send to the list
 
 
 for 0.43:
 
-- use python-debianbts to track bugginess status of packages via
-  the bts and remove the "bugged" directory-status tracking
-  altogether.  also remove "fixed".
+- provide mail templates for bugreports (which ideally only
+  should need manual logfile trimming) at
+  http://$piuparts/$distro/fail/$packages_$version.bug for usage 
+  by a then to be written tool.
+
+- write reportbug(-like) wrapper for mass bug filing (start
+  simple, make it more sophisticated later). 
 
 - use libeatmydata - either install it in all chroots or find a
   better way to use it. Since 0.41 there is --force-unsafe-io 
@@ -44,19 +51,11 @@ for 0.43:
 
 for 0.44:
 
-- provide mail templates for bugreports (which ideally only
-  should need manual logfile trimming) at
-  http://$piuparts/$distro/fail/$packages_$version.bug for usage 
-  by a then to be written tool.
-
-- write reportbug(-like) wrapper for mass bug filing (start
-  simple, make it more sophisticated later). 
-
-- svn mv piatti trunk/doc/examples  and include it into a new
+- mv piatti.git piuparts.git/doc/examples  and include it into a new
   binary package.  when doing so keep in mind the two tango icons
   and credit those in debian/copyright.
 
-- once that is done, move to git.
+- create piuparts-master and piuparts-slave packages.
 
 - publish FAI classes to setup piuparts.$fqdn automatically.
 
@@ -65,6 +64,19 @@ for 0.45:
 
 - remove configfile option "mirror" and use the mirror from
   "packages-url".
+
+- find_default_debian_mirrors: if parts[2] contains a / (think
+  stable/updates for security.d.o), you can't ignore this, it
+  will break later...
+
+- support for extra-packages-url (for backports, security, etc)
+
+- make it possible to call aptitude (or similar) instead of
+  apt-get and allow to override the commandline arguments of the
+  used program (to be able to test with and without recommended
+  packages or authentication).
+
+- piuparts-slave: timestamps to log messages
 
 - master:
   - write stats about number of daily tests (-> report: create
@@ -75,14 +87,13 @@ for 0.46:
 
 - slave_run: cleanup stale proc mountpoints
 
+- mounting /proc and perhaps others (usbfs, sysfs, /dev/pts,
+  etc.) in the chroot might be a good idea because some packages
+  might need this.  
+
 - the templates used by update-reports.py should be taken from
   /etc/piuparts/templates/ and not be included in the python
   source
-
-- mounting /proc and perhaps others (usbfs, sysfs, /dev/pts,
-  etc.) in the chroot might be a good idea because some packages
-  might need this.  Interestingly enough this currently seems to
-  prevent start-stop-daemon from starting any daemons ;)
 
 
 for 0.47 and later:
@@ -101,29 +112,6 @@ for 0.47 and later:
 - a redirect of http://piuparts.d.o/foo to
   http://p.d.o/source/f/foo.html would be nice
 
-
-for 0.50 and later:
-
-- multi-arch:
-  - piuparts-report should have a list of available arch and list
-    packages only available on untested archs in a new state
-    "(depends-)not-available-on-tested-archs"
-  - master should (per default) only schedule packages which are
-    not available on the master arch to slaves of different archs
-  -> "schedule-evenly-to-slaves = no"
-
-- piuparts can't currently test upgrades of required packages.
-  (Because they cannot be removed, it assumes these are
-  untestable, which is only true for removal tests...
-
-
-Low priority stuff (a.k.a. "nobody's said they must have it now")
------------------------------------------------------------------
-
-- create emacspeak-broken-dpkg-preconfigure package for broken
-  repo. (then later put more broken packages in there and use
-  that for testing piuparts)
-
 - monitor:
   - write slave-watcher to monitor hanging processes, eg. 
     looping dpkg-preconfigure
@@ -135,11 +123,22 @@ Low priority stuff (a.k.a. "nobody's said they must have it now")
     10min. see #387428
   - master.log grows to fast and there is no mechanism to stop it
 
-- find_default_debian_mirrors: if parts[2] contains a / (think
-  stable/updates for security.d.o), you can't ignore this, it
-  will break later...
 
-- support for extra-packages-url (for backports, security, etc)
+for 0.50 and later:
+
+- really support multiple architectures:
+  - piuparts-report should have a list of available arch and list
+    packages only available on untested archs in a new state
+    "(depends-)not-available-on-tested-archs"
+  - master should (per default) only schedule packages which are
+    not available on the master arch to slaves of different archs
+  -> "schedule-evenly-to-slaves = no"
+
+- piuparts-master: keep track of to whom a reservation was given
+
+- piuparts can't currently test upgrades of required packages.
+  (Because they cannot be removed, it assumes these are
+  untestable, which is only true for removal tests...
 
 - not sure if it's a sensible thing to to, but provide a way to
   turn off debugging output for piuparts.py - see
@@ -149,17 +148,13 @@ Low priority stuff (a.k.a. "nobody's said they must have it now")
 
 - move shell cronjobs functionality into master, slave & report
 
-- make it possible to call aptitude (or similar) instead of
-  apt-get and allow to override the commandline arguments of the
-  used program (to be able to test with and without recommended
-  packages or authentication).
 
-- Remove --minimize and related options/functionality? Since 0.38
-  --skip-minimize and --debfoster-options have become quite
-  obsolete (--minimize has been added in 0.38) since debootstrap
-  now creates a minimal chroot.
+Low priority stuff (a.k.a. "nobody's said they must have it now")
+-----------------------------------------------------------------
 
-- piuparts-master: keep track of to whom a reservation was given
+- create archive of broken packages to provide test cases for 
+  piuparts testing.
 
-- piuparts-slave: timestamps to log messages
-
+- create emacspeak-broken-dpkg-preconfigure package for broken
+  repo. (then later put more broken packages in there and use
+  that for testing piuparts)
