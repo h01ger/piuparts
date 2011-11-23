@@ -497,47 +497,78 @@ def make_metapackage(name, depends, conflicts):
     return os.path.join(tmpdir, name) + '.deb'
 
 
+def split_path(pathname):
+    parts = []
+    while pathname:
+        (head, tail) = os.path.split(pathname)
+        #print "split '%s' => '%s' + '%s'" % (pathname, head, tail)
+        if tail:
+            parts.append(tail)
+        elif not head:
+            break
+        elif head == pathname:
+            parts.append(head)
+            break
+        pathname = head
+    return parts
+
 def canonicalize_path(root, pathname):
     """Canonicalize a path name, simulating chroot at 'root'.
 
-    When resolving the symlink, pretend (similar to chroot) that root is
-    the root of the filesystem. Note that this does NOT work completely
-    correctly if the symlink target contains .. path components. This is
-    good enough for my immediate purposes, but nowhere near good enough
-    for anything that needs to be secure. For that, use chroot and have
-    the kernel resolve symlinks instead.
+    When resolving the symlink, pretend (similar to chroot) that
+    'root' is the root of the filesystem.  Also resolve '..' and
+    '.' components.  This should not escape the chroot below
+    'root', but for security concerns, use chroot and have the
+    kernel resolve symlinks instead.
 
     """
-
-    #print "CANONICALIZE: %s %s" % (root, pathname)
-    i = 0
-    while os.path.islink(pathname):
-        if i >= 10: # let's avoid infinite loops...
-            return True
-        i += 1
-        target = os.readlink(pathname)
-        #print "LINK: %s -> %s" % (pathname, target)
-        if os.path.isabs(target):
-            pathname = os.path.join(root, target[1:]) # Assume Unix filenames
+    #print "\nCANONICALIZE %s %s" % (root, pathname)
+    seen = []
+    parts = split_path(pathname)
+    #print "PARTS ", list(reversed(parts))
+    path = "/"
+    while parts:
+        tag = "\n".join(parts + [path])
+        #print "TEST '%s' + " % path, list(reversed(parts))
+        if tag in seen or len(seen) > 1024:
+            fullpath = os.path.join(path, *reversed(parts))
+            #print "LOOP %s" % fullpath
+            path = fullpath
+            logging.error("ELOOP: Too many symbolic links in '%s'" % path)
+            break
+        seen.append(tag)
+        part = parts.pop()
+        # Using normpath() to cleanup '.', '..' and multiple slashes.
+        # Removing a suffix 'foo/..' is safe here since it can't change the
+        # meaning of 'path' because it contains no symlinks - they have been
+        # resolved already.
+        newpath = os.path.normpath(os.path.join(path, part))
+        rootedpath = os.path.join(root, newpath[1:])
+        if newpath == "/":
+            path = "/"
+        elif os.path.islink(rootedpath):
+            target = os.readlink(rootedpath)
+            #print "LINK to '%s'" % target
+            if os.path.isabs(target):
+                path = "/"
+            parts.extend(split_path(target))
         else:
-            pathname = os.path.join(os.path.dirname(pathname), target)
-        #print "FOLLOW: %s" % pathname
-    (dn, bn) = os.path.split(pathname)
-    #print "DN: %s  BN: %s" % (dn, bn)
-    if pathname != root and dn != root:
-        dn = canonicalize_path(root, dn)
-    pathname = os.path.join(dn, bn)
-    #print "RETURN: %s EXISTS: %s" % (pathname, os.path.exists(pathname))
-    return pathname
+            path = newpath
+    #print "FINAL '%s'" % path
+    return path
 
 
 def is_broken_symlink(root, dirpath, filename):
     """Is symlink dirpath+filename broken?"""
 
+    if dirpath[:len(root)] == root:
+        dirpath = dirpath[len(root):]
     pathname = canonicalize_path(root, os.path.join(dirpath, filename))
+    pathname = os.path.join(root, pathname[1:])
 
     # The symlink chain, if any, has now been resolved. Does the target
     # exist?
+    #print "EXISTS ", pathname, os.path.exists(pathname)
     return not os.path.exists(pathname)
 
 
