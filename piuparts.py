@@ -565,6 +565,8 @@ class IsBrokenSymlinkTests(unittest.TestCase):
         self.symlink("dir", "dir-link")
         os.mkdir(os.path.join(self.testdir, "dir/subdir"))
         self.symlink("subdir", "dir/subdir-link")
+        self.symlink("notexist/", "trailing-slash-broken")
+        self.symlink("dir/", "trailing-slash-works")
         self.symlink("selfloop", "selfloop")
         self.symlink("/absolute-selfloop", "absolute-selfloop")
         self.symlink("../dir/selfloop", "dir/selfloop")
@@ -593,6 +595,10 @@ class IsBrokenSymlinkTests(unittest.TestCase):
     def testAbsoluteBrokenToSymlink(self):
         self.failUnless(is_broken_symlink(self.testdir, self.testdir, 
                                           "absolute-broken-to-symlink"))
+
+    def testTrailingSlashBroken(self):
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "trailing-slash-broken"))
 
     def testSelfLoopBroken(self):
         self.failUnless(is_broken_symlink(self.testdir, self.testdir,
@@ -635,6 +641,10 @@ class IsBrokenSymlinkTests(unittest.TestCase):
     def testAbsoluteWorksToSymlink(self):
         self.failIf(is_broken_symlink(self.testdir, self.testdir, 
                                       "absolute-works-to-symlink"))
+
+    def testTrailingSlashWorks(self):
+        self.failIf(is_broken_symlink(self.testdir, self.testdir,
+                                      "trailing-slash-works"))
 
     def testMultiLevelNestedSymlinks(self):
         # target/first-link -> ../target/second-link -> ../target
