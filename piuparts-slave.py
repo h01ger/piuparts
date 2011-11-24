@@ -289,6 +289,8 @@ class Section:
 
         self._slave.close()
 
+        test_count = len(self._slave.get_reserved())
+
         if self._slave.get_reserved():
             self._check_tarball()
             packages_files = {}
@@ -323,6 +325,8 @@ class Section:
                                 "Package %s not found" % package_name)
                 self._slave.forget_reserved(package_name, version)
             os.chdir(oldcwd)
+
+        return( test_count )
 
 
 def log_name(package, version):
@@ -510,15 +514,15 @@ def main():
         sections.append(section)
 
     while True:
+        test_count = 0
+
         for section in sections:
-            section.run()
-        idle = True
-        for section_name in section_names:
-          if os.listdir(os.path.join(global_config["master-directory"],section_name,"reserved")):
-            idle = False
-        if idle:
-          logging.info("Nothing to do, sleeping for %s seconds." % global_config["idle-sleep"])
-          time.sleep(int(global_config["idle-sleep"]))
+            test_count += section.run()
+
+        if test_count == 0:
+            sleep_time = int(global_config["idle-sleep"])
+            logging.info("Nothing to do, sleeping for %d seconds." % sleep_time)
+            time.sleep( sleep_time )
 
 
 if __name__ == "__main__":
