@@ -381,9 +381,30 @@ def run(command, ignore_errors=False):
     env["LC_ALL"] = "C"
     env["LANGUAGES"] = ""
     env["PIUPARTS_OBJECTS"] = ' '.join(str(vobject) for vobject in settings.testobjects )
-    p = subprocess.Popen(command, env=env, stdin=subprocess.PIPE, 
+    devnull = open('/dev/null', 'r')
+    p = subprocess.Popen(command, env=env, stdin=devnull, 
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    (output, _) = p.communicate()
+    output = ""
+    excessive_output = False
+    while p.poll() is None:
+        """Read 64 KB chunks, but depending on the output buffering behavior
+        of the command we may get less even if more output is coming later.
+        Abort after reading 2 MB."""
+        output += p.stdout.read(1 << 16)
+        if (len(output) > (1 << 21)):
+            excessive_output = True
+            logging.error("Terminating command due to excessive output")
+            p.terminate()
+            for i in range(10):
+                time.sleep(0.5)
+                if p.poll() is not None:
+                    break
+            else:
+                logging.error("Killing command due to excessive output")
+                p.kill()
+            p.wait()
+            break
+    devnull.close()
 
     if output:
         dump("\n" + indent_string(output.rstrip("\n")))
@@ -396,6 +417,8 @@ def run(command, ignore_errors=False):
     else:
         logging.error("Command failed (status=%d): %s\n%s" % 
               (p.returncode, repr(command), indent_string(output)))
+        if excessive_output:
+            logging.error("Command was terminated while producing excessive output")
         panic()
     return p.returncode, output
 
@@ -474,47 +497,78 @@ def make_metapackage(name, depends, conflicts):
     return os.path.join(tmpdir, name) + '.deb'
 
 
+def split_path(pathname):
+    parts = []
+    while pathname:
+        (head, tail) = os.path.split(pathname)
+        #print "split '%s' => '%s' + '%s'" % (pathname, head, tail)
+        if tail:
+            parts.append(tail)
+        elif not head:
+            break
+        elif head == pathname:
+            parts.append(head)
+            break
+        pathname = head
+    return parts
+
 def canonicalize_path(root, pathname):
     """Canonicalize a path name, simulating chroot at 'root'.
 
-    When resolving the symlink, pretend (similar to chroot) that root is
-    the root of the filesystem. Note that this does NOT work completely
-    correctly if the symlink target contains .. path components. This is
-    good enough for my immediate purposes, but nowhere near good enough
-    for anything that needs to be secure. For that, use chroot and have
-    the kernel resolve symlinks instead.
+    When resolving the symlink, pretend (similar to chroot) that
+    'root' is the root of the filesystem.  Also resolve '..' and
+    '.' components.  This should not escape the chroot below
+    'root', but for security concerns, use chroot and have the
+    kernel resolve symlinks instead.
 
     """
-
-    #print "CANONICALIZE: %s %s" % (root, pathname)
-    i = 0
-    while os.path.islink(pathname):
-        if i >= 10: # let's avoid infinite loops...
-            return True
-        i += 1
-        target = os.readlink(pathname)
-        #print "LINK: %s -> %s" % (pathname, target)
-        if os.path.isabs(target):
-            pathname = os.path.join(root, target[1:]) # Assume Unix filenames
+    #print "\nCANONICALIZE %s %s" % (root, pathname)
+    seen = []
+    parts = split_path(pathname)
+    #print "PARTS ", list(reversed(parts))
+    path = "/"
+    while parts:
+        tag = "\n".join(parts + [path])
+        #print "TEST '%s' + " % path, list(reversed(parts))
+        if tag in seen or len(seen) > 1024:
+            fullpath = os.path.join(path, *reversed(parts))
+            #print "LOOP %s" % fullpath
+            path = fullpath
+            logging.error("ELOOP: Too many symbolic links in '%s'" % path)
+            break
+        seen.append(tag)
+        part = parts.pop()
+        # Using normpath() to cleanup '.', '..' and multiple slashes.
+        # Removing a suffix 'foo/..' is safe here since it can't change the
+        # meaning of 'path' because it contains no symlinks - they have been
+        # resolved already.
+        newpath = os.path.normpath(os.path.join(path, part))
+        rootedpath = os.path.join(root, newpath[1:])
+        if newpath == "/":
+            path = "/"
+        elif os.path.islink(rootedpath):
+            target = os.readlink(rootedpath)
+            #print "LINK to '%s'" % target
+            if os.path.isabs(target):
+                path = "/"
+            parts.extend(split_path(target))
         else:
-            pathname = os.path.join(os.path.dirname(pathname), target)
-        #print "FOLLOW: %s" % pathname
-    (dn, bn) = os.path.split(pathname)
-    #print "DN: %s  BN: %s" % (dn, bn)
-    if pathname != root and dn != root:
-        dn = canonicalize_path(root, dn)
-    pathname = os.path.join(dn, bn)
-    #print "RETURN: %s EXISTS: %s" % (pathname, os.path.exists(pathname))
-    return pathname
+            path = newpath
+    #print "FINAL '%s'" % path
+    return path
 
 
 def is_broken_symlink(root, dirpath, filename):
     """Is symlink dirpath+filename broken?"""
 
+    if dirpath[:len(root)] == root:
+        dirpath = dirpath[len(root):]
     pathname = canonicalize_path(root, os.path.join(dirpath, filename))
+    pathname = os.path.join(root, pathname[1:])
 
     # The symlink chain, if any, has now been resolved. Does the target
     # exist?
+    #print "EXISTS ", pathname, os.path.exists(pathname)
     return not os.path.exists(pathname)
 
 
@@ -538,6 +592,21 @@ class IsBrokenSymlinkTests(unittest.TestCase):
         self.symlink("absolute-broken", "absolute-broken-to-symlink")
         self.symlink("/", "absolute-works")
         self.symlink("/absolute-works", "absolute-works-to-symlink")
+        os.mkdir(os.path.join(self.testdir, "dir"))
+        self.symlink("dir", "dir-link")
+        os.mkdir(os.path.join(self.testdir, "dir/subdir"))
+        self.symlink("subdir", "dir/subdir-link")
+        self.symlink("notexist/", "trailing-slash-broken")
+        self.symlink("dir/", "trailing-slash-works")
+        self.symlink("selfloop", "selfloop")
+        self.symlink("/absolute-selfloop", "absolute-selfloop")
+        self.symlink("../dir/selfloop", "dir/selfloop")
+        self.symlink("../dir-link/selfloop", "dir/selfloop1")
+        self.symlink("../../dir/subdir/selfloop", "dir/subdir/selfloop")
+        self.symlink("../../dir-link/subdir/selfloop", "dir/subdir/selfloop1")
+        self.symlink("../../link/subdir-link/selfloop", "dir/subdir/selfloop2")
+        self.symlink("../../dir-link/subdir-link/selfloop", "dir/subdir/selfloop3")
+        self.symlink("explode/bomb", "explode")
 
     def tearDown(self):
         shutil.rmtree(self.testdir)
@@ -558,6 +627,36 @@ class IsBrokenSymlinkTests(unittest.TestCase):
         self.failUnless(is_broken_symlink(self.testdir, self.testdir, 
                                           "absolute-broken-to-symlink"))
 
+    def testTrailingSlashBroken(self):
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "trailing-slash-broken"))
+
+    def testSelfLoopBroken(self):
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "selfloop"))
+
+    def testExpandingSelfLoopBroken(self):
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "explode"))
+
+    def testAbsoluteSelfLoopBroken(self):
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "absolute-selfloop"))
+
+    def testSubdirSelfLoopBroken(self):
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/selfloop"))
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/selfloop1"))
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/subdir/selfloop"))
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/subdir/selfloop1"))
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/subdir/selfloop2"))
+        self.failUnless(is_broken_symlink(self.testdir, self.testdir,
+                                          "dir/subdir/selfloop3"))
+
     def testRelativeWorks(self):
         self.failIf(is_broken_symlink(self.testdir, self.testdir, 
                                       "relative-works"))
@@ -573,6 +672,10 @@ class IsBrokenSymlinkTests(unittest.TestCase):
     def testAbsoluteWorksToSymlink(self):
         self.failIf(is_broken_symlink(self.testdir, self.testdir, 
                                       "absolute-works-to-symlink"))
+
+    def testTrailingSlashWorks(self):
+        self.failIf(is_broken_symlink(self.testdir, self.testdir,
+                                      "trailing-slash-works"))
 
     def testMultiLevelNestedSymlinks(self):
         # target/first-link -> ../target/second-link -> ../target
@@ -805,10 +908,10 @@ class Chroot:
                 self.run_scripts("post_distupgrade")
             self.check_for_no_processes()
 
-    def apt_get_knows(self, package_names):
+    def apt_get_knows(self, packages):
         """Does apt-get (or apt-cache) know about a set of packages?"""
 
-        for name in package_names:
+        for name in packages:
             (status, output) = self.run(["apt-cache", "show", name],
                                         ignore_errors=True)
             if status != 0:
@@ -851,10 +954,10 @@ class Chroot:
             logging.debug("The package did not modify any file.\n")     
 
 
-    def install_package_files(self, filenames):
-        if filenames:
-            self.copy_files(filenames, "tmp")
-            tmp_files = [os.path.basename(a) for a in filenames]
+    def install_package_files(self, package_files):
+        if package_files:
+            self.copy_files(package_files, "tmp")
+            tmp_files = [os.path.basename(a) for a in package_files]
             tmp_files = [os.path.join("tmp", name) for name in tmp_files]
 
             if settings.scriptsdir is not None:
@@ -898,10 +1001,11 @@ class Chroot:
         self.run(["dpkg", "--remove", "--pending"], ignore_errors=True)
 
 
-    def restore_selections(self, changes, packages):
-        """Restore package selections in a chroot by applying 'changes'.
-           'changes' is a return value from diff_selections."""
+    def restore_selections(self, selections, packages):
+        """Restore package selections in a chroot to the state in
+        'selections'."""
 
+        changes = diff_selections(self, selections)
         deps = {}
         nondeps = {}
         for name, state in changes.iteritems():
@@ -1011,6 +1115,9 @@ class Chroot:
                 self.list_installed_files (pre_info, self.save_meta_data())
             else:
                 self.run(["apt-get", "-y", "install"] + packages)
+
+            self.run_scripts("post_install")
+
 
     def check_for_no_processes(self):
         """Check there are no processes running inside the chroot."""
@@ -1586,10 +1693,10 @@ def diff_selections(chroot, selections):
     return changes
 
 
-def get_package_names_from_package_files(filenames):
+def get_package_names_from_package_files(package_files):
     """Return list of package names given list of package file names."""
     vlist = []
-    for filename in filenames:
+    for filename in package_files:
         (status, output) = run(["dpkg", "--info", filename])
         for line in [line.lstrip() for line in output.split("\n")]:
             if line[:len("Package:")] == "Package:":
@@ -1702,7 +1809,7 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     return ok
 
 
-def install_purge_test(chroot, root_info, selections, package_list, packages):
+def install_purge_test(chroot, root_info, selections, package_files, packages):
     """Do an install-purge test. Return True if successful, False if not.
        Assume 'root' is a directory already populated with a working
        chroot, with packages in states given by 'selections'."""
@@ -1711,11 +1818,11 @@ def install_purge_test(chroot, root_info, selections, package_list, packages):
 
     if settings.warn_on_others:
         # Create a metapackage with dependencies from the given packages
-        if package_list:
+        if package_files:
             control_infos = []
             # We were given package files, so let's get the Depends and
             # Conflicts directly from the .debs
-            for deb in package_list:
+            for deb in package_files:
                 returncode, output = run(["dpkg", "-f", deb])
                 control = deb822.Deb822(output)
                 control_infos.append(control)
@@ -1753,8 +1860,8 @@ def install_purge_test(chroot, root_info, selections, package_list, packages):
     else:
         deps_info = None
 
-    if package_list:
-        chroot.install_package_files(package_list)
+    if package_files:
+        chroot.install_package_files(package_files)
     else:
         chroot.install_packages_by_name(packages)
         chroot.run(["apt-get", "clean"])
@@ -1766,20 +1873,19 @@ def install_purge_test(chroot, root_info, selections, package_list, packages):
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't there initially.    
-    changes = diff_selections(chroot, selections)
-    chroot.restore_selections(changes, packages)
+    chroot.restore_selections(selections, packages)
 
     chroot.check_for_broken_symlinks()
 
     return check_results(chroot, root_info, file_owners, deps_info=deps_info)
 
 
-def install_upgrade_test(chroot, root_info, selections, package_list, package_names):
+def install_upgrade_test(chroot, root_info, selections, package_files, packages):
     """Install package via apt-get, then upgrade from package files.
     Return True if successful, False if not."""
 
     # First install via apt-get.
-    chroot.install_packages_by_name(package_names)
+    chroot.install_packages_by_name(packages)
 
     if settings.scriptsdir is not None:
         chroot.run_scripts("pre_upgrade")
@@ -1787,14 +1893,12 @@ def install_upgrade_test(chroot, root_info, selections, package_list, package_na
     chroot.check_for_broken_symlinks()
 
     # Then from the package files.
-    chroot.install_package_files(package_list)
+    chroot.install_package_files(package_files)
 
     file_owners = chroot.get_files_owned_by_packages()
 
-    # Remove all packages from the chroot that weren't there
-    # initially.
-    changes = diff_selections(chroot, selections)
-    chroot.restore_selections(changes, package_names)
+    # Remove all packages from the chroot that weren't there initially.
+    chroot.restore_selections(selections, packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -1819,7 +1923,7 @@ def load_meta_data(filename):
     return root_info, selections
 
 
-def install_and_upgrade_between_distros(filenames, packages):
+def install_and_upgrade_between_distros(package_files, packages):
     """Install package and upgrade it between distributions, then remove.
        Return True if successful, False if not."""
 
@@ -1893,7 +1997,7 @@ def install_and_upgrade_between_distros(filenames, packages):
 
     chroot.check_for_no_processes()
 
-    chroot.install_package_files(filenames)
+    chroot.install_package_files(package_files)
     chroot.run(["apt-get", "clean"])
 
     chroot.check_for_no_processes()
@@ -1901,8 +2005,7 @@ def install_and_upgrade_between_distros(filenames, packages):
     file_owners = chroot.get_files_owned_by_packages()
 
     # use root_info and selections
-    changes = diff_selections(chroot, selections)
-    chroot.restore_selections(changes, packages)
+    chroot.restore_selections(selections, packages)
     result = check_results(chroot, root_info, file_owners)
 
     chroot.check_for_no_processes()
@@ -2262,9 +2365,10 @@ def process_packages(package_list):
     # Find the names of packages.
     if settings.args_are_package_files:
         packages = get_package_names_from_package_files(package_list)
+        package_files = package_list
     else:
         packages = package_list
-        package_list = []
+        package_files = []
 
     if len(settings.debian_distros) == 1:
         chroot = get_chroot()
@@ -2276,7 +2380,7 @@ def process_packages(package_list):
 
         if not settings.no_install_purge_test:
             if not install_purge_test(chroot, root_info, selections,
-                      package_list, packages):
+                      package_files, packages):
                 logging.error("FAIL: Installation and purging test.")
                 panic()
             logging.info("PASS: Installation and purging test.")
@@ -2286,7 +2390,7 @@ def process_packages(package_list):
                 logging.info("Can't test upgrades: -a or --apt option used.")
             elif not chroot.apt_get_knows(packages):
                 logging.info("Can't test upgrade: packages not known by apt-get.")
-            elif install_upgrade_test(chroot, root_info, selections, package_list, 
+            elif install_upgrade_test(chroot, root_info, selections, package_files,
                                   packages):
                 logging.info("PASS: Installation, upgrade and purging tests.")
             else:
@@ -2296,7 +2400,7 @@ def process_packages(package_list):
         chroot.remove()
         dont_do_on_panic(cid)
     else:
-        if install_and_upgrade_between_distros(package_list, packages):
+        if install_and_upgrade_between_distros(package_files, packages):
             logging.info("PASS: Upgrading between Debian distributions.")
         else:
             logging.error("FAIL: Upgrading between Debian distributions.")

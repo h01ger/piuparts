@@ -37,10 +37,17 @@ piuparts (0.42) UNRELEASED; urgency=low
   * piuparts-slave.py: fix triggering tarball recreation, check tarball age
     regularily, log tarball creation in *.tgz.log.
   * piuparts.py:
+    - Add unittests for misbehaving symlinks.
     - Fix resolving absolute symlinks of intermediate directory components,
       i.e. /var/run -> /run while checking /etc/motd -> /var/run/motd.
       Solves about 30000 false positives of
       'Broken symlinks: /etc/motd -> /var/run/motd'.  (Closes: #648784)
+    - when running commands in the chroot, redirect stdin from /dev/null
+    - stop using Popen.communicate()
+    - use consistent variable names for package lists
+    - compute the changes in restore_selections()
+    - Add missing post_install_* hook to install_packages_by_name().
+      (Closes: #628077)
   * piuparts-report.py: 
     - sort binary packages by name
     - sort package lists by name
