@@ -45,6 +45,9 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Terminate commands producing more than 2 MB of output.
     - Add missing post_install_* hook to install_packages_by_name().
       (Closes: #628077)
+    - Create /etc/dpkg/dpkg.cfg.d/ if missing inside the chroot (e.g. on
+      lenny).  (Closes: #647752)
+    - Remove logrotate and its dependencies only once.
     - Use consistent variable names for package lists.
     - Compute the changes in restore_selections().
     - Check for settings.scriptsdir inside run_scripts().
