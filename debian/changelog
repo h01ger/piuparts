@@ -48,9 +48,12 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Create /etc/dpkg/dpkg.cfg.d/ if missing inside the chroot (e.g. on
       lenny).  (Closes: #647752)
     - Remove logrotate and its dependencies only once.
+    - Only run 'apt-get update' after updating the sources.list.
+    - Only run 'apt-get clean' before creating tarballs or saving meta data.
     - Use consistent variable names for package lists.
     - Compute the changes in restore_selections().
     - Check for settings.scriptsdir inside run_scripts().
+    - Consistently use chroot.relative() to build filenames inside the chroot.
   * piuparts-slave.py:
     - Fix triggering tarball recreation.
     - Check tarball age regularily.
