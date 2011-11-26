@@ -54,6 +54,11 @@ piuparts (0.42) UNRELEASED; urgency=low
     - resolve virtual packages when linking
     - update list of error states
 
+  [ Dave Steele ]
+  * piuparts-slave.py: make Section.run() report the number of packages
+    processed and use this to decide whether a slave should sleep.
+    (Closes: #649967)
+
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 
 piuparts (0.41) unstable; urgency=low
