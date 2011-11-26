@@ -8,11 +8,6 @@ piuparts (0.42) UNRELEASED; urgency=low
       logrotate. Thanks Stefano! (Closes: #638832)
     - apply patch by Gregor Herrmann to fix --minimize. (Closes: #648423)
   * Remove Debian.NEWS entry about source in git. (Closes: #640121)
-  * piuparts-slave.py: Replace deprecated os.popen2 with subprocess.Popen,
-    thanks to Scott Schaefer for the patch. 
-    (Closes: #640646)
-  * debian/copyright: apply patch by Scott Schaefer to make it compliant with 
-    DEP-5. Thanks Scott!
   * piuparts.py, piuparts-report.py, ChangeLog: Expand tabs to spaces.
   * Remove whitespaces from whitespace-only lines.
 
@@ -28,6 +23,7 @@ piuparts (0.42) UNRELEASED; urgency=low
   * debian/control: Add python-apt and python-debianbts to piuparts depends.
 
   [ Scott Schaefer ]
+  * debian/copyright: Make it compliant with DEP-5.
   * piuparts-slave.py: 
     - Replace deprecated os.popen2 with subprocess.Popen. (Closes: #640646)
     - Add some more logging.
