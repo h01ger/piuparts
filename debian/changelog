@@ -46,6 +46,8 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Remove logrotate and its dependencies only once.
     - Only run 'apt-get update' after updating the sources.list.
     - Only run 'apt-get clean' before creating tarballs or saving meta data.
+    - Do the same checks for running processes and broken symlinks in all
+      tests.
     - Use consistent variable names for package lists.
     - Compute the changes in restore_selections().
     - Check for settings.scriptsdir inside run_scripts().
