@@ -15,7 +15,6 @@ piuparts (0.42) UNRELEASED; urgency=low
     DEP-5. Thanks Scott!
   * piuparts.py, piuparts-report.py, ChangeLog: Expand tabs to spaces.
   * Remove whitespaces from whitespace-only lines.
-  * *.py: Add vim modeline.
 
   [ Mika Pflüger ]
   * piuparts-analyze.py:
@@ -31,29 +30,33 @@ piuparts (0.42) UNRELEASED; urgency=low
   [ Scott Schaefer ]
   * piuparts-slave.py: 
     - Replace deprecated os.popen2 with subprocess.Popen. (Closes: #640646)
-    - add some more logging.
+    - Add some more logging.
 
   [ Andreas Beckmann ]
-  * piuparts-slave.py: fix triggering tarball recreation, check tarball age
-    regularily, log tarball creation in *.tgz.log.
+  * *.py: Add vim modeline.
   * piuparts.py:
     - Add unittests for misbehaving symlinks.
     - Fix resolving absolute symlinks of intermediate directory components,
       i.e. /var/run -> /run while checking /etc/motd -> /var/run/motd.
       Solves about 30000 false positives of
       'Broken symlinks: /etc/motd -> /var/run/motd'.  (Closes: #648784)
-    - when running commands in the chroot, redirect stdin from /dev/null
-    - stop using Popen.communicate()
-    - use consistent variable names for package lists
-    - compute the changes in restore_selections()
-    - check for settings.scriptsdir inside run_scripts()
+    - When running commands in the chroot, redirect stdin from /dev/null.
+    - Stop using Popen.communicate() as it may run out of memory.
+    - Terminate commands producing more than 2 MB of output.
     - Add missing post_install_* hook to install_packages_by_name().
       (Closes: #628077)
+    - Use consistent variable names for package lists.
+    - Compute the changes in restore_selections().
+    - Check for settings.scriptsdir inside run_scripts().
+  * piuparts-slave.py:
+    - Fix triggering tarball recreation.
+    - Check tarball age regularily.
+    - Log tarball creation in *.tgz.log.
   * piuparts-report.py: 
-    - sort binary packages by name
-    - sort package lists by name
-    - resolve virtual packages when linking
-    - update list of error states
+    - state-*.html: Sort package lists by name.
+    - source/?/*.html: Sort binary packages by name.
+    - Dependency lists: resolve virtual packages and link to a real package.
+    - Update list of error states to be highlighted.
 
   [ Dave Steele ]
   * piuparts-slave.py: make Section.run() report the number of packages
