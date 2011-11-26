@@ -46,6 +46,7 @@ piuparts (0.42) UNRELEASED; urgency=low
     - stop using Popen.communicate()
     - use consistent variable names for package lists
     - compute the changes in restore_selections()
+    - check for settings.scriptsdir inside run_scripts()
     - Add missing post_install_* hook to install_packages_by_name().
       (Closes: #628077)
   * piuparts-report.py: 
