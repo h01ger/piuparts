@@ -814,7 +814,7 @@ class Chroot:
                     "".join(lines))
 
     def create_apt_conf(self):
-        """Create /etc/apt/apt.conf inside the chroot."""
+        """Create /etc/apt/apt.conf.d/piuparts inside the chroot."""
         lines = [
             'APT::Get::Assume-Yes "yes";\n',
             'APT::Install-Recommends "0";\n',
@@ -841,7 +841,7 @@ class Chroot:
         if settings.dpkg_force_confdef:
             lines.append('Dpkg::Options {"--force-confdef";};\n')
 
-        create_file(self.relative("etc/apt/apt.conf"),
+        create_file(self.relative("etc/apt/apt.conf.d/piuparts"),
             "".join(lines))
 
     def create_dpkg_conf(self):
