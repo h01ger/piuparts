@@ -1,10 +1,10 @@
 # run 'echo known_circular_depends = $(grep -v ^# circular-depends-wheezy.txt)'
 
 # from http://debian.semistable.com/debgraph.out.html
-# last updated: 2011-11-21
+# last updated: 2011-11-26
 libc6 libgcc1 multiarch-support
 coreutils dpkg
-perl perl-modules
+libclass-isa-perl libswitch-perl perl perl-modules
 odbcinst odbcinst1debian2
 python-imaging python-imaging-tk
 autodocktools mgltools-pmv
@@ -16,14 +16,15 @@ uqm uqm-content
 libmaven-scm-java libmaven2-core-java libwagon-java
 acheck acheck-rules
 liblwp-protocol-https-perl libwww-perl
+libmono-corlib2.0-cil libmono-posix2.0-cil libmono-security2.0-cil libmono-system2.0-cil mono-2.0-gac mono-gac mono-runtime
+libmono-system-data-linq2.0-cil libmono-system-web2.0-cil libmono-wcf3.0-cil libmono2.0-cil
 ghostscript gs-cjk-resource libgs9
 xemacs21 xemacs21-bin xemacs21-mule xemacs21-mule-canna-wnn xemacs21-nomule xemacs21-support
 aide aide-common
-libntrack0 ntrack-module-libnl-0
-libmono-corlib2.0-cil libmono-posix2.0-cil libmono-security2.0-cil libmono-system2.0-cil mono-2.0-gac mono-gac mono-runtime
-libmono-system-data-linq2.0-cil libmono-system-web2.0-cil libmono-wcf3.0-cil libmono2.0-cil
+libntrack0 ntrack-module-libnl-0 ntrack-module-rtnetlink-0
 gamin libgamin0
 monodoc-browser monodoc-http monodoc-manual
+libgeronimo-jpa-2.0-spec-java libgeronimo-osgi-support-java libosgi-compendium-java
 bochs bochs-wx
 tasksel tasksel-data
 g++-4.5 libstdc++6-4.5-dev
@@ -46,9 +47,6 @@ apt-watch-backend apt-watch-interface
 
 # coq-theories depends on the virtual package coq-$VERSION provided by coq
 coq coq-theories
-
-# fuse-emulator is a virtual package provided by fuse-emulator-sdl
-fuse-emulator fuse-emulator-common
 
 # libhugs-base and libhugs-haskell98 are virtual packages provided by
 # libhugs-base-bundled and libhugs-haskell98-bundled
