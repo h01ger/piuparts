@@ -779,7 +779,10 @@ class Chroot:
     def unpack_from_tgz(self, tarball):
         """Unpack a tarball to a chroot."""
         logging.debug("Unpacking %s into %s" % (tarball, self.name))
-        run(["tar", "-C", self.name, "-zxf", tarball])
+        prefix = []
+        if settings.eatmydata:
+            prefix.append('eatmydata')
+        run(prefix + ["tar", "-C", self.name, "-zxf", tarball])
 
     def setup_from_lvm(self, lvm_volume):
         """Create a chroot by creating an LVM snapshot."""
@@ -794,7 +797,11 @@ class Chroot:
         run(['mount', self.lvm_snapshot, self.name])
 
     def run(self, command, ignore_errors=False):
-        return run(["chroot", self.name] + command,
+        prefix = []
+        if settings.eatmydata and os.path.isfile(os.path.join(self.name,
+                                                 'usr/bin/eatmydata')):
+            prefix.append('eatmydata')
+        return run(["chroot", self.name] + prefix + command,
                    ignore_errors=ignore_errors)
 
     def create_apt_sources(self, distro):
@@ -862,8 +869,14 @@ class Chroot:
               (settings.debian_distros[0], self.name))
         if settings.do_not_verify_signatures:
           logging.info("Warning: not using --keyring option when running debootstrap!")
-        run(["debootstrap", "--variant=minbase", settings.keyringoption, settings.debian_distros[0], 
-             self.name, settings.debian_mirrors[0][0]])
+        prefix = []
+        options = [settings.keyringoption]
+        if settings.eatmydata:
+            options.append('--include=eatmydata')
+            options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
+            prefix.append('eatmydata')
+        run(prefix + ["debootstrap", "--variant=minbase"] + options +
+            [settings.debian_distros[0], self.name, settings.debian_mirrors[0][0]])
 
     def minimize(self):
         """Minimize a chroot by removing (almost all) unnecessary packages"""
@@ -2081,6 +2094,11 @@ def parse_command_line():
                       default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
                       help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
 
+    parser.add_option("--no-eatmydata",
+                      default=False,
+                      action='store_true',
+                      help="Default is to use libeatmydata in the chroot")
+
     parser.add_option("--dpkg-noforce-unsafe-io",
                       default=False,
                       action='store_true',
@@ -2282,6 +2300,7 @@ def parse_command_line():
     settings.warn_on_others = opts.warn_on_others
     settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
     settings.debfoster_options = opts.debfoster_options.split()
+    settings.eatmydata = not opts.no_eatmydata
     settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
     settings.dpkg_force_confdef = opts.dpkg_force_confdef
 
