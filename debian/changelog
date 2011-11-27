@@ -34,7 +34,7 @@ piuparts (0.42) UNRELEASED; urgency=low
       b) Installed diversions not removed by purge:
     (Closes: #588313)
   * Kill children (hard-coded value, 45 minutes) to insure test doesn't
-    run "forever" (Closes: #640647)
+    run "forever" (Closes: #640647, #387428)
   * piupartslib/packagesdb.py: Modify several functions in PackagesDB class
     to use python 'set' type, instead of a list.  This permitted replacing 
     inefficient combination of unique() function and random.shuffle() with
