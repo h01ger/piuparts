@@ -1,0 +1,45 @@
+To: submit@bugs.debian.org
+Subject: prompts user without following Debian Configuration Management Specification
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts piuparts.d.o
+
+Hi,
+
+during a test with piuparts I noticed your package prompts the user badly.
+Prompting in maintainer scripts must be done by communicating through a
+program such as debconf which conforms to the Debian Configuration management
+specification, version 2 or higher.
+
+Refer to Debian Policy Manual section 3.9.1 (Prompting in maintainer scripts)
+for details. Quoting from
+http://www.debian.org/doc/debian-policy/ch-binary.html#s-maintscriptprompt
+
+------------------------------------------------------------------------------
+[ 3.9.1 Prompting in maintainer scripts ]
+Package maintainer scripts may prompt the user if necessary. Prompting must be
+done by communicating through a program, such as debconf, which conforms to
+the Debian Configuration Management Specification, version 2 or higher.
+
+Packages which are essential, or which are dependencies of essential packages,
+may fall back on another prompting method if no such interface is available
+when they are executed.
+
+The Debian Configuration Management Specification is included in the
+debconf_specification files in the debian-policy package.
+------------------------------------------------------------------------------
+
+From the attached log (scroll to the bottom...):
+
+
+
+And as it's not possible to set two usertags at the same time, this also
+should to be done:
+
+User: lintian-maint@debian.org
+Usertags: read-in-maintainer-script
+
+cheers,

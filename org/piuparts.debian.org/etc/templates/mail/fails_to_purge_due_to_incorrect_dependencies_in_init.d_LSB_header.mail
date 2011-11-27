@@ -1,0 +1,21 @@
+To: submit@bugs.debian.org
+Subject: fails to purge due to incorrect dependencies in init.d LSB header
+
+Package:
+Version:
+Severity: important
+User: debian-qa@lists.debian.org
+Usertags: piuparts piuparts.d.o
+User:     initscripts-ng-devel@lists.alioth.debian.org
+Usertags: incorrect-dependency
+
+Hi,
+
+during a test with piuparts I noticed your package failed to purge due to
+incorrect dependencies in the init.d LSB header. Some debian notes are
+available from at http://wiki.debian.org/LSBInitScripts
+
+From the attached log (scroll to the bottom...):
+
+
+cheers,

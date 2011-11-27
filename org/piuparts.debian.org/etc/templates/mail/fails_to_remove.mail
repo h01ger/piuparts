@@ -1,0 +1,17 @@
+To: submit@bugs.debian.org
+Subject: fails to remove
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts piuparts.d.o
+
+Hi,
+
+during a test with piuparts I noticed your package fails to remove.
+
+From the attached log (scroll to the bottom...):
+
+
+cheers,

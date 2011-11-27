@@ -1,0 +1,26 @@
+To: submit@bugs.debian.org
+Subject: "command not found" during purge
+
+Package:
+Version:
+Severity: normal
+User: debian-qa@lists.debian.org
+Usertags: piuparts piuparts.d.o
+
+Hi,
+
+during a test with piuparts I noticed a "command not found" during purge, the
+relevant lines from the attached logfile (scroll down to the end) are:
+
+
+
+From the third paragraph about the meaning of the depends field in
+http://www.debian.org/doc/debian-policy/ch-relationships.html#s-binarydeps
+
+The Depends field should also be used if the postinst, prerm or postrm scripts
+require the package to be present in order to run. __Note, however, that the
+postrm cannot rely on any non-essential packages to be present during the
+purge phase__.
+
+
+cheers,
