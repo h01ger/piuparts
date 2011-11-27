@@ -136,6 +136,9 @@ your package.
 You can specify several custom scripts to be run inside piuparts.
 You have to store them in a directory and give it as argument to
 piuparts: '--scriptsdir=/dir/with/the/scripts'
+This option can be given multiple times. The scripts from all
+directories will be merged together (and later ones may overwrite
+earlier scripts with the same filename).
 
 The script prefix determines in which step it is executed. You
 can run several scripts in every step, they are run in
@@ -151,31 +154,54 @@ being tested (seperated by spaces, if applicable) or the .changes
 file(s) being used.  So when running in master-slave mode, it
 will be set to the (one) package being tested at a time.
 
+Depending on the current test, the variable PIUPARTS_TEST is set
+to
+. 'install' (installation and purging test),
+. 'upgrade' (installation, upgrade and purging tests) or
+. 'distupgrade'.
+
+During the 'upgrade' and 'distupgrade' tests, the variable
+PIUPARTS_PHASE is set to one of the following values:
+. 'install' while initially installing the packages from the repository,
+. 'upgrade' when upgrading to the .debs,
+. 'distupgrade' while reinstalling the packages after 'apt-get dist-upgrade' to ensure they were not removed accidently
+During the 'install' test, the PIUPARTS_PHASE variable is set to
+'install'.
+
+The current distribution is available in the variable
+PIUPARTS_DISTRIBUTION.
+
 The following prefixes for scripts are recognized:
 
 'post_setup_' - after the *setup* of the chroot is finished.
+Before metadata of the chroot is recorded for later comparison.
 
-'pre_install_' - before *installing* your package.
+'pre_test_' - at the beginning of each test. After metadata of
+the chroot was recorded for later comparison.
+
+'pre_install_' - before *installing* your package. Depending on
+the test, this may be run multiple times. The PIUPARTS_TEST and
+PIUPARTS_PHASE variables can be used to distinguish the cases.
 
 'post_install_' - after *installing* your package and its
-dependencies.  In the case of the upgrade test, it is after
-install and upgrade.
+dependencies.  Depending on the test, this may be run multiple
+times. The PIUPARTS_TEST and PIUPARTS_PHASE variables can be used
+to distinguish the cases.
 
 'pre_remove_' - before *removing* your package.
 
 'post_remove_' - after *removing* your package.
 
-'post_purge_' - after *purging* your package.
-
-'pre_upgrade_' - before *upgrading* your package, once the
-current version in the archive has been installed (this is done
-in the second test, "Installation, upgrade and purging test").
+'post_purge_' - after *purging* your package. Right before
+comparing the chroot with the initially recorded metadata.
 
 'pre_distupgrade_' - before *upgrading* the chroot to the *next
-distribution*.
+distribution*. The next distribution is available in the variable
+PIUPARTS_DISTRIBUTION_NEXT.
 
 'post_distupgrade_' - after *upgrading* the chroot to the *next
-distribution*.
+distribution*. The previous distribution is available in the
+variable PIUPARTS_DISTRIBUTION_PREV.
 
 
 === Example custom scripts:

@@ -131,7 +131,7 @@ class Settings:
     def __init__(self):
         self.defaults = None
         self.tmpdir = None
-        self.scriptsdir = None
+        self.scriptsdirs = []
         self.keep_tmpdir = False
         self.single_changes_list = False
         # limit output of logfiles to the last megabyte:
@@ -734,15 +734,17 @@ class Chroot:
             self.run(["apt-get", "-yf", "upgrade"])
         self.minimize()
 
-        #copy scripts dir into the chroot
-        if settings.scriptsdir is not None:
+        # Copy scripts dirs into the chroot, merging all dirs together,
+        # later files overwriting earlier ones.
+        if settings.scriptsdirs:
             dest = self.relative("tmp/scripts/")
             if not os.path.exists(self.relative("tmp/scripts/")):
                 os.mkdir(dest)
-            logging.debug("Copying scriptsdir to %s" % dest)
-            for sfile in os.listdir(settings.scriptsdir):
-                if (sfile.startswith("post_") or sfile.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), sfile)):
-                    shutil.copy(os.path.join((settings.scriptsdir), sfile), dest) 
+            for sdir in settings.scriptsdirs:
+                logging.debug("Copying scriptsdir %s to %s" % (sdir, dest))
+                for sfile in os.listdir(sdir):
+                    if (sfile.startswith("post_") or sfile.startswith("pre_")) and os.path.isfile(os.path.join(sdir, sfile)):
+                        shutil.copy(os.path.join(sdir, sfile), dest)
 
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
@@ -896,6 +898,7 @@ class Chroot:
 
     def configure_chroot(self):
         """Configure a chroot according to current settings"""
+        os.environ["PIUPARTS_DISTRIBUTION"] = settings.debian_distros[0]
         if not settings.keep_sources_list:
             self.create_apt_sources(settings.debian_distros[0])
         self.create_apt_conf()
@@ -910,11 +913,14 @@ class Chroot:
         """Upgrade a chroot installation to each successive distro."""
         for distro in distros:
             logging.debug("Upgrading %s to %s" % (self.name, distro))
+            os.environ["PIUPARTS_DISTRIBUTION_NEXT"] = distro
             self.create_apt_sources(distro)
             # Run custom scripts before upgrade
             self.run_scripts("pre_distupgrade")
             self.run(["apt-get", "update"])
             self.run(["apt-get", "-yf", "dist-upgrade"])
+            os.environ["PIUPARTS_DISTRIBUTION_PREV"] = os.environ["PIUPARTS_DISTRIBUTION"]
+            os.environ["PIUPARTS_DISTRIBUTION"] = distro
             # Sometimes dist-upgrade won't upgrade the packages we want
             # to test because the new version depends on a newer library,
             # and installing that would require removing the old version
@@ -1333,7 +1339,7 @@ class Chroot:
     def run_scripts (self, step):
         """ Run custom scripts to given step post-install|remove|purge"""
 
-        if settings.scriptsdir is None:
+        if not settings.scriptsdirs:
             return
         logging.info("Running scripts "+ step)
         basepath = self.relative("tmp/scripts/")
@@ -1868,7 +1874,11 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
        Assume 'root' is a directory already populated with a working
        chroot, with packages in states given by 'selections'."""
 
+    os.environ["PIUPARTS_TEST"] = "install"
+    chroot.run_scripts("pre_test")
+
     # Install packages into the chroot.
+    os.environ["PIUPARTS_PHASE"] = "install"
 
     if settings.warn_on_others:
         # Create a metapackage with dependencies from the given packages
@@ -1938,15 +1948,18 @@ def install_upgrade_test(chroot, root_info, selections, package_files, packages)
     """Install package via apt-get, then upgrade from package files.
     Return True if successful, False if not."""
 
-    # First install via apt-get.
-    chroot.install_packages_by_name(packages)
+    os.environ["PIUPARTS_TEST"] = "upgrade"
+    chroot.run_scripts("pre_test")
 
-    chroot.run_scripts("pre_upgrade")
+    # First install via apt-get.
+    os.environ["PIUPARTS_PHASE"] = "install"
+    chroot.install_packages_by_name(packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
     # Then from the package files.
+    os.environ["PIUPARTS_PHASE"] = "upgrade"
     chroot.install_package_files(package_files)
 
     chroot.check_for_no_processes()
@@ -2006,6 +2019,8 @@ def install_and_upgrade_between_distros(package_files, packages):
     # a reasonable default behaviour for distro upgrade tests, which are not 
     # done by default anyway.
 
+    os.environ["PIUPARTS_TEST"] = "distupgrade"
+
     chroot = get_chroot()
     chroot.create()
     cid = do_on_panic(chroot.remove)
@@ -2046,15 +2061,21 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     chroot.check_for_no_processes()
 
+    chroot.run_scripts("pre_test")
+
+    os.environ["PIUPARTS_PHASE"] = "install"
+
     chroot.install_packages_by_name(packages)
 
-    chroot.run_scripts("pre_upgrade")
-
     chroot.check_for_no_processes()
+
+    os.environ["PIUPARTS_PHASE"] = "distupgrade"
 
     chroot.upgrade_to_distros(settings.debian_distros[1:], packages)
 
     chroot.check_for_no_processes()
+
+    os.environ["PIUPARTS_PHASE"] = "upgrade"
 
     chroot.install_package_files(package_files)
 
@@ -2276,7 +2297,8 @@ def parse_command_line():
                       help="Minimize chroot with debfoster. This used to be the default until #539142 was fixed.")
 
     parser.add_option("--scriptsdir", metavar="DIR",
-                      help="Directory where are placed the custom scripts.")
+                      action="append", default=[],
+                      help="Directory where are placed the custom scripts. Can be given multiple times.")
 
     parser.add_option("-t", "--tmpdir", metavar="DIR",
                       help="Use DIR for temporary storage. Default is " +
@@ -2392,11 +2414,10 @@ def parse_command_line():
         else:
             settings.tmpdir = "/tmp"
 
-    if opts.scriptsdir is not None:
-        settings.scriptsdir = opts.scriptsdir
-        if not os.path.isdir(settings.scriptsdir):
-            logging.error("Scripts directory is not a directory: %s" % 
-                          settings.scriptsdir)
+    settings.scriptsdirs = opts.scriptsdir
+    for sdir in settings.scriptsdirs:
+        if not os.path.isdir(sdir):
+            logging.error("Scripts directory is not a directory: %s" % sdir)
             panic()
 
     if not settings.debian_distros:
