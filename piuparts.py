@@ -2162,6 +2162,11 @@ def parse_command_line():
                       action='store_true',
                       help="Default is to use libeatmydata in the chroot")
 
+    parser.add_option("--no-eatmydata",
+                      default=False,
+                      action='store_true',
+                      help="Default is to use libeatmydata in the chroot")
+
     parser.add_option("--dpkg-noforce-unsafe-io",
                       default=False,
                       action='store_true',
