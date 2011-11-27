@@ -15,7 +15,6 @@ Package: piuparts
 Architecture: all
 Depends: apt, ${python:Depends}, debootstrap, lsof, lsb-release, 
     python-debian, ${misc:Depends}, python-debianbts, python-apt
-Recommends: eatmydata
 Suggests: python-rpy, ghostscript
 Description: .deb package installation, upgrading, and removal testing tool
  piuparts tests that .deb packages (as used by Debian) handle
