@@ -330,6 +330,14 @@ Success: ok
 Slave reports that a particular package is untestable, possibly
 because it insists on interacting with the user.
 
+----
+Command: status
+Success: ok <package-state>=<count> <package-state>=<count>...
+----
+Slave asks master to report the number of packages in all
+different states. The "status" command should only be issued
+after all "pass" and "fail" commands.
+
 In all cases, if the master cannot respond with "ok" (e.g.,
 because of a disk error storing a log file), it aborts and the
 connection fails. The slave may only assume the command has

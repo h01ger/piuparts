@@ -71,10 +71,13 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Compute the changes in restore_selections().
     - Check for settings.scriptsdir inside run_scripts().
     - Consistently use chroot.relative() to build filenames inside the chroot.
+  * piuparts-master.py:
+    - Add a 'status' command that reports package counts for all states.
   * piuparts-slave.py:
     - Fix triggering tarball recreation.
     - Check tarball age regularily.
     - Log tarball creation in *.tgz.log.
+    - Request and print package counts from master.
   * piuparts-report.py: 
     - state-*.html: Sort package lists by name.
     - source/?/*.html: Sort binary packages by name.

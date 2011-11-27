@@ -114,6 +114,7 @@ class Master(Protocol):
     def __init__(self, input, output, packages_file, known_circular_depends="", section=None):
         Protocol.__init__(self, input, output)
         self._commands = {
+            "status": self._status,
             "reserve": self._reserve,
             "unreserve": self._unreserve,
             "pass": self._pass,
@@ -154,6 +155,17 @@ class Master(Protocol):
          for st in self._binary_db.get_states():
             for name in self._binary_db.get_pkg_names_in_state(st):
                 logging.debug("%s : %s\n" % (st,name))
+
+    def _status(self, command, args):
+        self._check_args(0, command, args)
+        stats = ""
+        total = 0
+        for state in self._binary_db.get_states():
+            count = len(self._binary_db.get_packages_in_state(state))
+            total += count
+            stats += "%s=%d " % (state, count)
+        stats += "total=%d" % total
+        self._short_response("ok", stats)
 
     def _reserve(self, command, args):
         self._check_args(0, command, args)
