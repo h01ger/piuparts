@@ -106,6 +106,9 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Log tarball creation in *.tgz.log.
     - Request and print package counts from master.
     - Reload section config every time a section is being run.
+    - Add precedence attribute to allow prioritizing different sections and to
+      suspend processing of low priority ones while there are packages waiting
+      in more important sections.
   * piuparts-report.py: 
     - state-*.html: Sort package lists by name, display state of all
       alternative dependencies and packages providing a virtual dependency.
