@@ -27,14 +27,14 @@ piuparts (0.42) UNRELEASED; urgency=low
   * piuparts-slave.py: 
     - Replace deprecated os.popen2 with subprocess.Popen. (Closes: #640646)
     - Add some more logging.
-  * piuparty.py: kill (via SIGTERM, then if that fails, via SIGKILL), leftover
-    processes. (Closes: #522918)
-  * Test for incorrect diversions (dpkg-divert):
+    - Kill children (hard-coded value, 45 minutes) to ensure test doesn't
+      run "forever" (Closes: #640647, #387428)
+  * piuparty.py:
+    - Kill leftover processes (via SIGTERM, then if that fails, via SIGKILL).
+      (Closes: #522918)
+    - Test for incorrect diversion handling:  (Closes: #588313)
       a) Existing diversions removed/modified, and/or
-      b) Installed diversions not removed by purge:
-    (Closes: #588313)
-  * Kill children (hard-coded value, 45 minutes) to insure test doesn't
-    run "forever" (Closes: #640647, #387428)
+      b) Installed diversions not removed by purge.
   * piupartslib/packagesdb.py: Modify several functions in PackagesDB class
     to use python 'set' type, instead of a list.  This permitted replacing 
     inefficient combination of unique() function and random.shuffle() with
@@ -52,7 +52,7 @@ piuparts (0.42) UNRELEASED; urgency=low
       'Broken symlinks: /etc/motd -> /var/run/motd'.  (Closes: #648784)
     - When running commands in the chroot, redirect stdin from /dev/null.
     - Stop using Popen.communicate() as it may run out of memory.
-    - Terminate commands producing more than 2 MB of output.
+    - Terminate commands producing more than 2 MB of output. (Closes: #649335)
     - Add missing post_install_* hook to install_packages_by_name().
       (Closes: #628077)
     - Create /etc/dpkg/dpkg.cfg.d/ if missing inside the chroot (e.g. on
@@ -61,16 +61,16 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Only run 'apt-get update' after updating the sources.list.
     - Only run 'apt-get clean' before creating tarballs or saving meta data.
     - Do the same checks for running processes and broken symlinks in all
-      tests.
-    - Use consistent variable names for package lists.
-    - Compute the changes in restore_selections().
-    - Check for settings.scriptsdir inside run_scripts().
-    - Consistently use chroot.relative() to build filenames inside the chroot.
+      tests.  (Closes: #648708)
     - Create piupart's apt config in the chroot as /etc/apt.conf.d/piuparts
       instead of /etc/apt.conf in order to allow overriding the settings from
       custom scripts by just dropping new config bits in e.g.
       /etc/apt/apt.conf.d/piuparts-foobar.
-      apt.conf.d is supported in lenny, possibly earlier releases, too.
+    - Integrate diversion checks with Chroot.check_result().
+    - Use consistent variable names for package lists.  (Closes: #648177)
+    - Compute the changes in restore_selections().
+    - Check for settings.scriptsdir inside run_scripts().
+    - Consistently use chroot.relative() to build filenames inside the chroot.
   * piuparts-slave.py:
     - Fix triggering tarball recreation.
     - Check tarball age regularily.
