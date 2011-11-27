@@ -708,8 +708,7 @@ class Chroot:
         self.name = None
 
         self.pre_install_diversions = None
-        self.post_install_diversions = None
-        
+
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
         self.name = tempfile.mkdtemp(dir=settings.tmpdir)
@@ -744,8 +743,6 @@ class Chroot:
             for sfile in os.listdir(settings.scriptsdir):
                 if (sfile.startswith("post_") or sfile.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), sfile)):
                     shutil.copy(os.path.join((settings.scriptsdir), sfile), dest) 
-
-        self.pre_install_diversions = self.get_diversions()
 
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
@@ -1011,30 +1008,19 @@ class Chroot:
         return vdict
 
     def get_diversions(self):
-    	"""Get current dpkg-divert --list in a chroot."""
+        """Get current dpkg-divert --list in a chroot."""
         if not settings.check_broken_diversions:
             return
         (status, output) = self.run(["dpkg-divert", "--list"])
-        lines = []
-        for line in output.split("\n"):
-            lines.append(line)
-        return lines
+        return output.split("\n")
 
-
-    def check_for_broken_diversions(self):
-        """Check that diversions in chroot are identical (though potenttially reordered)."""
-        if not settings.check_broken_diversions:
-            return
-        if self.pre_install_diversions and self.post_install_diversions:
-            added = [ln for ln in self.pre_install_diversions if not ln in self.post_install_diversions]
-            removed = [ln for ln in self.post_install_diversions if not ln in self.pre_install_diversions]
-            if added:
-                logging.error("Error: Installed diversions (dpkg-divert) not removed by purge:\n%s" %  
-                              indent_string("\n".join(added)))
-            if removed:
-                logging.error("Error: Existing diversions (dpkg-divert) removed/modified:\n%s" %
-                              indent_string("\n".join(removed)))
-    	
+    def get_modified_diversions(self, pre_install_diversions, post_install_diversions = None):
+        """Check that diversions in chroot are identical (though potentially reordered)."""
+        if post_install_diversions is None:
+            post_install_diversions = self.get_diversions()
+        removed = [ln for ln in pre_install_diversions if not ln in post_install_diversions]
+        added = [ln for ln in post_install_diversions if not ln in pre_install_diversions]
+        return (removed, added)
 
     def remove_or_purge(self, operation, packages):
         """Remove or purge packages in a chroot."""
@@ -1093,17 +1079,6 @@ class Chroot:
 
         # Finally, purge actual packages.
         self.remove_or_purge("purge", nondeps_to_purge)
-
-        self.post_install_diversions = self.get_diversions()
-
-        # remove logrotate and it's depends 
-        #    (this is a fix for #602409 introduced by #566597 
-        #    - search for the latter bug number in this file)
-        # XXX: another crude hack: ^^^
-        if not settings.skip_logrotatefiles_test:
-          self.remove_or_purge("remove", ["adduser", "cron", "libpopt0", "logrotate"])
-          self.remove_or_purge("purge", ["adduser", "cron", "libpopt0", "logrotate"])
-          self.run(["apt-get", "clean"])
 
         # Run custom scripts after purge all packages.
         self.run_scripts("post_purge")
@@ -1820,6 +1795,18 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     installed.)
     """
 
+    ok = True
+    if settings.check_broken_diversions:
+        (removed, added) = chroot.get_modified_diversions(chroot.pre_install_diversions)
+        if added:
+            logging.error("FAIL: Installed diversions (dpkg-divert) not removed by purge:\n%s" %
+                          indent_string("\n".join(added)))
+            ok = False
+        if removed:
+            logging.error("FAIL: Existing diversions (dpkg-divert) removed/modified:\n%s" %
+                          indent_string("\n".join(removed)))
+            ok = False
+
     current_info = chroot.save_meta_data()
     if settings.warn_on_others and deps_info is not None:
         (new, removed, modified) = diff_meta_data(root_info, current_info)
@@ -1833,7 +1820,6 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     else:
         (new, removed, modified) = diff_meta_data(root_info, current_info)
 
-    ok = True
     if new:
         if settings.warn_on_leftovers_after_purge:
           logging.info("Warning: Package purging left files on system:\n" +
@@ -1937,10 +1923,9 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't there initially.    
-    changes = diff_selections(chroot, selections)
-    chroot.restore_selections(changes, packages)
-    
-    chroot.check_for_broken_diversions()
+    chroot.restore_selections(selections, packages)
+
+    chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
     return check_results(chroot, root_info, file_owners, deps_info=deps_info)
@@ -2031,6 +2016,7 @@ def install_and_upgrade_between_distros(package_files, packages):
     if settings.end_meta:
         # load root_info and selections
         root_info, selections = load_meta_data(settings.end_meta)
+        chroot.pre_install_diversions = []  # FIXME: diversion info needs to be restored
     else:
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
 
@@ -2039,10 +2025,12 @@ def install_and_upgrade_between_distros(package_files, packages):
         # set root_info and selections
         root_info = chroot.save_meta_data()
         selections = chroot.get_selections()
+        chroot.pre_install_diversions = chroot.get_diversions()
 
         if settings.save_end_meta:
             # save root_info and selections
             save_meta_data(settings.save_end_meta, root_info, selections)
+            # FIXME: diversion info needs to be stored
 
         chroot.remove()
         dont_do_on_panic(cid)
@@ -2223,7 +2211,7 @@ def parse_command_line():
     parser.add_option("-m", "--mirror", action="append", metavar="URL",
                       default=[],
                       help="Which Debian mirror to use.")
-    
+
     parser.add_option("--no-diversions", action="store_true",
                       default=False,
                       help="Don't check for broken diversions.")
@@ -2454,6 +2442,7 @@ def process_packages(package_list):
         cid = do_on_panic(chroot.remove)
 
         root_info = chroot.save_meta_data()
+        chroot.pre_install_diversions = chroot.get_diversions()
         selections = chroot.get_selections()
 
         if not settings.no_install_purge_test:

@@ -26,6 +26,8 @@ for 0.42:
 - merge script from my svn working copy: home/piupartsm/bin/biggest_blocker.sh 
   with a similar one Dave send to the list
 
+- store and load the diversion information with --save-end-meta and --end-meta
+
 
 for 0.43:
 

@@ -10,9 +10,6 @@ piuparts (0.42) UNRELEASED; urgency=low
   * Remove Debian.NEWS entry about source in git. (Closes: #640121)
   * piuparts.py, piuparts-report.py, ChangeLog: Expand tabs to spaces.
   * Remove whitespaces from whitespace-only lines.
-  * piuparts-slave.py: Replace deprecated os.popen2 with subprocess.Popen,
-    thanks to Scott Schaefer and Evgeni Golov for their patches. 
-    (Closes: #640646)
 
   [ Mika Pflüger ]
   * piuparts-analyze.py:
