@@ -52,6 +52,11 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Compute the changes in restore_selections().
     - Check for settings.scriptsdir inside run_scripts().
     - Consistently use chroot.relative() to build filenames inside the chroot.
+    - Create piupart's apt config in the chroot as /etc/apt.conf.d/piuparts
+      instead of /etc/apt.conf in order to allow overriding the settings from
+      custom scripts by just dropping new config bits in e.g.
+      /etc/apt/apt.conf.d/piuparts-foobar.
+      apt.conf.d is supported in lenny, possibly earlier releases, too.
   * piuparts-slave.py:
     - Fix triggering tarball recreation.
     - Check tarball age regularily.
