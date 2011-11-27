@@ -725,33 +725,30 @@ class Section:
         return total
 
 
-    def merge_maintainer_templates(self, templates):
-        for maint_tpl in templates:
-            tpl = os.path.join(self._output_directory,"maintainer",maintainer_subdir(maint_tpl),maint_tpl)
-            lines = read_file(tpl)
+    def create_maintainer_summaries(self, maintainers, source_data):
+        logging.debug("Writing maintainer summaries in %s" % self._output_directory)
+        states = ["fail", "unknown", "pass"]
+        for maintainer in maintainers.keys():
+            sources = maintainers[maintainer]
             rows = ""
-            for line in lines:
-              state, count, packages = line.split(",")
-              if packages == "none\n":
-                links = "&nbsp;"
-              else:
-                links = ""
-                for package in packages.split(" "):
-                  links += "<a href=\"#%s\">%s</a> " % (package,package)
-              rows += "<tr class=\"normalrow\"><td class=\"labelcell\">%s:</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\" colspan=\"4\">%s</td></tr>" % \
-                       (state, count, links)
-            os.unlink(tpl)
-            template_path = tpl[:-len("_tpl")]
+            package_rows = ""
+            packages = {}
+            for state in states:
+                packages[state] = []
+            for source in sorted(sources):
+                (state, sourcerows, binaryrows) = source_data[source]
+                packages[state].append(source)
+                package_rows += sourcerows + binaryrows
 
-            for state in ("fail","unkn","pass"):
-                filename = template_path+"_"+state
-                if os.path.isfile(filename):
-                     f = file(filename, "r")
-                     rows += file.read(f)
-                     f.close()
-                     os.unlink(filename)
-
-            maintainer = os.path.basename(maint_tpl[:-len("_tpl")])
+            for state in states:
+                if len(packages[state]) > 0:
+                    links = ""
+                    for package in packages[state]:
+                        links += "<a href=\"#%s\">%s</a> " % (package, package)
+                else:
+                    links = "&nbsp;"
+                rows += "<tr class=\"normalrow\"><td class=\"labelcell\">%s:</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\" colspan=\"4\">%s</td></tr>" % \
+                        (state, len(packages[state]), links)
 
             distrolinks = "<tr class=\"normalrow\"><td class=\"labelcell\">other distributions: </td><td class=\"contentcell2\" colspan=\"5\">"
             for section in self._section_names:
@@ -760,7 +757,7 @@ class Section:
             distrolinks += "</td></tr>"
 
             htmlpage = string.Template(HTML_HEADER + MAINTAINER_BODY_TEMPLATE + HTML_FOOTER)
-            filename = template_path+".html"
+            filename = os.path.join(self._output_directory, "maintainer", maintainer_subdir(maintainer), maintainer + ".html")
             f = file(filename, "w")
             f.write(htmlpage.safe_substitute( {
                "page_title": html_protect("Status of "+maintainer+" packages in "+self._config.section),
@@ -768,9 +765,10 @@ class Section:
                "distrolinks": distrolinks,
                "section_navigation": create_section_navigation(self._section_names,self._config.section),
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-               "rows": rows,
+               "rows": rows + package_rows,
              }))
             f.close()
+
 
     def create_source_summary (self, source, logs_by_dir):
         source_version = self._source_db.get_control_header(source, "Version")
@@ -834,60 +832,29 @@ class Section:
 
         return sourcerows, binaryrows, source_state, maintainer, uploaders
 
-    def create_maintainer_templates_for_source(self,source, source_state, sourcerows, binaryrows, maintainer, uploaders):
-        maintainer_pages = [] 
-        maintainer_pages.append(get_email_address(maintainer))
-        for uploader in uploaders.split(", "):
-          if uploader:
-            maintainer_pages.append(get_email_address(uploader))
-        for maintainer_page in maintainer_pages:
-          maintainer_summary_page_path = os.path.join(self._output_directory, "maintainer", maintainer_subdir(maintainer_page))
-
-          if not os.path.exists(maintainer_summary_page_path):
-            os.makedirs(maintainer_summary_page_path)
-          filename = os.path.join(maintainer_summary_page_path, (maintainer_page + "_tpl"))
-          maintainer_package_count = {}
-          maintainer_packages = {}
-          if os.path.isfile(filename):
-            lines = read_file(filename)
-            for line in lines:
-              state, count, packages = line.split(",")
-              maintainer_package_count[state]=int(count)
-              maintainer_packages[state]=packages[:-1]
-            if maintainer_packages[source_state] == "none":
-              maintainer_packages[source_state] = source
-            else:
-              maintainer_packages[source_state] = "%s %s" % (maintainer_packages[source_state],source)
-          else:
-            maintainer_package_count["fail"] = 0
-            maintainer_package_count["unknown"] = 0
-            maintainer_package_count["pass"] = 0
-            for state in "fail", "unknown", "pass":
-              maintainer_packages[state] = "none"
-            maintainer_packages[source_state] = source
-          if source_state == "fail":
-            maintainer_package_count["fail"]+=1
-          elif source_state == "unknown":
-            maintainer_package_count["unknown"]+=1
-          else:
-            maintainer_package_count["pass"]+=1
-          lines = ""
-          for state in "fail", "unknown", "pass":
-            lines +=  "%s,%s,%s\n" % (state,maintainer_package_count[state],maintainer_packages[state])
-          write_file(filename,lines)
-          append_file(filename[:-4]+"_"+source_state[:4],sourcerows+binaryrows)
 
     def create_package_summaries(self, logs_by_dir):
         logging.debug("Writing package templates in %s" % self._config.section)    
 
+        maintainers = {}
+        source_binary_rows = {}
         sources = ""
         for source in self._source_db.get_all_packages():
             (sourcerows, binaryrows, source_state, maintainer, uploaders) = self.create_source_summary(source, logs_by_dir)
             if source_state != "udeb":
-              sources += "%s: %s\n" % (source, source_state)
-              self.create_maintainer_templates_for_source(source, source_state, sourcerows, binaryrows, maintainer, uploaders)
+                sources += "%s: %s\n" % (source, source_state)
+                source_binary_rows[source] = (source_state, sourcerows, binaryrows)
+                for maint in [maintainer] + uploaders.split(","):
+                    if maint.strip():
+                        email = get_email_address(maint.strip())
+                        if not "INVALID" in email:
+                            if not email in maintainers:
+                                maintainers[email] = []
+                            maintainers[email].append(source)
 
         write_file(os.path.join(self._output_directory, "sources.txt"), sources)
+
+        self.create_maintainer_summaries(maintainers, source_binary_rows)
 
 
     def make_stats_graph(self):
@@ -1039,9 +1006,6 @@ class Section:
 
         if self._config["sources-url"]:
             self.create_package_summaries(logs_by_dir)
-
-            logging.debug("Merging maintainer summaries in %s" % self._output_directory)    
-            self.merge_maintainer_templates(find_files_with_suffix(self._output_directory+"/maintainer/", "_tpl"))
 
         logging.debug("Writing section index page")    
         self.write_section_index_page(dirs, total_packages)
