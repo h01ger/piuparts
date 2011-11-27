@@ -1022,13 +1022,16 @@ class Chroot:
         added = [ln for ln in post_install_diversions if not ln in pre_install_diversions]
         return (removed, added)
 
-    def remove_or_purge(self, operation, packages):
-        """Remove or purge packages in a chroot."""
-        for name in packages:
-            self.run(["dpkg", "--" + operation, name], ignore_errors=True)
-        self.run(["dpkg", "--remove", "--pending"], ignore_errors=True)
+    def remove_packages(self, packages):
+        """Remove packages in a chroot."""
+        if packages:
+            self.run(["apt-get", "remove"] + packages, ignore_errors=True)
 
-
+    def purge_packages(self, packages):
+        """Purge packages in a chroot."""
+        if packages:
+            self.run(["dpkg", "--purge"] + packages, ignore_errors=True)
+ 
     def restore_selections(self, selections, packages):
         """Restore package selections in a chroot to the state in
         'selections'."""
@@ -1055,8 +1058,8 @@ class Chroot:
         self.run_scripts("pre_remove")
 
         # First remove all packages.
-        self.remove_or_purge("remove", deps_to_remove + deps_to_purge +
-                                        nondeps_to_remove + nondeps_to_purge)
+        self.remove_packages(deps_to_remove + deps_to_purge +
+                             nondeps_to_remove + nondeps_to_purge)
         # Run custom scripts after removing all packages. 
         self.run_scripts("post_remove")
 
@@ -1072,13 +1075,13 @@ class Chroot:
         if not settings.skip_logrotatefiles_test and logrotatefiles:
             installed = self.install_logrotate()
             self.check_output_logrotatefiles(logrotatefiles_list)
-            self.remove_or_purge("purge", installed)
+            self.purge_packages(installed)
 
         # Then purge all packages being depended on.
-        self.remove_or_purge("purge", deps_to_purge)
+        self.purge_packages(deps_to_purge)
 
         # Finally, purge actual packages.
-        self.remove_or_purge("purge", nondeps_to_purge)
+        self.purge_packages(nondeps_to_purge)
 
         # Run custom scripts after purge all packages.
         self.run_scripts("post_purge")
@@ -1901,7 +1904,7 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
         chroot.install_package_files([metapackage])
         # Now remove it
         metapackagename = os.path.basename(metapackage)[:-4]
-        chroot.remove_or_purge("purge", [metapackagename])
+        chroot.purge_packages([metapackagename])
         shutil.rmtree(os.path.dirname(metapackage))
 
         # Save the file ownership information so we can tell which
