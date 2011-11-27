@@ -93,7 +93,7 @@ def alarm_handler(signum, frame):
 class MasterNotOK(Exception):
 
     def __init__(self):
-        self.args = "Master did not responed with 'ok'"
+        self.args = "Master did not respond with 'ok'"
 
 
 class MasterDidNotGreet(Exception):

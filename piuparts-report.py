@@ -1074,6 +1074,7 @@ def main():
     section_names = []
     if len(sys.argv) > 1:
         section = sys.argv[1]
+        # FIXME: does this work without settings master_directory and output_directory?
     else:
         global_config = Config(section="global")
         global_config.read(CONFIG_FILE)
