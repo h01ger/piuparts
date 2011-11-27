@@ -707,6 +707,8 @@ class Section:
             counts += ", %s" % count
             logging.debug("%s: %s" % (state, count))
             total += count
+        logging.debug("total: %s" % total)
+        logging.debug("source: %s" % len(self._source_db.get_all_packages()))
         header += "\n"       
         counts += "\n"       
 
