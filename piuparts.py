@@ -709,7 +709,7 @@ class Chroot:
 
         self.pre_install_diversions = None
         self.post_install_diversions = None
-        
+
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
         self.name = tempfile.mkdtemp(dir=settings.tmpdir)
@@ -1095,15 +1095,6 @@ class Chroot:
         self.remove_or_purge("purge", nondeps_to_purge)
 
         self.post_install_diversions = self.get_diversions()
-
-        # remove logrotate and it's depends 
-        #    (this is a fix for #602409 introduced by #566597 
-        #    - search for the latter bug number in this file)
-        # XXX: another crude hack: ^^^
-        if not settings.skip_logrotatefiles_test:
-          self.remove_or_purge("remove", ["adduser", "cron", "libpopt0", "logrotate"])
-          self.remove_or_purge("purge", ["adduser", "cron", "libpopt0", "logrotate"])
-          self.run(["apt-get", "clean"])
 
         # Run custom scripts after purge all packages.
         self.run_scripts("post_purge")
@@ -1937,10 +1928,11 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't there initially.    
-    changes = diff_selections(chroot, selections)
-    chroot.restore_selections(changes, packages)
-    
+    chroot.restore_selections(selections, packages)
+
     chroot.check_for_broken_diversions()
+
+    chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
     return check_results(chroot, root_info, file_owners, deps_info=deps_info)
@@ -2223,7 +2215,7 @@ def parse_command_line():
     parser.add_option("-m", "--mirror", action="append", metavar="URL",
                       default=[],
                       help="Which Debian mirror to use.")
-    
+
     parser.add_option("--no-diversions", action="store_true",
                       default=False,
                       help="Don't check for broken diversions.")
