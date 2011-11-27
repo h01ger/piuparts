@@ -715,21 +715,23 @@ class Chroot:
         os.chmod(self.name, 0755)
         logging.debug("Created temporary directory %s" % self.name)
 
-    def create(self):
+    def create(self, temp_tgz = None):
         """Create a chroot according to user's wishes."""
         self.create_temp_dir()
         cid = do_on_panic(self.remove)
 
-        if settings.basetgz:
+        if temp_tgz:
+            self.unpack_from_tgz(temp_tgz)
+        elif settings.basetgz:
             self.unpack_from_tgz(settings.basetgz)
         elif settings.lvm_volume:
             self.setup_from_lvm(settings.lvm_volume)
         else:
             self.setup_minimal_chroot()
 
-        self.configure_chroot()
         self.mount_proc()
         self.mount_selinux()
+        self.configure_chroot()
         if settings.basetgz:
             self.run(["apt-get", "-yf", "upgrade"])
         self.minimize()
@@ -749,7 +751,7 @@ class Chroot:
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
 
-        if settings.savetgz:
+        if settings.savetgz and not temp_tgz:
             self.pack_into_tgz(settings.savetgz)
 
         dont_do_on_panic(cid)
@@ -775,12 +777,18 @@ class Chroot:
         (fd, temp_tgz) = create_temp_file()
         return temp_tgz
 
+    def remove_temp_tgz_file(self, temp_tgz):
+        """Remove the file that was used as a temporary tgz file"""
+        # Yes, remove_files() would work just as well, but putting it in
+        # the interface for Chroot allows the VirtServ hack to work.
+        remove_files([temp_tgz])
+
     def pack_into_tgz(self, result):
         """Tar and compress all files in the chroot."""
         self.run(["apt-get", "clean"])
         logging.debug("Saving %s to %s." % (self.name, result))
 
-        run(['tar', '--exclude', './proc/*', '-czf', result, '-C', self.name, './'])
+        run(['tar', '-czf', result, '--one-file-system', '--exclude', 'tmp/scripts', '-C', self.name, './'])
 
     def unpack_from_tgz(self, tarball):
         """Unpack a tarball to a chroot."""
@@ -1432,6 +1440,9 @@ class VirtServ(Chroot):
     #  adt-virt revert
     def create_temp_tgz_file(self):
         return self
+    def remove_temp_tgz_file(self, tgz):
+        if tgz is not self: self._fail('removing a tgz not supported')
+        # FIXME: anything else to do here?
     def pack_into_tgz(self, tgz):
         if tgz is not self: self._fail('packing into tgz not supported')
         if not 'revert' in self._caps: self._fail('testbed cannot revert')
@@ -2025,17 +2036,16 @@ def install_and_upgrade_between_distros(package_files, packages):
     chroot.create()
     cid = do_on_panic(chroot.remove)
 
-    if settings.basetgz:
-        root_tgz = settings.basetgz
-    else:
-        root_tgz = chroot.create_temp_tgz_file()
-        chroot.pack_into_tgz(root_tgz)
-
     if settings.end_meta:
         # load root_info and selections
         root_info, selections = load_meta_data(settings.end_meta)
         chroot.pre_install_diversions = []  # FIXME: diversion info needs to be restored
     else:
+        if not settings.basetgz:
+            temp_tgz = chroot.create_temp_tgz_file()
+            # FIXME: on panic remove temp_tgz
+            chroot.pack_into_tgz(temp_tgz)
+
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
 
         chroot.check_for_no_processes()
@@ -2052,12 +2062,17 @@ def install_and_upgrade_between_distros(package_files, packages):
 
         chroot.remove()
         dont_do_on_panic(cid)
-        chroot = get_chroot()
-        chroot.create()
-        cid = do_on_panic(chroot.remove)
 
-    # leave indication in logfile why we do what we do
-    logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
+        # leave indication in logfile why we do what we do
+        logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
+
+        chroot = get_chroot()
+        if settings.basetgz:
+            chroot.create()
+        else:
+            chroot.create(temp_tgz)
+            chroot.remove_temp_tgz_file(temp_tgz)
+        cid = do_on_panic(chroot.remove)
 
     chroot.check_for_no_processes()
 
@@ -2089,8 +2104,6 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     chroot.check_for_no_processes()
 
-    if root_tgz != settings.basetgz:
-        remove_files([root_tgz])
     chroot.remove()
     dont_do_on_panic(cid)
 
