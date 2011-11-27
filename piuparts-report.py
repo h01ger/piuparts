@@ -993,8 +993,7 @@ class Section:
         for state in self._binary_db.get_states():
             logging.debug("Writing page for %s" % state)
             vlist = ""
-            for name in sorted(self._binary_db.get_pkg_names_in_state(state):
-                                  key=lambda pkg: pkg["Package"]):
+            for name in sorted(self._binary_db.get_pkg_names_in_state(state)):
                 package = self._binary_db.get_package(name)
                 vlist += "<li id=\"%s\">%s (%s)" % (
                                          package["Package"],

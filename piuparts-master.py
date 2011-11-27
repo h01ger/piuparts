@@ -161,7 +161,7 @@ class Master(Protocol):
         stats = ""
         total = 0
         for state in self._binary_db.get_states():
-            count = len(self._binary_db.get_packages_in_state(state))
+            count = len(self._binary_db.get_pkg_names_in_state(state))
             total += count
             stats += "%s=%d " % (state, count)
         stats += "total=%d" % total
