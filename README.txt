@@ -379,6 +379,9 @@ used for all further sections.
 
 ==== section specific configuration
 
+The section specific settings will be reloaded each time a section
+is being run.
+
 * "master-command" is the command to run on master-host to start the master. When the master has been installed from the Debian package, the command is 'python /usr/share/piuparts/piuparts-master'.  If you want to use a section in the master configuration file other than "master", append the section name to this command.  For example, if the master configuration file has a "sid-ia64" section that you want to use, the command should be 'python /usr/share/piuparts/piuparts-master sid-ia64'.
 
 * "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "/dev/null", that is, log messages are not put in a file.

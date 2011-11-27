@@ -78,6 +78,7 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Check tarball age regularily.
     - Log tarball creation in *.tgz.log.
     - Request and print package counts from master.
+    - Reload section config every time a section is being run.
   * piuparts-report.py: 
     - state-*.html: Sort package lists by name.
     - source/?/*.html: Sort binary packages by name.

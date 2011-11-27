@@ -286,6 +286,8 @@ class Section:
     def run(self):
         logging.info("-------------------------------------------")
         logging.info("Running section " + self._config.section)
+        self._config = Config(section=self._config.section)
+        self._config.read(CONFIG_FILE)
         self._slave.connect_to_master(self._log_file)
 
         oldcwd = os.getcwd()
