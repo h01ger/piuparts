@@ -108,6 +108,9 @@ The 'components' that are used for a mirror can also be set with this option: a 
 +
 Note that file: addresses works if the directories are made accessible from within the chroot with '--bindmount'.
 
+*--no-diversions*::
+  Don't check for broken diversions.
+
 *-n, --no-ignores*::
   Forget all built-in and other ignores that have been set so far. Any '-i' or '-I' arguments that come after this one will be obeyed, but none of the ones that come before.
 

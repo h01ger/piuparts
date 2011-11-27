@@ -154,6 +154,7 @@ class Settings:
         self.no_upgrade_test = False
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
+        self.check_broken_diversions = True
         self.check_broken_symlinks = True
         self.warn_broken_symlinks = True
         self.debfoster_options = None
@@ -706,6 +707,9 @@ class Chroot:
     def __init__(self):
         self.name = None
 
+        self.pre_install_diversions = None
+        self.post_install_diversions = None
+        
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
         self.name = tempfile.mkdtemp(dir=settings.tmpdir)
@@ -740,6 +744,8 @@ class Chroot:
             for sfile in os.listdir(settings.scriptsdir):
                 if (sfile.startswith("post_") or sfile.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), sfile)):
                     shutil.copy(os.path.join((settings.scriptsdir), sfile), dest) 
+
+        self.pre_install_diversions = self.get_diversions()
 
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
@@ -1004,6 +1010,32 @@ class Chroot:
             vdict[name] = status
         return vdict
 
+    def get_diversions(self):
+    	"""Get current dpkg-divert --list in a chroot."""
+        if not settings.check_broken_diversions:
+            return
+        (status, output) = self.run(["dpkg-divert", "--list"])
+        lines = []
+        for line in output.split("\n"):
+            lines.append(line)
+        return lines
+
+
+    def check_for_broken_diversions(self):
+        """Check that diversions in chroot are identical (though potenttially reordered)."""
+        if not settings.check_broken_diversions:
+            return
+        if self.pre_install_diversions and self.post_install_diversions:
+            added = [ln for ln in self.pre_install_diversions if not ln in self.post_install_diversions]
+            removed = [ln for ln in self.post_install_diversions if not ln in self.pre_install_diversions]
+            if added:
+                logging.error("Error: Installed diversions (dpkg-divert) not removed by purge:\n%s" %  
+                              indent_string("\n".join(added)))
+            if removed:
+                logging.error("Error: Existing diversions (dpkg-divert) removed/modified:\n%s" %
+                              indent_string("\n".join(removed)))
+    	
+
     def remove_or_purge(self, operation, packages):
         """Remove or purge packages in a chroot."""
         for name in packages:
@@ -1061,6 +1093,17 @@ class Chroot:
 
         # Finally, purge actual packages.
         self.remove_or_purge("purge", nondeps_to_purge)
+
+        self.post_install_diversions = self.get_diversions()
+
+        # remove logrotate and it's depends 
+        #    (this is a fix for #602409 introduced by #566597 
+        #    - search for the latter bug number in this file)
+        # XXX: another crude hack: ^^^
+        if not settings.skip_logrotatefiles_test:
+          self.remove_or_purge("remove", ["adduser", "cron", "libpopt0", "logrotate"])
+          self.remove_or_purge("purge", ["adduser", "cron", "libpopt0", "logrotate"])
+          self.run(["apt-get", "clean"])
 
         # Run custom scripts after purge all packages.
         self.run_scripts("post_purge")
@@ -1894,9 +1937,10 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't there initially.    
-    chroot.restore_selections(selections, packages)
-
-    chroot.check_for_no_processes()
+    changes = diff_selections(chroot, selections)
+    chroot.restore_selections(changes, packages)
+    
+    chroot.check_for_broken_diversions()
     chroot.check_for_broken_symlinks()
 
     return check_results(chroot, root_info, file_owners, deps_info=deps_info)
@@ -2179,6 +2223,10 @@ def parse_command_line():
     parser.add_option("-m", "--mirror", action="append", metavar="URL",
                       default=[],
                       help="Which Debian mirror to use.")
+    
+    parser.add_option("--no-diversions", action="store_true",
+                      default=False,
+                      help="Don't check for broken diversions.")
 
     parser.add_option("-n", "--no-ignores", action="callback",
                       callback=forget_ignores,
@@ -2313,6 +2361,7 @@ def parse_command_line():
 
     settings.debian_mirrors = [parse_mirror_spec(x, defaults.get_components())
                                for x in opts.mirror]
+    settings.check_broken_diversions = not opts.no_diversions
     settings.check_broken_symlinks = not opts.no_symlinks
     settings.warn_broken_symlinks = not opts.fail_on_broken_symlinks
     settings.savetgz = opts.save

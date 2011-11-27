@@ -32,6 +32,10 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Add some more logging.
   * piuparty.py: kill (via SIGTERM, then if that fails, via SIGKILL), leftover
     processes. (Closes: #522918)
+  * Test for incorrect diversions (dpkg-divert):
+      a) Existing diversions removed/modified, and/or
+      b) Installed diversions not removed by purge:
+    (Closes: #588313)
 
   [ Andreas Beckmann ]
   * *.py: Add vim modeline.
