@@ -702,7 +702,7 @@ class Section:
         counts = current_day
         total = 0
         for state in self._binary_db.get_states():
-            count = len(self._binary_db.get_packages_in_state(state))
+            count = len(self._binary_db.get_pkg_names_in_state(state))
             header += ", %s" % state
             counts += ", %s" % count
             logging.debug("%s: %s" % (state, count))
@@ -970,7 +970,7 @@ class Section:
               analysis = self.create_and_link_to_analysises(state)
             tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a>%s</td>" +
                           "<td class=\"contentcell2\">%d</td><td class=\"contentcell2\">%s</td></tr>\n") % \
-                          (html_protect(state), html_protect(state), analysis, len(self._binary_db.get_packages_in_state(state)),
+                          (html_protect(state), html_protect(state), analysis, len(self._binary_db.get_pkg_names_in_state(state)),
                           dir_link)
         try:
           tablerows += self.make_stats_graph();
@@ -993,8 +993,9 @@ class Section:
         for state in self._binary_db.get_states():
             logging.debug("Writing page for %s" % state)
             vlist = ""
-            for package in sorted(self._binary_db.get_packages_in_state(state),
+            for name in sorted(self._binary_db.get_pkg_names_in_state(state):
                                   key=lambda pkg: pkg["Package"]):
+                package = self._binary_db.get_package(name)
                 vlist += "<li id=\"%s\">%s (%s)" % (
                                          package["Package"],
                                          self.link_to_source_summary(package["Package"]),
