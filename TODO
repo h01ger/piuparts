@@ -6,8 +6,6 @@ higher than wishlist!
 
 for 0.42:
 
-- share templates for filing bugs
-
 - piuparts-report should keep state, ie cache the results of the log 
   analysis and generated html pages. Thus, a piuparts-report run could
   take minutes instead of hours... this is now (with four distros tested 
@@ -35,6 +33,8 @@ for 0.43:
   should need manual logfile trimming) at
   http://$piuparts/$distro/fail/$packages_$version.bug for usage 
   by a then to be written tool.
+  org/piuparts.debian.org/etc/templates/mail (part of piatti.git) has generic 
+  templates for filing bugs.
 
 - write reportbug(-like) wrapper for mass bug filing (start
   simple, make it more sophisticated later). 
