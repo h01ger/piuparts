@@ -53,8 +53,6 @@ piuparts (0.42) UNRELEASED; urgency=low
     - When running commands in the chroot, redirect stdin from /dev/null.
     - Stop using Popen.communicate() as it may run out of memory.
     - Terminate commands producing more than 2 MB of output. (Closes: #649335)
-    - Add missing post_install_* hook to install_packages_by_name().
-      (Closes: #628077)
     - Create /etc/dpkg/dpkg.cfg.d/ if missing inside the chroot (e.g. on
       lenny).  (Closes: #647752)
     - Remove logrotate and its dependencies only once.
@@ -67,6 +65,24 @@ piuparts (0.42) UNRELEASED; urgency=low
       custom scripts by just dropping new config bits in e.g.
       /etc/apt/apt.conf.d/piuparts-foobar.
     - Integrate diversion checks with Chroot.check_result().
+    - Use 'apt-get remove' to remove all packages at once with proper
+      dependency ordering.  (Closes: #648162)
+    - Set more environment variables to let custom scripts know where and
+      when they are being run: PIUPARTS_TEST, PIUPARTS_PHASE,
+      PIUPARTS_DISTRIBUTION{,_PREV,_NEXT}.  See the README for details.
+      (Closes: #589498)
+    - Add missing post_install_* custom scripts to install_packages_by_name().
+      (Closes: #628077)
+    - Remove pre_upgrade_* custom scripts, they can be replaced with
+      pre_install_* scripts that check for PIUPARTS_PHASE=upgrade.
+    - Add pre_test_* custom scripts.  These are run exactly once at the
+      beginning of each test (after recording the initial chroot state).
+    - Allow multiple --scriptsdir options, the contents will be merged.
+    - Exclude /tmp/scripts when creating a tarball.
+    - Use --one-file-system when creating a tarball to exclude bindmounts etc.
+    - Restore base system from temp_tgz instead of running debootstrap again.
+      (Closes: #648193)
+    - Purge all packages at once instead of doing it one-by-one.
     - Use consistent variable names for package lists.  (Closes: #648177)
     - Compute the changes in restore_selections().
     - Check for settings.scriptsdir inside run_scripts().
