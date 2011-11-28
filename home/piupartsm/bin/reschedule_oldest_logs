@@ -29,8 +29,13 @@ if [ -z "$MASTER" ] || [ -z "$SECTIONS" ] ; then
 	exit 1
 fi
 
+AGE=180
+COUNT=200
+FAIL_AGE=30
+FAIL_COUNT=25
 #
-# reschedule 200 oldest log files, if they are older then 180 days
+# reschedule 200 oldest log files, if they are older than 180 days
+# reschedule 25 oldest fail log files, if they are older than 30 days
 #
 for SECTION in $SECTIONS ; do
 	# only for sid and wheezy
@@ -38,8 +43,10 @@ for SECTION in $SECTIONS ; do
 		echo $SECTION
 		cd $MASTER/$SECTION
 		# we ignore bugged here - ptyhon-bts is really the way to go
-	        find pass fail -name "*.log" -mtime +180 | xargs -n99999 -s999999 ls -dtl |tail -200
-		find pass fail -name "*.log" -mtime +180 | xargs -n99999 -s999999 ls -dt |tail -200 | xargs rm 2> /dev/null
+		find pass fail -name "*.log" -mtime +$AGE | xargs -n99999 -s999999 ls -dtl | tail -n $COUNT
+		find pass fail -name "*.log" -mtime +$AGE | xargs -n99999 -s999999 ls -dt  | tail -n $COUNT | xargs rm 2> /dev/null
+		find fail -name "*.log" -mtime +$FAIL_AGE | xargs -n99999 -s999999 ls -dtl | tail -n $FAIL_COUNT
+		find fail -name "*.log" -mtime +$FAIL_AGE | xargs -n99999 -s999999 ls -dt  | tail -n $FAIL_COUNT | xargs rm 2> /dev/null
 		echo
 		echo "#########################################################"
 		echo
