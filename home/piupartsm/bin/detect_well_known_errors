@@ -39,6 +39,7 @@ LOGS=`mktemp`
 # bash has some severe limitations, like no named arrays... :/
 NR=0
 for SECTION in $SECTIONS ; do 
+	mkdir -p $HTDOCS/$SECTION
 	KNOWNLOGS[$NR]=`mktemp`
 	cd $MASTER/$SECTION
 	for problem in `ls ~/bin/known_problems` ; do
