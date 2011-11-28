@@ -1003,7 +1003,7 @@ class Chroot:
             logging.debug("The package did not modify any file.\n")     
 
 
-    def install_package_files(self, package_files):
+    def install_package_files(self, package_files, packages = None):
         if package_files:
             self.copy_files(package_files, "tmp")
             tmp_files = [os.path.basename(a) for a in package_files]
@@ -1954,7 +1954,7 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
         deps_info = None
 
     if package_files:
-        chroot.install_package_files(package_files)
+        chroot.install_package_files(package_files, packages)
     else:
         chroot.install_packages_by_name(packages)
 
@@ -1989,7 +1989,7 @@ def install_upgrade_test(chroot, root_info, selections, package_files, packages,
 
     # Then from the package files.
     os.environ["PIUPARTS_PHASE"] = "upgrade"
-    chroot.install_package_files(package_files)
+    chroot.install_package_files(package_files, packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -2111,7 +2111,7 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     os.environ["PIUPARTS_PHASE"] = "upgrade"
 
-    chroot.install_package_files(package_files)
+    chroot.install_package_files(package_files, packages)
 
     chroot.check_for_no_processes()
 
