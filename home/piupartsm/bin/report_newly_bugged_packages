@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# Copyright © 2011 Andreas Beckmann <debian@abeckmann.de>
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+
+PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
+
+get_config_value()
+{
+	local key value
+	key="$1"
+	value="$(sed -rn -e "/^$key\s*=/s/^$key\s*=\s*//p" "$PIUPARTS_CONF")"
+	if [ -z "$value" ]; then
+		echo "'$key' not set in $PIUPARTS_CONF, exiting."
+		exit 1
+	fi
+	echo "$value"
+}
+
+MASTER=$(get_config_value master-directory)
+SECTIONS=$(get_config_value sections)
+
+export PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
+
+for SECTION in $SECTIONS ; do
+	if [ -d $MASTER/$SECTION ]; then
+		echo $SECTION
+		cd $MASTER/$SECTION
+		/org/piuparts.debian.org/share/piuparts/piuparts-analyze
+	fi
+done
