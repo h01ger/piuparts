@@ -38,8 +38,9 @@ FAIL_COUNT=25
 # reschedule 25 oldest fail log files, if they are older than 30 days
 #
 for SECTION in $SECTIONS ; do
+	DISTRO=$(sed -rn '\#\['"$SECTION"'\]#,/^\[/ {s/^distro\s*=\s*//p}' /etc/piuparts/piuparts.conf)
 	# only for sid and wheezy
-        if [ "$SECTION" = "sid" ] || [ "$SECTION" = "wheezy" ] ; then
+	if [ "$DISTRO" = "sid" ] || [ "$DISTRO" = "wheezy" ] || [ "$DISTRO" = "experimental" ]; then
 		echo $SECTION
 		cd $MASTER/$SECTION
 		# we ignore bugged here - ptyhon-bts is really the way to go
