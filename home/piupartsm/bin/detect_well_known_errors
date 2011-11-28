@@ -59,9 +59,9 @@ for SECTION in $SECTIONS ; do
 			COUNT=0
 			for LOG in $(cat $LOGS|sort) ; do
 				PACKAGE=$(echo $LOG | cut -d "_" -f1|cut -d "/" -f2)
-				LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}_* $MASTER/$SECTION/bugged/${PACKAGE}_* $MASTER/$SECTION/pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f7)
+				LATEST=$(ls -tr1 --color=none fail/${PACKAGE}_* bugged/${PACKAGE}_* pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f1)
 				if [ "${problem%_error.conf}_error.conf" = "$problem" ] ; then 
-					LATESTFAIL=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}_* $MASTER/$SECTION/bugged/${PACKAGE}_*  2>/dev/null|tail -1|cut -d "/" -f7-8)
+					LATESTFAIL=$(ls -tr1 --color=none fail/${PACKAGE}_* bugged/${PACKAGE}_*  2>/dev/null|tail -1)
 					if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
 						echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
 						echo "$LOG" >> ${KNOWNLOGS[$NR]}
@@ -69,7 +69,7 @@ for SECTION in $SECTIONS ; do
 					fi
 				else
 					# this is an issue, not an error
-					LATESTSUCCESS=$(ls -tr1 --color=none $MASTER/$SECTION/pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f7-8)
+					LATESTSUCCESS=$(ls -tr1 --color=none pass/${PACKAGE}_* 2>/dev/null|tail -1)
 					if [ "$LATEST" = "pass" ] && [ "$LATESTSUCCESS" = "$LOG" ] ; then 
 						echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
 						echo "$LOG" >> ${KNOWNLOGS[$NR]}
@@ -108,8 +108,8 @@ for SECTION in $SECTIONS ; do
 		echo "<ul>" >> $OUTPUT
 		for LOG in $(cat $UNKNOWNLOGS|sort) ; do
 			PACKAGE=$(echo $LOG | cut -d "_" -f1|cut -d "/" -f2)
-			LATEST=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}_* $MASTER/$SECTION/bugged/${PACKAGE}_* $MASTER/$SECTION/pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f7)
-			LATESTFAIL=$(ls -tr1 --color=none $MASTER/$SECTION/fail/${PACKAGE}_* $MASTER/$SECTION/bugged/${PACKAGE}_*  2>/dev/null|tail -1|cut -d "/" -f7-8)
+			LATEST=$(ls -tr1 --color=none fail/${PACKAGE}_* bugged/${PACKAGE}_* pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f1)
+			LATESTFAIL=$(ls -tr1 --color=none fail/${PACKAGE}_* bugged/${PACKAGE}_*  2>/dev/null|tail -1)
 			if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
 				echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
 				COUNT=$((COUNT+1))
