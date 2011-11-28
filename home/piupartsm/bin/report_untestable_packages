@@ -35,16 +35,15 @@ fi
 
 DAYS=7
 LOGS=`mktemp`
-find $MASTER/*/untestable/ -mtime +$DAYS -name "*.log" 2>/dev/null > $LOGS
+for SECTION in $SECTIONS ; do
+	find $MASTER/$SECTION/untestable/ -mtime +$DAYS -name "*.log" 2>/dev/null >> $LOGS
+done
 if [ -s $LOGS ] ; then 
-	for SECTION in $SECTIONS ; do
-        	for package_log in $(grep $SECTION $LOGS) ; do 
-			rm -f $package_log
-		done
-	done
 	echo "Untestable packages detected, which have been tested more than $DAYS days ago!"
 	echo "These packages have been rescheduling for piuparts testing."
 	echo
-	cat "$LOGS"
+	for package_log in $(cat $LOGS) ; do
+		rm -fv $package_log
+	done
 fi
 rm $LOGS
