@@ -2510,14 +2510,15 @@ def process_packages(package_list):
         if not settings.no_upgrade_test:
             if not settings.args_are_package_files:
                 logging.info("Can't test upgrades: -a or --apt option used.")
-            elif not chroot.apt_get_knows(packages):
-                logging.info("Can't test upgrade: packages not known by apt-get.")
-            elif install_upgrade_test(chroot, root_info, selections, package_files,
-                                  packages):
-                logging.info("PASS: Installation, upgrade and purging tests.")
             else:
-                logging.error("FAIL: Installation, upgrade and purging tests.")
-                panic()
+                if not chroot.apt_get_knows(packages):
+                    logging.info("Can't test upgrade: packages not known by apt-get.")
+                elif install_upgrade_test(chroot, root_info, selections, package_files,
+                                      packages):
+                    logging.info("PASS: Installation, upgrade and purging tests.")
+                else:
+                    logging.error("FAIL: Installation, upgrade and purging tests.")
+                    panic()
 
         chroot.remove()
         dont_do_on_panic(cid)
