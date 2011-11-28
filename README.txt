@@ -10,7 +10,7 @@ Notes about the piuparts installation on piatti.debian.org
 
 === User setup
 
-A piupartss and a piupartsm user is need. Both are members of the group piuparts and /org/piuparts.debian.org is 774 piupartss.piuparts.
+A piupartss and a piupartsm user is need. Both are members of the group piuparts and /org/piuparts.debian.org is 774 piupartss:piuparts.
 Both user have some files in $HOME which are kept in git, including hidden files.
 
 Create an SSH keypair for piupartss and put it into ~/.ssh/authorized_keys of the piupartsm user, so the piupartss can login with ssh to localhost as piupartsm.

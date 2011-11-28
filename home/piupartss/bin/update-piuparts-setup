@@ -81,15 +81,15 @@ if [ -d /org/piuparts.debian.org/.svn ] ; then
 fi
 if [ ! -d /org/piuparts.debian.org/ ] ; then
         sudo mkdir -p /org/piuparts.debian.org/
-	sudo chown piupartss.piuparts /org/piuparts.debian.org/
+	sudo chown piupartss:piuparts /org/piuparts.debian.org/
 	sudo chmod 775 /org/piuparts.debian.org/
 fi
 cd /org/piuparts.debian.org/
 pwd
 cp -r ~piupartss/piatti/org/piuparts.debian.org/* .
 mkdir -p master slave
-sudo chown piupartss.piuparts slave
-sudo chown piupartsm.piuparts master htdocs
+sudo chown piupartss:piuparts slave
+sudo chown piupartsm:piuparts master htdocs
 sudo chmod 775 master slave htdocs
 cd /org/piuparts.debian.org/etc
 # to support multiple host with this setup
@@ -106,7 +106,7 @@ fi
 if [ ! -d /org/piuparts.debian.org/src/ ] ; then
         sudo mkdir -p /org/piuparts.debian.org/src/
 	cd /org/piuparts.debian.org/src/
-        sudo chown piupartss.piuparts /org/piuparts.debian.org/src
+        sudo chown piupartss:piuparts /org/piuparts.debian.org/src
         sudo chmod 755 /org/piuparts.debian.org/src
 	git clone git://git.debian.org/git/piuparts/piuparts.git
 	cd piuparts
