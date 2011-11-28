@@ -464,10 +464,13 @@ class PackagesDB:
     def get_pkg_names_in_state(self, state):
         self._compute_package_states()
         return set(self._in_state[state])
-    
+
+    def has_package(self, name):
+        return name in self._packages
+
     def get_package(self, name):
         return self._packages[name]
-    
+
     def get_all_packages(self):
         self._find_all_packages()
         return self._packages
