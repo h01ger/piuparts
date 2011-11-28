@@ -934,7 +934,8 @@ class Chroot:
             # and installing that would require removing the old version
             # of the library, and we've told apt-get not to remove
             # packages. So, we force the installation like this.
-            self.install_packages_by_name(packages)
+            known_packages = self.get_known_packages(packages)
+            self.install_packages_by_name(known_packages)
             # Run custom scripts after upgrade
             self.run_scripts("post_distupgrade")
             self.check_for_no_processes()
@@ -944,7 +945,6 @@ class Chroot:
 
     def get_known_packages(self, packages):
         """Does apt-get (or apt-cache) know about a set of packages?"""
-
         known_packages = []
         new_packages = []
         for name in packages:
@@ -1973,8 +1973,8 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
     return check_results(chroot, root_info, file_owners, deps_info=deps_info)
 
 
-def install_upgrade_test(chroot, root_info, selections, package_files, packages):
-    """Install package via apt-get, then upgrade from package files.
+def install_upgrade_test(chroot, root_info, selections, package_files, packages, old_packages):
+    """Install old_packages via apt-get, then upgrade from package files.
     Return True if successful, False if not."""
 
     os.environ["PIUPARTS_TEST"] = "upgrade"
@@ -1982,7 +1982,7 @@ def install_upgrade_test(chroot, root_info, selections, package_files, packages)
 
     # First install via apt-get.
     os.environ["PIUPARTS_PHASE"] = "install"
-    chroot.install_packages_by_name(packages)
+    chroot.install_packages_by_name(old_packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -2098,7 +2098,8 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     os.environ["PIUPARTS_PHASE"] = "install"
 
-    chroot.install_packages_by_name(packages)
+    known_packages = chroot.get_known_packages(packages)
+    chroot.install_packages_by_name(known_packages)
 
     chroot.check_for_no_processes()
 
@@ -2511,10 +2512,12 @@ def process_packages(package_list):
             if not settings.args_are_package_files:
                 logging.info("Can't test upgrades: -a or --apt option used.")
             else:
-                if not chroot.apt_get_knows(packages):
+                packages_to_query = packages[:]
+                known_packages = chroot.get_known_packages(packages_to_query)
+                if not known_packages:
                     logging.info("Can't test upgrade: packages not known by apt-get.")
                 elif install_upgrade_test(chroot, root_info, selections, package_files,
-                                      packages):
+                        packages, known_packages):
                     logging.info("PASS: Installation, upgrade and purging tests.")
                 else:
                     logging.error("FAIL: Installation, upgrade and purging tests.")
