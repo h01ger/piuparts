@@ -940,14 +940,32 @@ class Chroot:
             self.check_for_no_processes()
 
     def apt_get_knows(self, packages):
+        return self.get_known_packages(packages)
+
+    def get_known_packages(self, packages):
         """Does apt-get (or apt-cache) know about a set of packages?"""
 
+        known_packages = []
+        new_packages = []
         for name in packages:
             (status, output) = self.run(["apt-cache", "show", name],
                                         ignore_errors=True)
-            if status != 0:
-                return False
-        return True
+            # apt-cache reports status for some virtual packages and packages
+            # in status config-files-remaining state without installation
+            # candidate -- but only real packages have Filename/MD5sum/SHA*
+            if status != 0 or re.search(r'^(Filename|MD5sum|SHA1|SHA256):', output, re.M) is None:
+                new_packages.append(name)
+            else:
+                known_packages.append(name)
+        if not known_packages:
+            logging.info("apt-cache does not know about any of the requested packages")
+        else:
+            logging.info("apt-cache knows about the following packages: " +
+                    ", ".join(known_packages))
+            if new_packages:
+                logging.info("the following packages are not in the archive: " +
+                        ", ".join(new_packages))
+        return known_packages
 
     def copy_files(self, source_names, target_name):
         """Copy files in 'source_name' to file/dir 'target_name', relative
