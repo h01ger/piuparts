@@ -87,9 +87,9 @@ fi
 cd /org/piuparts.debian.org/
 pwd
 cp -r ~piupartss/piatti/org/piuparts.debian.org/* .
-mkdir -p master slave
+mkdir -p master slave backup
 sudo chown piupartss:piuparts slave
-sudo chown piupartsm:piuparts master htdocs
+sudo chown piupartsm:piuparts master htdocs backup
 sudo chmod 775 master slave htdocs
 cd /org/piuparts.debian.org/etc
 # to support multiple host with this setup
