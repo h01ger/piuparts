@@ -36,7 +36,7 @@ fi
 
 LOGS=`mktemp`
 for SECTION in $SECTIONS ; do 
-	rgrep -l -e "(E: Broken packages|E: Error, pkgProblemResolver::Resolve generated breaks)" $MASTER/$SECTION/fail 2>/dev/null >> $LOGS
+	rgrep -l -E "(E: Broken packages|E: Error, pkgProblemResolver::Resolve generated breaks)" $MASTER/$SECTION/fail 2>/dev/null >> $LOGS
         if [ -s $LOGS ] ; then 
           for package_log in $(grep $SECTION $LOGS) ; do 
 		mv $package_log $MASTER/$SECTION/untestable/
