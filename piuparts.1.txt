@@ -65,6 +65,9 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *--dpkg-noforce-unsafe-io*::
   Prevent running dpkg with --force-unsafe-io.  --force-unsafe-io causes dpkg to skip certain file system syncs known to cause substantial performance degradation on some filesystems.  Thus, including this option reverts to safe but slower behavior.
 
+*--no-eatmydata*::
+  Prevent use of eatmydata.
+
 *-i* 'filename', *--ignore*='filename'::
   Add a filename to the list of filenames to be ignored when comparing changes before and after installation. By default, piuparts ignores files that always change during a package installation and uninstallation, such as *dpkg* status files. The filename should be relative to the root of the chroot (e.g., _var/lib/dpkg/status_). This option can be used as many times as necessary.
 
@@ -104,6 +107,9 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 The 'components' that are used for a mirror can also be set with this option: a space separated list within the same argument (so you need to quote the entire argument in the shell). If no components are given explicitly, the usual Debian components are used (main, contrib, and non-free). For the mirrors read from _/etc/apt/sources.list_, the components are read from the same place.
 +
 Note that file: addresses works if the directories are made accessible from within the chroot with '--bindmount'.
+
+*--no-diversions*::
+  Don't check for broken diversions.
 
 *-n, --no-ignores*::
   Forget all built-in and other ignores that have been set so far. Any '-i' or '-I' arguments that come after this one will be obeyed, but none of the ones that come before.

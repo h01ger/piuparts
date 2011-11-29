@@ -28,6 +28,7 @@ import sys
 import stat
 import time
 import logging
+from signal import alarm, signal, SIGALRM, SIGKILL
 import subprocess
 import ConfigParser
 
@@ -36,7 +37,7 @@ import piupartslib.packagesdb
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
-
+MAX_WAIT_TEST_RUN = 45*60
 
 def setup_logging(log_level, log_file_name):
     logger = logging.getLogger()
@@ -83,10 +84,16 @@ class Config(piupartslib.conf.Config):
             }, "")
 
 
+class Alarm(Exception):
+    pass
+
+def alarm_handler(signum, frame):
+    raise Alarm
+
 class MasterNotOK(Exception):
 
     def __init__(self):
-        self.args = "Master did not responed with 'ok'"
+        self.args = "Master did not respond with 'ok'"
 
 
 class MasterDidNotGreet(Exception):
@@ -180,6 +187,15 @@ class Slave:
         if line != "ok\n":
             raise MasterNotOK()
 
+    def get_status(self):
+        self._writeline("status")
+        line = self._readline()
+        words = line.split()
+        if words and words[0] == "ok":
+            logging.info("Master status: " + " ".join(words[1:]))
+        else:
+            raise MasterIsCrazy()
+
     def reserve(self):
         self._writeline("reserve")
         line = self._readline()
@@ -270,6 +286,8 @@ class Section:
     def run(self):
         logging.info("-------------------------------------------")
         logging.info("Running section " + self._config.section)
+        self._config = Config(section=self._config.section)
+        self._config.read(CONFIG_FILE)
         self._slave.connect_to_master(self._log_file)
 
         oldcwd = os.getcwd()
@@ -287,6 +305,7 @@ class Section:
             while len(self._slave.get_reserved()) < max_reserved and self._slave.reserve():
                 pass
 
+        self._slave.get_status()
         self._slave.close()
 
         test_count = len(self._slave.get_reserved())
@@ -346,6 +365,41 @@ def upgrade_testable(config, package, packages_files):
     else:
         return False
 
+def get_process_children(pid):
+    p = subprocess.Popen('ps --no-headers -o pid --ppid %d' % pid,
+           shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+    stdout, stderr = p.communicate()
+    return [int(p) for p in stdout.split()]
+
+def run_test_with_timeout(cmd, maxwait, kill_all):
+      logging.debug("Executing: %s" % cmd)
+
+      stdout = ""
+      sh_cmd = "{ %s; } 2>&1" % cmd
+      p = subprocess.Popen(sh_cmd, shell=True,
+                     stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+      if maxwait > 0:
+          signal(SIGALRM, alarm_handler)
+          alarm(maxwait)
+      try:
+          stdout, stderr = p.communicate()
+          if maxwait > 0:
+              alarm(0)
+      except Alarm:
+          pids = [p.pid]
+          if kill_all:
+              pids.extend(get_process_children(p.pid))
+          for pid in pids:
+              if pid > 0:
+                  try: 
+                      os.kill(pid, SIGKILL)
+                  except OSError:
+                      pass
+          return -1,stdout
+
+      return p.returncode,stdout 
+
+
 def test_package(config, package, packages_files):
     logging.info("Testing package %s/%s %s" % (config.section, package["Package"], package["Version"]))
 
@@ -360,54 +414,46 @@ def test_package(config, package, packages_files):
     output.write("\n")
 
     # omit distro test if chroot-tgz is not specified.
+    ret = 0
     if config["chroot-tgz"]: 
-      command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s" % \
-                  config
-      if config["keep-sources-list"] in ["yes", "true"]:
-          command += " --keep-sources-list "
+        command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s" % \
+                    config
+        if config["keep-sources-list"] in ["yes", "true"]:
+            command += " --keep-sources-list "
+        if config["mirror"]:
+            command += " --mirror %s " % config["mirror"]
+        command += " " + package["Package"]
 
-      if config["mirror"]:
-          command += " --mirror %s " % config["mirror"]
-      command += " " + package["Package"]
+        output.write("Executing: %s\n" % command)
+        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN, True)
+        if ret < 0:
+            output.write(f + "\n *** Process KILLED - exceed maximum run time ***\n")
+        else:
+            output.write(f)
 
-      logging.debug("Executing: %s" % command)
-      output.write("Executing: %s\n" % command)
-      f = os.popen("{ %s; } 2>&1" % command, "r")
-      for line in f:
-          output.write(line)
-      status = f.close()
-      if status is None:
-          status = 0
-    else:
-          status = 0
-
-    if status == 0 and upgrade_testable(config, package, packages_files):
+    if ret == 0 and upgrade_testable(config, package, packages_files):
         distros = config["upgrade-test-distros"].split()
         distros = ["-d " + distro.strip() for distro in distros]
         distros = " ".join(distros)
         command = "%(piuparts-cmd)s -ab %(upgrade-test-chroot-tgz)s " % config
         command += distros
-
         if config["mirror"]:
           command += " --mirror %s " % config["mirror"]
-
         command += " " + package["Package"]
 
-        logging.debug("Executing: %s" % command)
-        output.write("\nExecuting: %s\n" % command)
-        f = os.popen("{ %s; } 2>&1" % command, "r")
-        for line in f:
-            output.write(line)
+        output.write("Executing: %s\n" % cmd)
+        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN, True)
+        if ret < 0:
+            output.write(" *** Process KILLED - exceed maximum run time ***\n")
+        else:
+            output.write(f)
             output.flush()
-        status = f.close()
-        if status is None:
-            status = 0
 
     output.write("\n")
     output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n", 
                                time.gmtime()))
     output.close()
-    if not os.WIFEXITED(status) or os.WEXITSTATUS(status) != 0:
+    if ret != 0:
         subdir = "fail"
     else:
         subdir = "pass"

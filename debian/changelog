@@ -8,14 +8,8 @@ piuparts (0.42) UNRELEASED; urgency=low
       logrotate. Thanks Stefano! (Closes: #638832)
     - apply patch by Gregor Herrmann to fix --minimize. (Closes: #648423)
   * Remove Debian.NEWS entry about source in git. (Closes: #640121)
-  * piuparts-slave.py: Replace deprecated os.popen2 with subprocess.Popen,
-    thanks to Scott Schaefer for the patch. 
-    (Closes: #640646)
-  * debian/copyright: apply patch by Scott Schaefer to make it compliant with 
-    DEP-5. Thanks Scott!
   * piuparts.py, piuparts-report.py, ChangeLog: Expand tabs to spaces.
   * Remove whitespaces from whitespace-only lines.
-  * *.py: Add vim modeline.
 
   [ Mika Pflüger ]
   * piuparts-analyze.py:
@@ -29,36 +23,92 @@ piuparts (0.42) UNRELEASED; urgency=low
   * debian/control: Add python-apt and python-debianbts to piuparts depends.
 
   [ Scott Schaefer ]
+  * debian/copyright: Make it compliant with DEP-5.
   * piuparts-slave.py: 
     - Replace deprecated os.popen2 with subprocess.Popen. (Closes: #640646)
-    - add some more logging.
+    - Add some more logging.
+    - Kill children (hard-coded value, 45 minutes) to ensure test doesn't
+      run "forever" (Closes: #640647, #387428)
+  * piuparty.py:
+    - Kill leftover processes (via SIGTERM, then if that fails, via SIGKILL).
+      (Closes: #522918)
+    - Test for incorrect diversion handling:  (Closes: #588313)
+      a) Existing diversions removed/modified, and/or
+      b) Installed diversions not removed by purge.
+  * piupartslib/packagesdb.py: Modify several functions in PackagesDB class
+    to use python 'set' type, instead of a list.  This permitted replacing 
+    inefficient combination of unique() function and random.shuffle() with
+    python set.pop() method.  Since python prohibits storing non-hashable
+    object in a set, minor modifications to piuparts-report and to
+    piuparts-master required. (Closes: #640648)
 
   [ Andreas Beckmann ]
-  * piuparts-slave.py: fix triggering tarball recreation, check tarball age
-    regularily, log tarball creation in *.tgz.log.
+  * *.py: Add vim modeline.
   * piuparts.py:
     - Add unittests for misbehaving symlinks.
     - Fix resolving absolute symlinks of intermediate directory components,
       i.e. /var/run -> /run while checking /etc/motd -> /var/run/motd.
       Solves about 30000 false positives of
       'Broken symlinks: /etc/motd -> /var/run/motd'.  (Closes: #648784)
-    - when running commands in the chroot, redirect stdin from /dev/null
-    - stop using Popen.communicate()
-    - use consistent variable names for package lists
-    - compute the changes in restore_selections()
-    - check for settings.scriptsdir inside run_scripts()
-    - Add missing post_install_* hook to install_packages_by_name().
+    - When running commands in the chroot, redirect stdin from /dev/null.
+    - Stop using Popen.communicate() as it may run out of memory.
+    - Terminate commands producing more than 2 MB of output. (Closes: #649335)
+    - Create /etc/dpkg/dpkg.cfg.d/ if missing inside the chroot (e.g. on
+      lenny).  (Closes: #647752)
+    - Remove logrotate and its dependencies only once.
+    - Only run 'apt-get update' after updating the sources.list.
+    - Only run 'apt-get clean' before creating tarballs or saving meta data.
+    - Do the same checks for running processes and broken symlinks in all
+      tests.  (Closes: #648708)
+    - Create piupart's apt config in the chroot as /etc/apt.conf.d/piuparts
+      instead of /etc/apt.conf in order to allow overriding the settings from
+      custom scripts by just dropping new config bits in e.g.
+      /etc/apt/apt.conf.d/piuparts-foobar.
+    - Integrate diversion checks with Chroot.check_result().
+    - Use 'apt-get remove' to remove all packages at once with proper
+      dependency ordering.  (Closes: #648162)
+    - Set more environment variables to let custom scripts know where and
+      when they are being run: PIUPARTS_TEST, PIUPARTS_PHASE,
+      PIUPARTS_DISTRIBUTION{,_PREV,_NEXT}.  See the README for details.
+      (Closes: #589498)
+    - Add missing post_install_* custom scripts to install_packages_by_name().
       (Closes: #628077)
+    - Remove pre_upgrade_* custom scripts, they can be replaced with
+      pre_install_* scripts that check for PIUPARTS_PHASE=upgrade.
+    - Add pre_test_* custom scripts.  These are run exactly once at the
+      beginning of each test (after recording the initial chroot state).
+    - Allow multiple --scriptsdir options, the contents will be merged.
+    - Exclude /tmp/scripts when creating a tarball.
+    - Use --one-file-system when creating a tarball to exclude bindmounts etc.
+    - Restore base system from temp_tgz instead of running debootstrap again.
+      (Closes: #648193)
+    - Purge all packages at once instead of doing it one-by-one.
+    - Use consistent variable names for package lists.  (Closes: #648177)
+    - Compute the changes in restore_selections().
+    - Check for settings.scriptsdir inside run_scripts().
+    - Consistently use chroot.relative() to build filenames inside the chroot.
+  * piuparts-master.py:
+    - Add a 'status' command that reports package counts for all states.
+  * piuparts-slave.py:
+    - Fix triggering tarball recreation.
+    - Check tarball age regularily.
+    - Log tarball creation in *.tgz.log.
+    - Request and print package counts from master.
+    - Reload section config every time a section is being run.
   * piuparts-report.py: 
-    - sort binary packages by name
-    - sort package lists by name
-    - resolve virtual packages when linking
-    - update list of error states
+    - state-*.html: Sort package lists by name.
+    - source/?/*.html: Sort binary packages by name.
+    - Dependency lists: resolve virtual packages and link to a real package.
+    - Update list of error states to be highlighted.
 
   [ Dave Steele ]
   * piuparts-slave.py: make Section.run() report the number of packages
     processed and use this to decide whether a slave should sleep.
     (Closes: #649967)
+
+  [ Stefano Rivera ]
+  * piuparts.py: use eatmydata by default, add option --no-eatmydata. (This
+    was discussed in #633033.)
 
  -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
 

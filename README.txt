@@ -136,6 +136,9 @@ your package.
 You can specify several custom scripts to be run inside piuparts.
 You have to store them in a directory and give it as argument to
 piuparts: '--scriptsdir=/dir/with/the/scripts'
+This option can be given multiple times. The scripts from all
+directories will be merged together (and later ones may overwrite
+earlier scripts with the same filename).
 
 The script prefix determines in which step it is executed. You
 can run several scripts in every step, they are run in
@@ -151,31 +154,54 @@ being tested (seperated by spaces, if applicable) or the .changes
 file(s) being used.  So when running in master-slave mode, it
 will be set to the (one) package being tested at a time.
 
+Depending on the current test, the variable PIUPARTS_TEST is set
+to
+. 'install' (installation and purging test),
+. 'upgrade' (installation, upgrade and purging tests) or
+. 'distupgrade'.
+
+During the 'upgrade' and 'distupgrade' tests, the variable
+PIUPARTS_PHASE is set to one of the following values:
+. 'install' while initially installing the packages from the repository,
+. 'upgrade' when upgrading to the .debs,
+. 'distupgrade' while reinstalling the packages after 'apt-get dist-upgrade' to ensure they were not removed accidently
+During the 'install' test, the PIUPARTS_PHASE variable is set to
+'install'.
+
+The current distribution is available in the variable
+PIUPARTS_DISTRIBUTION.
+
 The following prefixes for scripts are recognized:
 
 'post_setup_' - after the *setup* of the chroot is finished.
+Before metadata of the chroot is recorded for later comparison.
 
-'pre_install_' - before *installing* your package.
+'pre_test_' - at the beginning of each test. After metadata of
+the chroot was recorded for later comparison.
+
+'pre_install_' - before *installing* your package. Depending on
+the test, this may be run multiple times. The PIUPARTS_TEST and
+PIUPARTS_PHASE variables can be used to distinguish the cases.
 
 'post_install_' - after *installing* your package and its
-dependencies.  In the case of the upgrade test, it is after
-install and upgrade.
+dependencies.  Depending on the test, this may be run multiple
+times. The PIUPARTS_TEST and PIUPARTS_PHASE variables can be used
+to distinguish the cases.
 
 'pre_remove_' - before *removing* your package.
 
 'post_remove_' - after *removing* your package.
 
-'post_purge_' - after *purging* your package.
-
-'pre_upgrade_' - before *upgrading* your package, once the
-current version in the archive has been installed (this is done
-in the second test, "Installation, upgrade and purging test").
+'post_purge_' - after *purging* your package. Right before
+comparing the chroot with the initially recorded metadata.
 
 'pre_distupgrade_' - before *upgrading* the chroot to the *next
-distribution*.
+distribution*. The next distribution is available in the variable
+PIUPARTS_DISTRIBUTION_NEXT.
 
 'post_distupgrade_' - after *upgrading* the chroot to the *next
-distribution*.
+distribution*. The previous distribution is available in the
+variable PIUPARTS_DISTRIBUTION_PREV.
 
 
 === Example custom scripts:
@@ -330,6 +356,14 @@ Success: ok
 Slave reports that a particular package is untestable, possibly
 because it insists on interacting with the user.
 
+----
+Command: status
+Success: ok <package-state>=<count> <package-state>=<count>...
+----
+Slave asks master to report the number of packages in all
+different states. The "status" command should only be issued
+after all "pass" and "fail" commands.
+
 In all cases, if the master cannot respond with "ok" (e.g.,
 because of a disk error storing a log file), it aborts and the
 connection fails. The slave may only assume the command has
@@ -352,10 +386,16 @@ this:
 
 ==== global configuration
 
-These settings are used for all sections. Except for the first
-three they are all mandatory:
+These settings have to be placed in the [global] section and are
+used for all further sections.
 
 * "sections" defaults to sid and defines which sections should be processed in master-slave mode. Each section defined here has to have a section with the section specific settings explained below. The first section defined should always be sid, because the data from first section a package is in is used for the source package html report.
+
+* "master-host" is the host where the master exists. The slave will give this host to ssh. This option is mandatory.
+
+* "master-user" is the username of the master. The slave will log in using this username. This option is mandatory.
+
+* "master-directory" is the directory where the master keeps its files. Can be relative to the master's home directory.
 
 * "idle-sleep" is the length of time the slave should wait before querying the master again if the master didn't have any new packages to test. In seconds, so a value of 300 would mean five minutes, and that seems to be a good value when there are fairly few slaves per master. The default is 300 seconds.
 
@@ -363,17 +403,14 @@ three they are all mandatory:
 
 * "min-tgz-retry-delay" is used to specify the minimum time (in seconds) between attempts to recreate a tarball which was created more than "max-tgz-age" seconds ago. The default is 21600 seconds, which is 6h.
 
-* "master-host" is the host where the master exists. The slave will give this host to ssh.
+==== section specific configuration
 
-* "master-user" is the username of the master. The slave will log in using this username.
-
-* "master-directory" is the directory where the master keeps its files. Can be relative to the master's home directory.
+The section specific settings will be reloaded each time a section
+is being run.
 
 * "master-command" is the command to run on master-host to start the master. When the master has been installed from the Debian package, the command is 'python /usr/share/piuparts/piuparts-master'.  If you want to use a section in the master configuration file other than "master", append the section name to this command.  For example, if the master configuration file has a "sid-ia64" section that you want to use, the command should be 'python /usr/share/piuparts/piuparts-master sid-ia64'.
 
 * "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "/dev/null", that is, log messages are not put in a file.
-
-==== section specific configuration 
 
 * "packages-url" is a URL to the Packages.bz2 file specifying what packages should be tested. This needs to be a Packages.bz2 file, other compression methods are not supported. For example, you might use 'http://ftp.debian.org/debian/dists/sid/main/binary-i386/Packages.bz2' but you really do want to replace "ftp.debian.org" with the name of your local mirror.
 
@@ -407,4 +444,4 @@ If you want to run piuparts-report (which is only+very useful if
 you run piuparts in master-slave mode), you need to 'apt-get
 install python-rpy r-recommended r-base-dev'. For more
 information see
-link:http://svn.debian.org/viewsvn/piuparts/piatti/README.txt?view=markup[svn://svn.debian.org/svn/piuparts/piatti/README.txt].
+link:http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=blob_plain;f=README.txt;hb=piatti[http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=blob_plain;f=README.txt;hb=piatti].

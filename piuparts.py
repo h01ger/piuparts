@@ -49,6 +49,7 @@ import subprocess
 import unittest
 import urllib
 import uuid
+from signal import signal, SIGTERM, SIGKILL
 
 try:
     from debian import deb822
@@ -130,7 +131,7 @@ class Settings:
     def __init__(self):
         self.defaults = None
         self.tmpdir = None
-        self.scriptsdir = None
+        self.scriptsdirs = []
         self.keep_tmpdir = False
         self.single_changes_list = False
         # limit output of logfiles to the last megabyte:
@@ -153,6 +154,7 @@ class Settings:
         self.no_upgrade_test = False
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
+        self.check_broken_diversions = True
         self.check_broken_symlinks = True
         self.warn_broken_symlinks = True
         self.debfoster_options = None
@@ -705,46 +707,51 @@ class Chroot:
     def __init__(self):
         self.name = None
 
+        self.pre_install_diversions = None
+
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
         self.name = tempfile.mkdtemp(dir=settings.tmpdir)
         os.chmod(self.name, 0755)
         logging.debug("Created temporary directory %s" % self.name)
 
-    def create(self):
+    def create(self, temp_tgz = None):
         """Create a chroot according to user's wishes."""
         self.create_temp_dir()
         cid = do_on_panic(self.remove)
 
-        if settings.basetgz:
+        if temp_tgz:
+            self.unpack_from_tgz(temp_tgz)
+        elif settings.basetgz:
             self.unpack_from_tgz(settings.basetgz)
         elif settings.lvm_volume:
             self.setup_from_lvm(settings.lvm_volume)
         else:
             self.setup_minimal_chroot()
 
-        self.configure_chroot()
         self.mount_proc()
         self.mount_selinux()
+        self.configure_chroot()
         if settings.basetgz:
             self.run(["apt-get", "-yf", "upgrade"])
         self.minimize()
-        self.run(["apt-get", "clean"])
 
-        #copy scripts dir into the chroot
-        if settings.scriptsdir is not None:
+        # Copy scripts dirs into the chroot, merging all dirs together,
+        # later files overwriting earlier ones.
+        if settings.scriptsdirs:
             dest = self.relative("tmp/scripts/")
             if not os.path.exists(self.relative("tmp/scripts/")):
                 os.mkdir(dest)
-            logging.debug("Copying scriptsdir to %s" % dest)
-            for sfile in os.listdir(settings.scriptsdir):
-                if (sfile.startswith("post_") or sfile.startswith("pre_")) and os.path.isfile(os.path.join((settings.scriptsdir), sfile)):
-                    shutil.copy(os.path.join((settings.scriptsdir), sfile), dest) 
+            for sdir in settings.scriptsdirs:
+                logging.debug("Copying scriptsdir %s to %s" % (sdir, dest))
+                for sfile in os.listdir(sdir):
+                    if (sfile.startswith("post_") or sfile.startswith("pre_")) and os.path.isfile(os.path.join(sdir, sfile)):
+                        shutil.copy(os.path.join(sdir, sfile), dest)
 
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
 
-        if settings.savetgz:
+        if settings.savetgz and not temp_tgz:
             self.pack_into_tgz(settings.savetgz)
 
         dont_do_on_panic(cid)
@@ -770,16 +777,26 @@ class Chroot:
         (fd, temp_tgz) = create_temp_file()
         return temp_tgz
 
+    def remove_temp_tgz_file(self, temp_tgz):
+        """Remove the file that was used as a temporary tgz file"""
+        # Yes, remove_files() would work just as well, but putting it in
+        # the interface for Chroot allows the VirtServ hack to work.
+        remove_files([temp_tgz])
+
     def pack_into_tgz(self, result):
         """Tar and compress all files in the chroot."""
+        self.run(["apt-get", "clean"])
         logging.debug("Saving %s to %s." % (self.name, result))
 
-        run(['tar', '--exclude', './proc/*', '-czf', result, '-C', self.name, './'])
+        run(['tar', '-czf', result, '--one-file-system', '--exclude', 'tmp/scripts', '-C', self.name, './'])
 
     def unpack_from_tgz(self, tarball):
         """Unpack a tarball to a chroot."""
         logging.debug("Unpacking %s into %s" % (tarball, self.name))
-        run(["tar", "-C", self.name, "-zxf", tarball])
+        prefix = []
+        if settings.eatmydata and os.path.isfile('/usr/bin/eatmydata'):
+            prefix.append('eatmydata')
+        run(prefix + ["tar", "-C", self.name, "-zxf", tarball])
 
     def setup_from_lvm(self, lvm_volume):
         """Create a chroot by creating an LVM snapshot."""
@@ -794,7 +811,11 @@ class Chroot:
         run(['mount', self.lvm_snapshot, self.name])
 
     def run(self, command, ignore_errors=False):
-        return run(["chroot", self.name] + command,
+        prefix = []
+        if settings.eatmydata and os.path.isfile(os.path.join(self.name,
+                                                 'usr/bin/eatmydata')):
+            prefix.append('eatmydata')
+        return run(["chroot", self.name] + prefix + command,
                    ignore_errors=ignore_errors)
 
     def create_apt_sources(self, distro):
@@ -803,11 +824,11 @@ class Chroot:
         for mirror, components in settings.debian_mirrors:
             lines.append("deb %s %s %s\n" % 
                          (mirror, distro, " ".join(components)))
-        create_file(os.path.join(self.name, "etc/apt/sources.list"), 
+        create_file(self.relative("etc/apt/sources.list"), 
                     "".join(lines))
 
     def create_apt_conf(self):
-        """Create /etc/apt/apt.conf inside the chroot."""
+        """Create /etc/apt/apt.conf.d/piuparts inside the chroot."""
         lines = [
             'APT::Get::Assume-Yes "yes";\n',
             'APT::Install-Recommends "0";\n',
@@ -834,7 +855,7 @@ class Chroot:
         if settings.dpkg_force_confdef:
             lines.append('Dpkg::Options {"--force-confdef";};\n')
 
-        create_file(self.relative("etc/apt/apt.conf"),
+        create_file(self.relative("etc/apt/apt.conf.d/piuparts"),
             "".join(lines))
 
     def create_dpkg_conf(self):
@@ -846,12 +867,14 @@ class Chroot:
             lines.append('force-confdef\n')
             logging.info("Warning: dpkg has been configured to use the force-confdef option. This will hide problems, see #466118.")
         if lines:
+          if not os.path.exists(self.relative("etc/dpkg/dpkg.cfg.d")):
+              os.mkdir(self.relative("etc/dpkg/dpkg.cfg.d"))
           create_file(self.relative("etc/dpkg/dpkg.cfg.d/piuparts"),
             "".join(lines))
 
     def create_policy_rc_d(self):
         """Create a policy-rc.d that prevents daemons from running."""
-        full_name = os.path.join(self.name, "usr/sbin/policy-rc.d")
+        full_name = self.relative("usr/sbin/policy-rc.d")
         create_file(full_name, "#!/bin/sh\nexit 101\n")
         os.chmod(full_name, 0777)
         logging.debug("Created policy-rc.d and chmodded it.")
@@ -860,10 +883,17 @@ class Chroot:
         """Set up a minimal Debian system in a chroot."""
         logging.debug("Setting up minimal chroot for %s at %s." % 
               (settings.debian_distros[0], self.name))
+        prefix = []
+        if settings.eatmydata and os.path.isfile('/usr/bin/eatmydata'):
+            prefix.append('eatmydata')
         if settings.do_not_verify_signatures:
           logging.info("Warning: not using --keyring option when running debootstrap!")
-        run(["debootstrap", "--variant=minbase", settings.keyringoption, settings.debian_distros[0], 
-             self.name, settings.debian_mirrors[0][0]])
+        options = [settings.keyringoption]
+        if settings.eatmydata:
+            options.append('--include=eatmydata')
+            options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
+        run(prefix + ["debootstrap", "--variant=minbase"] + options +
+            [settings.debian_distros[0], self.name, settings.debian_mirrors[0][0]])
 
     def minimize(self):
         """Minimize a chroot by removing (almost all) unnecessary packages"""
@@ -876,6 +906,7 @@ class Chroot:
 
     def configure_chroot(self):
         """Configure a chroot according to current settings"""
+        os.environ["PIUPARTS_DISTRIBUTION"] = settings.debian_distros[0]
         if not settings.keep_sources_list:
             self.create_apt_sources(settings.debian_distros[0])
         self.create_apt_conf()
@@ -890,35 +921,56 @@ class Chroot:
         """Upgrade a chroot installation to each successive distro."""
         for distro in distros:
             logging.debug("Upgrading %s to %s" % (self.name, distro))
+            os.environ["PIUPARTS_DISTRIBUTION_NEXT"] = distro
             self.create_apt_sources(distro)
             # Run custom scripts before upgrade
             self.run_scripts("pre_distupgrade")
             self.run(["apt-get", "update"])
             self.run(["apt-get", "-yf", "dist-upgrade"])
+            os.environ["PIUPARTS_DISTRIBUTION_PREV"] = os.environ["PIUPARTS_DISTRIBUTION"]
+            os.environ["PIUPARTS_DISTRIBUTION"] = distro
             # Sometimes dist-upgrade won't upgrade the packages we want
             # to test because the new version depends on a newer library,
             # and installing that would require removing the old version
             # of the library, and we've told apt-get not to remove
             # packages. So, we force the installation like this.
-            self.install_packages_by_name(packages)
+            known_packages = self.get_known_packages(packages)
+            self.install_packages_by_name(known_packages)
             # Run custom scripts after upgrade
             self.run_scripts("post_distupgrade")
             self.check_for_no_processes()
 
     def apt_get_knows(self, packages):
-        """Does apt-get (or apt-cache) know about a set of packages?"""
+        return self.get_known_packages(packages)
 
+    def get_known_packages(self, packages):
+        """Does apt-get (or apt-cache) know about a set of packages?"""
+        known_packages = []
+        new_packages = []
         for name in packages:
             (status, output) = self.run(["apt-cache", "show", name],
                                         ignore_errors=True)
-            if status != 0:
-                return False
-        return True
+            # apt-cache reports status for some virtual packages and packages
+            # in status config-files-remaining state without installation
+            # candidate -- but only real packages have Filename/MD5sum/SHA*
+            if status != 0 or re.search(r'^(Filename|MD5sum|SHA1|SHA256):', output, re.M) is None:
+                new_packages.append(name)
+            else:
+                known_packages.append(name)
+        if not known_packages:
+            logging.info("apt-cache does not know about any of the requested packages")
+        else:
+            logging.info("apt-cache knows about the following packages: " +
+                    ", ".join(known_packages))
+            if new_packages:
+                logging.info("the following packages are not in the archive: " +
+                        ", ".join(new_packages))
+        return known_packages
 
     def copy_files(self, source_names, target_name):
         """Copy files in 'source_name' to file/dir 'target_name', relative
         to the root of the chroot."""
-        target_name = os.path.join(self.name, target_name)
+        target_name = self.relative(target_name)
         logging.debug("Copying %s to %s" % 
                       (", ".join(source_names), target_name))
         for source_name in source_names:
@@ -951,7 +1003,7 @@ class Chroot:
             logging.debug("The package did not modify any file.\n")     
 
 
-    def install_package_files(self, package_files):
+    def install_package_files(self, package_files, packages = None):
         if package_files:
             self.copy_files(package_files, "tmp")
             tmp_files = [os.path.basename(a) for a in package_files]
@@ -976,9 +1028,7 @@ class Chroot:
 
             self.run_scripts("post_install")
 
-            self.run(["apt-get", "clean"])
-            remove_files([os.path.join(self.name, name) 
-                            for name in tmp_files])
+            remove_files([self.relative(name) for name in tmp_files])
 
     def get_selections(self):
         """Get current package selections in a chroot."""
@@ -989,13 +1039,31 @@ class Chroot:
             vdict[name] = status
         return vdict
 
-    def remove_or_purge(self, operation, packages):
-        """Remove or purge packages in a chroot."""
-        for name in packages:
-            self.run(["dpkg", "--" + operation, name], ignore_errors=True)
-        self.run(["dpkg", "--remove", "--pending"], ignore_errors=True)
+    def get_diversions(self):
+        """Get current dpkg-divert --list in a chroot."""
+        if not settings.check_broken_diversions:
+            return
+        (status, output) = self.run(["dpkg-divert", "--list"])
+        return output.split("\n")
 
+    def get_modified_diversions(self, pre_install_diversions, post_install_diversions = None):
+        """Check that diversions in chroot are identical (though potentially reordered)."""
+        if post_install_diversions is None:
+            post_install_diversions = self.get_diversions()
+        removed = [ln for ln in pre_install_diversions if not ln in post_install_diversions]
+        added = [ln for ln in post_install_diversions if not ln in pre_install_diversions]
+        return (removed, added)
 
+    def remove_packages(self, packages):
+        """Remove packages in a chroot."""
+        if packages:
+            self.run(["apt-get", "remove"] + packages, ignore_errors=True)
+
+    def purge_packages(self, packages):
+        """Purge packages in a chroot."""
+        if packages:
+            self.run(["dpkg", "--purge"] + packages, ignore_errors=True)
+ 
     def restore_selections(self, selections, packages):
         """Restore package selections in a chroot to the state in
         'selections'."""
@@ -1022,8 +1090,8 @@ class Chroot:
         self.run_scripts("pre_remove")
 
         # First remove all packages.
-        self.remove_or_purge("remove", deps_to_remove + deps_to_purge +
-                                        nondeps_to_remove + nondeps_to_purge)
+        self.remove_packages(deps_to_remove + deps_to_purge +
+                             nondeps_to_remove + nondeps_to_purge)
         # Run custom scripts after removing all packages. 
         self.run_scripts("post_remove")
 
@@ -1039,14 +1107,13 @@ class Chroot:
         if not settings.skip_logrotatefiles_test and logrotatefiles:
             installed = self.install_logrotate()
             self.check_output_logrotatefiles(logrotatefiles_list)
-            for pkg in installed:
-                self.remove_or_purge("purge", installed)
+            self.purge_packages(installed)
 
         # Then purge all packages being depended on.
-        self.remove_or_purge("purge", deps_to_purge)
+        self.purge_packages(deps_to_purge)
 
         # Finally, purge actual packages.
-        self.remove_or_purge("purge", nondeps_to_purge)
+        self.purge_packages(nondeps_to_purge)
 
         # Run custom scripts after purge all packages.
         self.run_scripts("post_purge")
@@ -1057,7 +1124,8 @@ class Chroot:
 
     def save_meta_data(self):
         """Return the filesystem meta data for all objects in the chroot."""
-        root = os.path.join(self.name, ".")
+        self.run(["apt-get", "clean"])
+        root = self.relative(".")
         vdict = {}
         proc = os.path.join(root, "proc")
         for dirpath, dirnames, filenames in os.walk(root):
@@ -1117,6 +1185,21 @@ class Chroot:
         if count > 0:
             logging.error("FAIL: Processes are running inside chroot:\n%s" % 
                           indent_string(output))
+            for signo in [ 15, 9 ]:
+                p = subprocess.Popen(["lsof", "-t", "+D", self.name],
+                               stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                stdout, _ = p.communicate()
+                if stdout:
+                    pidlist = [int(pidstr) for pidstr in stdout.split("\n") if len(pidstr)]
+                    for pid in pidlist:
+                        if pid > 0:
+                            try:
+                                if signo == 15:
+                                    os.kill(pid, SIGTERM)
+                                else:
+                                    os.kill(pid, SIGKILL)
+                            except OSError:
+                                pass
             panic()
 
 
@@ -1259,7 +1342,6 @@ class Chroot:
         list of packages that were installed"""
         old_selections = self.get_selections()
         self.run(['apt-get', 'install', '-y', 'logrotate'])
-        self.run(['apt-get', 'clean'])
         diff = diff_selections(self, old_selections)
         return diff.keys()
 
@@ -1283,7 +1365,7 @@ class Chroot:
     def run_scripts (self, step):
         """ Run custom scripts to given step post-install|remove|purge"""
 
-        if settings.scriptsdir is None:
+        if not settings.scriptsdirs:
             return
         logging.info("Running scripts "+ step)
         basepath = self.relative("tmp/scripts/")
@@ -1376,6 +1458,9 @@ class VirtServ(Chroot):
     #  adt-virt revert
     def create_temp_tgz_file(self):
         return self
+    def remove_temp_tgz_file(self, tgz):
+        if tgz is not self: self._fail('removing a tgz not supported')
+        # FIXME: anything else to do here?
     def pack_into_tgz(self, tgz):
         if tgz is not self: self._fail('packing into tgz not supported')
         if not 'revert' in self._caps: self._fail('testbed cannot revert')
@@ -1748,6 +1833,18 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     installed.)
     """
 
+    ok = True
+    if settings.check_broken_diversions:
+        (removed, added) = chroot.get_modified_diversions(chroot.pre_install_diversions)
+        if added:
+            logging.error("FAIL: Installed diversions (dpkg-divert) not removed by purge:\n%s" %
+                          indent_string("\n".join(added)))
+            ok = False
+        if removed:
+            logging.error("FAIL: Existing diversions (dpkg-divert) removed/modified:\n%s" %
+                          indent_string("\n".join(removed)))
+            ok = False
+
     current_info = chroot.save_meta_data()
     if settings.warn_on_others and deps_info is not None:
         (new, removed, modified) = diff_meta_data(root_info, current_info)
@@ -1761,7 +1858,6 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     else:
         (new, removed, modified) = diff_meta_data(root_info, current_info)
 
-    ok = True
     if new:
         if settings.warn_on_leftovers_after_purge:
           logging.info("Warning: Package purging left files on system:\n" +
@@ -1807,7 +1903,11 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
        Assume 'root' is a directory already populated with a working
        chroot, with packages in states given by 'selections'."""
 
+    os.environ["PIUPARTS_TEST"] = "install"
+    chroot.run_scripts("pre_test")
+
     # Install packages into the chroot.
+    os.environ["PIUPARTS_PHASE"] = "install"
 
     if settings.warn_on_others:
         # Create a metapackage with dependencies from the given packages
@@ -1843,7 +1943,7 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
         chroot.install_package_files([metapackage])
         # Now remove it
         metapackagename = os.path.basename(metapackage)[:-4]
-        chroot.remove_or_purge("purge", [metapackagename])
+        chroot.purge_packages([metapackagename])
         shutil.rmtree(os.path.dirname(metapackage))
 
         # Save the file ownership information so we can tell which
@@ -1854,10 +1954,9 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
         deps_info = None
 
     if package_files:
-        chroot.install_package_files(package_files)
+        chroot.install_package_files(package_files, packages)
     else:
         chroot.install_packages_by_name(packages)
-        chroot.run(["apt-get", "clean"])
 
 
     chroot.check_for_no_processes()
@@ -1868,24 +1967,32 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
     # Remove all packages from the chroot that weren't there initially.    
     chroot.restore_selections(selections, packages)
 
+    chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
     return check_results(chroot, root_info, file_owners, deps_info=deps_info)
 
 
-def install_upgrade_test(chroot, root_info, selections, package_files, packages):
-    """Install package via apt-get, then upgrade from package files.
+def install_upgrade_test(chroot, root_info, selections, package_files, packages, old_packages):
+    """Install old_packages via apt-get, then upgrade from package files.
     Return True if successful, False if not."""
 
+    os.environ["PIUPARTS_TEST"] = "upgrade"
+    chroot.run_scripts("pre_test")
+
     # First install via apt-get.
-    chroot.install_packages_by_name(packages)
+    os.environ["PIUPARTS_PHASE"] = "install"
+    chroot.install_packages_by_name(old_packages)
 
-    chroot.run_scripts("pre_upgrade")
-
+    chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
     # Then from the package files.
-    chroot.install_package_files(package_files)
+    os.environ["PIUPARTS_PHASE"] = "upgrade"
+    chroot.install_package_files(package_files, packages)
+
+    chroot.check_for_no_processes()
+    chroot.check_for_broken_symlinks()
 
     file_owners = chroot.get_files_owned_by_packages()
 
@@ -1941,55 +2048,70 @@ def install_and_upgrade_between_distros(package_files, packages):
     # a reasonable default behaviour for distro upgrade tests, which are not 
     # done by default anyway.
 
+    os.environ["PIUPARTS_TEST"] = "distupgrade"
+
     chroot = get_chroot()
     chroot.create()
     cid = do_on_panic(chroot.remove)
 
-    if settings.basetgz:
-        root_tgz = settings.basetgz
-    else:
-        root_tgz = chroot.create_temp_tgz_file()
-        chroot.pack_into_tgz(root_tgz)
-
     if settings.end_meta:
         # load root_info and selections
         root_info, selections = load_meta_data(settings.end_meta)
+        chroot.pre_install_diversions = []  # FIXME: diversion info needs to be restored
     else:
+        if not settings.basetgz:
+            temp_tgz = chroot.create_temp_tgz_file()
+            # FIXME: on panic remove temp_tgz
+            chroot.pack_into_tgz(temp_tgz)
+
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
-        chroot.run(["apt-get", "clean"])
+
+        chroot.check_for_no_processes()
 
         # set root_info and selections
         root_info = chroot.save_meta_data()
         selections = chroot.get_selections()
+        chroot.pre_install_diversions = chroot.get_diversions()
 
         if settings.save_end_meta:
             # save root_info and selections
             save_meta_data(settings.save_end_meta, root_info, selections)
+            # FIXME: diversion info needs to be stored
 
         chroot.remove()
         dont_do_on_panic(cid)
+
+        # leave indication in logfile why we do what we do
+        logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
+
         chroot = get_chroot()
-        chroot.create()
+        if settings.basetgz:
+            chroot.create()
+        else:
+            chroot.create(temp_tgz)
+            chroot.remove_temp_tgz_file(temp_tgz)
         cid = do_on_panic(chroot.remove)
 
-    # leave indication in logfile why we do what we do
-    logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
+    chroot.check_for_no_processes()
+
+    chroot.run_scripts("pre_test")
+
+    os.environ["PIUPARTS_PHASE"] = "install"
+
+    known_packages = chroot.get_known_packages(packages)
+    chroot.install_packages_by_name(known_packages)
 
     chroot.check_for_no_processes()
 
-    chroot.run(["apt-get", "update"])
-    chroot.install_packages_by_name(packages)
-
-    chroot.run_scripts("pre_upgrade")
-
-    chroot.check_for_no_processes()
+    os.environ["PIUPARTS_PHASE"] = "distupgrade"
 
     chroot.upgrade_to_distros(settings.debian_distros[1:], packages)
 
     chroot.check_for_no_processes()
 
-    chroot.install_package_files(package_files)
-    chroot.run(["apt-get", "clean"])
+    os.environ["PIUPARTS_PHASE"] = "upgrade"
+
+    chroot.install_package_files(package_files, packages)
 
     chroot.check_for_no_processes()
 
@@ -2001,8 +2123,6 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     chroot.check_for_no_processes()
 
-    if root_tgz != settings.basetgz:
-        remove_files([root_tgz])
     chroot.remove()
     dont_do_on_panic(cid)
 
@@ -2081,6 +2201,11 @@ def parse_command_line():
                       default="-o MaxPriority=required -o UseRecommends=no -f -n apt debfoster",
                       help="Run debfoster with different parameters (default: -o MaxPriority=required -o UseRecommends=no -f -n apt debfoster).")
 
+    parser.add_option("--no-eatmydata",
+                      default=False,
+                      action='store_true',
+                      help="Default is to use libeatmydata in the chroot")
+
     parser.add_option("--dpkg-noforce-unsafe-io",
                       default=False,
                       action='store_true',
@@ -2143,6 +2268,10 @@ def parse_command_line():
                       default=[],
                       help="Which Debian mirror to use.")
 
+    parser.add_option("--no-diversions", action="store_true",
+                      default=False,
+                      help="Don't check for broken diversions.")
+
     parser.add_option("-n", "--no-ignores", action="callback",
                       callback=forget_ignores,
                       help="Forget all ignores set so far, including " +
@@ -2200,7 +2329,8 @@ def parse_command_line():
                       help="Minimize chroot with debfoster. This used to be the default until #539142 was fixed.")
 
     parser.add_option("--scriptsdir", metavar="DIR",
-                      help="Directory where are placed the custom scripts.")
+                      action="append", default=[],
+                      help="Directory where are placed the custom scripts. Can be given multiple times.")
 
     parser.add_option("-t", "--tmpdir", metavar="DIR",
                       help="Use DIR for temporary storage. Default is " +
@@ -2276,12 +2406,14 @@ def parse_command_line():
 
     settings.debian_mirrors = [parse_mirror_spec(x, defaults.get_components())
                                for x in opts.mirror]
+    settings.check_broken_diversions = not opts.no_diversions
     settings.check_broken_symlinks = not opts.no_symlinks
     settings.warn_broken_symlinks = not opts.fail_on_broken_symlinks
     settings.savetgz = opts.save
     settings.warn_on_others = opts.warn_on_others
     settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
     settings.debfoster_options = opts.debfoster_options.split()
+    settings.eatmydata = not opts.no_eatmydata
     settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
     settings.dpkg_force_confdef = opts.dpkg_force_confdef
 
@@ -2314,11 +2446,10 @@ def parse_command_line():
         else:
             settings.tmpdir = "/tmp"
 
-    if opts.scriptsdir is not None:
-        settings.scriptsdir = opts.scriptsdir
-        if not os.path.isdir(settings.scriptsdir):
-            logging.error("Scripts directory is not a directory: %s" % 
-                          settings.scriptsdir)
+    settings.scriptsdirs = opts.scriptsdir
+    for sdir in settings.scriptsdirs:
+        if not os.path.isdir(sdir):
+            logging.error("Scripts directory is not a directory: %s" % sdir)
             panic()
 
     if not settings.debian_distros:
@@ -2367,6 +2498,7 @@ def process_packages(package_list):
         cid = do_on_panic(chroot.remove)
 
         root_info = chroot.save_meta_data()
+        chroot.pre_install_diversions = chroot.get_diversions()
         selections = chroot.get_selections()
 
         if not settings.no_install_purge_test:
@@ -2379,14 +2511,17 @@ def process_packages(package_list):
         if not settings.no_upgrade_test:
             if not settings.args_are_package_files:
                 logging.info("Can't test upgrades: -a or --apt option used.")
-            elif not chroot.apt_get_knows(packages):
-                logging.info("Can't test upgrade: packages not known by apt-get.")
-            elif install_upgrade_test(chroot, root_info, selections, package_files,
-                                  packages):
-                logging.info("PASS: Installation, upgrade and purging tests.")
             else:
-                logging.error("FAIL: Installation, upgrade and purging tests.")
-                panic()
+                packages_to_query = packages[:]
+                known_packages = chroot.get_known_packages(packages_to_query)
+                if not known_packages:
+                    logging.info("Can't test upgrade: packages not known by apt-get.")
+                elif install_upgrade_test(chroot, root_info, selections, package_files,
+                        packages, known_packages):
+                    logging.info("PASS: Installation, upgrade and purging tests.")
+                else:
+                    logging.error("FAIL: Installation, upgrade and purging tests.")
+                    panic()
 
         chroot.remove()
         dont_do_on_panic(cid)
