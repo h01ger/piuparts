@@ -65,6 +65,7 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Integrate diversion checks with Chroot.check_result().
     - Use 'apt-get remove' to remove all packages at once with proper
       dependency ordering.  (Closes: #648162)
+    - Purge all packages at once instead of doing it one-by-one.
     - Set more environment variables to let custom scripts know where and
       when they are being run: PIUPARTS_TEST, PIUPARTS_PHASE,
       PIUPARTS_DISTRIBUTION{,_PREV,_NEXT}.  See the README for details.
@@ -80,7 +81,10 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Use --one-file-system when creating a tarball to exclude bindmounts etc.
     - Restore base system from temp_tgz instead of running debootstrap again.
       (Closes: #648193)
-    - Purge all packages at once instead of doing it one-by-one.
+    - Do not fail upgrade/distupgrade tests for a set of packages where not
+      all packages exist in the start distribution.  This happens e.g. when
+      testing .changes files and packages were split/added. Only install the
+      old packages that actually exist according to 'apt-cache show'.
     - Use consistent variable names for package lists.  (Closes: #648177)
     - Compute the changes in restore_selections().
     - Check for settings.scriptsdir inside run_scripts().
