@@ -1019,12 +1019,26 @@ class Section:
                                         "list": vlist
                                        }))
 
+
+    def detect_removed_packages(self, logs_by_dir):
+        for vdir in logs_by_dir.keys():
+            for log in sorted(logs_by_dir[vdir]):
+                if log.endswith(".log"):
+                    package, version = log[:-len(".log")].split("_")
+                    if not self._binary_db.has_package(package):
+                        logging.debug("Obsolete log file: %s/%s" % (vdir, log))
+                        logs_by_dir[vdir].remove(log)
+
+
     def generate_html(self):
         logging.debug("Finding log files")
         dirs = ["pass", "fail", "bugged", "reserved", "untestable"]
         logs_by_dir = {}
         for vdir in dirs:
             logs_by_dir[vdir] = find_files_with_suffix(vdir, ".log")
+
+        logging.debug("Detecting removed packages")
+        self.detect_removed_packages(logs_by_dir)
 
         logging.debug("Copying log files")
         copy_logs(logs_by_dir, self._output_directory)
@@ -1065,6 +1079,7 @@ class Section:
         os.chdir(self._master_directory)
         self.generate_html()
         os.chdir(oldcwd)
+
 
 def main():
     setup_logging(logging.DEBUG, None)

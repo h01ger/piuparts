@@ -466,6 +466,7 @@ class PackagesDB:
         return set(self._in_state[state])
 
     def has_package(self, name):
+        self._find_all_packages()
         return name in self._packages
 
     def get_package(self, name):
