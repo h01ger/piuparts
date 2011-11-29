@@ -1020,13 +1020,21 @@ class Section:
                                        }))
 
 
-    def detect_removed_packages(self, logs_by_dir):
+    def archive_logfile(self, vdir, log):
+        archivedir = os.path.join("archive", vdir)
+        if not os.path.exists(archivedir):
+            os.makedirs(archivedir)
+        os.rename(os.path.join(vdir, log), os.path.join("archive", vdir, log))
+
+
+    def cleanup_removed_packages(self, logs_by_dir):
         for vdir in logs_by_dir.keys():
             for log in sorted(logs_by_dir[vdir]):
                 if log.endswith(".log"):
                     package, version = log[:-len(".log")].split("_")
                     if not self._binary_db.has_package(package):
-                        logging.debug("Obsolete log file: %s/%s" % (vdir, log))
+                        logging.debug("Package %s was removed, archiving %s/%s" % (package, vdir, log))
+                        self.archive_logfile(vdir, log)
                         logs_by_dir[vdir].remove(log)
 
 
@@ -1037,8 +1045,8 @@ class Section:
         for vdir in dirs:
             logs_by_dir[vdir] = find_files_with_suffix(vdir, ".log")
 
-        logging.debug("Detecting removed packages")
-        self.detect_removed_packages(logs_by_dir)
+        logging.debug("Archiving logs of obsolete packages")
+        self.cleanup_removed_packages(logs_by_dir)
 
         logging.debug("Copying log files")
         copy_logs(logs_by_dir, self._output_directory)
