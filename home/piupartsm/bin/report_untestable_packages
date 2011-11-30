@@ -38,20 +38,20 @@ get_config_value()
 
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
+get_config_value DAYS global reschedule-untestable-days 7
 
 
 #
 # find packages which have been in untestable for more than $DAYS days and reschedule them for testing
 #
 
-DAYS=7
 LOGS=`mktemp`
 for SECTION in $SECTIONS ; do
 	find $MASTER/$SECTION/untestable/ -mtime +$DAYS -name "*.log" 2>/dev/null >> $LOGS
 done
 if [ -s $LOGS ] ; then 
 	echo "Untestable packages detected, which have been tested more than $DAYS days ago!"
-	echo "These packages have been rescheduling for piuparts testing."
+	echo "These packages have been rescheduled for piuparts testing."
 	echo
 	for package_log in $(cat $LOGS) ; do
 		rm -fv $package_log
