@@ -49,17 +49,17 @@ for SECTION in $SECTIONS ; do
 	cd $MASTER/$SECTION
 	mkdir -p archive/pass archive/bugged archive/fail
 	# loop through all packages logs 
-	for PACKAGE in $(find pass/ fail/ bugged/|cut -d "_" -f1|cut -d"/" -f2|sort -u|sed '1d') ; do 
+	for PACKAGE in $(find pass/ fail/ bugged/ -name '*.log' | cut -d"_" -f1 | cut -d"/" -f2 | sort -u) ; do
 		# all logs except the last one (|sed '$d' deletes the last line)
-		OLDLOGS=$( ls -tr1 --color=none bugged/${PACKAGE}_* fail/${PACKAGE}_* pass/${PACKAGE}_* 2>/dev/null|sed '$d' )
+		OLDLOGS=$( ls -tr1 --color=none bugged/${PACKAGE}_*.log fail/${PACKAGE}_*.log pass/${PACKAGE}_*.log 2>/dev/null|sed '$d' )
 		if [ ! -z "$OLDLOGS" ] ; then
 			for LOG in $OLDLOGS ; do
 				mv -v $LOG archive/$(echo $LOG|cut -d"/" -f1)/
 			done
 			# ptyhon-bts is really the way to go
-			if $(ls fail/${PACKAGE}_* >/dev/null 2>&1) && $(echo $OLDLOGS | grep -q "bugged/" 2>/dev/null) ; then
+			if $(ls fail/${PACKAGE}_*.log >/dev/null 2>&1) && $(echo $OLDLOGS | grep -q "bugged/" 2>/dev/null) ; then
 				echo keeping bugged state:
-				mv -v fail/${PACKAGE}_* bugged/ 2>/dev/null
+				mv -v fail/${PACKAGE}_*.log bugged/ 2>/dev/null
 			fi
 		fi
 	done
