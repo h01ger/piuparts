@@ -39,29 +39,33 @@ get_config_value()
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
 
-
-AGE=180
-COUNT=200
-FAIL_AGE=30
-FAIL_COUNT=25
 #
 # reschedule 200 oldest log files, if they are older than 180 days
 # reschedule 25 oldest fail log files, if they are older than 30 days
 #
+get_config_value AGE        global reschedule-old-days 180
+get_config_value COUNT      global reschedule-old-count 200
+get_config_value FAIL_AGE   global reschedule-fail-days 30
+get_config_value FAIL_COUNT global reschedule-fail-count 25
+
+LOGS=`mktemp`
+OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
-	DISTRO=$(sed -rn '\#\['"$SECTION"'\]#,/^\[/ {s/^distro\s*=\s*//p}' /etc/piuparts/piuparts.conf)
-	# only for sid and wheezy
-	if [ "$DISTRO" = "sid" ] || [ "$DISTRO" = "wheezy" ] || [ "$DISTRO" = "experimental" ]; then
-		echo $SECTION
+	get_config_value RESCHEDULE $SECTION auto-reschedule yes
+	if [ "$RESCHEDULE" = "yes" ]; then
 		cd $MASTER/$SECTION
 		# we ignore bugged here - ptyhon-bts is really the way to go
-		find pass fail -name "*.log" -mtime +$AGE | xargs -n99999 -s999999 ls -dtl | tail -n $COUNT
-		find pass fail -name "*.log" -mtime +$AGE | xargs -n99999 -s999999 ls -dt  | tail -n $COUNT | xargs rm 2> /dev/null
-		find fail -name "*.log" -mtime +$FAIL_AGE | xargs -n99999 -s999999 ls -dtl | tail -n $FAIL_COUNT
-		find fail -name "*.log" -mtime +$FAIL_AGE | xargs -n99999 -s999999 ls -dt  | tail -n $FAIL_COUNT | xargs rm 2> /dev/null
-		echo
-		echo "#########################################################"
-		echo
+		find pass fail -name "*.log" -mtime +$AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $COUNT > $LOGS
+		find fail -name "*.log" -mtime +$FAIL_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $FAIL_COUNT >> $LOGS
+		if [ -s $LOGS ]; then
+			echo $SECTION
+			ls -dtl $(cat $LOGS)
+			sort -u $LOGS | xargs rm 2>/dev/null
+			echo
+			echo "#########################################################"
+			echo
+		fi
+		cd $OLDPWD
 	fi
 done
-
+rm $LOGS
