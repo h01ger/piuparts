@@ -21,19 +21,29 @@ if [ "$HOSTNAME" != "piatti" ] ; then
 	exit 0
 fi
 
-#
-# parse config file
-#
 
-[ -e /etc/piuparts/piuparts.conf ] || exit 0
-TEMPFILE=`mktemp`
-egrep "(^sections|^master-directory)" /etc/piuparts/piuparts.conf| sed -e "s# =#=#g" -e "s#= #=#g" -e 's#=#="#' -e 's#$#"#' -e "s#sections#SECTIONS#" -e "s#master-directory#MASTER#" > $TEMPFILE
-. $TEMPFILE
-rm $TEMPFILE
-if [ -z "$MASTER" ] || [ -z "$SECTIONS" ] ; then
-	echo "sections and/or master-directory not set in /etc/piuparts/piuparts.conf, exiting."
-	exit 1
-fi
+PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
+[ -f "$PIUPARTS_CONF" ] || exit 0
+
+# usage: get_config_value VARIABLE section key [default]
+get_config_value()
+{
+	local section key value
+	test -n "$1" && test "$1" = "$(echo "$1" | tr -c -d '[:alnum:]_')" || exit 1
+	section="$2"
+	key="$3"
+	value="$(sed -rn '\#^\['"$section"'\]#,/^\[/ {/^'"$key"'\s*=/ {s/^'"$key"'\s*=\s*//; s/\s*$//; p}}' "$PIUPARTS_CONF")"
+	test -n "$value" || value="$4"
+	if [ -z "$value" ]; then
+		echo "'$key' not set in section [$section] of $PIUPARTS_CONF, exiting." >&2
+		exit 1
+	fi
+	eval "$1"='"$value"'
+}
+
+get_config_value MASTER global master-directory
+get_config_value SECTIONS global sections
+
 
 #
 # this scripts monitors the output of piuparts-slave
