@@ -36,12 +36,12 @@ get_config_value()
 	eval "$1"='"$value"'
 }
 
-get_config_value MASTER global master-directory
+get_config_value PIUPARTS_TEMPDIR global tempdir /org/piuparts.debian.org/tmp
 
 
-LS_TMP=$(ls --color=never -l /org/piuparts.debian.org/tmp)
+LS_TMP=$(ls --color=never -l $PIUPARTS_TEMPDIR)
 if [ "$(echo "$LS_TMP" | wc -l)" -gt 12 ] ; then 
-	echo "More than ten directories in /org/piuparts.debian.org/tmp detected!"
+	echo "More than ten directories in $PIUPARTS_TEMPDIR detected!"
 	echo
 	echo "$LS_TMP"
 	echo
