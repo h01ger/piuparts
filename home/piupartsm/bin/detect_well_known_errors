@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 # Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
+# Copyright © 2011 Andreas Beckmann <debian@abeckmann.de>
 # 
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -38,24 +39,91 @@ get_config_value()
 
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
+get_config_value HTDOCS global output-directory
 
 
-#
-# loop through all known problems
-#
-HTDOCS=/org/piuparts.debian.org/htdocs
+PROBLEMDIR="$HOME/bin/known_problems"
+PROBLEMS=$(ls $PROBLEMDIR)
+OLDPWD=$(pwd)
+
+
 LOGS=`mktemp`
 
-# bash has some severe limitations, like no named arrays... :/
-NR=0
-for SECTION in $SECTIONS ; do 
-	mkdir -p $HTDOCS/$SECTION
-	KNOWNLOGS[$NR]=`mktemp`
+for SECTION in $SECTIONS
+do
+	date
 	cd $MASTER/$SECTION
-	for problem in `ls ~/bin/known_problems` ; do
+
+	#
+	# remove outdated *.kpr files
+	#
+	>$LOGS
+	find pass bugged fail -name '*.kpr' | \
+	while read kpr
+	do
+		log="${kpr%.kpr}.log"
+		if [ ! -f "$log" ] || [ "$log" -nt "$kpr" ]; then
+			echo "$kpr" >> $LOGS
+			rm -f "$kpr"
+		fi
+	done
+	REMOVED=$(wc -l $LOGS | awk '{ print $1 }')
+
+	#
+	# build missing *.kpr files
+	#
+	>$LOGS
+	find pass bugged fail -name '*.log' | \
+	while read log
+	do
+		kpr="${log%.log}.kpr"
+		if [ ! -f "$kpr" ]; then
+			> "$kpr"
+			echo "$kpr" >> $LOGS
+			dir="${log%%/*}"
+			for problem in $PROBLEMS
+			do
+				# source files to get COMMAND, WHERE
+				. $PROBLEMDIR/$problem
+				for where in $WHERE
+				do
+					if [ "$dir" = "$where" ]; then
+						RESULT=$(cat "$log" | eval "$COMMAND")
+						if [ -n "$RESULT" ]; then
+							echo "$log $problem" >> "$kpr"
+						fi
+					fi
+				done
+			done
+		fi
+	done
+	ADDED=$(wc -l $LOGS | awk '{ print $1 }')
+
+	echo "$SECTION: parsed logfiles: $REMOVED removed, $ADDED added"
+	cd "$OLDPWD"
+done
+
+ALLKPR=`mktemp`
+KNOWNLOGS=`mktemp`
+UNKNOWNLOGS=`mktemp`
+
+for SECTION in $SECTIONS
+do
+	date
+	echo $SECTION:
+	mkdir -p $HTDOCS/$SECTION
+	cd $MASTER/$SECTION
+	find pass bugged fail -name '*.kpr' | xargs --no-run-if-empty cat > $ALLKPR
+	cut -d' ' -f 2 $ALLKPR | sort | uniq -c
+	>$KNOWNLOGS
+	#
+	# loop through all known problems
+	#
+	for problem in $PROBLEMS
+	do
 		# source files to get COMMAND, HELPTEXT and ISSUE
-		. ~/bin/known_problems/$problem 				
-		printf "%b" "$COMMAND" > $LOGS
+		. $PROBLEMDIR/$problem
+		grep $problem $ALLKPR | cut -d' ' -f1 | sort -u > $LOGS
 		if [ -s $LOGS ] ; then 
 			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
 			echo '<table class="righttable"><tr class="titlerow"><td class="titlecell">' > $OUTPUT
@@ -69,45 +137,35 @@ for SECTION in $SECTIONS ; do
 			echo "<ul>" >> $OUTPUT
 			COUNT=0
 			for LOG in $(cat $LOGS|sort) ; do
-				PACKAGE=$(echo $LOG | cut -d "_" -f1|cut -d "/" -f2)
-				LATEST=$(ls -tr1 --color=none fail/${PACKAGE}_* bugged/${PACKAGE}_* pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f1)
+				PACKAGE=${LOG##*/}
+				PACKAGE=${PACKAGE%%_*}
+				LATEST=$(ls -tr1 --color=none fail/${PACKAGE}_*.log bugged/${PACKAGE}_*.log pass/${PACKAGE}_*.log 2>/dev/null|tail -1|cut -d "/" -f1)
 				if [ "${problem%_error.conf}_error.conf" = "$problem" ] ; then 
-					LATESTFAIL=$(ls -tr1 --color=none fail/${PACKAGE}_* bugged/${PACKAGE}_*  2>/dev/null|tail -1)
+					LATESTFAIL=$(ls -tr1 --color=none fail/${PACKAGE}_*.log bugged/${PACKAGE}_*.log  2>/dev/null|tail -1)
 					if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
 						echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
-						echo "$LOG" >> ${KNOWNLOGS[$NR]}
+						echo "$LOG" >> $KNOWNLOGS
 						COUNT=$((COUNT+1))
 					fi
 				else
 					# this is an issue, not an error
-					LATESTSUCCESS=$(ls -tr1 --color=none pass/${PACKAGE}_* 2>/dev/null|tail -1)
+					LATESTSUCCESS=$(ls -tr1 --color=none pass/${PACKAGE}_*.log 2>/dev/null|tail -1)
 					if [ "$LATEST" = "pass" ] && [ "$LATESTSUCCESS" = "$LOG" ] ; then 
 						echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
-						echo "$LOG" >> ${KNOWNLOGS[$NR]}
+						echo "$LOG" >> $KNOWNLOGS
 						COUNT=$((COUNT+1))
 					fi 
 				fi
 			done
 			echo "</ul>" >>$OUTPUT
 			echo "<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>" >> $OUTPUT
-		else
-			touch ${KNOWNLOGS[$NR]}
 		fi
         done
-	NR=$((NR+1))
-done
-rm $LOGS
-
-#
-# report unknown failures
-#
-UNKNOWNLOGS=`mktemp`
-
-NR=0
-for SECTION in $SECTIONS ; do 
-	cd $MASTER/$SECTION
+	#
+	# report unknown failures
+	#
 	find fail -name "*.log" > $LOGS
-	grep -v -f ${KNOWNLOGS[$NR]} $LOGS > $UNKNOWNLOGS
+	grep -v -f $KNOWNLOGS $LOGS > $UNKNOWNLOGS
 	if [ -s $UNKNOWNLOGS ] ; then
 		OUTPUT=$HTDOCS/$SECTION/unknown_failures.tpl
 		echo '<table class="righttable"><tr class="titlerow"><td class="titlecell">' > $OUTPUT
@@ -118,9 +176,10 @@ for SECTION in $SECTIONS ; do
 		COUNT=0
 		echo "<ul>" >> $OUTPUT
 		for LOG in $(cat $UNKNOWNLOGS|sort) ; do
-			PACKAGE=$(echo $LOG | cut -d "_" -f1|cut -d "/" -f2)
-			LATEST=$(ls -tr1 --color=none fail/${PACKAGE}_* bugged/${PACKAGE}_* pass/${PACKAGE}_* 2>/dev/null|tail -1|cut -d "/" -f1)
-			LATESTFAIL=$(ls -tr1 --color=none fail/${PACKAGE}_* bugged/${PACKAGE}_*  2>/dev/null|tail -1)
+			PACKAGE=${LOG##*/}
+			PACKAGE=${PACKAGE%%_*}
+			LATEST=$(ls -tr1 --color=none fail/${PACKAGE}_*.log bugged/${PACKAGE}_*.log pass/${PACKAGE}_*.log 2>/dev/null|tail -1|cut -d "/" -f1)
+			LATESTFAIL=$(ls -tr1 --color=none fail/${PACKAGE}_*.log bugged/${PACKAGE}_*.log  2>/dev/null|tail -1)
 			if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
 				echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
 				COUNT=$((COUNT+1))
@@ -129,7 +188,8 @@ for SECTION in $SECTIONS ; do
 		echo "</ul>" >> $OUTPUT
 		echo "<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>" >> $OUTPUT
 	fi
-	rm $LOGS ${KNOWNLOGS[$NR]} $UNKNOWNLOGS
-	NR=$((NR+1))
+	cd "$OLDPWD"
 done
+rm $ALLKPR $LOGS $KNOWNLOGS $UNKNOWNLOGS
+date
 
