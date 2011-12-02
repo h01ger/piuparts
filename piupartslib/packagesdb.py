@@ -334,9 +334,9 @@ class PackagesDB:
                     prefer_alt = None
                     for alternative in alt_deps[d]:
                         dep = alternative.name
-                        if dep in self._package_state:
+                        altdep_state = self.get_package_state(dep)
+                        if altdep_state != "does-not-exist":
                             alt_found += 1
-                            altdep_state = self._package_state[dep]
                             if prefer_alt_score < 3 and altdep_state == "essential-required":
                                 prefer_alt = alternative
                                 prefer_alt_idx = d
@@ -373,17 +373,14 @@ class PackagesDB:
              return state
 
         for dep in package.dependencies():
-            if dep not in self._package_state:
-                return "dependency-does-not-exist"
-            dep_state = self._package_state[dep]
-            if dep_state is None:
-                return "unknown"
-            elif dep_state in self._dep_state_to_state:
+            dep_state = self.get_package_state(dep)
+            if dep_state in self._dep_state_to_state:
                 return self._dep_state_to_state[dep_state]
 
         state = "waiting-to-be-tested"
         for dep in package.dependencies():
-            if self._package_state[dep] not in \
+            dep_state = self.get_package_state(dep)
+            if dep_state not in \
                     ["successfully-tested", "essential-required"]:
                 state = "unknown"
                 break
@@ -402,11 +399,12 @@ class PackagesDB:
         state = "unknown" 
         if package["Package"] in self._known_circular_depends:
             for dep in package.dependencies():
-                if dep not in self._known_circular_depends and self._package_state[dep] not in \
+                dep_state = self.get_package_state(dep)
+                if dep not in self._known_circular_depends and dep_state not in \
                         ["successfully-tested", "essential-required"]:
                     state = "unknown"
                     break
-                if dep in self._known_circular_depends and self._package_state[dep] not in \
+                if dep in self._known_circular_depends and dep_state not in \
                         ["failed-testing", "dependency-failed-testing"]:
                     state = "waiting-to-be-tested"
                     continue
