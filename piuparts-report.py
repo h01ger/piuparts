@@ -969,12 +969,21 @@ class Section:
                                          package["Package"],
                                          self.link_to_source_summary(package["Package"]),
                                          html_protect(package["Maintainer"]))
-                if package.dependencies():
+                all_deps = package.all_dependencies()
+                if all_deps:
                     vlist += "\n<ul>\n"
-                    for dep in package.dependencies():
+                    for alternatives in all_deps:
+                        dep = alternatives[0]
                         vlist += "<li>dependency %s is %s</li>\n" % \
                                   (self.link_to_state_page(self._config.section,dep,dep), 
                                   emphasize_reason(html_protect(self._binary_db.get_package_state(dep))))
+                        if len(alternatives) > 1:
+                            vlist += "\n<ul>\n"
+                            for dep in alternatives[1:]:
+                                vlist += "<li>alternative dependency %s is %s</li>\n" % \
+                                          (self.link_to_state_page(self._config.section,dep,dep),
+                                          emphasize_reason(html_protect(self._binary_db.state_by_name(dep))))
+                            vlist += "</ul>\n"
                     vlist += "</ul>\n"
                 vlist += "</li>\n"
             htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)

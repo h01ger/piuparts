@@ -54,6 +54,7 @@ class Package(UserDict.UserDict):
             name, value = header.split(":", 1)
             self[name.strip()] = value.strip()
         self._parsed_deps = {}
+        self._parsed_alt_deps = {}
 
     def _parse_dependencies(self, header_name):
         if header_name in self._parsed_deps:
@@ -65,11 +66,30 @@ class Package(UserDict.UserDict):
             self._parsed_deps[header_name] = depends
         return depends
 
+    def _parse_alternative_dependencies(self, header_name):
+        if header_name in self._parsed_alt_deps:
+            depends = self._parsed_alt_deps[header_name]
+        else:
+            parser = DependencyParser(self[header_name])
+            depends = parser.get_dependencies()
+            depends = [[alt.name for alt in alternatives] for alternatives in depends]
+            self._parsed_alt_deps[header_name] = depends
+        return depends
+
+    # first alternative only - [package_name...]
     def dependencies(self):
         vlist = []
         for header in ["Depends", "Pre-Depends"]:
             if header in self:
                 vlist += self._parse_dependencies(header)
+        return vlist
+
+    # all alternatives - [[package_name...]...]
+    def all_dependencies(self):
+        vlist = []
+        for header in ["Depends", "Pre-Depends"]:
+            if header in self:
+                vlist += self._parse_alternative_dependencies(header)
         return vlist
 
     def depends_with_alts(self, header_name):
