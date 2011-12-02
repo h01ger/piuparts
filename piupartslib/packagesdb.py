@@ -384,7 +384,7 @@ class PackagesDB:
         state = "waiting-to-be-tested"
         for dep in package.dependencies():
             if self._package_state[dep] not in \
-               ["successfully-tested", "essential-required"]:
+                    ["successfully-tested", "essential-required"]:
                 state = "unknown"
                 break
         if state == "waiting-to-be-tested":
@@ -396,20 +396,20 @@ class PackagesDB:
             if pkg in deps:
                 deps.remove(pkg)
         if package["Package"] in deps:
-            return "circular-dependency" # actually, it's a unknown circular-dependency
+            return "circular-dependency"  # actually, it's an unknown circular-dependency
 
         # treat circular-dependencies as testable (for the part of the circle)
         state = "unknown" 
         if package["Package"] in self._known_circular_depends:
-          for dep in package.dependencies():
-            if dep not in self._known_circular_depends and self._package_state[dep] not in \
-               ["successfully-tested", "essential-required"]:
-                state = "unknown"
-                break
-            if dep in self._known_circular_depends and self._package_state[dep] not in \
-               ["failed-testing","dependency-failed-testing"]:
-                state = "waiting-to-be-tested"
-                continue
+            for dep in package.dependencies():
+                if dep not in self._known_circular_depends and self._package_state[dep] not in \
+                        ["successfully-tested", "essential-required"]:
+                    state = "unknown"
+                    break
+                if dep in self._known_circular_depends and self._package_state[dep] not in \
+                        ["failed-testing", "dependency-failed-testing"]:
+                    state = "waiting-to-be-tested"
+                    continue
         return state
 
     def _compute_package_states(self):
