@@ -10,7 +10,7 @@ site27 = $(libdir)/python2.7/dist-packages
 etcdir = $(prefix)/etc
 distribution=${shell dpkg-parsechangelog | sed -n 's/^Distribution: *//p'}
 ifeq ($(distribution),UNRELEASED)
-version=${shell echo "`dpkg-parsechangelog | sed -n 's/^Version: *//p'`~`date +%Y%m%d%H%M`"}
+version=${shell echo "`dpkg-parsechangelog | sed -n 's/^Version: *//p'`~`date +%Y%m%d%H%M`~`git describe --tags --dirty`"}
 else
 version=${shell dpkg-parsechangelog | sed -n 's/^Version: *//p'}
 endif
