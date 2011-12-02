@@ -454,6 +454,8 @@ class PackagesDB:
 
         self._in_state["unknown"] = todo
         self._in_state["unknown-preferred-alternative"] = unpreferred_alt
+        for package_name in unpreferred_alt:
+            self._package_state[package_name] = "unknown-preferred-alternative"
 
         for state in self._states:
             self._in_state[state].sort()
