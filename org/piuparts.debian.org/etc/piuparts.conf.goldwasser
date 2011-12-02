@@ -51,7 +51,7 @@ master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages
 packages-url = http://ftp.de.debian.org/debian/dists/wheezy/main/binary-amd64/Packages.bz2
 sources-url = http://ftp.de.debian.org/debian/dists/wheezy/main/source/Sources.bz2
 mirror = http://ftp.de.debian.org/debian/
-piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --dpkg-noforce-unsafe-io --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
+piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --no-eatmydata --dpkg-noforce-unsafe-io --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 upgrade-test-distros = squeeze wheezy
 upgrade-test-chroot-tgz = squeeze.tar.gz
 max-reserved = 5
