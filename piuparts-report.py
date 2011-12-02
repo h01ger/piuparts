@@ -445,6 +445,7 @@ def emphasize_reason(reason):
         "dependency-cannot-be-tested",
         "dependency-does-not-exist",
         "circular-dependency",
+        "does-not-exist",
         "unknown",
         "unknown-preferred-alternative",
         "no-dependency-from-alternatives-exists",
@@ -661,7 +662,7 @@ class Section:
         return link
 
     def link_to_state_page(self, section, package_name, link_target):
-        state = self._binary_db.state_by_name(package_name)
+        state = self._binary_db.get_package_state(package_name)
         if state != "unknown":
             link = "<a href=\"/%s/%s\">%s</a>" % (
                 section,
@@ -782,7 +783,7 @@ class Section:
         failed = False
         binaryrows = ""
         for binary in sorted(binaries.split(", ")):
-          state = self._binary_db.state_by_name(binary)
+          state = self._binary_db.get_package_state(binary)
           if state == "unknown":
             # Don't track udebs and binary packages on other archs. 
             # The latter is a FIXME which needs parsing the Packages files from other archs too
@@ -1006,7 +1007,7 @@ class Section:
                     for dep in package.dependencies():
                         vlist += "<li>dependency %s is %s</li>\n" % \
                                   (self.link_to_state_page(self._config.section,dep,dep), 
-                                  emphasize_reason(html_protect(self._binary_db.state_by_name(dep))))
+                                  emphasize_reason(html_protect(self._binary_db.get_package_state(dep))))
                     vlist += "</ul>\n"
                 vlist += "</li>\n"
             htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)

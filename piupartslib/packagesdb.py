@@ -194,6 +194,7 @@ class LogDB:
 
 class PackagesDB:
 
+    # keep in sync with piuparts-report.py: emphasize_reason()
     _states = [
         "successfully-tested",
         "failed-testing",
@@ -205,6 +206,7 @@ class PackagesDB:
         "dependency-cannot-be-tested",
         "dependency-does-not-exist",
         "circular-dependency",
+        #"does-not-exist",  # can only happen as query result for a dependency
         "unknown",
         "unknown-preferred-alternative",
         "no-dependency-from-alternatives-exists",
@@ -219,6 +221,7 @@ class PackagesDB:
         "dependency-cannot-be-tested": "dependency-cannot-be-tested",
         "dependency-does-not-exist": "dependency-does-not-exist",
         "circular-dependency": "circular-dependency",
+        "does-not-exist": "dependency-does-not-exist",
         "unknown-preferred-alternative": "unknown-preferred-alternative",
         "no-dependency-from-alternatives-exists": "dependency-cannot-be-tested",
     }
@@ -268,13 +271,16 @@ class PackagesDB:
     def _find_all_packages(self):
         if self._packages is None:
             self._packages = {}
+            self._virtual_packages = {}
             for pf in self._packages_files:
                 for p in pf.values():
                     self._packages[p["Package"]] = p
             for p in self._packages.values():
                 for provided in p.provides():
-                    if provided not in self._packages:
-                        self._packages[provided] = p
+                    if provided != p["Package"]:
+                        if provided not in self._virtual_packages:
+                            self._virtual_packages[provided] = []
+                        self._virtual_packages[provided].append(p["Package"])
 
     def _get_recursive_dependencies(self, package, break_circles=True):
         assert self._packages is not None
@@ -287,6 +293,8 @@ class PackagesDB:
                 deps.append(dep)
                 if dep in self._packages:
                     more += self._packages[dep].dependencies()
+                elif dep in self._virtual_packages:
+                    more += self._packages[self._virtual_packages[dep][0]].dependencies()
 
         # Break circular dependencies
         if break_circles and package["Package"] in deps:
@@ -331,9 +339,9 @@ class PackagesDB:
                     prefer_alt = None
                     for alternative in alt_deps[d]:
                         dep = alternative.name
-                        if dep in self._package_state:
+                        altdep_state = self.get_package_state(dep)
+                        if altdep_state != "does-not-exist":
                             alt_found += 1
-                            altdep_state = self._package_state[dep]
                             if prefer_alt_score < 3 and altdep_state == "essential-required":
                                 prefer_alt = alternative
                                 prefer_alt_idx = d
@@ -370,18 +378,15 @@ class PackagesDB:
              return state
 
         for dep in package.dependencies():
-            if dep not in self._package_state:
-                return "dependency-does-not-exist"
-            dep_state = self._package_state[dep]
-            if dep_state is None:
-                return "unknown"
-            elif dep_state in self._dep_state_to_state:
+            dep_state = self.get_package_state(dep)
+            if dep_state in self._dep_state_to_state:
                 return self._dep_state_to_state[dep_state]
 
         state = "waiting-to-be-tested"
         for dep in package.dependencies():
-            if self._package_state[dep] not in \
-               ["successfully-tested", "essential-required"]:
+            dep_state = self.get_package_state(dep)
+            if dep_state not in \
+                    ["successfully-tested", "essential-required"]:
                 state = "unknown"
                 break
         if state == "waiting-to-be-tested":
@@ -393,20 +398,21 @@ class PackagesDB:
             if pkg in deps:
                 deps.remove(pkg)
         if package["Package"] in deps:
-            return "circular-dependency" # actually, it's a unknown circular-dependency
+            return "circular-dependency"  # actually, it's an unknown circular-dependency
 
         # treat circular-dependencies as testable (for the part of the circle)
         state = "unknown" 
         if package["Package"] in self._known_circular_depends:
-          for dep in package.dependencies():
-            if dep not in self._known_circular_depends and self._package_state[dep] not in \
-               ["successfully-tested", "essential-required"]:
-                state = "unknown"
-                break
-            if dep in self._known_circular_depends and self._package_state[dep] not in \
-               ["failed-testing","dependency-failed-testing"]:
-                state = "waiting-to-be-tested"
-                continue
+            for dep in package.dependencies():
+                dep_state = self.get_package_state(dep)
+                if dep not in self._known_circular_depends and dep_state not in \
+                        ["successfully-tested", "essential-required"]:
+                    state = "unknown"
+                    break
+                if dep in self._known_circular_depends and dep_state not in \
+                        ["failed-testing", "dependency-failed-testing"]:
+                    state = "waiting-to-be-tested"
+                    continue
         return state
 
     def _compute_package_states(self):
@@ -454,6 +460,8 @@ class PackagesDB:
 
         self._in_state["unknown"] = todo
         self._in_state["unknown-preferred-alternative"] = unpreferred_alt
+        for package_name in unpreferred_alt:
+            self._package_state[package_name] = "unknown-preferred-alternative"
 
         for state in self._states:
             self._in_state[state].sort()
@@ -471,6 +479,11 @@ class PackagesDB:
 
     def get_package(self, name):
         return self._packages[name]
+
+    def get_providers(self, name):
+        if name in self._virtual_packages:
+            return self._virtual_packages[name]
+        return []
 
     def get_all_packages(self):
         self._find_all_packages()
@@ -502,14 +515,16 @@ class PackagesDB:
         else:
           return self._packages[package_name][header]
 
-    def get_package_state(self, package_name):
-        return self._package_state[package_name]
-
-    def state_by_name(self, package_name):
+    def get_package_state(self, package_name, resolve_virtual=True):
         if package_name in self._package_state:
             return self._package_state[package_name]
-        else:
-            return "unknown"
+        if package_name in self._virtual_packages:
+            if resolve_virtual:
+                provider = self._virtual_packages[package_name][0]
+                return self._package_state[provider]
+            else:
+                return "virtual"
+        return "does-not-exist"
 
     def _find_packages_ready_for_testing(self):
         return self.get_pkg_names_in_state("waiting-to-be-tested")
