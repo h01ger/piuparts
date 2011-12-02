@@ -194,6 +194,7 @@ class LogDB:
 
 class PackagesDB:
 
+    # keep in sync with piuparts-report.py: emphasize_reason()
     _states = [
         "successfully-tested",
         "failed-testing",
@@ -205,6 +206,7 @@ class PackagesDB:
         "dependency-cannot-be-tested",
         "dependency-does-not-exist",
         "circular-dependency",
+        #"does-not-exist",  # can only happen as query result for a dependency
         "unknown",
         "unknown-preferred-alternative",
         "no-dependency-from-alternatives-exists",
@@ -219,6 +221,7 @@ class PackagesDB:
         "dependency-cannot-be-tested": "dependency-cannot-be-tested",
         "dependency-does-not-exist": "dependency-does-not-exist",
         "circular-dependency": "circular-dependency",
+        "does-not-exist": "dependency-does-not-exist",
         "unknown-preferred-alternative": "unknown-preferred-alternative",
         "no-dependency-from-alternatives-exists": "dependency-cannot-be-tested",
     }
