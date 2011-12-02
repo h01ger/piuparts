@@ -271,13 +271,16 @@ class PackagesDB:
     def _find_all_packages(self):
         if self._packages is None:
             self._packages = {}
+            self._virtual_packages = {}
             for pf in self._packages_files:
                 for p in pf.values():
                     self._packages[p["Package"]] = p
             for p in self._packages.values():
                 for provided in p.provides():
-                    if provided not in self._packages:
-                        self._packages[provided] = p
+                    if provided != p["Package"]:
+                        if provided not in self._virtual_packages:
+                            self._virtual_packages[provided] = []
+                        self._virtual_packages[provided].append(p["Package"])
 
     def _get_recursive_dependencies(self, package, break_circles=True):
         assert self._packages is not None
@@ -290,6 +293,8 @@ class PackagesDB:
                 deps.append(dep)
                 if dep in self._packages:
                     more += self._packages[dep].dependencies()
+                elif dep in self._virtual_packages:
+                    more += self._packages[self._virtual_packages[dep][0]].dependencies()
 
         # Break circular dependencies
         if break_circles and package["Package"] in deps:
@@ -474,6 +479,11 @@ class PackagesDB:
     def get_package(self, name):
         return self._packages[name]
 
+    def get_providers(self, name):
+        if name in self._virtual_packages:
+            return self._virtual_packages[name]
+        return []
+
     def get_all_packages(self):
         self._find_all_packages()
         return self._packages
@@ -504,9 +514,15 @@ class PackagesDB:
         else:
           return self._packages[package_name][header]
 
-    def get_package_state(self, package_name):
+    def get_package_state(self, package_name, resolve_virtual=True):
         if package_name in self._package_state:
             return self._package_state[package_name]
+        if package_name in self._virtual_packages:
+            if resolve_virtual:
+                provider = self._virtual_packages[package_name][0]
+                return self._package_state[provider]
+            else:
+                return "virtual"
         return "does-not-exist"
 
     def _find_packages_ready_for_testing(self):
