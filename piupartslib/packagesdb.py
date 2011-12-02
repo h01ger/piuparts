@@ -507,13 +507,9 @@ class PackagesDB:
           return self._packages[package_name][header]
 
     def get_package_state(self, package_name):
-        return self._package_state[package_name]
-
-    def state_by_name(self, package_name):
         if package_name in self._package_state:
             return self._package_state[package_name]
-        else:
-            return "unknown"
+        return "does-not-exist"
 
     def _find_packages_ready_for_testing(self):
         return self.get_pkg_names_in_state("waiting-to-be-tested")
