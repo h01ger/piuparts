@@ -6,11 +6,6 @@ higher than wishlist!
 
 for 0.42:
 
-- piuparts-report should keep state, ie cache the results of the log 
-  analysis and generated html pages. Thus, a piuparts-report run could
-  take minutes instead of hours... this is now (with four distros tested 
-  instead of three) more needed than ever.
-
 - use python-debianbts to track bugginess status of packages via
   the bts and remove the "bugged" directory-status tracking
   altogether.  also remove "fixed".
@@ -22,8 +17,6 @@ for 0.42:
 
 
 for 0.43:
-
-- discard logs for packages which have been removed from distro.
 
 - warn/remove about files in */reserved older than 24h
 
@@ -38,10 +31,6 @@ for 0.43:
 
 - write reportbug(-like) wrapper for mass bug filing (start
   simple, make it more sophisticated later). 
-
-- use libeatmydata - either install it in all chroots or find a
-  better way to use it. Since 0.41 there is --force-unsafe-io 
-  but libeatmydata should be even faster.
 
 - generate piuparts.1.txt automatically from piuparts.py - see
   this blog post for a nice howto:
@@ -109,7 +98,8 @@ for 0.47 and later:
     "fragment".)
   - RSS feeds of logs
   - do more fancy R graphs, eg. also per state
-  - sort packages on maintainer pages alphabetically
+  - sort packages on maintainer pages alphabetically (states first 
+    though)
   - link (and target) to piuparts.d.o configuration is static to
     piatti. should refer to the actual hosts configuration, eg
     goldwassers
