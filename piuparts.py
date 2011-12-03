@@ -1085,6 +1085,8 @@ class Chroot:
                              if state == "remove"]
         nondeps_to_purge = [name for name, state in nondeps.iteritems()
                             if state == "purge"]
+        deps_to_install = [name for name, state in deps.iteritems()
+                          if state == "install"]
 
         # Run custom scripts before removing all packages. 
         self.run_scripts("pre_remove")
@@ -1094,6 +1096,10 @@ class Chroot:
                              nondeps_to_remove + nondeps_to_purge)
         # Run custom scripts after removing all packages. 
         self.run_scripts("post_remove")
+
+        # Then reinstall missing packages.
+        if deps_to_install:
+            self.install_packages_by_name(deps_to_install)
 
         if not settings.skip_cronfiles_test:
             cronfiles, cronfiles_list = self.check_if_cronfiles(packages)
@@ -1121,6 +1127,7 @@ class Chroot:
         # Now do a final run to see that everything worked.
         self.run(["dpkg", "--purge", "--pending"])
         self.run(["dpkg", "--remove", "--pending"])
+        self.run(["apt-get", "clean"])
 
     def save_meta_data(self):
         """Return the filesystem meta data for all objects in the chroot."""
@@ -1766,8 +1773,11 @@ def diff_selections(chroot, selections):
         if name not in selections:
             changes[name] = "purge"
         elif selections[name] != current[name] and \
-             selections[name] == "purge":
+             selections[name] in ["purge", "install"]:
             changes[name] = selections[name]
+    for name, value in selections.iteritems():
+        if name not in current:
+            changes[name] = "install"
     return changes
 
 
