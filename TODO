@@ -6,14 +6,17 @@ higher than wishlist!
 
 for 0.42:
 
-
-- piuparts-report.py: fix those 2 FIXMEs in main()
+- fix 588041
 
 - Adjust report scripts to detect this condition;
           text in log="*** Process KILLED - exceed maximum run time ***"
 
+- release! 
+
 
 for 0.43:
+
+- piuparts-report.py: fix those FIXMEs in main()
 
 - use python-debianbts to track bugginess status of packages via
   the bts and remove the "bugged" directory-status tracking
