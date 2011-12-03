@@ -441,7 +441,7 @@ def test_package(config, package, packages_files):
           command += " --mirror %s " % config["mirror"]
         command += " " + package["Package"]
 
-        output.write("Executing: %s\n" % cmd)
+        output.write("Executing: %s\n" % command)
         ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN, True)
         if ret < 0:
             output.write(" *** Process KILLED - exceed maximum run time ***\n")
