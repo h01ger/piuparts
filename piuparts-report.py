@@ -986,7 +986,7 @@ class Section:
                             for dep in alternatives[1:]:
                                 vlist += "<li>alternative dependency %s is %s</li>\n" % \
                                           (self.link_to_state_page(self._config.section,dep,dep),
-                                          emphasize_reason(html_protect(self._binary_db.state_by_name(dep))))
+                                          emphasize_reason(html_protect(self._binary_db.get_package_state(dep))))
                             vlist += "</ul>\n"
                     vlist += "</ul>\n"
                 vlist += "</li>\n"
