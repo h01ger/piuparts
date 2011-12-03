@@ -6,7 +6,7 @@
 #
 
 [global]
-#sections = wheezy sid squeeze2wheezy
+#sections = sid wheezy squeeze2wheezy
 sections = squeeze2wheezy
 master-host = localhost
 master-user = piupartsm
