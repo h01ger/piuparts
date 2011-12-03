@@ -106,6 +106,7 @@ done
 ALLKPR=`mktemp`
 KNOWNLOGS=`mktemp`
 UNKNOWNLOGS=`mktemp`
+KNOWNFAILURES=`mktemp`
 
 for SECTION in $SECTIONS
 do
@@ -165,7 +166,8 @@ do
 	# report unknown failures
 	#
 	find fail -name "*.log" > $LOGS
-	grep -v -f $KNOWNLOGS $LOGS > $UNKNOWNLOGS
+	grep -f $LOGS $KNOWNLOGS > $KNOWNFAILURES
+	grep -v -f $KNOWNFAILURES $LOGS > $UNKNOWNLOGS
 	if [ -s $UNKNOWNLOGS ] ; then
 		OUTPUT=$HTDOCS/$SECTION/unknown_failures.tpl
 		echo '<table class="righttable"><tr class="titlerow"><td class="titlecell">' > $OUTPUT
@@ -190,6 +192,6 @@ do
 	fi
 	cd "$OLDPWD"
 done
-rm $ALLKPR $LOGS $KNOWNLOGS $UNKNOWNLOGS
+rm $ALLKPR $LOGS $KNOWNLOGS $UNKNOWNLOGS $KNOWNFAILURES
 date
 
