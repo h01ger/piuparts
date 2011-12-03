@@ -6,21 +6,18 @@ higher than wishlist!
 
 for 0.42:
 
-- use python-debianbts to track bugginess status of packages via
-  the bts and remove the "bugged" directory-status tracking
-  altogether.  also remove "fixed".
 
 - piuparts-report.py: fix those 2 FIXMEs in main()
 
-- merge script from my svn working copy: home/piupartsm/bin/biggest_blocker.sh 
-  with a similar one Dave send to the list
+- Adjust report scripts to detect this condition;
+          text in log="*** Process KILLED - exceed maximum run time ***"
 
 
 for 0.43:
 
-- warn/remove about files in */reserved older than 24h
-
-- store and load the diversion information with --save-end-meta and --end-meta
+- use python-debianbts to track bugginess status of packages via
+  the bts and remove the "bugged" directory-status tracking
+  altogether.  also remove "fixed".
 
 - provide mail templates for bugreports (which ideally only
   should need manual logfile trimming) at
@@ -36,11 +33,19 @@ for 0.43:
   this blog post for a nice howto:
   http://andialbrecht.wordpress.com/2009/03/17/creating-a-man-page-with-distutils-and-optparse/
 
+- warn/remove about files in */reserved older than 24h
+
+- store and load the diversion information with --save-end-meta and --end-meta
+
 - sometimes a chroot doesn't get removed on piatti - find out
   why and fix it.
 
-- Adjust report scripts to detect this condition;
-          text in log="*** Process KILLED - exceed maximum run time ***"
+- display biggest blockers, either using something like
+  lynx --dump http://piuparts.debian.org/$1/state-dependency-failed-testing.html | \
+	grep -E "dependency .* is failed-testing" | \
+	sed  's#\(.*\)\(\[.*\]\)\(.*\)#\1\3#' | \
+	sort|uniq -c| grep -v " 1 "|sort -n | tac 
+  or https://github.com/davesteele/piublocker
 
 
 for 0.44:
