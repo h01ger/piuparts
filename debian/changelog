@@ -89,6 +89,7 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Compute the changes in restore_selections().
     - Check for settings.scriptsdir inside run_scripts().
     - Consistently use chroot.relative() to build filenames inside the chroot.
+    - Make restore_selections() reinstall missing packages (Closes: #648707)
   * piuparts-master.py:
     - Add a 'status' command that reports package counts for all states.
   * piuparts-slave.py:
