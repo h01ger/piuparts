@@ -959,6 +959,18 @@ class Section:
             "packagesurl": html_protect(self._config["packages-url"]), 
            }))
 
+    def _show_providers(self, dep):
+        providers = self._binary_db.get_providers(dep)
+        vlist = ""
+        if providers:
+            vlist += "\n<ul>\n"
+            for provider in providers:
+                vlist += "<li>provider %s is %s</li>\n" % \
+                          (self.link_to_state_page(self._config.section, provider, provider),
+                          emphasize_reason(html_protect(self._binary_db.get_package_state(provider))))
+            vlist += "</ul>\n"
+        return vlist
+
     def write_state_pages(self):
         for state in self._binary_db.get_states():
             logging.debug("Writing page for %s" % state)
@@ -976,13 +988,15 @@ class Section:
                         dep = alternatives[0]
                         vlist += "<li>dependency %s is %s</li>\n" % \
                                   (self.link_to_state_page(self._config.section,dep,dep), 
-                                  emphasize_reason(html_protect(self._binary_db.get_package_state(dep))))
+                                  emphasize_reason(html_protect(self._binary_db.get_package_state(dep, resolve_virtual=False))))
+                        vlist += self._show_providers(dep)
                         if len(alternatives) > 1:
                             vlist += "\n<ul>\n"
                             for dep in alternatives[1:]:
                                 vlist += "<li>alternative dependency %s is %s</li>\n" % \
                                           (self.link_to_state_page(self._config.section,dep,dep),
-                                          emphasize_reason(html_protect(self._binary_db.get_package_state(dep))))
+                                          emphasize_reason(html_protect(self._binary_db.get_package_state(dep, resolve_virtual=False))))
+                                vlist += self._show_providers(dep)
                             vlist += "</ul>\n"
                     vlist += "</ul>\n"
                 vlist += "</li>\n"
