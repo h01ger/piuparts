@@ -38,8 +38,6 @@ for 0.43:
   this blog post for a nice howto:
   http://andialbrecht.wordpress.com/2009/03/17/creating-a-man-page-with-distutils-and-optparse/
 
-- warn/remove about files in */reserved older than 24h
-
 - store and load the diversion information with --save-end-meta and --end-meta
 
 - sometimes a chroot doesn't get removed on piatti - find out
