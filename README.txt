@@ -41,7 +41,7 @@ If you want to test your package in another release, for example,
 lenny, you can do so with:
 
 ---- 
-# piuparts sm_0.6-1_i386.deb -d lenny
+# piuparts ./sm_0.6-1_i386.deb -d lenny
 ---- 
 
 By default, this will read the first mirror from your
@@ -49,8 +49,16 @@ By default, this will read the first mirror from your
 mirror you can do it with the option '-m':
 
 ---- 
-# piuparts sm_0.6-1_i386.deb -m http://ftp.de.debian.org/debian
+# piuparts ./sm_0.6-1_i386.deb -m http://ftp.de.debian.org/debian
 ---- 
+
+It's possible to use -d more than once. For example, to do a first 
+installation in stable, then upgrade to testing, then upgrade to 
+unstable and then upgrade to the local package use this:
+
+----
+# piuparts -d stable -d testing -d unstable ./sm_0.6-1_i386.deb
+----
 
 
 === Some tips
@@ -78,13 +86,13 @@ then you only have to remember to update this tarball with:
 To run piuparts using this tarball:
 
 ---- 
-# piuparts -p sm_0.6-1_i386.deb
+# piuparts -p ./sm_0.6-1_i386.deb
 ---- 
 
 If you want to use your own pre-made tarball:
 
 ---- 
-# piuparts --basetgz=/path/to/my/tarball.tgz sm_0.6-1_i386.deb
+# piuparts --basetgz=/path/to/my/tarball.tgz ./sm_0.6-1_i386.deb
 ---- 
 
 Piuparts also has the option of using a tarball as the contents
