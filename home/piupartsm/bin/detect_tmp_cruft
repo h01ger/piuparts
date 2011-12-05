@@ -45,6 +45,8 @@ if [ "$(echo "$LS_TMP" | wc -l)" -gt 12 ] ; then
 	echo
 	echo "$LS_TMP"
 	echo
+	echo "$(du -sh /org/piuparts.debian.org/tmp 2>/dev/null)"
+	echo
 	echo "One is normal for piuparts operation, more is not."
 	echo "Please investigate and cleanup."
 fi
