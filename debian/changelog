@@ -66,6 +66,7 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Use 'apt-get remove' to remove all packages at once with proper
       dependency ordering.  (Closes: #648162)
     - Purge all packages at once instead of doing it one-by-one.
+    - Make restore_selections() reinstall missing packages.  (Closes: #648707)
     - Set more environment variables to let custom scripts know where and
       when they are being run: PIUPARTS_TEST, PIUPARTS_PHASE,
       PIUPARTS_DISTRIBUTION{,_PREV,_NEXT}.  See the README for details.
@@ -89,7 +90,14 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Compute the changes in restore_selections().
     - Check for settings.scriptsdir inside run_scripts().
     - Consistently use chroot.relative() to build filenames inside the chroot.
-    - Make restore_selections() reinstall missing packages (Closes: #648707)
+  * piupartslib/packagesdb.py:
+    - Handle 'unknown-preferred-alternative' state correctly.
+    - Add 'does-not-exist' state for dependency resolution to distinguish this
+      from 'unknown' state so that the latter only indicates 'unresolvable' or
+      'not yet resolved'.
+    - Handle virtual packages separately from real packages.
+    - Use get_package_state() internally which 'resolves' (purely) virtual
+      packages by default (can be disabled).
   * piuparts-master.py:
     - Add a 'status' command that reports package counts for all states.
   * piuparts-slave.py:
@@ -99,10 +107,15 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Request and print package counts from master.
     - Reload section config every time a section is being run.
   * piuparts-report.py: 
-    - state-*.html: Sort package lists by name.
+    - state-*.html: Sort package lists by name, display state of all
+      alternative dependencies and packages providing a virtual dependency.
     - source/?/*.html: Sort binary packages by name.
-    - Dependency lists: resolve virtual packages and link to a real package.
+    - maintainer/?/*.html: Sort source packages by name.
     - Update list of error states to be highlighted.
+    - Archive logs of packages that were removed from the distribution.
+    - Speedup generating maintainer summaries.
+  * Makefile: Use 'git describe' to get an exact stamp for development
+    versions.
 
   [ Dave Steele ]
   * piuparts-slave.py: make Section.run() report the number of packages

@@ -10,6 +10,8 @@ for 0.42:
 
 - Adjust report scripts to detect this condition;
           text in log="*** Process KILLED - exceed maximum run time ***"
+          or "Terminating command due to excessive output"
+          (eventually sync wording for such errors)
 
 - release! 
 
