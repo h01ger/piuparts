@@ -662,16 +662,12 @@ class Section:
         return link
 
     def link_to_state_page(self, section, package_name, link_target):
-        state = self._binary_db.get_package_state(package_name)
-        if state not in ("unknown", "does-not-exist", "unknown-preferred-alternative"):
-            try:
-                link = "<a href=\"/%s/%s\">%s</a>" % (
-                  section,
-                  "state-"+state+".html"+"#"+self._binary_db._packages[package_name]["Package"],
-                  link_target)
-            except:
-                print "debug_669: %s in state %s" % (package_name, state)
-                link = "unknown-package"
+        if self.has_package(package_name):
+            state = self._binary_db.get_package_state(package_name)
+            link = "<a href=\"/%s/%s\">%s</a>" % (
+                section,
+                "state-"+state+".html"+"#"+package_name,
+                link_target)
         else:
           if link_target == package_name:
             link = html_protect(package_name)
