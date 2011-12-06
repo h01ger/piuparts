@@ -662,7 +662,7 @@ class Section:
         return link
 
     def link_to_state_page(self, section, package_name, link_target):
-        if self.has_package(package_name):
+        if self._binary_db.has_package(package_name):
             state = self._binary_db.get_package_state(package_name)
             link = "<a href=\"/%s/%s\">%s</a>" % (
                 section,
