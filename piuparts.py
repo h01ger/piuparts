@@ -2081,7 +2081,7 @@ def install_and_upgrade_between_distros(package_files, packages):
         # set root_info and selections
         root_info = chroot.save_meta_data()
         selections = chroot.get_selections()
-        chroot.pre_install_diversions = chroot.get_diversions()
+        diversions = chroot.get_diversions()
 
         if settings.save_end_meta:
             # save root_info and selections
@@ -2100,6 +2100,7 @@ def install_and_upgrade_between_distros(package_files, packages):
         else:
             chroot.create(temp_tgz)
             chroot.remove_temp_tgz_file(temp_tgz)
+        chroot.pre_install_diversions = diversions
         cid = do_on_panic(chroot.remove)
 
     chroot.check_for_no_processes()
