@@ -48,8 +48,10 @@ for SECTION in $SECTIONS ; do
 	mkdir -p $MASTER/$SECTION/archive
 	cd $MASTER/$SECTION
 	mkdir -p archive/pass archive/bugged archive/fail
+	test -f archive/stamp || touch -d @0 archive/stamp  # start at the epoch
+	touch -d yesterday archive/stamp.new  # look back one more day the next time we will be run
 	# loop through all packages logs 
-	for PACKAGE in $(find pass/ fail/ bugged/ -name '*.log' | cut -d"_" -f1 | cut -d"/" -f2 | sort -u) ; do
+	for PACKAGE in $(find pass/ fail/ bugged/ -name '*.log' -newer archive/stamp | cut -d"_" -f1 | cut -d"/" -f2 | sort -u) ; do
 		# all logs except the last one (|sed '$d' deletes the last line)
 		OLDLOGS=$( ls -tr1 --color=none bugged/${PACKAGE}_*.log fail/${PACKAGE}_*.log pass/${PACKAGE}_*.log 2>/dev/null|sed '$d' )
 		if [ ! -z "$OLDLOGS" ] ; then
@@ -65,5 +67,6 @@ for SECTION in $SECTIONS ; do
 	done
 	echo
 	echo
+	mv archive/stamp.new archive/stamp
 done
 
