@@ -86,6 +86,10 @@ piuparts (0.42) UNRELEASED; urgency=low
       all packages exist in the start distribution.  This happens e.g. when
       testing .changes files and packages were split/added. Only install the
       old packages that actually exist according to 'apt-cache show'.
+    - Add --extra-old-packages option to intall additional old packages that
+      are not in the set of new packages to be tested.  Useful for testing
+      upgrades with Conflicts/Replaces relationships, e.g. in package renames
+      or merges.
     - Use consistent variable names for package lists.  (Closes: #648177)
     - Compute the changes in restore_selections().
     - Check for settings.scriptsdir inside run_scripts().

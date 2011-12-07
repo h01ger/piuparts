@@ -152,6 +152,7 @@ class Settings:
         self.list_installed_files = False
         self.no_install_purge_test = False
         self.no_upgrade_test = False
+        self.extra_old_packages = []
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
         self.check_broken_diversions = True
@@ -934,8 +935,9 @@ class Chroot:
             # and installing that would require removing the old version
             # of the library, and we've told apt-get not to remove
             # packages. So, we force the installation like this.
-            known_packages = self.get_known_packages(packages)
-            self.install_packages_by_name(known_packages)
+            if packages:
+                known_packages = self.get_known_packages(packages + settings.extra_old_packages)
+                self.install_packages_by_name(known_packages)
             # Run custom scripts after upgrade
             self.run_scripts("post_distupgrade")
             self.check_for_no_processes()
@@ -2109,7 +2111,7 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     os.environ["PIUPARTS_PHASE"] = "install"
 
-    known_packages = chroot.get_known_packages(packages)
+    known_packages = chroot.get_known_packages(packages + settings.extra_old_packages)
     chroot.install_packages_by_name(known_packages)
 
     chroot.check_for_no_processes()
@@ -2301,6 +2303,12 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Skip install and purge test.")
 
+    parser.add_option("--extra-old-packages",
+                      action="append", default=[],
+                      help="Install these additional packages along with the old packages from the archive. " +
+                      "Useful to test Conflicts/Replaces of packages that will disappear during the update. " +
+                      "Takes a comma separated list of package names and can be given multiple times.")
+
     parser.add_option("-p", "--pbuilder", action="callback",
                       callback=set_basetgz_to_pbuilder,
                       help="Use /var/cache/pbuilder/base.tgz as the base " +
@@ -2397,6 +2405,7 @@ def parse_command_line():
     settings.list_installed_files = opts.list_installed_files
     settings.no_install_purge_test = opts.no_install_purge_test
     settings.no_upgrade_test = opts.no_upgrade_test
+    [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
     settings.skip_cronfiles_test = opts.skip_cronfiles_test
     settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test
     settings.keyring = opts.keyring
@@ -2524,6 +2533,7 @@ def process_packages(package_list):
                 logging.info("Can't test upgrades: -a or --apt option used.")
             else:
                 packages_to_query = packages[:]
+                packages_to_query.extend(settings.extra_old_packages)
                 known_packages = chroot.get_known_packages(packages_to_query)
                 if not known_packages:
                     logging.info("Can't test upgrade: packages not known by apt-get.")
