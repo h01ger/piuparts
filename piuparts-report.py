@@ -389,6 +389,7 @@ linktarget_by_template = {
     "modified_files_after_purge_error.tpl": "due to files having been modified after purge",
     "disappeared_files_after_purge_error.tpl": "due to files having disappeared after purge",
     "db_setup_error.tpl": "due to failing to setup a database",
+    "dependency_error.tpl": "due to unsatisfied dependencies",
 }
 
 
