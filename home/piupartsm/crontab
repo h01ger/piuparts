@@ -9,7 +9,7 @@
 #
 # monitor slave session every hour
 #
-23 * * * * /home/piupartsm/bin/detect_slave_problems 
+23 * * * * $HOME/bin/detect_slave_problems 
 
 #
 # make sure slave is reminded daily (and also monitored if not started with ~piupartss/bin/slave_run)
@@ -20,18 +20,18 @@
 # monitor for problems once a day
 #
 # FIXME now: use run-parts
-45 22 * * * /home/piupartsm/bin/detect_stale_mounts
-50 22 * * * /home/piupartsm/bin/detect_tmp_cruft
-55 22 * * * /home/piupartsm/bin/detect_network_issues
-0  23 * * * /home/piupartsm/bin/detect_archive_issues
-5  23 * * * /home/piupartsm/bin/detect_piuparts_issues
-10 23 * * * /home/piupartsm/bin/report_untestable_packages
-20 23 * * * /home/piupartsm/bin/report_stale_reserved_packages
-25 23 * * * /home/piupartsm/bin/archive_old_logs
-25  5 * * * /home/piupartsm/bin/reschedule_oldest_logs
+45 22 * * * $HOME/bin/detect_stale_mounts
+50 22 * * * $HOME/bin/detect_tmp_cruft
+55 22 * * * $HOME/bin/detect_network_issues
+0  23 * * * $HOME/bin/detect_archive_issues
+5  23 * * * $HOME/bin/detect_piuparts_issues
+10 23 * * * $HOME/bin/report_untestable_packages
+20 23 * * * $HOME/bin/report_stale_reserved_packages
+25 23 * * * $HOME/bin/archive_old_logs
+25  5 * * * $HOME/bin/reschedule_oldest_logs
 
 #
 # misc
 #
-0 2 * * * /home/piupartsm/bin/prepare_backup
+0 2 * * * $HOME/bin/prepare_backup
 

@@ -7,10 +7,10 @@
 #
 # start slave_run automatically after reboots
 #
-@reboot sudo /home/piupartss/bin/slave_run
+@reboot sudo $HOME/bin/slave_run
 
 #
 # monitor for problems every six hours
 #
-23 */6 * * * /home/piupartss/bin/detect_leftover_processes
+23 */6 * * * $HOME/bin/detect_leftover_processes
 
