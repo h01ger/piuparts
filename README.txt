@@ -440,6 +440,8 @@ is being run.
 
 * "keep-sources-list" controls whether the slave runs piuparts with the '--keep-sources-list' option.  This option does not apply to upgrade tests.  The value should be "yes" or "no", with the default being "no".  Use this option for dists that you need a custom sources.list for, such as "stable-proposed-updates".
 
+* "precedence" controls the order the sections are being processed by the slave. Sections with a larger precedence value will be run only if all sections with a smaller precedence value are idle, i.e. master does not have any packages that this slave could test. Sections with the same precedence value will be processed round-robin until they are all idle (or a more important section has packages to be tested). The default is 1.
+
 * "debug" tells the slave whether to log debug level messages. The value should be "yes" or "no", with the default being "no". piuparts itself currently always produces debug output and there is no way to disable that.
 
 Some of the configuration items are not required, but it is best

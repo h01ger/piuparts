@@ -81,6 +81,7 @@ class Config(piupartslib.conf.Config):
                 "debug": "no",
                 "keep-sources-list": "no",
                 "arch": None,
+                "precedence": "1",
             }, "")
 
 
@@ -283,9 +284,12 @@ class Section:
             create_or_replace_chroot_tgz(self._config, tarball,
                       self._base_tgz_ctrl, self._config["upgrade-test-distros"].split()[0])
 
+    def precedence(self):
+        return int(self._config["precedence"])
+
     def run(self):
         logging.info("-------------------------------------------")
-        logging.info("Running section " + self._config.section)
+        logging.info("Running section %s (precedence=%d)" % (self._config.section, self.precedence()))
         self._config = Config(section=self._config.section)
         self._config.read(CONFIG_FILE)
         self._slave.connect_to_master(self._log_file)
@@ -561,9 +565,14 @@ def main():
 
     while True:
         test_count = 0
+        precedence = None
 
-        for section in sections:
-            test_count += section.run()
+        for section in sorted(sections, key=lambda section: section.precedence()):
+            if precedence is None or section.precedence() <= precedence:
+                processed = section.run()
+                if processed > 0:
+                    test_count += processed
+                    precedence = section.precedence()
 
         if test_count == 0:
             sleep_time = int(global_config["idle-sleep"])
