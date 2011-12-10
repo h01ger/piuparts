@@ -47,6 +47,10 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2011-12-10</b>: Finally, upgrades from squeeze to wheezy are also being tested. Yay!
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2011-11-21</b>: All mails created by the piuparts master-slave setup on piatti.d.o are now sent to the <a href="https://lists.alioth.debian.org/mailman/listinfo/piuparts-reports" target="_blank">piuparts-reports mailinglist</a> on alioth. Subcribe and learn more about the details of this setup!
      </td>
     </tr>
