@@ -65,7 +65,7 @@ date >> $DAILYREPORT
 ~/bin/detect_well_known_errors 2>&1 >> $DAILYREPORT
 
 date >> $DAILYREPORT
-nice python $PIUPARTS_PREFIX/share/piuparts/piuparts-report >> $DAILYREPORT 2>&1
+nice python $PIUPARTS_PREFIX/share/piuparts/piuparts-report 2>&1 >> $DAILYREPORT 2>&1
 
 date >> $DAILYREPORT
 cat $DAILYREPORT | mail -s piuparts-report $LOGNAME
