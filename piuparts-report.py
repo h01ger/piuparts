@@ -735,9 +735,9 @@ class Section:
         states = ["fail", "unknown", "pass"]
         for maintainer in maintainers.keys():
             sources = maintainers[maintainer]
-            maintainer_subdir = os.path.join(maintainer_dir, maintainer_subdir(maintainer))
-            if not os.path.exists(maintainer_subdir):
-              os.mkdir(maintainer_subdir)
+            maintainer_subdir_path = os.path.join(maintainer_dir, maintainer_subdir(maintainer))
+            if not os.path.exists(maintainer_subdir_path):
+              os.mkdir(maintainer_subdir_path)
             rows = ""
             package_rows = ""
             packages = {}
@@ -765,7 +765,7 @@ class Section:
             distrolinks += "</td></tr>"
 
             htmlpage = string.Template(HTML_HEADER + MAINTAINER_BODY_TEMPLATE + HTML_FOOTER)
-            filename = os.path.join(maintainer_subdir, maintainer + ".html")
+            filename = os.path.join(maintainer_subdir_path, maintainer + ".html")
             f = file(filename, "w")
             f.write(htmlpage.safe_substitute( {
                "page_title": html_protect("Status of "+maintainer+" packages in "+self._config.section),
