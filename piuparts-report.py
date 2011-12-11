@@ -729,6 +729,9 @@ class Section:
 
     def create_maintainer_summaries(self, maintainers, source_data):
         logging.debug("Writing maintainer summaries in %s" % self._output_directory)
+        maintainer_dir = os.path.join(self._output_directory, "maintainer")
+        if not os.path.exists(maintainer_dir):
+            os.mkdir(maintainer_dir)
         states = ["fail", "unknown", "pass"]
         for maintainer in maintainers.keys():
             sources = maintainers[maintainer]
@@ -759,10 +762,10 @@ class Section:
             distrolinks += "</td></tr>"
 
             htmlpage = string.Template(HTML_HEADER + MAINTAINER_BODY_TEMPLATE + HTML_FOOTER)
-            maintainer_path = os.path.join(self._output_directory, "maintainer", maintainer_subdir(maintainer))
-            if not os.path.exists(maintainer_path):
-              os.mkdir(maintainer_path)
-            filename = os.path.join(maintainer_path, maintainer + ".html")
+            maintainer_subdir = os.path.join(maintainer_dir, maintainer_subdir(maintainer))
+            if not os.path.exists(maintainer_subdir):
+              os.mkdir(maintainer_subdir)
+            filename = os.path.join(maintainer_subdir, maintainer + ".html")
             f = file(filename, "w")
             f.write(htmlpage.safe_substitute( {
                "page_title": html_protect("Status of "+maintainer+" packages in "+self._config.section),
