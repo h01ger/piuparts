@@ -759,7 +759,10 @@ class Section:
             distrolinks += "</td></tr>"
 
             htmlpage = string.Template(HTML_HEADER + MAINTAINER_BODY_TEMPLATE + HTML_FOOTER)
-            filename = os.path.join(self._output_directory, "maintainer", maintainer_subdir(maintainer), maintainer + ".html")
+            maintainer_path = os.path.join(self._output_directory, "maintainer", maintainer_subdir(maintainer))
+            if not os.path.exists(maintainer_path):
+              os.mkdir(maintainer_path)
+            filename = os.path.join(maintainer_path, maintainer + ".html")
             f = file(filename, "w")
             f.write(htmlpage.safe_substitute( {
                "page_title": html_protect("Status of "+maintainer+" packages in "+self._config.section),

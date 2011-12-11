@@ -8,6 +8,7 @@ piuparts (0.42) UNRELEASED; urgency=low
   * Remove Debian.NEWS entry about source in git. (Closes: #640121)
   * piuparts.py, piuparts-report.py, ChangeLog: Expand tabs to spaces.
   * Remove whitespaces from whitespace-only lines.
+  * piuparts-report: create maintainer subdir if it doesn't exist.
 
   [ Mika Pflüger ]
   * piuparts-analyze.py:
