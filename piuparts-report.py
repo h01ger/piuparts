@@ -369,6 +369,7 @@ linktarget_by_template = {
     "owned_files_after_purge_error.tpl": "due to owned files existing after purge",
     "owned_files_by_many_packages_error.tpl": "due to owned files by many packages",
     "processes_running_error.tpl": "due to leaving processes running behind",
+    "excessive_output_error.tpl": "due to being terminated after excessive output",
     "unowned_files_after_purge_error.tpl": "due to unowned files after purge",
     "conffile_prompt_error.tpl": "due to prompting due to modified conffiles",
     "unknown_purge_error.tpl": "due to purge failed due to an unknown reason",

@@ -6,17 +6,13 @@ higher than wishlist!
 
 for 0.42:
 
-- fix 588041
-
-- Adjust report scripts to detect this condition;
-          text in log="*** Process KILLED - exceed maximum run time ***"
-          or "Terminating command due to excessive output"
-          (eventually sync wording for such errors)
-
 - release! 
 
 
 for 0.43:
+
+- piuparts-slave should do the rescheduling of old logs and do so with
+  lowest precedence, that is, only when there are no new logs to be tested.
 
 - piuparts-report.py: fix those FIXMEs in main()
 
