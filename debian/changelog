@@ -11,6 +11,9 @@ piuparts (0.42) UNRELEASED; urgency=low
   * piuparts-report: 
     - create maintainer subdirs if they don't exist.
     - detect tests being terminated due to excessive output.
+  * Add git to Build-Depends-Indep: as git describe is used to generate
+    part of the version string for development builds.
+  * Add debian/.gitignore
 
   [ Mika Pflüger ]
   * piuparts-analyze.py:
