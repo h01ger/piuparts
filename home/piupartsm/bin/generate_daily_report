@@ -53,6 +53,14 @@ if [ -e $LOCKFILE ]; then
 fi
 date > $LOCKFILE
 
+# various scripts to detect issues and cleanup
+for SCRIPT in detect_stale_mounts detect_tmp_cruft detect_piuparts_issues archive_old_logs ; do
+  ~/bin/$SCRIPT 2>&1 | mail -s $SCRIPT $LOGNAME
+done
+
+#
+# piuparts-report starts here
+#
 DAILYREPORT=$HTDOCS/dailyreport.txt
 >$DAILYREPORT
 

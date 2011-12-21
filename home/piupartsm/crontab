@@ -18,17 +18,14 @@
 
 #
 # monitor for problems once a day
+# - these may result in packages being retested
+# - if that's not the case, run them from within ~/bin/generate_daily_report
 #
-# FIXME now: use run-parts
-45 22 * * * $HOME/bin/detect_stale_mounts
-50 22 * * * $HOME/bin/detect_tmp_cruft
-55 22 * * * $HOME/bin/detect_network_issues
-0  23 * * * $HOME/bin/detect_archive_issues
-5  23 * * * $HOME/bin/detect_piuparts_issues
-10 23 * * * $HOME/bin/report_untestable_packages
-20 23 * * * $HOME/bin/report_stale_reserved_packages
-25 23 * * * $HOME/bin/archive_old_logs
-25  5 * * * $HOME/bin/reschedule_oldest_logs
+00 12 * * * $HOME/bin/reschedule_oldest_logs
+30 12 * * * $HOME/bin/detect_network_issues
+0  13 * * * $HOME/bin/detect_archive_issues
+30 13 * * * $HOME/bin/report_untestable_packages
+0  14 * * * $HOME/bin/report_stale_reserved_packages
 
 #
 # misc
