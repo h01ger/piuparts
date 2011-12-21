@@ -63,10 +63,10 @@ for SECTION in $SECTIONS ; do
 				echo keeping bugged state:
 				mv -v fail/${PACKAGE}_*.log bugged/ 2>/dev/null
 			fi
+			echo
+			echo
 		fi
 	done
-	echo
-	echo
 	mv archive/stamp.new archive/stamp
 done
 
