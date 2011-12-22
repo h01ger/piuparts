@@ -45,6 +45,14 @@ for 0.43:
 	sed  's#\(.*\)\(\[.*\]\)\(.*\)#\1\3#' | \
 	sort|uniq -c| grep -v " 1 "|sort -n | tac 
   or https://github.com/davesteele/piublocker
+  - actually, don't merely display them on the website, better: use that
+    to suggest packages to file bugs against, in the to be written
+    bug-submitting-tool - start with the errors which are easy to detect
+    reliably.
+    The bug-submitting tool should get the bug categories from piupartslib
+    and download it's data from a configurationable piuparts install.
+
+- copy/move .kpr files to htdocs?
 
 
 for 0.44:
