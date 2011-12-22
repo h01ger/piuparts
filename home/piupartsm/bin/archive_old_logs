@@ -70,7 +70,7 @@ for SECTION in $SECTIONS ; do
 		fi
 	done
 	if [ -n "$OUTPUT" ] ; then
-		echo 
+		echo
 		echo
 	fi
 	mv archive/stamp.new archive/stamp
