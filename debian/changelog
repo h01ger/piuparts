@@ -1,4 +1,4 @@
-piuparts (0.42) UNRELEASED; urgency=low
+piuparts (0.42) unstable; urgency=low
 
   [ Holger Levsen ]
   * piuparts.py:
@@ -141,7 +141,7 @@ piuparts (0.42) UNRELEASED; urgency=low
     - Use eatmydata by default, add option --no-eatmydata. (This was discussed
       in #633033.)
 
- -- Holger Levsen <holger@debian.org>  Sun, 28 Aug 2011 09:50:12 +0200
+ -- Holger Levsen <holger@debian.org>  Fri, 23 Dec 2011 10:51:28 +0100
 
 piuparts (0.41) unstable; urgency=low
 
