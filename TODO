@@ -4,11 +4,6 @@ Things to do for piuparts
 Please also check the BTS, especially the bugs with a severity
 higher than wishlist!
 
-for 0.42:
-
-- release! 
-
-
 for 0.43:
 
 - piuparts-slave should do the rescheduling of old logs and do so with
