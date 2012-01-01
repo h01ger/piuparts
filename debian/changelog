@@ -1,3 +1,13 @@
+piuparts (0.43) UNRELEASED; urgency=low
+
+  * how to maintain this with git-dch? IMO now it's the time to stop
+    maintaining debian/changelog manually but rather generate it from git
+    commit logs directly.
+  * So this is a bogus conflict entry which will need to manually removed
+    later.
+
+ -- Holger Levsen <holger@debian.org>  Sun, 01 Jan 2012 14:14:35 +0100
+
 piuparts (0.42) unstable; urgency=low
 
   [ Holger Levsen ]
