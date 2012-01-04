@@ -40,6 +40,7 @@ get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
 get_config_value HTDOCS global output-directory
 get_config_value URLBASE global urlbase http://piuparts.debian.org
+get_config_value DAYS global reschedule-untestable-days 7
 
 
 #
@@ -68,7 +69,7 @@ if [ -s $URLS ]; then
         echo "generated breaks' in failed logs.)"
 	echo 
 	echo 'The following packages have been moved to $section/untestable and will be'
-	echo "tested again in 7 days."
+	echo "tested again in $DAYS days."
 	echo
         echo "Broken packages are usually a temporary problem in the archive and are"
         echo "caught by other tools like britney or http://edos.debian.net/edos-debcheck/"

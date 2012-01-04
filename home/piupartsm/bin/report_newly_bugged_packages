@@ -41,12 +41,12 @@ get_config_value SECTIONS global sections
 get_config_value PIUPARTS_PREFIX global prefix /org/piuparts.debian.org
 
 
-export PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
+export PYTHONPATH=$PIUPARTS_PREFIX/lib/python2.6/dist-packages:$PIUPARTS_PREFIX/lib/python2.7/dist-packages
 
 for SECTION in $SECTIONS ; do
 	if [ -d $MASTER/$SECTION ]; then
 		echo $SECTION
 		cd $MASTER/$SECTION
-		/org/piuparts.debian.org/share/piuparts/piuparts-analyze
+		$PIUPARTS_PREFIX/share/piuparts/piuparts-analyze
 	fi
 done
