@@ -51,6 +51,7 @@ for SECTION in $SECTIONS ; do
 	rgrep -l -e "^RuntimeError: maximum recursion depth exceeded while calling a Python object" $MASTER/$SECTION/fail >> $FILE
 	rgrep -l -e "^Traceback" $MASTER/$SECTION/fail >> $FILE
 	rgrep -l -e "^OSError:" $MASTER/$SECTION/fail >> $FILE
+	rgrep -l -e "^IndentationError:" $MASTER/$SECTION/fail >> $FILE
 	# Python errors from maintainer scripts etc. would be indented by 2 spaces, so don't match here.
 done
 if [ -s $FILE ] ; then 
