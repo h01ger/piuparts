@@ -43,10 +43,18 @@ get_config_value PIUPARTS_PREFIX global prefix /org/piuparts.debian.org
 
 export PYTHONPATH=$PIUPARTS_PREFIX/lib/python2.6/dist-packages:$PIUPARTS_PREFIX/lib/python2.7/dist-packages
 
+OLDPWD=$(pwd)
+OUTPUT=$(mktemp)
 for SECTION in $SECTIONS ; do
 	if [ -d $MASTER/$SECTION ]; then
-		echo $SECTION
 		cd $MASTER/$SECTION
-		$PIUPARTS_PREFIX/share/piuparts/piuparts-analyze
+		$PIUPARTS_PREFIX/share/piuparts/piuparts-analyze 2>&1 > $OUTPUT
+		if [ -s $OUTPUT ]; then
+			echo $SECTION
+			cat $OUTPUT
+			echo
+		fi
+		cd "$OLDPWD"
 	fi
 done
+rm $OUTPUT
