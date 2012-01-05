@@ -52,6 +52,8 @@ ALLKPR=`mktemp`
 KNOWNLOGS=`mktemp`
 UNKNOWNLOGS=`mktemp`
 KNOWNFAILURES=`mktemp`
+LIST_ALL=`mktemp`
+LIST_PKG=`mktemp`
 
 for SECTION in $SECTIONS
 do
@@ -110,6 +112,7 @@ do
 	mkdir -p $HTDOCS/$SECTION
 	find pass bugged fail -name '*.kpr' | xargs --no-run-if-empty cat > $ALLKPR
 	cut -d' ' -f 2 $ALLKPR | sort | uniq -c
+	ls -tr1 --color=none fail/*.log bugged/*.log pass/*.log 2>/dev/null > $LIST_ALL
 	>$KNOWNLOGS
 	#
 	# loop through all known problems
@@ -134,9 +137,10 @@ do
 			for LOG in $(cat $LOGS|sort) ; do
 				PACKAGE=${LOG##*/}
 				PACKAGE=${PACKAGE%%_*}
-				LATEST=$(ls -tr1 --color=none fail/${PACKAGE}_*.log bugged/${PACKAGE}_*.log pass/${PACKAGE}_*.log 2>/dev/null|tail -1|cut -d "/" -f1)
+				grep "/${PACKAGE}_" $LIST_ALL > $LIST_PKG
+				LATEST=$(tail -n 1 $LIST_PKG | cut -d "/" -f1)
 				if [ "${problem%_error.conf}_error.conf" = "$problem" ] ; then 
-					LATESTFAIL=$(ls -tr1 --color=none fail/${PACKAGE}_*.log bugged/${PACKAGE}_*.log  2>/dev/null|tail -1)
+					LATESTFAIL=$(grep -v ^pass/ $LIST_PKG | tail -n 1)
 					if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
 						echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
 						echo "$LOG" >> $KNOWNLOGS
@@ -144,7 +148,7 @@ do
 					fi
 				else
 					# this is an issue, not an error
-					LATESTSUCCESS=$(ls -tr1 --color=none pass/${PACKAGE}_*.log 2>/dev/null|tail -1)
+					LATESTSUCCESS=$(grep ^pass/ $LIST_PKG | tail -n 1)
 					if [ "$LATEST" = "pass" ] && [ "$LATESTSUCCESS" = "$LOG" ] ; then 
 						echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
 						echo "$LOG" >> $KNOWNLOGS
@@ -154,6 +158,7 @@ do
 			done
 			echo "</ul>" >>$OUTPUT
 			echo "<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>" >> $OUTPUT
+			test $COUNT -gt 0 || rm $OUTPUT
 		fi
         done
 	#
@@ -174,8 +179,9 @@ do
 		for LOG in $(cat $UNKNOWNLOGS|sort) ; do
 			PACKAGE=${LOG##*/}
 			PACKAGE=${PACKAGE%%_*}
-			LATEST=$(ls -tr1 --color=none fail/${PACKAGE}_*.log bugged/${PACKAGE}_*.log pass/${PACKAGE}_*.log 2>/dev/null|tail -1|cut -d "/" -f1)
-			LATESTFAIL=$(ls -tr1 --color=none fail/${PACKAGE}_*.log bugged/${PACKAGE}_*.log  2>/dev/null|tail -1)
+			grep "/${PACKAGE}_" $LIST_ALL > $LIST_PKG
+			LATEST=$(tail -n 1 $LIST_PKG | cut -d "/" -f1)
+			LATESTFAIL=$(grep -v ^pass/ $LIST_PKG | tail -n 1)
 			if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
 				echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
 				COUNT=$((COUNT+1))
@@ -187,6 +193,6 @@ do
 	fi
 	cd "$OLDPWD"
 done
-rm $LOGS $ALLKPR $KNOWNLOGS $UNKNOWNLOGS $KNOWNFAILURES
+rm $LOGS $ALLKPR $KNOWNLOGS $UNKNOWNLOGS $KNOWNFAILURES $LIST_ALL $LIST_PKG
 date
 
