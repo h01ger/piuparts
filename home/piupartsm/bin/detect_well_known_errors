@@ -48,10 +48,16 @@ OLDPWD=$(pwd)
 
 
 LOGS=`mktemp`
+ALLKPR=`mktemp`
+KNOWNLOGS=`mktemp`
+UNKNOWNLOGS=`mktemp`
+KNOWNFAILURES=`mktemp`
 
 for SECTION in $SECTIONS
 do
+	test -d $MASTER/$SECTION || continue
 	date
+	echo $SECTION:
 	cd $MASTER/$SECTION
 
 	#
@@ -99,21 +105,9 @@ do
 	done
 	ADDED=$(wc -l $LOGS | awk '{ print $1 }')
 
-	echo "$SECTION: parsed logfiles: $REMOVED removed, $ADDED added"
-	cd "$OLDPWD"
-done
+	echo "parsed logfiles: $REMOVED removed, $ADDED added"
 
-ALLKPR=`mktemp`
-KNOWNLOGS=`mktemp`
-UNKNOWNLOGS=`mktemp`
-KNOWNFAILURES=`mktemp`
-
-for SECTION in $SECTIONS
-do
-	date
-	echo $SECTION:
 	mkdir -p $HTDOCS/$SECTION
-	cd $MASTER/$SECTION
 	find pass bugged fail -name '*.kpr' | xargs --no-run-if-empty cat > $ALLKPR
 	cut -d' ' -f 2 $ALLKPR | sort | uniq -c
 	>$KNOWNLOGS
@@ -189,9 +183,10 @@ do
 		done
 		echo "</ul>" >> $OUTPUT
 		echo "<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>" >> $OUTPUT
+		test $COUNT -gt 0 || rm $OUTPUT
 	fi
 	cd "$OLDPWD"
 done
-rm $ALLKPR $LOGS $KNOWNLOGS $UNKNOWNLOGS $KNOWNFAILURES
+rm $LOGS $ALLKPR $KNOWNLOGS $UNKNOWNLOGS $KNOWNFAILURES
 date
 
