@@ -53,7 +53,9 @@ if [ -e $LOCKFILE ]; then
 fi
 date > $LOCKFILE
 
+#
 # various scripts to detect issues and cleanup
+#
 OUTPUT=$(mktemp)
 for SCRIPT in detect_stale_mounts detect_tmp_cruft detect_piuparts_issues archive_old_logs report_newly_bugged_packages ; do
   ~/bin/$SCRIPT 2>&1 > $OUTPUT
@@ -70,17 +72,26 @@ DAILYREPORT=$HTDOCS/dailyreport.txt
 >$DAILYREPORT
 
 # Failures of the day it should be, the rest is boring.
+FAILURESTAMP=$HTDOCS/last-failure-report.stamp
+test -f $FAILURESTAMP || touch -d @0 $FAILURESTAMP  # start at the epoch
+touch $FAILURESTAMP.new  # for the next report
+
+echo "New failures:" >> $DAILYREPORT
 for SECTION in $SECTIONS ; do
-	find $MASTER/$SECTION/fail $MASTER/$SECTION/bugged $MASTER/$SECTION/untestable -type f -name '*.log' -mtime -1 -exec ls -rt1 {} \;
+	find $MASTER/$SECTION/fail $MASTER/$SECTION/bugged $MASTER/$SECTION/untestable \
+		-type f -name '*.log' -newer $FAILURESTAMP -exec ls -1 {} + 2>/dev/null
 done | sed s#^$MASTER#$URLBASE# >> $DAILYREPORT
 
+echo "" >> $DAILYREPORT
 date >> $DAILYREPORT
 ~/bin/detect_well_known_errors 2>&1 >> $DAILYREPORT
 
+echo "" >> $DAILYREPORT
 date >> $DAILYREPORT
 nice python $PIUPARTS_PREFIX/share/piuparts/piuparts-report 2>&1 >> $DAILYREPORT 2>&1
-
 date >> $DAILYREPORT
+
 cat $DAILYREPORT | mail -s piuparts-report $LOGNAME
 
+mv $FAILURESTAMP.new $FAILURESTAMP
 rm -f $LOCKFILE
