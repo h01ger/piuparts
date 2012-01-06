@@ -374,6 +374,7 @@ linktarget_by_template = [
     ("unowned_files_after_purge_error.tpl", "due to unowned files after purge"),
     ("modified_files_after_purge_error.tpl", "due to files having been modified after purge"),
     ("disappeared_files_after_purge_error.tpl", "due to files having disappeared after purge"),
+    ("diversion_error.tpl", "due to diversions being modified after purge"),
     ("processes_running_error.tpl", "due to leaving processes running behind"),
     ("excessive_output_error.tpl", "due to being terminated after excessive output"),
     ("conffile_prompt_error.tpl", "due to prompting due to modified conffiles"),
