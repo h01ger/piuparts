@@ -357,41 +357,39 @@ state_by_dir = {
     "untestable": "dependency-cannot-be-tested",
 }
 
-# maybe better to use a list here to be able to use a defined order
-# see http://docs.python.org/library/bisect.html 2nd example
-# or use XX_name.tpl and get the linktarget from the template 
+# better use XX_name.tpl and get the linktarget from the template
 # (its a substring of the <title> of the that template
-# the 2nd option should be preferend, maintaining this list is errorprone and tiresome
-linktarget_by_template = {
-    "command_not_found_error.tpl": "due to a 'command not found' error",
-    "files_in_usr_local_error.tpl": "due to files in /usr/local",
-    "overwrite_other_packages_files_error.tpl": "due to overwriting other packages files",
-    "owned_files_after_purge_error.tpl": "due to owned files existing after purge",
-    "owned_files_by_many_packages_error.tpl": "due to owned files by many packages",
-    "processes_running_error.tpl": "due to leaving processes running behind",
-    "excessive_output_error.tpl": "due to being terminated after excessive output",
-    "unowned_files_after_purge_error.tpl": "due to unowned files after purge",
-    "conffile_prompt_error.tpl": "due to prompting due to modified conffiles",
-    "unknown_purge_error.tpl": "due to purge failed due to an unknown reason",
-    "insserv_error.tpl": "due to a problem with insserv",
-    "unknown_failures.tpl": "due to unclassified failures",
-    "initdscript_lsb_header_issue.tpl": "but logfile contains update-rc.d issues",
-    "command_not_found_issue.tpl": "but logfile contains 'command not found'",
-    "broken_symlinks_issue.tpl": "but logfile contains 'broken symlinks'",
-    "broken_symlinks_error.tpl": "...and logfile also contains 'broken symlinks'",
-    "pre_installation_script_error.tpl": "due to pre-installation maintainer script failed",
-    "post_installation_script_error.tpl": "due to post-installation maintainer script failed",
-    "pre_removal_script_error.tpl": "due to pre-removal maintainer script failed",
-    "post_removal_script_error.tpl": "due to post-removal maintainer script failed",
-    "cron_error_after_removal_error.tpl": "due to errors from cronjob after removal",
-    "logrotate_error_after_removal_error.tpl": "due to errors from logrotate after removal",
-    "problems_and_no_force_error.tpl": "due to not enough force being used",
-    "pre_depends_error.tpl": "due to a problem with pre-depends",
-    "modified_files_after_purge_error.tpl": "due to files having been modified after purge",
-    "disappeared_files_after_purge_error.tpl": "due to files having disappeared after purge",
-    "db_setup_error.tpl": "due to failing to setup a database",
-    "dependency_error.tpl": "due to unsatisfied dependencies",
-}
+# maintaining this list is errorprone and tiresome
+linktarget_by_template = [
+    ("command_not_found_error.tpl", "due to a 'command not found' error"),
+    ("files_in_usr_local_error.tpl", "due to files in /usr/local"),
+    ("overwrite_other_packages_files_error.tpl", "due to overwriting other packages files"),
+    ("owned_files_after_purge_error.tpl", "due to owned files existing after purge"),
+    ("owned_files_by_many_packages_error.tpl", "due to owned files by many packages"),
+    ("processes_running_error.tpl", "due to leaving processes running behind"),
+    ("excessive_output_error.tpl", "due to being terminated after excessive output"),
+    ("unowned_files_after_purge_error.tpl", "due to unowned files after purge"),
+    ("conffile_prompt_error.tpl", "due to prompting due to modified conffiles"),
+    ("unknown_purge_error.tpl", "due to purge failed due to an unknown reason"),
+    ("insserv_error.tpl", "due to a problem with insserv"),
+    ("unknown_failures.tpl", "due to unclassified failures"),
+    ("initdscript_lsb_header_issue.tpl", "but logfile contains update-rc.d issues"),
+    ("command_not_found_issue.tpl", "but logfile contains 'command not found'"),
+    ("broken_symlinks_issue.tpl", "but logfile contains 'broken symlinks'"),
+    ("broken_symlinks_error.tpl", "...and logfile also contains 'broken symlinks'"),
+    ("pre_installation_script_error.tpl", "due to pre-installation maintainer script failed"),
+    ("post_installation_script_error.tpl", "due to post-installation maintainer script failed"),
+    ("pre_removal_script_error.tpl", "due to pre-removal maintainer script failed"),
+    ("post_removal_script_error.tpl", "due to post-removal maintainer script failed"),
+    ("cron_error_after_removal_error.tpl", "due to errors from cronjob after removal"),
+    ("logrotate_error_after_removal_error.tpl", "due to errors from logrotate after removal"),
+    ("problems_and_no_force_error.tpl", "due to not enough force being used"),
+    ("pre_depends_error.tpl", "due to a problem with pre-depends"),
+    ("modified_files_after_purge_error.tpl", "due to files having been modified after purge"),
+    ("disappeared_files_after_purge_error.tpl", "due to files having disappeared after purge"),
+    ("db_setup_error.tpl", "due to failing to setup a database"),
+    ("dependency_error.tpl", "due to unsatisfied dependencies"),
+]
 
 
 class Config(piupartslib.conf.Config):
@@ -884,7 +882,7 @@ class Section:
 
     def create_and_link_to_analysises(self,state):
         link="<ul>"
-        for template, linktarget in linktarget_by_template.iteritems():
+        for template, linktarget in linktarget_by_template:
           # sucessful logs only have issues and failed logs only have errors
           # and "(un)owned (files/directories)" and symlink issues should only be reported in sid
           if (state == "failed-testing" and template[-9:] != "issue.tpl") or (state == "successfully-tested" and template[-9:] == "issue.tpl"):
