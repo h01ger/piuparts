@@ -1,16 +1,15 @@
 # run 'echo known_circular_depends = $(grep -v ^# circular-depends-wheezy.txt)'
 
 # from http://debian.semistable.com/debgraph.out.html
-# last updated: 2011-11-26
+# last updated: 2012-01-06
 libc6 libgcc1 multiarch-support
 coreutils dpkg
-libclass-isa-perl libswitch-perl perl perl-modules
+libswitch-perl perl perl-modules
 odbcinst odbcinst1debian2
 python-imaging python-imaging-tk
-autodocktools mgltools-pmv
 g++-4.4 libstdc++6-4.4-dev
-ca-certificates-java openjdk-6-jre-headless openjdk-6-jre-lib
 g++-4.6 libstdc++6-4.6-dev
+ca-certificates-java openjdk-6-jre-headless openjdk-6-jre-lib
 dmsetup libdevmapper1.02.1
 uqm uqm-content
 libmaven-scm-java libmaven2-core-java libwagon-java
@@ -24,21 +23,22 @@ aide aide-common
 libntrack0 ntrack-module-libnl-0 ntrack-module-rtnetlink-0
 gamin libgamin0
 monodoc-browser monodoc-http monodoc-manual
+openjdk-7-jre-headless openjdk-7-jre-lib
 libgeronimo-jpa-2.0-spec-java libgeronimo-osgi-support-java libosgi-compendium-java
 bochs bochs-wx
 tasksel tasksel-data
 g++-4.5 libstdc++6-4.5-dev
-openjdk-7-jre-headless openjdk-7-jre-lib
 python-netcdf python-scientific
 gcj-4.6-jdk libgcj12-dev
 gdc-4.4 libphobos-4.4-dev
 gcj-4.4-jdk libgcj10-dev
+gdc-4.6 libphobos2-4.6-dev
 pcb-common pcb-gtk pcb-lesstif
 ggz-gtk-games ggz-gtk-games-data
 ggz-sdl-games ggz-sdl-games-data
 gnuift gnuift-perl
 heroes-common heroes-ggi heroes-sdl
-cli-uno-bridge libuno-cli-cppuhelper1.0-cil
+libverto-glib1 libverto-libev1 libverto1
 strongswan-ikev1 strongswan-ikev2 strongswan-nm strongswan-starter
 klogd sysklogd
 
