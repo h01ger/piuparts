@@ -58,7 +58,7 @@ for SECTION in $SECTIONS ; do
 		get_config_value _FAIL_AGE   $SECTION reschedule-fail-days $FAIL_AGE
 		get_config_value _FAIL_COUNT $SECTION reschedule-fail-count $FAIL_COUNT
 		cd $MASTER/$SECTION
-		# we ignore bugged here - ptyhon-bts is really the way to go
+		# FIXME: we ignore bugged here - ptyhon-bts is really the way to go
 		find pass fail -name "*.log" -mtime +$_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_COUNT > $LOGS
 		find fail -name "*.log" -mtime +$_FAIL_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_FAIL_COUNT >> $LOGS
 		if [ -s $LOGS ]; then
