@@ -6,6 +6,10 @@ piuparts (0.43) UNRELEASED; urgency=low
   * So this is a bogus conflict entry which will need to manually removed
     later.
 
+  [ Andreas Beckmann ]
+  * piuparts.py:
+    - Add to self.ignored_patterns: /run/.*
+
  -- Holger Levsen <holger@debian.org>  Sun, 01 Jan 2012 14:14:35 +0100
 
 piuparts (0.42) unstable; urgency=low

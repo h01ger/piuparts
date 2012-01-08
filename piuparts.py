@@ -253,6 +253,7 @@ class Settings:
             "/etc/ssl/certs(/.*)?",
             "/etc/init.d/\.depend.*",
             "/lib/modules/.*/modules.*",
+            "/run/.*",
             "/usr/lib/python2\../site-packages/debconf.py[co]",
             "/var/backups/.*",
             "/var/cache/man/(/.*)?",
