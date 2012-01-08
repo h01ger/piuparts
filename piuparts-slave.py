@@ -296,6 +296,7 @@ class Section:
 
         oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
+        test_count = 0
 
         for logdir in ["pass", "fail", "untestable"]:
             for basename in os.listdir(logdir):
@@ -311,8 +312,6 @@ class Section:
 
         self._slave.get_status()
         self._slave.close()
-
-        test_count = len(self._slave.get_reserved())
 
         if self._slave.get_reserved():
             self._check_tarball()
@@ -334,6 +333,7 @@ class Section:
               packages_file = packages_files[distro]
 
             for package_name, version in self._slave.get_reserved():
+                test_count += 1
                 if package_name in packages_file:
                     package = packages_file[package_name]
                     if version == package["Version"] or self._config["upgrade-test-distros"]:
@@ -347,9 +347,9 @@ class Section:
                                 log_name(package_name, version)),
                                 "Package %s not found" % package_name)
                 self._slave.forget_reserved(package_name, version)
-            os.chdir(oldcwd)
 
-        return( test_count )
+        os.chdir(oldcwd)
+        return test_count
 
 
 def log_name(package, version):
