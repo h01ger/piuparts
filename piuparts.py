@@ -388,6 +388,7 @@ def run(command, ignore_errors=False):
     devnull = open('/dev/null', 'r')
     p = subprocess.Popen(command, env=env, stdin=devnull, 
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    max_output = 1 << 21  # 2 MB
     output = ""
     excessive_output = False
     while p.poll() is None:
@@ -395,7 +396,7 @@ def run(command, ignore_errors=False):
         of the command we may get less even if more output is coming later.
         Abort after reading 2 MB."""
         output += p.stdout.read(1 << 16)
-        if (len(output) > (1 << 21)):
+        if (len(output) > max_output):
             excessive_output = True
             logging.error("Terminating command due to excessive output")
             p.terminate()
@@ -408,6 +409,8 @@ def run(command, ignore_errors=False):
                 p.kill()
             p.wait()
             break
+    if not excessive_output:
+        output += p.stdout.read(max_output)
     devnull.close()
 
     if output:

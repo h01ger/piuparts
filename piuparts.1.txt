@@ -219,7 +219,8 @@ ENVIRONMENT
 
 NOTES
 -----
-Outputs of commands run by piuparts are limited to the last two megabytes. To change this limit, the source code needs to be edited.
+Output of commands run by piuparts is limited to two megabytes. To change this limit, the source code needs to be edited.
+Commands exceeding this limit will be aborted.
 
 SEE ALSO
 --------
