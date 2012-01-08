@@ -2578,6 +2578,9 @@ def main():
     # Packages that don't use debconf will lose.
     os.environ["DEBIAN_FRONTEND"] = "noninteractive"
 
+    if "DISPLAY" in os.environ:
+        del os.environ["DISPLAY"]
+
 
     changes_packages_list = []
     regular_packages_list = []
