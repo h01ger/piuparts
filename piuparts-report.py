@@ -651,8 +651,8 @@ class Section:
 
     def link_to_uploaders(self, uploaders):
         link = ""
-        for uploader in uploaders.split(", "):
-          link += self.link_to_maintainer_summary(uploader)+", "
+        for uploader in uploaders.split(","):
+            link += self.link_to_maintainer_summary(uploader.strip()) + ", "
         return link[:-2]
 
     def link_to_source_summary(self, package_name):
@@ -788,7 +788,7 @@ class Section:
         success = True
         failed = False
         binaryrows = ""
-        for binary in sorted(binaries.split(", ")):
+        for binary in sorted([x.strip() for x in binaries.split(",") if x.strip()]):
           state = self._binary_db.get_package_state(binary)
           if state == "unknown":
             # Don't track udebs and binary packages on other archs. 
