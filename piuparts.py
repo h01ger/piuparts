@@ -1915,7 +1915,7 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
     return ok
 
 
-def install_purge_test(chroot, chroot_state, selections, package_files, packages):
+def install_purge_test(chroot, chroot_state, package_files, packages):
     """Do an install-purge test. Return True if successful, False if not.
        Assume 'root' is a directory already populated with a working
        chroot, with packages in states given by 'selections'."""
@@ -1982,7 +1982,7 @@ def install_purge_test(chroot, chroot_state, selections, package_files, packages
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't there initially.    
-    chroot.restore_selections(selections, packages)
+    chroot.restore_selections(chroot_state["selections"], packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -1990,7 +1990,7 @@ def install_purge_test(chroot, chroot_state, selections, package_files, packages
     return check_results(chroot, chroot_state, file_owners, deps_info=deps_info)
 
 
-def install_upgrade_test(chroot, chroot_state, selections, package_files, packages, old_packages):
+def install_upgrade_test(chroot, chroot_state, package_files, packages, old_packages):
     """Install old_packages via apt-get, then upgrade from package files.
     Return True if successful, False if not."""
 
@@ -2014,7 +2014,7 @@ def install_upgrade_test(chroot, chroot_state, selections, package_files, packag
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't there initially.
-    chroot.restore_selections(selections, packages)
+    chroot.restore_selections(chroot_state["selections"], packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -2022,11 +2022,11 @@ def install_upgrade_test(chroot, chroot_state, selections, package_files, packag
     return check_results(chroot, chroot_state, file_owners)
 
 
-def save_meta_data(filename, chroot_state, selections):
+def save_meta_data(filename, chroot_state):
     """Save directory tree meta data into a file for fast access later."""
     logging.debug("Saving chroot meta data to %s" % filename)
     f = file(filename, "w")
-    pickle.dump((chroot_state, selections), f)
+    pickle.dump(chroot_state, f)
     f.close()
 
 
@@ -2034,9 +2034,9 @@ def load_meta_data(filename):
     """Load meta data saved by 'save_meta_data'."""
     logging.debug("Loading chroot meta data from %s" % filename)
     f = file(filename, "r")
-    (chroot_state, selections) = pickle.load(f)
+    chroot_state = pickle.load(f)
     f.close()
-    return chroot_state, selections
+    return chroot_state
 
 
 def install_and_upgrade_between_distros(package_files, packages):
@@ -2073,7 +2073,7 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     if settings.end_meta:
         # load root_info and selections
-        chroot_state, selections = load_meta_data(settings.end_meta)
+        chroot_state = load_meta_data(settings.end_meta)
         chroot.pre_install_diversions = []  # FIXME: diversion info needs to be restored
     else:
         if not settings.basetgz:
@@ -2088,12 +2088,12 @@ def install_and_upgrade_between_distros(package_files, packages):
         # set root_info and selections
         chroot_state = {}
         chroot_state["tree"] = chroot.save_meta_data()
-        selections = chroot.get_selections()
+        chroot_state["selections"] = chroot.get_selections()
         diversions = chroot.get_diversions()
 
         if settings.save_end_meta:
             # save root_info and selections
-            save_meta_data(settings.save_end_meta, chroot_state, selections)
+            save_meta_data(settings.save_end_meta, chroot_state)
             # FIXME: diversion info needs to be stored
 
         chroot.remove()
@@ -2136,8 +2136,7 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     file_owners = chroot.get_files_owned_by_packages()
 
-    # use root_info and selections
-    chroot.restore_selections(selections, packages)
+    chroot.restore_selections(chroot_state["selections"], packages)
     result = check_results(chroot, chroot_state, file_owners)
 
     chroot.check_for_no_processes()
@@ -2526,10 +2525,10 @@ def process_packages(package_list):
         chroot_state = {}
         chroot_state["tree"] = chroot.save_meta_data()
         chroot.pre_install_diversions = chroot.get_diversions()
-        selections = chroot.get_selections()
+        chroot_state["selections"] = chroot.get_selections()
 
         if not settings.no_install_purge_test:
-            if not install_purge_test(chroot, chroot_state, selections,
+            if not install_purge_test(chroot, chroot_state,
                       package_files, packages):
                 logging.error("FAIL: Installation and purging test.")
                 panic()
@@ -2544,7 +2543,7 @@ def process_packages(package_list):
                 known_packages = chroot.get_known_packages(packages_to_query)
                 if not known_packages:
                     logging.info("Can't test upgrade: packages not known by apt-get.")
-                elif install_upgrade_test(chroot, chroot_state, selections, package_files,
+                elif install_upgrade_test(chroot, chroot_state, package_files,
                         packages, known_packages):
                     logging.info("PASS: Installation, upgrade and purging tests.")
                 else:
