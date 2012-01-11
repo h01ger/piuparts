@@ -1181,6 +1181,9 @@ class Chroot:
         if packages:
             self.run_scripts("pre_install")
 
+            self.run(["apt-cache", "policy"])
+            self.run(["apt-cache", "policy"] + packages)
+
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
                 self.run(["apt-get", "-y", "install"] + packages)
