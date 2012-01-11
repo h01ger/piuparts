@@ -712,8 +712,6 @@ class Chroot:
     def __init__(self):
         self.name = None
 
-        self.pre_install_diversions = None
-
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
         self.name = tempfile.mkdtemp(dir=settings.tmpdir)
@@ -1852,7 +1850,7 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
     root_info = chroot_state["tree"]
     ok = True
     if settings.check_broken_diversions:
-        (removed, added) = chroot.get_modified_diversions(chroot.pre_install_diversions)
+        (removed, added) = chroot.get_modified_diversions(chroot_state["diversions"])
         if added:
             logging.error("FAIL: Installed diversions (dpkg-divert) not removed by purge:\n%s" %
                           indent_string("\n".join(added)))
@@ -2074,7 +2072,6 @@ def install_and_upgrade_between_distros(package_files, packages):
     if settings.end_meta:
         # load root_info and selections
         chroot_state = load_meta_data(settings.end_meta)
-        chroot.pre_install_diversions = []  # FIXME: diversion info needs to be restored
     else:
         if not settings.basetgz:
             temp_tgz = chroot.create_temp_tgz_file()
@@ -2089,12 +2086,11 @@ def install_and_upgrade_between_distros(package_files, packages):
         chroot_state = {}
         chroot_state["tree"] = chroot.save_meta_data()
         chroot_state["selections"] = chroot.get_selections()
-        diversions = chroot.get_diversions()
+        chroot_state["diversions"] = chroot.get_diversions()
 
         if settings.save_end_meta:
             # save root_info and selections
             save_meta_data(settings.save_end_meta, chroot_state)
-            # FIXME: diversion info needs to be stored
 
         chroot.remove()
         dont_do_on_panic(cid)
@@ -2108,7 +2104,6 @@ def install_and_upgrade_between_distros(package_files, packages):
         else:
             chroot.create(temp_tgz)
             chroot.remove_temp_tgz_file(temp_tgz)
-        chroot.pre_install_diversions = diversions
         cid = do_on_panic(chroot.remove)
 
     chroot.check_for_no_processes()
@@ -2524,8 +2519,8 @@ def process_packages(package_list):
 
         chroot_state = {}
         chroot_state["tree"] = chroot.save_meta_data()
-        chroot.pre_install_diversions = chroot.get_diversions()
         chroot_state["selections"] = chroot.get_selections()
+        chroot_state["diversions"] = chroot.get_diversions()
 
         if not settings.no_install_purge_test:
             if not install_purge_test(chroot, chroot_state,
