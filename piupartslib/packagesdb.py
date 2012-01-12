@@ -87,9 +87,12 @@ class Package(UserDict.UserDict):
         return vlist
 
     # all alternatives - [[package_name...]...]
-    def all_dependencies(self):
+    def all_dependencies(self, header_name=None):
+        headers = ["Depends", "Pre-Depends"]
+        if header_name is not None:
+            headers = [header_name]
         vlist = []
-        for header in ["Depends", "Pre-Depends"]:
+        for header in headers:
             if header in self:
                 vlist += self._parse_alternative_dependencies(header)
         return vlist
