@@ -12,6 +12,8 @@ piuparts (0.44) UNRELEASED; urgency=low
   * piuparts.py:
     - Add to self.ignored_patterns: /var/lib/ucf/.*
     - Increase output limit to 3 MB (for dist-upgrading daptup).
+  * piuparts-report.py:
+    - Add link to the list of untestable logs.
 
   [ Holger Levsen ]
   * Enable automatic bug updating in piuparts-analyse: if a bug is not closed

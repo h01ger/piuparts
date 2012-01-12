@@ -361,7 +361,7 @@ state_by_dir = {
     "fail": "failed-testing",
     "bugged": "failed-testing",
     "reserved": "waiting-to-be-tested",
-    "untestable": "dependency-cannot-be-tested",
+    "untestable": "cannot-be-tested",
 }
 
 # better use XX_name.tpl and get the linktarget from the template
@@ -949,7 +949,7 @@ class Section:
             dir_link = ""
             analysis = ""
             for vdir in dirs:
-              if vdir in ("pass","fail","bugged") and state_by_dir[vdir] == state:
+              if vdir in ("pass", "fail", "bugged", "untestable") and state_by_dir[vdir] == state:
                 dir_link += "<a href='%s.html'>%s</a> logs<br>" % (vdir, html_protect(vdir))
             if state in ("successfully-tested", "failed-testing"):
               analysis = self.create_and_link_to_analysises(state)
