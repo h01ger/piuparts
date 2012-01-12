@@ -97,19 +97,12 @@ class Package(UserDict.UserDict):
                 vlist += self._parse_alternative_dependencies(header)
         return vlist
 
-    def depends_with_alts(self, header_name):
-        vlist = []
-        if header_name in self:
-            parser = DependencyParser(self[header_name])
-            vlist += parser.get_dependencies()
-        return vlist
-
     def prefer_alt_depends(self, header_name,dep_idx,dep):
         if header_name in self:
             if header_name not in self._parsed_deps:
                   self._parse_dependencies(header_name)
             if self._parsed_deps[header_name][dep_idx]:
-                self._parsed_deps[header_name][dep_idx] = dep.name
+                self._parsed_deps[header_name][dep_idx] = dep
 
     def provides(self):
         vlist = []
@@ -341,7 +334,7 @@ class PackagesDB:
 
         state = None
         for header in ["Depends", "Pre-Depends"]:
-            alt_deps=package.depends_with_alts(header)
+            alt_deps = package.all_dependencies(header)
             for d in range(len(alt_deps)):
                 if len(alt_deps[d]) > 1:
                     alt_found = 0
@@ -352,8 +345,7 @@ class PackagesDB:
                     prefer_alt_idx = 0
                     prefer_alt = None
                     for alternative in alt_deps[d]:
-                        dep = alternative.name
-                        altdep_state = self.get_package_state(dep)
+                        altdep_state = self.get_package_state(alternative)
                         if altdep_state != "does-not-exist":
                             alt_found += 1
                             if prefer_alt_score < 3 and altdep_state == "essential-required":
