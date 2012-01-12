@@ -447,10 +447,10 @@ def emphasize_reason(reason):
         "dependency-cannot-be-tested",
         "dependency-does-not-exist",
         "circular-dependency",
-        "does-not-exist",
         "unknown",
         "unknown-preferred-alternative",
         "no-dependency-from-alternatives-exists",
+        "does-not-exist",
     ]
     if reason in bad_states:
       reason = "<em>"+reason+"</em>"
