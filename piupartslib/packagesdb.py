@@ -342,7 +342,6 @@ class PackagesDB:
                     alt_unknowns = 0
                     alt_state = None
                     prefer_alt_score = 0
-                    prefer_alt_idx = 0
                     prefer_alt = None
                     for alternative in alt_deps[d]:
                         altdep_state = self.get_package_state(alternative)
@@ -350,16 +349,13 @@ class PackagesDB:
                             alt_found += 1
                             if prefer_alt_score < 3 and altdep_state == "essential-required":
                                 prefer_alt = alternative
-                                prefer_alt_idx = d
                                 prefer_alt_score = 3
                             elif prefer_alt_score < 2 and altdep_state == "successfully-tested":
                                 prefer_alt = alternative
-                                prefer_alt_idx = d
                                 prefer_alt_score = 2
                             elif prefer_alt_score < 1 and \
                                  altdep_state in ["waiting-to-be-tested", "waiting-for-dependency-to-be-tested"]:
                                 prefer_alt = alternative
-                                prefer_alt_idx = d
                                 prefer_alt_score = 1
                             elif altdep_state == "unknown":
                                 alt_unknowns += 1
@@ -369,9 +365,9 @@ class PackagesDB:
                                     alt_state = altdep_state
 
                     if prefer_alt_score >= 2:
-                        package.prefer_alt_depends(header,prefer_alt_idx,prefer_alt)
+                        package.prefer_alt_depends(header, d, prefer_alt)
                     elif prefer_alt_score == 1 and ((alt_unknowns + alt_fails) == 0):
-                        package.prefer_alt_depends(header,prefer_alt_idx,prefer_alt)
+                        package.prefer_alt_depends(header, d, prefer_alt)
                     elif alt_found == 0:
                         return "no-dependency-from-alternatives-exists"
                     else:
