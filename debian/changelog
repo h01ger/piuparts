@@ -10,6 +10,10 @@ piuparts (0.43) UNRELEASED; urgency=low
   * piuparts.py:
     - Add to self.ignored_patterns: /run/.*
 
+  [ Holger Levsen ]
+  * piuparts.1.txt: correctly reverse the description of --save-end-meta 
+    and --end-meta.
+
  -- Holger Levsen <holger@debian.org>  Sun, 01 Jan 2012 14:14:35 +0100
 
 piuparts (0.42) unstable; urgency=low
