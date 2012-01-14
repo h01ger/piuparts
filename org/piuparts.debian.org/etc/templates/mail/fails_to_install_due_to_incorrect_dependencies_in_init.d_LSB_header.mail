@@ -5,7 +5,7 @@ Package:
 Version:
 Severity: serious
 User: debian-qa@lists.debian.org
-Usertags: piuparts piuparts.d.o
+Usertags: piuparts
 User:     initscripts-ng-devel@lists.alioth.debian.org
 Usertags: incorrect-dependency
 
