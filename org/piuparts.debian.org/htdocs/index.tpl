@@ -280,5 +280,10 @@
       <b>2009-03-19</b>: lenny2squeeze is not needed, so all logs for squeeze (as well as lenny2squeeze) were deleted. (As squeeze now includes two kinds of tests: installation and removal in squeeze, and installation in lenny, upgrade to squeeze, removal in squeeze.)
      </td>
     </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2009-02-28</b>: Start maintaining piatti.debian.org via the piuparts svn repository on alioth.
+     </td>
+    </tr>
     </table>
 
