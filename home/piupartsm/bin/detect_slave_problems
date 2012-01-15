@@ -67,7 +67,7 @@ difference=$(( $unixtime - $stamptime ))
 # FIXME: parse config file for duration...
 if [ ! -f $LOCKFILE ] && [ ${difference} -ge 1860 ] ; then
 	{
-		echo "Either piuparts-slave hangs or is not running at all or wasn't started with ~piupartss/bin/slave_run - please investigate and take appropriate measures!"
+		echo "Either a test is running for a very long time (but no test should run longer than an hour), piuparts-slave hangs or is not running at all or wasn't started with ~piupartss/bin/slave_run - please investigate and take appropriate measures!"
 		echo
 		tail $SCREENLOG
 	} | mail -s "problem with piuparts-slave detected" piupartsm
