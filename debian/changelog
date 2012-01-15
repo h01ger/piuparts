@@ -23,6 +23,7 @@ piuparts (0.43) UNRELEASED; urgency=low
     - Reorder the list of known problem analyses and add a few new ones.
     - Correctly split + strip comma-separated lists.
   * Makefile:
+  * README.txt: Document piuparts.conf settings used by piatti.git scripts.
 
   [ Holger Levsen ]
   * piuparts.1.txt: correctly reverse the description of --save-end-meta
