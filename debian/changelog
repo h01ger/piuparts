@@ -9,6 +9,20 @@ piuparts (0.43) UNRELEASED; urgency=low
   [ Andreas Beckmann ]
   * piuparts.py:
     - Add to self.ignored_patterns: /run/.*
+    - Unset DISPLAY variable before running commands in the chroot.
+    - Read possibly remaining buffered output after a command terminated.
+    - Run apt-cache policy on the packages to be installed.
+    - Simplify keeping the reference chroot state: move tree info, selections
+      and diversions into a dict, can be extended easily.
+  * piupartslib/packagesdb.py:
+    - Restrict circular-dependency state to packages on the circle.
+  * piuparts-master.py:
+  * piuparts-slave.py:
+    - Fix chdir in/out of the slave dir to work with relative paths.
+  * piuparts-report.py:
+    - Reorder the list of known problem analyses and add a few new ones.
+    - Correctly split + strip comma-separated lists.
+  * Makefile:
 
   [ Holger Levsen ]
   * piuparts.1.txt: correctly reverse the description of --save-end-meta
