@@ -131,34 +131,37 @@ class Settings:
     def __init__(self):
         self.defaults = None
         self.tmpdir = None
-        self.scriptsdirs = []
         self.keep_tmpdir = False
-        self.single_changes_list = False
         self.max_command_output_size = 2 * 1024 * 1024
+        self.single_changes_list = False
         self.args_are_package_files = True
+        # distro setup
         self.debian_mirrors = []
         self.debian_distros = []
+        self.keep_sources_list = False
+        self.do_not_verify_signatures = False
+        self.scriptsdirs = []
         self.bindmounts = []
+        # chroot setup
         self.basetgz = None
-        self.lvm_volume = None
         self.savetgz = None
+        self.lvm_volume = None
         self.end_meta = None
         self.save_end_meta = None
-        self.warn_on_others = False
-        self.warn_on_leftovers_after_purge = False
-        self.keep_sources_list = False
         self.skip_minimize = True
-        self.list_installed_files = False
+        self.debfoster_options = None
+        # tests and checks
         self.no_install_purge_test = False
         self.no_upgrade_test = False
+        self.list_installed_files = False
         self.extra_old_packages = []
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
         self.check_broken_diversions = True
         self.check_broken_symlinks = True
         self.warn_broken_symlinks = True
-        self.debfoster_options = None
-        self.do_not_verify_signatures = False
+        self.warn_on_others = False
+        self.warn_on_leftovers_after_purge = False
         self.ignored_files = [
             "/dev/MAKEDEV",
             "/etc/aliases",
@@ -2388,27 +2391,12 @@ def parse_command_line():
     (opts, args) = parser.parse_args()
 
     settings.defaults = opts.defaults
-    settings.args_are_package_files = not opts.apt
-    settings.basetgz = opts.basetgz
-    settings.lvm_volume = opts.lvm_volume
-    settings.lvm_snapshot_size = opts.lvm_snapshot_size
-    settings.bindmounts += opts.bindmount
-    settings.debian_distros = opts.distribution
-    settings.ignored_files += opts.ignore
-    settings.ignored_patterns += opts.ignore_regex
     settings.keep_tmpdir = opts.keep_tmpdir
     settings.single_changes_list = opts.single_changes_list
+    settings.args_are_package_files = not opts.apt
+    # distro setup
+    settings.debian_distros = opts.distribution
     settings.keep_sources_list = opts.keep_sources_list
-    settings.skip_minimize = opts.skip_minimize
-    settings.minimize = opts.minimize
-    if settings.minimize:
-      settings.skip_minimize = False
-    settings.list_installed_files = opts.list_installed_files
-    settings.no_install_purge_test = opts.no_install_purge_test
-    settings.no_upgrade_test = opts.no_upgrade_test
-    [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
-    settings.skip_cronfiles_test = opts.skip_cronfiles_test
-    settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test
     settings.keyring = opts.keyring
     settings.do_not_verify_signatures = opts.do_not_verify_signatures
     if settings.do_not_verify_signatures:
@@ -2417,6 +2405,34 @@ def parse_command_line():
     else:
       settings.keyringoption="--keyring=%s" % settings.keyring
       settings.apt_unauthenticated="No"
+    settings.eatmydata = not opts.no_eatmydata
+    settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
+    settings.dpkg_force_confdef = opts.dpkg_force_confdef
+    settings.bindmounts += opts.bindmount
+    # chroot setup
+    settings.basetgz = opts.basetgz
+    settings.savetgz = opts.save
+    settings.lvm_volume = opts.lvm_volume
+    settings.lvm_snapshot_size = opts.lvm_snapshot_size
+    settings.skip_minimize = opts.skip_minimize
+    settings.minimize = opts.minimize
+    if settings.minimize:
+      settings.skip_minimize = False
+    settings.debfoster_options = opts.debfoster_options.split()
+    # tests and checks
+    settings.no_install_purge_test = opts.no_install_purge_test
+    settings.no_upgrade_test = opts.no_upgrade_test
+    settings.list_installed_files = opts.list_installed_files
+    [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
+    settings.skip_cronfiles_test = opts.skip_cronfiles_test
+    settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test
+    settings.check_broken_diversions = not opts.no_diversions
+    settings.check_broken_symlinks = not opts.no_symlinks
+    settings.warn_broken_symlinks = not opts.fail_on_broken_symlinks
+    settings.warn_on_others = opts.warn_on_others
+    settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
+    settings.ignored_files += opts.ignore
+    settings.ignored_patterns += opts.ignore_regex
     settings.pedantic_purge_test = opts.pedantic_purge_test
     if not settings.pedantic_purge_test:
       settings.ignored_patterns += settings.non_pedantic_ignore_patterns
@@ -2427,16 +2443,6 @@ def parse_command_line():
 
     settings.debian_mirrors = [parse_mirror_spec(x, defaults.get_components())
                                for x in opts.mirror]
-    settings.check_broken_diversions = not opts.no_diversions
-    settings.check_broken_symlinks = not opts.no_symlinks
-    settings.warn_broken_symlinks = not opts.fail_on_broken_symlinks
-    settings.savetgz = opts.save
-    settings.warn_on_others = opts.warn_on_others
-    settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
-    settings.debfoster_options = opts.debfoster_options.split()
-    settings.eatmydata = not opts.no_eatmydata
-    settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
-    settings.dpkg_force_confdef = opts.dpkg_force_confdef
 
     if opts.adt_virt is None:
         settings.adt_virt = None
