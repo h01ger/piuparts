@@ -2414,6 +2414,8 @@ def parse_command_line():
     settings.savetgz = opts.save
     settings.lvm_volume = opts.lvm_volume
     settings.lvm_snapshot_size = opts.lvm_snapshot_size
+    settings.end_meta = opts.end_meta
+    settings.save_end_meta = opts.save_end_meta
     settings.skip_minimize = opts.skip_minimize
     settings.minimize = opts.minimize
     if settings.minimize:

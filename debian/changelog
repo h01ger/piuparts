@@ -14,6 +14,7 @@ piuparts (0.43) UNRELEASED; urgency=low
     - Run apt-cache policy on the packages to be installed.
     - Simplify keeping the reference chroot state: move tree info, selections
       and diversions into a dict, can be extended easily.
+    - Fix --*end-meta documentation and actually enable these options.
   * piupartslib/packagesdb.py:
     - Restrict circular-dependency state to packages on the circle.
   * piuparts-master.py:
