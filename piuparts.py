@@ -134,8 +134,7 @@ class Settings:
         self.scriptsdirs = []
         self.keep_tmpdir = False
         self.single_changes_list = False
-        # limit output of logfiles to the last megabyte:
-        self.max_command_output_size = 1024 * 1024
+        self.max_command_output_size = 2 * 1024 * 1024
         self.args_are_package_files = True
         self.debian_mirrors = []
         self.debian_distros = []
@@ -388,7 +387,6 @@ def run(command, ignore_errors=False):
     devnull = open('/dev/null', 'r')
     p = subprocess.Popen(command, env=env, stdin=devnull, 
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    max_output = 1 << 21  # 2 MB
     output = ""
     excessive_output = False
     while p.poll() is None:
@@ -396,7 +394,7 @@ def run(command, ignore_errors=False):
         of the command we may get less even if more output is coming later.
         Abort after reading 2 MB."""
         output += p.stdout.read(1 << 16)
-        if (len(output) > max_output):
+        if (len(output) > settings.max_command_output_size):
             excessive_output = True
             logging.error("Terminating command due to excessive output")
             p.terminate()
@@ -410,7 +408,7 @@ def run(command, ignore_errors=False):
             p.wait()
             break
     if not excessive_output:
-        output += p.stdout.read(max_output)
+        output += p.stdout.read(settings.max_command_output_size)
     devnull.close()
 
     if output:
@@ -2099,7 +2097,7 @@ def install_and_upgrade_between_distros(package_files, packages):
         dont_do_on_panic(cid)
 
         # leave indication in logfile why we do what we do
-        logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
+        logging.info("Notice: package selections and meta data from target distro saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
 
         chroot = get_chroot()
         if settings.basetgz:
@@ -2325,10 +2323,10 @@ def parse_command_line():
                       help="Save the chroot into FILENAME.")
 
     parser.add_option("-B", "--end-meta", metavar="FILE",
-                      help="Save chroot package selection and file meta data in FILE for later use. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
+                      help="Load chroot package selection and file meta data from FILE. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
 
     parser.add_option("-S", "--save-end-meta", metavar="FILE",
-                      help="Load chroot package selection and file meta data from FILE. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
+                      help="Save chroot package selection and file meta data in FILE for later use. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
 
     parser.add_option("--single-changes-list", default=False,
                       action="store_true",
