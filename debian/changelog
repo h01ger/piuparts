@@ -11,7 +11,7 @@ piuparts (0.43) UNRELEASED; urgency=low
     - Add to self.ignored_patterns: /run/.*
 
   [ Holger Levsen ]
-  * piuparts.1.txt: correctly reverse the description of --save-end-meta 
+  * piuparts.1.txt: correctly reverse the description of --save-end-meta
     and --end-meta.
 
  -- Holger Levsen <holger@debian.org>  Sun, 01 Jan 2012 14:14:35 +0100
@@ -26,7 +26,7 @@ piuparts (0.42) unstable; urgency=low
   * Remove Debian.NEWS entry about source in git. (Closes: #640121)
   * piuparts.py, piuparts-report.py, ChangeLog: Expand tabs to spaces.
   * Remove whitespaces from whitespace-only lines.
-  * piuparts-report: 
+  * piuparts-report:
     - create maintainer subdirs if they don't exist.
     - detect tests being terminated due to excessive output.
   * Add git to Build-Depends-Indep: as git describe is used to generate
@@ -46,7 +46,7 @@ piuparts (0.42) unstable; urgency=low
 
   [ Scott Schaefer ]
   * debian/copyright: Make it compliant with DEP-5.
-  * piuparts-slave.py: 
+  * piuparts-slave.py:
     - Replace deprecated os.popen2 with subprocess.Popen. (Closes: #640646)
     - Add some more logging.
     - Kill children (hard-coded value, 45 minutes) to ensure test doesn't
@@ -58,7 +58,7 @@ piuparts (0.42) unstable; urgency=low
       a) Existing diversions removed/modified, and/or
       b) Installed diversions not removed by purge.
   * piupartslib/packagesdb.py: Modify several functions in PackagesDB class
-    to use python 'set' type, instead of a list.  This permitted replacing 
+    to use python 'set' type, instead of a list.  This permitted replacing
     inefficient combination of unique() function and random.shuffle() with
     python set.pop() method.  Since python prohibits storing non-hashable
     object in a set, minor modifications to piuparts-report and to
@@ -137,7 +137,7 @@ piuparts (0.42) unstable; urgency=low
     - Add precedence attribute to allow prioritizing different sections and to
       suspend processing of low priority ones while there are packages waiting
       in more important sections.
-  * piuparts-report.py: 
+  * piuparts-report.py:
     - state-*.html: Sort package lists by name, display state of all
       alternative dependencies and packages providing a virtual dependency.
     - source/?/*.html: Sort binary packages by name.
@@ -164,31 +164,31 @@ piuparts (0.42) unstable; urgency=low
 piuparts (0.41) unstable; urgency=low
 
   * piupartslib/packagesdb.py: Apply patch by Scott Schaefer to also consider
-    alternative depends: the algorithm used to select the "best" alternative 
+    alternative depends: the algorithm used to select the "best" alternative
     is:
      1) Prefer first alternative in state "essential-required"
      2) If no "essential-required" alternatives, prefer first alternative
         in state "successfully-tested"
-     3) Otherwise, prefer first alternative in state 
+     3) Otherwise, prefer first alternative in state
         "waiting-to-be-tested" IF NO REMAINING alternatives are in one of the
         "unknown/fail" states
     For this two new states have been introduced:
      a) "unknown-preferred-alternative": equivalent of "unknown", this defers
-        calculation of this package's state, since one or more of its 
-        alternative depends are "unknown" (or 
-        "unknown-preferred-alternative"), and no alternative is either 
+        calculation of this package's state, since one or more of its
+        alternative depends are "unknown" (or
+        "unknown-preferred-alternative"), and no alternative is either
         "essential-required" or "successfully-tested".  The alternatives will
         be re-tested on subsequest pass.
      b) "no-dependency-from-alternatives-exists": if none of the alternatives
         can be found in the archive.
     (Closes: #526045)
-  * piuparts-report.py: 
+  * piuparts-report.py:
     - correct a typo from the patch for #523950.
     - make_stats_graph: draw the two new states as well.
     - point to source code in git instead of svn.
-  * piuparts.py: 
-    - use proxy settings either from apt configuration or http_proxy 
-      environment variable, the latter overwriting the former (if present) 
+  * piuparts.py:
+    - use proxy settings either from apt configuration or http_proxy
+      environment variable, the latter overwriting the former (if present)
       - Thanks to Scott Schaefer for the patch. (Closes: #632046)
     - new option "--no-install-purge-test" to only do upgrade tests
       - Thanks to Andreas Beckmann for the patch (Closes: #588482)
@@ -197,20 +197,20 @@ piuparts (0.41) unstable; urgency=low
       Thanks to Scott once more!
     - new option: "--fail-on-broken-symlinks". Remove option "--warn-symlinks"
       as this is the default now.
-  * piuparts-slave: 
+  * piuparts-slave:
     - check if chroot-tgz is older than max-tgz-age (defaulting to 30 days)
-      and recreate it, if it is. Keep backup and put in back in place when 
+      and recreate it, if it is. Keep backup and put in back in place when
       debootstrapping a new chroot-tgz fails. Retry after min-tgz-retry-delay
       seconds. Thanks to Scott Schaefer for the patch. (Closes: #632924)
     - document new configuration options max-tgz-age and min-tgz-retry-delay
       in README.txt.
-    - fix bug in piuparts-slave which prevented running a single section by 
+    - fix bug in piuparts-slave which prevented running a single section by
       including section name as command-line argument - thanks again to Scott
       and see 632924 too.
   * debian/control:
     - require python >= 2.6.6-3~, get rid of python-support build-depends.
     - add X-Python-Version: pseudo-header
-  * debian/rules: use dh_python2 instead of python-support to build the 
+  * debian/rules: use dh_python2 instead of python-support to build the
     package
   * Makefile: build for python 2.6 and 2.7 instead of 2.5 and 2.6.
   * Source code is now stored in git.
@@ -218,7 +218,7 @@ piuparts (0.41) unstable; urgency=low
     git clone git+ssh://git.debian.org/git/piuparts/piuparts.git
     Thanks to Thomas Koch for setting those up and keeping history!
   * The configuration and scripts used on piatti.debian.org have also been
-    moved to git, the URLs are the same, just s#piuparts#piatti#. 
+    moved to git, the URLs are the same, just s#piuparts#piatti#.
   * Add entry about git to NEWS.
   * Update Vcs-*-Headers in control to reflect move to git.
 
@@ -226,10 +226,10 @@ piuparts (0.41) unstable; urgency=low
 
 piuparts (0.40) unstable; urgency=low
 
-  * piuparts.py: 
+  * piuparts.py:
     - make "natty" the default Ubuntu distribution.
-    - add to self.ignored_files: 
-      - /var/log/bootstrap.log 
+    - add to self.ignored_files:
+      - /var/log/bootstrap.log
   * debian/control: depend on ${python:Depends} instead of just python. Thanks
     to Jakub Wilk. (Closes: #614617)
   * *.py: do not use Python built-in function names as variable name. Thanks
@@ -245,9 +245,9 @@ piuparts (0.39) unstable; urgency=low
 
   [ Holger Levsen ]
   * The vintage of 2010 release!
-  * piuparts-report.py: 
+  * piuparts-report.py:
      - report packages which failed
-       - due to broken maintainer scripts, 
+       - due to broken maintainer scripts,
        - due to output from cron after removal,
        - due to not enough force being,
        - due to a problem with pre-depends,
@@ -255,15 +255,15 @@ piuparts (0.39) unstable; urgency=low
        - due to files having disappeared after purge and
        - due to problems configuring a database.
      - only report about (un)owned files and directories and symlink issues in
-       sid - that's hardcoded as it's not practical to track them anywhere else 
+       sid - that's hardcoded as it's not practical to track them anywhere else
        anyway. And at least for broken symlinks this will also stay like this
        for a long time.
      - visual improvements in the output.
      - ignore udebs and binaries from other archs too.
      - graph is generated using all the available data points.
-  * piupartslib/packagesdb.py: 
+  * piupartslib/packagesdb.py:
     - automatically break circular dependencies when there are only circular
-      dependencies left, using a configurable list of circular depdencies in 
+      dependencies left, using a configurable list of circular depdencies in
       piuparts.conf (Closes: #526046)
         The list of circular depends is taken from a script written by Robert
       Lemmen available at http://debian.semistable.com/debgraph.out.html -
@@ -271,41 +271,41 @@ piuparts (0.39) unstable; urgency=low
         Note that the dependency resovler is still buggy, the state
       waiting-for-dependency-to-be-tested still contains some packages
       with failed depends (due to them being dependent on packages with
-      circular depends). This bug has no effect other than that (so the state 
-      waiting-to-be-tested is calculated correctly). This bug is also no 
+      circular depends). This bug has no effect other than that (so the state
+      waiting-to-be-tested is calculated correctly). This bug is also no
       regression.
     - get rid of the longtime unused states "fixed" and "fix-not-yet-tested"
       (also in piuparts-master and piuparts-report).
     - forget reservations of untestable packages.
-  * piuparts-slave.py: 
-    - fix crash when going into sleep when idle. 
+  * piuparts-slave.py:
+    - fix crash when going into sleep when idle.
     - add support for only doing upgrade tests (without the basic test in the
       upgrade target distro).
     - honor mirror configuration option also for upgrade-tests.
-    - also do upgrade tests if the version of a package being tested (the one 
-      in the upgraded distro) is not available in the distro being upgraded 
+    - also do upgrade tests if the version of a package being tested (the one
+      in the upgraded distro) is not available in the distro being upgraded
       from. (This is a very short test, but a successfully one.)
     - make configuration setting "distro" to not default to any distro.
-  * piuparts.py: 
+  * piuparts.py:
     - new option: --log-level to specify the verbosity of piuparts
       output. Thanks to Fabrice Coutadeur for the patch! (Closes: #567190)
     - new option: --warn-on-leftovers-after-purge to not fail if a package
       leaves files behind after purge. (Closes: #566599)
-    - add to self.ignored_files: 
+    - add to self.ignored_files:
       - /var/lib/apt/lists/partial/.delete-me-later
       - /var/log/alternatives.log (Closes: #591966)
       - /var/log/apt/history.log (Closes: #594964)
       - /usr/share/fonts/X11/misc/fonts.alias (Closes: #576321)
-    - add to self.ignored_patterns: 
+    - add to self.ignored_patterns:
       - /etc/init.d/.depend.*
       - /var/mail(/.*)? - this used to be just /var/mail/.*
       - /var/lib//update-rc.d(/.*)? (Closes: #605127)
     - create temporary DEBIAN directory for the piuparts-depends-dummy package
-      with 0755 perms regardless of the umask of the calling shell. 
+      with 0755 perms regardless of the umask of the calling shell.
       (Closes: #573904)
     - fix --do-not-verify-signatures option (Closes: #574936) - thanks to
       Cleto Martin Angelina for the patch.
-    - make Chroot.diff_meta_data() special case and ignore files matching 
+    - make Chroot.diff_meta_data() special case and ignore files matching
       (/etc/rc.\.d/)[SK][0-9]{2}(.*)$ so that piuparts doesn't complain about
       initscripts renamed by insserv. Thanks to by Andreas Beckmann for the
       patch! (Closes: #586793)
@@ -315,10 +315,10 @@ piuparts (0.39) unstable; urgency=low
     - new custom script: pre_remove_ (Closes: #539146)
     - set environment variable PIUPARTS_OBJECTS in custom scripts to a space
       separated list of packages / changes files being tested.
-    - do not call apt-get with --no-remove when installing packages. 
+    - do not call apt-get with --no-remove when installing packages.
       (Closes: #603453)
     - apply patch by Andres Mejia to fix parsing of the --force-confdef option
-      and also to configure apt to use that option. Thanks, Andres. 
+      and also to configure apt to use that option. Thanks, Andres.
       (Closes: #605475)
     - don't panic if package is not known by apt-get, this probably just means
       a package not yet in the archive is being tested. (Closes: #566672)
@@ -328,11 +328,11 @@ piuparts (0.39) unstable; urgency=low
       comments to install_and_upgrade_between_distros() to make the code
       easier to understand and hopefully improve in future. (Closes: #560050).
     - add logging to install_and_upgrade_between_distros() to point people to
-      read the functions source code if they wonder why the log (for distro 
+      read the functions source code if they wonder why the log (for distro
       upgrade tests) looks like it looks.
-  * piuparts.1.txt: 
+  * piuparts.1.txt:
     - update the pointer to custom-scripts.txt to point to README.txt, as
-      those two files have been merged. Thanks to Gregor Hermann for 
+      those two files have been merged. Thanks to Gregor Hermann for
       spotting this. (Closes: #574504)
     - indicate that it's possible to check several packages or .changes files
       at once.
@@ -340,8 +340,8 @@ piuparts (0.39) unstable; urgency=low
   * README.txt
     - better documentation of custom scripts.
     - reformat to achieve consistent width.
-  * Add ${misc:Depends} to Depends in debian/control. 
-  * Remove versioned dependencies on debootstrap as the version available 
+  * Add ${misc:Depends} to Depends in debian/control.
+  * Remove versioned dependencies on debootstrap as the version available
     in Etch is sufficient. Drop build-depends on dpkg-dev as it's in
     build-essential.
   * Build-depend on debhelper>=7 and use dh_prep instead of dh_clean -k, bump
@@ -359,7 +359,7 @@ piuparts (0.39) unstable; urgency=low
       package was removed. (Closes: #566597)
 
   [ John Wright ]
-  * Use debian module when available, else debian_bundle module. 
+  * Use debian module when available, else debian_bundle module.
     (Closes: #586443)
   * Use built-in set type, available since python-2.4.
 

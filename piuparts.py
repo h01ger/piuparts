@@ -1067,7 +1067,7 @@ class Chroot:
         """Purge packages in a chroot."""
         if packages:
             self.run(["dpkg", "--purge"] + packages, ignore_errors=True)
- 
+
     def restore_selections(self, selections, packages):
         """Restore package selections in a chroot to the state in
         'selections'."""

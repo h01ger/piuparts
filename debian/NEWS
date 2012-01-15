@@ -2,7 +2,7 @@ piuparts (0.38) unstable; urgency=low
 
   * New default behaviours in piuparts:
    * --skip-minimize is now the default. This is because debootstrap is called
-     with --variant=minbase instead of --resolv-deps now and because if a 
+     with --variant=minbase instead of --resolv-deps now and because if a
      base.tgz or an lvm snapshot is specified, piuparts should not touch it.
      (Closes: #539142)
      Introduce a new option, --minimize, to minimize a chroot with debfoster.
@@ -23,8 +23,8 @@ piuparts (0.36) unstable; urgency=low
 
   * piuparts 0.36 introduces many changes to master-slave mode, please read
     debian/changelog carefully.
-  * Backwards compatibility of the configuration files for master-slave-mode 
-    has been broken, as the three config files got merged into one: 
+  * Backwards compatibility of the configuration files for master-slave-mode
+    has been broken, as the three config files got merged into one:
     /etc/piuparts/piuparts.conf
   * piuparts-reports has been re-added and improved.
   * The documentation files have been merged and converted to asciidoc.
