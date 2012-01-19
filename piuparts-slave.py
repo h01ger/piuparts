@@ -188,12 +188,12 @@ class Slave:
         if line != "ok\n":
             raise MasterNotOK()
 
-    def get_status(self):
+    def get_status(section):
         self._writeline("status")
         line = self._readline()
         words = line.split()
         if words and words[0] == "ok":
-            logging.info("Master " + self._config.section + "status: " + " ".join(words[1:]))
+            logging.info("Master " + section + "status: " + " ".join(words[1:]))
         else:
             raise MasterIsCrazy()
 
@@ -310,7 +310,7 @@ class Section:
             while len(self._slave.get_reserved()) < max_reserved and self._slave.reserve():
                 pass
 
-        self._slave.get_status()
+        self._slave.get_status(self._config.section)
         self._slave.close()
 
         if self._slave.get_reserved():
