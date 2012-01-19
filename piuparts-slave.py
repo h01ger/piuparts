@@ -193,7 +193,7 @@ class Slave:
         line = self._readline()
         words = line.split()
         if words and words[0] == "ok":
-            logging.info("Master " + section + "status: " + " ".join(words[1:]))
+            logging.info("Master " + section + " status: " + " ".join(words[1:]))
         else:
             raise MasterIsCrazy()
 
