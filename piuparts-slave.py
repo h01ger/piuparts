@@ -188,7 +188,7 @@ class Slave:
         if line != "ok\n":
             raise MasterNotOK()
 
-    def get_status(section):
+    def get_status(self, section):
         self._writeline("status")
         line = self._readline()
         words = line.split()
