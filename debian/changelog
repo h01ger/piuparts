@@ -25,6 +25,7 @@ piuparts (0.43) UNRELEASED; urgency=low
     - Correctly split + strip comma-separated lists.
   * piuparts-analyze.py:
     - Also consider bugs that 'affects' a package.
+    - Treat bugs without 'found' version as older than anything.
   * Makefile: Support version number substitution in piuparts-*.py, too.
   * README.txt: Document piuparts.conf settings used by piatti.git scripts.
 
