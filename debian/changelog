@@ -23,6 +23,8 @@ piuparts (0.43) UNRELEASED; urgency=low
   * piuparts-report.py:
     - Reorder the list of known problem analyses and add a few new ones.
     - Correctly split + strip comma-separated lists.
+  * piuparts-analyze.py:
+    - Also consider bugs that 'affects' a package.
   * Makefile: Support version number substitution in piuparts-*.py, too.
   * README.txt: Document piuparts.conf settings used by piatti.git scripts.
 
