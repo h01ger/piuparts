@@ -14,6 +14,10 @@ command not found. According to policy 7.2 you cannot rely on the depends
 being available during purge, only the essential packages are available for
 sure.
 
+The fix should be easy: your package is using adduser or deluser from the
+adduser package, which is only priority important. Using useradd or userdel
+from the passwd package should fix this problem.
+
 Filing this as important because a.) it's a clear policy violation (to not
 clean up at purge) b.) having a piuparts clean archive is a release goal
 since lenny and c.) this package being piuparts buggy blocks packages
@@ -21,10 +25,6 @@ depending on it from being tested by piuparts (and thus possibly the
 detection of more severe problems).
 
 From the attached log (scroll to the bottom...):
-
-The fix should be easy: your package is using adduser or deluser from the
-adduser package, which is only priority important. Using useradd or userdel
-from the passwd package should fix this problem.
 
 
 cheers,
