@@ -24,7 +24,9 @@
 set -e
 
 # do nothing if piuparts-slave is running
-if [ "$(ps fax|grep piuparts-slave|grep -v grep)" != "" ] && exit 0
+if [ "$(ps fax|grep piuparts-slave|grep -v grep)" != "" ] ; then 
+	exit 0
+fi
 
 # umount all mount points (should be none on boot, but this script can also be called at other times)
 for MOUNTPOINT in $(cat /proc/mounts|cut -d " " -f 2|grep /org/piuparts.debian.org/tmp/) ; do 
