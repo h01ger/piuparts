@@ -15,8 +15,11 @@ output-directory = /org/piuparts.debian.org/htdocs/
 idle-sleep = 1800
 # 60*60*24*7
 max-tgz-age = 604800
-# temporarily disable, to test squeeze2wheezy faster
-reschedule-old-count = 0
+# rescheduling settings
+reschedule-old-days = 90
+reschedule-old-count = 200
+reschedule-fail-days = 30
+reschedule-fail-count = 25
 
 [sid]
 precedence = 1

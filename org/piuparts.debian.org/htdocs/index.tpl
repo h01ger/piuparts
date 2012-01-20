@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2012-01-20</b>: As squeeze2wheezy has been fully tested by today, re-enable rescheduling of old logs sid, wheezy and squeezewheezy: 200 successful logs old than 90 days are rescheduled each day, plus 25 failed logs older than 30 days.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2011-12-20</b>: Currently, while the machine is busy testing all of squeeze2wheeezy, all old log rescheduling has been disabled. Normally, these reschedulings happen for sid, wheezy and squeezewheezy: 200 successful logs old than 180 days are rescheduled each day, plus 25 failed logs older than 30 days.
      </td>
     </tr>
