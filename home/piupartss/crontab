@@ -7,7 +7,7 @@
 #
 # start slave_run automatically after reboots
 #
-@reboot sudo $HOME/bin/slave_run
+@reboot $HOME/bin/slave_cleanup ; sudo $HOME/bin/slave_run
 
 #
 # monitor for problems every six hours
