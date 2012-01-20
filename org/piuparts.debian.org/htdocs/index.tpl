@@ -47,7 +47,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2012-01-20</b>: As squeeze2wheezy has been fully tested by today, re-enable rescheduling of old logs sid, wheezy and squeezewheezy: 200 successful logs old than 90 days are rescheduled each day, plus 25 failed logs older than 30 days.
+      <b>2012-01-20</b>: As squeeze2wheezy has been fully tested by today, re-enable rescheduling of old logs for sid, wheezy and squeezewheezy: 200 successful logs older than 90 days are rescheduled each day, plus 25 failed logs older than 30 days.
      </td>
     </tr>
     <tr class="normalrow">
