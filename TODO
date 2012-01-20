@@ -4,23 +4,14 @@ Things to do for piuparts
 Please also check the BTS, especially the bugs with a severity
 higher than wishlist!
 
-for 0.43:
+for 0.44:
 
 - piuparts-slave should do the rescheduling of old logs and do so with
   lowest precedence, that is, only when there are no new logs to be tested.
 
 - piuparts-report.py: fix those FIXMEs in main()
 
-- use python-debianbts to track bugginess status of packages via
-  the bts and remove the "bugged" directory-status tracking
-  altogether.  also remove "fixed".
-
-- provide mail templates for bugreports (which ideally only
-  should need manual logfile trimming) at
-  http://$piuparts/$distro/fail/$packages_$version.bug for usage 
-  by a then to be written tool.
-  org/piuparts.debian.org/etc/templates/mail (part of piatti.git) has generic 
-  templates for filing bugs.
+- remove the "bugged" directory-status tracking altogether.  also remove "fixed".
 
 - write reportbug(-like) wrapper for mass bug filing (start
   simple, make it more sophisticated later). 
@@ -47,19 +38,19 @@ for 0.43:
 
 - copy/move .kpr files to htdocs?
 
+- create piuparts-master and piuparts-slave packages.
 
-for 0.44:
+
+for 0.45:
 
 - mv piatti.git piuparts.git/doc/examples  and include it into a new
   binary package.  when doing so keep in mind the two tango icons
   and credit those in debian/copyright.
 
-- create piuparts-master and piuparts-slave packages.
-
 - publish FAI classes to setup piuparts.$fqdn automatically.
 
 
-for 0.45:
+for 0.46:
 
 - remove configfile option "mirror" and use the mirror from
   "packages-url".
@@ -82,7 +73,7 @@ for 0.45:
     fancy graphs)
 
 
-for 0.46:
+for 0.47:
 
 - slave_run: cleanup stale proc mountpoints
 
@@ -95,7 +86,7 @@ for 0.46:
   source
 
 
-for 0.47 and later:
+for 0.48 and later:
 
 - report:
   - write stats about the reasons for failures, as its done with
