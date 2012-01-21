@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2012 Holger Levsen (holger@layer-acht.org)
 # 
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -119,6 +119,11 @@ HTML_HEADER = """
       piuparts.d.o configuration:<br>
       <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=blob;f=org/piuparts.debian.org/etc/piuparts.conf.piatti" target="_blank">piuparts.conf.piatti</a><br>
       <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=tree;f=org/piuparts.debian.org/etc/scripts" target="_blank">scripts</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="/bug_howto.html">How to file bugs</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -299,6 +304,7 @@ ANALYSIS_BODY_TEMPLATE = """
 """
 
 # this template is normally replaced with from $htdocs
+# FIXME: once piatti.git is merged, drop this template here and always use that from $htdocs
 INDEX_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
@@ -1111,18 +1117,21 @@ def main():
             section.generate_output(master_directory=master_directory,output_directory=output_directory,section_names=section_names)
             sections.append(section)
 
-        # main page
-        logging.debug("Writing index page")
-        # FIXME: I'm sure the next 3 lines can be written more elegant..
+        # static pages
+        logging.debug("Writing static pages")
+        # FIXME: simplify code once piatti.git is merged
         INDEX_BODY = INDEX_BODY_TEMPLATE
-        if os.path.isfile(os.path.join(output_directory,"index.tpl")):
-          INDEX_BODY = "".join(read_file(os.path.join(output_directory,"index.tpl")))
-        htmlpage = string.Template(HTML_HEADER + INDEX_BODY + HTML_FOOTER)
-        write_file(os.path.join(output_directory,"index.html"), htmlpage.safe_substitute( {
+        for page in ("index", "bug_howto"):
+          tpl = os.path.join(output_directory,page+".tpl")
+          if os.path.isfile(tpl):
+            INDEX_BODY = "".join(read_file(tpl))
+          htmlpage = string.Template(HTML_HEADER + INDEX_BODY + HTML_FOOTER)
+          write_file(os.path.join(output_directory,page+".html"), htmlpage.safe_substitute( {
                                  "page_title": "About piuparts.d.o and News",
                                  "section_navigation": create_section_navigation(section_names),
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                               }))
+
         # daily report
         # FIXME:
         #generate_daily_report();
