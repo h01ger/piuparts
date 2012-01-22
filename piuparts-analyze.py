@@ -127,7 +127,7 @@ def get_bug_versions(bug):
     """Gets a list of only the version numbers for which the bug is found.
     Newest versions are returned first."""
     # debianbts returns it in the format package/1.2.3 or 1.2.3 which will become 1.2.3
-    return reversed(sorted([x.rsplit('/', 1)[-1] for x in debianbts.get_status((bug,))[0].found_versions], cmp=apt_pkg.version_compare))
+    return list(reversed(sorted([x.rsplit('/', 1)[-1] for x in debianbts.get_status((bug,))[0].found_versions], cmp=apt_pkg.version_compare))) or ['~']
 
 
 def move_to_bugged(failed_log):
@@ -159,6 +159,7 @@ def mark_logs_with_reported_bugs():
         moved = False
         for bug in piuparts_bugs_in(pname):
             for bug_version in get_bug_versions(bug):
+                #print('DEBUG: %s/%s #%d %s' % (pname, pversion, bug, bug_version))
 
                 if apt_pkg.version_compare(pversion, bug_version) == 0: # pversion == bug_version
                     if not moved:
@@ -219,7 +220,8 @@ def all_piuparts_bugs():
 
 
 def piuparts_bugs_in(package):
-    return debianbts.get_bugs('package', package, 'bugs', all_piuparts_bugs())
+    return debianbts.get_bugs('package', package, 'bugs', all_piuparts_bugs()) + \
+           debianbts.get_bugs('affects', package, 'bugs', all_piuparts_bugs())
 
 
 def main():

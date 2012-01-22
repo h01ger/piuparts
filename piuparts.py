@@ -131,35 +131,37 @@ class Settings:
     def __init__(self):
         self.defaults = None
         self.tmpdir = None
-        self.scriptsdirs = []
         self.keep_tmpdir = False
+        self.max_command_output_size = 2 * 1024 * 1024
         self.single_changes_list = False
-        # limit output of logfiles to the last megabyte:
-        self.max_command_output_size = 1024 * 1024
         self.args_are_package_files = True
+        # distro setup
         self.debian_mirrors = []
         self.debian_distros = []
+        self.keep_sources_list = False
+        self.do_not_verify_signatures = False
+        self.scriptsdirs = []
         self.bindmounts = []
+        # chroot setup
         self.basetgz = None
-        self.lvm_volume = None
         self.savetgz = None
+        self.lvm_volume = None
         self.end_meta = None
         self.save_end_meta = None
-        self.warn_on_others = False
-        self.warn_on_leftovers_after_purge = False
-        self.keep_sources_list = False
         self.skip_minimize = True
-        self.list_installed_files = False
+        self.debfoster_options = None
+        # tests and checks
         self.no_install_purge_test = False
         self.no_upgrade_test = False
+        self.list_installed_files = False
         self.extra_old_packages = []
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
         self.check_broken_diversions = True
         self.check_broken_symlinks = True
         self.warn_broken_symlinks = True
-        self.debfoster_options = None
-        self.do_not_verify_signatures = False
+        self.warn_on_others = False
+        self.warn_on_leftovers_after_purge = False
         self.ignored_files = [
             "/dev/MAKEDEV",
             "/etc/aliases",
@@ -253,6 +255,7 @@ class Settings:
             "/etc/ssl/certs(/.*)?",
             "/etc/init.d/\.depend.*",
             "/lib/modules/.*/modules.*",
+            "/run/.*",
             "/usr/lib/python2\../site-packages/debconf.py[co]",
             "/var/backups/.*",
             "/var/cache/man/(/.*)?",
@@ -394,7 +397,7 @@ def run(command, ignore_errors=False):
         of the command we may get less even if more output is coming later.
         Abort after reading 2 MB."""
         output += p.stdout.read(1 << 16)
-        if (len(output) > (1 << 21)):
+        if (len(output) > settings.max_command_output_size):
             excessive_output = True
             logging.error("Terminating command due to excessive output")
             p.terminate()
@@ -407,6 +410,8 @@ def run(command, ignore_errors=False):
                 p.kill()
             p.wait()
             break
+    if not excessive_output:
+        output += p.stdout.read(settings.max_command_output_size)
     devnull.close()
 
     if output:
@@ -707,8 +712,6 @@ class Chroot:
 
     def __init__(self):
         self.name = None
-
-        self.pre_install_diversions = None
 
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
@@ -1065,7 +1068,7 @@ class Chroot:
         """Purge packages in a chroot."""
         if packages:
             self.run(["dpkg", "--purge"] + packages, ignore_errors=True)
- 
+
     def restore_selections(self, selections, packages):
         """Restore package selections in a chroot to the state in
         'selections'."""
@@ -1176,6 +1179,9 @@ class Chroot:
     def install_packages_by_name(self, packages):
         if packages:
             self.run_scripts("pre_install")
+
+            self.run(["apt-cache", "policy"])
+            self.run(["apt-cache", "policy"] + packages)
 
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
@@ -1834,8 +1840,8 @@ def process_changes(changes):
     return package_list
 
 
-def check_results(chroot, root_info, file_owners, deps_info=None):
-    """Check that current chroot state matches 'root_info'.
+def check_results(chroot, chroot_state, file_owners, deps_info=None):
+    """Check that current chroot state matches 'chroot_state'.
 
     If settings.warn_on_others is True and deps_info is not None, then only
     print a warning rather than failing if the current chroot contains files
@@ -1845,9 +1851,10 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     installed.)
     """
 
+    root_info = chroot_state["tree"]
     ok = True
     if settings.check_broken_diversions:
-        (removed, added) = chroot.get_modified_diversions(chroot.pre_install_diversions)
+        (removed, added) = chroot.get_modified_diversions(chroot_state["diversions"])
         if added:
             logging.error("FAIL: Installed diversions (dpkg-divert) not removed by purge:\n%s" %
                           indent_string("\n".join(added)))
@@ -1910,7 +1917,7 @@ def check_results(chroot, root_info, file_owners, deps_info=None):
     return ok
 
 
-def install_purge_test(chroot, root_info, selections, package_files, packages):
+def install_purge_test(chroot, chroot_state, package_files, packages):
     """Do an install-purge test. Return True if successful, False if not.
        Assume 'root' is a directory already populated with a working
        chroot, with packages in states given by 'selections'."""
@@ -1977,15 +1984,15 @@ def install_purge_test(chroot, root_info, selections, package_files, packages):
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't there initially.    
-    chroot.restore_selections(selections, packages)
+    chroot.restore_selections(chroot_state["selections"], packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
-    return check_results(chroot, root_info, file_owners, deps_info=deps_info)
+    return check_results(chroot, chroot_state, file_owners, deps_info=deps_info)
 
 
-def install_upgrade_test(chroot, root_info, selections, package_files, packages, old_packages):
+def install_upgrade_test(chroot, chroot_state, package_files, packages, old_packages):
     """Install old_packages via apt-get, then upgrade from package files.
     Return True if successful, False if not."""
 
@@ -2009,19 +2016,19 @@ def install_upgrade_test(chroot, root_info, selections, package_files, packages,
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't there initially.
-    chroot.restore_selections(selections, packages)
+    chroot.restore_selections(chroot_state["selections"], packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
-    return check_results(chroot, root_info, file_owners)
+    return check_results(chroot, chroot_state, file_owners)
 
 
-def save_meta_data(filename, root_info, selections):
+def save_meta_data(filename, chroot_state):
     """Save directory tree meta data into a file for fast access later."""
     logging.debug("Saving chroot meta data to %s" % filename)
     f = file(filename, "w")
-    pickle.dump((root_info, selections), f)
+    pickle.dump(chroot_state, f)
     f.close()
 
 
@@ -2029,9 +2036,9 @@ def load_meta_data(filename):
     """Load meta data saved by 'save_meta_data'."""
     logging.debug("Loading chroot meta data from %s" % filename)
     f = file(filename, "r")
-    (root_info, selections) = pickle.load(f)
+    chroot_state = pickle.load(f)
     f.close()
-    return root_info, selections
+    return chroot_state
 
 
 def install_and_upgrade_between_distros(package_files, packages):
@@ -2068,8 +2075,7 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     if settings.end_meta:
         # load root_info and selections
-        root_info, selections = load_meta_data(settings.end_meta)
-        chroot.pre_install_diversions = []  # FIXME: diversion info needs to be restored
+        chroot_state = load_meta_data(settings.end_meta)
     else:
         if not settings.basetgz:
             temp_tgz = chroot.create_temp_tgz_file()
@@ -2081,20 +2087,20 @@ def install_and_upgrade_between_distros(package_files, packages):
         chroot.check_for_no_processes()
 
         # set root_info and selections
-        root_info = chroot.save_meta_data()
-        selections = chroot.get_selections()
-        diversions = chroot.get_diversions()
+        chroot_state = {}
+        chroot_state["tree"] = chroot.save_meta_data()
+        chroot_state["selections"] = chroot.get_selections()
+        chroot_state["diversions"] = chroot.get_diversions()
 
         if settings.save_end_meta:
             # save root_info and selections
-            save_meta_data(settings.save_end_meta, root_info, selections)
-            # FIXME: diversion info needs to be stored
+            save_meta_data(settings.save_end_meta, chroot_state)
 
         chroot.remove()
         dont_do_on_panic(cid)
 
         # leave indication in logfile why we do what we do
-        logging.info("Notice: package selections and meta data from target disto saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
+        logging.info("Notice: package selections and meta data from target distro saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
 
         chroot = get_chroot()
         if settings.basetgz:
@@ -2102,7 +2108,6 @@ def install_and_upgrade_between_distros(package_files, packages):
         else:
             chroot.create(temp_tgz)
             chroot.remove_temp_tgz_file(temp_tgz)
-        chroot.pre_install_diversions = diversions
         cid = do_on_panic(chroot.remove)
 
     chroot.check_for_no_processes()
@@ -2130,9 +2135,8 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     file_owners = chroot.get_files_owned_by_packages()
 
-    # use root_info and selections
-    chroot.restore_selections(selections, packages)
-    result = check_results(chroot, root_info, file_owners)
+    chroot.restore_selections(chroot_state["selections"], packages)
+    result = check_results(chroot, chroot_state, file_owners)
 
     chroot.check_for_no_processes()
 
@@ -2322,10 +2326,10 @@ def parse_command_line():
                       help="Save the chroot into FILENAME.")
 
     parser.add_option("-B", "--end-meta", metavar="FILE",
-                      help="Save chroot package selection and file meta data in FILE for later use. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
+                      help="Load chroot package selection and file meta data from FILE. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
 
     parser.add_option("-S", "--save-end-meta", metavar="FILE",
-                      help="Load chroot package selection and file meta data from FILE. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
+                      help="Save chroot package selection and file meta data in FILE for later use. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.")
 
     parser.add_option("--single-changes-list", default=False,
                       action="store_true",
@@ -2387,27 +2391,12 @@ def parse_command_line():
     (opts, args) = parser.parse_args()
 
     settings.defaults = opts.defaults
-    settings.args_are_package_files = not opts.apt
-    settings.basetgz = opts.basetgz
-    settings.lvm_volume = opts.lvm_volume
-    settings.lvm_snapshot_size = opts.lvm_snapshot_size
-    settings.bindmounts += opts.bindmount
-    settings.debian_distros = opts.distribution
-    settings.ignored_files += opts.ignore
-    settings.ignored_patterns += opts.ignore_regex
     settings.keep_tmpdir = opts.keep_tmpdir
     settings.single_changes_list = opts.single_changes_list
+    settings.args_are_package_files = not opts.apt
+    # distro setup
+    settings.debian_distros = opts.distribution
     settings.keep_sources_list = opts.keep_sources_list
-    settings.skip_minimize = opts.skip_minimize
-    settings.minimize = opts.minimize
-    if settings.minimize:
-      settings.skip_minimize = False
-    settings.list_installed_files = opts.list_installed_files
-    settings.no_install_purge_test = opts.no_install_purge_test
-    settings.no_upgrade_test = opts.no_upgrade_test
-    [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
-    settings.skip_cronfiles_test = opts.skip_cronfiles_test
-    settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test
     settings.keyring = opts.keyring
     settings.do_not_verify_signatures = opts.do_not_verify_signatures
     if settings.do_not_verify_signatures:
@@ -2416,6 +2405,36 @@ def parse_command_line():
     else:
       settings.keyringoption="--keyring=%s" % settings.keyring
       settings.apt_unauthenticated="No"
+    settings.eatmydata = not opts.no_eatmydata
+    settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
+    settings.dpkg_force_confdef = opts.dpkg_force_confdef
+    settings.bindmounts += opts.bindmount
+    # chroot setup
+    settings.basetgz = opts.basetgz
+    settings.savetgz = opts.save
+    settings.lvm_volume = opts.lvm_volume
+    settings.lvm_snapshot_size = opts.lvm_snapshot_size
+    settings.end_meta = opts.end_meta
+    settings.save_end_meta = opts.save_end_meta
+    settings.skip_minimize = opts.skip_minimize
+    settings.minimize = opts.minimize
+    if settings.minimize:
+      settings.skip_minimize = False
+    settings.debfoster_options = opts.debfoster_options.split()
+    # tests and checks
+    settings.no_install_purge_test = opts.no_install_purge_test
+    settings.no_upgrade_test = opts.no_upgrade_test
+    settings.list_installed_files = opts.list_installed_files
+    [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
+    settings.skip_cronfiles_test = opts.skip_cronfiles_test
+    settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test
+    settings.check_broken_diversions = not opts.no_diversions
+    settings.check_broken_symlinks = not opts.no_symlinks
+    settings.warn_broken_symlinks = not opts.fail_on_broken_symlinks
+    settings.warn_on_others = opts.warn_on_others
+    settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
+    settings.ignored_files += opts.ignore
+    settings.ignored_patterns += opts.ignore_regex
     settings.pedantic_purge_test = opts.pedantic_purge_test
     if not settings.pedantic_purge_test:
       settings.ignored_patterns += settings.non_pedantic_ignore_patterns
@@ -2426,16 +2445,6 @@ def parse_command_line():
 
     settings.debian_mirrors = [parse_mirror_spec(x, defaults.get_components())
                                for x in opts.mirror]
-    settings.check_broken_diversions = not opts.no_diversions
-    settings.check_broken_symlinks = not opts.no_symlinks
-    settings.warn_broken_symlinks = not opts.fail_on_broken_symlinks
-    settings.savetgz = opts.save
-    settings.warn_on_others = opts.warn_on_others
-    settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
-    settings.debfoster_options = opts.debfoster_options.split()
-    settings.eatmydata = not opts.no_eatmydata
-    settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
-    settings.dpkg_force_confdef = opts.dpkg_force_confdef
 
     if opts.adt_virt is None:
         settings.adt_virt = None
@@ -2517,12 +2526,13 @@ def process_packages(package_list):
         chroot.create()
         cid = do_on_panic(chroot.remove)
 
-        root_info = chroot.save_meta_data()
-        chroot.pre_install_diversions = chroot.get_diversions()
-        selections = chroot.get_selections()
+        chroot_state = {}
+        chroot_state["tree"] = chroot.save_meta_data()
+        chroot_state["selections"] = chroot.get_selections()
+        chroot_state["diversions"] = chroot.get_diversions()
 
         if not settings.no_install_purge_test:
-            if not install_purge_test(chroot, root_info, selections,
+            if not install_purge_test(chroot, chroot_state,
                       package_files, packages):
                 logging.error("FAIL: Installation and purging test.")
                 panic()
@@ -2537,7 +2547,7 @@ def process_packages(package_list):
                 known_packages = chroot.get_known_packages(packages_to_query)
                 if not known_packages:
                     logging.info("Can't test upgrade: packages not known by apt-get.")
-                elif install_upgrade_test(chroot, root_info, selections, package_files,
+                elif install_upgrade_test(chroot, chroot_state, package_files,
                         packages, known_packages):
                     logging.info("PASS: Installation, upgrade and purging tests.")
                 else:
@@ -2576,6 +2586,9 @@ def main():
     # Make sure debconf does not ask questions and stop everything.
     # Packages that don't use debconf will lose.
     os.environ["DEBIAN_FRONTEND"] = "noninteractive"
+
+    if "DISPLAY" in os.environ:
+        del os.environ["DISPLAY"]
 
 
     changes_packages_list = []

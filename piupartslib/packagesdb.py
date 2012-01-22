@@ -215,6 +215,7 @@ class LogDB:
 class PackagesDB:
 
     # keep in sync with piuparts-report.py: emphasize_reason()
+    # FIXME: can we reorder this list or remove entries without breaking the counts.txt for the plot?
     _states = [
         "successfully-tested",
         "failed-testing",
@@ -226,10 +227,10 @@ class PackagesDB:
         "dependency-cannot-be-tested",
         "dependency-does-not-exist",
         "circular-dependency",
-        #"does-not-exist",  # can only happen as query result for a dependency
         "unknown",
         "unknown-preferred-alternative",
         "no-dependency-from-alternatives-exists",
+        #"does-not-exist",  # can only happen as query result for a dependency
     ]
 
     _dep_state_to_state = {
@@ -240,10 +241,9 @@ class PackagesDB:
         "dependency-failed-testing": "dependency-failed-testing",
         "dependency-cannot-be-tested": "dependency-cannot-be-tested",
         "dependency-does-not-exist": "dependency-does-not-exist",
-        "circular-dependency": "circular-dependency",
-        "does-not-exist": "dependency-does-not-exist",
         "unknown-preferred-alternative": "unknown-preferred-alternative",
         "no-dependency-from-alternatives-exists": "dependency-cannot-be-tested",
+        "does-not-exist": "dependency-does-not-exist",
     }
 
     def __init__(self, logdb=None, prefix=None):

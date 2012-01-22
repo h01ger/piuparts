@@ -188,12 +188,12 @@ class Slave:
         if line != "ok\n":
             raise MasterNotOK()
 
-    def get_status(self):
+    def get_status(self, section):
         self._writeline("status")
         line = self._readline()
         words = line.split()
         if words and words[0] == "ok":
-            logging.info("Master status: " + " ".join(words[1:]))
+            logging.info("Master " + section + " status: " + " ".join(words[1:]))
         else:
             raise MasterIsCrazy()
 
@@ -296,6 +296,7 @@ class Section:
 
         oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
+        test_count = 0
 
         for logdir in ["pass", "fail", "untestable"]:
             for basename in os.listdir(logdir):
@@ -309,10 +310,8 @@ class Section:
             while len(self._slave.get_reserved()) < max_reserved and self._slave.reserve():
                 pass
 
-        self._slave.get_status()
+        self._slave.get_status(self._config.section)
         self._slave.close()
-
-        test_count = len(self._slave.get_reserved())
 
         if self._slave.get_reserved():
             self._check_tarball()
@@ -334,6 +333,7 @@ class Section:
               packages_file = packages_files[distro]
 
             for package_name, version in self._slave.get_reserved():
+                test_count += 1
                 if package_name in packages_file:
                     package = packages_file[package_name]
                     if version == package["Version"] or self._config["upgrade-test-distros"]:
@@ -347,9 +347,9 @@ class Section:
                                 log_name(package_name, version)),
                                 "Package %s not found" % package_name)
                 self._slave.forget_reserved(package_name, version)
-            os.chdir(oldcwd)
 
-        return( test_count )
+        os.chdir(oldcwd)
+        return test_count
 
 
 def log_name(package, version):

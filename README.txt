@@ -447,6 +447,31 @@ is being run.
 Some of the configuration items are not required, but it is best
 to set them all to be sure what the configuration actually is.
 
+==== piatti.git specific configuration
+
+In addition to some of the above settings the following
+configuration settings are used by the scripts in the piatti.git
+repository. They are all optional, default values are set in the
+scripts.
+
+* "prefix" (global) sets the prefix of the piuparts installation, e.g. for finding $prefix/share/piuparts/ .
+
+* "urlbase" (global) is the base url of the webserver serving this piuparts instance. Used to provide links to logfiles in email reports.
+
+* "tempdir" (global) is the temporary directory to be monitored for leftover mountpoints and chroots.
+
+* "reschedule-untestable-days" (global) sets the rescheduling delay for untestable packages (e.g. due to unsatisfied dependencies).
+
+* "reschedule-old-days" (global, section) and the following three settings define the rescheduling scheme for passed and failed packages.
+
+* "reschedule-old-count" (global, section)
+
+* "reschedule-fail-days" (global, section)
+
+* "reschedule-fail-count" (global, section)
+
+* "auto-reschedule" (section) can be set to "no" to disable rescheduling of passed and failed packages.
+
 
 === Running piuparts in master-slave mode, piuparts-report and the setup on piuparts.debian.org
 

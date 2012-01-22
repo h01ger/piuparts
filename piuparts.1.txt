@@ -139,10 +139,10 @@ Note that file: addresses works if the directories are made accessible from with
   Save the chroot, after it has been set up, as a tarball into _filename_. It can then be used with '-b'.
 
 *-B* 'FILE', *--end-meta*='FILE'::
-  Save chroot package selection and file meta data in FILE for later use. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.
+  Load chroot package selection and file meta data from FILE. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.
 
 *-S* 'FILE', *--save-end-meta*='FILE'::
-  Load chroot package selection and file meta data from FILE. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.
+  Save chroot package selection and file meta data in FILE for later use. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.
 
 *--scriptsdir*='DIR'::
   Directory where are placed the custom scripts. For more information about this, read README.txt
@@ -219,7 +219,8 @@ ENVIRONMENT
 
 NOTES
 -----
-Outputs of commands run by piuparts are limited to the last two megabytes. To change this limit, the source code needs to be edited.
+Output of commands run by piuparts is limited to two megabytes. To change this limit, the source code needs to be edited.
+Commands exceeding this limit will be aborted.
 
 SEE ALSO
 --------
