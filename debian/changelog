@@ -1,10 +1,4 @@
-piuparts (0.43) UNRELEASED; urgency=low
-
-  * how to maintain this with git-dch? IMO now it's the time to stop
-    maintaining debian/changelog manually but rather generate it from git
-    commit logs directly.
-  * So this is a bogus conflict entry which will need to manually removed
-    later.
+piuparts (0.43) unstable; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -15,6 +9,7 @@ piuparts (0.43) UNRELEASED; urgency=low
     - Simplify keeping the reference chroot state: move tree info, selections
       and diversions into a dict, can be extended easily.
     - Fix --*end-meta documentation and actually enable these options.
+    - Cleanup options and settings.
   * piupartslib/packagesdb.py:
     - Restrict circular-dependency state to packages on the circle.
   * piuparts-master.py:
@@ -32,8 +27,14 @@ piuparts (0.43) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * piuparts.1.txt: correctly reverse the description of --save-end-meta
     and --end-meta.
+  * piuparts-report.py:
+    - add support for more static pages and add bug_howto.tpl, explaining how
+      to file meaningful bugs piuparts-analyse understands. This page also
+      links to the templates used for bug filing.
+  * piuparts-slave.py: make status message more useful by including the
+    section.
 
- -- Holger Levsen <holger@debian.org>  Sun, 01 Jan 2012 14:14:35 +0100
+ -- Holger Levsen <holger@debian.org>  Sun, 22 Jan 2012 13:03:59 +0100
 
 piuparts (0.42) unstable; urgency=low
 
