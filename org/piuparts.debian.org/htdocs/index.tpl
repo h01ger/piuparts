@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2012-01-22</b>: Since some weeks, piuparts-analyse is captable of moving logfiles from fail to bugged, if there is a bug report usertagged 'piuparts' against that package+version combination. Thus, since today there is a webpage, explaining <a href="bug_howto.html">how to file bugs based on tests run on piuparts.debian.org</a>. So now the question how to help can easily be answered: read that page and start filing bugs!
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2012-01-20</b>: As squeeze2wheezy has been fully tested by today, re-enable rescheduling of old logs for sid, wheezy and squeezewheezy: 200 successful logs older than 90 days are rescheduled each day, plus 25 failed logs older than 30 days.
      </td>
     </tr>

@@ -6,22 +6,21 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	This page shall grow into a well written explaination how to file useful bugs fast.
+	This page shall grow into a well written explaination how to file useful bugs fast. It assumes you are familar with <a href="http://www.debian.org/Bugs/Reporting" target="_blank">reporting bugs in Debian</a>.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	First, of all, read the piuparts logfile and identify why piuparts failed.
+	First, of all, read the piuparts logfile and identify why piuparts testing failed.
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	Then, check the BTS for that package, to see if this issue was already filedas a bug. Often it's also useful to check the source packages bug page.
-     </td>
+	Then, check the BTS for that package, to see if this issue was already filed as a bug. Often it's also useful to check the source packages bug page.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	Then, file a bug. The important thing here is to set a usertag like this:
+	Then, if there is none, file a bug. If there already is a bug describing the same problem you're seeing in the piuparts logfile, usertag it like this:
 	<pre>
  User: debian-qa@lists.debian.org
  Usertags: piuparts
@@ -32,7 +31,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	The following is an example bug report. There are many more <a href="templates/mail/">templates</a> available for you to make use from!
+	Also, if you file a new bug report, don't forget to usertag it! The following is an example bug report. There are many more <a href="templates/mail/">templates</a> available for you to make use from!
 	<pre>
  To: submit@bugs.debian.org
  Subject: $package: fails to upgrade from 'testing' - trying to overwrite ...
@@ -63,6 +62,11 @@
  attachment: $failed_logfile
 	</pre>
 	Please take care when filing bugs to file meaningful bugs and to not annoy maintainers. Don't nitpick or insist on severities, the important thing is to get the bug fixed, not the right severity. Optionally you can also send copies to the piuparts-devel mailinglist by adding <i>X-debbugs-cc: piuparts-devel@lists.alioth.debian.org</i> pseudo-headers. 
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+	Also, you should be aware that what you are doing can probably be seen as mass bug filing (even if you just file a few now, they are part of a series of bugs of one kind) and as such needs to be discussed on debian-devel@lists.d.o first! For many types of bugs this has already been done. This is or should be indicated in the summary web pages as well as the mail templates.
      </td>
     </tr>
     <tr class="normalrow">
