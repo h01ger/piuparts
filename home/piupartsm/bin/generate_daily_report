@@ -57,7 +57,7 @@ date > $LOCKFILE
 # various scripts to detect issues and cleanup
 #
 OUTPUT=$(mktemp)
-for SCRIPT in detect_stale_mounts detect_tmp_cruft detect_piuparts_issues archive_old_logs report_newly_bugged_packages ; do
+for SCRIPT in detect_stale_mounts detect_tmp_cruft detect_network_issues detect_piuparts_issues archive_old_logs report_newly_bugged_packages ; do
   ~/bin/$SCRIPT 2>&1 > $OUTPUT
   if [ -s $OUTPUT ] ; then 
 	cat $OUTPUT | mail -s $SCRIPT $LOGNAME
