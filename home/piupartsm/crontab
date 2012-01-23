@@ -23,6 +23,7 @@
 #
 00 12 * * * $HOME/bin/reschedule_oldest_logs
 30 12 * * * $HOME/bin/detect_network_issues
+45 12 * * * $HOME/bin/detect_piuparts_issues
 0  13 * * * $HOME/bin/detect_archive_issues
 30 13 * * * $HOME/bin/report_untestable_packages
 0  14 * * * $HOME/bin/report_stale_reserved_packages
