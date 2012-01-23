@@ -19,6 +19,10 @@ case $PIUPARTS_OBJECTS in
 	live-config-upstart)	log_debug
 				PIUPARTS_OBJECTS=upstart
 				;;
+	clvm|dtc-xen|ganeti2|mylvmbackup)
+				log_debug
+				PIUPARTS_OBJECTS=lvm2
+				;;
 esac
 
 #
@@ -44,6 +48,13 @@ case $PIUPARTS_OBJECTS in
 	systemd-sysv)		log_debug
 				# force installation and removal of essential package sysvinit
 				yes 'Yes, do as I say!' | apt-get -y --force-yes install systemd-sysv
+				;;
+	lvm2)
+				if [ "$PIUPARTS_PHASE" = "install" ] && [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
+					# work around lvm2 bug http://bugs.debian.org/603036 which is squeeze-ignore
+					log_debug
+					apt-get -y install udev
+				fi
 				;;
 esac
 
