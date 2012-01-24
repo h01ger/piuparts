@@ -28,12 +28,36 @@ if [ "$(ps fax|grep piuparts-slave|grep -v grep)" != "" ] ; then
 	exit 0
 fi
 
+
+PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
+[ -f "$PIUPARTS_CONF" ] || exit 0
+
+# usage: get_config_value VARIABLE section key [default]
+get_config_value()
+{
+	local section key value
+	test -n "$1" && test "$1" = "$(echo "$1" | tr -c -d '[:alnum:]_')" || exit 1
+	section="$2"
+	key="$3"
+	value="$(sed -rn '\#^\['"$section"'\]#,/^\[/ {/^'"$key"'\s*=/ {s/^'"$key"'\s*=\s*//; s/\s*$//; p}}' "$PIUPARTS_CONF")"
+	test -n "$value" || value="$4"
+	if [ -z "$value" ]; then
+		echo "'$key' not set in section [$section] of $PIUPARTS_CONF, exiting." >&2
+		exit 1
+	fi
+	eval "$1"='"$value"'
+}
+
+get_config_value PIUPARTS_TEMPDIR global tempdir /org/piuparts.debian.org/tmp
+
+
 # umount all mount points (should be none on boot, but this script can also be called at other times)
-for MOUNTPOINT in $(cat /proc/mounts|cut -d " " -f 2|grep /org/piuparts.debian.org/tmp/) ; do 
+for MOUNTPOINT in $(tac /proc/mounts | cut -d " " -f 2 | grep $PIUPARTS_TEMPDIR/)
+do
 	sudo umount $MOUNTPOINT
 done
 
 # cleanup tmp
-sudo rm /org/piuparts.debian.org/tmp -Rf
-mkdir /org/piuparts.debian.org/tmp
+sudo rm -rf --one-file-system $PIUPARTS_TEMPDIR
+mkdir -p $PIUPARTS_TEMPDIR
 
