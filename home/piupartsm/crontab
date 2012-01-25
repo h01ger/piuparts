@@ -1,6 +1,11 @@
 # m h dom mon dow (0|7=sun,1=mon)    command
 
 #
+# cleanup $HTDOCS/daily.lock
+#
+@reboot $HOME/bin/master_cleanup
+
+#
 # create reports once a day
 #  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
 #
