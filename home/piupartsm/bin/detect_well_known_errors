@@ -121,7 +121,7 @@ do
 	do
 		# source files to get COMMAND, HELPTEXT and ISSUE
 		. $PROBLEMDIR/$problem
-		grep $problem $ALLKPR | cut -d' ' -f1 | sort -u > $LOGS
+		grep " $problem" $ALLKPR | cut -d' ' -f1 | sort -u > $LOGS
 		if [ -s $LOGS ] ; then 
 			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
 			echo '<table class="righttable"><tr class="titlerow"><td class="titlecell">' > $OUTPUT
