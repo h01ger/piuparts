@@ -1,5 +1,5 @@
 To: submit@bugs.debian.org
-Subject: : fails to upgrade from squeeze - trying to overwrite ...
+Subject: fails to upgrade from squeeze - trying to overwrite ...
 
 Package:
 Version:
@@ -10,7 +10,8 @@ Usertags: piuparts
 Hi,
 
 during a test with piuparts I noticed your package fails to upgrade from
-squeeze. It installed fine in squeeze, then the upgrade to wheezy fails
+'squeeze'.
+It installed fine in 'squeeze', then the upgrade to 'wheezy' fails
 because it tries to overwrite other packages files without declaring a
 replaces relation.
 

@@ -1,5 +1,5 @@
 To: submit@bugs.debian.org
-Subject: doesnt use invoke-rc.d
+Subject: doesn't use invoke-rc.d
 
 Package:
 Version:
@@ -9,9 +9,9 @@ Usertags: piuparts
 
 Hi,
 
-during a test with piuparts I noticed your package starts processes where it
-shouldnt. This is very probably due to not using invoke-rc.d as mandated by
-policy 9.3.3.2. This is seriously disturbing! ;-)
+during a test with piuparts I noticed your package starts processes
+where it shouldn't. This is very probably due to not using invoke-rc.d
+as mandated by policy 9.3.3.2. This is seriously disturbing! ;-)
 
 See http://www.debian.org/doc/debian-policy/ch-opersys.html#s9.3.3
 and /usr/share/doc/sysv-rc/README.invoke-rc.d.gz as well

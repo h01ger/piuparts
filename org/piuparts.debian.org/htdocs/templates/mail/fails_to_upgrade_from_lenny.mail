@@ -1,5 +1,5 @@
 To: submit@bugs.debian.org
-Subject: : fails to upgrade from lenny
+Subject: fails to upgrade from lenny
 
 Package:
 Version:
@@ -10,7 +10,8 @@ Usertags: piuparts
 Hi,
 
 during a test with piuparts I noticed your package fails to upgrade from
-lenny. It installed fine in lenny, then the upgrade to squeeze fails.
+'lenny'.
+It installed fine in 'lenny', then the upgrade to 'squeeze' fails.
 
 From the attached log (scroll to the bottom...):
 

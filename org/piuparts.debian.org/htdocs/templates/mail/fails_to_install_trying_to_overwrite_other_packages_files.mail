@@ -9,9 +9,9 @@ Usertags: piuparts
 
 Hi,
 
-during a test with piuparts I noticed your package failed to install because
-it tries to overwrite other packages files without declaring a replaces
-relation.
+during a test with piuparts I noticed your package failed to install
+because it tries to overwrite other packages files without declaring a
+replaces relation.
 
 See policy 7.6 at
 http://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces

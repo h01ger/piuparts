@@ -9,9 +9,9 @@ Usertags: piuparts
 
 Hi,
 
-during a test with piuparts I noticed your package modifies files from another
-package in /usr. This is so wrong, I'm not even bothered to look up the part
-of policy this violates ;-P
+during a test with piuparts I noticed your package modifies files from
+another package in /usr. This is so wrong, I'm not even bothered to look
+up the part of policy this violates ;-P
 
 From the attached log (scroll to the bottom...):
 

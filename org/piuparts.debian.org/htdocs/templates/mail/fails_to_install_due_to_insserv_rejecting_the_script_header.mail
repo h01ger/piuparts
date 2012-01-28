@@ -9,8 +9,8 @@ Usertags: piuparts
 
 Hi,
 
-during a test with piuparts I noticed your package failed to install due to 
-insserv rejecting the script header. Some notes are 
+during a test with piuparts I noticed your package failed to install due
+to insserv rejecting the script header. Some notes are
 available from at http://wiki.debian.org/LSBInitScripts
 
 From the attached log (scroll to the bottom...):

@@ -9,8 +9,8 @@ Usertags: piuparts
 
 Hi,
 
-during a test with piuparts I noticed your package left unowned files on the
-system after purge, which is a violation of policy 6.8:
+during a test with piuparts I noticed your package left unowned files on
+the system after purge, which is a violation of policy 6.8:
 
 http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetails
 
@@ -18,8 +18,8 @@ From the attached log (scroll to the bottom...):
 
 
 As putting files into /usr/local is also a violation of
-http://www.debian.org/doc/debian-policy/ch-opersys.html#s9.1.2 I'm setting
-the severity to serious.
+http://www.debian.org/doc/debian-policy/ch-opersys.html#s9.1.2
+I'm setting the severity to serious.
 
 
 cheers,
