@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2012-01-30</b>: Add new suite to be tested, testing2sid, to catch upgrade problems before they reach testing.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2012-01-22</b>: Since some weeks, piuparts-analyse is captable of moving logfiles from fail to bugged, if there is a bug report usertagged 'piuparts' against that package+version combination. Thus, since today there is a webpage, explaining <a href="bug_howto.html">how to file bugs based on tests run on piuparts.debian.org</a>. So now the question how to help can easily be answered: read that page and start filing bugs!
      </td>
     </tr>

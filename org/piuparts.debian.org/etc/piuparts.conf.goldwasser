@@ -7,7 +7,7 @@
 
 [global]
 #sections = sid wheezy squeeze2wheezy
-sections = wheezy
+sections = testing2sid wheezy
 master-host = localhost
 master-user = piupartsm
 master-directory = /org/piuparts.debian.org/master/
@@ -28,8 +28,21 @@ distro = sid
 chroot-tgz = sid.tar.gz
 max-reserved = 50
 log-file = sid.log
-# Once there are no packages left which leave files on purge behind, 
+# Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
+known_circular_depends = libc6 libgcc1 multiarch-support coreutils dpkg libswitch-perl perl perl-modules ghostscript gs-cjk-resource libgs9 odbcinst odbcinst1debian2 python-imaging python-imaging-tk g++-4.4 libstdc++6-4.4-dev libqt4-dbus qdbus g++-4.6 libstdc++6-4.6-dev ca-certificates-java openjdk-6-jre-headless openjdk-6-jre-lib dmsetup libdevmapper1.02.1 uqm uqm-content libmaven-scm-java libmaven2-core-java libwagon-java liblwp-protocol-https-perl libwww-perl acheck acheck-rules libmono-corlib2.0-cil libmono-posix2.0-cil libmono-security2.0-cil libmono-system2.0-cil mono-2.0-gac mono-gac mono-runtime libmono-system-data-linq2.0-cil libmono-system-web2.0-cil libmono-wcf3.0-cil libmono2.0-cil libntrack0 ntrack-module-libnl-0 ntrack-module-rtnetlink-0 xemacs21 xemacs21-bin xemacs21-mule xemacs21-mule-canna-wnn xemacs21-nomule xemacs21-support aide aide-common gamin libgamin0 monodoc-browser monodoc-http monodoc-manual openjdk-7-jre-headless openjdk-7-jre-lib libgeronimo-jpa-2.0-spec-java libgeronimo-osgi-support-java libosgi-compendium-java bochs bochs-wx tasksel tasksel-data g++-4.5 libstdc++6-4.5-dev gcj-4.6-jdk libgcj12-dev gdc-4.6 libphobos2-4.6-dev gdc-4.4 libphobos-4.4-dev gcj-4.4-jdk libgcj10-dev pcb-common pcb-gtk pcb-lesstif ggz-gtk-games ggz-gtk-games-data ggz-sdl-games ggz-sdl-games-data gnat-gps gnat-gps-common gnuift gnuift-perl heroes-common heroes-ggi heroes-sdl libverto-glib1 libverto-libev1 libverto1 strongswan-ikev1 strongswan-ikev2 strongswan-nm strongswan-starter klogd sysklogd apt-watch-backend apt-watch-interface coq coq-theories hugs libhugs-base libhugs-haskell98 libreoffice-core libreoffice-common libreoffice-style-default opendnssec-enforcer opendnssec-enforcer-backend
+
+[testing2sid]
+description = Debian main: package installation in testing and upgrade to sid, then removal and purge test.
+master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master testing2sid
+packages-url = http://ftp.de.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
+sources-url = http://ftp.de.debian.org/debian/dists/sid/main/source/Sources.bz2
+mirror = http://ftp.de.debian.org/debian/
+piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
+upgrade-test-distros = testing sid
+upgrade-test-chroot-tgz = testing.tar.gz
+max-reserved = 50
+log-file = testing2sid.log
 known_circular_depends = libc6 libgcc1 multiarch-support coreutils dpkg libswitch-perl perl perl-modules ghostscript gs-cjk-resource libgs9 odbcinst odbcinst1debian2 python-imaging python-imaging-tk g++-4.4 libstdc++6-4.4-dev libqt4-dbus qdbus g++-4.6 libstdc++6-4.6-dev ca-certificates-java openjdk-6-jre-headless openjdk-6-jre-lib dmsetup libdevmapper1.02.1 uqm uqm-content libmaven-scm-java libmaven2-core-java libwagon-java liblwp-protocol-https-perl libwww-perl acheck acheck-rules libmono-corlib2.0-cil libmono-posix2.0-cil libmono-security2.0-cil libmono-system2.0-cil mono-2.0-gac mono-gac mono-runtime libmono-system-data-linq2.0-cil libmono-system-web2.0-cil libmono-wcf3.0-cil libmono2.0-cil libntrack0 ntrack-module-libnl-0 ntrack-module-rtnetlink-0 xemacs21 xemacs21-bin xemacs21-mule xemacs21-mule-canna-wnn xemacs21-nomule xemacs21-support aide aide-common gamin libgamin0 monodoc-browser monodoc-http monodoc-manual openjdk-7-jre-headless openjdk-7-jre-lib libgeronimo-jpa-2.0-spec-java libgeronimo-osgi-support-java libosgi-compendium-java bochs bochs-wx tasksel tasksel-data g++-4.5 libstdc++6-4.5-dev gcj-4.6-jdk libgcj12-dev gdc-4.6 libphobos2-4.6-dev gdc-4.4 libphobos-4.4-dev gcj-4.4-jdk libgcj10-dev pcb-common pcb-gtk pcb-lesstif ggz-gtk-games ggz-gtk-games-data ggz-sdl-games ggz-sdl-games-data gnat-gps gnat-gps-common gnuift gnuift-perl heroes-common heroes-ggi heroes-sdl libverto-glib1 libverto-libev1 libverto1 strongswan-ikev1 strongswan-ikev2 strongswan-nm strongswan-starter klogd sysklogd apt-watch-backend apt-watch-interface coq coq-theories hugs libhugs-base libhugs-haskell98 libreoffice-core libreoffice-common libreoffice-style-default opendnssec-enforcer opendnssec-enforcer-backend
 
 [wheezy]
