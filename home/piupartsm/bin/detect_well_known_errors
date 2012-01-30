@@ -17,6 +17,10 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
+#
+# Usage: detect_well_known_errors [--recheck|--recheck-failed]
+#
+
 
 PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
 [ -f "$PIUPARTS_CONF" ] || exit 0
@@ -61,6 +65,15 @@ do
 	date
 	echo $SECTION:
 	cd $MASTER/$SECTION
+
+	#
+	# remove all *.kpr files if rechecking is requested
+	#
+	if [ "$1" = "--recheck" ]; then
+		rm -f pass/*.kpr bugged/*.kpr fail/*.kpr
+	elif [ "$1" = "--recheck-failed" ]; then
+		rm -f bugged/*.kpr fail/*.kpr
+	fi
 
 	#
 	# remove outdated *.kpr files
