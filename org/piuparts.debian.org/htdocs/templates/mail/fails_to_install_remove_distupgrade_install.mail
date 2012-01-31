@@ -1,0 +1,26 @@
+To: submit@bugs.debian.org
+Subject: fails to install, remove, distupgrade, and install again
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package failed to install
+(in 'CODENAME1'), remove (but not purge), distupgrade to 'CODENAME2',
+and install again.
+Before the second installation the package is in config-files-remaining
+state. The configuration is remaining from the last version that was
+successfully configured - which is from the previous release.
+
+Like a plain failure on initial install this makes the package too buggy
+for a release, thus the severity.
+
+From the attached log (scroll to the bottom...):
+
+
+
+cheers,
