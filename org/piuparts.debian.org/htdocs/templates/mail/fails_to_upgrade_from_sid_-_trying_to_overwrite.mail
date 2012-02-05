@@ -1,0 +1,24 @@
+To: submit@bugs.debian.org
+Subject: fails to upgrade from 'sid' - trying to overwrite ...
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package fails to upgrade from
+'sid' to 'experimental'.
+It installed fine in 'sid', then the upgrade to 'experimental' fails
+because it tries to overwrite other packages files without declaring a
+replaces relation.
+
+See policy 7.6 at
+http://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces
+
+From the attached log (scroll to the bottom...):
+
+
+cheers,
