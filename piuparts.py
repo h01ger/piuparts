@@ -269,6 +269,7 @@ class Settings:
             "/var/lib/onak(/.*)?",
             "/var/lib/papercut(/.*)?",
             "/var/lib/insserv/run.*.log",
+            "/var/lib/ucf/.*",
             "/var/lib/update-rc.d(/.*)?",
             "/var/log/exim/.*",
             "/var/log/exim4/.*",

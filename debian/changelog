@@ -8,6 +8,10 @@ piuparts (0.44) UNRELEASED; urgency=low
     breakage now, or IOW, because I want to continue to be able to fixup
     piatti.debian.org quickly.
 
+  [ Andreas Beckmann ]
+  * piuparts.py:
+    - Add to self.ignored_patterns: /var/lib/ucf/.*
+
  -- Holger Levsen <holger@debian.org>  Sun, 22 Jan 2012 13:33:59 +0100
 
 piuparts (0.43) unstable; urgency=low
