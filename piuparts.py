@@ -132,7 +132,7 @@ class Settings:
         self.defaults = None
         self.tmpdir = None
         self.keep_tmpdir = False
-        self.max_command_output_size = 2 * 1024 * 1024
+        self.max_command_output_size = 3 * 1024 * 1024  # 3 MB (daptup on dist-upgrade)
         self.single_changes_list = False
         self.args_are_package_files = True
         # distro setup
