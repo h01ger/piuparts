@@ -1,7 +1,7 @@
 # run 'echo known_circular_depends = $(grep -v ^# circular-depends-sid.txt)'
 
 # from http://debian.semistable.com/debgraph.out.html
-# last updated: 2012-01-06
+# last updated: 2012-02-14
 libc6 libgcc1 multiarch-support
 coreutils dpkg
 libswitch-perl perl perl-modules
@@ -15,28 +15,27 @@ ca-certificates-java openjdk-6-jre-headless openjdk-6-jre-lib
 dmsetup libdevmapper1.02.1
 uqm uqm-content
 libmaven-scm-java libmaven2-core-java libwagon-java
-liblwp-protocol-https-perl libwww-perl
 acheck acheck-rules
-libmono-corlib2.0-cil libmono-posix2.0-cil libmono-security2.0-cil libmono-system2.0-cil mono-2.0-gac mono-gac mono-runtime
-libmono-system-data-linq2.0-cil libmono-system-web2.0-cil libmono-wcf3.0-cil libmono2.0-cil
+liblwp-protocol-https-perl libwww-perl
+tasksel tasksel-data
+libmono-corlib4.0-cil libmono-security4.0-cil libmono-system-configuration4.0-cil libmono-system-security4.0-cil libmono-system-xml4.0-cil libmono-system4.0-cil mono-4.0-gac mono-gac mono-runtime
 libntrack0 ntrack-module-libnl-0 ntrack-module-rtnetlink-0
 xemacs21 xemacs21-bin xemacs21-mule xemacs21-mule-canna-wnn xemacs21-nomule xemacs21-support
 aide aide-common
+libmono-system-web-services4.0-cil libmono-system-web4.0-cil libmono-web4.0-cil
 gamin libgamin0
+libmono-posix2.0-cil libmono-security2.0-cil libmono-system2.0-cil
+libmono-system-data-linq2.0-cil libmono-system-web2.0-cil libmono-wcf3.0-cil libmono2.0-cil
 monodoc-browser monodoc-http monodoc-manual
 openjdk-7-jre-headless openjdk-7-jre-lib
 libgeronimo-jpa-2.0-spec-java libgeronimo-osgi-support-java libosgi-compendium-java
 bochs bochs-wx
-tasksel tasksel-data
 g++-4.5 libstdc++6-4.5-dev
 gcj-4.6-jdk libgcj12-dev
 gdc-4.6 libphobos2-4.6-dev
 gdc-4.4 libphobos-4.4-dev
 gcj-4.4-jdk libgcj10-dev
 pcb-common pcb-gtk pcb-lesstif
-ggz-gtk-games ggz-gtk-games-data
-ggz-sdl-games ggz-sdl-games-data
-gnat-gps gnat-gps-common
 gnuift gnuift-perl
 heroes-common heroes-ggi heroes-sdl
 libverto-glib1 libverto-libev1 libverto1
