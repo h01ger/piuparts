@@ -50,16 +50,19 @@ for SECTION in $SECTIONS ; do
 	rgrep -l "Hash Sum mismatch" $MASTER/$SECTION/fail >> $FILE
 	rgrep -l -e "Failed to fetch.*Could not resolve" $MASTER/$SECTION/fail >> $FILE
 	rgrep -l -e "Failed to fetch.*Something wicked happened resolving" $MASTER/$SECTION/fail >> $FILE
+	rgrep -l -e "Failed to fetch.*Unable to connect to" $MASTER/$SECTION/fail >> $FILE
 	rgrep -l "Some index files failed to download, they have been ignored, or old ones used instead." $MASTER/$SECTION/fail >> $FILE
 	rgrep -l "Some index files failed to download. They have been ignored, or old ones used instead." $MASTER/$SECTION/fail >> $FILE
 	rgrep -l -e "W: GPG error: .* Release: The following signatures were invalid: BADSIG" $MASTER/$SECTION/fail >> $FILE
 done
 if [ -s $FILE ] ; then 
 	echo "Network problems on detected!"
-	echo "(By grep'ing for 'Cannot initiate the connection to', 'Failed to"
-	echo "fetch.*Could not resolve', 'Failed to fetch.*Something wicked"
-	echo " happened resolving', 'Some index files failed to download',"
-	echo "'Hash Sum mismatch', and 'The following signatures were invalid'"
+	echo "(By grep'ing for"
+	echo "    'Cannot initiate the connection to',"
+	echo "    'Failed to fetch',"
+	echo "    'Some index files failed to download',"
+	echo "    'Hash Sum mismatch',"
+	echo "    'The following signatures were invalid'"
 	echo "in failed logs.)"
 	echo 
 	echo "The following logfiles have been deleted:" 
