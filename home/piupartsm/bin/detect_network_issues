@@ -54,6 +54,8 @@ for SECTION in $SECTIONS ; do
 	rgrep -l "Some index files failed to download, they have been ignored, or old ones used instead." $MASTER/$SECTION/fail >> $FILE
 	rgrep -l "Some index files failed to download. They have been ignored, or old ones used instead." $MASTER/$SECTION/fail >> $FILE
 	rgrep -l -e "W: GPG error: .* Release: The following signatures were invalid: BADSIG" $MASTER/$SECTION/fail >> $FILE
+	# modified changelogs are usually caused by mirror pushes during the piuparts test
+	rgrep -l -E '  /usr/share/doc/(.*)/changelog.*owned by: \1' $MASTER/$SECTION/fail >> $FILE
 done
 if [ -s $FILE ] ; then 
 	echo "Network problems on detected!"
@@ -64,6 +66,8 @@ if [ -s $FILE ] ; then
 	echo "    'Hash Sum mismatch',"
 	echo "    'The following signatures were invalid'"
 	echo "in failed logs.)"
+	echo "Test failures due to modified /usr/share/doc/*/changelog.*"
+	echo "are caused by mirror updates during the test."
 	echo 
 	echo "The following logfiles have been deleted:" 
 	echo
