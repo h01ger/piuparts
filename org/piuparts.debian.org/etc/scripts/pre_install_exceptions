@@ -58,5 +58,14 @@ case $PIUPARTS_OBJECTS in
 				;;
 esac
 
+# allow lenny kernel image installation in chroot
+if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
+	for flavor in amd64 openvz-amd64 vserver-amd64 xen-amd64 486 686 686-bigmem openvz-686 vserver-686 vserver-686-bigmem xen-686
+	do
+		echo "linux-image-2.6.26-2-$flavor linux-image-2.6.26-2-$flavor/preinst/bootloader-initrd-2.6.26-2-$flavor boolean false"
+		echo "linux-image-2.6.26-2-$flavor linux-image-2.6.26-2-$flavor/preinst/lilo-initrd-2.6.26-2-$flavor boolean false"
+	done | debconf-set-selections
+fi
+
 exit 0
 
