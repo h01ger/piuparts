@@ -47,6 +47,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2012-02-20</b>: piuparts-analyse now sends commands the BTS: if a bug has not been explicitly marked fixed in the new version, it can rather very savely be assumed it's still present.
+     </td>
+    </tr>
+     </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2012-01-30</b>: Add new suite to be tested, testing2sid, to catch upgrade problems before they reach testing.
      </td>
     </tr>
