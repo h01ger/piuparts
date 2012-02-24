@@ -46,16 +46,18 @@ get_config_value SECTIONS global sections
 
 FILE=`mktemp`
 for SECTION in $SECTIONS ; do 
-	rgrep -l "Cannot initiate the connection to" $MASTER/$SECTION/fail >> $FILE
-	rgrep -l "Hash Sum mismatch" $MASTER/$SECTION/fail >> $FILE
-	rgrep -l -e "Failed to fetch.*Could not resolve" $MASTER/$SECTION/fail >> $FILE
-	rgrep -l -e "Failed to fetch.*Something wicked happened resolving" $MASTER/$SECTION/fail >> $FILE
-	rgrep -l -e "Failed to fetch.*Unable to connect to" $MASTER/$SECTION/fail >> $FILE
-	rgrep -l "Some index files failed to download, they have been ignored, or old ones used instead." $MASTER/$SECTION/fail >> $FILE
-	rgrep -l "Some index files failed to download. They have been ignored, or old ones used instead." $MASTER/$SECTION/fail >> $FILE
-	rgrep -l -e "W: GPG error: .* Release: The following signatures were invalid: BADSIG" $MASTER/$SECTION/fail >> $FILE
-	# modified changelogs are usually caused by mirror pushes during the piuparts test
-	rgrep -l -E '  /usr/share/doc/(.*)/changelog.*owned by: \1' $MASTER/$SECTION/fail >> $FILE
+	for subdir in fail bugged ; do
+		rgrep -l "Cannot initiate the connection to" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l "Hash Sum mismatch" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "Failed to fetch.*Could not resolve" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "Failed to fetch.*Something wicked happened resolving" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "Failed to fetch.*Unable to connect to" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l "Some index files failed to download, they have been ignored, or old ones used instead." $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l "Some index files failed to download. They have been ignored, or old ones used instead." $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "W: GPG error: .* Release: The following signatures were invalid: BADSIG" $MASTER/$SECTION/$subdir >> $FILE
+		# modified changelogs are usually caused by mirror pushes during the piuparts test
+		rgrep -l -E '  /usr/share/doc/(.*)/changelog.*owned by: \1' $MASTER/$SECTION/$subdir >> $FILE
+	done
 done
 if [ -s $FILE ] ; then 
 	echo "Network problems on detected!"
