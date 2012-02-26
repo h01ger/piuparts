@@ -1,0 +1,20 @@
+To: submit@bugs.debian.org
+Subject: fails to upgrade lenny -> squeeze -> wheezy
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package fails to upgrade from
+'lenny' to 'squeeze' to 'wheezy'.
+It installed fine in 'lenny', and upgraded to 'squeeze' successfully,
+but then the upgrade to 'wheezy' failed.
+
+From the attached log (scroll to the bottom...):
+
+
+cheers,
