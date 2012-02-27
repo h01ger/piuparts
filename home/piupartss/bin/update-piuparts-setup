@@ -49,8 +49,9 @@ if [ ! -z "$1" ] ; then
 	git checkout $1
 fi
 
-# git pull if $2 is given
+# git fetch+pull if $2 is given
 if [ ! -z "$2" ] ; then
+	git fetch $2
 	git pull $2 $1
 fi
 
@@ -123,8 +124,9 @@ if [ ! -z "$1" ] ; then
 	git checkout $1
 fi
 
-# git pull if $2 is given
+# git fetch+pull if $2 is given
 if [ ! -z "$2" ] ; then
+	git fetch $2
 	git pull $2 $1
 fi
 
