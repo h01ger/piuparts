@@ -51,7 +51,7 @@ LOGS=`mktemp`
 URLS=`mktemp`
 for SECTION in $SECTIONS ; do 
 	mkdir -p $MASTER/$SECTION/untestable/
-	rgrep -l -E "(E: Broken packages|E: Error, pkgProblemResolver::Resolve generated breaks)" $MASTER/$SECTION/fail 2>/dev/null > $LOGS
+	rgrep -l -E "E: Broken packages|E: Unable to correct problems, you have held broken packages|E: Error, pkgProblemResolver::Resolve generated breaks" $MASTER/$SECTION/fail 2>/dev/null > $LOGS
 	if [ -s $LOGS ]; then
 		for package_log in $(cat $LOGS)
 		do
@@ -65,8 +65,11 @@ if [ -s $URLS ]; then
 	date >> $HTDOCS/archive_issues.txt
 	cat $URLS >> $HTDOCS/archive_issues.txt
 	echo "Broken packages detected!"
-	echo "(By grep'ing for 'E: Broken packages' and 'E: Error, pkgProblemResolver::Resolve"
-        echo "generated breaks' in failed logs.)"
+	echo "(By grep'ing for"
+	echo "        'E: Broken packages',"
+	echo "        'E: Unable to correct problems, you have held broken packages',"
+	echo "        'E: Error, pkgProblemResolver::Resolve generated breaks'"
+	echo "in failed logs.)"
 	echo 
 	echo 'The following packages have been moved to $section/untestable and will be'
 	echo "tested again in $DAYS days."
