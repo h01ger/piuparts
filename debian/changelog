@@ -16,6 +16,7 @@ piuparts (0.44) UNRELEASED; urgency=low
     - Add link to the list of untestable logs.
     - Add more known problem reports: forgotten alternatives, warnings in
       passed logs: leftover files and failed maintainer scripts.
+  * Makefile: Install documentation with mode 0644 instead of 0755.
 
   [ Holger Levsen ]
   * Enable automatic bug updating in piuparts-analyse: if a bug is not closed
