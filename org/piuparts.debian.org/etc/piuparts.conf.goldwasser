@@ -10,6 +10,7 @@
 sections = testing2sid wheezy
 master-host = localhost
 master-user = piupartsm
+bts-from = piuparts-devel@lists.alioth.debian.org
 master-directory = /org/piuparts.debian.org/master/
 output-directory = /org/piuparts.debian.org/htdocs/
 # this value is too high for production (it will cause piuparts-slave to sleep

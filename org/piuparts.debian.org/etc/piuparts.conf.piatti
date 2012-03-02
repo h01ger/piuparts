@@ -9,6 +9,7 @@
 sections = sid testing2sid wheezy squeeze2wheezy squeeze lenny2squeeze
 master-host = localhost
 master-user = piupartsm
+bts-from = piuparts-devel@lists.alioth.debian.org
 master-directory = /org/piuparts.debian.org/master/
 output-directory = /org/piuparts.debian.org/htdocs/
 # 30*60
