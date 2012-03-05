@@ -1950,6 +1950,8 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
         depends = []
         conflicts = []
         for control in control_infos:
+            if control.get("pre-depends"):
+                depends.append(control["pre-depends"])
             if control.get("depends"):
                 depends.append(control["depends"])
             if control.get("conflicts"):
