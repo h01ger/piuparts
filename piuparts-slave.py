@@ -302,7 +302,13 @@ class Section:
         return ret
 
     def _run(self):
-        self._slave.connect_to_master(self._log_file)
+        try:
+            self._slave.connect_to_master(self._log_file)
+        except KeyboardInterrupt:
+            raise
+        except:
+            logging.error("connection to master failed")
+            return 0
 
         for logdir in ["pass", "fail", "untestable"]:
             for basename in os.listdir(logdir):
