@@ -17,6 +17,8 @@ piuparts (0.44) UNRELEASED; urgency=low
   * piuparts-master.py:
     - Implement simple section locking to allow concurrent master instances
       but allow only one instance per section.
+  * piuparts-slave.py:
+    - Do not leak the logfile file descriptor to piuparts.
   * piuparts-report.py:
     - Add link to the list of untestable logs.
     - Add more known problem reports: forgotten alternatives, warnings in

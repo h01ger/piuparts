@@ -410,7 +410,7 @@ def test_package(config, package, packages_files):
     output_name = log_name(package["Package"], package["Version"])
     logging.debug("Opening log file %s" % output_name)
     new_name = os.path.join("new", output_name)
-    output = file(new_name, "w")
+    output = file(new_name, "we")
     output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n", 
                                time.gmtime()))
     output.write("\n")
