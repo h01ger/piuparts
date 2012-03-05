@@ -91,6 +91,13 @@ class Alarm(Exception):
 def alarm_handler(signum, frame):
     raise Alarm
 
+
+class MasterIsBusy(Exception):
+
+    def __init__(self):
+        self.args = "Master is busy, retry later"
+
+
 class MasterNotOK(Exception):
 
     def __init__(self):
@@ -160,6 +167,8 @@ class Slave:
         self._to_master = p.stdin
         self._from_master = p.stdout
         line = self._readline()
+        if line == "busy\n":
+            raise MasterIsBusy()
         if line != "hello\n":
             raise MasterDidNotGreet()
         logging.debug("Connected to master")
@@ -306,6 +315,9 @@ class Section:
             self._slave.connect_to_master(self._log_file)
         except KeyboardInterrupt:
             raise
+        except MasterIsBusy:
+            logging.error("master is busy")
+            return 0
         except:
             logging.error("connection to master failed")
             return 0
