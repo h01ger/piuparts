@@ -371,41 +371,40 @@ class Section:
             if os.path.exists("idle.stamp"):
                 os.unlink("idle.stamp")
 
+        if self._config["distro"]:
+            distros = [self._config["distro"]]
+        else:
+            distros = []
+
+        if self._config["upgrade-test-distros"]:
+            distros += self._config["upgrade-test-distros"].split()
+
+        packages_files = {}
+        for distro in distros:
+            if distro not in packages_files:
+                packages_files[distro] = fetch_packages_file(self._config, distro)
+        if self._config["distro"]:
+            packages_file = packages_files[self._config["distro"]]
+        else:
+            packages_file = packages_files[distro]
+
         test_count = 0
-        if self._slave.get_reserved():
-            self._check_tarball()
-            packages_files = {}
-            if self._config["distro"]:
-                distros = [self._config["distro"]]
-            else:
-                distros = []
-
-            if self._config["upgrade-test-distros"]:
-                distros += self._config["upgrade-test-distros"].split()
-
-            for distro in distros:
-                if distro not in packages_files:
-                    packages_files[distro] = fetch_packages_file(self._config, distro)
-            if self._config["distro"]:
-              packages_file = packages_files[self._config["distro"]]
-            else:
-              packages_file = packages_files[distro]
-
-            for package_name, version in self._slave.get_reserved():
-                test_count += 1
-                if package_name in packages_file:
-                    package = packages_file[package_name]
-                    if version == package["Version"] or self._config["upgrade-test-distros"]:
-                        test_package(self._config, package, packages_files)
-                    else:
-                        create_file(os.path.join("untestable", 
-                                    log_name(package_name, version)),
-                                    "%s %s not found" % (package_name, version))
+        self._check_tarball()
+        for package_name, version in self._slave.get_reserved():
+            test_count += 1
+            if package_name in packages_file:
+                package = packages_file[package_name]
+                if version == package["Version"] or self._config["upgrade-test-distros"]:
+                    test_package(self._config, package, packages_files)
                 else:
                     create_file(os.path.join("untestable", 
                                 log_name(package_name, version)),
-                                "Package %s not found" % package_name)
-                self._slave.forget_reserved(package_name, version)
+                                "%s %s not found" % (package_name, version))
+            else:
+                create_file(os.path.join("untestable",
+                            log_name(package_name, version)),
+                            "Package %s not found" % package_name)
+            self._slave.forget_reserved(package_name, version)
         return test_count
 
 
