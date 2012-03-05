@@ -292,11 +292,17 @@ class Section:
         logging.info("Running section %s (precedence=%d)" % (self._config.section, self.precedence()))
         self._config = Config(section=self._config.section)
         self._config.read(CONFIG_FILE)
-        self._slave.connect_to_master(self._log_file)
 
         oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
-        test_count = 0
+
+        ret = self._run()
+
+        os.chdir(oldcwd)
+        return ret
+
+    def _run(self):
+        self._slave.connect_to_master(self._log_file)
 
         for logdir in ["pass", "fail", "untestable"]:
             for basename in os.listdir(logdir):
@@ -313,6 +319,7 @@ class Section:
         self._slave.get_status(self._config.section)
         self._slave.close()
 
+        test_count = 0
         if self._slave.get_reserved():
             self._check_tarball()
             packages_files = {}
@@ -347,8 +354,6 @@ class Section:
                                 log_name(package_name, version)),
                                 "Package %s not found" % package_name)
                 self._slave.forget_reserved(package_name, version)
-
-        os.chdir(oldcwd)
         return test_count
 
 
