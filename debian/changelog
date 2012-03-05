@@ -13,6 +13,7 @@ piuparts (0.44) UNRELEASED; urgency=low
     - Add to self.ignored_patterns: /var/lib/ucf/.*
     - Increase output limit to 3 MB (for dist-upgrading daptup).
     - Do not miss Pre-Depends in --warn-on-others mode.
+    - Remove packages and reinstall missing ones in one apt-get call.
   * piuparts-report.py:
     - Add link to the list of untestable logs.
     - Add more known problem reports: forgotten alternatives, warnings in
