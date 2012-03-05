@@ -247,6 +247,7 @@ class Section:
     def __init__(self, section):
         self._config = Config(section=section)
         self._config.read(CONFIG_FILE)
+        self._sleep_until = 0
         self._slave_directory = os.path.abspath(self._config["slave-directory"])
         if not os.path.exists(self._slave_directory):
             os.mkdir(self._slave_directory)
@@ -298,6 +299,9 @@ class Section:
         return int(self._config["precedence"])
 
     def run(self):
+        if time.time() < self._sleep_until:
+            return 0
+
         logging.info("-------------------------------------------")
         logging.info("Running section %s (precedence=%d)" % (self._config.section, self.precedence()))
         self._config = Config(section=self._config.section)
@@ -308,6 +312,7 @@ class Section:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
             logging.info("busy")
+            self._sleep_until = time.time() + 900
             lock.close()
             return 0
 
@@ -327,9 +332,11 @@ class Section:
             raise
         except MasterIsBusy:
             logging.error("master is busy")
+            self._sleep_until = time.time() + 300
             return 0
         except:
             logging.error("connection to master failed")
+            self._sleep_until = time.time() + 900
             return 0
 
         for logdir in ["pass", "fail", "untestable"]:
@@ -346,6 +353,10 @@ class Section:
 
         self._slave.get_status(self._config.section)
         self._slave.close()
+
+        if not self._slave.get_reserved():
+            self._sleep_until = time.time() + 3600
+            return 0
 
         test_count = 0
         if self._slave.get_reserved():

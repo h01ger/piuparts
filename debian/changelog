@@ -21,6 +21,7 @@ piuparts (0.44) UNRELEASED; urgency=low
     - Do not leak the logfile file descriptor to piuparts.
     - Do not abort if connection to master failed, just skip the section.
     - Implement simple section locking to allow concurrent slave instances.
+    - Sections wait before retry 15 minutes after error and one hour if idle.
   * piuparts-report.py:
     - Add link to the list of untestable logs.
     - Add more known problem reports: forgotten alternatives, warnings in
