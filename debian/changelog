@@ -20,6 +20,7 @@ piuparts (0.44) UNRELEASED; urgency=low
   * piuparts-slave.py:
     - Do not leak the logfile file descriptor to piuparts.
     - Do not abort if connection to master failed, just skip the section.
+    - Implement simple section locking to allow concurrent slave instances.
   * piuparts-report.py:
     - Add link to the list of untestable logs.
     - Add more known problem reports: forgotten alternatives, warnings in

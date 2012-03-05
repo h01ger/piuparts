@@ -30,6 +30,7 @@ import time
 import logging
 from signal import alarm, signal, SIGALRM, SIGKILL
 import subprocess
+import fcntl
 import ConfigParser
 
 import piupartslib.conf
@@ -302,12 +303,21 @@ class Section:
         self._config = Config(section=self._config.section)
         self._config.read(CONFIG_FILE)
 
+        lock = open(os.path.join(self._slave_directory, "slave.lock"), "we")
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            logging.info("busy")
+            lock.close()
+            return 0
+
         oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
 
         ret = self._run()
 
         os.chdir(oldcwd)
+        lock.close()
         return ret
 
     def _run(self):
