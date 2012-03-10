@@ -380,19 +380,23 @@ class PackagesDB:
             return "waiting-to-be-tested"
 
         # treat circular-dependencies as testable (for the part of the circle)
-        state = "unknown" 
         if package["Package"] in self._known_circular_depends:
+            testable = True
             for dep in package.dependencies():
                 dep_state = self.get_package_state(dep)
-                if dep not in self._known_circular_depends and dep_state not in \
+                if dep not in self._known_circular_depends and dep_state in \
                         ["successfully-tested", "essential-required"]:
-                    state = "unknown"
-                    break
-                if dep in self._known_circular_depends and dep_state not in \
+                    pass
+                elif dep in self._known_circular_depends and dep_state not in \
                         ["failed-testing", "dependency-failed-testing"]:
-                    state = "waiting-to-be-tested"
-                    continue
-        return state
+                    pass
+                else:
+                    testable = False
+                    break
+            if testable:
+                return "waiting-to-be-tested"
+
+        return "unknown"
 
     def _compute_package_states(self):
         if self._in_state is not None:
