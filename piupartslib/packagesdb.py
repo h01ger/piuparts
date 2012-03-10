@@ -213,7 +213,7 @@ class PackagesDB:
         "dependency-failed-testing",
         "dependency-cannot-be-tested",
         "dependency-does-not-exist",
-        "circular-dependency",
+        "circular-dependency",  # obsolete
         "unknown",
         "unknown-preferred-alternative",  # obsolete
         "no-dependency-from-alternatives-exists",  # obsolete
@@ -378,14 +378,6 @@ class PackagesDB:
                 break
         if state == "waiting-to-be-tested":
             return state
-
-        deps = self._get_recursive_dependencies(package, break_circles=False)
-        # ignore those packages:
-        for pkg in self._known_circular_depends:
-            if pkg in deps:
-                deps.remove(pkg)
-        if package["Package"] in deps:
-            return "circular-dependency"  # actually, it's an unknown circular-dependency
 
         # treat circular-dependencies as testable (for the part of the circle)
         state = "unknown" 
