@@ -369,15 +369,15 @@ class PackagesDB:
             if dep_state in self._dep_state_to_state:
                 return self._dep_state_to_state[dep_state]
 
-        state = "waiting-to-be-tested"
+        testable = True
         for dep in package.dependencies():
             dep_state = self.get_package_state(dep)
             if dep_state not in \
                     ["successfully-tested", "essential-required"]:
-                state = "unknown"
+                testable = False
                 break
-        if state == "waiting-to-be-tested":
-            return state
+        if testable:
+            return "waiting-to-be-tested"
 
         # treat circular-dependencies as testable (for the part of the circle)
         state = "unknown" 
