@@ -335,15 +335,11 @@ class PackagesDB:
         #      instead of "waiting-to-be-tested" depending on the order the
         #      package states get resolved.
 
-        state = None
         for header in ["Depends", "Pre-Depends"]:
             alt_deps = package.all_dependencies(header)
             for d in range(len(alt_deps)):
                 if len(alt_deps[d]) > 1:
                     alt_found = 0
-                    alt_fails = 0
-                    alt_unknowns = 0
-                    alt_state = None
                     prefer_alt_score = -1
                     prefer_alt = None
                     for alternative in alt_deps[d]:
@@ -363,24 +359,10 @@ class PackagesDB:
                             elif prefer_alt_score < 0 and altdep_state == "unknown":
                                 prefer_alt = alternative
                                 prefer_alt_score = 0
-                                alt_unknowns += 1
-                            elif altdep_state == "unknown":
-                                alt_unknowns += 1
-                            else:
-                                alt_fails += 1
-                                if alt_state is None:
-                                    alt_state = altdep_state
-
                     if alt_found == 0:
                         return "dependency-does-not-exist"
                     if prefer_alt_score >= 0:
                         package.prefer_alt_depends(header, d, prefer_alt)
-                    else:
-                        if alt_state is not None and alt_unknowns == 0:
-                            state = alt_state
-
-        if state is not None:
-             return state
 
         for dep in package.dependencies():
             dep_state = self.get_package_state(dep)
