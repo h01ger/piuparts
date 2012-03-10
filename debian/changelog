@@ -17,6 +17,8 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Do not consider a package as "untestable" if untestable/ contains a
       logfile from an obsolete version of that package.
     - Simplify handling of package and dependency states.
+    - Do not inherit 'dependency-does-not-exist' state (which may be fixed
+      in the package) but propagate it to 'dependency-cannot-be-tested'.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source

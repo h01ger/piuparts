@@ -227,7 +227,7 @@ class PackagesDB:
         "waiting-for-dependency-to-be-tested": "waiting-for-dependency-to-be-tested",
         "dependency-failed-testing": "dependency-failed-testing",
         "dependency-cannot-be-tested": "dependency-cannot-be-tested",
-        "dependency-does-not-exist": "dependency-does-not-exist",
+        "dependency-does-not-exist": "dependency-cannot-be-tested",
         "unknown-preferred-alternative": "unknown-preferred-alternative",
         "no-dependency-from-alternatives-exists": "dependency-cannot-be-tested",
         "does-not-exist": "dependency-does-not-exist",
