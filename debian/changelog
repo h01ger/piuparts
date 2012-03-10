@@ -23,6 +23,8 @@ piuparts (0.45) UNRELEASED; urgency=low
       'dependency-does-not-exist' instead.
     - Remove 'unknown-preferred-alternative' state as it interferes with
       circular dependencies involving alternatives and virtual packages.
+    - Fix state resolution of package dependencies containing alternatives,
+      virtual packages and circular dependencies.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source

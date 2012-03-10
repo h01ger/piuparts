@@ -319,16 +319,21 @@ class PackagesDB:
 
         # First attempt to resolve (still-unresolved) multiple alternative depends
         # Definitely sub-optimal, but improvement over blindly selecting first one
-        # 1) Prefer first alternative = "essential-required", prefer it
-        # 2) If no "essential-required", prefer first alternative = "successfully-tested"
-        # 3) Otherwise, prefer first alternative =  "waiting-to-be-tested" IF NO REMAINING
-        #    are "unknown/fail"
+        # Select the first alternative in the highest of the following states:
+        #   1) "essential-required"
+        #   2) "successfully-tested"
+        #   3) "waiting-to-be-tested" / "waiting-for-dependency-to-be-tested"
+        #   4) "unknown" (retry later)
+        # and update the preferred alternative of that dependency.
+        # If no alternative is in any of these states we retry later ("unknown")
+        # or set "dependency-does-not-exist".
         #
         # Problems:
         #   a) We will test and fail when >=1 "successfully-tested" but another
         #      that failed is selected by apt during test run
-        #   b) False positive "Dependency failed/cannot be tested"; however
-        #       more accurately "waiting-for-dependency-to-be-tested"
+        #   b) We may report a status of "waiting-for-dependency-to-be-tested"
+        #      instead of "waiting-to-be-tested" depending on the order the
+        #      package states get resolved.
 
         state = None
         for header in ["Depends", "Pre-Depends"]:
@@ -339,7 +344,7 @@ class PackagesDB:
                     alt_fails = 0
                     alt_unknowns = 0
                     alt_state = None
-                    prefer_alt_score = 0
+                    prefer_alt_score = -1
                     prefer_alt = None
                     for alternative in alt_deps[d]:
                         altdep_state = self.get_package_state(alternative)
@@ -355,6 +360,10 @@ class PackagesDB:
                                  altdep_state in ["waiting-to-be-tested", "waiting-for-dependency-to-be-tested"]:
                                 prefer_alt = alternative
                                 prefer_alt_score = 1
+                            elif prefer_alt_score < 0 and altdep_state == "unknown":
+                                prefer_alt = alternative
+                                prefer_alt_score = 0
+                                alt_unknowns += 1
                             elif altdep_state == "unknown":
                                 alt_unknowns += 1
                             else:
@@ -364,9 +373,7 @@ class PackagesDB:
 
                     if alt_found == 0:
                         return "dependency-does-not-exist"
-                    if prefer_alt_score >= 2:
-                        package.prefer_alt_depends(header, d, prefer_alt)
-                    elif prefer_alt_score == 1 and ((alt_unknowns + alt_fails) == 0):
+                    if prefer_alt_score >= 0:
                         package.prefer_alt_depends(header, d, prefer_alt)
                     else:
                         if alt_state is not None and alt_unknowns == 0:
