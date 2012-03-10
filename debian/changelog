@@ -19,6 +19,8 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Simplify handling of package and dependency states.
     - Do not inherit 'dependency-does-not-exist' state (which may be fixed
       in the package) but propagate it to 'dependency-cannot-be-tested'.
+    - Remove 'no-dependency-from-alternatives-exists' state and use
+      'dependency-does-not-exist' instead.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source

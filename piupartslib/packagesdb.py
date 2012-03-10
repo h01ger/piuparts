@@ -216,7 +216,7 @@ class PackagesDB:
         "circular-dependency",
         "unknown",
         "unknown-preferred-alternative",
-        "no-dependency-from-alternatives-exists",
+        "no-dependency-from-alternatives-exists",  # obsolete
         #"does-not-exist",  # can only happen as query result for a dependency
     ]
 
@@ -229,7 +229,6 @@ class PackagesDB:
         "dependency-cannot-be-tested": "dependency-cannot-be-tested",
         "dependency-does-not-exist": "dependency-cannot-be-tested",
         "unknown-preferred-alternative": "unknown-preferred-alternative",
-        "no-dependency-from-alternatives-exists": "dependency-cannot-be-tested",
         "does-not-exist": "dependency-does-not-exist",
     }
 
@@ -364,12 +363,12 @@ class PackagesDB:
                                 if alt_state is None:
                                     alt_state = altdep_state
 
+                    if alt_found == 0:
+                        return "dependency-does-not-exist"
                     if prefer_alt_score >= 2:
                         package.prefer_alt_depends(header, d, prefer_alt)
                     elif prefer_alt_score == 1 and ((alt_unknowns + alt_fails) == 0):
                         package.prefer_alt_depends(header, d, prefer_alt)
-                    elif alt_found == 0:
-                        return "no-dependency-from-alternatives-exists"
                     else:
                         if alt_state is not None and alt_unknowns == 0:
                             state = alt_state
