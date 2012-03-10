@@ -21,6 +21,8 @@ piuparts (0.45) UNRELEASED; urgency=low
       in the package) but propagate it to 'dependency-cannot-be-tested'.
     - Remove 'no-dependency-from-alternatives-exists' state and use
       'dependency-does-not-exist' instead.
+    - Remove 'unknown-preferred-alternative' state as it interferes with
+      circular dependencies involving alternatives and virtual packages.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source

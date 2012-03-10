@@ -215,7 +215,7 @@ class PackagesDB:
         "dependency-does-not-exist",
         "circular-dependency",
         "unknown",
-        "unknown-preferred-alternative",
+        "unknown-preferred-alternative",  # obsolete
         "no-dependency-from-alternatives-exists",  # obsolete
         #"does-not-exist",  # can only happen as query result for a dependency
     ]
@@ -228,7 +228,6 @@ class PackagesDB:
         "dependency-failed-testing": "dependency-failed-testing",
         "dependency-cannot-be-tested": "dependency-cannot-be-tested",
         "dependency-does-not-exist": "dependency-cannot-be-tested",
-        "unknown-preferred-alternative": "unknown-preferred-alternative",
         "does-not-exist": "dependency-does-not-exist",
     }
 
@@ -372,8 +371,6 @@ class PackagesDB:
                     else:
                         if alt_state is not None and alt_unknowns == 0:
                             state = alt_state
-                        elif state is None:
-                            state = "unknown-preferred-alternative"
 
         if state is not None:
              return state
@@ -421,7 +418,6 @@ class PackagesDB:
             return
 
         todo = []
-        unpreferred_alt = []
 
         self._find_all_packages()
         package_names = self._packages.keys()
@@ -437,17 +433,13 @@ class PackagesDB:
         while package_names:
             todo = []
             done = []
-            unpreferred_alt = []
             for package_name in package_names:
                 package = self._packages[package_name]
-                if self._package_state[package_name] in \
-                   [ "unknown", "unknown-preferred-alternative" ]:
+                if self._package_state[package_name] == "unknown":
                     state = self._compute_package_state(package)
                     assert state in self._states
                     if state == "unknown":
                         todo.append(package_name)
-                    elif state == "unknown-preferred-alternative":
-                        unpreferred_alt.append(package_name)
                     else:
                         self._in_state[state].append(package_name)
                         self._package_state[package_name] = state
@@ -457,12 +449,8 @@ class PackagesDB:
                 # to do anything the next time either.
                 break
             package_names = todo
-            package_names.extend(unpreferred_alt)
 
         self._in_state["unknown"] = todo
-        self._in_state["unknown-preferred-alternative"] = unpreferred_alt
-        for package_name in unpreferred_alt:
-            self._package_state[package_name] = "unknown-preferred-alternative"
 
         for state in self._states:
             self._in_state[state].sort()
