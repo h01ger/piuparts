@@ -404,11 +404,12 @@ class PackagesDB:
             return "waiting-to-be-tested"
 
         # treat circular-dependencies as testable (for the part of the circle)
-        if package["Package"] in self._known_circular_depends:
+        circular_deps = self._get_dependency_cycle(package["Package"])
+        if package["Package"] in circular_deps:
             testable = True
             for dep in deps:
                 dep_state = self.get_package_state(dep)
-                if dep in self._known_circular_depends:
+                if dep in circular_deps:
                     # allow any non-error dep_state on the cycle for testing
                     # (error states are handled by the error propagation above)
                     pass
