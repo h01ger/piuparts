@@ -295,7 +295,7 @@ class PackagesDB:
                             self._virtual_packages[provided] = []
                         self._virtual_packages[provided].append(p["Package"])
 
-    def _get_recursive_dependencies(self, package, break_circles=True):
+    def _get_recursive_dependencies(self, package):
         assert self._packages is not None
         deps = []
         more = package.dependencies()
@@ -308,12 +308,27 @@ class PackagesDB:
                     more += self._packages[dep].dependencies()
                 elif dep in self._virtual_packages:
                     more += self._packages[self._virtual_packages[dep][0]].dependencies()
-
-        # Break circular dependencies
-        if break_circles and package["Package"] in deps:
-            deps.remove(package["Package"])
-
         return deps
+
+    def _get_dependency_cycle(self, package_name):
+        deps = []
+        circular = []
+        more = [package_name]
+        while more:
+            dep = more[0]
+            more = more[1:]
+            if dep not in deps:
+                deps.append(dep)
+                if dep in self._packages:
+                    dep_pkg = self._packages[dep]
+                elif dep in self._virtual_packages:
+                    dep_pkg = self._packages[self._virtual_packages[dep][0]]
+                else:
+                    dep_pkg = None
+                if dep_pkg is not None and package_name in self._get_recursive_dependencies(dep_pkg):
+                    circular.append(dep)
+                    more += dep_pkg.dependencies()
+        return circular
 
     def _compute_package_state(self, package):
         if self._logdb.log_exists(package, [self._ok]):
