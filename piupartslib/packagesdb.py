@@ -220,15 +220,18 @@ class PackagesDB:
         #"does-not-exist",  # can only happen as query result for a dependency
     ]
 
-    _dep_state_to_state = {
+    _propagate_error_state = {
         "failed-testing": "dependency-failed-testing",
         "cannot-be-tested": "dependency-cannot-be-tested",
-        "waiting-to-be-tested": "waiting-for-dependency-to-be-tested",
-        "waiting-for-dependency-to-be-tested": "waiting-for-dependency-to-be-tested",
         "dependency-failed-testing": "dependency-failed-testing",
         "dependency-cannot-be-tested": "dependency-cannot-be-tested",
         "dependency-does-not-exist": "dependency-cannot-be-tested",
         "does-not-exist": "dependency-does-not-exist",
+    }
+
+    _propagate_waiting_state = {
+        "waiting-to-be-tested": "waiting-for-dependency-to-be-tested",
+        "waiting-for-dependency-to-be-tested": "waiting-for-dependency-to-be-tested",
     }
 
     def __init__(self, logdb=None, prefix=None):
@@ -368,8 +371,8 @@ class PackagesDB:
 
         for dep in deps:
             dep_state = self.get_package_state(dep)
-            if dep_state in self._dep_state_to_state:
-                return self._dep_state_to_state[dep_state]
+            if dep_state in self._propagate_error_state:
+                return self._propagate_error_state[dep_state]
 
         testable = True
         for dep in deps:
@@ -397,6 +400,11 @@ class PackagesDB:
                     break
             if testable:
                 return "waiting-to-be-tested"
+
+        for dep in deps:
+            dep_state = self.get_package_state(dep)
+            if dep_state in self._propagate_waiting_state:
+                return self._propagate_waiting_state[dep_state]
 
         return "unknown"
 
