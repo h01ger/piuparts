@@ -418,8 +418,7 @@ class Config(piupartslib.conf.Config):
                 "sources-url": None,
                 "master-directory": ".",
                 "description": "",
-                "known_circular_depends": "",
-                "max-reserved": 1, 
+                "max-reserved": 1,
             }, "")
 
 
@@ -573,17 +572,11 @@ class Section:
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
 
-        known_circular_depends = []
-        for kcd in self._config["known_circular_depends"].split():
-          known_circular_depends.append(kcd)
-          #logging.debug("circular depends: " + kcd)
-
         logging.debug("Loading and parsing Packages file")
         logging.info("Fetching %s" % self._config["packages-url"])
         packages_file = piupartslib.open_packages_url(self._config["packages-url"])
         self._binary_db = piupartslib.packagesdb.PackagesDB()
         self._binary_db.read_packages_file(packages_file)
-        self._binary_db.set_known_circular_depends(known_circular_depends)
         packages_file.close()
 
         if self._config["sources-url"]:

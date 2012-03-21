@@ -148,8 +148,3 @@ Low priority stuff (a.k.a. "nobody's said they must have it now")
   repo. (then later put more broken packages in there and use
   that for testing piuparts)
 
-- read circular depends from /etc/piuparts/circular-depends-*.txt
-  instead of having this infinite string in the config file
-  filename should be configurable, e.g.
-  [section]/circular-depends-file
-

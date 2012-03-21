@@ -54,7 +54,6 @@ class Config(piupartslib.conf.Config):
                 "log-file": None,
                 "packages-url": None,
                 "master-directory": ".",
-                "known_circular_depends": "",
             }, "")
 
 
@@ -112,7 +111,7 @@ class Master(Protocol):
         "successfully-tested",
     )
 
-    def __init__(self, input, output, packages_file, known_circular_depends="", section=None):
+    def __init__(self, input, output, packages_file, section=None):
         Protocol.__init__(self, input, output)
         self._commands = {
             "status": self._status,
@@ -125,15 +124,6 @@ class Master(Protocol):
         self._binary_db = piupartslib.packagesdb.PackagesDB(prefix=section)
         self._binary_db.create_subdirs()
         self._binary_db.read_packages_file(packages_file)
-        my_known_circular_depends = []
-        for kcd in known_circular_depends.split():
-          my_known_circular_depends.append(kcd)
-          logging.debug("circular depends: " + kcd)
-        try:
-          self._binary_db.set_known_circular_depends(my_known_circular_depends)
-          logging.debug("section: "+section+" even more WTF should this ever be logged with section lenny2squeeze...!")
-        except:
-          logging.debug("section: "+section+" a fine dose of WTF. I'm looking forward to the day I understand this. This shouldnt happen and only happens for the lenny2squeeze section, never for squeeze or sid. ")
         self._writeline("hello")
 
     def do_transaction(self):
@@ -226,9 +216,8 @@ def main():
 
         logging.info("Fetching %s" % config["packages-url"])
         packages_file = piupartslib.open_packages_url(config["packages-url"])
-        known_circular_depends = config["known_circular_depends"]
 
-        m = Master(sys.stdin, sys.stdout, packages_file, known_circular_depends, section=section)
+        m = Master(sys.stdin, sys.stdout, packages_file, section=section)
         while m.do_transaction():
             pass
         packages_file.close()
