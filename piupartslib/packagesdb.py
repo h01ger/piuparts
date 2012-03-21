@@ -364,13 +364,15 @@ class PackagesDB:
                     if prefer_alt_score >= 0:
                         package.prefer_alt_depends(header, d, prefer_alt)
 
-        for dep in package.dependencies():
+        deps = package.dependencies()
+
+        for dep in deps:
             dep_state = self.get_package_state(dep)
             if dep_state in self._dep_state_to_state:
                 return self._dep_state_to_state[dep_state]
 
         testable = True
-        for dep in package.dependencies():
+        for dep in deps:
             dep_state = self.get_package_state(dep)
             if dep_state not in \
                     ["successfully-tested", "essential-required"]:
@@ -382,7 +384,7 @@ class PackagesDB:
         # treat circular-dependencies as testable (for the part of the circle)
         if package["Package"] in self._known_circular_depends:
             testable = True
-            for dep in package.dependencies():
+            for dep in deps:
                 dep_state = self.get_package_state(dep)
                 if dep not in self._known_circular_depends and dep_state in \
                         ["successfully-tested", "essential-required"]:
