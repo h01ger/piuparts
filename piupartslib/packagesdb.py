@@ -389,13 +389,12 @@ class PackagesDB:
             testable = True
             for dep in deps:
                 dep_state = self.get_package_state(dep)
-                if dep not in self._known_circular_depends and dep_state in \
-                        ["successfully-tested", "essential-required"]:
+                if dep in self._known_circular_depends:
+                    # allow any non-error dep_state on the cycle for testing
+                    # (error states are handled by the error propagation above)
                     pass
-                elif dep in self._known_circular_depends and dep_state not in \
-                        ["failed-testing", "dependency-failed-testing"]:
-                    pass
-                else:
+                elif dep_state not in ["successfully-tested", "essential-required"]:
+                    # non-circular deps must have passed before testing circular deps
                     testable = False
                     break
             if testable:
