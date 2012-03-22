@@ -1,0 +1,46 @@
+To: submit@bugs.debian.org
+Subject: leaves alternatives after purge
+
+Package:
+Version:
+Severity: important
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package left unowned files on
+the system after purge, which is a violation of policy 6.8:
+
+http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetails
+
+The leftover files are actually alternatives that were installed by the
+package but have not been properly removed.
+
+While there is ongoing discussion how to remove alternatives correctly
+(see http://bugs.debian.org/71621 for details) the following strategy
+should work for regular cases:
+* 'postinst configure' always installs the alternative
+* 'prerm remove' removes the alternative
+* 'postrm remove' and 'postrm disappear' remove the alternative
+In all other cases a maintainer script is invoked (e.g. upgrade,
+deconfigure) the alternatives are not modified to preserve user
+configuration.
+Removing the alternative in 'prerm remove' avoids having a dangling link
+once the actual file gets removed, but 'prerm remove' is not called in
+all cases (e.g. unpacked but not configured packages or disappearing
+packages) so the postrm must remove the alternative again
+(update-alternatives gracefully handles removal of non-existing
+alternatives).
+
+Note that the arguments for adding and removing alternatives differ, for
+removal it's 'update-alternatives --remove <name> <path>'.
+
+Filing this as important as having a piuparts clean archive is a release
+goal since lenny.
+
+From the attached log (scroll to the bottom...):
+
+
+
+cheers,
