@@ -225,6 +225,12 @@ class PackagesDB:
         "essential-required",
     ]
 
+    _obsolete_states = [
+        "circular-dependency",
+        "unknown-preferred-alternative",
+        "no-dependency-from-alternatives-exists",
+    ]
+
     _propagate_error_state = {
         "failed-testing": "dependency-failed-testing",
         "cannot-be-tested": "dependency-cannot-be-tested",
@@ -467,6 +473,9 @@ class PackagesDB:
 
     def get_states(self):
         return self._states
+
+    def get_active_states(self):
+        return [x for x in self._states if not x in self._obsolete_states]
 
     def get_pkg_names_in_state(self, state):
         self._compute_package_states()

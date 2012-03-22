@@ -458,10 +458,10 @@ def emphasize_reason(reason):
         "dependency-failed-testing",
         "dependency-cannot-be-tested",
         "dependency-does-not-exist",
-        "circular-dependency",
+        "circular-dependency",  # obsolete
         "unknown",
-        "unknown-preferred-alternative",
-        "no-dependency-from-alternatives-exists",
+        "unknown-preferred-alternative",  # obsolete
+        "no-dependency-from-alternatives-exists",  # obsolete
         "does-not-exist",
     ]
     if reason in bad_states:
@@ -804,7 +804,7 @@ class Section:
             # The latter is a FIXME which needs parsing the Packages files from other archs too
             continue
           current_version = self._source_db.get_control_header(source, "Version")
-          if state != "circular-dependency" and not "waiting" in state and "dependency" in state:
+          if not "waiting" in state and "dependency" in state:
             state_style="lightalertlabelcell"
           elif state == "failed-testing":
             state_style="lightlabelcell"
@@ -947,7 +947,7 @@ class Section:
 
     def write_section_index_page(self,dirs,total_packages):
         tablerows = ""
-        for state in self._binary_db.get_states():
+        for state in self._binary_db.get_active_states():
             dir_link = ""
             analysis = ""
             for vdir in dirs:
@@ -989,7 +989,7 @@ class Section:
         return vlist
 
     def write_state_pages(self):
-        for state in self._binary_db.get_states():
+        for state in self._binary_db.get_active_states():
             logging.debug("Writing page for %s" % state)
             vlist = ""
             for name in sorted(self._binary_db.get_pkg_names_in_state(state)):
