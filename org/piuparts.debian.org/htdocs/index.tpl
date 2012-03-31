@@ -47,10 +47,16 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2012-03-05</b> temporarily disabled again until we've sorted out problems with it. <b>2012-02-20</b>: piuparts-analyse now sends commands the BTS: if a bug has not been explicitly marked fixed in the new version, it can rather very savely be assumed it's still present.
+      <b>2012-03-31</b> Disable lenny2squeeze tests, as lenny has been archived.
      </td>
     </tr>
-     </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2012-03-05</b>: temporarily disabled this again until we've sorted out problems with it. 
+      <br>
+      <b>2012-02-20</b>: piuparts-analyse now sends commands the BTS: if a bug has not been explicitly marked fixed in the new version, it can rather very savely be assumed it's still present.
+     </td>
+    </tr>
     <tr class="normalrow">
      <td class="contentcell2">
       <b>2012-01-30</b>: Add new suite to be tested, testing2sid, to catch upgrade problems before they reach testing.
