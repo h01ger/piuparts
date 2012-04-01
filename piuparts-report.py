@@ -419,6 +419,7 @@ class Config(piupartslib.conf.Config):
                 "master-directory": ".",
                 "description": "",
                 "known_circular_depends": "",
+                "max-reserved": 1, 
             }, "")
 
 
