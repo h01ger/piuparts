@@ -33,6 +33,9 @@ piuparts (0.44) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * Enable automatic bug updating in piuparts-analyse: if a bug is not closed
     in a new version, it can rather very savely be assumed it's not closed.
+    This has been disabled again.
+  * piuparts-report: don't create output for disabled sections. (Bye bye
+    Lenny!)
 
  -- Holger Levsen <holger@debian.org>  Sun, 22 Jan 2012 13:33:59 +0100
 
