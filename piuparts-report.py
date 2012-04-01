@@ -1082,7 +1082,7 @@ class Section:
 
     def generate_output(self, master_directory, output_directory, section_names):
         # generate output only if section is not disabled
-        if self._config["max-reserved"] != 0:
+        if int(self._config["max-reserved"]) != 0:
             self._section_names = section_names
             self._master_directory = os.path.abspath(os.path.join(master_directory, self._config.section))
             if not os.path.exists(self._master_directory):
