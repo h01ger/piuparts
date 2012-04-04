@@ -16,7 +16,17 @@ available for sure.
 
 The fix should be easy: your package is using adduser or deluser from
 the adduser package, which is only priority important. Using useradd or
-userdel from the passwd package should fix this problem.
+userdel from the passwd package (priority required) should fix this
+problem.
+
+There is ongoing discussion how to handle system users on package
+removal, see http://bugs.debian.org/621833
+Consensus seems to be not to remove system users (to avoid reusing UIDs
+which could grant access to the wrong files) but to "lock" them (where
+"locking"/"unlocking" is not yet precisely defined). Until that has
+been decided it should be sufficient to have the postrm script ignore
+any errors from deluser:
+  deluser ... || true
 
 Filing this as important because a.) it's a clear policy violation (to
 not clean up at purge) b.) having a piuparts clean archive is a release
