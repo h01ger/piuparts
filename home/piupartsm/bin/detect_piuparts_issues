@@ -58,6 +58,7 @@ for SECTION in $SECTIONS ; do
 		rgrep -l -e "^SyntaxError:" $MASTER/$SECTION/$subdir >> $FILE
 		# Python errors from maintainer scripts etc. would be indented by 2 spaces, so don't match here.
 		rgrep -l -e 'update-binfmts: warning: unable to close /proc/sys/fs/binfmt_misc/register: Invalid argument' $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e 'userdel: user .* is currently logged in' $MASTER/$SECTION/$subdir >> $FILE
 	done
 done
 if [ -s $FILE ] ; then 
