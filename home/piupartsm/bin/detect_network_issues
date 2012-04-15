@@ -52,6 +52,7 @@ for SECTION in $SECTIONS ; do
 		rgrep -l -e "Failed to fetch.*Could not resolve" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "Failed to fetch.*Something wicked happened resolving" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "Failed to fetch.*Unable to connect to" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l "E: Method http has died unexpectedly" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l "Some index files failed to download, they have been ignored, or old ones used instead." $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l "Some index files failed to download. They have been ignored, or old ones used instead." $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "W: GPG error: .* Release: The following signatures were invalid: BADSIG" $MASTER/$SECTION/$subdir >> $FILE
