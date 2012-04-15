@@ -32,6 +32,7 @@ piuparts (0.44) UNRELEASED; urgency=low
     - Add link to the list of untestable logs.
     - Add more known problem reports: forgotten alternatives, warnings in
       passed logs: leftover files and failed maintainer scripts.
+    - Do not abort if logfiles disappear during copying.
   * Makefile: Install documentation with mode 0644 instead of 0755.
 
   [ Holger Levsen ]

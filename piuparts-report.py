@@ -504,7 +504,10 @@ def update_file(source, target):
         bb = os.stat(target)
         if aa.st_size == bb.st_size and aa.st_mtime < bb.st_mtime:
             return
-    shutil.copyfile(source, target)
+    try:
+        shutil.copyfile(source, target)
+    except IOError as (errno, strerror):
+        logging.error("failed to copy %s to %s: I/O error(%d): %s" % (source, target, errno, strerror))
 
 
 def copy_logs(logs_by_dir, output_dir):
