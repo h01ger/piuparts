@@ -55,6 +55,7 @@ for SECTION in $SECTIONS ; do
 		rgrep -l -e "^Traceback" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "^OSError:" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "^IndentationError:" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "^SyntaxError:" $MASTER/$SECTION/$subdir >> $FILE
 		# Python errors from maintainer scripts etc. would be indented by 2 spaces, so don't match here.
 	done
 done
