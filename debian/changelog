@@ -21,6 +21,7 @@ piuparts (0.44) UNRELEASED; urgency=low
     - Do not leak the logfile file descriptor to piuparts.
     - Skip disabled sections (max-reserved = 0).
     - Do not abort if connection to master failed, just skip the section.
+    - Do not abort if Packages file cannot be fetched, just skip the section.
     - Implement simple section locking to allow concurrent slave instances.
     - Sections wait before retry 15 minutes after error and one hour if idle.
     - Create idle.stamp files to remember idle sections for one hour and

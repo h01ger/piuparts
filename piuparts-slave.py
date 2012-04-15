@@ -387,7 +387,12 @@ class Section:
         packages_files = {}
         for distro in distros:
             if distro not in packages_files:
-                packages_files[distro] = fetch_packages_file(self._config, distro)
+                try:
+                    packages_files[distro] = fetch_packages_file(self._config, distro)
+                except IOError:
+                    logging.error("failed to fetch packages file for %s" % distro)
+                    self._sleep_until = time.time() + 900
+                    return 0
         if self._config["distro"]:
             packages_file = packages_files[self._config["distro"]]
         else:
