@@ -19,6 +19,7 @@ piuparts (0.44) UNRELEASED; urgency=low
       but allow only one instance per section.
   * piuparts-slave.py:
     - Do not leak the logfile file descriptor to piuparts.
+    - Skip disabled sections (max-reserved = 0).
     - Do not abort if connection to master failed, just skip the section.
     - Implement simple section locking to allow concurrent slave instances.
     - Sections wait before retry 15 minutes after error and one hour if idle.

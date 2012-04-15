@@ -307,6 +307,11 @@ class Section:
         self._config = Config(section=self._config.section)
         self._config.read(CONFIG_FILE)
 
+        if int(self._config["max-reserved"]) == 0:
+            logging.info("disabled")
+            self._sleep_until = time.time() + 12 * 3600
+            return 0
+
         lock = open(os.path.join(self._slave_directory, "slave.lock"), "we")
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
