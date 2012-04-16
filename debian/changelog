@@ -26,6 +26,8 @@ piuparts (0.44) UNRELEASED; urgency=low
     - Sections wait before retry 15 minutes after error and one hour if idle.
     - Create idle.stamp files to remember idle sections for one hour and
       notify concurrent slaves about idle state.
+    - Skip misconfigured sections that have neither 'distro' nor
+      'upgrade-test-distros' in their config.  (Closes: #668863)
   * piuparts-report.py:
     - Add link to the list of untestable logs.
     - Add more known problem reports: forgotten alternatives, warnings in

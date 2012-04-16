@@ -384,6 +384,11 @@ class Section:
         if self._config["upgrade-test-distros"]:
             distros += self._config["upgrade-test-distros"].split()
 
+        if not distros:
+            logging.error("neither 'distro' nor 'upgrade-test-distros' configured")
+            self._sleep_until = time.time() + 3600
+            return 0
+
         packages_files = {}
         for distro in distros:
             if distro not in packages_files:
