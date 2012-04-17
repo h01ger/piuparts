@@ -14,6 +14,9 @@ piuparts (0.44) UNRELEASED; urgency=low
     - Increase output limit to 3 MB (for dist-upgrading daptup).
     - Do not miss Pre-Depends in --warn-on-others mode.
     - Remove packages and reinstall missing ones in one apt-get call.
+  * piupartslib/packagesdb.py:
+    - Only consider the newest version of a package as test candidate.
+      (Packages files may contain more than version of the same package.)
   * piuparts-master.py:
     - Implement simple section locking to allow concurrent master instances
       but allow only one instance per section.
