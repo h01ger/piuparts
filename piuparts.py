@@ -738,7 +738,7 @@ class Chroot:
         self.mount_selinux()
         self.configure_chroot()
         if settings.basetgz:
-            self.run(["apt-get", "-yf", "upgrade"])
+            self.run(["apt-get", "-yf", "dist-upgrade"])
         self.minimize()
 
         # Copy scripts dirs into the chroot, merging all dirs together,
