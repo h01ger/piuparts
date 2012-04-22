@@ -1223,7 +1223,7 @@ class Chroot:
         if pathname in settings.ignored_files:
             return True
         for pattern in settings.ignored_patterns:
-            if re.search(pattern, pathname):
+            if re.search('^' + pattern + '$', pathname):
                 return True
         return False
 
