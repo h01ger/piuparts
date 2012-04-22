@@ -220,6 +220,11 @@ class PackagesDB:
         #"does-not-exist",  # can only happen as query result for a dependency
     ]
 
+    _good_states = [
+        "successfully-tested",
+        "essential-required",
+    ]
+
     _propagate_error_state = {
         "failed-testing": "dependency-failed-testing",
         "cannot-be-tested": "dependency-cannot-be-tested",
@@ -377,8 +382,7 @@ class PackagesDB:
         testable = True
         for dep in deps:
             dep_state = self.get_package_state(dep)
-            if dep_state not in \
-                    ["successfully-tested", "essential-required"]:
+            if dep_state not in self._good_states:
                 testable = False
                 break
         if testable:
@@ -393,7 +397,7 @@ class PackagesDB:
                     # allow any non-error dep_state on the cycle for testing
                     # (error states are handled by the error propagation above)
                     pass
-                elif dep_state not in ["successfully-tested", "essential-required"]:
+                elif dep_state not in self._good_states:
                     # non-circular deps must have passed before testing circular deps
                     testable = False
                     break
