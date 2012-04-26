@@ -175,22 +175,6 @@ class LogDB:
                 return True
         return False
 
-    def any_log_exists(self, package, subdirs):
-        try:
-            cache = self.basename_cache
-        except AttributeError:
-            self.basename_cache = {}
-            cache = self.basename_cache
-        package_name = package["Package"]
-        for subdir in subdirs:
-            for basename in self.listdir(subdir):
-                if basename not in cache:
-                    cache[basename] = basename.split("_", 1)
-                parts = cache[basename]
-                if len(parts) == 2 and parts[0] == package_name:
-                    return True
-        return False
-
     def create(self, subdir, package, version, contents):
         (fd, temp_name) = tempfile.mkstemp(dir=subdir)
         os.close(fd)
