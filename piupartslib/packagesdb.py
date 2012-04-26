@@ -334,7 +334,7 @@ class PackagesDB:
             return "successfully-tested"
         if self._logdb.log_exists(package, [self._fail] + self._morefail):
             return "failed-testing"
-        if self._logdb.any_log_exists(package, [self._evil]):
+        if self._logdb.log_exists(package, [self._evil]):
             return "cannot-be-tested"
         if not package.is_testable():
             return "essential-required"
