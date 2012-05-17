@@ -34,8 +34,9 @@ piuparts (0.44) unstable; urgency=low
   [ Holger Levsen ]
   * piuparts-report: don't create output for disabled sections. (Bye bye
     Lenny!)
+  * Bump Standards-Version to 3.9.3, no changes necessary.
 
- -- Holger Levsen <holger@debian.org>  Thu, 17 May 2012 11:43:59 +0000
+ -- Holger Levsen <holger@debian.org>  Thu, 17 May 2012 14:36:53 +0200
 
 piuparts (0.43) unstable; urgency=low
 
