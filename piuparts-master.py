@@ -27,6 +27,7 @@ import sys
 import logging
 import ConfigParser
 import os
+import fcntl
 
 import piupartslib
 
@@ -215,6 +216,13 @@ def main():
 
         if not os.path.exists(os.path.join(master_directory, section)):
           os.makedirs(os.path.join(master_directory, section))
+
+        lock = open(os.path.join(master_directory, section, "master.lock"), "we")
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            print 'busy'
+            sys.exit(1)
 
         logging.info("Fetching %s" % config["packages-url"])
         packages_file = piupartslib.open_packages_url(config["packages-url"])

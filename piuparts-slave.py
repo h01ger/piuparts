@@ -30,6 +30,7 @@ import time
 import logging
 from signal import alarm, signal, SIGALRM, SIGKILL
 import subprocess
+import fcntl
 import ConfigParser
 
 import piupartslib.conf
@@ -90,6 +91,13 @@ class Alarm(Exception):
 
 def alarm_handler(signum, frame):
     raise Alarm
+
+
+class MasterIsBusy(Exception):
+
+    def __init__(self):
+        self.args = "Master is busy, retry later"
+
 
 class MasterNotOK(Exception):
 
@@ -160,6 +168,8 @@ class Slave:
         self._to_master = p.stdin
         self._from_master = p.stdout
         line = self._readline()
+        if line == "busy\n":
+            raise MasterIsBusy()
         if line != "hello\n":
             raise MasterDidNotGreet()
         logging.debug("Connected to master")
@@ -237,6 +247,7 @@ class Section:
     def __init__(self, section):
         self._config = Config(section=section)
         self._config.read(CONFIG_FILE)
+        self._sleep_until = 0
         self._slave_directory = os.path.abspath(self._config["slave-directory"])
         if not os.path.exists(self._slave_directory):
             os.mkdir(self._slave_directory)
@@ -288,15 +299,59 @@ class Section:
         return int(self._config["precedence"])
 
     def run(self):
+        if time.time() < self._sleep_until:
+            return 0
+
         logging.info("-------------------------------------------")
         logging.info("Running section %s (precedence=%d)" % (self._config.section, self.precedence()))
         self._config = Config(section=self._config.section)
         self._config.read(CONFIG_FILE)
-        self._slave.connect_to_master(self._log_file)
+
+        if int(self._config["max-reserved"]) == 0:
+            logging.info("disabled")
+            self._sleep_until = time.time() + 12 * 3600
+            return 0
+
+        lock = open(os.path.join(self._slave_directory, "slave.lock"), "we")
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            logging.info("busy")
+            self._sleep_until = time.time() + 900
+            lock.close()
+            return 0
 
         oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
-        test_count = 0
+
+        ret = self._run()
+
+        os.chdir(oldcwd)
+        lock.close()
+        return ret
+
+    def _run(self):
+        if os.path.exists("idle.stamp"):
+            statobj = os.stat("idle.stamp")
+            age = time.time() - statobj[stat.ST_MTIME]
+            ttl = 3600 - age
+            if age >= 0 and ttl > 0:
+                logging.info("idle")
+                self._sleep_until = time.time() + ttl
+                return 0
+
+        try:
+            self._slave.connect_to_master(self._log_file)
+        except KeyboardInterrupt:
+            raise
+        except MasterIsBusy:
+            logging.error("master is busy")
+            self._sleep_until = time.time() + 300
+            return 0
+        except:
+            logging.error("connection to master failed")
+            self._sleep_until = time.time() + 900
+            return 0
 
         for logdir in ["pass", "fail", "untestable"]:
             for basename in os.listdir(logdir):
@@ -313,42 +368,58 @@ class Section:
         self._slave.get_status(self._config.section)
         self._slave.close()
 
-        if self._slave.get_reserved():
-            self._check_tarball()
-            packages_files = {}
-            if self._config["distro"]:
-                distros = [self._config["distro"]]
-            else:
-                distros = []
+        if not self._slave.get_reserved():
+            self._sleep_until = time.time() + 3600
+            create_file("idle.stamp", "%d" % time.time())
+            return 0
+        else:
+            if os.path.exists("idle.stamp"):
+                os.unlink("idle.stamp")
 
-            if self._config["upgrade-test-distros"]:
-                distros += self._config["upgrade-test-distros"].split()
+        if self._config["distro"]:
+            distros = [self._config["distro"]]
+        else:
+            distros = []
 
-            for distro in distros:
-                if distro not in packages_files:
+        if self._config["upgrade-test-distros"]:
+            distros += self._config["upgrade-test-distros"].split()
+
+        if not distros:
+            logging.error("neither 'distro' nor 'upgrade-test-distros' configured")
+            self._sleep_until = time.time() + 3600
+            return 0
+
+        packages_files = {}
+        for distro in distros:
+            if distro not in packages_files:
+                try:
                     packages_files[distro] = fetch_packages_file(self._config, distro)
-            if self._config["distro"]:
-              packages_file = packages_files[self._config["distro"]]
-            else:
-              packages_file = packages_files[distro]
+                except IOError:
+                    logging.error("failed to fetch packages file for %s" % distro)
+                    self._sleep_until = time.time() + 900
+                    return 0
+        if self._config["distro"]:
+            packages_file = packages_files[self._config["distro"]]
+        else:
+            packages_file = packages_files[distro]
 
-            for package_name, version in self._slave.get_reserved():
-                test_count += 1
-                if package_name in packages_file:
-                    package = packages_file[package_name]
-                    if version == package["Version"] or self._config["upgrade-test-distros"]:
-                        test_package(self._config, package, packages_files)
-                    else:
-                        create_file(os.path.join("untestable", 
-                                    log_name(package_name, version)),
-                                    "%s %s not found" % (package_name, version))
+        test_count = 0
+        self._check_tarball()
+        for package_name, version in self._slave.get_reserved():
+            test_count += 1
+            if package_name in packages_file:
+                package = packages_file[package_name]
+                if version == package["Version"] or self._config["upgrade-test-distros"]:
+                    test_package(self._config, package, packages_files)
                 else:
                     create_file(os.path.join("untestable", 
                                 log_name(package_name, version)),
-                                "Package %s not found" % package_name)
-                self._slave.forget_reserved(package_name, version)
-
-        os.chdir(oldcwd)
+                                "%s %s not found" % (package_name, version))
+            else:
+                create_file(os.path.join("untestable",
+                            log_name(package_name, version)),
+                            "Package %s not found" % package_name)
+            self._slave.forget_reserved(package_name, version)
         return test_count
 
 
@@ -410,7 +481,7 @@ def test_package(config, package, packages_files):
     output_name = log_name(package["Package"], package["Version"])
     logging.debug("Opening log file %s" % output_name)
     new_name = os.path.join("new", output_name)
-    output = file(new_name, "w")
+    output = file(new_name, "we")
     output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n", 
                                time.gmtime()))
     output.write("\n")

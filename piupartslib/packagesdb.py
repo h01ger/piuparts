@@ -28,9 +28,11 @@ import dircache
 import os
 import tempfile
 import UserDict
-
+import apt_pkg
 
 from piupartslib.dependencyparser import DependencyParser
+
+apt_pkg.init_system()
 
 
 def rfc822_like_header_parse(input):
@@ -134,6 +136,11 @@ class PackagesFile(UserDict.UserDict):
             if not headers:
                 break
             p = Package(headers)
+            if p["Package"] in self:
+                q = self[p["Package"]]
+                if apt_pkg.version_compare(p["Version"], q["Version"]) <= 0:
+                    # there is already a newer version
+                    continue
             self[p["Package"]] = p
 
 

@@ -132,7 +132,7 @@ class Settings:
         self.defaults = None
         self.tmpdir = None
         self.keep_tmpdir = False
-        self.max_command_output_size = 2 * 1024 * 1024
+        self.max_command_output_size = 3 * 1024 * 1024  # 3 MB (daptup on dist-upgrade)
         self.single_changes_list = False
         self.args_are_package_files = True
         # distro setup
@@ -269,6 +269,7 @@ class Settings:
             "/var/lib/onak(/.*)?",
             "/var/lib/papercut(/.*)?",
             "/var/lib/insserv/run.*.log",
+            "/var/lib/ucf/.*",
             "/var/lib/update-rc.d(/.*)?",
             "/var/log/exim/.*",
             "/var/log/exim4/.*",
@@ -737,7 +738,7 @@ class Chroot:
         self.mount_selinux()
         self.configure_chroot()
         if settings.basetgz:
-            self.run(["apt-get", "-yf", "upgrade"])
+            self.run(["apt-get", "-yf", "dist-upgrade"])
         self.minimize()
 
         # Copy scripts dirs into the chroot, merging all dirs together,
@@ -1096,15 +1097,13 @@ class Chroot:
         # Run custom scripts before removing all packages. 
         self.run_scripts("pre_remove")
 
-        # First remove all packages.
+        # First remove all packages (and reinstall missing ones).
         self.remove_packages(deps_to_remove + deps_to_purge +
-                             nondeps_to_remove + nondeps_to_purge)
+                             nondeps_to_remove + nondeps_to_purge +
+                             ["%s+" % x for x in deps_to_install])
+
         # Run custom scripts after removing all packages. 
         self.run_scripts("post_remove")
-
-        # Then reinstall missing packages.
-        if deps_to_install:
-            self.install_packages_by_name(deps_to_install)
 
         if not settings.skip_cronfiles_test:
             cronfiles, cronfiles_list = self.check_if_cronfiles(packages)
@@ -1949,6 +1948,8 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
         depends = []
         conflicts = []
         for control in control_infos:
+            if control.get("pre-depends"):
+                depends.append(control["pre-depends"])
             if control.get("depends"):
                 depends.append(control["depends"])
             if control.get("conflicts"):

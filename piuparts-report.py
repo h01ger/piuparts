@@ -361,7 +361,7 @@ state_by_dir = {
     "fail": "failed-testing",
     "bugged": "failed-testing",
     "reserved": "waiting-to-be-tested",
-    "untestable": "dependency-cannot-be-tested",
+    "untestable": "cannot-be-tested",
 }
 
 # better use XX_name.tpl and get the linktarget from the template
@@ -370,14 +370,19 @@ state_by_dir = {
 linktarget_by_template = [
     ("initdscript_lsb_header_issue.tpl", "but logfile contains update-rc.d issues"),
     ("command_not_found_issue.tpl", "but logfile contains 'command not found'"),
+    ("alternatives_after_purge_issue.tpl", "but logfile contains forgotten alternatives"),
+    ("owned_files_after_purge_issue.tpl", "but logfile contains owned files existing after purge"),
+    ("unowned_files_after_purge_issue.tpl", "but logfile contains unowned files after purge"),
+    ("maintainer_script_issue.tpl", "but logfile contains maintainer script failures"),
     ("broken_symlinks_issue.tpl", "but logfile contains 'broken symlinks'"),
 
     ("dependency_error.tpl", "due to unsatisfied dependencies"),
     ("command_not_found_error.tpl", "due to a 'command not found' error"),
     ("files_in_usr_local_error.tpl", "due to files in /usr/local"),
     ("overwrite_other_packages_files_error.tpl", "due to overwriting other packages files"),
-    ("owned_files_after_purge_error.tpl", "due to owned files existing after purge"),
+    ("alternatives_after_purge_error.tpl", "due to forgotten alternatives after purge"),
     ("owned_files_by_many_packages_error.tpl", "due to owned files by many packages"),
+    ("owned_files_after_purge_error.tpl", "due to owned files existing after purge"),
     ("unowned_files_after_purge_error.tpl", "due to unowned files after purge"),
     ("modified_files_after_purge_error.tpl", "due to files having been modified after purge"),
     ("disappeared_files_after_purge_error.tpl", "due to files having disappeared after purge"),
@@ -414,6 +419,7 @@ class Config(piupartslib.conf.Config):
                 "master-directory": ".",
                 "description": "",
                 "known_circular_depends": "",
+                "max-reserved": 1, 
             }, "")
 
 
@@ -498,7 +504,10 @@ def update_file(source, target):
         bb = os.stat(target)
         if aa.st_size == bb.st_size and aa.st_mtime < bb.st_mtime:
             return
-    shutil.copyfile(source, target)
+    try:
+        shutil.copyfile(source, target)
+    except IOError as (errno, strerror):
+        logging.error("failed to copy %s to %s: I/O error(%d): %s" % (source, target, errno, strerror))
 
 
 def copy_logs(logs_by_dir, output_dir):
@@ -949,7 +958,7 @@ class Section:
             dir_link = ""
             analysis = ""
             for vdir in dirs:
-              if vdir in ("pass","fail","bugged") and state_by_dir[vdir] == state:
+              if vdir in ("pass", "fail", "bugged", "untestable") and state_by_dir[vdir] == state:
                 dir_link += "<a href='%s.html'>%s</a> logs<br>" % (vdir, html_protect(vdir))
             if state in ("successfully-tested", "failed-testing"):
               analysis = self.create_and_link_to_analysises(state)
@@ -1076,20 +1085,22 @@ class Section:
 
 
     def generate_output(self, master_directory, output_directory, section_names):
-        self._section_names = section_names
-        self._master_directory = os.path.abspath(os.path.join(master_directory, self._config.section))
-        if not os.path.exists(self._master_directory):
-            logging.debug("Warning: %s did not exist, now created. Did you ever let the slave work?" % (self._master_directory, self._config.section))
-            os.mkdir(self._master_directory)
+        # generate output only if section is not disabled
+        if int(self._config["max-reserved"]) != 0:
+            self._section_names = section_names
+            self._master_directory = os.path.abspath(os.path.join(master_directory, self._config.section))
+            if not os.path.exists(self._master_directory):
+                logging.debug("Warning: %s did not exist, now created. Did you ever let the slave work?" % (self._master_directory, self._config.section))
+                os.mkdir(self._master_directory)
 
-        self._output_directory = os.path.abspath(os.path.join(output_directory, self._config.section))
-        if not os.path.exists(self._output_directory):
-            os.mkdir(self._output_directory)
+            self._output_directory = os.path.abspath(os.path.join(output_directory, self._config.section))
+            if not os.path.exists(self._output_directory):
+                os.mkdir(self._output_directory)
 
-        oldcwd = os.getcwd()
-        os.chdir(self._master_directory)
-        self.generate_html()
-        os.chdir(oldcwd)
+            oldcwd = os.getcwd()
+            os.chdir(self._master_directory)
+            self.generate_html()
+            os.chdir(oldcwd)
 
 
 def main():

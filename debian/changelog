@@ -1,3 +1,42 @@
+piuparts (0.44) unstable; urgency=low
+
+  [ Andreas Beckmann ]
+  * piuparts.py:
+    - Add to self.ignored_patterns: /var/lib/ucf/.*
+    - Increase output limit to 3 MB (for dist-upgrading daptup).
+    - Do not miss Pre-Depends in --warn-on-others mode.
+    - Remove packages and reinstall missing ones in one apt-get call.
+    - Run 'apt-get dist-upgrade' (instead of upgrade) during chroot setup.
+  * piupartslib/packagesdb.py:
+    - Only consider the newest version of a package as test candidate.
+      (Packages files may contain more than version of the same package.)
+  * piuparts-master.py:
+    - Implement simple section locking to allow concurrent master instances
+      but allow only one instance per section.
+  * piuparts-slave.py:
+    - Do not leak the logfile file descriptor to piuparts.
+    - Skip disabled sections (max-reserved = 0).
+    - Do not abort if connection to master failed, just skip the section.
+    - Do not abort if Packages file cannot be fetched, just skip the section.
+    - Implement simple section locking to allow concurrent slave instances.
+    - Sections wait before retry 15 minutes after error and one hour if idle.
+    - Create idle.stamp files to remember idle sections for one hour and
+      notify concurrent slaves about idle state.
+    - Skip misconfigured sections that have neither 'distro' nor
+      'upgrade-test-distros' in their config.  (Closes: #668863)
+  * piuparts-report.py:
+    - Add link to the list of untestable logs.
+    - Add more known problem reports: forgotten alternatives, warnings in
+      passed logs: leftover files and failed maintainer scripts.
+    - Do not abort if logfiles disappear during copying.
+  * Makefile: Install documentation with mode 0644 instead of 0755.
+
+  [ Holger Levsen ]
+  * piuparts-report: don't create output for disabled sections. (Bye bye
+    Lenny!)
+
+ -- Holger Levsen <holger@debian.org>  Thu, 17 May 2012 11:43:59 +0000
+
 piuparts (0.43) unstable; urgency=low
 
   [ Andreas Beckmann ]
@@ -12,7 +51,6 @@ piuparts (0.43) unstable; urgency=low
     - Cleanup options and settings.
   * piupartslib/packagesdb.py:
     - Restrict circular-dependency state to packages on the circle.
-  * piuparts-master.py:
   * piuparts-slave.py:
     - Fix chdir in/out of the slave dir to work with relative paths.
   * piuparts-report.py:

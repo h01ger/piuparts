@@ -146,7 +146,6 @@ def mark_bugged_version(failed_log, bugged_log):
 
 
 def bts_update_found(bugnr, newversion):
-    # Disabled for now as I'm not sure automatic bug updating is wanted
     #subprocess.check_call(('bts', 'found', bugnr, newversion))
     print(' '.join(('bts', 'found', str(bugnr), newversion)))
 
@@ -170,7 +169,7 @@ def mark_logs_with_reported_bugs():
                 elif apt_pkg.version_compare(pversion, bug_version) > 0: # pversion > bug_version
                     bugged_logs = find_bugged_logs(failed_log)
                     if not bugged_logs and not moved:
-                        print('%s/%s: Maybe the bug was filed earlier: %d against %s/%s'
+                        print('%s/%s: Maybe the bug was filed earlier: http://bugs.debian.org/%d against %s/%s'
                               % (pname, pversion, bug, pname, bug_version))
                         break
                     for bugged_log in bugged_logs:

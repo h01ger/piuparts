@@ -24,14 +24,14 @@ install-doc:
 	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README.txt
 	install -d $(docdir)/
 	for file in README.txt README.html docbook-xsl.css ; do \
-	    install -m 0755 $$file $(docdir)/ ; done
+	    install -m 0644 $$file $(docdir)/ ; done
 	# build and install manpage
 	a2x -f manpage piuparts.1.txt
 	install -d $(man1dir) 
 	install -m 0644 piuparts.1 $(man1dir)
 	gzip -9f $(man1dir)/piuparts.1
 	a2x --copy -f xhtml piuparts.1.txt
-	install -m 0755 piuparts.1.html $(docdir)
+	install -m 0644 piuparts.1.html $(docdir)
 
 install-conf:
 	install -d $(etcdir)/piuparts
