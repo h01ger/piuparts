@@ -1,0 +1,62 @@
+# run 'echo known_circular_depends = $(grep -v ^# circular-depends-wheezy.txt)'
+
+# from http://debian.semistable.com/debgraph.out.html
+# last updated: 2012-02-14
+libc6 libgcc1 multiarch-support
+coreutils dpkg
+libswitch-perl perl perl-modules
+odbcinst odbcinst1debian2
+python-imaging python-imaging-tk
+g++-4.4 libstdc++6-4.4-dev
+libqt4-dbus qdbus
+g++-4.6 libstdc++6-4.6-dev
+ca-certificates-java openjdk-6-jre-headless openjdk-6-jre-lib
+dmsetup libdevmapper1.02.1
+uqm uqm-content
+libmaven-scm-java libmaven2-core-java libwagon-java
+acheck acheck-rules
+liblwp-protocol-https-perl libwww-perl
+libmono-corlib4.0-cil libmono-security4.0-cil libmono-system-configuration4.0-cil libmono-system-security4.0-cil libmono-system-xml4.0-cil libmono-system4.0-cil mono-4.0-gac mono-gac mono-runtime
+ghostscript gs-cjk-resource libgs9
+xemacs21 xemacs21-bin xemacs21-mule xemacs21-mule-canna-wnn xemacs21-nomule xemacs21-support
+aide aide-common
+libntrack0 ntrack-module-libnl-0 ntrack-module-rtnetlink-0
+libmono-system-web-services4.0-cil libmono-system-web4.0-cil libmono-web4.0-cil
+gamin libgamin0
+libmono-posix2.0-cil libmono-security2.0-cil libmono-system2.0-cil
+libmono-system-data-linq2.0-cil libmono-system-web2.0-cil libmono-wcf3.0-cil libmono2.0-cil
+monodoc-browser monodoc-http monodoc-manual
+openjdk-7-jre-headless openjdk-7-jre-lib
+libgeronimo-jpa-2.0-spec-java libgeronimo-osgi-support-java libosgi-compendium-java
+bochs bochs-wx
+tasksel tasksel-data
+g++-4.5 libstdc++6-4.5-dev
+python-netcdf python-scientific
+gcj-4.6-jdk libgcj12-dev
+gdc-4.6 libphobos2-4.6-dev
+gdc-4.4 libphobos-4.4-dev
+gcj-4.4-jdk libgcj10-dev
+pcb-common pcb-gtk pcb-lesstif
+gnuift gnuift-perl
+heroes-common heroes-ggi heroes-sdl
+libverto-glib1 libverto-libev1 libverto1
+strongswan-ikev1 strongswan-ikev2 strongswan-nm strongswan-starter
+klogd sysklogd
+
+# apt-watch-interface is a virtual package provided by apt-watch-gnome
+apt-watch-backend apt-watch-interface
+
+# coq-theories depends on the virtual package coq-$VERSION provided by coq
+coq coq-theories
+
+# libhugs-base and libhugs-haskell98 are virtual packages provided by
+# libhugs-base-bundled and libhugs-haskell98-bundled
+hugs libhugs-base libhugs-haskell98
+
+# libreoffice-style-default is a virtual package provided by several
+# libreoffice-style-* packages
+libreoffice-core libreoffice-common libreoffice-style-default
+
+# opendnssec-enforcer-backend is a wirtual package provided by
+# opendnssec-enforcer-{mysql,sqlite3}
+opendnssec-enforcer opendnssec-enforcer-backend

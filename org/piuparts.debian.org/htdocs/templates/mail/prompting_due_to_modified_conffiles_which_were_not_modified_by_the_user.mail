@@ -1,0 +1,36 @@
+To: submit@bugs.debian.org
+Subject: prompting due to modified conffiles which were not modified by the user
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package failed the piuparts
+upgrade test because dpkg detected a conffile as being modified and then
+prompted the user for an action. As there is no user input, this fails.
+But this is not the real problem, the real problem is that this prompt
+shows up in the first place, as there was nobody modifying this conffile
+at all, the package has just been installed and upgraded...
+
+This is a violation of policy 10.7.3, see
+http://www.debian.org/doc/debian-policy/ch-files.html#s10.7.3,
+which says "[These scripts handling conffiles] must not ask unnecessary
+questions (particularly during upgrades), and must otherwise be good
+citizens."
+
+http://wiki.debian.org/DpkgConffileHandling should help with figuring
+out how to do this properly.
+
+In http://lists.debian.org/debian-devel/2009/08/msg00675.html and
+followups it has been agreed that these bugs are to be filed with
+severity serious.
+
+From the attached log (scroll to the bottom...):
+
+
+
+cheers,

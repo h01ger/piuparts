@@ -1,0 +1,75 @@
+#!/bin/sh
+
+# Copyright 2009-2011 Holger Levsen (holger@layer-acht.org)
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+
+PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
+[ -f "$PIUPARTS_CONF" ] || exit 0
+
+# usage: get_config_value VARIABLE section key [default]
+get_config_value()
+{
+	local section key value
+	test -n "$1" && test "$1" = "$(echo "$1" | tr -c -d '[:alnum:]_')" || exit 1
+	section="$2"
+	key="$3"
+	value="$(sed -rn '\#^\['"$section"'\]#,/^\[/ {/^'"$key"'\s*=/ {s/^'"$key"'\s*=\s*//; s/\s*$//; p}}' "$PIUPARTS_CONF")"
+	test -n "$value" || value="$4"
+	if [ -z "$value" ]; then
+		echo "'$key' not set in section [$section] of $PIUPARTS_CONF, exiting." >&2
+		exit 1
+	fi
+	eval "$1"='"$value"'
+}
+
+get_config_value MASTER global master-directory
+get_config_value SECTIONS global sections
+
+#
+# reschedule 200 oldest log files, if they are older than 180 days
+# reschedule 25 oldest fail log files, if they are older than 30 days
+#
+get_config_value AGE        global reschedule-old-days 180
+get_config_value COUNT      global reschedule-old-count 200
+get_config_value FAIL_AGE   global reschedule-fail-days 30
+get_config_value FAIL_COUNT global reschedule-fail-count 25
+
+LOGS=`mktemp`
+OLDPWD=$(pwd)
+for SECTION in $SECTIONS ; do
+	get_config_value RESCHEDULE $SECTION auto-reschedule yes
+	if [ "$RESCHEDULE" = "yes" ]; then
+		get_config_value _AGE        $SECTION reschedule-old-days $AGE
+		get_config_value _COUNT      $SECTION reschedule-old-count $COUNT
+		get_config_value _FAIL_AGE   $SECTION reschedule-fail-days $FAIL_AGE
+		get_config_value _FAIL_COUNT $SECTION reschedule-fail-count $FAIL_COUNT
+		cd $MASTER/$SECTION
+		# FIXME: we ignore bugged here - ptyhon-bts is really the way to go
+		find pass fail -name "*.log" -mtime +$_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_COUNT > $LOGS
+		find fail -name "*.log" -mtime +$_FAIL_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_FAIL_COUNT >> $LOGS
+		if [ -s $LOGS ]; then
+			echo $SECTION
+			ls -dtl $(cat $LOGS)
+			sort -u $LOGS | xargs rm 2>/dev/null
+			echo
+			echo "#########################################################"
+			echo
+		fi
+		cd $OLDPWD
+	fi
+done
+rm $LOGS

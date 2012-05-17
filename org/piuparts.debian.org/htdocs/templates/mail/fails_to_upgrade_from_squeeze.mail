@@ -1,0 +1,19 @@
+To: submit@bugs.debian.org
+Subject: fails to upgrade from squeeze
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package fails to upgrade from
+'squeeze'.
+It installed fine in 'squeeze', then the upgrade to 'wheezy' fails.
+
+From the attached log (scroll to the bottom...):
+
+
+cheers,

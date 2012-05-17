@@ -1,0 +1,16 @@
+#!/bin/sh
+
+for target in ${PIUPARTS_OBJECTS}
+do
+	pkg=${target%%=*}
+	postrm=/var/lib/dpkg/info/$pkg.postrm
+	if [ -f $postrm ]; then
+		if head -n 1 $postrm | grep -qE '/bin/(ba)?sh' ; then
+			echo "DEBUG POSTRM PURGE: enabling 'set -x' in $pkg.postrm"
+			sed -i '2 i set -x' $postrm
+		else
+			echo "Unsupported script type in $postrm:"
+			head -n 1 $postrm
+		fi
+	fi
+done

@@ -1,0 +1,83 @@
+#!/bin/sh
+
+# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+
+PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
+[ -f "$PIUPARTS_CONF" ] || exit 0
+
+# usage: get_config_value VARIABLE section key [default]
+get_config_value()
+{
+	local section key value
+	test -n "$1" && test "$1" = "$(echo "$1" | tr -c -d '[:alnum:]_')" || exit 1
+	section="$2"
+	key="$3"
+	value="$(sed -rn '\#^\['"$section"'\]#,/^\[/ {/^'"$key"'\s*=/ {s/^'"$key"'\s*=\s*//; s/\s*$//; p}}' "$PIUPARTS_CONF")"
+	test -n "$value" || value="$4"
+	if [ -z "$value" ]; then
+		echo "'$key' not set in section [$section] of $PIUPARTS_CONF, exiting." >&2
+		exit 1
+	fi
+	eval "$1"='"$value"'
+}
+
+get_config_value MASTER global master-directory
+get_config_value SECTIONS global sections
+
+
+#
+# detect network/mirror problems
+#
+
+FILE=`mktemp`
+for SECTION in $SECTIONS ; do 
+	for subdir in fail bugged ; do
+		rgrep -l "Cannot initiate the connection to" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l "Hash Sum mismatch" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "Failed to fetch.*Could not resolve" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "Failed to fetch.*Something wicked happened resolving" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "Failed to fetch.*Unable to connect to" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l "Some index files failed to download, they have been ignored, or old ones used instead." $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l "Some index files failed to download. They have been ignored, or old ones used instead." $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "W: GPG error: .* Release: The following signatures were invalid: BADSIG" $MASTER/$SECTION/$subdir >> $FILE
+		# modified changelogs are usually caused by mirror pushes during the piuparts test
+		rgrep -l -E '  /usr/share/doc/(.*)/changelog.*owned by: \1' $MASTER/$SECTION/$subdir >> $FILE
+	done
+done
+if [ -s $FILE ] ; then 
+	echo "Network problems on detected!"
+	echo "(By grep'ing for"
+	echo "    'Cannot initiate the connection to',"
+	echo "    'Failed to fetch',"
+	echo "    'Some index files failed to download',"
+	echo "    'Hash Sum mismatch',"
+	echo "    'The following signatures were invalid'"
+	echo "in failed logs.)"
+	echo "Test failures due to modified /usr/share/doc/*/changelog.*"
+	echo "are caused by mirror updates during the test."
+	echo 
+	echo "The following logfiles have been deleted:" 
+	echo
+	echo "----------------------------------------------------------------------"
+	echo
+	for LOG in $(sort -u $FILE) ; do
+		rm -v $LOG
+	done
+	echo
+fi
+rm $FILE

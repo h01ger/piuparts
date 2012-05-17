@@ -1,0 +1,24 @@
+To: submit@bugs.debian.org
+Subject: unowned files after purge (policy 6.8, 10.8)
+
+Package:
+Version:
+Severity: important
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package left unowned files on
+the system after purge, which is a violation of policy 6.8 (or 10.8):
+
+http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetails
+
+Filing this as important as having a piuparts clean archive is a release
+goal since lenny.
+
+From the attached log (scroll to the bottom...):
+
+
+
+cheers,

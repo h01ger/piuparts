@@ -1,0 +1,86 @@
+#!/bin/sh
+
+# Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+HOSTNAME=`hostname`
+if [ "$HOSTNAME" != "piatti" ] ; then
+	exit 0
+fi
+
+
+PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
+[ -f "$PIUPARTS_CONF" ] || exit 0
+
+# usage: get_config_value VARIABLE section key [default]
+get_config_value()
+{
+	local section key value
+	test -n "$1" && test "$1" = "$(echo "$1" | tr -c -d '[:alnum:]_')" || exit 1
+	section="$2"
+	key="$3"
+	value="$(sed -rn '\#^\['"$section"'\]#,/^\[/ {/^'"$key"'\s*=/ {s/^'"$key"'\s*=\s*//; s/\s*$//; p}}' "$PIUPARTS_CONF")"
+	test -n "$value" || value="$4"
+	if [ -z "$value" ]; then
+		echo "'$key' not set in section [$section] of $PIUPARTS_CONF, exiting." >&2
+		exit 1
+	fi
+	eval "$1"='"$value"'
+}
+
+get_config_value MASTER global master-directory
+get_config_value SECTIONS global sections
+
+
+#
+# this scripts monitors the output of piuparts-slave
+# when running in screen started by ~piupartss/bin/slave_run 
+#
+
+SCREENLOG=$MASTER/../slave/screenlog.0
+MONITORDIR=$MASTER/monitor-slave
+LOCKFILE="$MONITORDIR/slave-problems"
+
+mkdir -p $MONITORDIR
+cd $MONITORDIR
+chown piupartsm.piuparts $MONITORDIR
+chmod 775 $MONITORDIR
+
+stamptime=$(/usr/bin/stat -c %Z $SCREENLOG 2>/dev/null || echo 0)
+unixtime=$(date +%s)
+difference=$(( $unixtime - $stamptime ))
+
+# dont complain, if already complained and screenlog is younger than 31 min (=1800 sec) - the slave likes to sleep that long
+# FIXME: parse config file for duration...
+if [ ! -f $LOCKFILE ] && [ ${difference} -ge 1860 ] ; then
+	{
+		echo "Either a test is running for a very long time (but no test should run longer than an hour), piuparts-slave hangs or is not running at all or wasn't started with ~piupartss/bin/slave_run - please investigate and take appropriate measures!"
+		echo
+		tail $SCREENLOG
+	} | mail -s "problem with piuparts-slave detected" piupartsm
+	touch $LOCKFILE
+	chmod 660 $LOCKFILE
+fi
+
+#
+# cleanup $LOCKFILE once a day to remind daily
+#
+
+HOUR=`date +%H`
+if [ "$HOUR" = "00" ] ; then
+	rm -f $LOCKFILE
+fi
+

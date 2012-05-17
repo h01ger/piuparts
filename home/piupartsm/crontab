@@ -1,0 +1,40 @@
+# m h dom mon dow (0|7=sun,1=mon)    command
+
+#
+# cleanup $HTDOCS/daily.lock
+#
+@reboot $HOME/bin/master_cleanup
+
+#
+# create reports once a day
+#  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
+#
+0 0 * * * $HOME/bin/generate_daily_report
+
+#
+# monitor slave session every hour
+#
+23 * * * * $HOME/bin/detect_slave_problems 
+
+#
+# make sure slave is reminded daily (and also monitored if not started with ~piupartss/bin/slave_run)
+#
+42 0 * * * mkdir -p /org/piuparts.debian.org/master/monitor-slave/ ; rm -f /org/piuparts.debian.org/master/monitor-slave/* ; cp /org/piuparts.debian.org/slave/screenlog.0 /org/piuparts.debian.org/master/monitor-slave/screenlog.new ; chmod -f 775 /org/piuparts.debian.org/master/monitor-slave/screenlog.new
+
+#
+# monitor for problems once a day
+# - these may result in packages being retested
+# - if that's not the case, run them from within ~/bin/generate_daily_report
+#
+00 12 * * * $HOME/bin/reschedule_oldest_logs
+30 12 * * * $HOME/bin/detect_network_issues
+45 12 * * * $HOME/bin/detect_piuparts_issues
+0  13 * * * $HOME/bin/detect_archive_issues
+30 13 * * * $HOME/bin/report_untestable_packages
+0  14 * * * $HOME/bin/report_stale_reserved_packages
+
+#
+# misc
+#
+0 2 * * * $HOME/bin/prepare_backup
+

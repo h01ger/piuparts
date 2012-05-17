@@ -1,0 +1,19 @@
+To: submit@bugs.debian.org
+Subject: cronjob exits with error after package removal
+
+Package:
+Version:
+Severity: important
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your packages cronjob exits with
+error after the package has been removed.
+
+From the attached log (scroll to the bottom...):
+
+
+
+cheers,

@@ -1,0 +1,97 @@
+#!/bin/sh
+
+# Copyright © 2011 Andreas Beckmann <debian@abeckmann.de>
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+
+PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
+[ -f "$PIUPARTS_CONF" ] || exit 0
+
+# usage: get_config_value VARIABLE section key [default]
+get_config_value()
+{
+	local section key value
+	test -n "$1" && test "$1" = "$(echo "$1" | tr -c -d '[:alnum:]_')" || exit 1
+	section="$2"
+	key="$3"
+	value="$(sed -rn '\#^\['"$section"'\]#,/^\[/ {/^'"$key"'\s*=/ {s/^'"$key"'\s*=\s*//; s/\s*$//; p}}' "$PIUPARTS_CONF")"
+	test -n "$value" || value="$4"
+	if [ -z "$value" ]; then
+		echo "'$key' not set in section [$section] of $PIUPARTS_CONF, exiting." >&2
+		exit 1
+	fi
+	eval "$1"='"$value"'
+}
+
+get_config_value MASTER global master-directory
+get_config_value SECTIONS global sections
+get_config_value HTDOCS global output-directory
+get_config_value URLBASE global urlbase http://piuparts.debian.org
+get_config_value PIUPARTS_PREFIX global prefix /org/piuparts.debian.org
+
+
+export PYTHONPATH=$PIUPARTS_PREFIX/lib/python2.6/dist-packages:$PIUPARTS_PREFIX/lib/python2.7/dist-packages
+
+LOCKFILE=$HTDOCS/daily.lock
+if [ -e $LOCKFILE ]; then
+	echo "dialy.lock exists:"
+	ls -l $LOCKFILE
+	exit 1
+fi
+date > $LOCKFILE
+
+#
+# various scripts to detect issues and cleanup
+#
+OUTPUT=$(mktemp)
+for SCRIPT in detect_stale_mounts detect_tmp_cruft detect_network_issues detect_piuparts_issues archive_old_logs report_newly_bugged_packages ; do
+  ~/bin/$SCRIPT 2>&1 > $OUTPUT
+  if [ -s $OUTPUT ] ; then 
+	cat $OUTPUT | mail -s $SCRIPT $LOGNAME
+  fi
+done
+rm $OUTPUT
+
+#
+# piuparts-report starts here
+#
+DAILYREPORT=$HTDOCS/dailyreport.txt
+>$DAILYREPORT
+
+# Failures of the day it should be, the rest is boring.
+FAILURESTAMP=$HTDOCS/last-failure-report.stamp
+test -f $FAILURESTAMP || touch -d @0 $FAILURESTAMP  # start at the epoch
+touch $FAILURESTAMP.new  # for the next report
+
+echo "New failures:" >> $DAILYREPORT
+for SECTION in $SECTIONS ; do
+	find $MASTER/$SECTION/fail $MASTER/$SECTION/bugged $MASTER/$SECTION/untestable \
+		-type f -name '*.log' -newer $FAILURESTAMP -exec ls -1 {} + 2>/dev/null
+done | sed s#^$MASTER#$URLBASE# >> $DAILYREPORT
+
+echo "" >> $DAILYREPORT
+date >> $DAILYREPORT
+~/bin/detect_well_known_errors 2>&1 >> $DAILYREPORT
+
+echo "" >> $DAILYREPORT
+date >> $DAILYREPORT
+nice python $PIUPARTS_PREFIX/share/piuparts/piuparts-report 2>&1 >> $DAILYREPORT 2>&1
+date >> $DAILYREPORT
+
+cat $DAILYREPORT | mail -s piuparts-report $LOGNAME
+
+mv $FAILURESTAMP.new $FAILURESTAMP
+rm -f $LOCKFILE

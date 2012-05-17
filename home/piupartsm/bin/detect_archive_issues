@@ -1,0 +1,86 @@
+#!/bin/sh
+
+# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+
+PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
+[ -f "$PIUPARTS_CONF" ] || exit 0
+
+# usage: get_config_value VARIABLE section key [default]
+get_config_value()
+{
+	local section key value
+	test -n "$1" && test "$1" = "$(echo "$1" | tr -c -d '[:alnum:]_')" || exit 1
+	section="$2"
+	key="$3"
+	value="$(sed -rn '\#^\['"$section"'\]#,/^\[/ {/^'"$key"'\s*=/ {s/^'"$key"'\s*=\s*//; s/\s*$//; p}}' "$PIUPARTS_CONF")"
+	test -n "$value" || value="$4"
+	if [ -z "$value" ]; then
+		echo "'$key' not set in section [$section] of $PIUPARTS_CONF, exiting." >&2
+		exit 1
+	fi
+	eval "$1"='"$value"'
+}
+
+get_config_value MASTER global master-directory
+get_config_value SECTIONS global sections
+get_config_value HTDOCS global output-directory
+get_config_value URLBASE global urlbase http://piuparts.debian.org
+get_config_value DAYS global reschedule-untestable-days 7
+
+
+#
+# detect packages which are/were untestable due to archive issue and mark them as such
+#
+
+LOGS=`mktemp`
+URLS=`mktemp`
+for SECTION in $SECTIONS ; do 
+	mkdir -p $MASTER/$SECTION/untestable/
+	rgrep -l -E "E: Broken packages|E: Unable to correct problems, you have held broken packages|E: Error, pkgProblemResolver::Resolve generated breaks" $MASTER/$SECTION/fail 2>/dev/null > $LOGS
+	if [ -s $LOGS ]; then
+		for package_log in $(cat $LOGS)
+		do
+			mv $package_log $MASTER/$SECTION/untestable/
+		done
+		sed "s#$MASTER/$SECTION/fail#$URLBASE/$SECTION/untestable#" $LOGS >> $URLS
+	fi
+done
+if [ -s $URLS ]; then
+	mkdir -p $HTDOCS
+	date >> $HTDOCS/archive_issues.txt
+	cat $URLS >> $HTDOCS/archive_issues.txt
+	echo "Broken packages detected!"
+	echo "(By grep'ing for"
+	echo "        'E: Broken packages',"
+	echo "        'E: Unable to correct problems, you have held broken packages',"
+	echo "        'E: Error, pkgProblemResolver::Resolve generated breaks'"
+	echo "in failed logs.)"
+	echo 
+	echo 'The following packages have been moved to $section/untestable and will be'
+	echo "tested again in $DAYS days."
+	echo
+        echo "Broken packages are usually a temporary problem in the archive and are"
+        echo "caught by other tools like britney or http://edos.debian.net/edos-debcheck/"
+        echo
+	echo "If it is always the same package failing, it's likely to be an issue in the"
+	echo "package."
+	echo
+	grep -f $URLS $HTDOCS/archive_issues.txt | sort | uniq -c | sort -rn
+	echo
+fi
+rm $LOGS $URLS

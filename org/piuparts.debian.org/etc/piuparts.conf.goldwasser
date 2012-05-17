@@ -1,0 +1,79 @@
+#
+# This is the configuration file for piuparts running in master-slave mode on a host called goldwasser
+# 
+# For more information on this setup see http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=blob;f=README.txt
+#
+#
+
+[global]
+#sections = sid wheezy squeeze2wheezy
+sections = testing2sid wheezy
+master-host = localhost
+master-user = piupartsm
+bts-from = piuparts-devel@lists.alioth.debian.org
+master-directory = /org/piuparts.debian.org/master/
+output-directory = /org/piuparts.debian.org/htdocs/
+# this value is too high for production (it will cause piuparts-slave to sleep
+# for a whole day) but useful for testing master-slave mode, for running on a 
+# test system 24/7 without causing load for 24/7
+idle-sleep = 86400
+
+[sid]
+description = Debian sid / main: package installation, removal and purge test.
+master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master sid
+packages-url = http://ftp.de.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
+sources-url = http://ftp.de.debian.org/debian/dists/sid/main/source/Sources.bz2
+mirror = http://ftp.de.debian.org/debian/
+piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
+distro = sid
+chroot-tgz = sid.tar.gz
+max-reserved = 50
+log-file = sid.log
+# Once there are no packages left which leave files on purge behind,
+# --pedantic-purge-test should be added
+known_circular_depends = libc6 libgcc1 multiarch-support coreutils dpkg libswitch-perl perl perl-modules ghostscript gs-cjk-resource libgs9 odbcinst odbcinst1debian2 python-imaging python-imaging-tk g++-4.4 libstdc++6-4.4-dev libqt4-dbus qdbus g++-4.6 libstdc++6-4.6-dev ca-certificates-java openjdk-6-jre-headless openjdk-6-jre-lib dmsetup libdevmapper1.02.1 uqm uqm-content libmaven-scm-java libmaven2-core-java libwagon-java acheck acheck-rules liblwp-protocol-https-perl libwww-perl tasksel tasksel-data libmono-corlib4.0-cil libmono-security4.0-cil libmono-system-configuration4.0-cil libmono-system-security4.0-cil libmono-system-xml4.0-cil libmono-system4.0-cil mono-4.0-gac mono-gac mono-runtime libntrack0 ntrack-module-libnl-0 ntrack-module-rtnetlink-0 xemacs21 xemacs21-bin xemacs21-mule xemacs21-mule-canna-wnn xemacs21-nomule xemacs21-support aide aide-common libmono-system-web-services4.0-cil libmono-system-web4.0-cil libmono-web4.0-cil gamin libgamin0 libmono-posix2.0-cil libmono-security2.0-cil libmono-system2.0-cil libmono-system-data-linq2.0-cil libmono-system-web2.0-cil libmono-wcf3.0-cil libmono2.0-cil monodoc-browser monodoc-http monodoc-manual openjdk-7-jre-headless openjdk-7-jre-lib libgeronimo-jpa-2.0-spec-java libgeronimo-osgi-support-java libosgi-compendium-java bochs bochs-wx g++-4.5 libstdc++6-4.5-dev gcj-4.6-jdk libgcj12-dev gdc-4.6 libphobos2-4.6-dev gdc-4.4 libphobos-4.4-dev gcj-4.4-jdk libgcj10-dev pcb-common pcb-gtk pcb-lesstif gnuift gnuift-perl heroes-common heroes-ggi heroes-sdl libverto-glib1 libverto-libev1 libverto1 strongswan-ikev1 strongswan-ikev2 strongswan-nm strongswan-starter klogd sysklogd apt-watch-backend apt-watch-interface coq coq-theories hugs libhugs-base libhugs-haskell98 libreoffice-core libreoffice-common libreoffice-style-default opendnssec-enforcer opendnssec-enforcer-backend
+
+
+[testing2sid]
+description = Debian main: package installation in testing and dist-upgrade to sid, then removal and purge test.
+master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master testing2sid
+packages-url = http://ftp.de.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
+sources-url = http://ftp.de.debian.org/debian/dists/sid/main/source/Sources.bz2
+mirror = http://ftp.de.debian.org/debian/
+piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
+upgrade-test-distros = testing sid
+upgrade-test-chroot-tgz = testing.tar.gz
+max-reserved = 50
+log-file = testing2sid.log
+known_circular_depends = libc6 libgcc1 multiarch-support coreutils dpkg libswitch-perl perl perl-modules ghostscript gs-cjk-resource libgs9 odbcinst odbcinst1debian2 python-imaging python-imaging-tk g++-4.4 libstdc++6-4.4-dev libqt4-dbus qdbus g++-4.6 libstdc++6-4.6-dev ca-certificates-java openjdk-6-jre-headless openjdk-6-jre-lib dmsetup libdevmapper1.02.1 uqm uqm-content libmaven-scm-java libmaven2-core-java libwagon-java acheck acheck-rules liblwp-protocol-https-perl libwww-perl tasksel tasksel-data libmono-corlib4.0-cil libmono-security4.0-cil libmono-system-configuration4.0-cil libmono-system-security4.0-cil libmono-system-xml4.0-cil libmono-system4.0-cil mono-4.0-gac mono-gac mono-runtime libntrack0 ntrack-module-libnl-0 ntrack-module-rtnetlink-0 xemacs21 xemacs21-bin xemacs21-mule xemacs21-mule-canna-wnn xemacs21-nomule xemacs21-support aide aide-common libmono-system-web-services4.0-cil libmono-system-web4.0-cil libmono-web4.0-cil gamin libgamin0 libmono-posix2.0-cil libmono-security2.0-cil libmono-system2.0-cil libmono-system-data-linq2.0-cil libmono-system-web2.0-cil libmono-wcf3.0-cil libmono2.0-cil monodoc-browser monodoc-http monodoc-manual openjdk-7-jre-headless openjdk-7-jre-lib libgeronimo-jpa-2.0-spec-java libgeronimo-osgi-support-java libosgi-compendium-java bochs bochs-wx g++-4.5 libstdc++6-4.5-dev gcj-4.6-jdk libgcj12-dev gdc-4.6 libphobos2-4.6-dev gdc-4.4 libphobos-4.4-dev gcj-4.4-jdk libgcj10-dev pcb-common pcb-gtk pcb-lesstif gnuift gnuift-perl heroes-common heroes-ggi heroes-sdl libverto-glib1 libverto-libev1 libverto1 strongswan-ikev1 strongswan-ikev2 strongswan-nm strongswan-starter klogd sysklogd apt-watch-backend apt-watch-interface coq coq-theories hugs libhugs-base libhugs-haskell98 libreoffice-core libreoffice-common libreoffice-style-default opendnssec-enforcer opendnssec-enforcer-backend
+
+
+[wheezy]
+description = Debian wheezy / main: package installation, removal and purge test.
+master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master wheezy
+packages-url = http://ftp.de.debian.org/debian/dists/wheezy/main/binary-amd64/Packages.bz2
+sources-url = http://ftp.de.debian.org/debian/dists/wheezy/main/source/Sources.bz2
+mirror = http://ftp.de.debian.org/debian/
+piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
+distro = wheezy
+chroot-tgz = wheezy.tar.gz
+max-reserved = 50
+auto-reschedule = no
+log-file = wheezy.log
+known_circular_depends = libc6 libgcc1 multiarch-support coreutils dpkg libswitch-perl perl perl-modules odbcinst odbcinst1debian2 python-imaging python-imaging-tk g++-4.4 libstdc++6-4.4-dev libqt4-dbus qdbus g++-4.6 libstdc++6-4.6-dev ca-certificates-java openjdk-6-jre-headless openjdk-6-jre-lib dmsetup libdevmapper1.02.1 uqm uqm-content libmaven-scm-java libmaven2-core-java libwagon-java acheck acheck-rules liblwp-protocol-https-perl libwww-perl libmono-corlib4.0-cil libmono-security4.0-cil libmono-system-configuration4.0-cil libmono-system-security4.0-cil libmono-system-xml4.0-cil libmono-system4.0-cil mono-4.0-gac mono-gac mono-runtime ghostscript gs-cjk-resource libgs9 xemacs21 xemacs21-bin xemacs21-mule xemacs21-mule-canna-wnn xemacs21-nomule xemacs21-support aide aide-common libntrack0 ntrack-module-libnl-0 ntrack-module-rtnetlink-0 libmono-system-web-services4.0-cil libmono-system-web4.0-cil libmono-web4.0-cil gamin libgamin0 libmono-posix2.0-cil libmono-security2.0-cil libmono-system2.0-cil libmono-system-data-linq2.0-cil libmono-system-web2.0-cil libmono-wcf3.0-cil libmono2.0-cil monodoc-browser monodoc-http monodoc-manual openjdk-7-jre-headless openjdk-7-jre-lib libgeronimo-jpa-2.0-spec-java libgeronimo-osgi-support-java libosgi-compendium-java bochs bochs-wx tasksel tasksel-data g++-4.5 libstdc++6-4.5-dev python-netcdf python-scientific gcj-4.6-jdk libgcj12-dev gdc-4.6 libphobos2-4.6-dev gdc-4.4 libphobos-4.4-dev gcj-4.4-jdk libgcj10-dev pcb-common pcb-gtk pcb-lesstif gnuift gnuift-perl heroes-common heroes-ggi heroes-sdl libverto-glib1 libverto-libev1 libverto1 strongswan-ikev1 strongswan-ikev2 strongswan-nm strongswan-starter klogd sysklogd apt-watch-backend apt-watch-interface coq coq-theories hugs libhugs-base libhugs-haskell98 libreoffice-core libreoffice-common libreoffice-style-default opendnssec-enforcer opendnssec-enforcer-backend
+
+ 
+[squeeze2wheezy]
+description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
+master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master squeeze2wheezy
+packages-url = http://ftp.de.debian.org/debian/dists/wheezy/main/binary-amd64/Packages.bz2
+sources-url = http://ftp.de.debian.org/debian/dists/wheezy/main/source/Sources.bz2
+mirror = http://ftp.de.debian.org/debian/
+piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --no-eatmydata --dpkg-noforce-unsafe-io --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
+upgrade-test-distros = squeeze wheezy
+upgrade-test-chroot-tgz = squeeze.tar.gz
+max-reserved = 50
+auto-reschedule = no
+log-file = squeeze2wheezy.log
+known_circular_depends = libc6 libgcc1 multiarch-support coreutils dpkg libswitch-perl perl perl-modules odbcinst odbcinst1debian2 python-imaging python-imaging-tk g++-4.4 libstdc++6-4.4-dev libqt4-dbus qdbus g++-4.6 libstdc++6-4.6-dev ca-certificates-java openjdk-6-jre-headless openjdk-6-jre-lib dmsetup libdevmapper1.02.1 uqm uqm-content libmaven-scm-java libmaven2-core-java libwagon-java acheck acheck-rules liblwp-protocol-https-perl libwww-perl libmono-corlib4.0-cil libmono-security4.0-cil libmono-system-configuration4.0-cil libmono-system-security4.0-cil libmono-system-xml4.0-cil libmono-system4.0-cil mono-4.0-gac mono-gac mono-runtime ghostscript gs-cjk-resource libgs9 xemacs21 xemacs21-bin xemacs21-mule xemacs21-mule-canna-wnn xemacs21-nomule xemacs21-support aide aide-common libntrack0 ntrack-module-libnl-0 ntrack-module-rtnetlink-0 libmono-system-web-services4.0-cil libmono-system-web4.0-cil libmono-web4.0-cil gamin libgamin0 libmono-posix2.0-cil libmono-security2.0-cil libmono-system2.0-cil libmono-system-data-linq2.0-cil libmono-system-web2.0-cil libmono-wcf3.0-cil libmono2.0-cil monodoc-browser monodoc-http monodoc-manual openjdk-7-jre-headless openjdk-7-jre-lib libgeronimo-jpa-2.0-spec-java libgeronimo-osgi-support-java libosgi-compendium-java bochs bochs-wx tasksel tasksel-data g++-4.5 libstdc++6-4.5-dev python-netcdf python-scientific gcj-4.6-jdk libgcj12-dev gdc-4.6 libphobos2-4.6-dev gdc-4.4 libphobos-4.4-dev gcj-4.4-jdk libgcj10-dev pcb-common pcb-gtk pcb-lesstif gnuift gnuift-perl heroes-common heroes-ggi heroes-sdl libverto-glib1 libverto-libev1 libverto1 strongswan-ikev1 strongswan-ikev2 strongswan-nm strongswan-starter klogd sysklogd apt-watch-backend apt-watch-interface coq coq-theories hugs libhugs-base libhugs-haskell98 libreoffice-core libreoffice-common libreoffice-style-default opendnssec-enforcer opendnssec-enforcer-backend
+

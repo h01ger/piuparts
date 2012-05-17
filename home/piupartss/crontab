@@ -1,0 +1,16 @@
+# m h dom mon dow (0|7=sun,1=mon)    command
+
+#
+# for normal checks, piupartsm's crontab should be used. This is only for tests which needs root priviledges
+#
+
+#
+# start slave_run automatically after reboots
+#
+@reboot $HOME/bin/slave_cleanup ; sudo $HOME/bin/slave_run
+
+#
+# monitor for problems every six hours
+#
+23 */6 * * * $HOME/bin/detect_leftover_processes
+

@@ -1,0 +1,43 @@
+To: submit@bugs.debian.org
+Subject: removal of $OFFENDER makes files disappear from $VICTIM
+
+Package: $OFFENDER
+Affects: $VICTIM
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts replaces-without-breaks
+
+Hi,
+
+during a test with piuparts and EDOS tools I noticed your package causes
+removal of files that also belong to another package.
+This is caused by using Replaces without corresponding Breaks.
+
+The installation sequence to reproduce this problem is
+
+  apt-get install $VICTIM
+  # (1)
+  apt-get install $OFFENDER
+  apt-get remove $OFFENDER
+  # (2)
+
+The list of installed files at points (1) and (2) should be identical,
+but the following files have disappeared:
+
+
+This is a serious bug violating policy 7.6, see
+http://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces
+and also see the footnote that describes this incorrect behavior
+http://www.debian.org/doc/debian-policy/footnotes.html#f53
+
+The $OFFENDER package has the following relationships with $VICTIM:
+
+  Conflicts:
+  Breaks:
+  Replaces:
+
+From the attached log (scroll to the bottom...):
+
+
+cheers,

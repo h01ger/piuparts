@@ -1,0 +1,56 @@
+#!/bin/sh
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+echo "Debug: running script $0"
+
+#
+# deal with packages depending on exceptions:
+#
+case $PIUPARTS_OBJECTS in
+	ltsp-client)		log_debug
+				PIUPARTS_OBJECTS=ltsp-client-core
+				;;
+	netscript-2.4-upstart)  log_debug
+				PIUPARTS_OBJECTS=upstart
+				;;
+	live-config-upstart)    log_debug
+				PIUPARTS_OBJECTS=upstart
+				;;
+esac
+
+#
+# deal with exceptions:
+#
+case $PIUPARTS_OBJECTS in 
+	fai-nfsroot)		log_debug
+				rm -f /.THIS_IS_THE_FAI_NFSROOT
+				;;
+	ltsp-client-core)	log_debug
+				rm -f /etc/ltsp_chroot
+				;;
+	apt-listbugs)		log_debug
+				;;
+	upstart)		log_debug
+				#  removal wont work if sysvinit isn't reinstalled
+				apt-get -y install sysvinit
+				apt-get clean
+				;;
+	file-rc)		log_debug
+				# removal wont work if sysv-rc isn't reinstalled
+				yes 'Yes, do as I say!' | apt-get -y --force-yes install sysv-rc
+				dpkg --purge file-rc
+				echo "Debug: this files don't exist when sysv-rc is installed by debootstrap, they are just created when sysv-rc is installed later. See #605127."
+				rm -fv /var/lib/update-rc.d/*
+				apt-get clean
+				;;
+	systemd-sysv)		log_debug
+				#  removal wont work if sysvinit isn't reinstalled
+				apt-get -y install sysvinit
+				apt-get clean
+				;;
+esac
+
+exit 0
