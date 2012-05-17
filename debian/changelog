@@ -1,12 +1,4 @@
-piuparts (0.44) UNRELEASED; urgency=low
-
-  * continue development.
-  * One of the first steps should be the merge of the branch piatti.git into
-    the develop branch of piuparts.git, followed by the removal of the git
-    repository piatti.git.
-    I'merely not doing this right now, because I don't want to fix the
-    breakage now, or IOW, because I want to continue to be able to fixup
-    piatti.debian.org quickly.
+piuparts (0.44) unstable; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -40,13 +32,10 @@ piuparts (0.44) UNRELEASED; urgency=low
   * Makefile: Install documentation with mode 0644 instead of 0755.
 
   [ Holger Levsen ]
-  * Enable automatic bug updating in piuparts-analyse: if a bug is not closed
-    in a new version, it can rather very savely be assumed it's not closed.
-    This has been disabled again.
   * piuparts-report: don't create output for disabled sections. (Bye bye
     Lenny!)
 
- -- Holger Levsen <holger@debian.org>  Sun, 22 Jan 2012 13:33:59 +0100
+ -- Holger Levsen <holger@debian.org>  Thu, 17 May 2012 11:43:59 +0000
 
 piuparts (0.43) unstable; urgency=low
 

@@ -6,6 +6,10 @@ higher than wishlist!
 
 for 0.44:
 
+- merge the branch piatti.git into the develop branch of piuparts.git
+
+- remove the git repository piatti.git.
+
 - piuparts-slave should do the rescheduling of old logs and do so with
   lowest precedence, that is, only when there are no new logs to be tested.
 
