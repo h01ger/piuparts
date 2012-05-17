@@ -12,20 +12,26 @@
 
 [global]
 sections = sid
-# master-host = localhost
-# master-user = piuparts
-# master-directory = .
-output-directory = html
+master-host = localhost
+master-user = piupartsm
+master-directory = /var/lib/piuparts/master
+output-directory = /var/lib/piuparts/htdocs
 idle-sleep = 300
+max-tgz-age = 604800
+reschedule-old-days = 90
+reschedule-old-count = 150
+reschedule-fail-days = 30
+reschedule-fail-count = 25
+#bts-from
 
 [sid]
+precedence = 1
 description = "Debian sid / main"
 master-command = python /usr/share/piuparts/piuparts-master sid
 # mirror = http://your.mirror.here/debian
 # packages-url = http://your.mirror.here/debian/dists/sid/main/binary-i386/Packages.bz2
-piuparts-cmd = sudo piuparts
-# another example:
-# piuparts-cmd = sudo piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /var/tmp
+# sources-url = http://your.mirror.here/debian/dists/sid/main/source/Sources.bz2
+piuparts-cmd = sudo piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /var/tmp
 distro = sid
 chroot-tgz = sid.tar.gz
 upgrade-test-distros = 
@@ -33,6 +39,7 @@ upgrade-test-chroot-tgz =
 max-reserved = 50
 debug = no
 log-file = sid-master.log
+
 
 ## another example:
 ## [s-p-u-i386]
