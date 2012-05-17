@@ -1,3 +1,10 @@
+piuparts (0.45) UNRELEASED; urgency=low
+
+  * Merge piatti.git into piuparts.git, so that piatti.git has become obsolete
+    now.  
+
+ -- Holger Levsen <holger@debian.org>  Thu, 17 May 2012 21:08:16 +0200
+
 piuparts (0.44) unstable; urgency=low
 
   [ Andreas Beckmann ]
