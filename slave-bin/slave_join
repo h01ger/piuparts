@@ -22,9 +22,22 @@ set -e
 # reattach to an existing slave session
 #
 
-SESSIONNAME=piuparts_slave_screen
+if [ -z "$1" ] ; then
+   SLAVENUM=0
+else
+   SLAVENUM=$1
+fi
 
-if screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
+if ! `echo $SLAVENUM | grep -E -e "^[0-9]{1}$" >/dev/null` ; then
+   echo "slave must be identified as a number between 0 and 9"
+   exit
+fi
+
+SCREENLOG=/var/lib/piuparts/slave/screenlog.$SLAVENUM
+
+if [ $(ps fax|grep piuparts-slave|grep slave/$SLAVENUM|grep -v grep |wc -l) != 0 ] ; then
+  screen -r -S piuparts-slave-screen -p $SLAVENUM -x
+else
   echo "piuparts-slave not running!"
   echo
   echo "ps faxu | grep piuparts"
