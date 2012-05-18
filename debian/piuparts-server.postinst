@@ -1,0 +1,77 @@
+#!/bin/sh
+
+set -e 
+
+pgroup=piuparts
+muser=piupartsm
+suser=piupartss
+scriptroot=/usr/share/piuparts
+userhome=$scriptroot
+
+case "$1" in
+  configure)
+
+    addgroup --system --quiet $pgroup
+
+    for user in $muser $suser
+    do
+        adduser --system --quiet --home $userhome/$user --ingroup $pgroup \
+                --shell /bin/sh $user
+
+        touch $userhome/$user/.profile
+        chown $user.$pgroup $userhome/$user/.profile
+
+        if [ $user = "piupartsm" ] ;
+        then
+            role="master"
+        else
+            role="slave"
+        fi
+
+        if ! grep $scriptroot/$role $userhome/$user/.profile > /dev/null;
+        then
+            echo PATH=\$PATH:$scriptroot:$scriptroot/$role \
+                 >>$userhome/$user/.profile
+        fi
+
+        if [ ! -d $userhome/$user/.ssh ] ; then
+            install -d -o $user -g $pgroup -m 0755 $userhome/$user/.ssh
+        fi
+    done
+
+
+    if [ ! -e $userhome/$suser/.ssh/id_rsa ] ; then
+        ssh-keygen -q -f $userhome/$suser/.ssh/id_rsa -N ""
+        chown $suser.$pgroup $userhome/$suser/.ssh/id_rsa \
+              $userhome/$suser/.ssh/id_rsa.pub
+    fi
+
+    cat $userhome/$suser/.ssh/id_rsa.pub >>$userhome/$muser/.ssh/authorized_keys
+    chown $muser.$pgroup $userhome/$muser/.ssh/authorized_keys
+    chmod 0600 $userhome/$muser/.ssh/authorized_keys
+
+    install -d -o $muser -g $pgroup -m 0755 /var/lib/piuparts/master
+    install -d -o $muser -g $pgroup -m 0755 /var/lib/piuparts/master/monitor-slave
+    install -d -o $muser -g $pgroup -m 0755 /var/lib/piuparts/backup
+
+    if [ -d /var/lib/piuparts/htdocs ] ; then
+        rm -rf /var/lib/piuparts/htdocs
+    fi
+    install -d -o $muser -g $pgroup -m 0755 /var/lib/piuparts/htdocs
+    cp -rf $scriptroot/htdocs/* /var/lib/piuparts/htdocs/
+
+    install -d -o $suser -g $pgroup -m 0755 /var/lib/piuparts/slave
+    install -d -o $suser -g $pgroup -m 0755 /var/lib/piuparts/slave/0
+
+    ;;
+
+  abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+  *)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 1
+    ;;
+esac
+
+
+#DEBHELPER#

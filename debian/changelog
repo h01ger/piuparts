@@ -9,6 +9,11 @@ piuparts (0.45) UNRELEASED; urgency=low
     configuration files.
   * Added server configuration files for apache, sudo, and cron.
   * Use dh_install, in preparation for multiple package build.
+  * Added packaging to create the piuparts-server package out of the old
+    piatti directory tree (Closes: #652934).
+    - Create and configure piupartss and piupartsm users.
+    - Coordinate ssh keys between master and slave users.
+    - Create working directory tree for each under /var/lib/piuparts
   * packagesdb.py:
     - Calculate recursive reverse dependency count, and store in PackagesDB.
     - Calculate the count of packages being blocked by a failed package.

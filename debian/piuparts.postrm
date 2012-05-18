@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e 
+
+muser=piupartsm
+suser=piupartss
+
+case "$1" in
+  purge)
+
+    # may be left over from a previous version
+    if [ -d /etc/piuparts ] ; then
+        rmdir /etc/piuparts
+    fi
+
+    ;;
+  upgrade|remove|failed-upgrade|abort-install|abort-upgrade)
+    ;;
+  *)
+    echo "postrm called with unknown argument \`$1'" >&2
+    exit 1
+    ;;
+esac
+
+#DEBHELPER#
+

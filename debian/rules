@@ -21,6 +21,7 @@ install: build
 	$(MAKE) prefix=$(CURDIR)/debian/tmp/usr etcdir=$(CURDIR)/debian/tmp/etc all
 	dh_install
 	dh_installman --sourcedir=debian/piuparts
+	dh_link
 
 binary-arch:
 binary-indep: build install

@@ -5,6 +5,7 @@ mandir = $(sharedir)/man
 man1dir = $(mandir)/man1
 libdir = $(prefix)/lib
 docdir = $(prefix)/share/doc/piuparts/
+svrdocdir = $(prefix)/share/doc/piuparts-server
 site26 = $(libdir)/python2.6/dist-packages
 site27 = $(libdir)/python2.7/dist-packages
 etcdir = $(prefix)/etc
@@ -32,10 +33,30 @@ install-doc:
 	gzip -9f $(man1dir)/piuparts.1
 	a2x --copy -f xhtml piuparts.1.txt
 	install -m 0644 piuparts.1.html $(docdir)
+	install -d $(svrdocdir)/
+	install -m 0755 README-server.txt $(svrdocdir)/
 
 install-conf:
 	install -d $(etcdir)/piuparts
 	install -m 0644 conf/piuparts.conf.sample $(etcdir)/piuparts/piuparts.conf
+
+	install -d $(etcdir)/cron.d
+	install -m 0644 home/piupartsm/crontab $(etcdir)/cron.d/piuparts-server
+	install -m 0644 home/piupartss/crontab $(etcdir)/cron.d/piuparts-slave
+
+	install -d $(etcdir)/piuparts/known_problems
+	for fl in home/piupartsm/bin/known_problems/* ; do\
+            install -m 0644 $$fl $(etcdir)/piuparts/known_problems; \
+        done
+
+	install -d $(etcdir)/sudoers.d
+	install -m 440 conf/piuparts.sudoers $(etcdir)/sudoers.d/piuparts
+
+	install -d $(etcdir)/apache2/conf.d
+	install -m 0644 conf/piuparts.apache $(etcdir)/apache2/conf.d
+
+	install -d $(etcdir)/piuparts/scripts
+	install org/piuparts.debian.org/etc/scripts/* $(etcdir)/piuparts/scripts
 
 install:
 	install -d $(sbindir)
@@ -53,6 +74,33 @@ install:
 	install -d $(site27)/piupartslib
 	install -m 0644 piupartslib/*.py $(site26)/piupartslib
 	install -m 0644 piupartslib/*.py $(site27)/piupartslib
+
+	install -d $(sharedir)/piuparts/master
+
+	for fl in home/piupartsm/bin/* ; do\
+            if [ -f $$fl ] ; then install $$fl $(sharedir)/piuparts/master ; fi ; done
+
+	install -d $(sharedir)/piuparts/slave
+
+	cp -r home/piupartss/bin/* $(sharedir)/piuparts/slave
+
+	install -d $(sharedir)/piuparts/htdocs
+	for file in org/piuparts.debian.org/htdocs/* ; do\
+            if [ -f $$file ] ; then \
+                install -m 0644 $$file $(sharedir)/piuparts/htdocs ;\
+            fi \
+        done
+
+	install -d $(sharedir)/piuparts/htdocs/images
+	install -m 0644 org/piuparts.debian.org/htdocs/images/* $(sharedir)/piuparts/htdocs/images
+
+	install -d $(sharedir)/piuparts/htdocs/templates/mail
+	for file in org/piuparts.debian.org/htdocs/templates/mail/* ; do\
+		if [ -f $$file ] ; then \
+			install -m 0644 $$file $(sharedir)/piuparts/htdocs/templates/mail ;\
+		fi \
+	done
+
 
 check:
 	python piuparts.py unittest

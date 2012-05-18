@@ -1,0 +1,6 @@
+etc/piuparts*
+etc/cron.d/piuparts-server
+etc/cron.d/piuparts-slave
+usr/share/piuparts/*
+etc/sudoers.d/piuparts
+etc/apache2/conf.d/piuparts.apache

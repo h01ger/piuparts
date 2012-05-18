@@ -4,8 +4,8 @@ Uploaders: Holger Levsen <holger@debian.org>
 Section: devel
 Priority: extra
 Standards-Version: 3.9.3
-Build-Depends: debhelper (>=7)
-Build-Depends-Indep: python (>=2.6.6-3~), asciidoc, xmlto, git
+Build-Depends: debhelper (>=7), python (>=2.6.6-3~)
+Build-Depends-Indep: asciidoc, xmlto, git
 Homepage: http://piuparts.debian.org
 Vcs-Git: git://anonscm.debian.org/piuparts/piuparts.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
@@ -26,3 +26,14 @@ Description: .deb package installation, upgrading, and removal testing tool
  .
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.
+
+Package: piuparts-server
+Architecture: all
+Depends: apt, ${python:Depends}, piuparts (>= 0.45), apache2, ${misc:Depends}, openssh-client, screen, adduser
+Breaks: piuparts (<= 0.44)
+Replaces: piuparts (<= 0.44)
+Description: piuparts master and slave server components
+ A master/slave piuparts server, along the lines of
+ http://piuparts.debian.org/.
+
+
