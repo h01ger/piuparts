@@ -360,26 +360,6 @@ def indent_string(str):
     return "\n".join(["  " + line for line in str.split("\n")])
 
 
-safechars = ("abcdefghijklmnopqrstuvwxyz" +
-             "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-             "0123456789" +
-             ",.-_!%/=+:")
-
-def shellquote(str):
-    if str == "":
-        return "''"
-
-    result = []
-    for c in str:
-        if c == "'":
-            result.append("\"'\"")
-        elif c in safechars:
-            result.append(c)
-        else:
-            result.append("\\" + c)
-    return "".join(result)
-
-
 def run(command, ignore_errors=False):
     """Run an external command and die with error message if it fails."""
     assert type(command) == type([])
@@ -448,17 +428,6 @@ def create_file(name, contents):
         f.close()
     except IOError, detail:
         logging.error("Couldn't create file %s: %s" % (name, detail))
-        panic()
-
-
-def append_to_file(name, contents):
-    """Append contents to an existing file."""
-    try:
-        f = file(name, "a")
-        f.write(contents)
-        f.close()
-    except IOError, detail:
-        logging.error("Couldn't append to file %s: %s" % (name, detail))
         panic()
 
 
@@ -946,9 +915,6 @@ class Chroot:
             # Run custom scripts after upgrade
             self.run_scripts("post_distupgrade")
             self.check_for_no_processes()
-
-    def apt_get_knows(self, packages):
-        return self.get_known_packages(packages)
 
     def get_known_packages(self, packages):
         """Does apt-get (or apt-cache) know about a set of packages?"""
