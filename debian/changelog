@@ -8,6 +8,8 @@ piuparts (0.45) UNRELEASED; urgency=low
   * piuparts-report.py:
     - Release Section object when section processing is complete. 
       (Closes: #673919)
+  * packagesdb.py
+    - Calculate recursive reverse dependency count, and store in Package
 
   [ Andreas Beckmann ]
   * piuparts.py:

@@ -57,6 +57,7 @@ class Package(UserDict.UserDict):
             self[name.strip()] = value.strip()
         self._parsed_deps = {}
         self._parsed_alt_deps = {}
+        self._rrdep_count = None
 
     def _parse_dependencies(self, header_name):
         if header_name in self._parsed_deps:
@@ -114,6 +115,15 @@ class Package(UserDict.UserDict):
     def is_testable(self):
         """Are we testable at all? Required aren't."""
         return self.get("Priority", "") != "required"
+
+    def rrdep_count(self):
+        """Get the recursive dependency count, if it has been calculated"""
+        if self._rrdep_count == None:
+            raise Exception('Reverse dependency count has not been calculated')
+        return(self._rrdep_count)
+
+    def set_rrdep_count(self, val):
+        self._rrdep_count = val
 
     def dump(self, output_file):
         output_file.write("".join(self.headers))
@@ -580,5 +590,42 @@ class PackagesDB:
         else:
             raise Exception("Log file exists already: %s (%s)" %
                                 (package, version))
+
+    def calc_rrdep_counts(self):
+        """Calculate recursive reverse dependency counts for Packages"""
+
+        self._find_all_packages()    # populate _packages
+
+        # create a reverse dependency dictionary.
+        # entries consist of a one-level list of reverse dependency package names,
+        # by package name
+        rdeps = {}
+        for pkg_name in self._packages.keys():
+            # use the Packages dependencies() method for a conservative count
+            for dep in self._packages[pkg_name].dependencies():
+                if dep in rdeps:
+                    rdeps[dep].append( pkg_name )
+                else:
+                    rdeps[dep] = [pkg_name]
+
+        def recurse_rdeps( pkg_name, rdeps, rrdep_dict ):
+            """ Recurse through the reverse dep arrays to determine the recursive
+                dependency count for a package. rrdep_dict.keys() contains the
+                accumulation of rdeps encountered"""
+
+            # are there any rdeps for this package?
+            if pkg_name in rdeps:
+                for rdep in rdeps[pkg_name]:
+                    # break circular dependency loops
+                    if not rdep in rrdep_dict:
+                        rrdep_dict[rdep] = 1
+                        rrdep_dict = recurse_rdeps( rdep, rdeps, rrdep_dict )
+
+            return rrdep_dict
+
+        # calculate all of the rrdeps
+        for pkg_name in self._packages.keys():
+            pkg_dep_count = len( recurse_rdeps( pkg_name, rdeps, {} ).keys() )
+            self._packages[pkg_name].set_rrdep_count( pkg_dep_count )
 
 # vi:set et ts=4 sw=4 :
