@@ -1122,11 +1122,9 @@ def main():
 
 
     if os.path.exists(master_directory):
-        sections = []
         for section_name in section_names:
             section = Section(section_name)
             section.generate_output(master_directory=master_directory,output_directory=output_directory,section_names=section_names)
-            sections.append(section)
 
         # static pages
         logging.debug("Writing static pages")
