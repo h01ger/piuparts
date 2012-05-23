@@ -153,6 +153,7 @@ class Settings:
         # tests and checks
         self.no_install_purge_test = False
         self.no_upgrade_test = False
+        self.install_remove_install = False
         self.list_installed_files = False
         self.extra_old_packages = []
         self.skip_cronfiles_test = False
@@ -1978,6 +1979,12 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
     else:
         chroot.install_packages_by_name(packages)
 
+    if settings.install_remove_install:
+        chroot.remove_packages(packages)
+        if package_files:
+            chroot.install_package_files(package_files)
+        else:
+            chroot.install_packages_by_name(packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -2006,6 +2013,9 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
+
+    if settings.install_remove_install:
+        chroot.remove_packages(packages)
 
     # Then from the package files.
     os.environ["PIUPARTS_PHASE"] = "upgrade"
@@ -2120,15 +2130,24 @@ def install_and_upgrade_between_distros(package_files, packages):
     known_packages = chroot.get_known_packages(packages + settings.extra_old_packages)
     chroot.install_packages_by_name(known_packages)
 
+    if settings.install_remove_install:
+        chroot.remove_packages(packages)
+
     chroot.check_for_no_processes()
 
     os.environ["PIUPARTS_PHASE"] = "distupgrade"
 
-    chroot.upgrade_to_distros(settings.debian_distros[1:], packages)
+    if not settings.install_remove_install:
+        chroot.upgrade_to_distros(settings.debian_distros[1:], packages)
+    else:
+        chroot.upgrade_to_distros(settings.debian_distros[1:], [])
 
     chroot.check_for_no_processes()
 
     os.environ["PIUPARTS_PHASE"] = "upgrade"
+
+    if settings.install_remove_install:
+        chroot.install_packages_by_name(packages)
 
     chroot.install_package_files(package_files, packages)
 
@@ -2308,6 +2327,10 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Skip install and purge test.")
 
+    parser.add_option("--install-remove-install",
+                      action="store_true", default=False,
+                      help="Remove package after installation and reinstall. For testing installation in config-files-remaining state.")
+
     parser.add_option("--extra-old-packages",
                       action="append", default=[],
                       help="Install these additional packages along with the old packages from the archive. " +
@@ -2425,6 +2448,7 @@ def parse_command_line():
     # tests and checks
     settings.no_install_purge_test = opts.no_install_purge_test
     settings.no_upgrade_test = opts.no_upgrade_test
+    settings.install_remove_install = opts.install_remove_install
     settings.list_installed_files = opts.list_installed_files
     [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
     settings.skip_cronfiles_test = opts.skip_cronfiles_test

@@ -120,6 +120,17 @@ purges.
 If you only want to perfom the first test, you can use the
 option: '--no-upgrade-test'  
 
+=== Testing packages in the config-files-remaining state
+
+The --install-remove-install option modifies the three piuparts
+tests in order to test package installation while config files
+from a previous installation are remaining, but the package itself
+was removed inbetween.
+This exercises different code paths in the maintainer scripts.
+
+. Installation and purging test: install, remove, install again and purge.
+. Installation, upgrade and purging test: install the old version, remove, install the new version and purge.
+. Distupgrade test: install the version from the first distribution, remove, distupgrade to the last distribution, install the new version.
 
 === Analyzing piuparts results
 
