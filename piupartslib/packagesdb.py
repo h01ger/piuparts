@@ -58,6 +58,7 @@ class Package(UserDict.UserDict):
         self._parsed_deps = {}
         self._parsed_alt_deps = {}
         self._rrdep_count = None
+        self._block_count = None
 
     def _parse_dependencies(self, header_name):
         if header_name in self._parsed_deps:
@@ -124,6 +125,15 @@ class Package(UserDict.UserDict):
 
     def set_rrdep_count(self, val):
         self._rrdep_count = val
+
+    def block_count(self):
+        """Get the number of packages blocked by this package"""
+        if self._block_count == None:
+            raise Exception('Block count has not been calculated')
+        return(self._block_count)
+
+    def set_block_count(self, val):
+        self._block_count = val
 
     def dump(self, output_file):
         output_file.write("".join(self.headers))
@@ -594,7 +604,8 @@ class PackagesDB:
     def calc_rrdep_counts(self):
         """Calculate recursive reverse dependency counts for Packages"""
 
-        self._find_all_packages()    # populate _packages
+        self._find_all_packages()       # populate _packages
+        self._compute_package_states()  # populate _package_state
 
         # create a reverse dependency dictionary.
         # entries consist of a one-level list of reverse dependency package names,
@@ -623,9 +634,25 @@ class PackagesDB:
 
             return rrdep_dict
 
-        # calculate all of the rrdeps
+
+        # define which state relationships between and package and reverse dep
+        # constitute a block
+        block_states = [
+            ("dependency-failed-testing", "failed-testing"),
+            ("dependency-cannot-be-tested", "cannot-be-tested"),
+            ]
+
+        # calculate all of the rrdeps and block counts
         for pkg_name in self._packages.keys():
-            pkg_dep_count = len( recurse_rdeps( pkg_name, rdeps, {} ).keys() )
-            self._packages[pkg_name].set_rrdep_count( pkg_dep_count )
+            rrdep_list = recurse_rdeps( pkg_name, rdeps, {} ).keys()
+
+            self._packages[pkg_name].set_rrdep_count( len(rrdep_list) )
+
+            block_list = [x for x in rrdep_list
+                     if (self._package_state[x], self._package_state[pkg_name])
+                        in block_states]
+
+            self._packages[pkg_name].set_block_count( len(block_list) )
+
 
 # vi:set et ts=4 sw=4 :
