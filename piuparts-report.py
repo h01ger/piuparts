@@ -233,7 +233,7 @@ STATE_BODY_TEMPLATE = """
    <table class="righttable">
     <tr class="titlerow">
      <td class="alerttitlecell">
-      Packages in state "$state" in $section
+      Packages in state "$state" in $section $aside
      </td>
     </tr>
     <tr class="normalrow">
@@ -566,7 +566,13 @@ def get_email_address(maintainer):
 
 class Section:
 
-    def __init__(self, section):
+    def __init__(self, section, master_directory):
+        self._section_directory = os.path.abspath( os.path.join( master_directory, section ) )
+        if not os.path.exists(self._section_directory):
+            logging.debug("Warning: %s did not exist, now created. Did you ever let the slave work?" % (self._section_directory, section))
+            os.mkdir(self._section_directory)
+
+
         self._config = Config(section=section)
         self._config.read(CONFIG_FILE)
         logging.debug("-------------------------------------------")
@@ -577,6 +583,12 @@ class Section:
         packages_file = piupartslib.open_packages_url(self._config["packages-url"])
         self._binary_db = piupartslib.packagesdb.PackagesDB()
         self._binary_db.read_packages_file(packages_file)
+
+        oldcwd = os.getcwd()
+        os.chdir(self._section_directory)
+        self._binary_db.calc_rrdep_counts()
+        os.chdir(oldcwd)
+
         packages_file.close()
 
         if self._config["sources-url"]:
@@ -994,10 +1006,20 @@ class Section:
             vlist = ""
             for name in sorted(self._binary_db.get_pkg_names_in_state(state)):
                 package = self._binary_db.get_package(name)
-                vlist += "<li id=\"%s\">%s (%s)" % (
+                if state not in ['failed-testing', 'cannot-be-tested' ]:
+                    vlist += "<li id=\"%s\">%s (%s)" % (
                                          package["Package"],
                                          self.link_to_source_summary(package["Package"]),
                                          html_protect(package["Maintainer"]))
+                    aside = ""
+                else:
+                    vlist += "<li id=\"%s\">%s (%d,%d) (%s)" % (
+                                         package["Package"],
+                                         self.link_to_source_summary(package["Package"]),
+                                         package.rrdep_count(),
+                                         package.block_count(),
+                                         html_protect(package["Maintainer"]))
+                    aside = "(reverse deps, blocked pkgs)"
                 all_deps = package.all_dependencies()
                 if all_deps:
                     vlist += "\n<ul>\n"
@@ -1024,7 +1046,8 @@ class Section:
                                         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                         "state": html_protect(state),
                                         "section": html_protect(self._config.section),
-                                        "list": vlist
+                                        "list": vlist,
+                                        "aside": aside,
                                        }))
 
 
@@ -1118,8 +1141,8 @@ def main():
 
     if os.path.exists(master_directory):
         for section_name in section_names:
-            section = Section(section_name)
-            section.generate_output(master_directory=master_directory,output_directory=output_directory,section_names=section_names)
+            section = Section(section_name, master_directory)
+            section.generate_output(output_directory=output_directory,section_names=section_names)
 
         # static pages
         logging.debug("Writing static pages")
