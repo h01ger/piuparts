@@ -30,6 +30,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Compute dependency cycles and test packages on such cycles if all
       non-circular dependencies are satisfied.
   * Remove known_circular_depends from piuparts.conf handling.
+  * Remove static list known_circular_depends from piuparts.conf.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source
