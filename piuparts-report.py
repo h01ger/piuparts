@@ -522,9 +522,15 @@ def copy_logs(logs_by_dir, output_dir):
 def remove_old_logs(logs_by_dir, output_dir):
     for vdir in logs_by_dir:
         fulldir = os.path.join(output_dir, vdir)
+
+        # convert logs_by_dir array to a dict to avoid linear search
+        logs_dict = {}
+        for log in logs_by_dir[vdir]:
+            logs_dict[log] = 1
+
         if os.path.exists(fulldir):
             for basename in os.listdir(fulldir):
-                if basename not in logs_by_dir[vdir]:
+                if not basename in logs_dict:
                     os.remove(os.path.join(fulldir, basename))
 
 

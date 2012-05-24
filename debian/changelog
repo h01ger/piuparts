@@ -14,6 +14,8 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Display reverse dependency counts and block counts to failure summaries.
     - Sort the failed-testing and cannot-be-tested summaries by block count.
       (Closes: #674498)
+    - Replace O(n^2) search in remove_old_logs() with a hash
+      piuparts-report run time improved 20% on mature environment.
 
   [ Andreas Beckmann ]
   * piuparts.py:
