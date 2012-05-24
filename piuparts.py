@@ -146,6 +146,7 @@ class Settings:
         self.basetgz = None
         self.savetgz = None
         self.lvm_volume = None
+        self.existing_chroot = None
         self.end_meta = None
         self.save_end_meta = None
         self.skip_minimize = True
@@ -732,6 +733,8 @@ class Chroot:
             self.unpack_from_tgz(settings.basetgz)
         elif settings.lvm_volume:
             self.setup_from_lvm(settings.lvm_volume)
+        elif settings.existing_chroot:
+            self.setup_from_dir(settings.existing_chroot)
         else:
             self.setup_minimal_chroot()
 
@@ -815,6 +818,14 @@ class Chroot:
         run(['lvcreate', '-n', self.lvm_snapshot, '-s', lvm_volume, '-L', settings.lvm_snapshot_size])
         logging.info("Mounting LVM snapshot to %s" % self.name); 
         run(['mount', self.lvm_snapshot, self.name])
+
+    def setup_from_dir(self, dirname):
+        """Create chroot from an existing one."""
+        logging.debug("Copying %s into %s" % (dirname, self.name))
+        for name in os.listdir(dirname):
+            src = os.path.join(dirname, name)
+            dst = os.path.join(self.name, name)
+            run(["cp", "-ax", src, dst])
 
     def run(self, command, ignore_errors=False):
         prefix = []
@@ -2257,6 +2268,11 @@ def parse_command_line():
                       action='store_true',
                       help="Do not verify signatures from the Release files when running debootstrap.")
 
+    parser.add_option("-e", "--existing-chroot", metavar="DIR",
+                      help="Use DIR as the contents of the initial " +
+                           "chroot, instead of building a new one with " +
+                           "debootstrap")
+
     parser.add_option("-i", "--ignore", action="append", metavar="FILENAME",
                       default=[],
                       help="Add FILENAME to list of filenames to be " +
@@ -2438,6 +2454,7 @@ def parse_command_line():
     settings.savetgz = opts.save
     settings.lvm_volume = opts.lvm_volume
     settings.lvm_snapshot_size = opts.lvm_snapshot_size
+    settings.existing_chroot = opts.existing_chroot
     settings.end_meta = opts.end_meta
     settings.save_end_meta = opts.save_end_meta
     settings.skip_minimize = opts.skip_minimize

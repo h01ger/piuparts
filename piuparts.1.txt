@@ -71,6 +71,11 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *--extra-old-packages*='pkg1[,pkg2]...'::
   Install additional old packages before upgrading.  Allows testing package renames/merges where the old package is no longer available in the new distribution and the new one utilizes Conflicts/Replaces.  The argument is a comma separated list of package names and the option can be given multiple times.
 
+*-e* 'dirname', *--existing-chroot*='dirname'::
+  Use the specified directory as source for the new chroot, instead of building
+  a new one with debootstrap. This is similar to '--basetgz', but the contents
+  are not archived.
+
 *-i* 'filename', *--ignore*='filename'::
   Add a filename to the list of filenames to be ignored when comparing changes before and after installation. By default, piuparts ignores files that always change during a package installation and uninstallation, such as *dpkg* status files. The filename should be relative to the root of the chroot (e.g., _var/lib/dpkg/status_). This option can be used as many times as necessary.
 
