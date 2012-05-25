@@ -1004,8 +1004,20 @@ class Section:
         for state in self._binary_db.get_active_states():
             logging.debug("Writing page for %s" % state)
             vlist = ""
-            for name in sorted(self._binary_db.get_pkg_names_in_state(state)):
-                package = self._binary_db.get_package(name)
+
+            def cmp_func(a, b):
+                """Sort by block count first"""
+                rrdep_cmp = cmp( a.block_count(), b.block_count())
+                if rrdep_cmp != 0:
+                    return -rrdep_cmp
+                else:
+                    return cmp( a["Package"], b["Package"] )
+
+            names = self._binary_db.get_pkg_names_in_state(state)
+            packages = [self._binary_db.get_package(name) for name in names]
+            packages.sort( cmp_func )
+
+            for package in packages:
                 if state not in ['failed-testing', 'cannot-be-tested' ]:
                     vlist += "<li id=\"%s\">%s (%s)" % (
                                          package["Package"],
