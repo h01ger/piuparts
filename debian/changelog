@@ -9,8 +9,8 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Release Section object when section processing is complete. 
       (Closes: #673919)
   * packagesdb.py
-    - Calculate recursive reverse dependency count, and store in Package
-    - Calculate the count of packages being blocked by a failed package
+    - Calculate recursive reverse dependency count, and store in PackagesDB.
+    - Calculate the count of packages being blocked by a failed package.
 
   [ Andreas Beckmann ]
   * piuparts.py:
