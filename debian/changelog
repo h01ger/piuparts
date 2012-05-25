@@ -19,6 +19,7 @@ piuparts (0.45) UNRELEASED; urgency=low
   * piuparts.py:
     - Implement --install-remove-install option to test installation in
       config-files-remaining state.  (Closes: #359154)
+    - Report leftover symlinks with target.
   * piupartslib/packagesdb.py:
     - Do not consider a package as "untestable" if untestable/ contains a
       logfile from an obsolete version of that package.

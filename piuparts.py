@@ -1716,7 +1716,11 @@ def file_list(meta_infos, file_owners):
     meta_infos.sort()
     vlist = []
     for name, data in meta_infos:
-        vlist.append("  %s\t" % name)
+        (st, target) = data
+        info = ""
+        if target is not None:
+            info = " -> %s" % target
+        vlist.append("  %s%s\t" % (name, info))
         if name in file_owners:
             vlist.append(" owned by: %s\n" % ", ".join(file_owners[name]))
         else:
