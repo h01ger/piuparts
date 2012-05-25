@@ -34,6 +34,8 @@ piuparts (0.45) UNRELEASED; urgency=low
       non-circular dependencies are satisfied.
   * piuparts-report.py:
     - Exclude obsolete states from generated report.
+  * piuparts-analyze.py:
+    - Don't report further bugs/versions if we found a match.
   * Remove known_circular_depends from piuparts.conf handling.
   * Remove static list known_circular_depends from piuparts.conf.
 

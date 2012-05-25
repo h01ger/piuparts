@@ -157,16 +157,17 @@ def mark_logs_with_reported_bugs():
         failed_errors = extract_errors(failed_log)
         moved = False
         for bug in piuparts_bugs_in(pname):
-            for bug_version in get_bug_versions(bug):
+            if moved:
+                break
+            found_versions = get_bug_versions(bug)
+            if pversion in found_versions:
+                move_to_bugged(failed_log)
+                moved = True
+                break
+            for bug_version in found_versions:
                 #print('DEBUG: %s/%s #%d %s' % (pname, pversion, bug, bug_version))
 
-                if apt_pkg.version_compare(pversion, bug_version) == 0: # pversion == bug_version
-                    if not moved:
-                        move_to_bugged(failed_log)
-                        moved = True
-                    break
-
-                elif apt_pkg.version_compare(pversion, bug_version) > 0: # pversion > bug_version
+                if apt_pkg.version_compare(pversion, bug_version) > 0: # pversion > bug_version
                     bugged_logs = find_bugged_logs(failed_log)
                     if not bugged_logs and not moved:
                         print('%s/%s: Maybe the bug was filed earlier: http://bugs.debian.org/%d against %s/%s'
