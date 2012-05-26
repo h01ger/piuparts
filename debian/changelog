@@ -16,6 +16,9 @@ piuparts (0.45) UNRELEASED; urgency=low
       (Closes: #674498)
     - Replace O(n^2) search in remove_old_logs() with a hash
       piuparts-report run time improved 20% on mature environment.
+    - Another search fix in create_package_summaries (find_links_to_logs)
+      yielding a 10x speedup for piuparts-report runs.
+      (Closes: #674672)
 
   [ Andreas Beckmann ]
   * piuparts.py:

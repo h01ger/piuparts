@@ -604,6 +604,8 @@ class Section:
           self._source_db.read_packages_file(sources_file)
           sources_file.close()
 
+        self._log_name_cache = {}
+
     def write_log_list_page(self, filename, title, preface, logs):
         packages = {}
         for pathname, package, version in logs:
@@ -662,14 +664,37 @@ class Section:
     def find_links_to_logs(self, package_name, dirs, logs_by_dir):
         links = []
         for vdir in dirs:
+
+          # avoid linear search against log file names by caching in a dict
+          # 
+          # this cache was added to avoid a very expensive linear search
+          # against the arrays in logs_by_dir. Note that the use of this cache
+          # assumes that the contents of logs_by_dir is invarient across calls
+          # to find_links_to_logs()
+          # 
+          if vdir not in self._log_name_cache:
+              self._log_name_cache[vdir] = {}
+
+              for basename in logs_by_dir[vdir]:
+                  if basename.endswith(".log"):
+                      package, version = basename[:-len(".log")].split("_")
+
+                      self._log_name_cache[vdir][package] = version
+
           if vdir == "fail":
             style = " class=\"needs-bugging\""
           else:
             style = ""
-          for basename in logs_by_dir[vdir]:
-            if basename.startswith(package_name+"_") and basename.endswith(".log"):
-              package, version = basename[:-len(".log")].split("_")
-              links.append("<a href=\"/%s\"%s>%s</a>" % (os.path.join(self._config.section, vdir, basename),style,html_protect(version)))
+
+          if package_name in self._log_name_cache[vdir]:
+              basename = package_name + "_" + self._log_name_cache[vdir][package_name] + ".log"
+
+              links.append("<a href=\"/%s\"%s>%s</a>" % (
+                      os.path.join(self._config.section, vdir, basename),
+                      style,
+                      html_protect(self._log_name_cache[vdir][package_name]),
+                      ))
+
         return links
 
     def link_to_maintainer_summary(self, maintainer):
@@ -811,6 +836,7 @@ class Section:
         binaries = self._source_db.get_control_header(source, "Binary")
         maintainer = self._source_db.get_control_header(source, "Maintainer")
         uploaders = self._source_db.get_control_header(source, "Uploaders")
+        current_version = self._source_db.get_control_header(source, "Version")
 
         success = True
         failed = False
@@ -821,14 +847,16 @@ class Section:
             # Don't track udebs and binary packages on other archs. 
             # The latter is a FIXME which needs parsing the Packages files from other archs too
             continue
-          current_version = self._source_db.get_control_header(source, "Version")
+
           if not "waiting" in state and "dependency" in state:
             state_style="lightalertlabelcell"
           elif state == "failed-testing":
             state_style="lightlabelcell"
           else:
             state_style="labelcell"
+
           binaryrows += "<tr class=\"normalrow\"><td class=\"labelcell\">Binary:</td><td class=\"contentcell2\">%s</td><td class=\"%s\">piuparts-result:</td><td class=\"contentcell2\">%s %s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" %  (binary, state_style, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), html_protect(current_version))
+
           if state not in ("successfully-tested", "essential-required"):
             success = False
           if state in ("failed-testing", "dependency-does-not-exist", "cannot-be-tested"):
