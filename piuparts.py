@@ -1720,6 +1720,8 @@ def file_list(meta_infos, file_owners):
         info = ""
         if target is not None:
             info = " -> %s" % target
+        elif stat.S_ISDIR(st.st_mode):
+            info = "/"
         vlist.append("  %s%s\t" % (name, info))
         if name in file_owners:
             vlist.append(" owned by: %s\n" % ", ".join(file_owners[name]))
