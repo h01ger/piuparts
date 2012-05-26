@@ -573,27 +573,22 @@ def get_email_address(maintainer):
 class Section:
 
     def __init__(self, section, master_directory):
-        self._section_directory = os.path.abspath( os.path.join( master_directory, section ) )
-        if not os.path.exists(self._section_directory):
-            logging.debug("Warning: %s did not exist, now created. Did you ever let the slave work?" % (self._section_directory, section))
-            os.mkdir(self._section_directory)
-
-
         self._config = Config(section=section)
         self._config.read(CONFIG_FILE)
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
 
+        self._master_directory = os.path.abspath(os.path.join(master_directory, self._config.section))
+        if not os.path.exists(self._master_directory):
+            logging.debug("Warning: %s did not exist, now created. Did you ever let the slave work?" % self._master_directory)
+            os.makedirs(self._master_directory)
+
         logging.debug("Loading and parsing Packages file")
         logging.info("Fetching %s" % self._config["packages-url"])
         packages_file = piupartslib.open_packages_url(self._config["packages-url"])
-        self._binary_db = piupartslib.packagesdb.PackagesDB()
+        self._binary_db = piupartslib.packagesdb.PackagesDB(prefix=self._master_directory)
         self._binary_db.read_packages_file(packages_file)
-
-        oldcwd = os.getcwd()
-        os.chdir(self._section_directory)
         self._binary_db.calc_rrdep_counts()
-        os.chdir(oldcwd)
 
         packages_file.close()
 
@@ -1146,16 +1141,12 @@ class Section:
         self.write_state_pages()
 
 
-    def generate_output(self, master_directory, output_directory, section_names):
+    def generate_output(self, output_directory, section_names):
         # skip output generation for disabled sections
         if int(self._config["max-reserved"]) == 0:
             return
 
         self._section_names = section_names
-        self._master_directory = os.path.abspath(os.path.join(master_directory, self._config.section))
-        if not os.path.exists(self._master_directory):
-            logging.debug("Warning: %s did not exist, now created. Did you ever let the slave work?" % (self._master_directory, self._config.section))
-            os.mkdir(self._master_directory)
 
         self._output_directory = os.path.abspath(os.path.join(output_directory, self._config.section))
         if not os.path.exists(self._output_directory):
@@ -1188,7 +1179,7 @@ def main():
     if os.path.exists(master_directory):
         for section_name in section_names:
             section = Section(section_name, master_directory)
-            section.generate_output(master_directory=master_directory,output_directory=output_directory,section_names=section_names)
+            section.generate_output(output_directory=output_directory, section_names=section_names)
 
         # static pages
         logging.debug("Writing static pages")
