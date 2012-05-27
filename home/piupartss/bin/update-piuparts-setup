@@ -4,7 +4,7 @@
 #  update piuparts setup on piatti.debian.org
 #
 
-# Copyright 2009-2011 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2012 Holger Levsen (holger@layer-acht.org)
 # 
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -27,87 +27,15 @@ fi
 
 set -e
 
-#
-# update slave home, mostly scripts
-#
+# please cleanup yourself
 cd 
-# get rid of svn
-if [ -d .svn ] ; then
-	rm .svn -rf
+if [ -d piatti ] ; then
+	echo please rm ~/piatti manually
 fi
-
-if [ ! -d piatti ] ; then
-	git clone git://git.debian.org/git/piuparts/piatti.git
-        cd piatti
-        git checkout piatti
-	cd ..
-fi
-cd piatti
-
-# git checkout branch if $1 is given
-if [ ! -z "$1" ] ; then
-	git checkout $1
-fi
-
-# git fetch+pull if $2 is given
-if [ ! -z "$2" ] ; then
-	git fetch $2
-	git pull $2 $1
-fi
-
-cd
-cp -r piatti/home/piupartss/* .
-cp -r piatti/home/piupartss/.forward .
-pwd
-crontab crontab
-
-#
-# update master home, that's mostly crontab to run piuparts-reports
-#
-# this is done as piupartsm user, as else ~piupartsm needs to be writeable
-# by the group, which prevents ssh logins...
-#
-cd ~piupartsm
-# rm .svn
-if [ -d .svn ] ; then
-	sudo rm .svn -rf
-fi
-
-sudo su - piupartsm -c "cp -r ~piupartss/piatti/home/piupartsm/* . ; cp -ax ~piupartss/piatti/home/piupartsm/.forward ."
-sudo su - piupartsm -c "crontab crontab"
-
-
-#
-# update /org/piuparts.debian.org
-#
-# rm .svn
-if [ -d /org/piuparts.debian.org/.svn ] ; then
-	rm /org/piuparts.debian.org/.svn -rf
-fi
-if [ ! -d /org/piuparts.debian.org/ ] ; then
-        sudo mkdir -p /org/piuparts.debian.org/
-	sudo chown piupartss:piuparts /org/piuparts.debian.org/
-	sudo chmod 775 /org/piuparts.debian.org/
-fi
-cd /org/piuparts.debian.org/
-pwd
-cp -r ~piupartss/piatti/org/piuparts.debian.org/* .
-mkdir -p master slave backup
-sudo chown piupartss:piuparts slave
-sudo chown piupartsm:piuparts master htdocs backup
-sudo chmod 775 master slave htdocs
-cd /org/piuparts.debian.org/etc
-# to support multiple host with this setup
-HOSTNAME=`hostname`
-ln -sf piuparts.conf.$HOSTNAME piuparts.conf
 
 #
 # update source
 #
-# rm .svn
-if [ -d /org/piuparts.debian.org/src/.svn ] ; then
-	rm /org/piuparts.debian.org/src/ -rf
-fi
 if [ ! -d /org/piuparts.debian.org/src/ ] ; then
         sudo mkdir -p /org/piuparts.debian.org/src/
 	cd /org/piuparts.debian.org/src/
@@ -119,6 +47,7 @@ if [ ! -d /org/piuparts.debian.org/src/ ] ; then
 fi
 cd  /org/piuparts.debian.org/src/piuparts
 pwd
+SRCDIR=$(pwd)
 # git checkout branch if $1 is given
 if [ ! -z "$1" ] ; then
 	git checkout $1
@@ -136,4 +65,46 @@ sudo make prefix=/org/piuparts.debian.org docdir=/org/piuparts.debian.org/htdocs
 # create working dir
 #
 sudo mkdir -p /org/piuparts.debian.org/tmp
+
+#
+# update slave home, mostly scripts
+#
+cd
+cp -r $SRCDIR/home/piupartss/* .
+cp -r $SRCDIR/home/piupartss/.forward .
+pwd
+crontab crontab
+
+#
+# update master home, that's mostly crontab to run piuparts-reports
+#
+# this is done as piupartsm user, as else ~piupartsm needs to be writeable
+# by the group, which prevents ssh logins...
+#
+cd ~piupartsm
+
+sudo su - piupartsm -c "cp -r $SRCDIR/home/piupartsm/* . ; cp -ax $SRCDIR/home/piupartsm/.forward ."
+sudo su - piupartsm -c "crontab crontab"
+
+
+#
+# update /org/piuparts.debian.org
+#
+if [ ! -d /org/piuparts.debian.org/ ] ; then
+        sudo mkdir -p /org/piuparts.debian.org/
+	sudo chown piupartss:piuparts /org/piuparts.debian.org/
+	sudo chmod 775 /org/piuparts.debian.org/
+fi
+cd /org/piuparts.debian.org/
+pwd
+cp -r $SRCDIR/org/piuparts.debian.org/* .
+mkdir -p master slave backup
+sudo chown piupartss:piuparts slave
+sudo chown piupartsm:piuparts master htdocs backup
+sudo chmod 775 master slave htdocs
+cd /org/piuparts.debian.org/etc
+# to support multiple host with this setup
+HOSTNAME=`hostname`
+ln -sf piuparts.conf.$HOSTNAME piuparts.conf
+
 
