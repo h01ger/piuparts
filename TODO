@@ -4,9 +4,7 @@ Things to do for piuparts
 Please also check the BTS, especially the bugs with a severity
 higher than wishlist!
 
-for 0.44:
-
-- merge the branch piatti.git into the develop branch of piuparts.git
+for 0.45:
 
 - remove the git repository piatti.git.
 
@@ -16,13 +14,6 @@ for 0.44:
 - piuparts-report.py: fix those FIXMEs in main()
 
 - remove the "bugged" directory-status tracking altogether.  also remove "fixed".
-
-- write reportbug(-like) wrapper for mass bug filing (start
-  simple, make it more sophisticated later). 
-
-- generate piuparts.1.txt automatically from piuparts.py - see
-  this blog post for a nice howto:
-  http://andialbrecht.wordpress.com/2009/03/17/creating-a-man-page-with-distutils-and-optparse/
 
 - sometimes a chroot doesn't get removed on piatti - find out
   why and fix it.
@@ -45,16 +36,23 @@ for 0.44:
 - create piuparts-master and piuparts-slave packages.
 
 
-for 0.45:
+for 0.46:
 
 - mv piatti.git piuparts.git/doc/examples  and include it into a new
   binary package.  when doing so keep in mind the two tango icons
   and credit those in debian/copyright.
 
+- write reportbug(-like) wrapper for mass bug filing (start
+  simple, make it more sophisticated later). 
+
+- generate piuparts.1.txt automatically from piuparts.py - see
+  this blog post for a nice howto:
+  http://andialbrecht.wordpress.com/2009/03/17/creating-a-man-page-with-distutils-and-optparse/
+
 - publish FAI classes to setup piuparts.$fqdn automatically.
 
 
-for 0.46:
+for 0.47:
 
 - remove configfile option "mirror" and use the mirror from
   "packages-url".
@@ -77,7 +75,7 @@ for 0.46:
     fancy graphs)
 
 
-for 0.47:
+for 0.48 and later:
 
 - slave_run: cleanup stale proc mountpoints
 
@@ -88,9 +86,6 @@ for 0.47:
 - the templates used by update-reports.py should be taken from
   /etc/piuparts/templates/ and not be included in the python
   source
-
-
-for 0.48 and later:
 
 - report:
   - write stats about the reasons for failures, as its done with
