@@ -1154,7 +1154,7 @@ def main():
     if os.path.exists(master_directory):
         for section_name in section_names:
             section = Section(section_name, master_directory)
-            section.generate_output(output_directory=output_directory,section_names=section_names)
+            section.generate_output(master_directory=master_directory,output_directory=output_directory,section_names=section_names)
 
         # static pages
         logging.debug("Writing static pages")
