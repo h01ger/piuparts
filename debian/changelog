@@ -5,7 +5,8 @@ piuparts (0.45) UNRELEASED; urgency=low
     now.  
 
   [ David Steele ]
-  * Moved /etc/piuparts purge management out of piuparts.
+  * Remove debian/postinst as it was only dealing with lenny time area
+    configuration files.
   * packagesdb.py:
     - Calculate recursive reverse dependency count, and store in PackagesDB.
     - Calculate the count of packages being blocked by a failed package.
