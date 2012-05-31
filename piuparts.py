@@ -200,7 +200,7 @@ class Settings:
             "/var/cache/apt/archives/lock",
             "/var/cache/apt/pkgcache.bin", 
             "/var/cache/apt/srcpkgcache.bin",
-            "/var/cache/debconf",
+            "/var/cache/debconf/",
             "/var/cache/debconf/config.dat",
             "/var/cache/debconf/config.dat-old",
             "/var/cache/debconf/passwords.dat",
@@ -230,20 +230,20 @@ class Settings:
             ]
         self.ignored_patterns = [
             # system state
-            "/dev/",
+            "/dev/.*",
             "/etc/init.d/\.depend.*",
             "/run/.*",
             "/var/backups/.*",
-            "/var/cache/man/(/.*)?",
+            "/var/cache/man/.*",
             "/var/mail/.*",
             "/var/run/.*",
             # package management
             "/var/lib/apt/lists/.*",
-            "/var/lib/dpkg/alternatives",
+            "/var/lib/dpkg/alternatives/.*",
             "/var/lib/dpkg/triggers/.*",
             "/var/lib/insserv/run.*.log",
             "/var/lib/ucf/.*",
-            "/var/lib/update-rc.d(/.*)?",
+            "/var/lib/update-rc.d/.*",
             # application data
             "/var/lib/mercurial-server/.*",
             "/var/lib/onak/.*",
@@ -251,9 +251,9 @@ class Settings:
             "/var/log/exim4/.*",
             "/var/spool/exim/.*",
             "/var/spool/exim4/.*",
-            "/var/spool/news(/.*)?",
+            "/var/spool/news/.*",
             "/var/spool/squid(/.*)?",
-            "/var/www(/.*)?",
+            "/var/www/.*",
             # HACKS
             "/lib/modules/.*/modules.*",
             ]
