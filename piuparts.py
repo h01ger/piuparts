@@ -165,11 +165,10 @@ class Settings:
         self.warn_on_others = False
         self.warn_on_leftovers_after_purge = False
         self.ignored_files = [
+            # piuparts state
+            "/usr/sbin/policy-rc.d",
+            # system state
             "/etc/aliases",
-            "/etc/apt/secring.gpg",
-            "/etc/apt/trustdb.gpg",
-            "/etc/apt/trusted.gpg",
-            "/etc/apt/trusted.gpg~",
             "/etc/crypttab",
             "/etc/group",
             "/etc/group-",
@@ -189,9 +188,15 @@ class Settings:
             "/etc/passwd-",
             "/etc/shadow",
             "/etc/shadow-",
-            "/usr/sbin/policy-rc.d",
             "/usr/share/info/dir",
             "/usr/share/info/dir.old",
+            "/var/cache/ldconfig/aux-cache",
+            "/var/games/",
+            # package management
+            "/etc/apt/secring.gpg",
+            "/etc/apt/trustdb.gpg",
+            "/etc/apt/trusted.gpg",
+            "/etc/apt/trusted.gpg~",
             "/var/cache/apt/archives/lock",
             "/var/cache/apt/pkgcache.bin", 
             "/var/cache/apt/srcpkgcache.bin",
@@ -201,8 +206,6 @@ class Settings:
             "/var/cache/debconf/passwords.dat",
             "/var/cache/debconf/templates.dat",
             "/var/cache/debconf/templates.dat-old",
-            "/var/cache/ldconfig/aux-cache",
-            "/var/games",
             "/var/lib/apt/extended_states",
             "/var/lib/dpkg/available",
             "/var/lib/dpkg/available-old", 
@@ -213,39 +216,46 @@ class Settings:
             "/var/lib/dpkg/status-old", 
             "/var/lib/dpkg/statoverride",
             "/var/lib/dpkg/statoverride-old",
-            "/var/lib/rbldns",
             "/var/log/alternatives.log",
             "/var/log/apt/history.log",
             "/var/log/apt/term.log",
             "/var/log/bootstrap.log",
             "/var/log/dpkg.log",
+            # system logfiles
             "/var/log/faillog",
             "/var/log/lastlog",
+            # home directories of system accounts
+            "/var/lib/rbldns/",
+            # HACKS
             ]
         self.ignored_patterns = [
+            # system state
             "/dev/",
             "/etc/init.d/\.depend.*",
-            "/lib/modules/.*/modules.*",
             "/run/.*",
             "/var/backups/.*",
             "/var/cache/man/(/.*)?",
+            "/var/mail/.*",
+            "/var/run/.*",
+            # package management
             "/var/lib/apt/lists/.*",
             "/var/lib/dpkg/alternatives",
             "/var/lib/dpkg/triggers/.*",
-            "/var/lib/mercurial-server(/.*)?",
-            "/var/lib/onak(/.*)?",
             "/var/lib/insserv/run.*.log",
             "/var/lib/ucf/.*",
             "/var/lib/update-rc.d(/.*)?",
+            # application data
+            "/var/lib/mercurial-server/.*",
+            "/var/lib/onak/.*",
             "/var/log/exim/.*",
             "/var/log/exim4/.*",
-            "/var/mail(/.*)?",
             "/var/spool/exim/.*",
             "/var/spool/exim4/.*",
             "/var/spool/news(/.*)?",
             "/var/spool/squid(/.*)?",
-            "/var/run/.*",
             "/var/www(/.*)?",
+            # HACKS
+            "/lib/modules/.*/modules.*",
             ]
         self.non_pedantic_ignore_patterns = [
             "/tmp/.*"

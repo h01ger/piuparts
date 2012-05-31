@@ -32,6 +32,8 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Ignore patterns need to match the full filename, not a substring.
     - Cleanup and regroup ignore lists.
       + Remove many obsolete entries not needed for squeeze or later.
+      + Group ignore entries into piuparts state, system state, package
+        management, logfiles, home directories, application data, and HACKS.
   * piupartslib/packagesdb.py:
     - Do not consider a package as "untestable" if untestable/ contains a
       logfile from an obsolete version of that package.
