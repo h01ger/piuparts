@@ -28,6 +28,7 @@ piuparts (0.45) UNRELEASED; urgency=low
       config-files-remaining state.  (Closes: #359154)
     - Report leftover symlinks with target.
     - Report leftover directories with a trailing slash.
+    - Allow ignore entries to specifically match directories.
   * piupartslib/packagesdb.py:
     - Do not consider a package as "untestable" if untestable/ contains a
       logfile from an obsolete version of that package.

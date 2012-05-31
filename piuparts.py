@@ -1128,6 +1128,8 @@ class Chroot:
                     target = os.readlink(name)
                 else:
                     target = None
+                    if stat.S_ISDIR(st.st_mode):
+                        name += "/"
                 vdict[name[len(root):]] = (st, target)
         return vdict
 
@@ -1720,11 +1722,12 @@ def file_list(meta_infos, file_owners):
         info = ""
         if target is not None:
             info = " -> %s" % target
-        elif stat.S_ISDIR(st.st_mode):
-            info = "/"
         vlist.append("  %s%s\t" % (name, info))
-        if name in file_owners:
-            vlist.append(" owned by: %s\n" % ", ".join(file_owners[name]))
+        key = name
+        if key.endswith('/'):
+            key = key[:-1]
+        if key in file_owners:
+            vlist.append(" owned by: %s\n" % ", ".join(file_owners[key]))
         else:
             vlist.append(" not owned\n")        
 
