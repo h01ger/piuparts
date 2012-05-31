@@ -243,6 +243,18 @@ class Settings:
             "/var/log/user.log",
             # home directories of system accounts
             "/var/lib/rbldns/",
+            # work around #316521 dpkg: incomplete cleanup of empty directories
+            "/etc/apache2/",
+            "/etc/apache2/conf.d/",
+            "/etc/cron.d/",
+            "/etc/nagios-plugins/config/",
+            "/etc/php5/",
+            "/etc/php5/conf.d/",
+            "/etc/php5/mods-available/",
+            "/etc/sgml/",
+            "/etc/ssl/",
+            "/etc/ssl/private/",
+            "/etc/xml/",
             # HACKS
             ]
         self.ignored_patterns = [

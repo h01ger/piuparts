@@ -36,6 +36,7 @@ piuparts (0.45) UNRELEASED; urgency=low
         management, logfiles, home directories, application data, and HACKS.
     - Add to ignored_files:
       + Default system logfiles as created by syslogd in /var/log/
+      + Common empty directories in /etc not removed due to dpkg bug #316521
   * piupartslib/packagesdb.py:
     - Do not consider a package as "untestable" if untestable/ contains a
       logfile from an obsolete version of that package.
