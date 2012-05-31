@@ -43,6 +43,7 @@ piuparts (0.45) UNRELEASED; urgency=low
       + /etc/X11/default-display-manager
       + /etc/aliases.db
       + /etc/network/interfaces
+      + /etc/news/whoami
       + /usr/share/keyrings/debian-archive-removed-keys.gpg~
       + /var/crash/
       + /var/lib/citadel/(data/.*)?
