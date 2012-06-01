@@ -1032,7 +1032,12 @@ class Section:
     def write_state_pages(self):
         for state in self._binary_db.get_active_states():
             logging.debug("Writing page for %s" % state)
+            with_counts = False
+            aside = ""
             vlist = ""
+            if state in ['failed-testing', 'cannot-be-tested']:
+                with_counts = True
+                aside = " (reverse deps, blocked pkgs)"
 
             def cmp_func(a, b):
                 """Sort by block count first"""
@@ -1047,20 +1052,12 @@ class Section:
             packages.sort( cmp_func )
 
             for package in packages:
-                if state not in ['failed-testing', 'cannot-be-tested' ]:
-                    vlist += "<li id=\"%s\">%s (%s)" % (
+                vlist += "<li id=\"%s\">%s" % (
                                          package["Package"],
-                                         self.link_to_source_summary(package["Package"]),
-                                         html_protect(package["Maintainer"]))
-                    aside = ""
-                else:
-                    vlist += "<li id=\"%s\">%s (%d,%d) (%s)" % (
-                                         package["Package"],
-                                         self.link_to_source_summary(package["Package"]),
-                                         package.rrdep_count(),
-                                         package.block_count(),
-                                         html_protect(package["Maintainer"]))
-                    aside = "(reverse deps, blocked pkgs)"
+                                         self.link_to_source_summary(package["Package"]))
+                if with_counts:
+                    vlist += " (%d, %d)" % (package.rrdep_count(), package.block_count())
+                vlist += " (%s)" % html_protect(package["Maintainer"])
                 all_deps = package.all_dependencies()
                 if all_deps:
                     vlist += "\n<ul>\n"
