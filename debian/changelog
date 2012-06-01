@@ -70,6 +70,7 @@ piuparts (0.45) UNRELEASED; urgency=low
   * piuparts-report.py:
     - Exclude obsolete states from generated report.
     - Establish packagesdb working directory in Section.
+    - Handle logs in /affected/ directories.
   * piuparts-analyze.py:
     - Don't report further bugs/versions if we found a match.
   * Remove known_circular_depends from piuparts.conf handling.
