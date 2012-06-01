@@ -31,6 +31,7 @@ piuparts (0.45) UNRELEASED; urgency=low
         Version: buggy-version
         Affects: package-under-test
         Found: package-under-test/tested-version
+    - Reschedule /affected/ logs like /fail/ logs.
   * piuparts.py:
     - Implement --install-remove-install option to test installation in
       config-files-remaining state.  (Closes: #359154)
