@@ -18,8 +18,12 @@ http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetail
 Filing this as important as having a piuparts clean archive is a release
 goal since lenny.
 
+The maintainer scripts create (and later remove) a file in that
+directory. Manual directory removal may be not appropriate as this
+directory is shared between several packages.
+
 If the package would ship this as an empty directory, dpkg would take
-care of the creation and removal.
+care of the creation and removal (if it's empty).
 
 From the attached log (scroll to the bottom...):
 
