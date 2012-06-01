@@ -1,0 +1,11 @@
+Alias /piuparts /var/lib/piuparts/htdocs
+
+<Directory /var/lib/piuparts/htdocs>
+  Order allow,deny
+  Allow from all
+
+  Options indexes
+</Directory>
+
+
+
