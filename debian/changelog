@@ -2,7 +2,7 @@ piuparts (0.45) UNRELEASED; urgency=low
 
   [ Holger Levsen ]
   * Merge piatti.git into piuparts.git, so that piatti.git has become obsolete
-    now.  
+    now.
 
   [ David Steele ]
   * Remove debian/postinst as it was only dealing with lenny time area
@@ -11,7 +11,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Calculate recursive reverse dependency count, and store in PackagesDB.
     - Calculate the count of packages being blocked by a failed package.
   * piuparts-report.py:
-    - Release Section object when section processing is complete. 
+    - Release Section object when section processing is complete.
       (Closes: #673919)
     - Display reverse dependency counts and block counts to failure summaries.
     - Sort the failed-testing and cannot-be-tested summaries by block count.
@@ -68,7 +68,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     decompress an archived one.  (Closes: #658044)
 
   [ Mikae Pflüger ]
-  * piuparts.py: Remove obsolete functions shellquote, apt_get_knows and 
+  * piuparts.py: Remove obsolete functions shellquote, apt_get_knows and
     append_to_file.
 
  -- Holger Levsen <holger@debian.org>  Thu, 17 May 2012 21:08:16 +0200
