@@ -1,0 +1,30 @@
+To: submit@bugs.debian.org
+Subject: leaves diversion after upgrade from squeeze
+
+Package:
+Version:
+Severity: important
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package fails to remove some
+diversions after upgrading from squeeze and removing the package
+afterwards.
+
+Filing this as important as having a piuparts clean archive is a release
+goal since lenny.
+
+From the attached log (scroll to the bottom...):
+
+
+
+The test did the following:
+  setup minimal squeeze chroot
+  install $package/squeeze
+  distupgrade wheezy
+  remove $package
+  purge $package
+
+cheers,
