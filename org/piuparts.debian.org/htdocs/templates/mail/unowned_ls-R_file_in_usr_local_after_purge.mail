@@ -1,0 +1,42 @@
+To: submit@bugs.debian.org
+Subject: unowned file /usr/local/share/texmf/ls-R after purge (policy 6.8, 9.1.2)
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package left unowned files on
+the system after purge, which is a violation of policy 6.8:
+http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetails
+
+As putting files into /usr/local is also a violation of
+http://www.debian.org/doc/debian-policy/ch-opersys.html#s9.1.2
+I'm setting the severity to serious.
+
+From the attached log (scroll to the bottom...):
+
+0m53.8s ERROR: FAIL: Package purging left files on system:
+  /usr/local/share/texmf/	 not owned
+  /usr/local/share/texmf/ls-R	 not owned
+
+
+This problem is usually caused by running mktexlsr (or texhash) without
+path arguments from a maintainer script.
+
+The recommende solution is to switch to use dh_installtex and have this
+generate most (or perhaps even all) of the maintainer scripts content.
+
+Otherwise run mktexlsr with the tree as argument where the package
+installs its files, which is usually
+  mktexlsr /usr/share/texmf
+
+Please have a look at the Debian-TeX-Policy (in the tex-common package)
+for the current practice of handling TeX packages. For further TeX
+packaging related questions contact debian-tex-maint@lists.debian.org
+
+
+cheers,
