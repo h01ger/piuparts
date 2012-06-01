@@ -35,10 +35,22 @@ piuparts (0.45) UNRELEASED; urgency=low
       + Remove many obsolete entries not needed for squeeze or later.
       + Group ignore entries into piuparts state, system state, package
         management, logfiles, home directories, application data, and HACKS.
-    - Add to ignored_files:
+    - Add to ignored_files/ignored_patterns:
       + Default system logfiles as created by syslogd in /var/log/
       + Common empty directories in /etc not removed due to dpkg bug #316521
       + cdebconf status files
+      + /boot/grub/
+      + /etc/X11/default-display-manager
+      + /etc/aliases.db
+      + /etc/network/interfaces
+      + /etc/news/whoami
+      + /usr/share/keyrings/debian-archive-removed-keys.gpg~
+      + /var/crash/
+      + /var/lib/citadel/(data/.*)?
+      + /var/lib/gozerbot/
+      + /var/lib/nagios/                        (Closes: #668756)
+      + /var/lib/openvswitch/(pki/.*)?
+      + /var/spool/powerdns/                    (Closes: #531134, #531135)
   * piupartslib/packagesdb.py:
     - Do not consider a package as "untestable" if untestable/ contains a
       logfile from an obsolete version of that package.

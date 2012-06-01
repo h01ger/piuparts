@@ -168,7 +168,11 @@ class Settings:
             # piuparts state
             "/usr/sbin/policy-rc.d",
             # system state
+            "/boot/grub/",
+            "/etc/X11/",
+            "/etc/X11/default-display-manager",
             "/etc/aliases",
+            "/etc/aliases.db",
             "/etc/crypttab",
             "/etc/group",
             "/etc/group-",
@@ -179,10 +183,12 @@ class Settings:
             "/etc/ld.so.cache",
             "/etc/mailname",
             "/etc/mtab",
-            "/etc/news",
+            "/etc/network/interfaces",
+            "/etc/news/",
             "/etc/news/organization",
             "/etc/news/server",
             "/etc/news/servers",
+            "/etc/news/whoami",
             "/etc/nologin",
             "/etc/passwd",
             "/etc/passwd-",
@@ -191,12 +197,14 @@ class Settings:
             "/usr/share/info/dir",
             "/usr/share/info/dir.old",
             "/var/cache/ldconfig/aux-cache",
+            "/var/crash/",
             "/var/games/",
             # package management
             "/etc/apt/secring.gpg",
             "/etc/apt/trustdb.gpg",
             "/etc/apt/trusted.gpg",
             "/etc/apt/trusted.gpg~",
+            "/usr/share/keyrings/debian-archive-removed-keys.gpg~",
             "/var/cache/apt/archives/lock",
             "/var/cache/apt/pkgcache.bin", 
             "/var/cache/apt/srcpkgcache.bin",
@@ -249,7 +257,10 @@ class Settings:
             "/var/log/syslog",
             "/var/log/user.log",
             # home directories of system accounts
+            "/var/lib/gozerbot/",
+            "/var/lib/nagios/",         # nagios* (#668756)
             "/var/lib/rbldns/",
+            "/var/spool/powerdns/",     # pdns-server (#531134), pdns-recursor (#531135)
             # work around #316521 dpkg: incomplete cleanup of empty directories
             "/etc/apache2/",
             "/etc/apache2/conf.d/",
@@ -281,14 +292,16 @@ class Settings:
             "/var/lib/ucf/.*",
             "/var/lib/update-rc.d/.*",
             # application data
+            "/var/lib/citadel/(data/.*)?",
             "/var/lib/mercurial-server/.*",
             "/var/lib/onak/.*",
+            "/var/lib/openvswitch/(pki/.*)?",
             "/var/log/exim/.*",
             "/var/log/exim4/.*",
             "/var/spool/exim/.*",
             "/var/spool/exim4/.*",
             "/var/spool/news/.*",
-            "/var/spool/squid(/.*)?",
+            "/var/spool/squid/(../.*)?",
             "/var/www/.*",
             # HACKS
             "/lib/modules/.*/modules.*",
