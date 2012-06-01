@@ -70,16 +70,16 @@ do
 	# remove all *.kpr files if rechecking is requested
 	#
 	if [ "$1" = "--recheck" ]; then
-		rm -f pass/*.kpr bugged/*.kpr fail/*.kpr
+		rm -f pass/*.kpr bugged/*.kpr affected/*.kpr fail/*.kpr
 	elif [ "$1" = "--recheck-failed" ]; then
-		rm -f bugged/*.kpr fail/*.kpr
+		rm -f bugged/*.kpr affected/*.kpr fail/*.kpr
 	fi
 
 	#
 	# remove outdated *.kpr files
 	#
 	>$LOGS
-	find pass bugged fail -name '*.kpr' | \
+	find pass bugged affected fail -name '*.kpr' | \
 	while read kpr
 	do
 		log="${kpr%.kpr}.log"
@@ -94,7 +94,7 @@ do
 	# build missing *.kpr files
 	#
 	>$LOGS
-	find pass bugged fail -name '*.log' | \
+	find pass bugged affected fail -name '*.log' | \
 	while read log
 	do
 		kpr="${log%.log}.kpr"
@@ -123,9 +123,9 @@ do
 	echo "parsed logfiles: $REMOVED removed, $ADDED added"
 
 	mkdir -p $HTDOCS/$SECTION
-	find pass bugged fail -name '*.kpr' | xargs --no-run-if-empty cat > $ALLKPR
+	find pass bugged affected fail -name '*.kpr' | xargs --no-run-if-empty cat > $ALLKPR
 	cut -d' ' -f 2 $ALLKPR | sort | uniq -c
-	ls -tr1 --color=none fail/*.log bugged/*.log pass/*.log 2>/dev/null > $LIST_ALL
+	ls -tr1 --color=none fail/*.log bugged/*.log affected/*.log pass/*.log 2>/dev/null > $LIST_ALL
 	>$KNOWNLOGS
 	#
 	# loop through all known problems
