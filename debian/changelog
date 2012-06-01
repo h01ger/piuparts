@@ -24,6 +24,13 @@ piuparts (0.45) UNRELEASED; urgency=low
       (Closes: #674672)
 
   [ Andreas Beckmann ]
+  * master/db/report: Add a new category /affected/ for failed logs where the
+    bug is in a dependency, but only exposed by the package being tested.
+    - In the BTS these are reported as
+        Package: buggy-package
+        Version: buggy-version
+        Affects: package-under-test
+        Found: package-under-test/tested-version
   * piuparts.py:
     - Implement --install-remove-install option to test installation in
       config-files-remaining state.  (Closes: #359154)
@@ -73,6 +80,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Handle logs in /affected/ directories.
   * piuparts-analyze.py:
     - Don't report further bugs/versions if we found a match.
+    - Classify logs with bugs filed into /bugged/ or /affected/.
   * Remove known_circular_depends from piuparts.conf handling.
   * Remove static list known_circular_depends from piuparts.conf.
 

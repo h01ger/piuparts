@@ -53,7 +53,7 @@ def find_logs(directory):
 def find_bugged_logs(failed_log):
     package = package_name(failed_log)
     pat = "/" + package + "_"
-    return [x for x in find_logs("bugged") if pat in x]
+    return [x for x in find_logs("bugged") + find_logs("affected") if pat in x]
 
 
 def package_name(log):
@@ -130,9 +130,9 @@ def get_bug_versions(bug):
     return list(reversed(sorted([x.rsplit('/', 1)[-1] for x in debianbts.get_status((bug,))[0].found_versions], cmp=apt_pkg.version_compare))) or ['~']
 
 
-def move_to_bugged(failed_log):
-    print("Moving %s to bugged" % failed_log)
-    os.rename(failed_log, os.path.join("bugged", os.path.basename(failed_log)))
+def move_to_bugged(failed_log, bugged="bugged"):
+    print("Moving %s to %s" % (failed_log, bugged))
+    os.rename(failed_log, os.path.join(bugged, os.path.basename(failed_log)))
 
 
 def mark_bugged_version(failed_log, bugged_log):
@@ -156,12 +156,18 @@ def mark_logs_with_reported_bugs():
         pversion = package_source_version(failed_log)
         failed_errors = extract_errors(failed_log)
         moved = False
-        for bug in piuparts_bugs_in(pname):
+        abugs = piuparts_bugs_affecting(pname)
+        bugs = piuparts_bugs_in(pname)
+        for bug in abugs + bugs:
             if moved:
                 break
+            if bug in abugs:
+                bugged = "affected"
+            else:
+                bugged = "bugged"
             found_versions = get_bug_versions(bug)
             if pversion in found_versions:
-                move_to_bugged(failed_log)
+                move_to_bugged(failed_log, bugged)
                 moved = True
                 break
             for bug_version in found_versions:
@@ -220,8 +226,10 @@ def all_piuparts_bugs():
 
 
 def piuparts_bugs_in(package):
-    return debianbts.get_bugs('package', package, 'bugs', all_piuparts_bugs()) + \
-           debianbts.get_bugs('affects', package, 'bugs', all_piuparts_bugs())
+    return debianbts.get_bugs('package', package, 'bugs', all_piuparts_bugs())
+
+def piuparts_bugs_affecting(package):
+    return debianbts.get_bugs('affects', package, 'bugs', all_piuparts_bugs())
 
 
 def main():
