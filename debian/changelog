@@ -90,7 +90,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     for the chroot, instead of building a new one with debootstrap or
     decompress an archived one.  (Closes: #658044)
 
-  [ Mikae Pflüger ]
+  [ Mika Pflüger ]
   * piuparts.py: Remove obsolete functions shellquote, apt_get_knows and
     append_to_file.
 
