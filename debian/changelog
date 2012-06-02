@@ -82,6 +82,7 @@ piuparts (0.45) UNRELEASED; urgency=low
   * piuparts-analyze.py:
     - Don't report further bugs/versions if we found a match.
     - Classify logs with bugs filed into /bugged/ or /affected/.
+    - Write .bug files with links to the BTS.
   * Remove known_circular_depends from piuparts.conf handling.
   * Remove static list known_circular_depends from piuparts.conf.
 

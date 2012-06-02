@@ -130,9 +130,19 @@ def get_bug_versions(bug):
     return list(reversed(sorted([x.rsplit('/', 1)[-1] for x in debianbts.get_status((bug,))[0].found_versions], cmp=apt_pkg.version_compare))) or ['~']
 
 
-def move_to_bugged(failed_log, bugged="bugged"):
-    print("Moving %s to %s" % (failed_log, bugged))
+def write_bug_file(failed_log, bugs):
+    if bugs:
+        f = file(os.path.splitext(failed_log)[0] + '.bug', "w")
+        for bug in bugs:
+            f.write('<a href="http://bugs.debian.org/%s" target="_blank">#%s</a>\n' % (bug, bug))
+        f.close()
+
+
+def move_to_bugged(failed_log, bugged="bugged", bug=None):
+    print("Moving %s to %s (#%s)" % (failed_log, bugged, bug))
     os.rename(failed_log, os.path.join(bugged, os.path.basename(failed_log)))
+    if bug is not None:
+        write_bug_file(os.path.join(bugged, os.path.basename(failed_log)), [bug])
 
 
 def mark_bugged_version(failed_log, bugged_log):
@@ -167,7 +177,7 @@ def mark_logs_with_reported_bugs():
                 bugged = "bugged"
             found_versions = get_bug_versions(bug)
             if pversion in found_versions:
-                move_to_bugged(failed_log, bugged)
+                move_to_bugged(failed_log, bugged, bug)
                 moved = True
                 break
             for bug_version in found_versions:
@@ -192,6 +202,8 @@ def mark_logs_with_reported_bugs():
                                 moved = True
                                 bts_update_found(bug, pversion)
                                 break
+        if not moved:
+            write_bug_file(failed_log, abugs + bugs)
 
 
 def report_packages_with_many_logs():
