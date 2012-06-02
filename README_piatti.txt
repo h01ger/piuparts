@@ -30,7 +30,7 @@ piupartss       ALL=(ALL) NOPASSWD: ALL
 
 * sudo apt-get install apt python debootstrap lsof lsb-release python-debian make dpkg-dev python-support asciidoc xmlto python-rpy r-recommended r-base-dev gs
 * you need a webserver too, if you run the master
-* Copy 'http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;a=blob;f=home/piupartss/bin/update-piuparts-setup' on the host and run it under the 'piupartss' user. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further updates from git as well as the initial installation. It needs the piupartss and piupartsm user set up as described below, though.
+* Copy 'http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob_plain;f=home/piupartss/bin/update-piuparts-setup' on the host and run it under the 'piupartss' user. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further updates from git as well as the initial installation. It needs the piupartss and piupartsm user set up as described below, though.
 * mkdir /org/piuparts.debian.org
 * sudo ln -s /org/piuparts.debian.org/etc/ /etc/piuparts
 	
