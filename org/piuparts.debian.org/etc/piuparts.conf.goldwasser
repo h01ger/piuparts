@@ -23,8 +23,6 @@ idle-sleep = 86400
 
 [sid]
 description = Debian sid / main: package installation, removal and purge test.
-packages-url = http://ftp.de.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
-sources-url = http://ftp.de.debian.org/debian/dists/sid/main/source/Sources.bz2
 mirror = http://ftp.de.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 distro = sid
@@ -37,8 +35,6 @@ log-file = sid.log
 
 [testing2sid]
 description = Debian main: package installation in testing and dist-upgrade to sid, then removal and purge test.
-packages-url = http://ftp.de.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
-sources-url = http://ftp.de.debian.org/debian/dists/sid/main/source/Sources.bz2
 mirror = http://ftp.de.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 upgrade-test-distros = testing sid
@@ -49,8 +45,6 @@ log-file = testing2sid.log
 
 [wheezy]
 description = Debian wheezy / main: package installation, removal and purge test.
-packages-url = http://ftp.de.debian.org/debian/dists/wheezy/main/binary-amd64/Packages.bz2
-sources-url = http://ftp.de.debian.org/debian/dists/wheezy/main/source/Sources.bz2
 mirror = http://ftp.de.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 distro = wheezy
@@ -62,8 +56,6 @@ log-file = wheezy.log
 
 [squeeze2wheezy]
 description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
-packages-url = http://ftp.de.debian.org/debian/dists/wheezy/main/binary-amd64/Packages.bz2
-sources-url = http://ftp.de.debian.org/debian/dists/wheezy/main/source/Sources.bz2
 mirror = http://ftp.de.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --no-eatmydata --dpkg-noforce-unsafe-io --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 upgrade-test-distros = squeeze wheezy
