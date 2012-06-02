@@ -24,14 +24,6 @@ piuparts (0.45) UNRELEASED; urgency=low
       (Closes: #674672)
 
   [ Andreas Beckmann ]
-  * master/db/report: Add a new category /affected/ for failed logs where the
-    bug is in a dependency, but only exposed by the package being tested.
-    - In the BTS these are reported as
-        Package: buggy-package
-        Version: buggy-version
-        Affects: package-under-test
-        Found: package-under-test/tested-version
-    - Reschedule /affected/ logs like /fail/ logs.
   * piuparts.py:
     - Implement --install-remove-install option to test installation in
       config-files-remaining state.  (Closes: #359154)
@@ -59,6 +51,14 @@ piuparts (0.45) UNRELEASED; urgency=low
       + /var/lib/nagios/                        (Closes: #668756)
       + /var/lib/openvswitch/(pki/.*)?
       + /var/spool/powerdns/                    (Closes: #531134, #531135)
+  * master/db/report: Add a new category /affected/ for failed logs where the
+    bug is in a dependency, but only exposed by the package being tested.
+    - In the BTS these are reported as
+        Package: buggy-package
+        Version: buggy-version
+        Affects: package-under-test
+        Found: package-under-test/tested-version
+    - Reschedule /affected/ logs like /fail/ logs.
   * piupartslib/packagesdb.py:
     - Do not consider a package as "untestable" if untestable/ contains a
       logfile from an obsolete version of that package.
@@ -91,7 +91,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     decompress an archived one.  (Closes: #658044)
 
   [ Mika Pflüger ]
-  * piuparts.py: Remove obsolete functions shellquote, apt_get_knows and
+  * piuparts.py: Remove obsolete functions shellquote, apt_get_knows, and
     append_to_file.
 
  -- Holger Levsen <holger@debian.org>  Thu, 17 May 2012 21:08:16 +0200
