@@ -76,6 +76,7 @@ class Config(piupartslib.conf.Config):
                 "mirror": None,
                 "piuparts-cmd": "sudo piuparts",
                 "distro": None,
+                "area": None,
                 "chroot-tgz": None,
                 "upgrade-test-distros": None,
                 "upgrade-test-chroot-tgz": None,
@@ -584,16 +585,7 @@ def create_or_replace_chroot_tgz(config, tgz, distro):
                 os.unlink(tgz + ".old")
 
 def fetch_packages_file(config, distro):
-    mirror = config["mirror"]
-    arch = config["arch"]
-    if not arch:
-        # Try to figure it out ourselves, using dpkg
-        p = subprocess.Popen(["dpkg", "--print-architecture"],
-                             stdout=subprocess.PIPE)
-        arch = p.stdout.read().rstrip()
-    packages_url = \
-        "%s/dists/%s/main/binary-%s/Packages.bz2" % (mirror, distro, arch)
-
+    packages_url = config.get_packages_url(distro)
     logging.debug("Fetching %s" % packages_url)
     f = piupartslib.open_packages_url(packages_url)
     packages_file = piupartslib.packagesdb.PackagesFile(f)
