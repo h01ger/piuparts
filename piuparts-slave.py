@@ -31,6 +31,7 @@ import logging
 from signal import alarm, signal, SIGALRM, SIGKILL
 import subprocess
 import fcntl
+import random
 import ConfigParser
 
 import piupartslib.conf
@@ -346,7 +347,7 @@ class Section:
             raise
         except MasterIsBusy:
             logging.error("master is busy")
-            self._sleep_until = time.time() + 300
+            self._sleep_until = time.time() + random.randrange(60, 180)
             return 0
         except:
             logging.error("connection to master failed")

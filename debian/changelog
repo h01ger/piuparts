@@ -75,6 +75,8 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Stop using static known_circular_depends.
     - Compute dependency cycles and test packages on such cycles if all
       non-circular dependencies are satisfied.
+  * piuparts-slave.py:
+    - Randomize waiting time (between 60 and 180 seconds) if master is busy.
   * piuparts-report.py:
     - Exclude obsolete states from generated report.
     - Establish packagesdb working directory in Section.
