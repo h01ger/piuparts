@@ -67,6 +67,18 @@ do
 	cd $MASTER/$SECTION
 
 	#
+	# remove outdated *.bug files
+	#
+	find pass bugged affected fail -name '*.bug' | \
+	while read bug
+	do
+		log="${bug%.bug}.log"
+		if [ ! -f "$log" ]; then
+			rm -f "$bug"
+		fi
+	done
+
+	#
 	# remove all *.kpr files if rechecking is requested
 	#
 	if [ "$1" = "--recheck" ]; then
