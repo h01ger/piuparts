@@ -647,9 +647,12 @@ def main():
                     precedence = section.precedence()
 
         if test_count == 0:
-            sleep_time = int(global_config["idle-sleep"])
-            logging.info("Nothing to do, sleeping for %d seconds." % sleep_time)
-            time.sleep( sleep_time )
+            now = time.time()
+            sleep_until = min([now + int(global_config["idle-sleep"])] + [section._sleep_until for section in sections])
+            if (sleep_until > now):
+                to_sleep = max(60, sleep_until - now)
+                logging.info("Nothing to do, sleeping for %d seconds." % to_sleep)
+                time.sleep(to_sleep)
 
 
 if __name__ == "__main__":

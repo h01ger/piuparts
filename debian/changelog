@@ -77,6 +77,7 @@ piuparts (0.45) UNRELEASED; urgency=low
       non-circular dependencies are satisfied.
   * piuparts-slave.py:
     - Randomize waiting time (between 60 and 180 seconds) if master is busy.
+    - Sleep until the next section can be tried, but at least 1 minute.
   * piuparts-report.py:
     - Exclude obsolete states from generated report.
     - Establish packagesdb working directory in Section.
