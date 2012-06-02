@@ -52,8 +52,11 @@ class Config(piupartslib.conf.Config):
         piupartslib.conf.Config.__init__(self, section,
             {
                 "log-file": None,
-                "packages-url": None,
                 "master-directory": ".",
+                "mirror": None,
+                "distro": None,
+                "area": None,
+                "arch": None,
             },
             defaults_section=defaults_section)
 
@@ -215,8 +218,8 @@ def main():
             print 'busy'
             sys.exit(1)
 
-        logging.info("Fetching %s" % config["packages-url"])
-        packages_file = piupartslib.open_packages_url(config["packages-url"])
+        logging.info("Fetching %s" % config.get_packages_url())
+        packages_file = piupartslib.open_packages_url(config.get_packages_url())
 
         m = Master(sys.stdin, sys.stdout, packages_file, section=section)
         while m.do_transaction():
