@@ -378,6 +378,7 @@ linktarget_by_template = [
     ("unowned_files_after_purge_issue.tpl", "but logfile contains unowned files after purge"),
     ("maintainer_script_issue.tpl", "but logfile contains maintainer script failures"),
     ("broken_symlinks_issue.tpl", "but logfile contains 'broken symlinks'"),
+    ("packages_have_been_kept_back_issue.tpl", "but logfile contains 'packages have been kept back'"),
 
     ("dependency_error.tpl", "due to unsatisfied dependencies"),
     ("command_not_found_error.tpl", "due to a 'command not found' error"),
