@@ -497,6 +497,9 @@ class PackagesDB:
     def get_active_states(self):
         return [x for x in self._states if not x in self._obsolete_states]
 
+    def get_error_states(self):
+        return [x for x in self._propagate_error_state.keys() if x in self._states]
+
     def get_pkg_names_in_state(self, state):
         self._compute_package_states()
         return set(self._in_state[state])
