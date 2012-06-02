@@ -4,8 +4,8 @@
 # The sample file does not set all required values, to prevent the
 # master from being run accidentally.
 #
-# You MUST make sure that master-host, master-user, master-directory, mirror
-# and packages-url are also set correctly. The sample file does not set it at
+# You MUST make sure that master-host, master-user, master-directory, and
+# mirror are also set correctly. The sample file does not set it at
 # all, to prevent the master from being run accidentally.
 #
 #
@@ -29,8 +29,6 @@ reschedule-fail-count = 25
 [sid]
 precedence = 1
 description = "Debian sid / main"
-# packages-url = http://your.mirror.here/debian/dists/sid/main/binary-i386/Packages.bz2
-# sources-url = http://your.mirror.here/debian/dists/sid/main/source/Sources.bz2
 piuparts-cmd = sudo piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /var/tmp
 # mirror = http://cdn.debian.net/debian
 distro = sid
@@ -46,7 +44,6 @@ log-file = sid-master.log
 
 ## another example:
 ## [s-p-u-i386]
-## packages-url = http://ftp.debian.org/debian/dists/stable-proposed-updates/binary-i386/Packages.bz2
 ## # mirror = http://cdn.debian.net/debian
 ## distro = stable-proposed-updates
 ## # area = main

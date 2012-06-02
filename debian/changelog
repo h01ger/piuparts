@@ -90,7 +90,9 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Make doc-root default to "/".
     - New per section key: area (set to one of main, contrib, non-free).
     - New defaults: mirror=http://cdn.debian.net/debian, area=main.
-    - Removed deprecated keys: known_circular_depends.
+    - Compute URLs from mirror, distro, area, arch.
+    - Removed deprecated keys: known_circular_depends, packages-url,
+      sources-url.
   * master/db/report: Add a new category /affected/ for failed logs where the
     bug is in a dependency, but only exposed by the package being tested.
     - In the BTS these are reported as          (Closes: #657740)

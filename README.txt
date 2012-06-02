@@ -437,10 +437,6 @@ section, too, and will serve as defaults for all other sections
 
 * "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "/dev/null", that is, log messages are not put in a file.
 
-* "packages-url" is a URL to the Packages.bz2 file specifying what packages should be tested. This needs to be a Packages.bz2 file, other compression methods are not supported. For example, you might use 'http://ftp.debian.org/debian/dists/sid/main/binary-i386/Packages.bz2' but you really do want to replace "ftp.debian.org" with the name of your local mirror.
-
-* "sources-url" is a URL to the Sources.bz2 file for your mirror. "sources-url" must match "packages-url", if it is not defined, piuparts-reports will not generate source centric html pages.
-
 * "piuparts-cmd" is the command the slave uses to start piuparts. It should include 'sudo' if necessary so that piuparts runs with sufficient priviledges to do its testing (and that means root priviledges).
 
 * "mirror" tells the slave which mirror it is to use. The slave gives this to piuparts when it runs it. The URLs for Packages and Sources files will be generated from this setting, too. Default (for fetching Packages/Sources): "http://cdn.debian.net/debian".
