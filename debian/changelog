@@ -94,6 +94,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Handle logs in /affected/ directories.
     - detect_well_known_errors: Add bug links if bugs are known.
     - New known issue: "packages have been kept back".
+    - Report rdeps and blocking counts in all error state reports.
   * piuparts-analyze.py:
     - Don't report further bugs/versions if we found a match.
     - Classify logs with bugs filed into /bugged/ or /affected/.

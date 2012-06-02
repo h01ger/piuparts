@@ -1041,7 +1041,7 @@ class Section:
             with_counts = False
             aside = ""
             vlist = ""
-            if state in ['failed-testing', 'cannot-be-tested']:
+            if state in self._binary_db.get_error_states():
                 with_counts = True
                 aside = " (reverse deps, blocked pkgs)"
 
