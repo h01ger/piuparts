@@ -35,7 +35,7 @@ install-doc:
 
 install-conf:
 	install -d $(etcdir)/piuparts
-	install -m 0644 piuparts.conf.sample $(etcdir)/piuparts/piuparts.conf
+	install -m 0644 conf/piuparts.conf.sample $(etcdir)/piuparts/piuparts.conf
 
 install:
 	install -d $(sbindir) 
