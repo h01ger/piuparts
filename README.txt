@@ -458,12 +458,12 @@ is being run.
 Some of the configuration items are not required, but it is best
 to set them all to be sure what the configuration actually is.
 
-==== piatti.git specific configuration
+==== piuparts.debian.org specific configuration
 
 In addition to some of the above settings the following
-configuration settings are used by the scripts in the piatti.git
-repository. They are all optional, default values are set in the
-scripts.
+configuration settings are used by the scripts in '~piuparts?/bin/'
+used to run piuparts.debian.org. They are all optional, default 
+values are set in the scripts.
 
 * "prefix" (global) sets the prefix of the piuparts installation, e.g. for finding $prefix/share/piuparts/ .
 
@@ -490,4 +490,4 @@ If you want to run piuparts-report (which is only+very useful if
 you run piuparts in master-slave mode), you need to 'apt-get
 install python-rpy r-recommended r-base-dev'. For more
 information see
-link:http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=blob_plain;f=README.txt;hb=piatti[http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=blob_plain;f=README.txt;hb=piatti].
+link:http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob;f=README_piatti.txt[http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob;f=README_piatti.txt].

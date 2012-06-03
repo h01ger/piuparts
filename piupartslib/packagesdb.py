@@ -274,7 +274,7 @@ class PackagesDB:
         self._in_state = None
         self._package_state = {}
         self.set_subdirs(ok="pass", fail="fail", evil="untestable",
-                         reserved="reserved", morefail=["bugged"])
+                         reserved="reserved", morefail=["bugged", "affected"])
 
     def set_subdirs(self, ok=None, fail=None, evil=None, reserved=None, morefail=None):
         # Prefix all the subdirs with the prefix

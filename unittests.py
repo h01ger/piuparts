@@ -54,6 +54,7 @@ class FakeLogDB(piupartslib.packagesdb.LogDB):
             "untestable": [],
             "reserved": [],
             "bugged": [],
+            "affected": [],
         }
 
     def listdir(self, dirname):

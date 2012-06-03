@@ -117,8 +117,8 @@ HTML_HEADER = """
     <tr class="normalrow">
      <td class="contentcell">
       piuparts.d.o configuration:<br>
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=blob;f=org/piuparts.debian.org/etc/piuparts.conf.piatti" target="_blank">piuparts.conf.piatti</a><br>
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git;a=tree;f=org/piuparts.debian.org/etc/scripts" target="_blank">scripts</a>
+      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob_plain;f=org/piuparts.debian.org/etc/piuparts.conf.piatti" target="_blank">piuparts.conf.piatti</a><br>
+      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=tree;f=org/piuparts.debian.org/etc/scripts" target="_blank">scripts</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -195,8 +195,7 @@ HTML_FOOTER = """
    and was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by
    <a href="mailto:holger@debian.org">Holger Levsen</a> and
    <a href="mailto:piuparts-devel@lists.alioth.debian.org">others</a> using
-   <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">piuparts.git</a> and
-   <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piatti.git" target="_blank">piatti.git</a>.
+   <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">piuparts.git</a>.
    Weather icons are from the <a href="http://tango.freedesktop.org/Tango_Icon_Library" target="_blank">Tango Icon Library</a>.
    <a href="http://validator.w3.org/check?uri=referer">
     <img border="0" src="/images/valid-html401.png" alt="Valid HTML 4.01!" height="15" width="80" align="middle">
@@ -339,6 +338,7 @@ title_by_dir = {
     "pass": "PASSED piuparts logs",
     "fail": "Failed UNREPORTED piuparts logs",
     "bugged": "Failed REPORTED piuparts logs",
+    "affected": "Failed AFFECTED piuparts logs",
     "reserved": "RESERVED packages",
     "untestable": "UNTESTABLE packages",
 }
@@ -350,6 +350,8 @@ desc_by_dir = {
             "Bugs have not yet been reported.",
     "bugged": "Log files for packages that have FAILED testing. " +
               "Bugs have been reported, but not yet fixed.",
+    "affected": "Log files for packages that have dependencies FAILED testing. " +
+              "Bugs have been reported, but not yet fixed.",
     "reserved": "Packages that are RESERVED for testing on a node in a " +
                 "distributed piuparts network.",
     "untestable": "Log files for packages that have are UNTESTABLE with " +
@@ -360,6 +362,7 @@ state_by_dir = {
     "pass": "successfully-tested",
     "fail": "failed-testing",
     "bugged": "failed-testing",
+    "affected": "failed-testing",
     "reserved": "waiting-to-be-tested",
     "untestable": "cannot-be-tested",
 }
@@ -375,6 +378,7 @@ linktarget_by_template = [
     ("unowned_files_after_purge_issue.tpl", "but logfile contains unowned files after purge"),
     ("maintainer_script_issue.tpl", "but logfile contains maintainer script failures"),
     ("broken_symlinks_issue.tpl", "but logfile contains 'broken symlinks'"),
+    ("packages_have_been_kept_back_issue.tpl", "but logfile contains 'packages have been kept back'"),
 
     ("dependency_error.tpl", "due to unsatisfied dependencies"),
     ("command_not_found_error.tpl", "due to a 'command not found' error"),
@@ -732,7 +736,7 @@ class Section:
         if state == "successfully-tested":
           dirs = ["pass"]
         elif state == "failed-testing":
-          dirs = ["fail", "bugged"]
+          dirs = ["fail", "bugged", "affected"]
         elif state == "cannot-be-tested":
           dirs = ["untestable"]
 
@@ -740,7 +744,7 @@ class Section:
           links = self.find_links_to_logs (package_name, dirs, logs_by_dir)
           link = ", ".join(links)
 
-        if "/bugged/" in link:
+        if "/bugged/" in link or "/affected/" in link:
           link += " - <a href=\"http://bugs.debian.org/cgi-bin/pkgreport.cgi?package="+package_name+"\" target=\"_blank\" class=\"bugged\">&nbsp;bug filed&nbsp;</a>"
 
         return link
@@ -960,15 +964,17 @@ class Section:
               f.close()
               if state == "failed-testing":
                 count_bugged = string.count(rows,"/bugged/")
+                count_affected = string.count(rows,"/affected/")
                 count_failed = string.count(rows,"/fail/") 
-                if count_bugged > 0 or count_failed > 0:
-                  substats = ": "
+                sep = ": "
                 if count_bugged > 0:
-                  substats += "%s bugged" % count_bugged
-                if count_bugged > 0 and count_failed > 0:
-                  substats += ", "
+                  substats += sep + "%s bugged" % count_bugged
+                  sep = ", "
+                if count_affected > 0:
+                  substats += sep + "%s affected" % count_affected
+                  sep = ", "
                 if count_failed > 0:
-                  substats += "<span id=\"needs-bugging\">%s failed</span>" % count_failed
+                  substats += sep + "<span id=\"needs-bugging\">%s failed</span>" % count_failed
               else:
                   count_passed = string.count(rows,"/pass/")
                   if count_passed > 0:
@@ -992,7 +998,7 @@ class Section:
             dir_link = ""
             analysis = ""
             for vdir in dirs:
-              if vdir in ("pass", "fail", "bugged", "untestable") and state_by_dir[vdir] == state:
+              if vdir in ("pass", "fail", "bugged", "affected", "untestable") and state_by_dir[vdir] == state:
                 dir_link += "<a href='%s.html'>%s</a> logs<br>" % (vdir, html_protect(vdir))
             if state in ("successfully-tested", "failed-testing"):
               analysis = self.create_and_link_to_analysises(state)
@@ -1109,7 +1115,7 @@ class Section:
 
     def generate_html(self):
         logging.debug("Finding log files")
-        dirs = ["pass", "fail", "bugged", "reserved", "untestable"]
+        dirs = ["pass", "fail", "bugged", "affected", "reserved", "untestable"]
         logs_by_dir = {}
         for vdir in dirs:
             logs_by_dir[vdir] = find_files_with_suffix(vdir, ".log")

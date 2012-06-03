@@ -67,19 +67,31 @@ do
 	cd $MASTER/$SECTION
 
 	#
+	# remove outdated *.bug files
+	#
+	find pass bugged affected fail -name '*.bug' | \
+	while read bug
+	do
+		log="${bug%.bug}.log"
+		if [ ! -f "$log" ]; then
+			rm -f "$bug"
+		fi
+	done
+
+	#
 	# remove all *.kpr files if rechecking is requested
 	#
 	if [ "$1" = "--recheck" ]; then
-		rm -f pass/*.kpr bugged/*.kpr fail/*.kpr
+		rm -f pass/*.kpr bugged/*.kpr affected/*.kpr fail/*.kpr
 	elif [ "$1" = "--recheck-failed" ]; then
-		rm -f bugged/*.kpr fail/*.kpr
+		rm -f bugged/*.kpr affected/*.kpr fail/*.kpr
 	fi
 
 	#
 	# remove outdated *.kpr files
 	#
 	>$LOGS
-	find pass bugged fail -name '*.kpr' | \
+	find pass bugged affected fail -name '*.kpr' | \
 	while read kpr
 	do
 		log="${kpr%.kpr}.log"
@@ -94,7 +106,7 @@ do
 	# build missing *.kpr files
 	#
 	>$LOGS
-	find pass bugged fail -name '*.log' | \
+	find pass bugged affected fail -name '*.log' | \
 	while read log
 	do
 		kpr="${log%.log}.kpr"
@@ -123,9 +135,9 @@ do
 	echo "parsed logfiles: $REMOVED removed, $ADDED added"
 
 	mkdir -p $HTDOCS/$SECTION
-	find pass bugged fail -name '*.kpr' | xargs --no-run-if-empty cat > $ALLKPR
+	find pass bugged affected fail -name '*.kpr' | xargs --no-run-if-empty cat > $ALLKPR
 	cut -d' ' -f 2 $ALLKPR | sort | uniq -c
-	ls -tr1 --color=none fail/*.log bugged/*.log pass/*.log 2>/dev/null > $LIST_ALL
+	ls -tr1 --color=none fail/*.log bugged/*.log affected/*.log pass/*.log 2>/dev/null > $LIST_ALL
 	>$KNOWNLOGS
 	#
 	# loop through all known problems
@@ -155,7 +167,11 @@ do
 				if [ "${problem%_error.conf}_error.conf" = "$problem" ] ; then 
 					LATESTFAIL=$(grep -v ^pass/ $LIST_PKG | tail -n 1)
 					if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
-						echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
+						echo "<li><a href='/$SECTION/$LOG'>$LOG</a>" >> $OUTPUT
+						echo "    (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)" >> $OUTPUT
+						BUG=${LOG%.log}.bug
+						test ! -s "$BUG" || cat "$BUG" >> $OUTPUT
+						echo "</li>" >> $OUTPUT
 						echo "$LOG" >> $KNOWNLOGS
 						COUNT=$((COUNT+1))
 					fi

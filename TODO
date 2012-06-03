@@ -6,14 +6,20 @@ higher than wishlist!
 
 for 0.45:
 
-- remove the git repository piatti.git.
-
-- piuparts-slave should do the rescheduling of old logs and do so with
-  lowest precedence, that is, only when there are no new logs to be tested.
-
 - piuparts-report.py: fix those FIXMEs in main()
 
 - remove the "bugged" directory-status tracking altogether.  also remove "fixed".
+
+- create piuparts-master and piuparts-slave packages.
+
+- mv piatti.git piuparts.git/doc/examples  and include it into a new
+  binary package.  when doing so keep in mind the two tango icons
+  and credit those in debian/copyright.
+  Instead of copying the icons the piuparts-server package should rather 
+  depend on the tango icons package.
+
+
+for 0.46:
 
 - sometimes a chroot doesn't get removed on piatti - find out
   why and fix it.
@@ -33,14 +39,8 @@ for 0.45:
 
 - copy/move .kpr files to htdocs?
 
-- create piuparts-master and piuparts-slave packages.
-
-
-for 0.46:
-
-- mv piatti.git piuparts.git/doc/examples  and include it into a new
-  binary package.  when doing so keep in mind the two tango icons
-  and credit those in debian/copyright.
+- piuparts-slave should do the rescheduling of old logs and do so with
+  lowest precedence, that is, only when there are no new logs to be tested.
 
 - write reportbug(-like) wrapper for mass bug filing (start
   simple, make it more sophisticated later). 
@@ -50,6 +50,8 @@ for 0.46:
   http://andialbrecht.wordpress.com/2009/03/17/creating-a-man-page-with-distutils-and-optparse/
 
 - publish FAI classes to setup piuparts.$fqdn automatically.
+
+- remove the git repository piatti.git.
 
 
 for 0.47:
