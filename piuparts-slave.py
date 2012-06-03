@@ -274,7 +274,7 @@ class Section:
         self._slave.set_master_host(self._global_config["master-host"])
         self._slave.set_master_user(self._global_config["master-user"])
         self._slave.set_master_directory(self._global_config["master-directory"])
-        self._slave.set_master_command(self._config["master-command"])
+        self._slave.set_master_command(self._global_config["master-command"] + " " + self._config.section)
         self._log_file=self._config["log-file"]
 
 

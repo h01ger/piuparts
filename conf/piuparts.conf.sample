@@ -16,6 +16,7 @@ master-host = localhost
 master-user = piupartsm
 master-directory = /var/lib/piuparts/master
 output-directory = /var/lib/piuparts/htdocs
+master-command = python /usr/share/piuparts/piuparts-master
 idle-sleep = 300
 max-tgz-age = 604800
 reschedule-old-days = 90
@@ -27,7 +28,6 @@ reschedule-fail-count = 25
 [sid]
 precedence = 1
 description = "Debian sid / main"
-master-command = python /usr/share/piuparts/piuparts-master sid
 # mirror = http://your.mirror.here/debian
 # packages-url = http://your.mirror.here/debian/dists/sid/main/binary-i386/Packages.bz2
 # sources-url = http://your.mirror.here/debian/dists/sid/main/source/Sources.bz2
@@ -43,6 +43,5 @@ log-file = sid-master.log
 
 ## another example:
 ## [s-p-u-i386]
-## master-command = python /usr/share/piuparts/piuparts-master.py s-p-u-i386
 ## packages-url = http://ftp.debian.org/debian/dists/stable-proposed-updates/binary-i386/Packages.bz2
 
