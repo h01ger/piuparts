@@ -27,7 +27,6 @@ reschedule-fail-count = 25
 [sid]
 precedence = 1
 description = Debian sid / main: package installation, removal and purge test.
-master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master sid
 packages-url = http://piatti.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
 sources-url = http://piatti.debian.org/debian/dists/sid/main/source/Sources.bz2
 mirror = http://piatti.debian.org/debian/
@@ -43,7 +42,6 @@ log-file = sid.log
 [testing2sid]
 precedence = 3
 description = Debian main: package installation in sid and dist-upgrade to testing, then removal and purge test.
-master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master testing2sid
 packages-url = http://piatti.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
 sources-url = http://piatti.debian.org/debian/dists/sid/main/source/Sources.bz2
 mirror = http://piatti.debian.org/debian/
@@ -58,7 +56,6 @@ log-file = testing2sid.log
 [wheezy]
 precedence = 2
 description = Debian wheezy / main: package installation, removal and purge test.
-master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master wheezy
 packages-url = http://piatti.debian.org/debian/dists/wheezy/main/binary-amd64/Packages.bz2
 sources-url = http://piatti.debian.org/debian/dists/wheezy/main/source/Sources.bz2
 mirror = http://piatti.debian.org/debian/
@@ -72,7 +69,6 @@ log-file = wheezy.log
 [squeeze2wheezy]
 precedence = 2
 description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
-master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master squeeze2wheezy
 packages-url = http://piatti.debian.org/debian/dists/wheezy/main/binary-amd64/Packages.bz2
 sources-url = http://piatti.debian.org/debian/dists/wheezy/main/source/Sources.bz2
 mirror = http://piatti.debian.org/debian/
@@ -86,7 +82,6 @@ log-file = squeeze2wheezy.log
 [squeeze]
 precedence = 4
 description = Debian squeeze / main: package installation, removal and purge test.
-master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master squeeze
 packages-url = http://piatti.debian.org/debian/dists/squeeze/main/binary-amd64/Packages.bz2
 sources-url = http://piatti.debian.org/debian/dists/squeeze/main/source/Sources.bz2
 mirror = http://piatti.debian.org/debian/
@@ -103,7 +98,6 @@ log-file = squeeze.log
 max-reserved = 0
 precedence = 99
 description = Debian main: package installation in lenny and dist-upgrade to squeeze, then removal and purge test.
-master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master lenny2squeeze
 packages-url = http://piatti.debian.org/debian/dists/squeeze/main/binary-amd64/Packages.bz2
 sources-url = http://piatti.debian.org/debian/dists/squeeze/main/source/Sources.bz2
 mirror = http://piatti.debian.org/debian/
