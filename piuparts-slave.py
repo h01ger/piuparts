@@ -245,7 +245,8 @@ class Slave:
 
 class Section:
 
-    def __init__(self, section):
+    def __init__(self, section, global_config):
+        self._global_config = global_config
         self._config = Config(section=section)
         self._config.read(CONFIG_FILE)
         self._sleep_until = 0
@@ -253,7 +254,7 @@ class Section:
         if not os.path.exists(self._slave_directory):
             os.mkdir(self._slave_directory)
 
-    def setup(self, master_host, master_user, master_directory, base_tgz_ctrl):
+    def setup(self):
         if self._config["debug"] in ["yes", "true"]:
             self._logger = logging.getLogger()
             self._logger.setLevel(logging.DEBUG)
@@ -264,7 +265,8 @@ class Section:
         if self._config["chroot-tgz"] and not self._config["distro"]:
           logging.info("The option --chroot-tgz needs --distro.")
 
-        self._base_tgz_ctrl = base_tgz_ctrl
+        self._base_tgz_ctrl = [int(global_config["max-tgz-age"]),
+                               int(global_config["min-tgz-retry-delay"])]
         self._check_tarball()
 
         for rdir in ["new", "pass", "fail"]:
@@ -273,9 +275,9 @@ class Section:
                 os.mkdir(rdir)
 
         self._slave = Slave()
-        self._slave.set_master_host(master_host)
-        self._slave.set_master_user(master_user)
-        self._slave.set_master_directory(master_directory)
+        self._slave.set_master_host(self._global_config["master-host"])
+        self._slave.set_master_user(self._global_config["master-user"])
+        self._slave.set_master_directory(self._global_config["master-directory"])
         self._slave.set_master_command(self._config["master-command"])
         self._log_file=self._config["log-file"]
 
@@ -626,13 +628,8 @@ def main():
 
     sections = []
     for section_name in section_names:
-        section = Section(section_name)
-        section.setup(
-               master_host=global_config["master-host"],
-               master_user=global_config["master-user"],
-               master_directory=global_config["master-directory"],
-               base_tgz_ctrl=[int(global_config["max-tgz-age"]),
-                              int(global_config["min-tgz-retry-delay"])])
+        section = Section(section_name, global_config)
+        section.setup()
         sections.append(section)
 
     while True:
