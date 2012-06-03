@@ -51,6 +51,7 @@ piuparts (0.45) UNRELEASED; urgency=low
       + /var/lib/nagios/                        (Closes: #668756)
       + /var/lib/openvswitch/(pki/.*)?
       + /var/spool/powerdns/                    (Closes: #531134, #531135)
+    - Implement a timeout for commands being run in the chroot.
   * piuparts.conf:
     - Make master-command a [global] instead of a [section] setting.
       The section name will be given as an argument to this command.

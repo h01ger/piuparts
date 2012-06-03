@@ -49,7 +49,7 @@ import subprocess
 import unittest
 import urllib
 import uuid
-from signal import signal, SIGTERM, SIGKILL
+from signal import alarm, signal, SIGALRM, SIGTERM, SIGKILL
 
 try:
     from debian import deb822
@@ -384,7 +384,14 @@ def indent_string(str):
     return "\n".join(["  " + line for line in str.split("\n")])
 
 
-def run(command, ignore_errors=False):
+class Alarm(Exception):
+    pass
+
+def alarm_handler(signum, frame):
+    raise Alarm
+
+
+def run(command, ignore_errors=False, timeout=0):
     """Run an external command and die with error message if it fails."""
 
     def kill_subprocess(p, reason):
@@ -411,6 +418,9 @@ def run(command, ignore_errors=False):
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     output = ""
     excessive_output = False
+    if timeout > 0:
+        signal(SIGALRM, alarm_handler)
+        alarm(timeout)
     try:
         while p.poll() is None:
             """Read 64 KB chunks, but depending on the output buffering behavior
@@ -419,12 +429,14 @@ def run(command, ignore_errors=False):
             output += p.stdout.read(1 << 16)
             if (len(output) > settings.max_command_output_size):
                 excessive_output = True
+                alarm(0)
                 kill_subprocess(p, "excessive output")
                 break
         if not excessive_output:
             output += p.stdout.read(settings.max_command_output_size)
-    except None:
-        pass
+        alarm(0)
+    except Alarm:
+        kill_subprocess(p, "excessive runtime")
     devnull.close()
 
     if output:
