@@ -62,7 +62,7 @@ for SECTION in $SECTIONS ; do
 		find pass fail affected -name "*.log" -mtime +$_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_COUNT > $LOGS
 		find fail affected -name "*.log" -mtime +$_FAIL_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_FAIL_COUNT >> $LOGS
 		if [ -s $LOGS ]; then
-			echo $SECTION
+			echo $SECTION: $(wc -l $LOGS | awk '{ print $1 }')
 			ls -dtl $(cat $LOGS)
 			sort -u $LOGS | xargs rm 2>/dev/null
 			echo
