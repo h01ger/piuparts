@@ -99,6 +99,8 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Don't report further bugs/versions if we found a match.
     - Classify logs with bugs filed into /bugged/ or /affected/.
     - Write .bug files with links to the BTS.
+  * detect_archive_issues: Only consider logs older than one day for marking
+    as "untestable" to allow piuparts-analyze to handle the log first.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source

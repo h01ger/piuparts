@@ -50,8 +50,9 @@ get_config_value DAYS global reschedule-untestable-days 7
 LOGS=`mktemp`
 URLS=`mktemp`
 for SECTION in $SECTIONS ; do 
-	mkdir -p $MASTER/$SECTION/untestable/
-	rgrep -l -E "E: Broken packages|E: Unable to correct problems, you have held broken packages|E: Error, pkgProblemResolver::Resolve generated breaks" $MASTER/$SECTION/fail 2>/dev/null > $LOGS
+	mkdir -p $MASTER/$SECTION/fail/ $MASTER/$SECTION/untestable/
+	find $MASTER/$SECTION/fail -name '*.log' -mtime +1 | xargs -r \
+		grep -l -E "E: Broken packages|E: Unable to correct problems, you have held broken packages|E: Error, pkgProblemResolver::Resolve generated breaks" 2>/dev/null > $LOGS
 	if [ -s $LOGS ]; then
 		for package_log in $(cat $LOGS)
 		do
