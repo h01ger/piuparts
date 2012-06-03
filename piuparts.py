@@ -386,6 +386,19 @@ def indent_string(str):
 
 def run(command, ignore_errors=False):
     """Run an external command and die with error message if it fails."""
+
+    def kill_subprocess(p, reason):
+        logging.error("Terminating command due to %s" % reason)
+        p.terminate()
+        for i in range(10):
+            time.sleep(0.5)
+            if p.poll() is not None:
+                break
+        else:
+            logging.error("Killing command due to %s" % reason)
+            p.kill()
+        p.wait()
+
     assert type(command) == type([])
     command = [x for x in command if x] # Delete any empty argument
     logging.debug("Starting command: %s" % command)
@@ -405,16 +418,7 @@ def run(command, ignore_errors=False):
         output += p.stdout.read(1 << 16)
         if (len(output) > settings.max_command_output_size):
             excessive_output = True
-            logging.error("Terminating command due to excessive output")
-            p.terminate()
-            for i in range(10):
-                time.sleep(0.5)
-                if p.poll() is not None:
-                    break
-            else:
-                logging.error("Killing command due to excessive output")
-                p.kill()
-            p.wait()
+            kill_subprocess(p, "excessive output")
             break
     if not excessive_output:
         output += p.stdout.read(settings.max_command_output_size)
