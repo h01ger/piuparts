@@ -133,6 +133,7 @@ class Settings:
         self.tmpdir = None
         self.keep_tmpdir = False
         self.max_command_output_size = 3 * 1024 * 1024  # 3 MB (daptup on dist-upgrade)
+        self.max_command_runtime = 30 * 60  # 30 minutes (texlive-full on dist-upgrade)
         self.single_changes_list = False
         self.args_are_package_files = True
         # distro setup
@@ -844,7 +845,7 @@ class Chroot:
                                                  'usr/bin/eatmydata')):
             prefix.append('eatmydata')
         return run(["chroot", self.name] + prefix + command,
-                   ignore_errors=ignore_errors)
+                   ignore_errors=ignore_errors, timeout=settings.max_command_runtime)
 
     def create_apt_sources(self, distro):
         """Create an /etc/apt/sources.list with a given distro."""
