@@ -51,9 +51,11 @@ piuparts (0.45) UNRELEASED; urgency=low
       + /var/lib/nagios/                        (Closes: #668756)
       + /var/lib/openvswitch/(pki/.*)?
       + /var/spool/powerdns/                    (Closes: #531134, #531135)
+  * piuparts.conf:
+    - Removed deprecated keys: known_circular_depends.
   * master/db/report: Add a new category /affected/ for failed logs where the
     bug is in a dependency, but only exposed by the package being tested.
-    - In the BTS these are reported as
+    - In the BTS these are reported as          (Closes: #657740)
         Package: buggy-package
         Version: buggy-version
         Affects: package-under-test
@@ -75,10 +77,13 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Stop using static known_circular_depends.
     - Compute dependency cycles and test packages on such cycles if all
       non-circular dependencies are satisfied.
+  * piuparts-master.py:
+    - Remove known_circular_depends handling.
   * piuparts-slave.py:
     - Randomize waiting time (between 60 and 180 seconds) if master is busy.
     - Sleep until the next section can be tried, but at least 1 minute.
   * piuparts-report.py:
+    - Remove known_circular_depends handling.
     - Exclude obsolete states from generated report.
     - Establish packagesdb working directory in Section.
     - Handle logs in /affected/ directories.
@@ -88,8 +93,6 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Don't report further bugs/versions if we found a match.
     - Classify logs with bugs filed into /bugged/ or /affected/.
     - Write .bug files with links to the BTS.
-  * Remove known_circular_depends from piuparts.conf handling.
-  * Remove static list known_circular_depends from piuparts.conf.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source
