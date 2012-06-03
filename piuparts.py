@@ -430,6 +430,7 @@ def run(command, ignore_errors=False, timeout=0):
             output += p.stdout.read(1 << 16)
             if (len(output) > settings.max_command_output_size):
                 excessive_output = True
+                ignore_errors = False
                 alarm(0)
                 kill_subprocess(p, "excessive output")
                 output += "\n\n***** Command was terminated after exceeding output limit (%.2f MB) *****\n" \
@@ -439,6 +440,7 @@ def run(command, ignore_errors=False, timeout=0):
             output += p.stdout.read(settings.max_command_output_size)
         alarm(0)
     except Alarm:
+        ignore_errors = False
         kill_subprocess(p, "excessive runtime")
         output += "\n\n***** Command was terminated after exceeding runtime limit (%s s) *****\n" % timeout
     devnull.close()
