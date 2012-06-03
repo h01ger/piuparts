@@ -93,7 +93,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Establish packagesdb working directory in Section.
     - Handle logs in /affected/ directories.
     - detect_well_known_errors: Add bug links if bugs are known.
-    - New known issue: "packages have been kept back".
+    - New known problem: "packages have been kept back".
     - Report rdeps and blocking counts in all error state reports.
   * piuparts-analyze.py:
     - Don't report further bugs/versions if we found a match.

@@ -381,6 +381,7 @@ linktarget_by_template = [
     ("packages_have_been_kept_back_issue.tpl", "but logfile contains 'packages have been kept back'"),
 
     ("dependency_error.tpl", "due to unsatisfied dependencies"),
+    ("packages_have_been_kept_back_error.tpl", "...and logfile also contains 'packages have been kept back'"),
     ("command_not_found_error.tpl", "due to a 'command not found' error"),
     ("files_in_usr_local_error.tpl", "due to files in /usr/local"),
     ("overwrite_other_packages_files_error.tpl", "due to overwriting other packages files"),
