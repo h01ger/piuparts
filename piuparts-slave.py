@@ -252,15 +252,11 @@ class Section:
         self._sleep_until = 0
         self._slave_directory = os.path.abspath(self._config["slave-directory"])
         if not os.path.exists(self._slave_directory):
-            os.mkdir(self._slave_directory)
+            os.makedirs(self._slave_directory)
 
-    def setup(self):
         if self._config["debug"] in ["yes", "true"]:
             self._logger = logging.getLogger()
             self._logger.setLevel(logging.DEBUG)
-
-        oldcwd = os.getcwd()
-        os.chdir(self._slave_directory)
 
         if self._config["chroot-tgz"] and not self._config["distro"]:
           logging.info("The option --chroot-tgz needs --distro.")
@@ -269,7 +265,7 @@ class Section:
                                int(global_config["min-tgz-retry-delay"])]
         self._check_tarball()
 
-        for rdir in ["new", "pass", "fail"]:
+        for rdir in ["new", "pass", "fail", "untestable", "reserved"]:
             rdir = os.path.join(self._slave_directory, rdir)
             if not os.path.exists(rdir):
                 os.mkdir(rdir)
@@ -281,13 +277,11 @@ class Section:
         self._slave.set_master_command(self._config["master-command"])
         self._log_file=self._config["log-file"]
 
-        for rdir in ["pass", "fail", "untestable", "reserved"]:
-            rdir = os.path.join(self._slave_directory, rdir)
-            if not os.path.exists(rdir):
-                os.makedirs(rdir)
-        os.chdir(oldcwd)
 
     def _check_tarball(self):
+        oldcwd = os.getcwd()
+        os.chdir(self._slave_directory)
+
         tarball = self._config["chroot-tgz"]
         if tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
@@ -297,6 +291,8 @@ class Section:
         if self._config["upgrade-test-distros"] and tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
                       self._base_tgz_ctrl, self._config["upgrade-test-distros"].split()[0])
+
+        os.chdir(oldcwd)
 
     def precedence(self):
         return int(self._config["precedence"])
@@ -615,9 +611,10 @@ def create_file(filename, contents):
 def main():
     setup_logging(logging.INFO, None)
 
-    # For supporting multiple architectures and suites, we take a command-line
-    # argument referring to a section in configuration file.  
-    # If no argument is given, the "global" section is assumed.
+    # For supporting multiple architectures and suites, we take command-line
+    # argument(s) referring to section(s) in the configuration file.
+    # If no argument is given, the "sections" entry from the "global" section
+    # is used.
     section_names = []
     global_config = Config(section="global")
     global_config.read(CONFIG_FILE)
@@ -626,11 +623,8 @@ def main():
     else:
         section_names = global_config["sections"].split()
 
-    sections = []
-    for section_name in section_names:
-        section = Section(section_name, global_config)
-        section.setup()
-        sections.append(section)
+    sections = [Section(section_name, global_config)
+                for section_name in section_names]
 
     while True:
         test_count = 0
