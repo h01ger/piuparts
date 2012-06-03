@@ -79,6 +79,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Stop using static known_circular_depends.
     - Compute dependency cycles and test packages on such cycles if all
       non-circular dependencies are satisfied.
+    - Consider any combination of two error states for the blocking count.
   * piuparts-master.py:
     - Remove known_circular_depends handling.
   * piuparts-slave.py:
