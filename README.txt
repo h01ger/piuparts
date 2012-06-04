@@ -416,6 +416,8 @@ used for all further sections.
 
 * "master-directory" is the directory where the master keeps its files. Can be relative to the master's home directory.
 
+* "master-command" is the command to run on master-host to start the master. When the master has been installed from the Debian package, the command is 'python /usr/share/piuparts/piuparts-master'.  The section name will be given as a command line argument to this command.
+
 * "idle-sleep" is the length of time the slave should wait before querying the master again if the master didn't have any new packages to test. In seconds, so a value of 300 would mean five minutes, and that seems to be a good value when there are fairly few slaves per master. The default is 300 seconds.
 
 * "max-tgz-age" is used to specify the maximum age (in seconds) after which basesystem tarballs will be recreated. If recreation fails, the old tarball will be used again. The default is 2592000 seconds, which is 30 days.
@@ -426,8 +428,6 @@ used for all further sections.
 
 The section specific settings will be reloaded each time a section
 is being run.
-
-* "master-command" is the command to run on master-host to start the master. When the master has been installed from the Debian package, the command is 'python /usr/share/piuparts/piuparts-master'.  If you want to use a section in the master configuration file other than "master", append the section name to this command.  For example, if the master configuration file has a "sid-ia64" section that you want to use, the command should be 'python /usr/share/piuparts/piuparts-master sid-ia64'.
 
 * "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "/dev/null", that is, log messages are not put in a file.
 

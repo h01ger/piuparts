@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2012-06-04</b> Wheezy freeze is approaching and lots of uploads happening. Old piatti hardware has problems keeping up with the pace of uploads, number of packages and distros being tested! :-) Piatti is about six years old...
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2012-03-31</b> Disable lenny2squeeze tests, as lenny has been archived.
      </td>
     </tr>
@@ -310,6 +315,31 @@
     <tr class="normalrow">
      <td class="contentcell2">
       <b>2009-02-28</b>: Start maintaining piatti.debian.org via the piuparts svn repository on alioth.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2007-02-24</b>: Holger <a href="http://lists.alioth.debian.org/pipermail/piuparts-devel/2007-February/000020.html" target="_blank">puts piuparts source in svn</a>.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2006-09-29</b>: Lars <a href="http://lists.debian.org/debian-devel/2006/09/msg01068.html" target="_blank">seeks help maintaining piuparts</a>.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2006-10-02</b><a href="http://bugs.debian.org/390754" target="_blank">#390754 O: piuparts -- package installation, upgrading and removal testing tool"</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2006-10-02</b><a href="http://bugs.debian.org/317033" target="_blank">#317033 ITP: piuparts -- .deb package installation, upgrading, and removal testing tool</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2005-06-19</b>: Lars writes <a href="http://liw.iki.fi/liw/log/2005-Debian.html#20050619b" target="_blank">the first blog post about piuparts</a> (version 0.4).
      </td>
     </tr>
     </table>

@@ -51,9 +51,13 @@ piuparts (0.45) UNRELEASED; urgency=low
       + /var/lib/nagios/                        (Closes: #668756)
       + /var/lib/openvswitch/(pki/.*)?
       + /var/spool/powerdns/                    (Closes: #531134, #531135)
+  * piuparts.conf:
+    - Make master-command a [global] instead of a [section] setting.
+      The section name will be given as an argument to this command.
+    - Removed deprecated keys: known_circular_depends.
   * master/db/report: Add a new category /affected/ for failed logs where the
     bug is in a dependency, but only exposed by the package being tested.
-    - In the BTS these are reported as
+    - In the BTS these are reported as          (Closes: #657740)
         Package: buggy-package
         Version: buggy-version
         Affects: package-under-test
@@ -75,18 +79,26 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Stop using static known_circular_depends.
     - Compute dependency cycles and test packages on such cycles if all
       non-circular dependencies are satisfied.
+    - Consider any combination of two error states for the blocking count.
+  * piuparts-master.py:
+    - Remove known_circular_depends handling.
+  * piuparts-slave.py:
+    - Randomize waiting time (between 60 and 180 seconds) if master is busy.
+    - Sleep until the next section can be tried, but at least 1 minute.
+    - Simplify and merge Section.setup() into Section.__init__().
+    - Generate master command: use global setting and append section.
   * piuparts-report.py:
+    - Remove known_circular_depends handling.
     - Exclude obsolete states from generated report.
     - Establish packagesdb working directory in Section.
     - Handle logs in /affected/ directories.
     - detect_well_known_errors: Add bug links if bugs are known.
     - New known issue: "packages have been kept back".
+    - Report rdeps and blocking counts in all error state reports.
   * piuparts-analyze.py:
     - Don't report further bugs/versions if we found a match.
     - Classify logs with bugs filed into /bugged/ or /affected/.
     - Write .bug files with links to the BTS.
-  * Remove known_circular_depends from piuparts.conf handling.
-  * Remove static list known_circular_depends from piuparts.conf.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source

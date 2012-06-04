@@ -497,6 +497,9 @@ class PackagesDB:
     def get_active_states(self):
         return [x for x in self._states if not x in self._obsolete_states]
 
+    def get_error_states(self):
+        return [x for x in self._propagate_error_state.keys() if x in self._states]
+
     def get_pkg_names_in_state(self, state):
         self._compute_package_states()
         return set(self._in_state[state])
@@ -606,6 +609,7 @@ class PackagesDB:
 
         self._find_all_packages()       # populate _packages
         self._compute_package_states()  # populate _package_state
+        error_states = self.get_error_states()
 
         # create a reverse dependency dictionary.
         # entries consist of a one-level list of reverse dependency package names,
@@ -634,24 +638,16 @@ class PackagesDB:
 
             return rrdep_dict
 
-
-        # define which state relationships between and package and reverse dep
-        # constitute a block
-        block_states = [
-            ("dependency-failed-testing", "failed-testing"),
-            ("dependency-cannot-be-tested", "cannot-be-tested"),
-            ]
-
         # calculate all of the rrdeps and block counts
         for pkg_name in self._packages.keys():
             rrdep_list = recurse_rdeps( pkg_name, rdeps, {} ).keys()
-
             self._packages[pkg_name].set_rrdep_count( len(rrdep_list) )
 
-            block_list = [x for x in rrdep_list
-                     if (self._package_state[x], self._package_state[pkg_name])
-                        in block_states]
-
+            if self._package_state[pkg_name] in error_states:
+                block_list = [x for x in rrdep_list
+                              if self._package_state[x] in error_states]
+            else:
+                block_list = []
             self._packages[pkg_name].set_block_count( len(block_list) )
 
 

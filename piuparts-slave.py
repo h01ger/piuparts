@@ -31,6 +31,7 @@ import logging
 from signal import alarm, signal, SIGALRM, SIGKILL
 import subprocess
 import fcntl
+import random
 import ConfigParser
 
 import piupartslib.conf
@@ -244,47 +245,43 @@ class Slave:
 
 class Section:
 
-    def __init__(self, section):
+    def __init__(self, section, global_config):
+        self._global_config = global_config
         self._config = Config(section=section)
         self._config.read(CONFIG_FILE)
         self._sleep_until = 0
         self._slave_directory = os.path.abspath(self._config["slave-directory"])
         if not os.path.exists(self._slave_directory):
-            os.mkdir(self._slave_directory)
+            os.makedirs(self._slave_directory)
 
-    def setup(self, master_host, master_user, master_directory, base_tgz_ctrl):
         if self._config["debug"] in ["yes", "true"]:
             self._logger = logging.getLogger()
             self._logger.setLevel(logging.DEBUG)
 
-        oldcwd = os.getcwd()
-        os.chdir(self._slave_directory)
-
         if self._config["chroot-tgz"] and not self._config["distro"]:
           logging.info("The option --chroot-tgz needs --distro.")
 
-        self._base_tgz_ctrl = base_tgz_ctrl
+        self._base_tgz_ctrl = [int(global_config["max-tgz-age"]),
+                               int(global_config["min-tgz-retry-delay"])]
         self._check_tarball()
 
-        for rdir in ["new", "pass", "fail"]:
+        for rdir in ["new", "pass", "fail", "untestable", "reserved"]:
             rdir = os.path.join(self._slave_directory, rdir)
             if not os.path.exists(rdir):
                 os.mkdir(rdir)
 
         self._slave = Slave()
-        self._slave.set_master_host(master_host)
-        self._slave.set_master_user(master_user)
-        self._slave.set_master_directory(master_directory)
-        self._slave.set_master_command(self._config["master-command"])
+        self._slave.set_master_host(self._global_config["master-host"])
+        self._slave.set_master_user(self._global_config["master-user"])
+        self._slave.set_master_directory(self._global_config["master-directory"])
+        self._slave.set_master_command(self._global_config["master-command"] + " " + self._config.section)
         self._log_file=self._config["log-file"]
 
-        for rdir in ["pass", "fail", "untestable", "reserved"]:
-            rdir = os.path.join(self._slave_directory, rdir)
-            if not os.path.exists(rdir):
-                os.makedirs(rdir)
-        os.chdir(oldcwd)
 
     def _check_tarball(self):
+        oldcwd = os.getcwd()
+        os.chdir(self._slave_directory)
+
         tarball = self._config["chroot-tgz"]
         if tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
@@ -294,6 +291,8 @@ class Section:
         if self._config["upgrade-test-distros"] and tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
                       self._base_tgz_ctrl, self._config["upgrade-test-distros"].split()[0])
+
+        os.chdir(oldcwd)
 
     def precedence(self):
         return int(self._config["precedence"])
@@ -346,7 +345,7 @@ class Section:
             raise
         except MasterIsBusy:
             logging.error("master is busy")
-            self._sleep_until = time.time() + 300
+            self._sleep_until = time.time() + random.randrange(60, 180)
             return 0
         except:
             logging.error("connection to master failed")
@@ -612,9 +611,10 @@ def create_file(filename, contents):
 def main():
     setup_logging(logging.INFO, None)
 
-    # For supporting multiple architectures and suites, we take a command-line
-    # argument referring to a section in configuration file.  
-    # If no argument is given, the "global" section is assumed.
+    # For supporting multiple architectures and suites, we take command-line
+    # argument(s) referring to section(s) in the configuration file.
+    # If no argument is given, the "sections" entry from the "global" section
+    # is used.
     section_names = []
     global_config = Config(section="global")
     global_config.read(CONFIG_FILE)
@@ -623,16 +623,8 @@ def main():
     else:
         section_names = global_config["sections"].split()
 
-    sections = []
-    for section_name in section_names:
-        section = Section(section_name)
-        section.setup(
-               master_host=global_config["master-host"],
-               master_user=global_config["master-user"],
-               master_directory=global_config["master-directory"],
-               base_tgz_ctrl=[int(global_config["max-tgz-age"]),
-                              int(global_config["min-tgz-retry-delay"])])
-        sections.append(section)
+    sections = [Section(section_name, global_config)
+                for section_name in section_names]
 
     while True:
         test_count = 0
@@ -646,9 +638,12 @@ def main():
                     precedence = section.precedence()
 
         if test_count == 0:
-            sleep_time = int(global_config["idle-sleep"])
-            logging.info("Nothing to do, sleeping for %d seconds." % sleep_time)
-            time.sleep( sleep_time )
+            now = time.time()
+            sleep_until = min([now + int(global_config["idle-sleep"])] + [section._sleep_until for section in sections])
+            if (sleep_until > now):
+                to_sleep = max(60, sleep_until - now)
+                logging.info("Nothing to do, sleeping for %d seconds." % to_sleep)
+                time.sleep(to_sleep)
 
 
 if __name__ == "__main__":
