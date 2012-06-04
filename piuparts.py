@@ -1225,6 +1225,11 @@ class Chroot:
         if count > 0:
             logging.error("FAIL: Processes are running inside chroot:\n%s" % 
                           indent_string(output))
+            self.terminate_running_processes()
+            panic()
+
+
+    def terminate_running_processes(self):
             for signo in [ 15, 9 ]:
                 p = subprocess.Popen(["lsof", "-t", "+D", self.name],
                                stdin=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -1240,7 +1245,6 @@ class Chroot:
                                     os.kill(pid, SIGKILL)
                             except OSError:
                                 pass
-            panic()
 
 
     def mount_selinux(self):
