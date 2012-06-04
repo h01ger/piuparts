@@ -411,17 +411,20 @@ def run(command, ignore_errors=False):
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     output = ""
     excessive_output = False
-    while p.poll() is None:
-        """Read 64 KB chunks, but depending on the output buffering behavior
-        of the command we may get less even if more output is coming later.
-        Abort after reading 2 MB."""
-        output += p.stdout.read(1 << 16)
-        if (len(output) > settings.max_command_output_size):
-            excessive_output = True
-            kill_subprocess(p, "excessive output")
-            break
-    if not excessive_output:
-        output += p.stdout.read(settings.max_command_output_size)
+    try:
+        while p.poll() is None:
+            """Read 64 KB chunks, but depending on the output buffering behavior
+            of the command we may get less even if more output is coming later.
+            Abort after reading max_command_output_size bytes."""
+            output += p.stdout.read(1 << 16)
+            if (len(output) > settings.max_command_output_size):
+                excessive_output = True
+                kill_subprocess(p, "excessive output")
+                break
+        if not excessive_output:
+            output += p.stdout.read(settings.max_command_output_size)
+    except None:
+        pass
     devnull.close()
 
     if output:
