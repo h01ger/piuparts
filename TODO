@@ -6,10 +6,6 @@ higher than wishlist!
 
 for 0.45:
 
-- piuparts-report.py: fix those FIXMEs in main()
-
-- remove the "bugged" directory-status tracking altogether.  also remove "fixed".
-
 - create piuparts-master and piuparts-slave packages.
 
 - mv piatti.git piuparts.git/doc/examples  and include it into a new
@@ -20,6 +16,8 @@ for 0.45:
 
 
 for 0.46:
+
+- piuparts-report.py: fix another FIXME in main()
 
 - sometimes a chroot doesn't get removed on piatti - find out
   why and fix it.

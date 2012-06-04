@@ -1164,13 +1164,10 @@ class Section:
 def main():
     setup_logging(logging.DEBUG, None)
 
-    # For supporting multiple architectures and suites, we take a command-line
-    # argument referring to a section in configuration file.  
-    # If no argument is given, the "global" section is assumed.
     section_names = []
     if len(sys.argv) > 1:
-        section = sys.argv[1]
-        # FIXME: does this work without settings master_directory and output_directory?
+        print 'piuparts-report takes no command line parameters.'
+        sys.exit(1)
     else:
         global_config = Config(section="global")
         global_config.read(CONFIG_FILE)
