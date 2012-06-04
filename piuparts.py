@@ -783,8 +783,9 @@ class Chroot:
     def remove(self):
         """Remove a chroot and all its contents."""
         if not settings.keep_tmpdir and os.path.exists(self.name):
-            self.unmount_proc()
+            self.terminate_running_processes()
             self.unmount_selinux()
+            self.unmount_proc()
             if settings.lvm_volume:
                 logging.debug('Unmounting and removing LVM snapshot %s' % self.lvm_snapshot_name)
                 run(['umount', self.name])
