@@ -1196,14 +1196,6 @@ def main():
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                               }))
 
-        # daily report
-        # FIXME:
-        #generate_daily_report();
-
-        # run-parts FIXME
-        # move the scripts to /usr/share/piuparts/sm-tools (or such)
-        # (what is now started via piupartsm/crontab
-
     else:
         logging.debug("Warning: %s does not exist!?! Creating it for you now." % master_directory)
         os.mkdir(master_directory)
