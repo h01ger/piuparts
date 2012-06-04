@@ -329,12 +329,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2006-10-02</b><a href="http://bugs.debian.org/390754" target="_blank">#390754 O: piuparts -- package installation, upgrading and removal testing tool"</a>
+      <b>2006-10-02</b>: <a href="http://bugs.debian.org/390754" target="_blank">#390754 O: piuparts -- package installation, upgrading and removal testing tool"</a>
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2006-10-02</b><a href="http://bugs.debian.org/317033" target="_blank">#317033 ITP: piuparts -- .deb package installation, upgrading, and removal testing tool</a>
+      <b>2006-10-02</b>: <a href="http://bugs.debian.org/317033" target="_blank">#317033 ITP: piuparts -- .deb package installation, upgrading, and removal testing tool</a>
      </td>
     </tr>
     <tr class="normalrow">
