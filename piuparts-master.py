@@ -91,7 +91,7 @@ class Protocol:
     def _read_long_part(self):
         lines = []
         while True:
-            line = self._readline()
+            line = self._input.readline()
             if not line:
                 raise ProtocolError()
             if line == ".\n":

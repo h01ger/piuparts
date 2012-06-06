@@ -88,6 +88,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Consider any combination of two error states for the blocking count.
   * piuparts-master.py:
     - Remove known_circular_depends handling.
+    - Reduce logfile verboseness: do not include received logs.
   * piuparts-slave.py:
     - Randomize waiting time (between 60 and 180 seconds) if master is busy.
     - Sleep until the next section can be tried, but at least 1 minute.
