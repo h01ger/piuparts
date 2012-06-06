@@ -1231,21 +1231,30 @@ class Chroot:
 
 
     def terminate_running_processes(self):
-            for signo in [ 15, 9 ]:
-                p = subprocess.Popen(["lsof", "-t", "+D", self.name],
-                               stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-                stdout, _ = p.communicate()
-                if stdout:
-                    pidlist = [int(pidstr) for pidstr in stdout.split("\n") if len(pidstr)]
-                    for pid in pidlist:
-                        if pid > 0:
-                            try:
-                                if signo == 15:
-                                    os.kill(pid, SIGTERM)
-                                else:
-                                    os.kill(pid, SIGKILL)
-                            except OSError:
-                                pass
+        """Terminate all processes running in the chroot."""
+        seen = []
+        while True:
+            p = subprocess.Popen(["lsof", "-t", "+D", self.name],
+                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+            stdout, _ = p.communicate()
+            if not stdout:
+                break
+
+            pidlist = reversed([int(pidstr) for pidstr in stdout.split("\n") if len(pidstr) and int(pidstr) > 0])
+            if not pidlist:
+                break
+
+            for pid in pidlist:
+                try:
+                    signo = (SIGTERM, SIGKILL)[pid in seen]
+                    os.kill(pid, signo)
+                    seen.append(pid)
+                    logging.debug("kill -%d %d" % (signo, pid))
+                    time.sleep(0.25)
+                except OSError:
+                    pass
+
+            time.sleep(5)
 
 
     def mount_selinux(self):
