@@ -29,6 +29,9 @@ for 0.46:
 
 - sometimes a chroot doesn't get removed on piatti - find out
   why and fix it.
+- slave_run: cleanup stale proc mountpoints
+  -> there is ~piupartss/bin/slave_cleanup now, maybe it should be executed 
+  at the beginning of slave_run?
 
 - copy/move .kpr files to htdocs?
 
@@ -66,8 +69,6 @@ for 0.47:
 
 
 for 0.48 and later:
-
-- slave_run: cleanup stale proc mountpoints
 
 - mounting /proc and perhaps others (usbfs, sysfs, /dev/pts,
   etc.) in the chroot might be a good idea because some packages
