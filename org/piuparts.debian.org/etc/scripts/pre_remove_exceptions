@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
@@ -22,5 +23,3 @@ esac
 # Allow removal of the kernel running on the host from the chroot.
 UNAME_R="$(uname -r)"
 echo "linux-image-$UNAME_R linux-image-$UNAME_R/prerm/removing-running-kernel-$UNAME_R boolean false" | debconf-set-selections
-
-exit 0

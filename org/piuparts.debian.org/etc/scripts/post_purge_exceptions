@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
@@ -52,5 +53,3 @@ case $PIUPARTS_OBJECTS in
 				apt-get clean
 				;;
 esac
-
-exit 0
