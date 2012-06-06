@@ -9,13 +9,6 @@ log_debug() {
 # deal with exceptions:
 #
 case $PIUPARTS_OBJECTS in 
-	debconf-english)	log_debug
-				# installing debconf-english removed the required
-				# package debconf-i18n and piuparts has no way
-				# to know this.
-				apt-get -y install debconf-i18n
-				apt-get clean
-				;;
 esac
 
 # Allow removal of the kernel running on the host from the chroot.
