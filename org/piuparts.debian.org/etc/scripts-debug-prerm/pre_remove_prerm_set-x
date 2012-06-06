@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+for target in ${PIUPARTS_OBJECTS%%=*}
+do
+	pkg=${target}
+	prerm=/var/lib/dpkg/info/$pkg.prerm
+	if [ -f $prerm ]; then
+		if head -n 1 $prerm | grep -qE '/bin/(ba)?sh' ; then
+			echo "DEBUG PRERM REMOVE: enabling 'set -x' in $pkg.prerm"
+			sed -i '2 i set -x' $prerm
+		else
+			echo "Unsupported script type in $prerm:"
+			head -n 1 $prerm
+		fi
+	fi
+done
