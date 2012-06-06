@@ -148,6 +148,7 @@ class Settings:
         self.savetgz = None
         self.lvm_volume = None
         self.existing_chroot = None
+        self.schroot = None
         self.end_meta = None
         self.save_end_meta = None
         self.skip_minimize = True
@@ -739,7 +740,8 @@ class Chroot:
 
     def create(self, temp_tgz = None):
         """Create a chroot according to user's wishes."""
-        self.create_temp_dir()
+        if not settings.schroot:
+            self.create_temp_dir()
         cid = do_on_panic(self.remove)
 
         if temp_tgz:
@@ -750,13 +752,16 @@ class Chroot:
             self.setup_from_lvm(settings.lvm_volume)
         elif settings.existing_chroot:
             self.setup_from_dir(settings.existing_chroot)
+        elif settings.schroot:
+            self.setup_from_schroot(settings.schroot)
         else:
             self.setup_minimal_chroot()
 
-        self.mount_proc()
-        self.mount_selinux()
+        if not settings.schroot:
+            self.mount_proc()
+            self.mount_selinux()
         self.configure_chroot()
-        if settings.basetgz:
+        if settings.basetgz or settings.schroot:
             self.run(["apt-get", "-yf", "dist-upgrade"])
         self.minimize()
 
@@ -784,16 +789,24 @@ class Chroot:
         """Remove a chroot and all its contents."""
         if not settings.keep_tmpdir and os.path.exists(self.name):
             self.terminate_running_processes()
-            self.unmount_selinux()
-            self.unmount_proc()
+            if not settings.schroot:
+                self.unmount_selinux()
+                self.unmount_proc()
             if settings.lvm_volume:
                 logging.debug('Unmounting and removing LVM snapshot %s' % self.lvm_snapshot_name)
                 run(['umount', self.name])
                 run(['lvremove', '-f', self.lvm_snapshot])
-            shutil.rmtree(self.name)
-            logging.debug("Removed directory tree at %s" % self.name)
+            if settings.schroot:
+                logging.debug("Terminate schroot session '%s'" % self.name)
+                run(['schroot', '--end-session', '--chroot', self.schroot_session])
+            if not settings.schroot:
+                shutil.rmtree(self.name)
+                logging.debug("Removed directory tree at %s" % self.name)
         elif settings.keep_tmpdir:
-            logging.debug("Keeping directory tree at %s" % self.name)   
+            if settings.schroot:
+                logging.debug("Keeping schroot session %s at %s" % (self.schroot_session, self.name))
+            else:
+                logging.debug("Keeping directory tree at %s" % self.name)   
 
     def create_temp_tgz_file(self):
         """Return the path to a file to be used as a temporary tgz file"""
@@ -823,6 +836,13 @@ class Chroot:
             prefix.append('eatmydata')
         run(prefix + ["tar", "-C", self.name, "-zxf", tarball])
 
+    def setup_from_schroot(self, schroot):
+        self.schroot_session = schroot.split(":")[1] + "-" + str(uuid.uuid1()) + "-piuparts"
+        run(['schroot', '--begin-session', '--chroot', schroot , '--session-name', self.schroot_session])
+        ret_code, output = run(['schroot', '--chroot', self.schroot_session, '--location'])
+        self.name = output.strip()
+        logging.info("New schroot session in '%s'" % self.name);
+
     def setup_from_lvm(self, lvm_volume):
         """Create a chroot by creating an LVM snapshot."""
         self.lvm_base = os.path.dirname(lvm_volume)
@@ -848,7 +868,11 @@ class Chroot:
         if settings.eatmydata and os.path.isfile(os.path.join(self.name,
                                                  'usr/bin/eatmydata')):
             prefix.append('eatmydata')
-        return run(["chroot", self.name] + prefix + command,
+        if settings.schroot:
+            return run(["schroot", "--preserve-environment", "--run-session", "--chroot", self.schroot_session, "--directory", "/", "-u", "root", "--"] + prefix + command,
+                   ignore_errors=ignore_errors, timeout=settings.max_command_runtime)
+        else:
+            return run(["chroot", self.name] + prefix + command,
                    ignore_errors=ignore_errors, timeout=settings.max_command_runtime)
 
     def create_apt_sources(self, distro):
@@ -2134,7 +2158,7 @@ def install_and_upgrade_between_distros(package_files, packages):
         # load root_info and selections
         chroot_state = load_meta_data(settings.end_meta)
     else:
-        if not settings.basetgz:
+        if not settings.basetgz and not settings.schroot:
             temp_tgz = chroot.create_temp_tgz_file()
             # FIXME: on panic remove temp_tgz
             chroot.pack_into_tgz(temp_tgz)
@@ -2160,7 +2184,7 @@ def install_and_upgrade_between_distros(package_files, packages):
         logging.info("Notice: package selections and meta data from target distro saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
 
         chroot = get_chroot()
-        if settings.basetgz:
+        if settings.basetgz or settings.schroot:
             chroot.create()
         else:
             chroot.create(temp_tgz)
@@ -2352,6 +2376,10 @@ def parse_command_line():
                       default="1G", help="Use SNAPSHOT-SIZE as snapshot size when creating " +
                       "a new LVM snapshot (default: 1G)")
 
+    parser.add_option("--schroot", metavar="SCHROOT-NAME", action="store",
+                      help="Use schroot session named SCHROOT-NAME for the chroot, instead of building " +
+                           "a new one with debootstrap.")
+
     parser.add_option("-m", "--mirror", action="append", metavar="URL",
                       default=[],
                       help="Which Debian mirror to use.")
@@ -2490,6 +2518,7 @@ def parse_command_line():
     settings.lvm_volume = opts.lvm_volume
     settings.lvm_snapshot_size = opts.lvm_snapshot_size
     settings.existing_chroot = opts.existing_chroot
+    settings.schroot = opts.schroot
     settings.end_meta = opts.end_meta
     settings.save_end_meta = opts.save_end_meta
     settings.skip_minimize = opts.skip_minimize

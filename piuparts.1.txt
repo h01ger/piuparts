@@ -152,6 +152,9 @@ Note that file: addresses works if the directories are made accessible from with
 *--scriptsdir*='DIR'::
   Directory where are placed the custom scripts. For more information about this, read README.txt
 
+*--schroot*='SCHROOT-NAME'::
+  Use schroot session named SCHROOT-NAME for the chroot, instead of building a new one with debootstrap.
+
 *--single-changes-list*::
   When processing changes files, piuparts will process the packages in each individual changes file seperately. This option will set piuparts to scan the packages of all changes files together along with any individual package files that may have been given on the command line.
 

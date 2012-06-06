@@ -118,6 +118,9 @@ piuparts (0.45) UNRELEASED; urgency=low
   * piuparts.py: Remove obsolete functions shellquote, apt_get_knows, and
     append_to_file.
 
+  [ Mehdi Abaakouk ]
+  * piuparts.py: Add support for schroot. (Closes #530733)
+
  -- Holger Levsen <holger@debian.org>  Thu, 17 May 2012 21:08:16 +0200
 
 piuparts (0.44) unstable; urgency=low
