@@ -5,8 +5,6 @@ log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
 }
 
-echo "Debug: running script $0"
-
 #
 # deal with packages depending on exceptions:
 #
