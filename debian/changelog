@@ -119,7 +119,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     append_to_file.
 
   [ Mehdi Abaakouk ]
-  * piuparts.py: Add support for schroot. (Closes #530733)
+  * piuparts.py: Add support for schroot. (Closes: #530733)
 
  -- Holger Levsen <holger@debian.org>  Thu, 17 May 2012 21:08:16 +0200
 

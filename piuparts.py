@@ -806,7 +806,7 @@ class Chroot:
             if settings.schroot:
                 logging.debug("Keeping schroot session %s at %s" % (self.schroot_session, self.name))
             else:
-                logging.debug("Keeping directory tree at %s" % self.name)   
+                logging.debug("Keeping directory tree at %s" % self.name)
 
     def create_temp_tgz_file(self):
         """Return the path to a file to be used as a temporary tgz file"""
