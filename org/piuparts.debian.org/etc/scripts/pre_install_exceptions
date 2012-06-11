@@ -8,7 +8,7 @@ log_debug() {
 #
 # deal with packages depending on exceptions:
 #
-case $PIUPARTS_OBJECTS in
+case ${PIUPARTS_OBJECTS%%=*} in
 	ltsp-client)		log_debug
 				PIUPARTS_OBJECTS=ltsp-client-core
 				;;
@@ -27,7 +27,7 @@ esac
 #
 # deal with exceptions:
 #
-case $PIUPARTS_OBJECTS in 
+case ${PIUPARTS_OBJECTS%%=*} in
 	fai-nfsroot)		log_debug
 				# fai-nfsroot refuses installation unless this file exist
 				touch /.THIS_IS_THE_FAI_NFSROOT
