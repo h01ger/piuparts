@@ -731,6 +731,7 @@ class Chroot:
 
     def __init__(self):
         self.name = None
+        self.bootstrapped = False
 
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
@@ -807,6 +808,9 @@ class Chroot:
                 logging.debug("Keeping schroot session %s at %s" % (self.schroot_session, self.name))
             else:
                 logging.debug("Keeping directory tree at %s" % self.name)
+
+    def was_bootstrapped(self):
+        return self.bootstrapped
 
     def create_temp_tgz_file(self):
         """Return the path to a file to be used as a temporary tgz file"""
@@ -951,6 +955,7 @@ class Chroot:
             options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
         run(prefix + ["debootstrap", "--variant=minbase"] + options +
             [settings.debian_distros[0], self.name, settings.debian_mirrors[0][0]])
+        self.bootstrapped = True
 
     def minimize(self):
         """Minimize a chroot by removing (almost all) unnecessary packages"""
@@ -2158,7 +2163,8 @@ def install_and_upgrade_between_distros(package_files, packages):
         # load root_info and selections
         chroot_state = load_meta_data(settings.end_meta)
     else:
-        if not settings.basetgz and not settings.schroot:
+        temp_tgz = None
+        if chroot.was_bootstrapped():
             temp_tgz = chroot.create_temp_tgz_file()
             # FIXME: on panic remove temp_tgz
             chroot.pack_into_tgz(temp_tgz)
@@ -2184,7 +2190,7 @@ def install_and_upgrade_between_distros(package_files, packages):
         logging.info("Notice: package selections and meta data from target distro saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
 
         chroot = get_chroot()
-        if settings.basetgz or settings.schroot:
+        if temp_tgz is None:
             chroot.create()
         else:
             chroot.create(temp_tgz)
