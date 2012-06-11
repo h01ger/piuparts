@@ -1185,7 +1185,7 @@ class Chroot:
         # Now do a final run to see that everything worked.
         self.run(["dpkg", "--purge", "--pending"])
         self.run(["dpkg", "--remove", "--pending"])
-        self.run(["apt-get", "clean"])
+
 
     def save_meta_data(self):
         """Return the filesystem meta data for all objects in the chroot."""
