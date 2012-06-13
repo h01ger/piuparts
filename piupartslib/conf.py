@@ -67,4 +67,9 @@ class Config(UserDict.UserDict):
                 return distros[-1]
         return None
 
+    def get_area(self):
+        if self["area"] is not None:
+            return self["area"]
+        return "main"
+
 # vi:set et ts=4 sw=4 :
