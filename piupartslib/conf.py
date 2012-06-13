@@ -58,4 +58,13 @@ class Config(UserDict.UserDict):
             return self["mirror"]
         return "http://cdn.debian.net/debian"
 
+    def get_distro(self):
+        if self["distro"] is not None:
+            return self["distro"]
+        if self["upgrade-test-distros"] is not None:
+            distros = self["upgrade-test-distros"].split()
+            if distros:
+                return distros[-1]
+        return None
+
 # vi:set et ts=4 sw=4 :
