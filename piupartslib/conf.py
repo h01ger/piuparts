@@ -23,6 +23,7 @@
 
 import ConfigParser
 import UserDict
+import subprocess
 
 
 class MissingMandatorySetting(Exception):
@@ -71,5 +72,13 @@ class Config(UserDict.UserDict):
         if self["area"] is not None:
             return self["area"]
         return "main"
+
+    def get_arch(self):
+        if not self["arch"]:
+            # Try to figure it out ourselves, using dpkg
+            p = subprocess.Popen(["dpkg", "--print-architecture"],
+                                 stdout=subprocess.PIPE)
+            self["arch"] = p.stdout.read().rstrip()
+        return self["arch"]
 
 # vi:set et ts=4 sw=4 :
