@@ -29,11 +29,13 @@ reschedule-fail-count = 25
 [sid]
 precedence = 1
 description = "Debian sid / main"
-# mirror = http://your.mirror.here/debian
 # packages-url = http://your.mirror.here/debian/dists/sid/main/binary-i386/Packages.bz2
 # sources-url = http://your.mirror.here/debian/dists/sid/main/source/Sources.bz2
 piuparts-cmd = sudo piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /var/tmp
+# mirror = http://cdn.debian.net/debian
 distro = sid
+# area = main
+# arch = amd64
 chroot-tgz = sid.tar.gz
 upgrade-test-distros =
 upgrade-test-chroot-tgz =
@@ -45,4 +47,7 @@ log-file = sid-master.log
 ## another example:
 ## [s-p-u-i386]
 ## packages-url = http://ftp.debian.org/debian/dists/stable-proposed-updates/binary-i386/Packages.bz2
-
+## # mirror = http://cdn.debian.net/debian
+## distro = stable-proposed-updates
+## # area = main
+## arch = i386

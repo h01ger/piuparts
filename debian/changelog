@@ -88,6 +88,8 @@ piuparts (0.45) UNRELEASED; urgency=low
       set in the [global] section.
       The section name will be given as an argument to this command.
     - Make doc-root default to "/".
+    - New per section key: area (set to one of main, contrib, non-free).
+    - New defaults: mirror=http://cdn.debian.net/debian, area=main.
     - Removed deprecated keys: known_circular_depends.
   * master/db/report: Add a new category /affected/ for failed logs where the
     bug is in a dependency, but only exposed by the package being tested.
@@ -99,6 +101,9 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Reschedule /affected/ logs like /fail/ logs.
   * piupartslib/conf.py:
     - Add support for getting default values from a special section.
+    - Add methods to get mirror, distro, area, arch from config file or
+      defaults.
+    - Add methods to compute URLs to Packages and Sources files.
   * piupartslib/packagesdb.py:
     - Do not consider a package as "untestable" if untestable/ contains a
       logfile from an obsolete version of that package.
