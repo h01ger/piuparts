@@ -419,7 +419,7 @@ class Section:
             test_count += 1
             if package_name in packages_file:
                 package = packages_file[package_name]
-                if version == package["Version"] or self._config["upgrade-test-distros"]:
+                if version == package["Version"]:
                     test_package(self._config, package, packages_files)
                 else:
                     create_file(os.path.join("untestable",
@@ -544,7 +544,7 @@ def test_package(config, package, packages_files):
         command.extend(["-d", config["distro"]])
         if config["keep-sources-list"] in ["yes", "true"]:
             command.append("--keep-sources-list")
-        command.extend(["--apt", package["Package"]])
+        command.extend(["--apt", "%s=%s" % (package["Package"], package["Version"])])
 
         output.write("Executing: %s\n" % " ".join(command))
         ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
@@ -558,7 +558,7 @@ def test_package(config, package, packages_files):
         command.extend(["-b", config["upgrade-test-chroot-tgz"]])
         for distro in config["upgrade-test-distros"].split():
             command.extend(["-d", distro])
-        command.extend(["--apt", package["Package"]])
+        command.extend(["--apt", "%s=%s" % (package["Package"], package["Version"])])
 
         output.write("Executing: %s\n" % " ".join(command))
         ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
