@@ -37,6 +37,15 @@ if [ -d piatti ] ; then
 fi
 
 #
+# create $PIUPARTS_PREFIX
+#
+if [ ! -d $PIUPARTS_PREFIX/ ] ; then
+	sudo mkdir -p $PIUPARTS_PREFIX/
+	sudo chown piupartss:piuparts $PIUPARTS_PREFIX/
+	sudo chmod 775 $PIUPARTS_PREFIX/
+fi
+
+#
 # update source
 #
 if [ ! -d $PIUPARTS_PREFIX/src/ ] ; then
@@ -93,11 +102,6 @@ sudo su - piupartsm -c "crontab crontab"
 #
 # update $PIUPARTS_PREFIX
 #
-if [ ! -d $PIUPARTS_PREFIX/ ] ; then
-	sudo mkdir -p $PIUPARTS_PREFIX/
-	sudo chown piupartss:piuparts $PIUPARTS_PREFIX/
-	sudo chmod 775 $PIUPARTS_PREFIX/
-fi
 cd $PIUPARTS_PREFIX/
 pwd
 cp -r $SRCDIR/org/piuparts.debian.org/* .
