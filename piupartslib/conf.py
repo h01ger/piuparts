@@ -53,4 +53,9 @@ class Config(UserDict.UserDict):
             elif key in self._mandatory:
                 raise MissingMandatorySetting(filename, key)
 
+    def get_mirror(self):
+        if self["mirror"] is not None:
+            return self["mirror"]
+        return "http://cdn.debian.net/debian"
+
 # vi:set et ts=4 sw=4 :
