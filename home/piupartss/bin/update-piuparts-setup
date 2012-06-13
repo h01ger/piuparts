@@ -1,4 +1,5 @@
 #!/bin/sh 
+set -e
 
 #
 #  update piuparts setup on piatti.debian.org
@@ -25,7 +26,9 @@ if [ "`id -n -u`" != "piupartss" ] ; then
         exit 1
 fi
 
-set -e
+PIUPARTS_PREFIX=/org/piuparts.debian.org
+PIUPARTS_HTDOCS=$PIUPARTS_PREFIX/htdocs
+PIUPARTS_TEMPDIR=$PIUPARTS_PREFIX/tmp
 
 # please cleanup yourself
 cd 
@@ -36,16 +39,16 @@ fi
 #
 # update source
 #
-if [ ! -d /org/piuparts.debian.org/src/ ] ; then
-        sudo mkdir -p /org/piuparts.debian.org/src/
-	cd /org/piuparts.debian.org/src/
-        sudo chown piupartss:piuparts /org/piuparts.debian.org/src
-        sudo chmod 755 /org/piuparts.debian.org/src
+if [ ! -d $PIUPARTS_PREFIX/src/ ] ; then
+	sudo mkdir -p $PIUPARTS_PREFIX/src/
+	cd $PIUPARTS_PREFIX/src/
+	sudo chown piupartss:piuparts $PIUPARTS_PREFIX/src
+	sudo chmod 755 $PIUPARTS_PREFIX/src
 	git clone git://git.debian.org/git/piuparts/piuparts.git
 	cd piuparts
 	git checkout piatti
 fi
-cd  /org/piuparts.debian.org/src/piuparts
+cd $PIUPARTS_PREFIX/src/piuparts
 pwd
 SRCDIR=$(pwd)
 # git checkout branch if $1 is given
@@ -59,12 +62,12 @@ if [ ! -z "$2" ] ; then
 	git pull $2 $1
 fi
 
-sudo make prefix=/org/piuparts.debian.org docdir=/org/piuparts.debian.org/htdocs/doc/ install install-doc
+sudo make prefix=$PIUPARTS_PREFIX docdir=$PIUPARTS_HTDOCS/doc install install-doc
 
 #
 # create working dir
 #
-sudo mkdir -p /org/piuparts.debian.org/tmp
+sudo mkdir -p $PIUPARTS_TEMPDIR
 
 #
 # update slave home, mostly scripts
@@ -88,21 +91,21 @@ sudo su - piupartsm -c "crontab crontab"
 
 
 #
-# update /org/piuparts.debian.org
+# update $PIUPARTS_PREFIX
 #
-if [ ! -d /org/piuparts.debian.org/ ] ; then
-        sudo mkdir -p /org/piuparts.debian.org/
-	sudo chown piupartss:piuparts /org/piuparts.debian.org/
-	sudo chmod 775 /org/piuparts.debian.org/
+if [ ! -d $PIUPARTS_PREFIX/ ] ; then
+	sudo mkdir -p $PIUPARTS_PREFIX/
+	sudo chown piupartss:piuparts $PIUPARTS_PREFIX/
+	sudo chmod 775 $PIUPARTS_PREFIX/
 fi
-cd /org/piuparts.debian.org/
+cd $PIUPARTS_PREFIX/
 pwd
 cp -r $SRCDIR/org/piuparts.debian.org/* .
 mkdir -p master slave backup
 sudo chown piupartss:piuparts slave
 sudo chown piupartsm:piuparts master htdocs backup
 sudo chmod 775 master slave htdocs
-cd /org/piuparts.debian.org/etc
+cd $PIUPARTS_PREFIX/etc
 # to support multiple host with this setup
 HOSTNAME=`hostname`
 ln -sf piuparts.conf.$HOSTNAME piuparts.conf
