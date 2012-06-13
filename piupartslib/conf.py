@@ -81,4 +81,12 @@ class Config(UserDict.UserDict):
             self["arch"] = p.stdout.read().rstrip()
         return self["arch"]
 
+    def get_packages_url(self):
+        return "%s/dists/%s/%s/binary-%s/Packages.bz2" % \
+                (self.get_mirror(), self.get_distro(), self.get_area(), self.get_arch())
+
+    def get_sources_url(self):
+        return "%s/dists/%s/%s/source/Sources.bz2" % \
+                (self.get_mirror(), self.get_distro(), self.get_area())
+
 # vi:set et ts=4 sw=4 :
