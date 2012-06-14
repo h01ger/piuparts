@@ -425,7 +425,7 @@ class Config(piupartslib.conf.Config):
                 "description": "",
                 "max-reserved": 1,
                 "doc-root": "/piuparts/",
-            }, "")
+            })
 
 
 def setup_logging(log_level, log_file_name):

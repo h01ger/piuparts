@@ -84,7 +84,7 @@ class Config(piupartslib.conf.Config):
                 "keep-sources-list": "no",
                 "arch": None,
                 "precedence": "1",
-            }, "")
+            })
 
 
 class Alarm(Exception):

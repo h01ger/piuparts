@@ -34,7 +34,7 @@ class MissingMandatorySetting(Exception):
 
 class Config(UserDict.UserDict):
 
-    def __init__(self, section, defaults, mandatory):
+    def __init__(self, section, defaults, mandatory=[]):
         UserDict.UserDict.__init__(self)
         self._section = section
         for key, value in defaults.iteritems():

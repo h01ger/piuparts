@@ -54,7 +54,7 @@ class Config(piupartslib.conf.Config):
                 "log-file": None,
                 "packages-url": None,
                 "master-directory": ".",
-            }, "")
+            })
 
 
 class CommandSyntaxError(Exception):
