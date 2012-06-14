@@ -7,14 +7,14 @@
     <tr class="normalrow">
      <td class="contentcell2">
       <em>piuparts</em> is a tool for testing that .deb packages can be installed, upgraded, and removed without problems. The
-      name, a variant of something suggested by Tollef Fog Heen, is short for "<em>p</em>ackage <em>i</em>nstallation, 
-      <em>up</em>grading <em>a</em>nd <em>r</em>emoval <em>t</em>esting <em>s</em>uite". 
+      name, a variant of something suggested by Tollef Fog Heen, is short for "<em>p</em>ackage <em>i</em>nstallation,
+      <em>up</em>grading <em>a</em>nd <em>r</em>emoval <em>t</em>esting <em>s</em>uite".
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
       It does this by  creating a minimal Debian installation in a chroot, and installing,
-      upgrading, and removing packages in that environment, and comparing the state of the directory tree before and after. 
+      upgrading, and removing packages in that environment, and comparing the state of the directory tree before and after.
       piuparts reports any files that have been added, removed, or modified during this process.
      </td>
     </tr>
@@ -25,11 +25,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      To make sure piuparts is run on all packages, piuparts.debian.org was set up as a service running on 
-      <a href="http://db.debian.org/machines.cgi?host=piatti" target="_blank">piatti.debian.org</a>. 
-      This machine was generously donated by <a href="http://hp.com/go/debian/" target="_blank">HP</a> 
-      to run piuparts on the Debian archive and is hosted as 
-      <a href="http://piuparts.cs.helsinki.fi">piuparts.cs.helsinki.fi</a> by the University of Helsinki, at the 
+      To make sure piuparts is run on all packages, piuparts.debian.org was set up as a service running on
+      <a href="http://db.debian.org/machines.cgi?host=piatti" target="_blank">piatti.debian.org</a>.
+      This machine was generously donated by <a href="http://hp.com/go/debian/" target="_blank">HP</a>
+      to run piuparts on the Debian archive and is hosted as
+      <a href="http://piuparts.cs.helsinki.fi">piuparts.cs.helsinki.fi</a> by the University of Helsinki, at the
       <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a>
       in Finland.
       As this is still being polished, see the piuparts wiki page to get an overview about <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development and the piuparts setup on piatti</a>. Better reports, statistics, tools to report bugs as well as testing on other architectures is planned. Join #debian-qa if you want to help.
@@ -57,7 +57,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2012-03-05</b>: temporarily disabled this again until we've sorted out problems with it. 
+      <b>2012-03-05</b>: temporarily disabled this again until we've sorted out problems with it.
       <br>
       <b>2012-02-20</b>: piuparts-analyse now sends commands the BTS: if a bug has not been explicitly marked fixed in the new version, it can rather very savely be assumed it's still present.
      </td>
@@ -154,7 +154,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-11-25</b>: Treat six packages specially: sudo (sensibly refuses removal if no root password is set), apt-listbugs (is called by apt and exists if there are RC buggy packages being upgraded), fai-nfsroot, ltsp-client-core (these two packages modify the installed system heavily and thus will only install if conditions are met), file-rc and upstart (these two replace essential packages and therefore apt needs to be told to do this). 
+      <b>2010-11-25</b>: Treat six packages specially: sudo (sensibly refuses removal if no root password is set), apt-listbugs (is called by apt and exists if there are RC buggy packages being upgraded), fai-nfsroot, ltsp-client-core (these two packages modify the installed system heavily and thus will only install if conditions are met), file-rc and upstart (these two replace essential packages and therefore apt needs to be told to do this).
      </td>
     </tr>
     <tr class="normalrow">
@@ -214,7 +214,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-02-16</b>: The squeeze test has been split into squeeze and lenny2squeeze, where squeeze means package installation in squeeze, removal and purge test, while lenny2squeeze means package installation in lenny, then upgrade to squeeze, then removal and purge test. This allows more issues to be found in squeeze since (potential) brokeness in lenny is not blurring the results in squeeze. 
+      <b>2010-02-16</b>: The squeeze test has been split into squeeze and lenny2squeeze, where squeeze means package installation in squeeze, removal and purge test, while lenny2squeeze means package installation in lenny, then upgrade to squeeze, then removal and purge test. This allows more issues to be found in squeeze since (potential) brokeness in lenny is not blurring the results in squeeze.
      </td>
     </tr>
     <tr class="normalrow">
@@ -239,12 +239,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-12-09</b>: Reschedule testing for 14287 successfully tested packages in sid, those in squeeze will be rescheduled once all testable package in sid have been tested again. This is because piuparts now creates and maintains chroots securily (using gpg signed Release files for both debootstrap and apt-get) and because it warns if broken symlinks are found in a package. 
+      <b>2009-12-09</b>: Reschedule testing for 14287 successfully tested packages in sid, those in squeeze will be rescheduled once all testable package in sid have been tested again. This is because piuparts now creates and maintains chroots securily (using gpg signed Release files for both debootstrap and apt-get) and because it warns if broken symlinks are found in a package.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-12-05</b>: Reschedule testing for ~400 failed packages in sid and ~600 in squeeze, to be followed by a rescheduling of all successful packages. This is because piuparts now warns if broken symlinks are found in a package. 
+      <b>2009-12-05</b>: Reschedule testing for ~400 failed packages in sid and ~600 in squeeze, to be followed by a rescheduling of all successful packages. This is because piuparts now warns if broken symlinks are found in a package.
      </td>
     </tr>
     <tr class="normalrow">
@@ -284,7 +284,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-05-06</b>: Only believe statistics you faked yourself! Up until today piuparts used to include virtual packages (those only exist true the Provides: header) into the calculations of statistics of package states and the total number of packages. Suddenly, sid has 2444 packages less! 
+      <b>2009-05-06</b>: Only believe statistics you faked yourself! Up until today piuparts used to include virtual packages (those only exist true the Provides: header) into the calculations of statistics of package states and the total number of packages. Suddenly, sid has 2444 packages less!
      </td>
     </tr>
     <tr class="normalrow">

@@ -1,16 +1,16 @@
 Format: http://dep.debian.net/deps/dep5
-Upstream-Name: piuparts 
-Upstream-Contact: Holger Levsen <holger@debian.org> 
+Upstream-Name: piuparts
+Upstream-Contact: Holger Levsen <holger@debian.org>
 Source: http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
-Copyright: 2005-2008 Lars Wirzenius 
-           2008-2011 Holger Levsen 
+Copyright: 2005-2008 Lars Wirzenius
+           2008-2011 Holger Levsen
 Comment: Original author is also Lars Wirzenius <liw@iki.fi>
  Upstream is bunch of lunatics who don't make release tarballs publicly
  available. The Debian .orig.tar.gz is what would be released, though.
 
 Files: *
-Copyright: 2005-2008 Lars Wirzenius <liw@iki.fi> 
-           2008-2011 Holger Levsen <holger@debian.org> 
+Copyright: 2005-2008 Lars Wirzenius <liw@iki.fi>
+           2008-2011 Holger Levsen <holger@debian.org>
 License: GPL-2+
  This program is free software; you can redistribute it
  and/or modify it under the terms of the GNU General Public

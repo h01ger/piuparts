@@ -2,17 +2,17 @@
 
 # Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2011 Andreas Beckmann <debian@abeckmann.de>
-# 
+#
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 2 of the License, or (at your
 # option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 # Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
@@ -147,7 +147,7 @@ do
 		# source files to get COMMAND, HELPTEXT and ISSUE
 		. $PROBLEMDIR/$problem
 		grep " $problem" $ALLKPR | cut -d' ' -f1 | sort -u > $LOGS
-		if [ -s $LOGS ] ; then 
+		if [ -s $LOGS ] ; then
 			OUTPUT=$HTDOCS/$SECTION/${problem%.conf}.tpl
 			echo '<table class="righttable"><tr class="titlerow"><td class="titlecell">' > $OUTPUT
 			echo "$HEADER in $SECTION" >> $OUTPUT
@@ -164,9 +164,9 @@ do
 				PACKAGE=${PACKAGE%%_*}
 				grep "/${PACKAGE}_" $LIST_ALL > $LIST_PKG
 				LATEST=$(tail -n 1 $LIST_PKG | cut -d "/" -f1)
-				if [ "${problem%_error.conf}_error.conf" = "$problem" ] ; then 
+				if [ "${problem%_error.conf}_error.conf" = "$problem" ] ; then
 					LATESTFAIL=$(grep -v ^pass/ $LIST_PKG | tail -n 1)
-					if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
+					if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then
 						echo "<li><a href=\"$LOG\">$LOG</a>" >> $OUTPUT
 						echo "    (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)" >> $OUTPUT
 						BUG=${LOG%.log}.bug
@@ -178,11 +178,11 @@ do
 				else
 					# this is an issue, not an error
 					LATESTSUCCESS=$(grep ^pass/ $LIST_PKG | tail -n 1)
-					if [ "$LATEST" = "pass" ] && [ "$LATESTSUCCESS" = "$LOG" ] ; then 
+					if [ "$LATEST" = "pass" ] && [ "$LATESTSUCCESS" = "$LOG" ] ; then
 						echo "<li><a href=\"$LOG\">$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
 						echo "$LOG" >> $KNOWNLOGS
 						COUNT=$((COUNT+1))
-					fi 
+					fi
 				fi
 			done
 			echo "</ul>" >>$OUTPUT
@@ -211,7 +211,7 @@ do
 			grep "/${PACKAGE}_" $LIST_ALL > $LIST_PKG
 			LATEST=$(tail -n 1 $LIST_PKG | cut -d "/" -f1)
 			LATESTFAIL=$(grep -v ^pass/ $LIST_PKG | tail -n 1)
-			if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
+			if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then
 				echo "<li><a href=\"$LOG\">$LOG</a>" >> $OUTPUT
 				echo "    (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)" >> $OUTPUT
 				BUG=${LOG%.log}.bug

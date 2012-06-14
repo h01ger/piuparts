@@ -1,19 +1,19 @@
 #!/usr/bin/python
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# 
+#
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 2 of the License, or (at your
 # option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 # Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 
+# this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
 
@@ -162,9 +162,9 @@ class Slave:
         else:
             user = ""
         ssh_cmdline = "cd %s; %s 2> %s.$$ && rm %s.$$" % \
-                      (self._master_directory or ".", 
+                      (self._master_directory or ".",
                       self._master_command, log_file, log_file)
-        p = subprocess.Popen(["ssh", user + self._master_host, ssh_cmdline], 
+        p = subprocess.Popen(["ssh", user + self._master_host, ssh_cmdline],
                        stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self._to_master = p.stdin
         self._from_master = p.stdout
@@ -411,7 +411,7 @@ class Section:
                 if version == package["Version"] or self._config["upgrade-test-distros"]:
                     test_package(self._config, package, packages_files)
                 else:
-                    create_file(os.path.join("untestable", 
+                    create_file(os.path.join("untestable",
                                 log_name(package_name, version)),
                                 "%s %s not found" % (package_name, version))
             else:
@@ -465,13 +465,13 @@ def run_test_with_timeout(cmd, maxwait, kill_all):
               pids.extend(get_process_children(p.pid))
           for pid in pids:
               if pid > 0:
-                  try: 
+                  try:
                       os.kill(pid, SIGKILL)
                   except OSError:
                       pass
           return -1,stdout
 
-      return p.returncode,stdout 
+      return p.returncode,stdout
 
 
 def test_package(config, package, packages_files):
@@ -481,7 +481,7 @@ def test_package(config, package, packages_files):
     logging.debug("Opening log file %s" % output_name)
     new_name = os.path.join("new", output_name)
     output = file(new_name, "we")
-    output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n", 
+    output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n",
                                time.gmtime()))
     output.write("\n")
     package.dump(output)
@@ -489,7 +489,7 @@ def test_package(config, package, packages_files):
 
     # omit distro test if chroot-tgz is not specified.
     ret = 0
-    if config["chroot-tgz"]: 
+    if config["chroot-tgz"]:
         command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s" % \
                     config
         if config["keep-sources-list"] in ["yes", "true"]:
@@ -524,7 +524,7 @@ def test_package(config, package, packages_files):
             output.flush()
 
     output.write("\n")
-    output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n", 
+    output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n",
                                time.gmtime()))
     output.close()
     if ret != 0:
@@ -558,7 +558,7 @@ def create_chroot(config, tarball, distro):
         os.rename(tarball + ".new", tarball)
 
 def create_or_replace_chroot_tgz(config, tgz, tgz_ctrl, distro):
-    forced = 0 
+    forced = 0
     if os.path.exists(tgz):
         max_tgz_age = tgz_ctrl[0]
         min_tgz_retry_delay = tgz_ctrl[1]
@@ -572,7 +572,7 @@ def create_or_replace_chroot_tgz(config, tgz, tgz_ctrl, distro):
             # stat.ST_CTIME is time created OR last renamed
             if min_tgz_retry_delay is None or now - statobj[stat.ST_CTIME] > min_tgz_retry_delay:
                 os.rename(tgz, tgz + ".old")
-                forced = 1 
+                forced = 1
                 logging.info("%s too old.  Renaming to force re-creation" % tgz)
     if not os.path.exists(tgz):
         create_chroot(config, tgz, distro)
@@ -588,7 +588,7 @@ def fetch_packages_file(config, distro):
     arch = config["arch"]
     if not arch:
         # Try to figure it out ourselves, using dpkg
-        p = subprocess.Popen(["dpkg", "--print-architecture"], 
+        p = subprocess.Popen(["dpkg", "--print-architecture"],
                              stdout=subprocess.PIPE)
         arch = p.stdout.read().rstrip()
     packages_url = \
@@ -652,6 +652,6 @@ if __name__ == "__main__":
   except KeyboardInterrupt:
      print ''
      print 'Slave interrupted by the user, exiting... manual cleanup still neccessary.'
-     sys.exit(1)  
+     sys.exit(1)
 
 # vi:set et ts=4 sw=4 :

@@ -13,7 +13,7 @@ X-Python-Version: >= 2.6
 
 Package: piuparts
 Architecture: all
-Depends: apt, ${python:Depends}, debootstrap, lsof, lsb-release, 
+Depends: apt, ${python:Depends}, debootstrap, lsof, lsb-release,
     python-debian, ${misc:Depends}, python-debianbts, python-apt
 Suggests: python-rpy, ghostscript, schroot
 Description: .deb package installation, upgrading, and removal testing tool
@@ -23,6 +23,6 @@ Description: .deb package installation, upgrading, and removal testing tool
  upgrading, and removing packages in that environment, and comparing the
  state of the directory tree before and after. piuparts reports any
  files that have been added, removed, or modified during this process.
- . 
+ .
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.

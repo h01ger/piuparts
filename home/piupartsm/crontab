@@ -14,7 +14,7 @@
 #
 # monitor slave session every hour
 #
-23 * * * * $HOME/bin/detect_slave_problems 
+23 * * * * $HOME/bin/detect_slave_problems
 
 #
 # make sure slave is reminded daily (and also monitored if not started with ~piupartss/bin/slave_run)

@@ -556,10 +556,10 @@ piuparts (0.38) unstable; urgency=low
     - Add support for using LVM snapshots. Thanks to
       Patrick Schoenfeld for the patch. (Closes: #559449)
     - Add support for warning on broken symlinks. Thanks to Carl Chenet for
-      the patch. (Closes: #440151)  
+      the patch. (Closes: #440151)
     - Make --help usuable without needing to be run as root. (Closes: #547379)
     - --skip-minimize is now the default. This is because debootstrap is called
-      with --variant=minbase instead of --resolv-deps now and because if a 
+      with --variant=minbase instead of --resolv-deps now and because if a
       base.tgz or an lvm snapshot is specified, piuparts should not touch it.
       (Closes: #539142, #559048)
       Introduce a new option, --minimize, to minimize a chroot with debfoster.
@@ -571,7 +571,7 @@ piuparts (0.38) unstable; urgency=low
       (Closes: #545907)
       In the chroots, APT::Get::AllowUnauthenticated is set accordingly in
       /etc/apt/apt.conf.
-    - Add new option, --pedantic-purge-test, to tell piuparts to be pedantic 
+    - Add new option, --pedantic-purge-test, to tell piuparts to be pedantic
       when checking if a purged package leaves files behind. If this option is
       not set, files left in /tmp are ignored. (Closes: #528266)
     - Add new option, --dpkg-force-confdef, to make dpkg use --force-confdev,
@@ -584,25 +584,25 @@ piuparts (0.38) unstable; urgency=low
     - Create policy-rc.d in 2nd chroot when using -b. (Closes: #466049)
       Thanks again to Patrick Schoenfeld for his help.
   * piuparts-report: report broken symlinks.
-  * piuparts-slave: 
-    - gracefully deal with upgrade-test-distros and upgrade-test-chroot-tgz 
-      not being set in the configuration. Thanks to Carl Chenet and Patrick 
+  * piuparts-slave:
+    - gracefully deal with upgrade-test-distros and upgrade-test-chroot-tgz
+      not being set in the configuration. Thanks to Carl Chenet and Patrick
       Schoenfeld for the patch. (Closes: #519192)
     - new default value for idle-sleep, 300 instead of 10 seconds. Also the
       slave will now only sleep if there is nothing to do for any section.
-  * Makefile: workaround 559305 by calling a2x twice.   
+  * Makefile: workaround 559305 by calling a2x twice.
   * Update debian/NEWS.
-  * Replace all references to sarge and etch with ones to lenny and squeeze.  
+  * Replace all references to sarge and etch with ones to lenny and squeeze.
 
  -- Holger Levsen <holger@debian.org>  Thu, 17 Dec 2009 14:10:27 +0000
 
 piuparts (0.37) unstable; urgency=low
 
-  * piuparts-report.py: report packages with update-rc.d warnings and those 
-    failing due to insserv errors. (Closes: #546540) 
-  * Fix typo in NEWS.Debian, thanks to Justin Rye for spotting it. 
+  * piuparts-report.py: report packages with update-rc.d warnings and those
+    failing due to insserv errors. (Closes: #546540)
+  * Fix typo in NEWS.Debian, thanks to Justin Rye for spotting it.
     (Closes: #547439)
-  * piuparts.py: 
+  * piuparts.py:
     - added to self.ignored_patterns:
       - /var/cache/man(/.*)? (Closes: #550953)
       - /var/lib/insserv/run.*.log
@@ -625,14 +625,14 @@ piuparts (0.36) unstable; urgency=low
   * Break backwards compatibility of the configuration files for master-slave-
     mode. Merge those three into one: /etc/piuparts/piuparts/piuparts.conf.
     Introduce a new global section in piuparts.conf which is shared among the
-    other sections there. 
+    other sections there.
   * piuparts.py:
-    - add check whether scriptsdir exits, to fail gracefully if not. 
+    - add check whether scriptsdir exits, to fail gracefully if not.
     - copy scriptsdir to chroot also when doing upgrade tests.
     - added to self.ignored_files:
       - /etc/shadow and /etc/shadow- (just as /etc/passwd* and /etc/group*)
       - /var/games (see #524461)
-      - /etc/apt/trusted.gpg and /etc/apt/trusted.gpg~ (just as 
+      - /etc/apt/trusted.gpg and /etc/apt/trusted.gpg~ (just as
         /etc/apt/trustdb.gpg and other backup files)
     - added to self.ignored_patterns:
       -  /var/lib/dpkg/triggers/*
@@ -643,8 +643,8 @@ piuparts (0.36) unstable; urgency=low
     - configure apt in chroots to not install recommends and suggests.
     - add support for scanning for packages in changes files, thanks to Andres
       Mejia for the patch. (Closes: #352940)
-    - change some methods from using 'args' to 'package_list'. This more 
-      accurately represents what is being passed into these methods now. 
+    - change some methods from using 'args' to 'package_list'. This more
+      accurately represents what is being passed into these methods now.
     - add an optional parameter to panic() method to specify what exit status
       to use. Also thanks to Andres.
     - add advice how to read the logfile to the top of the logfiles produced.
@@ -655,29 +655,29 @@ piuparts (0.36) unstable; urgency=low
     - fail gracefully if piuparts is run as non-root user. Thanks to Ignace
       Mouzannar for the patch. (Closes: #538273)
   * piupartslib/packagesdb.py:
-    - change the test whether a package is testable to check whether the 
+    - change the test whether a package is testable to check whether the
       package is of priority "required", and not whether it's "Essential".
-    - rename status "essential-required-important" to "essential-required" 
+    - rename status "essential-required-important" to "essential-required"
       as important packages can be tested like all the others.
-    - handle binNMUs where the Source header in the Packages file includes the 
+    - handle binNMUs where the Source header in the Packages file includes the
       Version and the Source package name in one line.
-    - fix get_packages_in_state() to only return unique packages and not also 
+    - fix get_packages_in_state() to only return unique packages and not also
       the provided ones as exact copies.
   * Install scripts for master-slave mode without .py extension.
-  * piuparts-master.py: remove code to write statistics, that is done only in 
+  * piuparts-master.py: remove code to write statistics, that is done only in
     piuparts-report.py now.
   * piuparts-slave.py:
-    - support looping trough multiple sections in piuparts.conf via new config 
-      value "sections". Thanks to Frank Ploss for writing this patch with me 
+    - support looping trough multiple sections in piuparts.conf via new config
+      value "sections". Thanks to Frank Ploss for writing this patch with me
       and helping me understand the code much better!
     - allow the user to stop the slave with control-C.
     - call piuparts with --mirror when mirror is set in piuparts.conf.
-  * Re-add piuparts-reports.py which got removed/lost between 0.14 and 0.20 
+  * Re-add piuparts-reports.py which got removed/lost between 0.14 and 0.20
     without changelog entry.
-  * piuparts-report.py: 
-    - support sections in configuration file. 
+  * piuparts-report.py:
+    - support sections in configuration file.
     - support looping trough multiple sections in piuparts.conf via new config
-      value "sections". 
+      value "sections".
     - generate counts.txt (per section) with raw numbers of packages per state,
       include these stats in the debug output (so it gets included in the mails
       send by cron.)
@@ -689,27 +689,27 @@ piuparts (0.36) unstable; urgency=low
     - provide links to logfiles in statistics page.
     - provide links to source packages pages from state pages and back, as well
       as links to the dependencies state.
-    - draw graphs of package states over time (if pypthon-rpy and gs are 
+    - draw graphs of package states over time (if pypthon-rpy and gs are
       installed) - thanks to Thomas Viehmann and Dirk Eddelbüttel for
       inspiration and support.
-    - create maintainer centric pages for each email address found in 
+    - create maintainer centric pages for each email address found in
       Maintainers or Uploaders.
     - improve layout, generate navigation for all pages.
-    - use icons to provide a quick overview of a source packages status. 
+    - use icons to provide a quick overview of a source packages status.
       (Thanks to tango.freedesktop.org for the icons!)
     - include index.tpl (if it exists) from output-directory into the
       generated index page, so one can add news to the index page without
       editing piuparts-report.py.
     - generate pages for known issues, which are detected by bash helper
-      script, run by cron on piuparts.debian.org and available from 
+      script, run by cron on piuparts.debian.org and available from
       svn/piuparts/piatti/home/piupartsm/bin/detect_well_known_errors
   * Always use alphabetic time zone abbreviation in timestamps.
-  * Makefile: 
+  * Makefile:
     - add "~$date" to versionstring if building an unreleased version, thus
       adding dpkg-dev to build-depends.
     - split install target into install-doc, install-conf and install, to aid
       development and deployment from trunk.
-  * debian/control: 
+  * debian/control:
     - depend on python (>>2.4), make dependency to python-debian unversioned.
     - add build-dependencies on debhelper, asciidoc and xmlto.
     - dependency gs has been renamed to ghostcript
@@ -722,16 +722,16 @@ piuparts (0.36) unstable; urgency=low
       sending mail to it
     - bump Standards-Version to 3.8.3, no changes necessary.
   * Rewrite debian/rules from scratch using debhelper.
-  * Merge README, how-to-use-piuparts.txt and custom-scripts.txt into 
-    README.txt, convert it to asciidoc and build pdf and html versions of it. 
-  * Restructure and update README.txt to reflect the configuration changes in 
+  * Merge README, how-to-use-piuparts.txt and custom-scripts.txt into
+    README.txt, convert it to asciidoc and build pdf and html versions of it.
+  * Restructure and update README.txt to reflect the configuration changes in
     master-slave mode.
   * Add debian/NEWS file.
   * Rewrite piuparts manpage in asciidoc.
   * Build and install html version of the piuparts manpage.
   * Update debian/copyright to reflect that piuparts is licenced under GPL2+.
   * Update FSF address in all files referencing the GPL.
-  * Remove unused file piuparts.css. 
+  * Remove unused file piuparts.css.
 
   [ Lars Wirzenius ]
   * Removed Lars Wirzenius as uploader.
@@ -760,7 +760,7 @@ piuparts (0.34) unstable; urgency=low
 
 piuparts (0.33) unstable; urgency=low
 
-  * Added --bindmount option, thanks to Aníbal Monsalve Salaza for the patch. 
+  * Added --bindmount option, thanks to Aníbal Monsalve Salaza for the patch.
     (Closes: #496186)
 
  -- Holger Levsen <holger@debian.org>  Sat, 08 Nov 2008 17:07:22 +0000
@@ -771,9 +771,9 @@ piuparts (0.32) unstable; urgency=low
   * Fix a typo in how-to-use-piuparts.txt.
 
   [ Holger Levsen ]
-  * Replace all references to sarge and etch with etch and lenny. 
+  * Replace all references to sarge and etch with etch and lenny.
     (Closes: #466111)
-  * Update README to reflect that piuparts runs fine in etch. 
+  * Update README to reflect that piuparts runs fine in etch.
   * Rename the post_upgrade custom script to post_distupgrade and introduce
     pre_distupgrade.
   * Bumped standards version, no changes needed.
@@ -927,9 +927,9 @@ piuparts (0.24) unstable; urgency=low
 piuparts (0.23) unstable; urgency=low
 
   * Cosmetic change, now file owner and file are shown in the same line.
-  * Add option --list-installed-files, that list files added/removed/modified 
+  * Add option --list-installed-files, that list files added/removed/modified
     to the chroot after the package's installation.  (Closes: #431821)
-  * Add option --no-upgrade-test, that allows skip testing upgrade from an 
+  * Add option --no-upgrade-test, that allows skip testing upgrade from an
     existing version in the archive. (Closes: #349933)
 
  -- Ana Beatriz Guerrero Lopez <ana@debian.org>  Tue, 10 Jul 2007 19:47:21 +0200
@@ -942,9 +942,9 @@ piuparts (0.22) unstable; urgency=low
 
   [ Ana Beatriz Guerrero Lopez ]
   * Rename piuparts.py.in back to piuparts.py.
-  * Add option --skip-minimize that allows skip the minimize chroot step 
+  * Add option --skip-minimize that allows skip the minimize chroot step
     with debfoster.
-  * Remove m4 substitution, and use sed instead. Drop Build-Depends on m4. 
+  * Remove m4 substitution, and use sed instead. Drop Build-Depends on m4.
     (Closes: #431248)
   * Drop support for python 2.3 and add support for python 2.5.
   * debian/rules:
@@ -1008,7 +1008,7 @@ piuparts (0.18-1) unstable; urgency=low
 
   * New upstream version. No Debian bugs fixed.
   * debian/control: Updated for new Python policy.
-  * debian/prerm, debian/postrm: Written. They compile/remove byte code 
+  * debian/prerm, debian/postrm: Written. They compile/remove byte code
     files.
 
  -- Lars Wirzenius <liw@iki.fi>  Thu,  7 Sep 2006 20:42:03 +0300
@@ -1025,7 +1025,7 @@ piuparts (0.17-1) unstable; urgency=low
 
 piuparts (0.16-1) unstable; urgency=low
 
-  * New upstream version. Fixes the following bugs reported against the 
+  * New upstream version. Fixes the following bugs reported against the
     Debian package:
     - TODO: keep track of bugs to show expected failures and unexpected
       successes (Closes: #353215)
@@ -1062,7 +1062,7 @@ piuparts (0.13-1) unstable; urgency=low
 piuparts (0.12-1) unstable; urgency=low
 
   * New upstream version. Fixes bug in Debian:
-    - dist-upgrade to experimental does not work (now documented as a 
+    - dist-upgrade to experimental does not work (now documented as a
       feature). Closes: #330749.
 
  -- Lars Wirzenius <liw@iki.fi>  Mon, 17 Oct 2005 21:03:12 +0300
@@ -1072,7 +1072,7 @@ piuparts (0.11-1) unstable; urgency=low
   * New upstream version. Fixes bugs in Debian:
     - Checks whether there are packages on the command line before creating
       a chroot. Closes: #322441.
-    - apt-get configured to allow unauthenticated repositories. 
+    - apt-get configured to allow unauthenticated repositories.
       Closes: #326705.
 
  -- Lars Wirzenius <liw@iki.fi>  Fri, 14 Oct 2005 01:16:25 +0300

@@ -2,19 +2,19 @@
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
 # Copyright 2009-2012 Holger Levsen (holger@layer-acht.org)
-# 
+#
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 2 of the License, or (at your
 # option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 # Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 
+# this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
 
@@ -91,14 +91,14 @@ HTML_HEADER = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">FAQ</a> 
+      <a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">FAQ</a>
      </td>
-    </tr>     
+    </tr>
     <tr class="normalrow">
      <td class="contentcell">
       <a href="http://bugs.debian.org/src:piuparts" target="_blank">Bugs</a> / <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;a=blob;f=TODO" target="_blank">ToDo</a>
      </td>
-    </tr>     
+    </tr>
     <tr class="titlerow">
      <td class="titlecell">
       Documentation
@@ -138,9 +138,9 @@ HTML_HEADER = """
     </tr>
     <tr>
      <td class="contentcell">
-      <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?tag=piuparts;users=debian-qa@lists.debian.org&amp;archive=both" target="_blank">Bugs filed</a> 
+      <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?tag=piuparts;users=debian-qa@lists.debian.org&amp;archive=both" target="_blank">Bugs filed</a>
      </td>
-    </tr>     
+    </tr>
     $section_navigation
     <tr class="titlerow">
      <td class="titlecell">
@@ -185,7 +185,7 @@ HTML_HEADER = """
 HTML_FOOTER = """
   </td>
  </tr>
-</table> 
+</table>
 </div>
  <hr>
  <div id="footer">
@@ -314,14 +314,14 @@ INDEX_BODY_TEMPLATE = """
     <tr class="normalrow">
      <td class="contentcell2">
       piuparts is a tool for testing that .deb packages can be installed, upgraded, and removed without problems. The
-      name, a variant of something suggested by Tollef Fog Heen, is short for "<em>p</em>ackage <em>i</em>nstallation, 
-      <em>up</em>grading <em>a</em>nd <em>r</em>emoval <em>t</em>esting <em>s</em>uite". 
+      name, a variant of something suggested by Tollef Fog Heen, is short for "<em>p</em>ackage <em>i</em>nstallation,
+      <em>up</em>grading <em>a</em>nd <em>r</em>emoval <em>t</em>esting <em>s</em>uite".
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
       It does this by  creating a minimal Debian installation in a chroot, and installing,
-      upgrading, and removing packages in that environment, and comparing the state of the directory tree before and after. 
+      upgrading, and removing packages in that environment, and comparing the state of the directory tree before and after.
       piuparts reports any files that have been added, removed, or modified during this process.
      </td>
     </tr>
@@ -619,11 +619,11 @@ class Section:
             versions = []
             for pathname, version in packages[package]:
                 version_count += 1
-                versions.append("<a href=\"%s\">%s</a>" % 
-                                (html_protect(pathname), 
+                versions.append("<a href=\"%s\">%s</a>" %
+                                (html_protect(pathname),
                                  html_protect(version)))
             line = "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % \
-                                (html_protect(package), 
+                                (html_protect(package),
                                  ", ".join(versions))
             lines.append(line)
 
@@ -658,7 +658,7 @@ class Section:
                 package, version = basename[:-len(".log")].split("_")
                 vlist.append((os.path.join(vdir, basename), package, version))
             self.write_log_list_page(os.path.join(output_directory, vdir + ".html"),
-                                title_by_dir[vdir], 
+                                title_by_dir[vdir],
                                 desc_by_dir[vdir], vlist)
 
     def find_links_to_logs(self, package_name, dirs, logs_by_dir):
@@ -666,12 +666,12 @@ class Section:
         for vdir in dirs:
 
           # avoid linear search against log file names by caching in a dict
-          # 
+          #
           # this cache was added to avoid a very expensive linear search
           # against the arrays in logs_by_dir. Note that the use of this cache
           # assumes that the contents of logs_by_dir is invarient across calls
           # to find_links_to_logs()
-          # 
+          #
           if vdir not in self._log_name_cache:
               self._log_name_cache[vdir] = {}
 
@@ -751,7 +751,7 @@ class Section:
         return link
 
     def write_counts_summary(self):
-        logging.debug("Writing counts.txt")    
+        logging.debug("Writing counts.txt")
         header = "date"
         current_day = "%s" % time.strftime("%Y%m%d")
         counts = current_day
@@ -764,12 +764,12 @@ class Section:
             total += count
         logging.debug("total: %s" % total)
         logging.debug("source: %s" % len(self._source_db.get_all_packages()))
-        header += "\n"       
-        counts += "\n"       
+        header += "\n"
+        counts += "\n"
 
-        countsfile = os.path.join(self._output_directory, "counts.txt") 
+        countsfile = os.path.join(self._output_directory, "counts.txt")
         if not os.path.isfile(countsfile):
-          logging.debug("writing new file: %s" % countsfile) 
+          logging.debug("writing new file: %s" % countsfile)
           write_file(countsfile, header)
           last_line = ""
         else:
@@ -844,7 +844,7 @@ class Section:
         for binary in sorted([x.strip() for x in binaries.split(",") if x.strip()]):
           state = self._binary_db.get_package_state(binary)
           if state == "unknown":
-            # Don't track udebs and binary packages on other archs. 
+            # Don't track udebs and binary packages on other archs.
             # The latter is a FIXME which needs parsing the Packages files from other archs too
             continue
 
@@ -898,7 +898,7 @@ class Section:
 
 
     def create_package_summaries(self, logs_by_dir):
-        logging.debug("Writing package templates in %s" % self._config.section)    
+        logging.debug("Writing package templates in %s" % self._config.section)
 
         maintainers = {}
         source_binary_rows = {}
@@ -928,7 +928,7 @@ class Section:
         r('cname <- c("date",rep(colnames(t)))')
         # here we define how many days we wants stats for (163=half a year)
         #r('v <- t[(nrow(t)-163):nrow(t),0:12]')
-        # make graph since day 1  
+        # make graph since day 1
         r('v <- t[0:nrow(t),0:12]')
         # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
         r('palette(c("#4e9a06", "#ef2929", "#d3d7cf", "#5c3566", "#c4a000", "#fce94f", "#a40000", "#888a85", "#2e3436", "#729fcf", "#3465a4", "#204a87", "#555753"))')
@@ -981,7 +981,7 @@ class Section:
                   if count_passed > 0:
                     substats += ": %s passed" % count_passed
               link += "<li><a href=%s>%s</a>%s</li>" % (
-                                                                       template[:-len(".tpl")]+".html", 
+                                                                       template[:-len(".tpl")]+".html",
                                                                        linktarget,
                                                                        substats
                                                        )
@@ -989,7 +989,7 @@ class Section:
               logging.debug("analysis template %s does not exist." % template)
 
         link += "</ul>"
-        if link == "<ul></ul>": 
+        if link == "<ul></ul>":
           link = ""
         return link
 
@@ -1021,7 +1021,7 @@ class Section:
             "section": html_protect(self._config.section),
             "description": html_protect(self._config["description"]),
             "tablerows": tablerows,
-            "packagesurl": html_protect(self._config["packages-url"]), 
+            "packagesurl": html_protect(self._config["packages-url"]),
            }))
 
     def _show_providers(self, dep):
@@ -1071,7 +1071,7 @@ class Section:
                     for alternatives in all_deps:
                         dep = alternatives[0]
                         vlist += "<li>dependency %s is %s</li>\n" % \
-                                  (self.link_to_state_page(self._config.section,dep,dep), 
+                                  (self.link_to_state_page(self._config.section,dep,dep),
                                   emphasize_reason(html_protect(self._binary_db.get_package_state(dep, resolve_virtual=False))))
                         vlist += self._show_providers(dep)
                         if len(alternatives) > 1:
@@ -1138,7 +1138,7 @@ class Section:
         if self._config["sources-url"]:
             self.create_package_summaries(logs_by_dir)
 
-        logging.debug("Writing section index page")    
+        logging.debug("Writing section index page")
         self.write_section_index_page(dirs, total_packages)
 
         logging.debug("Writing stats pages for %s" % self._config.section)

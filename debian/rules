@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-# Uncomment this to turn on verbose mode. 
+# Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
 build-arch:
@@ -30,7 +30,7 @@ binary-indep: build install
 	dh_compress
 	dh_fixperms
 	dh_python2
-	dh_installdeb 
+	dh_installdeb
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

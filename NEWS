@@ -149,7 +149,7 @@ New features and significant user visible changes
                 with piuparts-slave.
 
                 The chroot is always set up for piuparts, even if it is
-                unpacked from a tarball. This reduces problems with 
+                unpacked from a tarball. This reduces problems with
                 out-of-date chroots and with using the pbuilder base.tgz
                 tarball.
 

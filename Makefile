@@ -20,14 +20,14 @@ ignore = -I fdmount -N
 all: install-conf install-doc install
 
 install-doc:
-	# build and install manual 
+	# build and install manual
 	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README.txt
 	install -d $(docdir)/
 	for file in README.txt README.html docbook-xsl.css ; do \
 	    install -m 0644 $$file $(docdir)/ ; done
 	# build and install manpage
 	a2x -f manpage piuparts.1.txt
-	install -d $(man1dir) 
+	install -d $(man1dir)
 	install -m 0644 piuparts.1 $(man1dir)
 	gzip -9f $(man1dir)/piuparts.1
 	a2x --copy -f xhtml piuparts.1.txt
@@ -38,7 +38,7 @@ install-conf:
 	install -m 0644 conf/piuparts.conf.sample $(etcdir)/piuparts/piuparts.conf
 
 install:
-	install -d $(sbindir) 
+	install -d $(sbindir)
 	sed -e 's/__PIUPARTS_VERSION__/$(version)/g' piuparts.py > piuparts
 	install piuparts $(sbindir)/piuparts
 	rm piuparts
@@ -59,4 +59,4 @@ check:
 	python unittests.py
 
 clean:
-	rm -rf piuparts.1 piuparts.1.xml piuparts.1.html piuparts README.xml README.html docbook-xsl.css piuparts.html 
+	rm -rf piuparts.1 piuparts.1.xml piuparts.1.html piuparts README.xml README.html docbook-xsl.css piuparts.html

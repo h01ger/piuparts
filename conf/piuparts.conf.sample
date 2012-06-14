@@ -3,7 +3,7 @@
 #
 # The sample file does not set all required values, to prevent the
 # master from being run accidentally.
-# 
+#
 # You MUST make sure that master-host, master-user, master-directory, mirror
 # and packages-url are also set correctly. The sample file does not set it at
 # all, to prevent the master from being run accidentally.
@@ -34,8 +34,8 @@ description = "Debian sid / main"
 piuparts-cmd = sudo piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /var/tmp
 distro = sid
 chroot-tgz = sid.tar.gz
-upgrade-test-distros = 
-upgrade-test-chroot-tgz = 
+upgrade-test-distros =
+upgrade-test-chroot-tgz =
 max-reserved = 50
 debug = no
 log-file = sid-master.log
