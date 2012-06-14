@@ -963,7 +963,10 @@ class Chroot:
         if settings.skip_minimize or not settings.minimize:
              return
         self.run(["apt-get", "install", "debfoster"])
-        self.run(["debfoster"] + settings.debfoster_options)
+        debfoster_command = ["debfoster"] + settings.debfoster_options
+        if settings.eatmydata:
+            debfoster_command.append("eatmydata")
+        self.run(debfoster_command)
         remove_files([self.relative("var/lib/debfoster/keepers")])
         self.run(["dpkg", "--purge", "debfoster"])
 
