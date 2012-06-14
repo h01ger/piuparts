@@ -6,6 +6,8 @@ higher than wishlist!
 
 for 0.45:
 
+- do not upload with sunny.png weather-severe-alert.png included. Replace them with links.
+
 - create piuparts-master and piuparts-slave packages.
 
 - mv piatti.git piuparts.git/doc/examples  and include it into a new
