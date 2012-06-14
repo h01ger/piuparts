@@ -539,7 +539,7 @@ def create_chroot(config, tarball, distro):
     output_name = tarball + ".log"
     logging.debug("Opening log file %s" % output_name)
     logging.info("Creating new tarball %s" % tarball)
-    command = "%s -ad %s -s %s.new -m %s hello" % \
+    command = "%s -ad %s -s %s.new -m %s dpkg" % \
                 (config["piuparts-cmd"], distro, tarball, config["mirror"])
     output = file(output_name, "w")
     output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n\n",
