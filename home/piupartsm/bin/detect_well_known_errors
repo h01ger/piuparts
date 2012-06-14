@@ -167,7 +167,7 @@ do
 				if [ "${problem%_error.conf}_error.conf" = "$problem" ] ; then 
 					LATESTFAIL=$(grep -v ^pass/ $LIST_PKG | tail -n 1)
 					if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
-						echo "<li><a href='/$SECTION/$LOG'>$LOG</a>" >> $OUTPUT
+						echo "<li><a href=\"$LOG\">$LOG</a>" >> $OUTPUT
 						echo "    (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)" >> $OUTPUT
 						BUG=${LOG%.log}.bug
 						test ! -s "$BUG" || cat "$BUG" >> $OUTPUT
@@ -179,7 +179,7 @@ do
 					# this is an issue, not an error
 					LATESTSUCCESS=$(grep ^pass/ $LIST_PKG | tail -n 1)
 					if [ "$LATEST" = "pass" ] && [ "$LATESTSUCCESS" = "$LOG" ] ; then 
-						echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
+						echo "<li><a href=\"$LOG\">$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
 						echo "$LOG" >> $KNOWNLOGS
 						COUNT=$((COUNT+1))
 					fi 
@@ -212,7 +212,11 @@ do
 			LATEST=$(tail -n 1 $LIST_PKG | cut -d "/" -f1)
 			LATESTFAIL=$(grep -v ^pass/ $LIST_PKG | tail -n 1)
 			if [ "$LATEST" != "pass" ] && [ "$LATESTFAIL" = "$LOG" ] ; then 
-				echo "<li><a href='/$SECTION/$LOG'>$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>" >> $OUTPUT
+				echo "<li><a href=\"$LOG\">$LOG</a>" >> $OUTPUT
+				echo "    (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)" >> $OUTPUT
+				BUG=${LOG%.log}.bug
+				test ! -s "$BUG" || cat "$BUG" >> $OUTPUT
+				echo "</li>" >> $OUTPUT
 				COUNT=$((COUNT+1))
 			fi
 		done

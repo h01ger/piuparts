@@ -108,6 +108,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Write .bug files with links to the BTS.
   * detect_archive_issues: Only consider logs older than one day for marking
     as "untestable" to allow piuparts-analyze to handle the log first.
+  * Replace all references to lenny and squeeze with squeeze and wheezy.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source

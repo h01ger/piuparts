@@ -964,9 +964,9 @@ class Section:
                }))
               f.close()
               if state == "failed-testing":
-                count_bugged = string.count(rows,"/bugged/")
-                count_affected = string.count(rows,"/affected/")
-                count_failed = string.count(rows,"/fail/") 
+                count_bugged = string.count(rows, '"bugged/')
+                count_affected = string.count(rows, '"affected/')
+                count_failed = string.count(rows, '"fail/')
                 sep = ": "
                 if count_bugged > 0:
                   substats += sep + "%s bugged" % count_bugged
@@ -977,7 +977,7 @@ class Section:
                 if count_failed > 0:
                   substats += sep + "<span id=\"needs-bugging\">%s failed</span>" % count_failed
               else:
-                  count_passed = string.count(rows,"/pass/")
+                  count_passed = string.count(rows, '"pass/')
                   if count_passed > 0:
                     substats += ": %s passed" % count_passed
               link += "<li><a href=%s>%s</a>%s</li>" % (

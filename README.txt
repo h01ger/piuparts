@@ -38,10 +38,10 @@ This will create a sid chroot with debootstrap, where it'll test
 your package.
 
 If you want to test your package in another release, for example,
-lenny, you can do so with:
+squeeze, you can do so with:
 
 ---- 
-# piuparts ./sm_0.6-1_i386.deb -d lenny
+# piuparts ./sm_0.6-1_i386.deb -d squeeze
 ---- 
 
 By default, this will read the first mirror from your
@@ -443,7 +443,7 @@ is being run.
 
 * "chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the basic install/purge testing. If the tarball doesn't exist, the slave creates it. This can be left empty if only upgrade tests should be run.
 
-* "upgrade-test-distros" is the space delimited list of distributions the slave should use for testing upgrades between distributions (i.e., Debian versions). Currently, "lenny squeeze sid" is a good choice.  Leave this unset if you do not want to run upgrade tests.
+* "upgrade-test-distros" is the space delimited list of distributions the slave should use for testing upgrades between distributions (i.e., Debian versions). Currently, "squeeze wheezy sid" is a good choice.  Leave this unset if you do not want to run upgrade tests.
 
 * "upgrade-test-chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the first distribution in upgrade-test-distros. If the file does not exist, the slave creates it. This can be left empty if only basic tests should be run.
 
