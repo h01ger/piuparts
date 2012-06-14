@@ -413,7 +413,7 @@ linktarget_by_template = [
 
 class Config(piupartslib.conf.Config):
 
-    def __init__(self, section="report"):
+    def __init__(self, section="report", defaults_section=None):
         self.section = section
         piupartslib.conf.Config.__init__(self, section,
             {
@@ -425,7 +425,8 @@ class Config(piupartslib.conf.Config):
                 "description": "",
                 "max-reserved": 1,
                 "doc-root": "/piuparts/",
-            })
+            },
+            defaults_section=defaults_section)
 
 
 def setup_logging(log_level, log_file_name):
@@ -586,7 +587,7 @@ def get_email_address(maintainer):
 class Section:
 
     def __init__(self, section, master_directory, doc_root):
-        self._config = Config(section=section)
+        self._config = Config(section=section, defaults_section="global")
         self._config.read(CONFIG_FILE)
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)

@@ -59,7 +59,7 @@ def setup_logging(log_level, log_file_name):
 
 class Config(piupartslib.conf.Config):
 
-    def __init__(self, section="slave"):
+    def __init__(self, section="slave", defaults_section=None):
         self.section = section
         piupartslib.conf.Config.__init__(self, section,
             {
@@ -84,7 +84,8 @@ class Config(piupartslib.conf.Config):
                 "keep-sources-list": "no",
                 "arch": None,
                 "precedence": "1",
-            })
+            },
+            defaults_section=defaults_section)
 
 
 class Alarm(Exception):
@@ -247,7 +248,7 @@ class Section:
 
     def __init__(self, section, global_config):
         self._global_config = global_config
-        self._config = Config(section=section)
+        self._config = Config(section=section, defaults_section="global")
         self._config.read(CONFIG_FILE)
         self._sleep_until = 0
         self._slave_directory = os.path.abspath(self._config["slave-directory"])
@@ -304,7 +305,7 @@ class Section:
 
         logging.info("-------------------------------------------")
         logging.info("Running section %s (precedence=%d)" % (self._config.section, self.precedence()))
-        self._config = Config(section=self._config.section)
+        self._config = Config(section=self._config.section, defaults_section="global")
         self._config.read(CONFIG_FILE)
 
         if int(self._config["max-reserved"]) == 0:

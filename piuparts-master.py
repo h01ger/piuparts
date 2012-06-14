@@ -48,13 +48,14 @@ def setup_logging(log_level, log_file_name):
 
 class Config(piupartslib.conf.Config):
 
-    def __init__(self, section="master"):
+    def __init__(self, section="master", defaults_section=None):
         piupartslib.conf.Config.__init__(self, section,
             {
                 "log-file": None,
                 "packages-url": None,
                 "master-directory": ".",
-            })
+            },
+            defaults_section=defaults_section)
 
 
 class CommandSyntaxError(Exception):
@@ -199,7 +200,7 @@ def main():
         master_directory = global_config["master-directory"]
 
         section = sys.argv[1]
-        config = Config(section=section)
+        config = Config(section=section, defaults_section="global")
         config.read(CONFIG_FILE)
 
         setup_logging(logging.DEBUG, config["log-file"])

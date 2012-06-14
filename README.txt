@@ -410,6 +410,13 @@ used for all further sections.
 
 * "sections" defaults to sid and defines which sections should be processed in master-slave mode. Each section defined here has to have a section with the section specific settings explained below. The first section defined should always be sid, because the data from first section a package is in is used for the source package html report.
 
+==== section specific configuration
+
+The section specific settings will be reloaded each time a section
+is being run. All these keys can be specified in the [global]
+section, too, and will serve as defaults for all other sections
+(overriding the builtin defaults).
+
 * "master-host" is the host where the master exists. The slave will give this host to ssh. This option is mandatory.
 
 * "master-user" is the username of the master. The slave will log in using this username. This option is mandatory.
@@ -423,11 +430,6 @@ used for all further sections.
 * "max-tgz-age" is used to specify the maximum age (in seconds) after which basesystem tarballs will be recreated. If recreation fails, the old tarball will be used again. The default is 2592000 seconds, which is 30 days.
 
 * "min-tgz-retry-delay" is used to specify the minimum time (in seconds) between attempts to recreate a tarball which was created more than "max-tgz-age" seconds ago. The default is 21600 seconds, which is 6h.
-
-==== section specific configuration
-
-The section specific settings will be reloaded each time a section
-is being run.
 
 * "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "/dev/null", that is, log messages are not put in a file.
 
