@@ -135,6 +135,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Test the 'dpkg' package for creating/updating a base_tgz.
     - Don't update the tarball for disabled sections.
     - Rewrite starting piuparts.
+    - Rewrite stopping piuparts for more reliable cleanup.
   * piuparts-report.py:
     - Remove known_circular_depends handling.
     - Exclude obsolete states from generated report.

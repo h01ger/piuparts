@@ -28,7 +28,7 @@ import sys
 import stat
 import time
 import logging
-from signal import alarm, signal, SIGALRM, SIGKILL
+from signal import alarm, signal, SIGALRM, SIGINT, SIGKILL
 import subprocess
 import fcntl
 import random
@@ -452,6 +452,17 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
         pids = [p.pid]
         if kill_all:
             pids.extend(get_process_children(p.pid))
+        if p.poll() is None:
+            print 'Sending SIGINT...'
+            try:
+                os.killpg(os.getpgid(p.pid), SIGINT)
+            except OSError:
+                pass
+            # piuparts has 30 seconds to clean up after Ctrl-C
+            for i in range(60):
+                time.sleep(0.5)
+                if p.poll() is not None:
+                    break
         for pid in pids:
             if pid > 0:
                 try:
@@ -462,7 +473,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
     logging.debug("Executing: %s" % " ".join(cmd))
 
     stdout = ""
-    p = subprocess.Popen(cmd,
+    p = subprocess.Popen(cmd, preexec_fn=os.setpgrp,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if maxwait > 0:
         signal(SIGALRM, alarm_handler)
