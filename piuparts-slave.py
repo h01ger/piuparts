@@ -447,18 +447,18 @@ def get_process_children(pid):
     return [int(p) for p in stdout.split()]
 
 def run_test_with_timeout(cmd, maxwait, kill_all=True):
-      logging.debug("Executing: %s" % " ".join(cmd))
+    logging.debug("Executing: %s" % " ".join(cmd))
 
-      stdout = ""
-      p = subprocess.Popen(cmd,
+    stdout = ""
+    p = subprocess.Popen(cmd,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-      if maxwait > 0:
-          signal(SIGALRM, alarm_handler)
-          alarm(maxwait)
-      try:
-          stdout, stderr = p.communicate()
-          alarm(0)
-      except Alarm:
+    if maxwait > 0:
+        signal(SIGALRM, alarm_handler)
+        alarm(maxwait)
+    try:
+        stdout, stderr = p.communicate()
+        alarm(0)
+    except Alarm:
           pids = [p.pid]
           if kill_all:
               pids.extend(get_process_children(p.pid))
@@ -470,7 +470,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
                       pass
           return -1,stdout
 
-      return p.returncode,stdout
+    return p.returncode,stdout
 
 
 def test_package(config, package, packages_files):
