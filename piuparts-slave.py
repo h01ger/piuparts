@@ -447,6 +447,7 @@ def get_process_children(pid):
     return [int(p) for p in stdout.split()]
 
 def run_test_with_timeout(cmd, maxwait, kill_all):
+      cmd = " ".join(cmd)
       logging.debug("Executing: %s" % cmd)
 
       stdout = ""
@@ -488,18 +489,21 @@ def test_package(config, package, packages_files):
     package.dump(output)
     output.write("\n")
 
+    base_command = config["piuparts-cmd"].split()
+    if config["mirror"]:
+        base_command.extend(["--mirror", config["mirror"]])
+
     # omit distro test if chroot-tgz is not specified.
     ret = 0
     if config["chroot-tgz"]:
-        command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s" % \
-                    config
+        command = base_command[:]
+        command.extend(["-b", config["chroot-tgz"]])
+        command.extend(["-d", config["distro"]])
         if config["keep-sources-list"] in ["yes", "true"]:
-            command += " --keep-sources-list "
-        if config["mirror"]:
-            command += " --mirror %s " % config["mirror"]
-        command += " " + package["Package"]
+            command.append("--keep-sources-list")
+        command.extend(["--apt", package["Package"]])
 
-        output.write("Executing: %s\n" % command)
+        output.write("Executing: %s\n" % " ".join(command))
         ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN, True)
         if ret < 0:
             output.write(f + "\n *** Process KILLED - exceed maximum run time ***\n")
@@ -507,16 +511,13 @@ def test_package(config, package, packages_files):
             output.write(f)
 
     if ret == 0 and upgrade_testable(config, package, packages_files):
-        distros = config["upgrade-test-distros"].split()
-        distros = ["-d " + distro.strip() for distro in distros]
-        distros = " ".join(distros)
-        command = "%(piuparts-cmd)s -ab %(upgrade-test-chroot-tgz)s " % config
-        command += distros
-        if config["mirror"]:
-          command += " --mirror %s " % config["mirror"]
-        command += " " + package["Package"]
+        command = base_command[:]
+        command.extend(["-b", config["upgrade-test-chroot-tgz"]])
+        for distro in config["upgrade-test-distros"].split():
+            command.extend(["-d", distro])
+        command.extend(["--apt", package["Package"]])
 
-        output.write("Executing: %s\n" % command)
+        output.write("Executing: %s\n" % " ".join(command))
         ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN, True)
         if ret < 0:
             output.write(" *** Process KILLED - exceed maximum run time ***\n")
