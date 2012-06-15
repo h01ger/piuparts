@@ -499,6 +499,7 @@ def make_metapackage(name, depends, conflicts):
     # Inspired by pbuilder's pbuilder-satisfydepends-aptitude
 
     tmpdir = tempfile.mkdtemp(dir=settings.tmpdir)
+    panic_handler_id = do_on_panic(lambda: shutil.rmtree(tmpdir))
     old_umask = os.umask(0)
     os.makedirs(os.path.join(tmpdir, name, 'DEBIAN'), mode = 0755)
     os.umask(old_umask)
@@ -521,6 +522,7 @@ def make_metapackage(name, depends, conflicts):
                 control.dump())
 
     run(['dpkg-deb', '-b', os.path.join(tmpdir, name)])
+    dont_do_on_panic(panic_handler_id)
     return os.path.join(tmpdir, name) + '.deb'
 
 
@@ -2034,13 +2036,16 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
         all_conflicts = ", ".join(conflicts)
         metapackage = make_metapackage("piuparts-depends-dummy",
                                        all_depends, all_conflicts)
+        cleanup_metapackage = lambda: shutil.rmtree(os.path.dirname(metapackage))
+        panic_handler_id = do_on_panic(cleanup_metapackage)
 
         # Install the metapackage
         chroot.install_package_files([metapackage])
         # Now remove it
         metapackagename = os.path.basename(metapackage)[:-4]
         chroot.purge_packages([metapackagename])
-        shutil.rmtree(os.path.dirname(metapackage))
+        cleanup_metapackage()
+        dont_do_on_panic(panic_handler_id)
 
         # Save the file ownership information so we can tell which
         # modifications were caused by the actual packages we are testing,
