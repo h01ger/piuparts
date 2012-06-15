@@ -446,21 +446,18 @@ def get_process_children(pid):
     stdout, stderr = p.communicate()
     return [int(p) for p in stdout.split()]
 
-def run_test_with_timeout(cmd, maxwait, kill_all):
-      cmd = " ".join(cmd)
-      logging.debug("Executing: %s" % cmd)
+def run_test_with_timeout(cmd, maxwait, kill_all=True):
+      logging.debug("Executing: %s" % " ".join(cmd))
 
       stdout = ""
-      sh_cmd = "{ %s; } 2>&1" % cmd
-      p = subprocess.Popen(sh_cmd, shell=True,
-                     stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+      p = subprocess.Popen(cmd,
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
       if maxwait > 0:
           signal(SIGALRM, alarm_handler)
           alarm(maxwait)
       try:
           stdout, stderr = p.communicate()
-          if maxwait > 0:
-              alarm(0)
+          alarm(0)
       except Alarm:
           pids = [p.pid]
           if kill_all:
@@ -493,7 +490,6 @@ def test_package(config, package, packages_files):
     if config["mirror"]:
         base_command.extend(["--mirror", config["mirror"]])
 
-    # omit distro test if chroot-tgz is not specified.
     ret = 0
     if config["chroot-tgz"]:
         command = base_command[:]
@@ -504,13 +500,13 @@ def test_package(config, package, packages_files):
         command.extend(["--apt", package["Package"]])
 
         output.write("Executing: %s\n" % " ".join(command))
-        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN, True)
+        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
         if ret < 0:
             output.write(f + "\n *** Process KILLED - exceed maximum run time ***\n")
         else:
             output.write(f)
 
-    if ret == 0 and upgrade_testable(config, package, packages_files):
+    if ret == 0 and config["upgrade-test-chroot-tgz"] and upgrade_testable(config, package, packages_files):
         command = base_command[:]
         command.extend(["-b", config["upgrade-test-chroot-tgz"]])
         for distro in config["upgrade-test-distros"].split():
@@ -518,12 +514,11 @@ def test_package(config, package, packages_files):
         command.extend(["--apt", package["Package"]])
 
         output.write("Executing: %s\n" % " ".join(command))
-        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN, True)
+        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
         if ret < 0:
             output.write(" *** Process KILLED - exceed maximum run time ***\n")
         else:
             output.write(f)
-            output.flush()
 
     output.write("\n")
     output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n",
@@ -534,7 +529,7 @@ def test_package(config, package, packages_files):
     else:
         subdir = "pass"
     os.rename(new_name, os.path.join(subdir, output_name))
-    logging.debug("Done with %s" % output_name)
+    logging.debug("Done with %s: %s (%d)" % (output_name, subdir, ret))
 
 
 def create_chroot(config, tarball, distro):

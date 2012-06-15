@@ -134,6 +134,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Generate master command: use global setting and append section.
     - Test the 'dpkg' package for creating/updating a base_tgz.
     - Don't update the tarball for disabled sections.
+    - Rewrite starting piuparts.
   * piuparts-report.py:
     - Remove known_circular_depends handling.
     - Exclude obsolete states from generated report.
