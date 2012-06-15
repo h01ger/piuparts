@@ -2738,6 +2738,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print ''
         print 'Piuparts interrupted by the user, exiting...'
+        panic(1)
         sys.exit(1)
 
 # vi:set et ts=4 sw=4 :
