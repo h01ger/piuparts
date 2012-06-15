@@ -41,6 +41,9 @@ import piupartslib.packagesdb
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 MAX_WAIT_TEST_RUN = 45*60
 
+interrupted = False
+old_sigint_handler = None
+
 def setup_logging(log_level, log_file_name):
     logger = logging.getLogger()
     logger.setLevel(log_level)
@@ -94,6 +97,13 @@ class Alarm(Exception):
 
 def alarm_handler(signum, frame):
     raise Alarm
+
+def sigint_handler(signum, frame):
+    global interrupted
+    interrupted = True
+    print '\nSlave interrupted by the user, waiting for the current test to finish.'
+    print 'Press Ctrl-C again to abort now.'
+    signal(SIGINT, old_sigint_handler)
 
 
 class MasterIsBusy(Exception):
@@ -420,6 +430,8 @@ class Section:
                             log_name(package_name, version)),
                             "Package %s not found" % package_name)
             self._slave.forget_reserved(package_name, version)
+            if interrupted:
+                raise KeyboardInterrupt
         return test_count
 
 
@@ -494,11 +506,21 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
     except Alarm:
         terminate_subprocess(p, kill_all)
         return -1,stdout
+    except KeyboardInterrupt:
+        print '\nSlave interrupted by the user, cleaning up...'
+        try:
+            kill_subprocess(p, kill_all)
+        except KeyboardInterrupt:
+            print '\nTerminating piuparts was interrupted... manual cleanup still neccessary.'
+            raise
+        raise
 
     return p.returncode,stdout
 
 
 def test_package(config, package, packages_files):
+    global old_sigint_handler
+    old_sigint_handler = signal(SIGINT, sigint_handler)
     logging.info("Testing package %s/%s %s" % (config.section, package["Package"], package["Version"]))
 
     output_name = log_name(package["Package"], package["Version"])
@@ -555,6 +577,7 @@ def test_package(config, package, packages_files):
         subdir = "pass"
     os.rename(new_name, os.path.join(subdir, output_name))
     logging.debug("Done with %s: %s (%d)" % (output_name, subdir, ret))
+    signal(SIGINT, old_sigint_handler)
 
 
 def create_chroot(config, tarball, distro):
@@ -664,7 +687,7 @@ if __name__ == "__main__":
      main()
   except KeyboardInterrupt:
      print ''
-     print 'Slave interrupted by the user, exiting... manual cleanup still neccessary.'
+     print 'Slave interrupted by the user, exiting...'
      sys.exit(1)
 
 # vi:set et ts=4 sw=4 :
