@@ -447,6 +447,18 @@ def get_process_children(pid):
     return [int(p) for p in stdout.split()]
 
 def run_test_with_timeout(cmd, maxwait, kill_all=True):
+
+    def terminate_subprocess(p, kill_all):
+        pids = [p.pid]
+        if kill_all:
+            pids.extend(get_process_children(p.pid))
+        for pid in pids:
+            if pid > 0:
+                try:
+                    os.kill(pid, SIGKILL)
+                except OSError:
+                    pass
+
     logging.debug("Executing: %s" % " ".join(cmd))
 
     stdout = ""
@@ -459,16 +471,8 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
         stdout, stderr = p.communicate()
         alarm(0)
     except Alarm:
-          pids = [p.pid]
-          if kill_all:
-              pids.extend(get_process_children(p.pid))
-          for pid in pids:
-              if pid > 0:
-                  try:
-                      os.kill(pid, SIGKILL)
-                  except OSError:
-                      pass
-          return -1,stdout
+        terminate_subprocess(p, kill_all)
+        return -1,stdout
 
     return p.returncode,stdout
 
