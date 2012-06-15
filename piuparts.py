@@ -741,9 +741,9 @@ class Chroot:
 
     def create(self, temp_tgz = None):
         """Create a chroot according to user's wishes."""
+        self.panic_handler_id = do_on_panic(self.remove)
         if not settings.schroot:
             self.create_temp_dir()
-        cid = do_on_panic(self.remove)
 
         if temp_tgz:
             self.unpack_from_tgz(temp_tgz)
@@ -784,8 +784,6 @@ class Chroot:
         if settings.savetgz and not temp_tgz:
             self.pack_into_tgz(settings.savetgz)
 
-        dont_do_on_panic(cid)
-
     def remove(self):
         """Remove a chroot and all its contents."""
         if not settings.keep_tmpdir and os.path.exists(self.name):
@@ -808,6 +806,7 @@ class Chroot:
                 logging.debug("Keeping schroot session %s at %s" % (self.schroot_session, self.name))
             else:
                 logging.debug("Keeping directory tree at %s" % self.name)
+        dont_do_on_panic(self.panic_handler_id)
 
     def was_bootstrapped(self):
         return self.bootstrapped
@@ -1527,6 +1526,7 @@ class VirtServ(Chroot):
 
     def remove(self):
         self._command('close')
+        dont_do_on_panic(self.panic_handler_id)
 
     def _fail(self,m):
         logging.error("adt-virt-* error: "+m)
@@ -2157,7 +2157,6 @@ def install_and_upgrade_between_distros(package_files, packages):
 
     chroot = get_chroot()
     chroot.create()
-    cid = do_on_panic(chroot.remove)
 
     if settings.end_meta:
         # load root_info and selections
@@ -2184,7 +2183,6 @@ def install_and_upgrade_between_distros(package_files, packages):
             save_meta_data(settings.save_end_meta, chroot_state)
 
         chroot.remove()
-        dont_do_on_panic(cid)
 
         # leave indication in logfile why we do what we do
         logging.info("Notice: package selections and meta data from target distro saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
@@ -2195,7 +2193,6 @@ def install_and_upgrade_between_distros(package_files, packages):
         else:
             chroot.create(temp_tgz)
             chroot.remove_temp_tgz_file(temp_tgz)
-        cid = do_on_panic(chroot.remove)
 
     chroot.check_for_no_processes()
 
@@ -2237,7 +2234,6 @@ def install_and_upgrade_between_distros(package_files, packages):
     chroot.check_for_no_processes()
 
     chroot.remove()
-    dont_do_on_panic(cid)
 
     return result
 
@@ -2636,7 +2632,6 @@ def process_packages(package_list):
     if len(settings.debian_distros) == 1:
         chroot = get_chroot()
         chroot.create()
-        cid = do_on_panic(chroot.remove)
 
         chroot_state = {}
         chroot_state["tree"] = chroot.save_meta_data()
@@ -2667,7 +2662,6 @@ def process_packages(package_list):
                     panic()
 
         chroot.remove()
-        dont_do_on_panic(cid)
     else:
         if install_and_upgrade_between_distros(package_files, packages):
             logging.info("PASS: Upgrading between Debian distributions.")
