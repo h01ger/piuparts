@@ -440,18 +440,16 @@ def upgrade_testable(config, package, packages_files):
     else:
         return False
 
-def get_process_children(pid):
-    p = subprocess.Popen('ps --no-headers -o pid --ppid %d' % pid,
-           shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-    stdout, stderr = p.communicate()
-    return [int(p) for p in stdout.split()]
 
 def run_test_with_timeout(cmd, maxwait, kill_all=True):
 
     def terminate_subprocess(p, kill_all):
         pids = [p.pid]
         if kill_all:
-            pids.extend(get_process_children(p.pid))
+            ps = subprocess.Popen(["ps", "--no-headers", "-o", "pid", "--ppid", "%d" % p.pid],
+                                  stdout = subprocess.PIPE)
+            stdout, stderr = ps.communicate()
+            pids.extend([int(pid) for pid in stdout.split()])
         if p.poll() is None:
             print 'Sending SIGINT...'
             try:
