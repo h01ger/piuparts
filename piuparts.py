@@ -2165,7 +2165,7 @@ def install_and_upgrade_between_distros(package_files, packages):
         temp_tgz = None
         if chroot.was_bootstrapped():
             temp_tgz = chroot.create_temp_tgz_file()
-            # FIXME: on panic remove temp_tgz
+            panic_handler_id = do_on_panic(lambda: chroot.remove_temp_tgz_file(temp_tgz))
             chroot.pack_into_tgz(temp_tgz)
 
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
@@ -2193,6 +2193,7 @@ def install_and_upgrade_between_distros(package_files, packages):
         else:
             chroot.create(temp_tgz)
             chroot.remove_temp_tgz_file(temp_tgz)
+            dont_do_on_panic(panic_handler_id)
 
     chroot.check_for_no_processes()
 

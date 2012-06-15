@@ -59,6 +59,7 @@ piuparts (0.45) UNRELEASED; urgency=low
       in the chroot.
     - Perform chroot cleanup after receiving Ctrl-C/SIGINT, too.
     - Let Chroot register/de-register the cleanup panic handler.
+    - Remove temp_tgz on error exit.
   * piuparts.conf:
     - Make master-command a [global] instead of a [section] setting.
       The section name will be given as an argument to this command.

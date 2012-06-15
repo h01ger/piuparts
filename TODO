@@ -123,8 +123,6 @@ for 0.50 and later:
 Low priority stuff (a.k.a. "nobody's said they must have it now")
 -----------------------------------------------------------------
 
-- piuparts.py: add a panic handler to remove the temp_tgz
-
 - create archive of broken packages to provide test cases for
   piuparts testing.
 
