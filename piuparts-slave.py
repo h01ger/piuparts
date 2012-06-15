@@ -463,10 +463,22 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
                 time.sleep(0.5)
                 if p.poll() is not None:
                     break
+        if p.poll() is None:
+            print 'Sending SIGTERM...'
+            p.terminate()
+            # piuparts has 5 seconds to clean up after SIGTERM
+            for i in range(10):
+                time.sleep(0.5)
+                if p.poll() is not None:
+                    break
+        if p.poll() is None:
+            print 'Sending SIGKILL...'
+            p.kill()
         for pid in pids:
             if pid > 0:
                 try:
                     os.kill(pid, SIGKILL)
+                    print "Killed %d" % pid
                 except OSError:
                     pass
 
