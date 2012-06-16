@@ -515,7 +515,8 @@ def update_file(source, target):
     try:
         shutil.copyfile(source, target)
     except IOError as (errno, strerror):
-        logging.error("failed to copy %s to %s: I/O error(%d): %s" % (source, target, errno, strerror))
+        logging.error("failed to copy %s to %s: I/O error(%d): %s" \
+                       % (source, target, errno, strerror))
 
 
 def copy_logs(logs_by_dir, output_dir):
@@ -587,9 +588,11 @@ class Section:
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
 
-        self._master_directory = os.path.abspath(os.path.join(master_directory, self._config.section))
+        self._master_directory = os.path.abspath(os.path.join(master_directory, \
+                                                         self._config.section))
         if not os.path.exists(self._master_directory):
-            logging.debug("Warning: %s did not exist, now created. Did you ever let the slave work?" % self._master_directory)
+            logging.debug("Warning: %s did not exist, now created. Did you ever let the slave work?"
+                           % self._master_directory)
             os.makedirs(self._master_directory)
 
         logging.debug("Loading and parsing Packages file")
@@ -640,7 +643,9 @@ class Section:
         f = file(filename, "w")
         f.write(htmlpage.safe_substitute( {
                     "page_title": html_protect(title+" in "+self._config.section),
-                    "section_navigation": create_section_navigation(self._section_names,self._config.section),
+                    "section_navigation":
+                       create_section_navigation(self._section_names,
+                                                 self._config.section),
                     "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                     "title": html_protect(title),
                     "section": html_protect(self._config.section),
@@ -691,7 +696,10 @@ class Section:
             style = ""
 
           if package_name in self._log_name_cache[vdir]:
-              basename = package_name + "_" + self._log_name_cache[vdir][package_name] + ".log"
+              basename = package_name \
+                       + "_" \
+                       + self._log_name_cache[vdir][package_name] \
+                       + ".log"
 
               links.append("<a href=\"/%s\"%s>%s</a>" % (
                       os.path.join(self._config.section, vdir, basename),
@@ -703,7 +711,9 @@ class Section:
 
     def link_to_maintainer_summary(self, maintainer):
         email = get_email_address(maintainer)
-        return "<a href=\"/%s/maintainer/%s/%s.html\">%s</a>" % (self._config.section,maintainer_subdir(email),email,html_protect(maintainer))
+        return "<a href=\"/%s/maintainer/%s/%s.html\">%s</a>" \
+               % (self._config.section,maintainer_subdir(email),
+                  email,html_protect(maintainer))
 
     def link_to_uploaders(self, uploaders):
         link = ""
@@ -750,7 +760,9 @@ class Section:
           link = ", ".join(links)
 
         if "/bugged/" in link or "/affected/" in link:
-          link += " - <a href=\"http://bugs.debian.org/cgi-bin/pkgreport.cgi?package="+package_name+"\" target=\"_blank\" class=\"bugged\">&nbsp;bug filed&nbsp;</a>"
+          link += " - <a href=\"http://bugs.debian.org/cgi-bin/pkgreport.cgi?package=" \
+                  + package_name \
+                  + "\" target=\"_blank\" class=\"bugged\">&nbsp;bug filed&nbsp;</a>"
 
         return link
 
@@ -812,23 +824,41 @@ class Section:
                         links += "<a href=\"#%s\">%s</a> " % (package, package)
                 else:
                     links = "&nbsp;"
-                rows += "<tr class=\"normalrow\"><td class=\"labelcell\">%s:</td><td class=\"contentcell2\">%s</td><td class=\"contentcell2\" colspan=\"4\">%s</td></tr>" % \
-                        (state, len(packages[state]), links)
+                rows +=   "<tr class=\"normalrow\">" \
+                        + "<td class=\"labelcell\">%s:</td>" % state \
+                        + "<td class=\"contentcell2\">%s</td>" % len(packages[state]) \
+                        + "<td class=\"contentcell2\" colspan=\"4\">%s</td>" % links \
+                        + "</tr>"
 
-            distrolinks = "<tr class=\"normalrow\"><td class=\"labelcell\">other distributions: </td><td class=\"contentcell2\" colspan=\"5\">"
+            distrolinks = "<tr class=\"normalrow\">" \
+                          + "<td class=\"labelcell\">other distributions: </td>" \
+                          + "<td class=\"contentcell2\" colspan=\"5\">"
+
             for section in self._section_names:
               if section != self._config.section:
-                distrolinks += "<a href=\"/"+section+"/maintainer/"+maintainer_subdir(maintainer)+"/"+maintainer+".html\">"+html_protect(section)+"</a> "
+                distrolinks += "<a href=\"/" \
+                               + section \
+                               + "/maintainer/" \
+                               + maintainer_subdir(maintainer) \
+                               + "/" \
+                               + maintainer \
+                               + ".html\">" \
+                               + html_protect(section) \
+                               + "</a> "
             distrolinks += "</td></tr>"
 
             htmlpage = string.Template(HTML_HEADER + MAINTAINER_BODY_TEMPLATE + HTML_FOOTER)
             filename = os.path.join(maintainer_subdir_path, maintainer + ".html")
             f = file(filename, "w")
             f.write(htmlpage.safe_substitute( {
-               "page_title": html_protect("Status of "+maintainer+" packages in "+self._config.section),
+               "page_title": html_protect(  "Status of " \
+                                          + maintainer \
+                                          + " packages in " \
+                                          + self._config.section),
                "maintainer": html_protect(maintainer+" in "+self._config.section),
                "distrolinks": distrolinks,
-               "section_navigation": create_section_navigation(self._section_names,self._config.section),
+               "section_navigation": create_section_navigation(self._section_names,
+                                                               self._config.section),
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": rows + package_rows,
              }))
@@ -859,7 +889,19 @@ class Section:
           else:
             state_style="labelcell"
 
-          binaryrows += "<tr class=\"normalrow\"><td class=\"labelcell\">Binary:</td><td class=\"contentcell2\">%s</td><td class=\"%s\">piuparts-result:</td><td class=\"contentcell2\">%s %s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" %  (binary, state_style, self.link_to_state_page(self._config.section,binary,state), self.links_to_logs(binary, state, logs_by_dir), html_protect(current_version))
+          binaryrows +=   "<tr class=\"normalrow\">" \
+                        + "<td class=\"labelcell\">Binary:</td>" \
+                        + "<td class=\"contentcell2\">%s</td>" \
+                          % binary\
+                        + "<td class=\"%s\">piuparts-result:</td>" \
+                          % state_style \
+                        + "<td class=\"contentcell2\">%s %s</td>" \
+                          % ( self.link_to_state_page(self._config.section,binary,state),
+                              self.links_to_logs(binary, state, logs_by_dir) ) \
+                        + "<td class=\"labelcell\">Version:</td>" \
+                        + "<td class=\"contentcell2\">%s</td>" \
+                          % html_protect(current_version) \
+                        + "</tr>"
 
           if state not in ("successfully-tested", "essential-required"):
             success = False
@@ -868,20 +910,52 @@ class Section:
 
         if binaryrows != "":
           source_state="unknown"
+
           if success: source_state="<img src=\"/images/sunny.png\">"
           if failed:  source_state="<img src=\"/images/weather-severe-alert.png\">"
 
-          sourcerows = "<tr class=\"titlerow\"><td class=\"titlecell\" colspan=\"6\" id=\"%s\">%s in %s</td></tr>" % (source, source, self._config.section)
-          sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Source:</td><td class=\"contentcell2\"><a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a></td><td class=\"labelcell\">piuparts summary:</td><td class=\"contentcell2\">%s</td><td class=\"labelcell\">Version:</td><td class=\"contentcell2\">%s</td></tr>" % (source, html_protect(source), source_state, html_protect(source_version))
-          sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Maintainer:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (self.link_to_maintainer_summary(maintainer))
-          if uploaders:
-            sourcerows += "<tr class=\"normalrow\"><td class=\"labelcell\">Uploaders:</td><td class=\"contentcell2\" colspan=\"5\">%s</td></tr>" % (self.link_to_uploaders(uploaders))
+          sourcerows =    "<tr class=\"titlerow\">" \
+                        + "<td class=\"titlecell\" colspan=\"6\" id=\"%s\">%s in %s</td>" \
+                          % (source, source, self._config.section) \
+                        + "</tr>"
 
-          source_summary_page_path = os.path.join(self._output_directory, "source", source_subdir(source))
+          sourcerows +=   "<tr class=\"normalrow\">" \
+                        + "<td class=\"labelcell\">Source:</td>" \
+                        + "<td class=\"contentcell2\">" \
+                          + "<a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a>" \
+                            % ( source, html_protect(source) ) \
+                          + "</td>" \
+                        + "<td class=\"labelcell\">piuparts summary:</td>" \
+                        + "<td class=\"contentcell2\">%s</td>" \
+                          % source_state \
+                        + "<td class=\"labelcell\">Version:</td>" \
+                        + "<td class=\"contentcell2\">%s</td>" \
+                          % html_protect(source_version) \
+                        + "</tr>" 
+
+          sourcerows += "<tr class=\"normalrow\">" \
+                        + "<td class=\"labelcell\">Maintainer:</td>" \
+                        + "<td class=\"contentcell2\" colspan=\"5\">%s</td>" \
+                          % self.link_to_maintainer_summary(maintainer) \
+                        + "</tr>" 
+
+          if uploaders:
+            sourcerows += "<tr class=\"normalrow\">" \
+                          + "<td class=\"labelcell\">Uploaders:</td>" \
+                          + "<td class=\"contentcell2\" colspan=\"5\">%s</td>" \
+                            % self.link_to_uploaders(uploaders) \
+                          + "</tr>" 
+
+          source_summary_page_path = os.path.join( self._output_directory,
+                                                  "source",
+                                                   source_subdir(source))
+
           if not os.path.exists(source_summary_page_path):
              os.makedirs(source_summary_page_path)
+
           filename = os.path.join(source_summary_page_path, (source + ".html"))
           htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
+
           f = file(filename, "w")
           f.write(htmlpage.safe_substitute( {
              "page_title": html_protect("Status of source package "+source+" in "+self._config.section),
@@ -908,7 +982,9 @@ class Section:
         source_binary_rows = {}
         sources = ""
         for source in self._source_db.get_all_packages():
-            (sourcerows, binaryrows, source_state, maintainer, uploaders) = self.create_source_summary(source, logs_by_dir)
+            (sourcerows, binaryrows, source_state, maintainer, uploaders) = \
+                               self.create_source_summary(source, logs_by_dir)
+
             if source_state != "udeb":
                 sources += "%s: %s\n" % (source, source_state)
                 source_binary_rows[source] = (source_state, sourcerows, binaryrows)
@@ -935,19 +1011,35 @@ class Section:
         # make graph since day 1
         r('v <- t[0:nrow(t),0:12]')
         # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
-        r('palette(c("#4e9a06", "#ef2929", "#d3d7cf", "#5c3566", "#c4a000", "#fce94f", "#a40000", "#888a85", "#2e3436", "#729fcf", "#3465a4", "#204a87", "#555753"))')
+        r('palette(c("#4e9a06", "#ef2929", "#d3d7cf", "#5c3566", "#c4a000", \
+                     "#fce94f", "#a40000", "#888a85", "#2e3436", "#729fcf", \
+                     "#3465a4", "#204a87", "#555753"))')
         r('bitmap(file="'+pngfile+'",type="png16m",width=16,height=9,pointsize=10,res=100)')
-        r('barplot(t(v),col = 1:13, main="Binary packages per state in '+self._config.section+'", xlab="", ylab="Number of binary packages",space=0.1,border=0)')
+        r('barplot(t(v),col = 1:13, \
+          main="Binary packages per state in '+self._config.section+'", \
+          xlab="", ylab="Number of binary packages", space=0.1, border=0)')
         r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
-        return "<tr class=\"normalrow\"> <td class=\"contentcell2\" colspan=\"3\"><a href=\"%s\"><img src=\"/%s/%s\" height=\"450\" width=\"800\" alt=\"Binary package states in %s\"></a></td></tr>\n" % ("states.png", self._config.section, "states.png", self._config.section)
+
+        stats_html = "<tr class=\"normalrow\"> " \
+                     + "<td class=\"contentcell2\" colspan=\"3\">" \
+                     + "<a href=\"%s\">" \
+                       % "states.png" \
+                     + "<img src=\"/%s/%s\" height=\"450\" width=\"800\" alt=\"Binary package states in %s\">" \
+                       % (self._config.section, "states.png", self._config.section) \
+                     + "</a></td></tr>\n"
+
+        return stats_html
+
 
     def create_and_link_to_analysises(self,state):
         link="<ul>"
         for template, linktarget in linktarget_by_template:
           # sucessful logs only have issues and failed logs only have errors
           # and "(un)owned (files/directories)" and symlink issues should only be reported in sid
-          if (state == "failed-testing" and template[-9:] != "issue.tpl") or (state == "successfully-tested" and template[-9:] == "issue.tpl"):
-           if self._config.section == "sid" or ("owned" not in linktarget and "symlink" not in linktarget):
+          if (state == "failed-testing" and template[-9:] != "issue.tpl") \
+              or (state == "successfully-tested" and template[-9:] == "issue.tpl"):
+           if self._config.section == "sid" \
+              or ("owned" not in linktarget and "symlink" not in linktarget):
             substats = ""
 
             tpl = os.path.join(self._output_directory, template)
@@ -984,11 +1076,12 @@ class Section:
                   count_passed = string.count(rows, '"pass/')
                   if count_passed > 0:
                     substats += ": %s passed" % count_passed
-              link += "<li><a href=%s>%s</a>%s</li>" % (
-                                                                       template[:-len(".tpl")]+".html",
-                                                                       linktarget,
-                                                                       substats
-                                                       )
+              link += "<li><a href=%s>%s</a>%s</li>" % \
+                       (
+                           template[:-len(".tpl")]+".html", 
+                           linktarget,
+                           substats,
+                       )
             except:
               logging.debug("analysis template %s does not exist." % template)
 

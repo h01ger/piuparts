@@ -28,6 +28,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Another search fix in create_package_summaries (find_links_to_logs)
       yielding a 10x speedup for piuparts-report runs.
       (Closes: #674672)
+    - Cleanup/wrap some long source lines.
 
   [ Andreas Beckmann ]
   * piuparts.py:
