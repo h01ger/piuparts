@@ -566,8 +566,8 @@ def create_section_navigation(section_names,current_section="sid"):
     for section in section_names:
         tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell\"><a href='/%s'>%s</a></td></tr>\n") % \
                           (html_protect(section), html_protect(section))
-    tablerows += "<tr><td class=\"contentcell\"><a href=\"/%s/maintainer/\">by maintainer / uploader</a></td></tr>" % current_section
-    tablerows += "<tr><td class=\"contentcell\"><a href=\"/%s/source/\">by source package</a></td></tr>" % current_section
+    tablerows += "<tr><td class=\"contentcell\"><a href=\"/%s/maintainer/\">by maintainer / uploader</a></td></tr>\n" % current_section
+    tablerows += "<tr><td class=\"contentcell\"><a href=\"/%s/source/\">by source package</a></td></tr>\n" % current_section
     return tablerows;
 
 def get_email_address(maintainer):
@@ -762,7 +762,7 @@ class Section:
         if "/bugged/" in link or "/affected/" in link:
           link += " - <a href=\"http://bugs.debian.org/cgi-bin/pkgreport.cgi?package=" \
                   + package_name \
-                  + "\" target=\"_blank\" class=\"bugged\">&nbsp;bug filed&nbsp;</a>"
+                  + "\" target=\"_blank\" class=\"bugged\">&nbsp;bug filed&nbsp;</a>\n"
 
         return link
 
@@ -828,7 +828,7 @@ class Section:
                         + "<td class=\"labelcell\">%s:</td>" % state \
                         + "<td class=\"contentcell2\">%s</td>" % len(packages[state]) \
                         + "<td class=\"contentcell2\" colspan=\"4\">%s</td>" % links \
-                        + "</tr>"
+                        + "</tr>\n"
 
             distrolinks = "<tr class=\"normalrow\">" \
                           + "<td class=\"labelcell\">other distributions: </td>" \
@@ -901,7 +901,7 @@ class Section:
                         + "<td class=\"labelcell\">Version:</td>" \
                         + "<td class=\"contentcell2\">%s</td>" \
                           % html_protect(current_version) \
-                        + "</tr>"
+                        + "</tr>\n"
 
           if state not in ("successfully-tested", "essential-required"):
             success = False
@@ -917,7 +917,7 @@ class Section:
           sourcerows =    "<tr class=\"titlerow\">" \
                         + "<td class=\"titlecell\" colspan=\"6\" id=\"%s\">%s in %s</td>" \
                           % (source, source, self._config.section) \
-                        + "</tr>"
+                        + "</tr>\n"
 
           sourcerows +=   "<tr class=\"normalrow\">" \
                         + "<td class=\"labelcell\">Source:</td>" \
@@ -931,20 +931,20 @@ class Section:
                         + "<td class=\"labelcell\">Version:</td>" \
                         + "<td class=\"contentcell2\">%s</td>" \
                           % html_protect(source_version) \
-                        + "</tr>" 
+                        + "</tr>\n" 
 
           sourcerows += "<tr class=\"normalrow\">" \
                         + "<td class=\"labelcell\">Maintainer:</td>" \
                         + "<td class=\"contentcell2\" colspan=\"5\">%s</td>" \
                           % self.link_to_maintainer_summary(maintainer) \
-                        + "</tr>" 
+                        + "</tr>\n" 
 
           if uploaders:
             sourcerows += "<tr class=\"normalrow\">" \
                           + "<td class=\"labelcell\">Uploaders:</td>" \
                           + "<td class=\"contentcell2\" colspan=\"5\">%s</td>" \
                             % self.link_to_uploaders(uploaders) \
-                          + "</tr>" 
+                          + "</tr>\n" 
 
           source_summary_page_path = os.path.join( self._output_directory,
                                                   "source",
@@ -1076,7 +1076,7 @@ class Section:
                   count_passed = string.count(rows, '"pass/')
                   if count_passed > 0:
                     substats += ": %s passed" % count_passed
-              link += "<li><a href=%s>%s</a>%s</li>" % \
+              link += "<li><a href=%s>%s</a>%s</li>\n" % \
                        (
                            template[:-len(".tpl")]+".html", 
                            linktarget,

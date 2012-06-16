@@ -29,6 +29,7 @@ piuparts (0.45) UNRELEASED; urgency=low
       yielding a 10x speedup for piuparts-report runs.
       (Closes: #674672)
     - Cleanup/wrap some long source lines.
+    - Cleanup/wrap some long html lines.
 
   [ Andreas Beckmann ]
   * piuparts.py:
