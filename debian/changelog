@@ -8,6 +8,7 @@ piuparts (0.45) UNRELEASED; urgency=low
   * Remove debian/postinst as it was only dealing with lenny time area
     configuration files.
   * Added server configuration files for apache, sudo, and cron.
+  * Use dh_install, in preparation for multiple package build.
   * packagesdb.py:
     - Calculate recursive reverse dependency count, and store in PackagesDB.
     - Calculate the count of packages being blocked by a failed package.

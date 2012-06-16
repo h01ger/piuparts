@@ -18,8 +18,9 @@ install: build
 	dh_testroot
 	dh_prep
 	dh_installdirs
-	dh_installman
-	$(MAKE) prefix=$(CURDIR)/debian/piuparts/usr etcdir=$(CURDIR)/debian/piuparts/etc all
+	$(MAKE) prefix=$(CURDIR)/debian/tmp/usr etcdir=$(CURDIR)/debian/tmp/etc all
+	dh_install
+	dh_installman --sourcedir=debian/piuparts
 
 binary-arch:
 binary-indep: build install
