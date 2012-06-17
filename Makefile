@@ -34,7 +34,7 @@ install-doc:
 	a2x --copy -f xhtml piuparts.1.txt
 	install -m 0644 piuparts.1.html $(docdir)
 	install -d $(svrdocdir)/
-	install -m 0755 README-server.txt $(svrdocdir)/
+	install -m 0755 README_server.txt $(svrdocdir)/
 
 install-conf:
 	install -d $(etcdir)/piuparts

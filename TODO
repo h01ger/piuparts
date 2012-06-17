@@ -21,7 +21,6 @@ for 0.45:
 
 - doc_root needs to be set in piuparts.conf_piatti and _goldwasser.
 
-- README_piatti.txt and README-Server.txt should agree on either - or _
 
 for 0.46:
 
