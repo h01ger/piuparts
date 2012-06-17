@@ -23,8 +23,21 @@ for 0.45:
 
 - NEWS should mention new master+slave packages.
 
+- split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and 
+  /etc/piuparts/slave.conf?!
+
+- the doc_root needs cleanup and the parameter needs sanitized: a trailing
+  slash is required and the $doc_root substitution should be replaced by 
+  ${doc_root} and there should be no slash following the }
+  (just to have nice html without extra ////)
+
+- slave package writes into the masters homedir... comments?
+
 
 for 0.46:
+
+- use cdn.debian.net as mirror default (instead of "your.mirror.here") and provide
+  a debconf template to overwrite this.
 
 - in maintainer view: sort buggy states up again
 

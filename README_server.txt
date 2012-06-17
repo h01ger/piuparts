@@ -7,9 +7,10 @@ and Packages files. Note that the server can place a significant load on the
 repository. Consider setting up a local mirror, or a caching proxy for http
 and apt-get, to reduce the load.
 
-Start the server using /sbin/slave_run, which will launch a 'screen' session.
-The slave will launch a master process via ssh, as needed, to retrieve work
-and return results. Use /sbin/slave_join to join the screen session. 
+Start the server using /usr/sbin/piuparts_slave_run, which will launch a
+'screen' session. The slave will launch a master process via ssh, as needed,
+to retrieve work and return results. Use /usr/sbin/piuparts_slave_join to 
+join the screen session. 
 
 Logs are stored under /var/lib/piuparts. They are stored there because they
 are basically the result of piuparts running.
