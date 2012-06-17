@@ -504,10 +504,14 @@ def find_files_with_suffix(dir,suffix):
 
 def update_file(source, target):
     if os.path.exists(target):
-        aa = os.stat(source)
-        bb = os.stat(target)
-        if aa.st_size == bb.st_size and aa.st_mtime < bb.st_mtime:
-            return
+        try:
+            aa = os.stat(source)
+            bb = os.stat(target)
+        except OSError:
+            pass
+        else:
+            if aa.st_size == bb.st_size and aa.st_mtime < bb.st_mtime:
+                return
     try:
         shutil.copyfile(source, target)
     except IOError as (errno, strerror):
