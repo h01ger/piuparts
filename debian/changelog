@@ -126,11 +126,15 @@ piuparts (0.45) UNRELEASED; urgency=low
   * detect_archive_issues: Only consider logs older than one day for marking
     as "untestable" to allow piuparts-analyze to handle the log first.
   * Replace all references to lenny and squeeze with squeeze and wheezy.
+  * Add/update several bug reporting templates.
+  * Add custom scripts to aid debugging common problems in maintainer scripts.
+  * Add custom script for squeeze to ensure adduser, ucf, and install-info
+    are not purged.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source
     for the chroot, instead of building a new one with debootstrap or
-    decompress an archived one.  (Closes: #658044)
+    decompressing an archived one.  (Closes: #658044)
 
   [ Mika Pflüger ]
   * piuparts.py: Remove obsolete functions shellquote, apt_get_knows, and
