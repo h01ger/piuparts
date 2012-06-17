@@ -82,8 +82,8 @@ sudo mkdir -p $PIUPARTS_TEMPDIR
 # update slave home, mostly scripts
 #
 cd
-cp -r $SRCDIR/usr/share/piuparts/piupartss/* .
-cp -r $SRCDIR/usr/share/piuparts/piupartss/.forward .
+cp -r $SRCDIR/home/piupartss/* .
+cp -r $SRCDIR/home/piupartss/.forward .
 pwd
 crontab crontab
 
@@ -95,7 +95,7 @@ crontab crontab
 #
 cd ~piupartsm
 
-sudo su - piupartsm -c "cp -r $SRCDIR/usr/share/piuparts/piupartsm/* . ; cp -ax $SRCDIR/usr/share/piuparts/piupartsm/.forward ."
+sudo su - piupartsm -c "cp -r $SRCDIR/home/piupartsm/* . ; cp -ax $SRCDIR/home/piupartsm/.forward ."
 sudo su - piupartsm -c "crontab crontab"
 
 
