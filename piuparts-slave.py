@@ -271,12 +271,13 @@ class Section:
                 os.mkdir(rdir)
 
         self._slave = Slave()
-        self._slave.set_master_host(self._global_config["master-host"])
-        self._slave.set_master_user(self._global_config["master-user"])
-        self._slave.set_master_directory(self._global_config["master-directory"])
-        self._slave.set_master_command(self._global_config["master-command"] + " " + self._config.section)
-        self._log_file=self._config["log-file"]
 
+    def _connect_to_master(self):
+        self._slave.set_master_host(self._config["master-host"])
+        self._slave.set_master_user(self._config["master-user"])
+        self._slave.set_master_directory(self._config["master-directory"])
+        self._slave.set_master_command(self._config["master-command"] + " " + self._config.section)
+        self._slave.connect_to_master(self._config["log-file"])
 
     def _check_tarball(self):
         oldcwd = os.getcwd()
@@ -340,7 +341,7 @@ class Section:
                 return 0
 
         try:
-            self._slave.connect_to_master(self._log_file)
+            self._connect_to_master()
         except KeyboardInterrupt:
             raise
         except MasterIsBusy:
