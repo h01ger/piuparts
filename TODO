@@ -9,6 +9,9 @@ for 0.45:
 - debian/piuparts-server.postinst creates homedirs in /usr/share/piuparts 
   - that's just wrong
 
+- postinst should be able to setup ~piupartss/.ssh/known_hosts from /etc/ssh
+  - even if only for localhost :)
+
 - do not upload with sunny.png weather-severe-alert.png included. Replace them
   with links and add depends to tango-icon-theme. Update copyright.
 
