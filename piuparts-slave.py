@@ -262,8 +262,6 @@ class Section:
         if self._config["chroot-tgz"] and not self._config["distro"]:
           logging.info("The option --chroot-tgz needs --distro.")
 
-        self._base_tgz_ctrl = [int(global_config["max-tgz-age"]),
-                               int(global_config["min-tgz-retry-delay"])]
         if int(self._config["max-reserved"]) > 0:
             self._check_tarball()
 
@@ -287,12 +285,12 @@ class Section:
         tarball = self._config["chroot-tgz"]
         if tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
-                      self._base_tgz_ctrl, self._config["distro"])
+                                         self._config["distro"])
 
         tarball = self._config["upgrade-test-chroot-tgz"]
         if self._config["upgrade-test-distros"] and tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
-                      self._base_tgz_ctrl, self._config["upgrade-test-distros"].split()[0])
+                                         self._config["upgrade-test-distros"].split()[0])
 
         os.chdir(oldcwd)
 
@@ -559,11 +557,11 @@ def create_chroot(config, tarball, distro):
     if os.path.exists(tarball + ".new"):
         os.rename(tarball + ".new", tarball)
 
-def create_or_replace_chroot_tgz(config, tgz, tgz_ctrl, distro):
+def create_or_replace_chroot_tgz(config, tgz, distro):
     forced = 0
     if os.path.exists(tgz):
-        max_tgz_age = tgz_ctrl[0]
-        min_tgz_retry_delay = tgz_ctrl[1]
+        max_tgz_age = int(config["max-tgz-age"])
+        min_tgz_retry_delay = int(config["min-tgz-retry-delay"])
         now = time.time()
         statobj = os.stat(tgz)
         # stat.ST_MTIME is actually time file was initially created
