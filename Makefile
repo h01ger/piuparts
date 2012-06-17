@@ -5,7 +5,7 @@ mandir = $(sharedir)/man
 man1dir = $(mandir)/man1
 libdir = $(prefix)/lib
 docdir = $(prefix)/share/doc/piuparts/
-svrdocdir = $(prefix)/share/doc/piuparts-server
+svrdocdir = $(prefix)/share/doc/piuparts-master
 site26 = $(libdir)/python2.6/dist-packages
 site27 = $(libdir)/python2.7/dist-packages
 etcdir = $(prefix)/etc
@@ -41,7 +41,7 @@ install-conf:
 	install -m 0644 conf/piuparts.conf.sample $(etcdir)/piuparts/piuparts.conf
 
 	install -d $(etcdir)/cron.d
-	install -m 0644 home/piupartsm/crontab $(etcdir)/cron.d/piuparts-server
+	install -m 0644 home/piupartsm/crontab $(etcdir)/cron.d/piuparts-master
 	install -m 0644 home/piupartss/crontab $(etcdir)/cron.d/piuparts-slave
 
 	install -d $(etcdir)/piuparts/known_problems

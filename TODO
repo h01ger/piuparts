@@ -15,11 +15,13 @@ for 0.45:
 - do not upload with sunny.png weather-severe-alert.png included. Replace them
   with links and add depends to tango-icon-theme. Update copyright.
 
-- create piuparts-master and piuparts-slave packages.
-  Maybe this is for 0.46 and 0.45 just has a piuparts-server package. We will
-  see...
-
 - doc_root needs to be set in piuparts.conf_piatti and _goldwasser.
+
+- document new packages... descriptions in debian/control should also be improved.
+
+- conf/piuparts.sudoers needs to be split as well...
+
+- NEWS should mention new master+slave packages.
 
 
 for 0.46:

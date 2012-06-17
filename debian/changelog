@@ -3,6 +3,8 @@ piuparts (0.45) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * Merge piatti.git into piuparts.git, so that piatti.git has become obsolete
     now. Update documentation accordingly.
+  * Further split packaging into piuparts-master, piuparts-slave and 
+    piuparts-common binary packages. (Closes: #585861)
 
   [ David Steele ]
   * Remove debian/postinst as it was only dealing with lenny time area
