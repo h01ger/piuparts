@@ -263,7 +263,8 @@ class Section:
 
         self._base_tgz_ctrl = [int(global_config["max-tgz-age"]),
                                int(global_config["min-tgz-retry-delay"])]
-        self._check_tarball()
+        if int(self._config["max-reserved"]) > 0:
+            self._check_tarball()
 
         for rdir in ["new", "pass", "fail", "untestable", "reserved"]:
             rdir = os.path.join(self._slave_directory, rdir)

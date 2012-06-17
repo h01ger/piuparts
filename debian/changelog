@@ -94,6 +94,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Sleep until the next section can be tried, but at least 1 minute.
     - Simplify and merge Section.setup() into Section.__init__().
     - Generate master command: use global setting and append section.
+    - Don't update the tarball for disabled sections.
   * piuparts-report.py:
     - Remove known_circular_depends handling.
     - Exclude obsolete states from generated report.
