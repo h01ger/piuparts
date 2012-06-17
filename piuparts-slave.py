@@ -246,8 +246,7 @@ class Slave:
 
 class Section:
 
-    def __init__(self, section, global_config):
-        self._global_config = global_config
+    def __init__(self, section):
         self._config = Config(section=section, defaults_section="global")
         self._config.read(CONFIG_FILE)
         self._sleep_until = 0
@@ -624,7 +623,7 @@ def main():
     else:
         section_names = global_config["sections"].split()
 
-    sections = [Section(section_name, global_config)
+    sections = [Section(section_name)
                 for section_name in section_names]
 
     while True:

@@ -77,7 +77,8 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Don't remove eatmydata when minimizing a chroot.  (Closes: #658962)
   * piuparts.conf:
     - Defaults for all [section] settings can be set in the [global] section.
-    - Make master-command a [global] instead of a [section] setting.
+    - Change master-command to not include the section name so that it can be
+      set in the [global] section.
       The section name will be given as an argument to this command.
     - Make doc-root default to "/".
     - Removed deprecated keys: known_circular_depends.
