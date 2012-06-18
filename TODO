@@ -4,14 +4,6 @@ ahings to do for piuparts
 Please also check the BTS, especially the bugs with a severity
 higher than wishlist!
 
-for 0.45:
-
-- do not upload with sunny.png weather-severe-alert.png included. Replace them
-  with links and add depends to tango-icon-theme. Update copyright.
-
-- test installation via packages only.
-
-
 for 0.46:
 
 - slave.postinst should setup ~piupartss/.ssh/known_hosts from /etc/ssh,

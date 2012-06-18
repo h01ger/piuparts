@@ -55,6 +55,7 @@ Recommends:
  python-rpy,
  r-base-dev,
  r-recommended,
+ tango-icon-theme
 Breaks:
  piuparts (<= 0.44)
 Replaces:
