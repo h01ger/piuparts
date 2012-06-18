@@ -1,4 +1,4 @@
-Things to do for piuparts
+ahings to do for piuparts
 =========================
 
 Please also check the BTS, especially the bugs with a severity
@@ -6,27 +6,29 @@ higher than wishlist!
 
 for 0.45:
 
+- check that slave.postist is sane regarding master home dir+ssh keys.
+
+- do not upload with sunny.png weather-severe-alert.png included. Replace them
+  with links and add depends to tango-icon-theme. Update copyright.
+
+- conf/piuparts.sudoers needs to be moved to slave package
+
+- test installation via packages only.
+
+
+for 0.46:
+
 - slave installation should setup ~piupartss/.ssh/known_hosts from /etc/ssh
   - even if only for localhost and using triggers
   piuparts-slave.postinst:
     dpkg-trigger piuparts-master-please-install-the-slave-key
 
-- do not upload with sunny.png weather-severe-alert.png included. Replace them
-  with links and add depends to tango-icon-theme. Update copyright.
+- piuparts-master package fails install, remove, install.
 
 - split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and 
   /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
 
-- conf/piuparts.sudoers needs to be split as well...
-
-- test installation via packages only.
-
-- merge/cleanup README_piatti.txt and README_server.txt? (Maybe leave that for 0.46).
-
-- master+slave packages fail to purge. master package fails install, remove, install.
-
-
-for 0.46:
+- merge/cleanup README_piatti.txt and README_server.txt?
 
 - use cdn.debian.net as mirror default (instead of "your.mirror.here") and provide
   a debconf template to overwrite this.
