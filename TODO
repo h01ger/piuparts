@@ -6,8 +6,6 @@ higher than wishlist!
 
 for 0.45:
 
-- check that slave.postist is sane regarding master home dir+ssh keys.
-
 - do not upload with sunny.png weather-severe-alert.png included. Replace them
   with links and add depends to tango-icon-theme. Update copyright.
 
@@ -16,9 +14,9 @@ for 0.45:
 
 for 0.46:
 
-- slave installation should setup ~piupartss/.ssh/known_hosts from /etc/ssh
-  - even if only for localhost and using triggers
-  piuparts-slave.postinst:
+- slave.postinst should setup ~piupartss/.ssh/known_hosts from /etc/ssh,
+  even if only for localhost 
+- slave.postinst should setup ~piupartsm/.ssh/authorized_keys using triggers
     dpkg-trigger piuparts-master-please-install-the-slave-key
 
 - piuparts-master package fails install, remove, install.
