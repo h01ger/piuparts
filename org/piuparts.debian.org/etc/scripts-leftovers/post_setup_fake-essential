@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+# If dbconfig-common was already purged, packages that have used
+# dbconfig-common in postinst will leave configuration files in
+# /etc/dbconfig-common
+DBCONFIG="dbconfig-common"
+
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	dpkg)
+		# skip while creating the tarball
+		exit 0
+		;;
+esac
+
+
+echo "*** Adding fake essential packages ***"
+apt-get install -yf $DBCONFIG
