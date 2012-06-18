@@ -23,7 +23,6 @@ Depends:
  debootstrap,
  lsb-release,
  lsof,
- python-apt,
  python-debian,
  ${misc:Depends},
  ${python:Depends}
@@ -43,17 +42,18 @@ Description: .deb package installation, upgrading, and removal testing tool
 Package: piuparts-master
 Architecture: all
 Depends:
+ piuparts-common (= ${source:Version}),
  adduser,
- apache2,
  openssh-server,
- piuparts (>= 0.45),
- piuparts-common,
  python-debianbts,
  ${misc:Depends},
  ${python:Depends}
 Recommends:
+ apache2,
  ghostscript,
- python-rpy
+ python-rpy,
+ r-base-dev,
+ r-recommended,
 Breaks:
  piuparts (<= 0.44)
 Replaces:
@@ -71,15 +71,19 @@ Description: piuparts master components
 Package: piuparts-slave
 Architecture: all
 Depends:
+ piuparts (= ${source:Version}),
+ piuparts-common (= ${source:Version}),
  adduser,
  openssh-client,
- piuparts (>= 0.45),
- piuparts-common,
  screen,
  ${misc:Depends},
  ${python:Depends}
 Suggests:
  schroot
+Breaks:
+ piuparts (<= 0.44)
+Replaces:
+ piuparts (<= 0.44)
 Description: piuparts slave components
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.
@@ -95,6 +99,10 @@ Depends:
  python-apt,
  ${misc:Depends},
  ${python:Depends}
+Breaks:
+ piuparts (<= 0.44)
+Replaces:
+ piuparts (<= 0.44)
 Description: common piuparts components
  piupartslib, common library used by piuparts-master, -reports, -analyze and
  -slave.
