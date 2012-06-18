@@ -1,3 +1,15 @@
+piuparts (0.45) unstable; urgency=low
+
+  * For those interested in running their own local instance of
+    piuparts.debian.org there are now piuparts-master and piuparts-slave
+    packages for ease of installation.
+  * This is useful for both developing piuparts as well as doing QA on the
+    Debian archive or other .deb archives.
+  * See README_server.txt and README_piatti.txt in the piuparts-master
+    package for more information.
+
+ -- Holger Levsen <holger@debian.org>  Mon, 18 Jun 2012 09:26:27 +0200
+
 piuparts (0.38) unstable; urgency=low
 
   * New default behaviours in piuparts:

@@ -5,6 +5,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     now. Update documentation accordingly.
   * Further split packaging into piuparts-master, piuparts-slave and 
     piuparts-common binary packages. (Closes: #585861)
+  * Update piuparts.NEWS about master+slave packages.
 
   [ David Steele ]
   * Remove debian/postinst as it was only dealing with lenny time area
