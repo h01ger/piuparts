@@ -1281,16 +1281,15 @@ class Section:
 def main():
     setup_logging(logging.DEBUG, None)
 
-    section_names = []
     if len(sys.argv) > 1:
         print 'piuparts-report takes no command line parameters.'
         sys.exit(1)
-    else:
-        global_config = Config(section="global")
-        global_config.read(CONFIG_FILE)
-        section_names = global_config["sections"].split()
-        master_directory = global_config["master-directory"]
-        output_directory = global_config["output-directory"]
+
+    global_config = Config(section="global")
+    global_config.read(CONFIG_FILE)
+    section_names = global_config["sections"].split()
+    master_directory = global_config["master-directory"]
+    output_directory = global_config["output-directory"]
     doc_root = global_config["doc-root"].strip()
     if not doc_root.startswith("/"):
         doc_root = "/" + doc_root
@@ -1320,7 +1319,7 @@ def main():
 
     else:
         logging.debug("Warning: %s does not exist!?! Creating it for you now." % master_directory)
-        os.mkdir(master_directory)
+        os.makedirs(master_directory)
 
 
 if __name__ == "__main__":
