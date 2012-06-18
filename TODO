@@ -23,6 +23,8 @@ for 0.45:
 
 - merge/cleanup README_piatti.txt and README_server.txt? (Maybe leave that for 0.46).
 
+- master+slave packages fail to purge. master package fails install, remove, install.
+
 
 for 0.46:
 
