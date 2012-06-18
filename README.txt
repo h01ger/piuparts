@@ -410,18 +410,20 @@ used for all further sections.
 
 * "sections" defaults to sid and defines which sections should be processed in master-slave mode. Each section defined here has to have a section with the section specific settings explained below. The first section defined should always be sid, because the data from first section a package is in is used for the source package html report.
 
+* "master-host" is the host where the master exists. The slave will give this host to ssh. This option is mandatory.
+
+* "master-user" is the username of the master. The slave will log in using this username. This option is mandatory.
+
+* "master-directory" is the directory where the master keeps its files. Can be relative to the master's home directory.
+
+* "output-directory" is the directory where piuparts-report places the logfiles, generated html files, charts, ... that can be served by a webserver.
+
 ==== section specific configuration
 
 The section specific settings will be reloaded each time a section
 is being run. All these keys can be specified in the [global]
 section, too, and will serve as defaults for all other sections
 (overriding the builtin defaults).
-
-* "master-host" is the host where the master exists. The slave will give this host to ssh. This option is mandatory.
-
-* "master-user" is the username of the master. The slave will log in using this username. This option is mandatory.
-
-* "master-directory" is the directory where the master keeps its files. Can be relative to the master's home directory.
 
 * "master-command" is the command to run on master-host to start the master. When the master has been installed from the Debian package, the command is 'python /usr/share/piuparts/piuparts-master'.  The section name will be given as a command line argument to this command.
 
