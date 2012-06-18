@@ -109,9 +109,12 @@ mkdir -p master slave backup
 sudo chown piupartss:piuparts slave
 sudo chown piupartsm:piuparts master htdocs backup
 sudo chmod 775 master slave htdocs
-cd $PIUPARTS_PREFIX/etc
+# create tango links
+sudo ln -sf /usr/share/icons/Tango/24x24/status/sunny.png htdocs/images/sunny.png
+sudo ln -sf /usr/share/icons/Tango/24x24/status/weather-severe-alert.png htdocs/images/weather-severe-alert.png
 # to support multiple host with this setup
 HOSTNAME=`hostname`
+cd $PIUPARTS_PREFIX/etc
 ln -sf piuparts.conf.$HOSTNAME piuparts.conf
 
 
