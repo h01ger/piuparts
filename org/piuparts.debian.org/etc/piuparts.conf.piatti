@@ -12,6 +12,7 @@ master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
 master-directory = /org/piuparts.debian.org/master/
 output-directory = /org/piuparts.debian.org/htdocs/
+doc-root = /
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master
 # 30*60
 idle-sleep = 1800

@@ -13,6 +13,7 @@ master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
 master-directory = /org/piuparts.debian.org/master/
 output-directory = /org/piuparts.debian.org/htdocs/
+doc-root = /
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master
 # this value is too high for production (it will cause piuparts-slave to sleep
 # for a whole day) but useful for testing master-slave mode, for running on a
