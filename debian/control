@@ -6,8 +6,9 @@ Section: devel
 Priority: extra
 Standards-Version: 3.9.3
 Build-Depends:
- debhelper (>=7),
- python (>=2.6.6-3~)
+ debhelper (>=8),
+ python (>=2.6.6-3~),
+ python-support
 Build-Depends-Indep:
  asciidoc,
  git,

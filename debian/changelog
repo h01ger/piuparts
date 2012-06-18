@@ -7,6 +7,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     piuparts-common binary packages (Closes: #585861) and cleanup
     dependencies.
   * Update piuparts.NEWS about master+slave packages.
+  * Switch to debhelper8 packaging.
 
   [ David Steele ]
   * Remove debian/postinst as it was only dealing with lenny time area
