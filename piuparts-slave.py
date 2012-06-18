@@ -28,7 +28,7 @@ import sys
 import stat
 import time
 import logging
-from signal import alarm, signal, SIGALRM, SIGKILL
+from signal import alarm, signal, SIGALRM, SIGINT, SIGKILL
 import subprocess
 import fcntl
 import random
@@ -40,6 +40,9 @@ import piupartslib.packagesdb
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 MAX_WAIT_TEST_RUN = 45*60
+
+interrupted = False
+old_sigint_handler = None
 
 def setup_logging(log_level, log_file_name):
     logger = logging.getLogger()
@@ -94,6 +97,13 @@ class Alarm(Exception):
 
 def alarm_handler(signum, frame):
     raise Alarm
+
+def sigint_handler(signum, frame):
+    global interrupted
+    interrupted = True
+    print '\nSlave interrupted by the user, waiting for the current test to finish.'
+    print 'Press Ctrl-C again to abort now.'
+    signal(SIGINT, old_sigint_handler)
 
 
 class MasterIsBusy(Exception):
@@ -420,6 +430,8 @@ class Section:
                             log_name(package_name, version)),
                             "Package %s not found" % package_name)
             self._slave.forget_reserved(package_name, version)
+            if interrupted:
+                raise KeyboardInterrupt
         return test_count
 
 
@@ -440,42 +452,75 @@ def upgrade_testable(config, package, packages_files):
     else:
         return False
 
-def get_process_children(pid):
-    p = subprocess.Popen('ps --no-headers -o pid --ppid %d' % pid,
-           shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-    stdout, stderr = p.communicate()
-    return [int(p) for p in stdout.split()]
 
-def run_test_with_timeout(cmd, maxwait, kill_all):
-      logging.debug("Executing: %s" % cmd)
+def run_test_with_timeout(cmd, maxwait, kill_all=True):
 
-      stdout = ""
-      sh_cmd = "{ %s; } 2>&1" % cmd
-      p = subprocess.Popen(sh_cmd, shell=True,
-                     stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-      if maxwait > 0:
-          signal(SIGALRM, alarm_handler)
-          alarm(maxwait)
-      try:
-          stdout, stderr = p.communicate()
-          if maxwait > 0:
-              alarm(0)
-      except Alarm:
-          pids = [p.pid]
-          if kill_all:
-              pids.extend(get_process_children(p.pid))
-          for pid in pids:
-              if pid > 0:
-                  try:
-                      os.kill(pid, SIGKILL)
-                  except OSError:
-                      pass
-          return -1,stdout
+    def terminate_subprocess(p, kill_all):
+        pids = [p.pid]
+        if kill_all:
+            ps = subprocess.Popen(["ps", "--no-headers", "-o", "pid", "--ppid", "%d" % p.pid],
+                                  stdout = subprocess.PIPE)
+            stdout, stderr = ps.communicate()
+            pids.extend([int(pid) for pid in stdout.split()])
+        if p.poll() is None:
+            print 'Sending SIGINT...'
+            try:
+                os.killpg(os.getpgid(p.pid), SIGINT)
+            except OSError:
+                pass
+            # piuparts has 30 seconds to clean up after Ctrl-C
+            for i in range(60):
+                time.sleep(0.5)
+                if p.poll() is not None:
+                    break
+        if p.poll() is None:
+            print 'Sending SIGTERM...'
+            p.terminate()
+            # piuparts has 5 seconds to clean up after SIGTERM
+            for i in range(10):
+                time.sleep(0.5)
+                if p.poll() is not None:
+                    break
+        if p.poll() is None:
+            print 'Sending SIGKILL...'
+            p.kill()
+        for pid in pids:
+            if pid > 0:
+                try:
+                    os.kill(pid, SIGKILL)
+                    print "Killed %d" % pid
+                except OSError:
+                    pass
 
-      return p.returncode,stdout
+    logging.debug("Executing: %s" % " ".join(cmd))
+
+    stdout = ""
+    p = subprocess.Popen(cmd, preexec_fn=os.setpgrp,
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    if maxwait > 0:
+        signal(SIGALRM, alarm_handler)
+        alarm(maxwait)
+    try:
+        stdout, stderr = p.communicate()
+        alarm(0)
+    except Alarm:
+        terminate_subprocess(p, kill_all)
+        return -1,stdout
+    except KeyboardInterrupt:
+        print '\nSlave interrupted by the user, cleaning up...'
+        try:
+            kill_subprocess(p, kill_all)
+        except KeyboardInterrupt:
+            print '\nTerminating piuparts was interrupted... manual cleanup still neccessary.'
+            raise
+        raise
+
+    return p.returncode,stdout
 
 
 def test_package(config, package, packages_files):
+    global old_sigint_handler
+    old_sigint_handler = signal(SIGINT, sigint_handler)
     logging.info("Testing package %s/%s %s" % (config.section, package["Package"], package["Version"]))
 
     output_name = log_name(package["Package"], package["Version"])
@@ -488,41 +533,39 @@ def test_package(config, package, packages_files):
     package.dump(output)
     output.write("\n")
 
-    # omit distro test if chroot-tgz is not specified.
+    base_command = config["piuparts-cmd"].split()
+    if config["mirror"]:
+        base_command.extend(["--mirror", config["mirror"]])
+
     ret = 0
     if config["chroot-tgz"]:
-        command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s" % \
-                    config
+        command = base_command[:]
+        command.extend(["-b", config["chroot-tgz"]])
+        command.extend(["-d", config["distro"]])
         if config["keep-sources-list"] in ["yes", "true"]:
-            command += " --keep-sources-list "
-        if config["mirror"]:
-            command += " --mirror %s " % config["mirror"]
-        command += " " + package["Package"]
+            command.append("--keep-sources-list")
+        command.extend(["--apt", package["Package"]])
 
-        output.write("Executing: %s\n" % command)
-        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN, True)
+        output.write("Executing: %s\n" % " ".join(command))
+        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
         if ret < 0:
             output.write(f + "\n *** Process KILLED - exceed maximum run time ***\n")
         else:
             output.write(f)
 
-    if ret == 0 and upgrade_testable(config, package, packages_files):
-        distros = config["upgrade-test-distros"].split()
-        distros = ["-d " + distro.strip() for distro in distros]
-        distros = " ".join(distros)
-        command = "%(piuparts-cmd)s -ab %(upgrade-test-chroot-tgz)s " % config
-        command += distros
-        if config["mirror"]:
-          command += " --mirror %s " % config["mirror"]
-        command += " " + package["Package"]
+    if ret == 0 and config["upgrade-test-chroot-tgz"] and upgrade_testable(config, package, packages_files):
+        command = base_command[:]
+        command.extend(["-b", config["upgrade-test-chroot-tgz"]])
+        for distro in config["upgrade-test-distros"].split():
+            command.extend(["-d", distro])
+        command.extend(["--apt", package["Package"]])
 
-        output.write("Executing: %s\n" % command)
-        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN, True)
+        output.write("Executing: %s\n" % " ".join(command))
+        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
         if ret < 0:
             output.write(" *** Process KILLED - exceed maximum run time ***\n")
         else:
             output.write(f)
-            output.flush()
 
     output.write("\n")
     output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n",
@@ -533,7 +576,8 @@ def test_package(config, package, packages_files):
     else:
         subdir = "pass"
     os.rename(new_name, os.path.join(subdir, output_name))
-    logging.debug("Done with %s" % output_name)
+    logging.debug("Done with %s: %s (%d)" % (output_name, subdir, ret))
+    signal(SIGINT, old_sigint_handler)
 
 
 def create_chroot(config, tarball, distro):
@@ -643,7 +687,7 @@ if __name__ == "__main__":
      main()
   except KeyboardInterrupt:
      print ''
-     print 'Slave interrupted by the user, exiting... manual cleanup still neccessary.'
+     print 'Slave interrupted by the user, exiting...'
      sys.exit(1)
 
 # vi:set et ts=4 sw=4 :
