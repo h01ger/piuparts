@@ -14,8 +14,6 @@ for 0.45:
 - do not upload with sunny.png weather-severe-alert.png included. Replace them
   with links and add depends to tango-icon-theme. Update copyright.
 
-- improve descriptions in debian/control.
-
 - split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and 
   /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
 

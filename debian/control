@@ -39,11 +39,14 @@ Recommends: python-rpy, ghostscript
 Breaks: piuparts (<= 0.44)
 Replaces: piuparts (<= 0.44)
 Description: piuparts master components
- A master/slave piuparts server, along the lines of
- http://piuparts.debian.org/.
+ piuparts is meant as a quality assurance tool for people who create .deb
+ packages to test them before they upload them to the Debian package archive.
+ A master/slave piuparts installation is used for testing complete archives
+ as it is done on http://piuparts.debian.org/.
  .
- This package installs the piuparts-master, which needs one or more slave to
- operate.
+ This package provides the piuparts-master, which needs one or more slave to
+ operate. It also contains piuparts-reports to generate web pages with the
+ testing results as well as documentation.
 
 Package: piuparts-slave
 Architecture: all
@@ -53,15 +56,21 @@ Depends: ${python:Depends}, ${misc:Depends},
     piuparts-common, piuparts (>= 0.45)
 Suggests: schroot
 Description: piuparts slave components
- A master/slave piuparts server, along the lines of
- http://piuparts.debian.org/.
+ piuparts is meant as a quality assurance tool for people who create .deb
+ packages to test them before they upload them to the Debian package archive.
+ A master/slave piuparts installation is used for testing complete archives
+ as it is done on http://piuparts.debian.org/.
  .
- This package installs the piuparts-slave.
+ This package provides the piuparts slave components, which need a piuparts
+ master to operate. See the documentation in the piuparts-master package.
 
 Package: piuparts-common
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends}, python-apt
 Description: common piuparts components
- piupartslib, common library used by piuparts-master, piuparts-reports and
- piuparts-slave.
+ piupartslib, common library used by piuparts-master, -reports, -analyze and
+ -slave.
+ .
+ See http://piuparts.debian.org or the piuparts package to learn more about
+ piuparts.
 
