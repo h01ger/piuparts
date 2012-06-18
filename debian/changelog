@@ -13,6 +13,7 @@ piuparts (0.45) UNRELEASED; urgency=low
   * Move /etc/sudoers.d/piuparts to piuparts-slave package.
   * piuparts-master: depend on tango-icon-theme and drop sunny.png and
     weather-severe-alert.png and use links instead.
+  * Reviewed and merged/cherry-picked all of the following changes.
 
   [ David Steele ]
   * Remove debian/postinst as it was only dealing with lenny time area
