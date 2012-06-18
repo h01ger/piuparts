@@ -18,4 +18,11 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		;;
 esac
 
+if [ -d /var/lib/mysql ]; then
+	log_debug
+	echo "Enabling MySQL database purge."
+	echo "mysql-server-5.1 mysql-server-5.1/postrm_remove_databases boolean true" | debconf-set-selections
+	echo "mysql-server-5.5 mysql-server-5.5/postrm_remove_databases boolean true" | debconf-set-selections
+fi
+
 exit 0
