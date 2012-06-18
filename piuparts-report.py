@@ -81,7 +81,7 @@ HTML_HEADER = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="$doc_root">About + News</a>
+      <a href="$doc_root/">About + News</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -106,12 +106,12 @@ HTML_HEADER = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://piuparts.debian.org/doc/README.html" target="_blank">piuparts README</a>
+      <a href="$doc_root/doc/README.html" target="_blank">piuparts README</a>
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://piuparts.debian.org/doc/piuparts.1.html" target="_blank">piuparts manpage</a>
+      <a href="$doc_root/doc/piuparts.1.html" target="_blank">piuparts manpage</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -327,7 +327,9 @@ INDEX_BODY_TEMPLATE = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      piuparts is meant as a quality assurance tool for people who create .deb packages to test them before they upload them to the Debian package archive. See the <a href="http://piuparts.debian.org/doc/README.html" target="_blank">piuparts README</a> for a quick intro and then read the <a href="http://piuparts.debian.org/doc/piuparts.1.html" target="_blank">piuparts manpage</a> to learn about all the fancy options!
+      piuparts is meant as a quality assurance tool for people who create .deb packages to test them before they upload them to the Debian package archive.
+      See the <a href="$doc_root/doc/README.html" target="_blank">piuparts README</a> for a quick intro
+      and then read the <a href="$doc_root/doc/piuparts.1.html" target="_blank">piuparts manpage</a> to learn about all the fancy options!
      </td>
     </tr>
     </table>
@@ -566,11 +568,11 @@ def read_file(filename):
 def create_section_navigation(section_names,current_section, doc_root):
     tablerows = ""
     for section in section_names:
-        tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell\"><a href='%s%s'>%s</a></td></tr>\n") % \
+        tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell\"><a href='%s/%s'>%s</a></td></tr>\n") % \
                           (doc_root, html_protect(section), html_protect(section))
-    tablerows += "<tr><td class=\"contentcell\"><a href=\"%s%s/maintainer/\">by maintainer / uploader</a></td></tr>\n" \
+    tablerows += "<tr><td class=\"contentcell\"><a href=\"%s/%s/maintainer/\">by maintainer / uploader</a></td></tr>\n" \
                  % (doc_root, current_section)
-    tablerows += "<tr><td class=\"contentcell\"><a href=\"%s%s/source/\">by source package</a></td></tr>\n" \
+    tablerows += "<tr><td class=\"contentcell\"><a href=\"%s/%s/source/\">by source package</a></td></tr>\n" \
                  % (doc_root, current_section)
     return tablerows;
 
@@ -709,7 +711,7 @@ class Section:
                        + self._log_name_cache[vdir][package_name] \
                        + ".log"
 
-              links.append("<a href=\"%s%s\"%s>%s</a>" % (
+              links.append("<a href=\"%s/%s\"%s>%s</a>" % (
                       self._doc_root,
                       os.path.join(self._config.section, vdir, basename),
                       style,
@@ -720,7 +722,7 @@ class Section:
 
     def link_to_maintainer_summary(self, maintainer):
         email = get_email_address(maintainer)
-        return "<a href=\"%s%s/maintainer/%s/%s.html\">%s</a>" \
+        return "<a href=\"%s/%s/maintainer/%s/%s.html\">%s</a>" \
                % (self._doc_root,self._config.section,maintainer_subdir(email),
                   email,html_protect(maintainer))
 
@@ -732,7 +734,7 @@ class Section:
 
     def link_to_source_summary(self, package_name):
         source_name = self._binary_db.get_control_header(package_name, "Source")
-        link = "<a href=\"%s%s/source/%s\">%s</a>" % (
+        link = "<a href=\"%s/%s/source/%s\">%s</a>" % (
                 self._doc_root,
                 self._config.section,
                 source_subdir(source_name)+"/"+source_name+".html",
@@ -742,7 +744,7 @@ class Section:
     def link_to_state_page(self, section, package_name, link_target):
         if self._binary_db.has_package(package_name):
             state = self._binary_db.get_package_state(package_name)
-            link = "<a href=\"%s%s/%s\">%s</a>" % (
+            link = "<a href=\"%s/%s/%s\">%s</a>" % (
                 self._doc_root,
                 section,
                 "state-"+state+".html"+"#"+package_name,
@@ -849,6 +851,7 @@ class Section:
               if section != self._config.section:
                 distrolinks += "<a href=\"" \
                                + self._doc_root \
+                               + "/" \
                                + section \
                                + "/maintainer/" \
                                + maintainer_subdir(maintainer) \
@@ -874,7 +877,7 @@ class Section:
                                                                self._doc_root),
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": rows + package_rows,
-               "doc_root": self._doc_root
+               "doc_root": self._doc_root,
              }))
             f.close()
 
@@ -1071,7 +1074,7 @@ class Section:
                  "section_navigation": create_section_navigation(self._section_names,self._config.section,self._doc_root),
                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                  "rows": rows,
-                 "doc_root": self._doc_root
+                 "doc_root": self._doc_root,
                }))
               f.close()
               if state == "failed-testing":
@@ -1206,7 +1209,7 @@ class Section:
                                         "section": html_protect(self._config.section),
                                         "list": vlist,
                                         "aside": aside,
-                                        "doc_root": self._doc_root
+                                        "doc_root": self._doc_root,
                                        }))
 
 
@@ -1278,17 +1281,20 @@ class Section:
 def main():
     setup_logging(logging.DEBUG, None)
 
-    section_names = []
     if len(sys.argv) > 1:
         print 'piuparts-report takes no command line parameters.'
         sys.exit(1)
-    else:
-        global_config = Config(section="global")
-        global_config.read(CONFIG_FILE)
-        section_names = global_config["sections"].split()
-        master_directory = global_config["master-directory"]
-        output_directory = global_config["output-directory"]
-        doc_root = global_config["doc-root"]
+
+    global_config = Config(section="global")
+    global_config.read(CONFIG_FILE)
+    section_names = global_config["sections"].split()
+    master_directory = global_config["master-directory"]
+    output_directory = global_config["output-directory"]
+    doc_root = global_config["doc-root"].strip()
+    if not doc_root.startswith("/"):
+        doc_root = "/" + doc_root
+    if doc_root.endswith("/"):
+        doc_root = doc_root[:-1]
 
     if os.path.exists(master_directory):
         for section_name in section_names:
@@ -1308,12 +1314,12 @@ def main():
                                  "page_title": "About piuparts.d.o and News",
                                  "section_navigation": create_section_navigation(section_names,"sid",doc_root),
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-                                 "doc_root": doc_root
+                                 "doc_root": doc_root,
                               }))
 
     else:
         logging.debug("Warning: %s does not exist!?! Creating it for you now." % master_directory)
-        os.mkdir(master_directory)
+        os.makedirs(master_directory)
 
 
 if __name__ == "__main__":

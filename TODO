@@ -15,8 +15,6 @@ for 0.45:
 - do not upload with sunny.png weather-severe-alert.png included. Replace them
   with links and add depends to tango-icon-theme. Update copyright.
 
-- doc_root needs to be set in piuparts.conf_piatti and _goldwasser.
-
 - document new packages... descriptions in debian/control should also be improved.
 
 - conf/piuparts.sudoers needs to be split as well...
@@ -26,10 +24,7 @@ for 0.45:
 - split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and 
   /etc/piuparts/slave.conf?!
 
-- the doc_root needs cleanup and the parameter needs sanitized: a trailing
-  slash is required and the $doc_root substitution should be replaced by 
-  ${doc_root} and there should be no slash following the }
-  (just to have nice html without extra ////)
+- improve doc-root description in README.txt
 
 - slave package writes into the masters homedir... comments?
 
