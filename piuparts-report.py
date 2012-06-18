@@ -426,7 +426,7 @@ class Config(piupartslib.conf.Config):
                 "master-directory": ".",
                 "description": "",
                 "max-reserved": 1,
-                "doc-root": "/piuparts/",
+                "doc-root": "/",
             },
             defaults_section=defaults_section)
 

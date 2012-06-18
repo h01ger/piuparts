@@ -79,6 +79,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Defaults for all [section] settings can be set in the [global] section.
     - Make master-command a [global] instead of a [section] setting.
       The section name will be given as an argument to this command.
+    - Make doc-root default to "/".
     - Removed deprecated keys: known_circular_depends.
   * master/db/report: Add a new category /affected/ for failed logs where the
     bug is in a dependency, but only exposed by the package being tested.

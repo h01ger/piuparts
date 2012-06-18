@@ -418,7 +418,7 @@ used for all further sections.
 
 * "output-directory" is the directory where piuparts-report places the logfiles, generated html files, charts, ... that can be served by a webserver.
 
-* "doc-root" is the location where the webserver will serve the piuparts report from. Default: "/piuparts/". Use "/" if it will be on the root of some domain.
+* "doc-root" is the location where the webserver will serve the piuparts report from. Default: "/".
 
 ==== section specific configuration
 

@@ -16,6 +16,7 @@ master-host = localhost
 master-user = piupartsm
 master-directory = /var/lib/piuparts/master
 output-directory = /var/lib/piuparts/htdocs
+doc-root = /piuparts/
 master-command = python /usr/share/piuparts/piuparts-master
 idle-sleep = 300
 max-tgz-age = 604800
