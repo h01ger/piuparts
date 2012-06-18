@@ -12,6 +12,10 @@ log_debug() {
 #
 
 case ${PIUPARTS_OBJECTS%%=*} in
+	docbookwiki)
+		log_debug
+		echo "docbookwiki docbookwiki/purge_books boolean true" | debconf-set-selections
+		;;
 	ifetch-tools)
 		log_debug
 		echo "ifetch-tools ifetch-tools/purge boolean true" | debconf-set-selections
