@@ -6,27 +6,24 @@ higher than wishlist!
 
 for 0.45:
 
-- debian/piuparts-server.postinst creates homedirs in /usr/share/piuparts 
-  - that's just wrong
-
-- postinst should be able to setup ~piupartss/.ssh/known_hosts from /etc/ssh
-  - even if only for localhost :)
+- slave installation should setup ~piupartss/.ssh/known_hosts from /etc/ssh
+  - even if only for localhost and using triggers
+  piuparts-slave.postinst:
+    dpkg-trigger piuparts-master-please-install-the-slave-key
 
 - do not upload with sunny.png weather-severe-alert.png included. Replace them
   with links and add depends to tango-icon-theme. Update copyright.
 
 - document new packages... descriptions in debian/control should also be improved.
 
-- conf/piuparts.sudoers needs to be split as well...
-
 - NEWS should mention new master+slave packages.
 
 - split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and 
-  /etc/piuparts/slave.conf?!
+  /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
 
-- improve doc-root description in README.txt
+- conf/piuparts.sudoers needs to be split as well...
 
-- slave package writes into the masters homedir... comments?
+- test installation via packages only.
 
 
 for 0.46:
@@ -135,7 +132,7 @@ for 0.50 and later:
 - move shell cronjobs functionality into master, slave & report
 
 
-Low priority stuff (a.k.a. "nobody's said they must have it now")
+1.0 should really have automated testing of piuparts itself...
 -----------------------------------------------------------------
 
 - create archive of broken packages to provide test cases for
