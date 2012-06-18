@@ -10,6 +10,14 @@ Usertags: piuparts
 Hi,
 
 during a test with piuparts I noticed your package failed to purge.
+According to policy 7.2 you cannot rely on the depends being available
+during purge, only the essential packages are available for sure.
+
+Filing this as important because a.) it's a clear policy violation (to
+not clean up at purge) b.) having a piuparts clean archive is a release
+goal since lenny and c.) this package being piuparts buggy blocks
+packages depending on it from being tested by piuparts (and thus
+possibly the detection of more severe problems).
 
 From the attached log (scroll to the bottom...):
 

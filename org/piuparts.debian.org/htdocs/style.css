@@ -228,7 +228,7 @@ h1.header {
 table.containertable {
     clear: both;
     background-color: #ddd;
-    border: none; 
+    border: none;
 }
 table.lefttable {
     width: 100%;
@@ -247,19 +247,19 @@ table.righttable {
 td.containercell {
     background-color: #ddd;
 }
-td.titlecell { 
-    color: white; 
+td.titlecell {
+    color: white;
     background-color: #d70751;
-    font-weight: bold; 
+    font-weight: bold;
     text-align: center;
     padding: 0.2em 0.2em 0.1em 0.2em;
     border-top: 3px solid #999;
     border-bottom: 1px solid #999;
 }
-td.alerttitlecell { 
-    color: white; 
+td.alerttitlecell {
+    color: white;
     background-color: #0755d7;
-    font-weight: bold; 
+    font-weight: bold;
     text-align: center;
     padding: 0.2em 0.2em 0.1em 0.2em;
     border-top: 3px solid #999;

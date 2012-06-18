@@ -6,16 +6,30 @@ higher than wishlist!
 
 for 0.45:
 
-- create piuparts-master and piuparts-slave packages.
+- slave installation should setup ~piupartss/.ssh/known_hosts from /etc/ssh
+  - even if only for localhost and using triggers
+  piuparts-slave.postinst:
+    dpkg-trigger piuparts-master-please-install-the-slave-key
 
-- mv piatti.git piuparts.git/doc/examples  and include it into a new
-  binary package.  when doing so keep in mind the two tango icons
-  and credit those in debian/copyright.
-  Instead of copying the icons the piuparts-server package should rather 
-  depend on the tango icons package.
+- do not upload with sunny.png weather-severe-alert.png included. Replace them
+  with links and add depends to tango-icon-theme. Update copyright.
+
+- split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and 
+  /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
+
+- conf/piuparts.sudoers needs to be split as well...
+
+- test installation via packages only.
+
+- merge/cleanup README_piatti.txt and README_server.txt? (Maybe leave that for 0.46).
+
+- master+slave packages fail to purge. master package fails install, remove, install.
 
 
 for 0.46:
+
+- use cdn.debian.net as mirror default (instead of "your.mirror.here") and provide
+  a debconf template to overwrite this.
 
 - in maintainer view: sort buggy states up again
 
@@ -30,7 +44,7 @@ for 0.46:
 - sometimes a chroot doesn't get removed on piatti - find out
   why and fix it.
 - slave_run: cleanup stale proc mountpoints
-  -> there is ~piupartss/bin/slave_cleanup now, maybe it should be executed 
+  -> there is ~piupartss/bin/slave_cleanup now, maybe it should be executed
   at the beginning of slave_run?
 
 - copy/move .kpr files to htdocs?
@@ -39,7 +53,7 @@ for 0.46:
   lowest precedence, that is, only when there are no new logs to be tested.
 
 - write reportbug(-like) wrapper for mass bug filing (start
-  simple, make it more sophisticated later). 
+  simple, make it more sophisticated later).
 
 - generate piuparts.1.txt automatically from piuparts.py - see
   this blog post for a nice howto:
@@ -72,7 +86,7 @@ for 0.48 and later:
 
 - mounting /proc and perhaps others (usbfs, sysfs, /dev/pts,
   etc.) in the chroot might be a good idea because some packages
-  might need this.  
+  might need this.
 
 - report:
   - write stats about the reasons for failures, as its done with
@@ -80,7 +94,7 @@ for 0.48 and later:
     "fragment".)
   - RSS feeds of logs
   - do more fancy R graphs, eg. also per state
-  - sort packages on maintainer pages alphabetically (states first 
+  - sort packages on maintainer pages alphabetically (states first
     though)
   - link (and target) to piuparts.d.o configuration is static to
     piatti. should refer to the actual hosts configuration, eg
@@ -113,17 +127,15 @@ for 0.50 and later:
   turn off debugging output for piuparts.py - see
   http://docs.python.org/library/logging.html
 
-- commandline-switches for all programms 
+- commandline-switches for all programms
 
 - move shell cronjobs functionality into master, slave & report
 
 
-Low priority stuff (a.k.a. "nobody's said they must have it now")
+1.0 should really have automated testing of piuparts itself...
 -----------------------------------------------------------------
 
-- piuparts.py: add a panic handler to remove the temp_tgz
-
-- create archive of broken packages to provide test cases for 
+- create archive of broken packages to provide test cases for
   piuparts testing.
 
 - create emacspeak-broken-dpkg-preconfigure package for broken

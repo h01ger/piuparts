@@ -1,6 +1,6 @@
 #
 # This is the configuration file for piuparts running in master-slave mode on a host called goldwasser
-# 
+#
 # For more information on this setup see http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob;f=README_piatti.txt
 #
 #
@@ -13,9 +13,10 @@ master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
 master-directory = /org/piuparts.debian.org/master/
 output-directory = /org/piuparts.debian.org/htdocs/
+doc-root = /
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master
 # this value is too high for production (it will cause piuparts-slave to sleep
-# for a whole day) but useful for testing master-slave mode, for running on a 
+# for a whole day) but useful for testing master-slave mode, for running on a
 # test system 24/7 without causing load for 24/7
 idle-sleep = 86400
 
@@ -58,7 +59,7 @@ max-reserved = 50
 auto-reschedule = no
 log-file = wheezy.log
 
- 
+
 [squeeze2wheezy]
 description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
 packages-url = http://ftp.de.debian.org/debian/dists/wheezy/main/binary-amd64/Packages.bz2

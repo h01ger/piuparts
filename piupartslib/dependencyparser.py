@@ -1,17 +1,17 @@
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# 
+#
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 2 of the License, or (at your
 # option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 # Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 
+# this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
 
@@ -125,7 +125,7 @@ class SimpleDependency:
         self.arch = arch
 
     def __repr__(self):
-        return "<DEP: %s, %s, %s, %s>" % (self.name, self.operator, 
+        return "<DEP: %s, %s, %s, %s>" % (self.name, self.operator,
                                           self.version, self.arch)
 
 
@@ -145,7 +145,7 @@ class DependencyParser:
 
         depends-field ::= EMPTY | dependency ("," dependency)*
         dependency ::= possible-dependency ("|" possible-dependency)*
-        possible-dependency ::= package-name version-dependency? 
+        possible-dependency ::= package-name version-dependency?
                                 arch-restriction?
         version-dependency ::= "(" relative-operator version-number ")"
         relative-operator ::= "<<" | "<=" | "=" | ">=" | ">>" | "<" | ">"
@@ -160,7 +160,7 @@ class DependencyParser:
         arch-name ::= alphanumeric alphanumeric*
         EMPTY ::= ""
         integer ::= digit digit*
-        alphanumeric ::= 
+        alphanumeric ::=
             "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" |
             "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" |
             "u" | "v" | "w" | "x" | "y" | "z" | digit
@@ -172,7 +172,7 @@ class DependencyParser:
     White space can occur between any tokens except inside package-name,
     version-number, or arch-name. Some of the headers restrict the syntax
     somewhat, e.g., Provides does not allow version-dependency, but this is
-    not included in the syntax for simplicity. 
+    not included in the syntax for simplicity.
 
     Note: Added "_" to name-char, because some packages (type-handling
     in particular) use Provides: headers with bogus package names.

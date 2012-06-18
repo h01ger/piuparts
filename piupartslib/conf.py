@@ -1,17 +1,17 @@
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# 
+#
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 2 of the License, or (at your
 # option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 # Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 
+# this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
 
@@ -34,9 +34,10 @@ class MissingMandatorySetting(Exception):
 
 class Config(UserDict.UserDict):
 
-    def __init__(self, section, defaults, mandatory):
+    def __init__(self, section, defaults, mandatory=[], defaults_section=None):
         UserDict.UserDict.__init__(self)
         self._section = section
+        self._defaults_section = defaults_section
         for key, value in defaults.iteritems():
             self[key] = value
         self._mandatory = mandatory
@@ -47,6 +48,8 @@ class Config(UserDict.UserDict):
         for key in self.keys():
             if cp.has_option(self._section, key):
                 self[key] = cp.get(self._section, key)
+            elif self._defaults_section and cp.has_option(self._defaults_section, key):
+                self[key] = cp.get(self._defaults_section, key)
             elif key in self._mandatory:
                 raise MissingMandatorySetting(filename, key)
 

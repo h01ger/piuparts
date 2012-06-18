@@ -1,17 +1,17 @@
 #!/bin/sh
 
 # Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
-# 
+#
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 2 of the License, or (at your
 # option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 # Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
@@ -47,7 +47,7 @@ get_config_value SECTIONS global sections
 
 #
 # this scripts monitors the output of piuparts-slave
-# when running in screen started by ~piupartss/bin/slave_run 
+# when running in screen started by ~piupartss/bin/slave_run
 #
 
 SCREENLOG=$MASTER/../slave/screenlog.0
@@ -56,7 +56,7 @@ LOCKFILE="$MONITORDIR/slave-problems"
 
 mkdir -p $MONITORDIR
 cd $MONITORDIR
-chown piupartsm.piuparts $MONITORDIR
+chown piupartsm:piuparts $MONITORDIR
 chmod 775 $MONITORDIR
 
 stamptime=$(/usr/bin/stat -c %Z $SCREENLOG 2>/dev/null || echo 0)

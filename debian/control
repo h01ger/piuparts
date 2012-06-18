@@ -4,8 +4,8 @@ Uploaders: Holger Levsen <holger@debian.org>
 Section: devel
 Priority: extra
 Standards-Version: 3.9.3
-Build-Depends: debhelper (>=7)
-Build-Depends-Indep: python (>=2.6.6-3~), asciidoc, xmlto, git
+Build-Depends: debhelper (>=7), python (>=2.6.6-3~)
+Build-Depends-Indep: asciidoc, xmlto, git
 Homepage: http://piuparts.debian.org
 Vcs-Git: git://anonscm.debian.org/piuparts/piuparts.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
@@ -13,9 +13,10 @@ X-Python-Version: >= 2.6
 
 Package: piuparts
 Architecture: all
-Depends: apt, ${python:Depends}, debootstrap, lsof, lsb-release, 
-    python-debian, ${misc:Depends}, python-debianbts, python-apt
-Suggests: python-rpy, ghostscript, schroot
+Depends: ${python:Depends}, ${misc:Depends},
+    debootstrap, lsof, lsb-release,
+    python-debian, python-apt
+Suggests: schroot
 Description: .deb package installation, upgrading, and removal testing tool
  piuparts tests that .deb packages (as used by Debian) handle
  installation, upgrading, and removal correctly. It does this by
@@ -23,6 +24,53 @@ Description: .deb package installation, upgrading, and removal testing tool
  upgrading, and removing packages in that environment, and comparing the
  state of the directory tree before and after. piuparts reports any
  files that have been added, removed, or modified during this process.
- . 
+ .
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.
+
+Package: piuparts-master
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends},
+    python-debianbts,
+    apache2,
+    openssh-server, adduser,
+    piuparts-common, piuparts (>= 0.45)
+Recommends: python-rpy, ghostscript
+Breaks: piuparts (<= 0.44)
+Replaces: piuparts (<= 0.44)
+Description: piuparts master components
+ piuparts is meant as a quality assurance tool for people who create .deb
+ packages to test them before they upload them to the Debian package archive.
+ A master/slave piuparts installation is used for testing complete archives
+ as it is done on http://piuparts.debian.org/.
+ .
+ This package provides the piuparts-master, which needs one or more slave to
+ operate. It also contains piuparts-reports to generate web pages with the
+ testing results as well as documentation.
+
+Package: piuparts-slave
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends},
+    screen,
+    openssh-client, adduser,
+    piuparts-common, piuparts (>= 0.45)
+Suggests: schroot
+Description: piuparts slave components
+ piuparts is meant as a quality assurance tool for people who create .deb
+ packages to test them before they upload them to the Debian package archive.
+ A master/slave piuparts installation is used for testing complete archives
+ as it is done on http://piuparts.debian.org/.
+ .
+ This package provides the piuparts slave components, which need a piuparts
+ master to operate. See the documentation in the piuparts-master package.
+
+Package: piuparts-common
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}, python-apt
+Description: common piuparts components
+ piupartslib, common library used by piuparts-master, -reports, -analyze and
+ -slave.
+ .
+ See http://piuparts.debian.org or the piuparts package to learn more about
+ piuparts.
+

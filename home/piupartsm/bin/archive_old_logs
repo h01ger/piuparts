@@ -1,17 +1,17 @@
 #!/bin/sh
 
 # Copyright 2009-2011 Holger Levsen (holger@layer-acht.org)
-# 
+#
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 2 of the License, or (at your
 # option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 # Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
@@ -43,14 +43,14 @@ get_config_value SECTIONS global sections
 #
 # archive old log files
 #
-for SECTION in $SECTIONS ; do 
+for SECTION in $SECTIONS ; do
 	mkdir -p $MASTER/$SECTION/archive
 	cd $MASTER/$SECTION
 	mkdir -p archive/pass archive/bugged archive/affected archive/fail
 	test -f archive/stamp || touch -d @0 archive/stamp  # start at the epoch
 	touch -d yesterday archive/stamp.new  # look back one more day the next time we will be run
 	OUTPUT=""
-	# loop through all packages logs 
+	# loop through all packages logs
 	for PACKAGE in $(find pass/ fail/ bugged/ affected/ -name '*.log' -newer archive/stamp | cut -d"_" -f1 | cut -d"/" -f2 | sort -u) ; do
 		# all logs except the last one (|sed '$d' deletes the last line)
 		OLDLOGS=$( ls -tr1 --color=none bugged/${PACKAGE}_*.log affected/${PACKAGE}_*.log fail/${PACKAGE}_*.log pass/${PACKAGE}_*.log 2>/dev/null|sed '$d' )

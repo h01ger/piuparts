@@ -1,19 +1,19 @@
 #!/usr/bin/python
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# 
+#
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 2 of the License, or (at your
 # option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 # Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 
+# this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
 
@@ -48,13 +48,14 @@ def setup_logging(log_level, log_file_name):
 
 class Config(piupartslib.conf.Config):
 
-    def __init__(self, section="master"):
+    def __init__(self, section="master", defaults_section=None):
         piupartslib.conf.Config.__init__(self, section,
             {
                 "log-file": None,
                 "packages-url": None,
                 "master-directory": ".",
-            }, "")
+            },
+            defaults_section=defaults_section)
 
 
 class CommandSyntaxError(Exception):
@@ -164,8 +165,8 @@ class Master(Protocol):
         if package is None:
             self._short_response("error")
         else:
-            self._short_response("ok", 
-                                 package["Package"], 
+            self._short_response("ok",
+                                 package["Package"],
                                  package["Version"])
 
     def _unreserve(self, command, args):
@@ -199,7 +200,7 @@ def main():
         master_directory = global_config["master-directory"]
 
         section = sys.argv[1]
-        config = Config(section=section)
+        config = Config(section=section, defaults_section="global")
         config.read(CONFIG_FILE)
 
         setup_logging(logging.DEBUG, config["log-file"])

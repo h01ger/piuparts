@@ -24,7 +24,7 @@ By default, piuparts can do three different tests:
 
 . An upgrade test between Debian releases. This test is enabled by using the '-d' option multiple times and disables the other two tests. It sets up the chroot with the first distribution named, then upgrades it to each successive one, and then remembers the directory tree state at the end. After this, it starts over with the chroot of the first distribution, installs the desired packages (via *apt-get*), and does the successive upgrading (via *apt-get dist-upgrade*). Then, if package files (and not just package names) were given on the command line, it installs them. Finally, it reports problems against the state of the directory tree at the last distribution compared with the state without the packages having been installed. This test can be quite slow to execute.
 +
-Note that this does not work with experimental, because *apt-get* does not automatically upgrade to packages in experimental. To test a particular package or group of packages in experimental, use the second test. 
+Note that this does not work with experimental, because *apt-get* does not automatically upgrade to packages in experimental. To test a particular package or group of packages in experimental, use the second test.
 
 
 Command line arguments are the paths to package files (e.g., _piuparts_1.0-1_all.deb_), paths to changes files (e.g., _piuparts_1.0-1_i386.changes_), or names of packages, if the '--apt' option is given.
@@ -51,7 +51,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   Bind-mount a directory inside the chroot.
 
 *-d* 'name', *--distribution*='name'::
-  Which Debian distribution to use: a code name (for example lenny, squeeze or sid) or experimental. The default is sid (=unstable).
+  Which Debian distribution to use: a code name (for example squeeze, wheezy or sid) or experimental. The default is sid (=unstable).
 
 *-D* 'flavor', *--defaults* 'flavor'::
   Use default settings suitable for a particular flavor of Debian: either debian or ubuntu.
@@ -215,10 +215,10 @@ piuparts ../foo_1.0-2_i386.changes
 piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.changes
 ----
 
-If you want to test that a package installs properly in the stable (currently lenny) Debian release, then can be upgraded to the testing (currently squeeze) and unstable (sid) versions, and then uninstalled without problems, you would give the following command:
+If you want to test that a package installs properly in the stable (currently squeeze) Debian release, then can be upgraded to the testing (currently wheezy) and unstable (sid) versions, and then uninstalled without problems, you would give the following command:
 
 ----
-piuparts -a -d lenny -d squeeze -d sid foo
+piuparts -a -d squeeze -d wheezy -d sid foo
 ----
 
 ENVIRONMENT

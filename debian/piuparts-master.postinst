@@ -1,0 +1,59 @@
+#!/bin/sh
+
+set -e 
+
+pgroup=piuparts
+muser=piupartsm
+scriptroot=/usr/share/piuparts
+userhome=/var/lib/piuparts
+
+case "$1" in
+  configure)
+
+    addgroup --system --quiet $pgroup
+
+    for user in $muser
+    do
+        adduser --system --quiet --home $userhome/$user --ingroup $pgroup \
+                --shell /bin/sh $user
+
+        touch $userhome/$user/.profile
+        chown $user:$pgroup $userhome/$user/.profile
+
+        if [ $user = "piupartsm" ] ;
+        then
+            role="master"
+        else
+            role="slave"
+        fi
+
+        if ! grep -q $scriptroot/$role $userhome/$user/.profile ;
+        then
+            echo PATH=\$PATH:$scriptroot:$scriptroot/$role \
+                 >>$userhome/$user/.profile
+        fi
+
+        if [ ! -d $userhome/$user/.ssh ] ; then
+            install -d -o $user -g $pgroup -m 0755 $userhome/$user/.ssh
+        fi
+    done
+
+    install -d -o $muser -g $pgroup -m 0755 $userhome/master
+    install -d -o $muser -g $pgroup -m 0755 $userhome/master/monitor-slave
+    install -d -o $muser -g $pgroup -m 0755 $userhome/backup
+
+    install -d -o $muser -g $pgroup -m 0755 $userhome/htdocs
+    cp -rf $scriptroot/htdocs/* $userhome/htdocs/
+
+    ;;
+
+  abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+  *)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 1
+    ;;
+esac
+
+
+#DEBHELPER#

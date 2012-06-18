@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -e 
+
+user=piupartsm
+
+case "$1" in
+  purge)
+    rm -rf /var/lib/piuparts/$user
+
+    if [ -d /var/lib/piuparts/htdocs ] ; then
+        rm -rf /var/lib/piuparts/htdocs
+    fi
+
+    if [ -d /var/lib/piuparts/backup ] ; then
+        rm -rf /var/lib/piuparts/backup
+    fi
+
+    if [ -d /var/lib/piuparts ] ; then
+        rmdir /var/lib/piuparts
+    fi
+
+    if [ -d /etc/piuparts ] ; then
+        rm -rf /etc/piuparts
+    fi
+
+    ;;
+  upgrade|remove|failed-upgrade|abort-install|abort-upgrade)
+    ;;
+  *)
+    echo "postrm called with unknown argument \`$1'" >&2
+    exit 1
+    ;;
+esac
+
+#DEBHELPER#
+

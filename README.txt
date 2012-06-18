@@ -1,12 +1,12 @@
 piuparts README
 ---------------
 
-Author: Lars Wirzenius 
+Author: Lars Wirzenius
 Email: <liw@iki.fi>
 
 After reading this README you probably also want to have a look
 at the piuparts manpage, to learn about the available options.
-But read this document first! 
+But read this document first!
 
 == Introduction
 
@@ -27,9 +27,9 @@ License, version 2, or (at your option) any later version.
 Testing your packages with piuparts is as easy as typing at the
 console prompt:
 
----- 
+----
 # piuparts sm_0.6-1_i386.deb
----- 
+----
 
 Note that in order to work, piuparts has to be executed as user
 root, so you need to be logged as root or use 'sudo'.
@@ -38,22 +38,22 @@ This will create a sid chroot with debootstrap, where it'll test
 your package.
 
 If you want to test your package in another release, for example,
-lenny, you can do so with:
+squeeze, you can do so with:
 
----- 
-# piuparts ./sm_0.6-1_i386.deb -d lenny
----- 
+----
+# piuparts ./sm_0.6-1_i386.deb -d squeeze
+----
 
 By default, this will read the first mirror from your
 '/etc/apt/sources.list ' file. If you want to specify a different
 mirror you can do it with the option '-m':
 
----- 
+----
 # piuparts ./sm_0.6-1_i386.deb -m http://ftp.de.debian.org/debian
----- 
+----
 
-It's possible to use -d more than once. For example, to do a first 
-installation in stable, then upgrade to testing, then upgrade to 
+It's possible to use -d more than once. For example, to do a first
+installation in stable, then upgrade to testing, then upgrade to
 unstable and then upgrade to the local package use this:
 
 ----
@@ -65,7 +65,7 @@ unstable and then upgrade to the local package use this:
 
 If you use piuparts on a regular basis, waiting for it to create
 a chroot every time takes too much time, even if you are using a
-local mirror or a caching tool such as approx. 
+local mirror or a caching tool such as approx.
 
 Piuparts has the option of using a tarball as the contents of the
 initial chroot, instead of building a new one with debootstrap. A
@@ -73,27 +73,27 @@ easy way to use this option is use a tarball created with
 pbuilder. If you are not a pbuilder user, you can create this
 tarball with the command (again, as root):
 
----- 
+----
 # pbuilder create
----- 
+----
 
 then you only have to remember to update this tarball with:
 
----- 
+----
 # pbuilder update
----- 
+----
 
 To run piuparts using this tarball:
 
----- 
+----
 # piuparts -p ./sm_0.6-1_i386.deb
----- 
+----
 
 If you want to use your own pre-made tarball:
 
----- 
+----
 # piuparts --basetgz=/path/to/my/tarball.tgz ./sm_0.6-1_i386.deb
----- 
+----
 
 Piuparts also has the option of using a tarball as the contents
 of the initial chroot, instead of building a new one with
@@ -118,7 +118,7 @@ version (deb files given to piuparts in the input), removes and
 purges.
 
 If you only want to perfom the first test, you can use the
-option: '--no-upgrade-test'  
+option: '--no-upgrade-test'
 
 === Testing packages in the config-files-remaining state
 
@@ -137,10 +137,10 @@ This exercises different code paths in the maintainer scripts.
 When piuparts finishes all the tests satisfactorily, you will get
 these lines as final output:
 
----- 
+----
 0m39.5s INFO: PASS: All tests.
 0m39.5s INFO: piuparts run ends.
----- 
+----
 
 Anyway, it is a good idea to read the whole log in order to
 discover possible problems that did not stop the piuparts
@@ -304,7 +304,7 @@ with a space, and followed by a line containing only a period.
 A sample session (">>" indicates what the slave sends, "<<" what
 the master responds with):
 
-----                
+----
 << hello
 >> pass liwc 1.2.3-4
 >>  The piuparts
@@ -326,51 +326,51 @@ The slave shall not speak until the master has spoken.
 
 Commands and responses in this protocol:
 
-----                
+----
 Command: reserve
 Success: ok <packagename> <packageversion>
 Failure: error
-----                    
+----
 Slave asks master to reserve a package (a particular version of
 it) for the slave to test.  The slave may reserve any number of
 packages to test. If the transaction fails, there are no more
 packages to test, and the slave should disconnect, wait some time
 and try again.
 
----- 
+----
 Command: unreserve <packagename> <packageversion>
 Success: ok
----- 
+----
 
 Slave informs master it cannot test the desired version of a
 package (perhaps it went away from the mirror?).
 
----- 
+----
 Command: pass <packagename> <packageversion>
           log file contents
          .
 Success: ok
----- 
+----
 
 Slave reports that it has tested a particular version of a
 package and that the package passed all tests. Master records
 this and stores the log file somewhere suitable.
 
----- 
+----
 Command: fail <packagename> <packageversion>
           log file contents
          .
 Success: ok
----- 
+----
 
 Same as "pass", but package failed one or more tests.
 
----- 
+----
 Command: untestable <packagename> <packageversion>
           log file contents
          .
 Success: ok
----- 
+----
 
 Slave reports that a particular package is untestable, possibly
 because it insists on interacting with the user.
@@ -401,7 +401,7 @@ this:
 ----
     [master]
     foo = bar
----- 
+----
 
 ==== global configuration
 
@@ -416,6 +416,17 @@ used for all further sections.
 
 * "master-directory" is the directory where the master keeps its files. Can be relative to the master's home directory.
 
+* "output-directory" is the directory where piuparts-report places the logfiles, generated html files, charts, ... that can be served by a webserver.
+
+* "doc-root" is the location where the webserver will serve the piuparts report from. Default: "/".
+
+==== section specific configuration
+
+The section specific settings will be reloaded each time a section
+is being run. All these keys can be specified in the [global]
+section, too, and will serve as defaults for all other sections
+(overriding the builtin defaults).
+
 * "master-command" is the command to run on master-host to start the master. When the master has been installed from the Debian package, the command is 'python /usr/share/piuparts/piuparts-master'.  The section name will be given as a command line argument to this command.
 
 * "idle-sleep" is the length of time the slave should wait before querying the master again if the master didn't have any new packages to test. In seconds, so a value of 300 would mean five minutes, and that seems to be a good value when there are fairly few slaves per master. The default is 300 seconds.
@@ -423,11 +434,6 @@ used for all further sections.
 * "max-tgz-age" is used to specify the maximum age (in seconds) after which basesystem tarballs will be recreated. If recreation fails, the old tarball will be used again. The default is 2592000 seconds, which is 30 days.
 
 * "min-tgz-retry-delay" is used to specify the minimum time (in seconds) between attempts to recreate a tarball which was created more than "max-tgz-age" seconds ago. The default is 21600 seconds, which is 6h.
-
-==== section specific configuration
-
-The section specific settings will be reloaded each time a section
-is being run.
 
 * "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "/dev/null", that is, log messages are not put in a file.
 
@@ -443,7 +449,7 @@ is being run.
 
 * "chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the basic install/purge testing. If the tarball doesn't exist, the slave creates it. This can be left empty if only upgrade tests should be run.
 
-* "upgrade-test-distros" is the space delimited list of distributions the slave should use for testing upgrades between distributions (i.e., Debian versions). Currently, "lenny squeeze sid" is a good choice.  Leave this unset if you do not want to run upgrade tests.
+* "upgrade-test-distros" is the space delimited list of distributions the slave should use for testing upgrades between distributions (i.e., Debian versions). Currently, "squeeze wheezy sid" is a good choice.  Leave this unset if you do not want to run upgrade tests.
 
 * "upgrade-test-chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the first distribution in upgrade-test-distros. If the file does not exist, the slave creates it. This can be left empty if only basic tests should be run.
 
@@ -462,7 +468,7 @@ to set them all to be sure what the configuration actually is.
 
 In addition to some of the above settings the following
 configuration settings are used by the scripts in '~piuparts?/bin/'
-used to run piuparts.debian.org. They are all optional, default 
+used to run piuparts.debian.org. They are all optional, default
 values are set in the scripts.
 
 * "prefix" (global) sets the prefix of the piuparts installation, e.g. for finding $prefix/share/piuparts/ .

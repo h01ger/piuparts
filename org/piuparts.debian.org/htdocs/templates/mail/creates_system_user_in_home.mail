@@ -1,0 +1,33 @@
+To: submit@bugs.debian.org
+Subject: creates system user in /home
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package creates a system user
+with a home directory in /home/$SYSUSER, which is a policy violation.
+
+The FHS (which is part of the policy) states:
+"/home : User home directories (optional)"
+"/home is a fairly standard concept, but it is clearly a site-specific
+filesystem. The setup will differ from host to host. Therefore, no
+program should rely on this location."
+http://www.debian.org/doc/packaging-manuals/fhs/fhs-2.3.html#HOMEUSERHOMEDIRECTORIES
+
+System users are usually placed in /var/lib.
+
+Possible problems that can arise in case /home is a remote file system:
+* the local root user may not be allowed to write to /home
+* $SYSUSER may have different UIDs on different hosts
+
+For that particular piuparts test /home has been made unusable.
+From the attached log (scroll to the bottom...):
+
+
+
+cheers,

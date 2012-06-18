@@ -1,0 +1,2 @@
+/usr/share/piuparts/slave/slave_run /usr/sbin/piuparts_slave_run
+/usr/share/piuparts/slave/slave_join /usr/sbin/piuparts_slave_join

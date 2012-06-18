@@ -1,4 +1,4 @@
-Notes about the piuparts installation on piatti.debian.org 
+Notes about the piuparts installation on piatti.debian.org
 ==========================================================
 
 == ToDo
@@ -33,7 +33,7 @@ piupartss       ALL=(ALL) NOPASSWD: ALL
 * Copy 'http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob_plain;f=home/piupartss/bin/update-piuparts-setup' on the host and run it under the 'piupartss' user. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further updates from git as well as the initial installation. It needs the piupartss and piupartsm user set up as described below, though.
 * mkdir /org/piuparts.debian.org
 * sudo ln -s /org/piuparts.debian.org/etc/ /etc/piuparts
-	
+
 === Apache configuration
 
 (Any other webserver will do.)
@@ -71,7 +71,7 @@ piupartss@piatti:/org/piuparts.debian.org$ ~/bin/update-piuparts-setup
 Run the following script under *your* user account you will start piuparts-slave on piatti, piuparts-master will be started automatically by the slave.
 
 ----
-holger@piatti:~$ sudo /home/piupartss/bin/slave_run 
+holger@piatti:~$ sudo /home/piupartss/bin/slave_run
 ----
 
 There are several cronjobs installed via '~piupartsm/crontab' and '~piupartss/crontab') which monitor the slave and the host it's running on.
@@ -83,7 +83,7 @@ It's possible to kill the slave any time by pressing CTRL-C, the currently done 
 Run the following script under *your* user account:
 
 ----
-holger@piatti:~$ sudo /home/piupartss/bin/slave_join 
+holger@piatti:~$ sudo /home/piupartss/bin/slave_join
 ----
 
 === Filing bugs

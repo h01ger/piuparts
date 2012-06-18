@@ -1,19 +1,19 @@
 #!/usr/bin/python
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# 
+#
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 2 of the License, or (at your
 # option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 # Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 
+# this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
 
@@ -59,7 +59,7 @@ def setup_logging(log_level, log_file_name):
 
 class Config(piupartslib.conf.Config):
 
-    def __init__(self, section="slave"):
+    def __init__(self, section="slave", defaults_section=None):
         self.section = section
         piupartslib.conf.Config.__init__(self, section,
             {
@@ -84,7 +84,8 @@ class Config(piupartslib.conf.Config):
                 "keep-sources-list": "no",
                 "arch": None,
                 "precedence": "1",
-            }, "")
+            },
+            defaults_section=defaults_section)
 
 
 class Alarm(Exception):
@@ -162,9 +163,9 @@ class Slave:
         else:
             user = ""
         ssh_cmdline = "cd %s; %s 2> %s.$$ && rm %s.$$" % \
-                      (self._master_directory or ".", 
+                      (self._master_directory or ".",
                       self._master_command, log_file, log_file)
-        p = subprocess.Popen(["ssh", user + self._master_host, ssh_cmdline], 
+        p = subprocess.Popen(["ssh", user + self._master_host, ssh_cmdline],
                        stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self._to_master = p.stdin
         self._from_master = p.stdout
@@ -245,9 +246,8 @@ class Slave:
 
 class Section:
 
-    def __init__(self, section, global_config):
-        self._global_config = global_config
-        self._config = Config(section=section)
+    def __init__(self, section):
+        self._config = Config(section=section, defaults_section="global")
         self._config.read(CONFIG_FILE)
         self._sleep_until = 0
         self._slave_directory = os.path.abspath(self._config["slave-directory"])
@@ -261,8 +261,6 @@ class Section:
         if self._config["chroot-tgz"] and not self._config["distro"]:
           logging.info("The option --chroot-tgz needs --distro.")
 
-        self._base_tgz_ctrl = [int(global_config["max-tgz-age"]),
-                               int(global_config["min-tgz-retry-delay"])]
         if int(self._config["max-reserved"]) > 0:
             self._check_tarball()
 
@@ -272,12 +270,13 @@ class Section:
                 os.mkdir(rdir)
 
         self._slave = Slave()
-        self._slave.set_master_host(self._global_config["master-host"])
-        self._slave.set_master_user(self._global_config["master-user"])
-        self._slave.set_master_directory(self._global_config["master-directory"])
-        self._slave.set_master_command(self._global_config["master-command"] + " " + self._config.section)
-        self._log_file=self._config["log-file"]
 
+    def _connect_to_master(self):
+        self._slave.set_master_host(self._config["master-host"])
+        self._slave.set_master_user(self._config["master-user"])
+        self._slave.set_master_directory(self._config["master-directory"])
+        self._slave.set_master_command(self._config["master-command"] + " " + self._config.section)
+        self._slave.connect_to_master(self._config["log-file"])
 
     def _check_tarball(self):
         oldcwd = os.getcwd()
@@ -286,12 +285,12 @@ class Section:
         tarball = self._config["chroot-tgz"]
         if tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
-                      self._base_tgz_ctrl, self._config["distro"])
+                                         self._config["distro"])
 
         tarball = self._config["upgrade-test-chroot-tgz"]
         if self._config["upgrade-test-distros"] and tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
-                      self._base_tgz_ctrl, self._config["upgrade-test-distros"].split()[0])
+                                         self._config["upgrade-test-distros"].split()[0])
 
         os.chdir(oldcwd)
 
@@ -304,7 +303,7 @@ class Section:
 
         logging.info("-------------------------------------------")
         logging.info("Running section %s (precedence=%d)" % (self._config.section, self.precedence()))
-        self._config = Config(section=self._config.section)
+        self._config = Config(section=self._config.section, defaults_section="global")
         self._config.read(CONFIG_FILE)
 
         if int(self._config["max-reserved"]) == 0:
@@ -341,7 +340,7 @@ class Section:
                 return 0
 
         try:
-            self._slave.connect_to_master(self._log_file)
+            self._connect_to_master()
         except KeyboardInterrupt:
             raise
         except MasterIsBusy:
@@ -412,7 +411,7 @@ class Section:
                 if version == package["Version"] or self._config["upgrade-test-distros"]:
                     test_package(self._config, package, packages_files)
                 else:
-                    create_file(os.path.join("untestable", 
+                    create_file(os.path.join("untestable",
                                 log_name(package_name, version)),
                                 "%s %s not found" % (package_name, version))
             else:
@@ -466,13 +465,13 @@ def run_test_with_timeout(cmd, maxwait, kill_all):
               pids.extend(get_process_children(p.pid))
           for pid in pids:
               if pid > 0:
-                  try: 
+                  try:
                       os.kill(pid, SIGKILL)
                   except OSError:
                       pass
           return -1,stdout
 
-      return p.returncode,stdout 
+      return p.returncode,stdout
 
 
 def test_package(config, package, packages_files):
@@ -482,7 +481,7 @@ def test_package(config, package, packages_files):
     logging.debug("Opening log file %s" % output_name)
     new_name = os.path.join("new", output_name)
     output = file(new_name, "we")
-    output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n", 
+    output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n",
                                time.gmtime()))
     output.write("\n")
     package.dump(output)
@@ -490,7 +489,7 @@ def test_package(config, package, packages_files):
 
     # omit distro test if chroot-tgz is not specified.
     ret = 0
-    if config["chroot-tgz"]: 
+    if config["chroot-tgz"]:
         command = "%(piuparts-cmd)s -ad %(distro)s -b %(chroot-tgz)s" % \
                     config
         if config["keep-sources-list"] in ["yes", "true"]:
@@ -525,7 +524,7 @@ def test_package(config, package, packages_files):
             output.flush()
 
     output.write("\n")
-    output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n", 
+    output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n",
                                time.gmtime()))
     output.close()
     if ret != 0:
@@ -540,7 +539,7 @@ def create_chroot(config, tarball, distro):
     output_name = tarball + ".log"
     logging.debug("Opening log file %s" % output_name)
     logging.info("Creating new tarball %s" % tarball)
-    command = "%s -ad %s -s %s.new -m %s hello" % \
+    command = "%s -ad %s -s %s.new -m %s dpkg" % \
                 (config["piuparts-cmd"], distro, tarball, config["mirror"])
     output = file(output_name, "w")
     output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n\n",
@@ -558,11 +557,11 @@ def create_chroot(config, tarball, distro):
     if os.path.exists(tarball + ".new"):
         os.rename(tarball + ".new", tarball)
 
-def create_or_replace_chroot_tgz(config, tgz, tgz_ctrl, distro):
-    forced = 0 
+def create_or_replace_chroot_tgz(config, tgz, distro):
+    forced = 0
     if os.path.exists(tgz):
-        max_tgz_age = tgz_ctrl[0]
-        min_tgz_retry_delay = tgz_ctrl[1]
+        max_tgz_age = int(config["max-tgz-age"])
+        min_tgz_retry_delay = int(config["min-tgz-retry-delay"])
         now = time.time()
         statobj = os.stat(tgz)
         # stat.ST_MTIME is actually time file was initially created
@@ -573,7 +572,7 @@ def create_or_replace_chroot_tgz(config, tgz, tgz_ctrl, distro):
             # stat.ST_CTIME is time created OR last renamed
             if min_tgz_retry_delay is None or now - statobj[stat.ST_CTIME] > min_tgz_retry_delay:
                 os.rename(tgz, tgz + ".old")
-                forced = 1 
+                forced = 1
                 logging.info("%s too old.  Renaming to force re-creation" % tgz)
     if not os.path.exists(tgz):
         create_chroot(config, tgz, distro)
@@ -589,7 +588,7 @@ def fetch_packages_file(config, distro):
     arch = config["arch"]
     if not arch:
         # Try to figure it out ourselves, using dpkg
-        p = subprocess.Popen(["dpkg", "--print-architecture"], 
+        p = subprocess.Popen(["dpkg", "--print-architecture"],
                              stdout=subprocess.PIPE)
         arch = p.stdout.read().rstrip()
     packages_url = \
@@ -624,7 +623,7 @@ def main():
     else:
         section_names = global_config["sections"].split()
 
-    sections = [Section(section_name, global_config)
+    sections = [Section(section_name)
                 for section_name in section_names]
 
     while True:
@@ -653,6 +652,6 @@ if __name__ == "__main__":
   except KeyboardInterrupt:
      print ''
      print 'Slave interrupted by the user, exiting... manual cleanup still neccessary.'
-     sys.exit(1)  
+     sys.exit(1)
 
 # vi:set et ts=4 sw=4 :

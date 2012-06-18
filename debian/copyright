@@ -1,16 +1,16 @@
 Format: http://dep.debian.net/deps/dep5
-Upstream-Name: piuparts 
-Upstream-Contact: Holger Levsen <holger@debian.org> 
+Upstream-Name: piuparts
+Upstream-Contact: Holger Levsen <holger@debian.org>
 Source: http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
-Copyright: 2005-2008 Lars Wirzenius 
-           2008-2011 Holger Levsen 
+Copyright: 2005-2008 Lars Wirzenius
+           2008-2011 Holger Levsen
 Comment: Original author is also Lars Wirzenius <liw@iki.fi>
  Upstream is bunch of lunatics who don't make release tarballs publicly
  available. The Debian .orig.tar.gz is what would be released, though.
 
 Files: *
-Copyright: 2005-2008 Lars Wirzenius <liw@iki.fi> 
-           2008-2011 Holger Levsen <holger@debian.org> 
+Copyright: 2005-2008 Lars Wirzenius <liw@iki.fi>
+           2008-2011 Holger Levsen <holger@debian.org>
 License: GPL-2+
  This program is free software; you can redistribute it
  and/or modify it under the terms of the GNU General Public
@@ -33,3 +33,77 @@ License: GPL-2+
  License version 2 can be found in the file
  '/usr/share/common-licenses/GPL-2'.
 
+Files: */sunny.png */weather-severe-alert.png
+Comment: These files were downloaded from http://tango.freedesktop.org/releases/
+ and released in the tango-icon-theme package. The license text is from that package.
+Copyright: 2005-2009 Ulisse Perusin <uli.peru@gmail.com>
+           2005-2009 Steven Garrity <sgarrity@silverorange.com>
+           2005-2009 Lapo Calamandrei <calamandrei@gmail.com>
+           2005-2009 Ryan Collier <rcollier@novell.com>
+           2005-2009 Rodney Dawes <dobey@novell.com>
+           2005-2009 Andreas Nilsson <nisses.mail@home.se>
+           2005-2009 Tuomas Kuosmanen <tigert@tigert.com>
+           2005-2009 Garrett LeSage <garrett@novell.com>
+           2005-2009 Jakub Steiner <jimmac@novell.com>
+License: Public Domain
+ In the preparation of the 0.8.90 release Novell took care of tracking
+ down all the contributors to get them to relicense their artwork
+ into Public Domain.
+ .
+ The COPYING file of the tarball states the following:
+ | The icons in this repository are herefore released into the Public Domain.
+ .
+ Additionally the copyright status of the files was tracked in the CVS and the
+ rdf properties of the SVGs adjusted for all files that were put into Public
+ Domain (see rdf:about and rdf:resource).  Both fields contain a link to the
+ Creative Commons Public Domain Dediciation[0] as reproduced below:
+ | Public Domain Dedication
+ |
+ | Copyright-Only Dedication (based on United States law) or Public Domain
+ | Certification
+ |
+ | The person or persons who have associated work with this document (the
+ | "Dedicator" or "Certifier") hereby either (a) certifies that, to the best
+ | of his knowledge, the work of authorship identified is in the public
+ | domain of the country from which the work is published, or (b)
+ | hereby dedicates whatever copyright the dedicators holds in the work
+ | of authorship identified below (the "Work") to the public domain. A
+ | certifier, moreover, dedicates any copyright interest he may have in
+ | the associated work, and for these purposes, is described as a
+ | "dedicator" below.
+ |
+ | A certifier has taken reasonable steps to verify the copyright
+ | status of this work. Certifier recognizes that his good faith efforts
+ | may not shield him from liability if in fact the work certified is not
+ | in the public domain.
+ |
+ | Dedicator makes this dedication for the benefit of the public at
+ | large and to the detriment of the Dedicator's heirs and successors.
+ | Dedicator intends this dedication to be an overt act of relinquishment
+ | in perpetuity of all present and future rights under copyright law,
+ | whether vested or contingent, in the Work. Dedicator understands that
+ | such relinquishment of all rights includes the relinquishment of all
+ | rights to enforce (by lawsuit or otherwise) those copyrights in the
+ | Work.
+ |
+ | Dedicator recognizes that, once placed in the public domain, the Work
+ | may be freely reproduced, distributed, transmitted, used, modified,
+ | built upon, or otherwise exploited by anyone for any purpose, commercial
+ | or non-commercial, and in any way, including by methods that have not
+ | yet been invented or conceived.
+ [0] http://creativecommons.org/licenses/publicdomain/
+
+Files: */debian.png */openlogo-ng-50.png
+Copyright: 1999 Software in the Public Interest
+License: Free
+ This logo or a modified version may be used by anyone to refer to the Debian project, but does not indicate endorsement by the project.
+ .
+ Note: we would appreciate that you make the image a link to http://www.debian.org/ if you use it on a web page.
+
+Files: */valid-html401.png */w3c-valid-css.png
+Copyright: 2009 W3C<insert copyright>
+License: Free Use
+ In most cases, W3C logos and icons may be used without requesting permission
+ from W3C. When the logo usage policy requires that you obtain express written
+ permission, please send your request to the W3C Communications Team
+ (w3t-pr@w3.org)
