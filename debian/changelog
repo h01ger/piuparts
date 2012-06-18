@@ -163,6 +163,7 @@ piuparts (0.45) UNRELEASED; urgency=low
   * Add custom scripts to enable/perform additional cleanup procedures to
     reduce the "FAIL: Package purging left files on system" errors if
     --warn-on-leftovers-after-purge is not used.
+    (Closes: #668752)
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source

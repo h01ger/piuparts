@@ -12,6 +12,10 @@ log_debug() {
 #
 
 case ${PIUPARTS_OBJECTS%%=*} in
+	mlmmj)  #668752
+		log_debug
+		echo "mlmmj mlmmj/remove-on-purge boolean true" | debconf-set-selections
+		;;
 esac
 
 exit 0
