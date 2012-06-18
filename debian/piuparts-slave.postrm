@@ -12,6 +12,10 @@ case "$1" in
         rm -rf /var/lib/piuparts/slave
     fi
 
+    if [ -d /var/lib/piuparts ] ; then
+        rmdir /var/lib/piuparts || true
+    fi
+
     if [ -d /etc/piuparts ] ; then
         rmdir /etc/piuparts || true
     fi
