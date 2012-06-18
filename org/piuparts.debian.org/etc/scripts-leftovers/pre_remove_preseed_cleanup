@@ -25,4 +25,10 @@ if [ -d /var/lib/mysql ]; then
 	echo "mysql-server-5.5 mysql-server-5.5/postrm_remove_databases boolean true" | debconf-set-selections
 fi
 
+if [ -d /var/lib/ldap ]; then
+	log_debug
+	echo "Enabling LDAP database purge."
+	echo "slapd slapd/purge_database boolean true" | debconf-set-selections
+fi
+
 exit 0
