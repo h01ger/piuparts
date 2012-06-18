@@ -16,12 +16,16 @@ case "$1" in
         rm -rf /var/lib/piuparts/backup
     fi
 
+    if [ -d /var/lib/piuparts/master ] ; then
+        rm -rf /var/lib/piuparts/master
+    fi
+
     if [ -d /var/lib/piuparts ] ; then
-        rmdir /var/lib/piuparts
+        rmdir /var/lib/piuparts || true
     fi
 
     if [ -d /etc/piuparts ] ; then
-        rm -rf /etc/piuparts
+        rmdir /etc/piuparts || true
     fi
 
     ;;

@@ -8,10 +8,13 @@ case "$1" in
   purge)
     rm -rf /var/lib/piuparts/$user
 
-    # belongs to piuparts-master atm
-    #if [ -d /etc/piuparts ] ; then
-    #    rm -rf /etc/piuparts
-    #fi
+    if [ -d /var/lib/piuparts/slave ] ; then
+        rm -rf /var/lib/piuparts/slave
+    fi
+
+    if [ -d /etc/piuparts ] ; then
+        rmdir /etc/piuparts || true
+    fi
 
     ;;
   upgrade|remove|failed-upgrade|abort-install|abort-upgrade)

@@ -7,7 +7,7 @@ case "$1" in
 
     # may be left over from a previous version
     if [ -d /etc/piuparts ] ; then
-        rmdir /etc/piuparts
+        rmdir /etc/piuparts || true
     fi
 
     ;;
