@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+#
+# enable extended purge mode that is available in some packages
+# but disabled by default because it might remove valuable user or
+# application data
+#
+
+case ${PIUPARTS_OBJECTS%%=*} in
+esac
+
+exit 0
