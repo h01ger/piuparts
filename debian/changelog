@@ -8,6 +8,8 @@ piuparts (0.45) UNRELEASED; urgency=low
     dependencies.
   * Update piuparts.NEWS about master+slave packages.
   * Switch to debhelper8 packaging.
+  * debian/copyight: use versioned URI of the machine-readable copyright file,
+    thanks lintian.
 
   [ David Steele ]
   * Remove debian/postinst as it was only dealing with lenny time area
