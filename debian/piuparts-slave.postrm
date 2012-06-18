@@ -2,13 +2,16 @@
 
 set -e 
 
+user=piupartss
+
 case "$1" in
   purge)
+    rm -rf /var/lib/piuparts/$user
 
-    # may be left over from a previous version
-    if [ -d /etc/piuparts ] ; then
-        rmdir /etc/piuparts
-    fi
+    # belongs to piuparts-master atm
+    #if [ -d /etc/piuparts ] ; then
+    #    rm -rf /etc/piuparts
+    #fi
 
     ;;
   upgrade|remove|failed-upgrade|abort-install|abort-upgrade)
