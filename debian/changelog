@@ -4,7 +4,8 @@ piuparts (0.45) UNRELEASED; urgency=low
   * Merge piatti.git into piuparts.git, so that piatti.git has become obsolete
     now. Update documentation accordingly.
   * Further split packaging into piuparts-master, piuparts-slave and 
-    piuparts-common binary packages. (Closes: #585861)
+    piuparts-common binary packages (Closes: #585861) and cleanup
+    dependencies.
   * Update piuparts.NEWS about master+slave packages.
 
   [ David Steele ]
