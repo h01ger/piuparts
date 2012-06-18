@@ -14,6 +14,7 @@ master-directory = /org/piuparts.debian.org/master/
 output-directory = /org/piuparts.debian.org/htdocs/
 doc-root = /
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master
+mirror = http://piatti.debian.org/debian/
 # 30*60
 idle-sleep = 1800
 # 60*60*24*7
@@ -28,7 +29,6 @@ reschedule-fail-count = 25
 [sid]
 precedence = 1
 description = Debian sid / main: package installation, removal and purge test.
-mirror = http://piatti.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
@@ -41,7 +41,6 @@ log-file = sid.log
 [testing2sid]
 precedence = 4
 description = Debian main: package installation in sid and dist-upgrade to testing, then removal and purge test.
-mirror = http://piatti.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 upgrade-test-distros = testing sid
 upgrade-test-chroot-tgz = testing.tar.gz
@@ -53,7 +52,6 @@ log-file = testing2sid.log
 [wheezy]
 precedence = 2
 description = Debian wheezy / main: package installation, removal and purge test.
-mirror = http://piatti.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 distro = wheezy
 chroot-tgz = wheezy.tar.gz
@@ -64,7 +62,6 @@ log-file = wheezy.log
 [squeeze2wheezy]
 precedence = 3
 description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
-mirror = http://piatti.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --no-eatmydata --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 upgrade-test-distros = squeeze wheezy
 upgrade-test-chroot-tgz = squeeze.tar.gz
@@ -75,7 +72,6 @@ log-file = squeeze2wheezy.log
 [squeeze]
 precedence = 5
 description = Debian squeeze / main: package installation, removal and purge test.
-mirror = http://piatti.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --no-eatmydata --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp --scriptsdir /etc/piuparts/scripts-squeeze/
 distro = squeeze
 chroot-tgz = squeeze.tar.gz
@@ -89,7 +85,6 @@ log-file = squeeze.log
 max-reserved = 0
 precedence = 99
 description = Debian main: package installation in lenny and dist-upgrade to squeeze, then removal and purge test.
-mirror = http://piatti.debian.org/debian/
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --dpkg-noforce-unsafe-io --no-eatmydata --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp --scriptsdir /etc/piuparts/scripts-squeeze/
 upgrade-test-distros = lenny squeeze
 upgrade-test-chroot-tgz = lenny.tar.gz
