@@ -10,6 +10,7 @@ piuparts (0.45) UNRELEASED; urgency=low
   * Switch to debhelper8 packaging.
   * debian/copyight: use versioned URI of the machine-readable copyright file,
     thanks lintian.
+  * Move /etc/sudoers.d/piuparts to piuparts-slave package.
 
   [ David Steele ]
   * Remove debian/postinst as it was only dealing with lenny time area
