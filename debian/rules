@@ -4,7 +4,7 @@
 #export DH_VERBOSE=1
 
 %:
-	dh $@ --with python-support
+	dh $@ --with python2
 
 
 override_dh_auto_build:
@@ -16,3 +16,6 @@ override_dh_auto_test:
 override_dh_auto_install:
 	$(MAKE) prefix=$(CURDIR)/debian/tmp/usr etcdir=$(CURDIR)/debian/tmp/etc all
 
+override_dh_python2:
+	dh_python2 -p piuparts-master -p piuparts-slave /usr/share/piuparts
+	dh_python2 -N piuparts-master -N piuparts-slave

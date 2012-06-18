@@ -8,7 +8,6 @@ Standards-Version: 3.9.3
 Build-Depends:
  debhelper (>=8),
  python (>=2.6.6-3~),
- python-support
 Build-Depends-Indep:
  asciidoc,
  git,
