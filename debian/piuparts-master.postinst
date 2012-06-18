@@ -5,7 +5,7 @@ set -e
 pgroup=piuparts
 muser=piupartsm
 scriptroot=/usr/share/piuparts
-userhome=var/lib/piuparts
+userhome=/var/lib/piuparts
 
 case "$1" in
   configure)
@@ -38,12 +38,12 @@ case "$1" in
         fi
     done
 
-    install -d -o $muser -g $pgroup -m 0755 /var/lib/piuparts/master
-    install -d -o $muser -g $pgroup -m 0755 /var/lib/piuparts/master/monitor-slave
-    install -d -o $muser -g $pgroup -m 0755 /var/lib/piuparts/backup
+    install -d -o $muser -g $pgroup -m 0755 $userhome/master
+    install -d -o $muser -g $pgroup -m 0755 $userhome/master/monitor-slave
+    install -d -o $muser -g $pgroup -m 0755 $userhome/backup
 
-    install -d -o $muser -g $pgroup -m 0755 /var/lib/piuparts/htdocs
-    cp -rf $scriptroot/htdocs/* /var/lib/piuparts/htdocs/
+    install -d -o $muser -g $pgroup -m 0755 $userhome/htdocs
+    cp -rf $scriptroot/htdocs/* $userhome/htdocs/
 
     ;;
 
