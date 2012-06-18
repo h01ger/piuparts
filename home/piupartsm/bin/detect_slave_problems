@@ -56,7 +56,7 @@ LOCKFILE="$MONITORDIR/slave-problems"
 
 mkdir -p $MONITORDIR
 cd $MONITORDIR
-chown piupartsm.piuparts $MONITORDIR
+chown piupartsm:piuparts $MONITORDIR
 chmod 775 $MONITORDIR
 
 stamptime=$(/usr/bin/stat -c %Z $SCREENLOG 2>/dev/null || echo 0)

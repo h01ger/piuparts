@@ -19,7 +19,7 @@ case "$1" in
                 --shell /bin/sh $user
 
         touch $userhome/$user/.profile
-        chown $user.$pgroup $userhome/$user/.profile
+        chown $user:$pgroup $userhome/$user/.profile
 
         if [ $user = "piupartsm" ] ;
         then
@@ -42,12 +42,12 @@ case "$1" in
 
     if [ ! -e $userhome/$suser/.ssh/id_rsa ] ; then
         ssh-keygen -q -f $userhome/$suser/.ssh/id_rsa -N ""
-        chown $suser.$pgroup $userhome/$suser/.ssh/id_rsa \
+        chown $suser:$pgroup $userhome/$suser/.ssh/id_rsa \
               $userhome/$suser/.ssh/id_rsa.pub
     fi
 
     cat $userhome/$suser/.ssh/id_rsa.pub >>$userhome/$muser/.ssh/authorized_keys
-    chown $muser.$pgroup $userhome/$muser/.ssh/authorized_keys
+    chown $muser:$pgroup $userhome/$muser/.ssh/authorized_keys
     chmod 0600 $userhome/$muser/.ssh/authorized_keys
 
     install -d -o $suser -g $pgroup -m 0755 /var/lib/piuparts/slave

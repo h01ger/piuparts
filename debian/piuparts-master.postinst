@@ -18,7 +18,7 @@ case "$1" in
                 --shell /bin/sh $user
 
         touch $userhome/$user/.profile
-        chown $user.$pgroup $userhome/$user/.profile
+        chown $user:$pgroup $userhome/$user/.profile
 
         if [ $user = "piupartsm" ] ;
         then
