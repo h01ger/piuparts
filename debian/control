@@ -42,7 +42,7 @@ Description: .deb package installation, upgrading, and removal testing tool
 Package: piuparts-master
 Architecture: all
 Depends:
- piuparts-common (= ${source:Version}),
+ piuparts-common (= ${binary:Version}),
  adduser,
  openssh-server,
  python-debianbts,
@@ -71,8 +71,8 @@ Description: piuparts master components
 Package: piuparts-slave
 Architecture: all
 Depends:
- piuparts (= ${source:Version}),
- piuparts-common (= ${source:Version}),
+ piuparts (= ${binary:Version}),
+ piuparts-common (= ${binary:Version}),
  adduser,
  openssh-client,
  screen,
