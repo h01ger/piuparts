@@ -13,7 +13,7 @@ X-Python-Version: >= 2.6
 
 Package: piuparts
 Architecture: all
-Depends: apt, ${python:Depends}, debootstrap, lsof, lsb-release,
+Depends: ${python:Depends}, debootstrap, lsof, lsb-release,
     python-debian, ${misc:Depends}, python-debianbts, python-apt
 Suggests: schroot
 Description: .deb package installation, upgrading, and removal testing tool
@@ -29,7 +29,7 @@ Description: .deb package installation, upgrading, and removal testing tool
 
 Package: piuparts-master
 Architecture: all
-Depends: apt, ${python:Depends}, piuparts (>= 0.45), apache2, ${misc:Depends}, openssh-server, screen, adduser, piuparts-common
+Depends: ${python:Depends}, piuparts (>= 0.45), apache2, ${misc:Depends}, openssh-server, screen, adduser, piuparts-common
 Recommends: python-rpy, ghostscript
 Breaks: piuparts (<= 0.44)
 Replaces: piuparts (<= 0.44)
@@ -42,7 +42,7 @@ Description: piuparts master components
 
 Package: piuparts-slave
 Architecture: all
-Depends: apt, ${python:Depends}, piuparts (>= 0.45), ${misc:Depends}, openssh-client, screen, adduser, piuparts-common
+Depends: ${python:Depends}, piuparts (>= 0.45), ${misc:Depends}, openssh-client, screen, adduser, piuparts-common
 Suggests: schroot
 Description: piuparts slave components
  A master/slave piuparts server, along the lines of
@@ -52,7 +52,7 @@ Description: piuparts slave components
 
 Package: piuparts-common
 Architecture: all
-Depends: apt, ${python:Depends}, ${misc:Depends}
+Depends: ${python:Depends}, ${misc:Depends}, python-apt
 Description: common piuparts components
  piupartslib, common library used by piuparts-master, piuparts-reports and
  piuparts-slave.
