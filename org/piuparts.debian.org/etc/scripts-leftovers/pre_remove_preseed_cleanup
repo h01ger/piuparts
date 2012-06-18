@@ -5,6 +5,14 @@ log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
 }
 
+dbconfig_enable_purge()
+{
+	log_debug
+	echo "$1 $1${2+/$2}/dbconfig-remove boolean true" | debconf-set-selections
+	echo "$1 $1${2+/$2}/purge boolean true" | debconf-set-selections
+}
+
+
 #
 # enable extended purge mode that is available in some packages
 # but disabled by default because it might remove valuable user or
@@ -23,6 +31,27 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	mlmmj)  #668752
 		log_debug
 		echo "mlmmj mlmmj/remove-on-purge boolean true" | debconf-set-selections
+		;;
+	movabletype-opensource)
+		dbconfig_enable_purge movabletype-opensource
+		;;
+	nova-common)
+		dbconfig_enable_purge nova-common
+		;;
+	pdns-backend-sqlite)
+		dbconfig_enable_purge pdns-backend-sqlite
+		;;
+	pdns-backend-sqlite3)
+		dbconfig_enable_purge pdns-backend-sqlite3
+		;;
+	redmine)
+		dbconfig_enable_purge redmine instances/default
+		;;
+	request-tracker3.8)
+		dbconfig_enable_purge request-tracker3.8
+		;;
+	request-tracker4)
+		dbconfig_enable_purge request-tracker4
 		;;
 esac
 
