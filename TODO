@@ -26,11 +26,6 @@ for 0.45:
 
 - improve doc-root description in README.txt
 
-- the doc_root needs cleanup and the parameter needs sanitized: a trailing
-  slash is required and the $doc_root substitution should be replaced by 
-  ${doc_root} and there should be no slash following the }
-  (just to have nice html without extra ////)
-
 - slave package writes into the masters homedir... comments?
 
 

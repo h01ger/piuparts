@@ -32,7 +32,6 @@ piuparts (0.45) UNRELEASED; urgency=low
       (Closes: #674672)
     - Cleanup/wrap some long source lines.
     - Cleanup/wrap some long html lines.
-    - Use piatti to serve the README and man page.
     - Allow the html root to be changed from /
       (piuparts.conf: e.g. [global] doc-root = /piuparts/).
 
