@@ -40,7 +40,7 @@ log-file = sid.log
 
 
 [testing2sid]
-precedence = 3
+precedence = 4
 description = Debian main: package installation in sid and dist-upgrade to testing, then removal and purge test.
 packages-url = http://piatti.debian.org/debian/dists/sid/main/binary-amd64/Packages.bz2
 sources-url = http://piatti.debian.org/debian/dists/sid/main/source/Sources.bz2
@@ -67,7 +67,7 @@ log-file = wheezy.log
 
 
 [squeeze2wheezy]
-precedence = 2
+precedence = 3
 description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
 packages-url = http://piatti.debian.org/debian/dists/wheezy/main/binary-amd64/Packages.bz2
 sources-url = http://piatti.debian.org/debian/dists/wheezy/main/source/Sources.bz2
@@ -80,7 +80,7 @@ log-file = squeeze2wheezy.log
 
 
 [squeeze]
-precedence = 4
+precedence = 5
 description = Debian squeeze / main: package installation, removal and purge test.
 packages-url = http://piatti.debian.org/debian/dists/squeeze/main/binary-amd64/Packages.bz2
 sources-url = http://piatti.debian.org/debian/dists/squeeze/main/source/Sources.bz2
