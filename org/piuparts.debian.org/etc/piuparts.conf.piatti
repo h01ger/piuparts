@@ -29,7 +29,7 @@ reschedule-fail-count = 25
 [sid]
 precedence = 1
 description = Debian sid / main: package installation, removal and purge test.
-piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
+piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp --scriptsdir /etc/piuparts/scripts-leftovers
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
 distro = sid

@@ -24,7 +24,7 @@ idle-sleep = 86400
 
 [sid]
 description = Debian sid / main: package installation, removal and purge test.
-piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
+piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp --scriptsdir /etc/piuparts/scripts-leftovers
 distro = sid
 chroot-tgz = sid.tar.gz
 max-reserved = 50
