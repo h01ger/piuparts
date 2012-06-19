@@ -8,7 +8,7 @@ log_debug() {
 #
 # deal with exceptions:
 #
-case $PIUPARTS_OBJECTS in 
+case ${PIUPARTS_OBJECTS%%=*} in
 esac
 
 # Allow removal of the kernel running on the host from the chroot.

@@ -3,7 +3,7 @@ piuparts (0.45) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * Merge piatti.git into piuparts.git, so that piatti.git has become obsolete
     now. Update documentation accordingly.
-  * Further split packaging into piuparts-master, piuparts-slave and 
+  * Further split packaging into piuparts-master, piuparts-slave and
     piuparts-common binary packages (Closes: #585861) and cleanup
     dependencies.
   * Update piuparts.NEWS about master+slave packages.
@@ -83,6 +83,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Remove temp_tgz on error exit.
     - Remove metapackage build directory on error exit.  (Closes: #663702)
     - Don't remove eatmydata when minimizing a chroot.  (Closes: #658962)
+    - Add support for version-qualified package arguments (--apt foo=1.2-3).
   * piuparts.conf:
     - Defaults for all [section] settings can be set in the [global] section.
     - Change master-command to not include the section name so that it can be
@@ -140,6 +141,8 @@ piuparts (0.45) UNRELEASED; urgency=low
       press Ctrl-C once to exit after the current piuparts test has finished,
       press Ctrl-C again to cleanly terminate the currently running test,
       press Ctrl-C again to abort any ongoing cleanup.
+    - Pass a version qualified package name (foo=1.2-3) to piuparts to ensure
+      the correct package version gets tested.
   * piuparts-report.py:
     - Remove known_circular_depends handling.
     - Exclude obsolete states from generated report.

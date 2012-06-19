@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 
-for target in ${PIUPARTS_OBJECTS}
+for target in ${PIUPARTS_OBJECTS%%=*}
 do
-	pkg=${target%%=*}
+	pkg=${target}
 	postrm=/var/lib/dpkg/info/$pkg.postrm
 	if [ -f $postrm ]; then
 		if head -n 1 $postrm | grep -qE '/bin/(ba)?sh' ; then

@@ -949,20 +949,20 @@ class Section:
                         + "<td class=\"labelcell\">Version:</td>" \
                         + "<td class=\"contentcell2\">%s</td>" \
                           % html_protect(source_version) \
-                        + "</tr>\n" 
+                        + "</tr>\n"
 
           sourcerows += "<tr class=\"normalrow\">" \
                         + "<td class=\"labelcell\">Maintainer:</td>" \
                         + "<td class=\"contentcell2\" colspan=\"5\">%s</td>" \
                           % self.link_to_maintainer_summary(maintainer) \
-                        + "</tr>\n" 
+                        + "</tr>\n"
 
           if uploaders:
             sourcerows += "<tr class=\"normalrow\">" \
                           + "<td class=\"labelcell\">Uploaders:</td>" \
                           + "<td class=\"contentcell2\" colspan=\"5\">%s</td>" \
                             % self.link_to_uploaders(uploaders) \
-                          + "</tr>\n" 
+                          + "</tr>\n"
 
           source_summary_page_path = os.path.join( self._output_directory,
                                                   "source",
@@ -1098,7 +1098,7 @@ class Section:
                     substats += ": %s passed" % count_passed
               link += "<li><a href=%s>%s</a>%s</li>\n" % \
                        (
-                           template[:-len(".tpl")]+".html", 
+                           template[:-len(".tpl")]+".html",
                            linktarget,
                            substats,
                        )

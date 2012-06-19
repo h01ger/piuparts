@@ -1,6 +1,5 @@
 #!/bin/sh
-
-set -e 
+set -e
 
 case "$1" in
   purge)
@@ -20,4 +19,3 @@ case "$1" in
 esac
 
 #DEBHELPER#
-

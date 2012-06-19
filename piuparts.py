@@ -1132,6 +1132,8 @@ class Chroot:
         """Restore package selections in a chroot to the state in
         'selections'."""
 
+        packages = [p.split("=", 1)[0].strip() for p in packages]
+
         changes = diff_selections(self, selections)
         deps = {}
         nondeps = {}
@@ -1240,7 +1242,7 @@ class Chroot:
             self.run_scripts("pre_install")
 
             self.run(["apt-cache", "policy"])
-            self.run(["apt-cache", "policy"] + packages)
+            self.run(["apt-cache", "policy"] + [p.split("=", 1)[0].strip() for p in packages])
 
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
@@ -2135,7 +2137,7 @@ def load_meta_data(filename):
     return chroot_state
 
 
-def install_and_upgrade_between_distros(package_files, packages):
+def install_and_upgrade_between_distros(package_files, packages_qualified):
     """Install package and upgrade it between distributions, then remove.
        Return True if successful, False if not."""
 
@@ -2162,6 +2164,8 @@ def install_and_upgrade_between_distros(package_files, packages):
     # done by default anyway.
 
     os.environ["PIUPARTS_TEST"] = "distupgrade"
+
+    packages = [p.split("=", 1)[0].strip() for p in packages_qualified]
 
     chroot = get_chroot()
     chroot.create()
@@ -2231,7 +2235,7 @@ def install_and_upgrade_between_distros(package_files, packages):
     if settings.install_remove_install:
         chroot.install_packages_by_name(packages)
 
-    chroot.install_package_files(package_files, packages)
+    chroot.install_package_files(package_files, packages_qualified)
 
     chroot.check_for_no_processes()
 
@@ -2658,7 +2662,7 @@ def process_packages(package_list):
             if not settings.args_are_package_files:
                 logging.info("Can't test upgrades: -a or --apt option used.")
             else:
-                packages_to_query = packages[:]
+                packages_to_query = [p.split("=", 1)[0].strip() for p in packages]
                 packages_to_query.extend(settings.extra_old_packages)
                 known_packages = chroot.get_known_packages(packages_to_query)
                 if not known_packages:
