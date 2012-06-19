@@ -6,6 +6,8 @@ higher than wishlist!
 
 for 0.46:
 
+- verify that all scripts in $user/bin/ also work from master-slave packages
+
 - slave.postinst should setup ~piupartss/.ssh/known_hosts from /etc/ssh,
   even if only for localhost
 - slave.postinst should setup ~piupartsm/.ssh/authorized_keys using triggers

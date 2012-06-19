@@ -43,6 +43,7 @@ install-conf:
 	install -d $(etcdir)/cron.d
 	install -m 0644 home/piupartsm/crontab $(etcdir)/cron.d/piuparts-master
 	install -m 0644 home/piupartss/crontab $(etcdir)/cron.d/piuparts-slave
+	sed -i -r '/^[^#]+/s/^/#/' $(etcdir)/cron.d/piuparts-*
 
 	install -d $(etcdir)/piuparts/known_problems
 	for fl in home/piupartsm/bin/known_problems/* ; do\
