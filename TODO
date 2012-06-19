@@ -7,13 +7,13 @@ higher than wishlist!
 for 0.46:
 
 - slave.postinst should setup ~piupartss/.ssh/known_hosts from /etc/ssh,
-  even if only for localhost 
+  even if only for localhost
 - slave.postinst should setup ~piupartsm/.ssh/authorized_keys using triggers
     dpkg-trigger piuparts-master-please-install-the-slave-key
 
 - piuparts-master package fails install, remove, install.
 
-- split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and 
+- split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and
   /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
 
 - conf/piuparts.sudoers should be split for master+slave packages.

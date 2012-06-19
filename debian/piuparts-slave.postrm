@@ -1,6 +1,5 @@
 #!/bin/sh
-
-set -e 
+set -e
 
 user=piupartss
 
@@ -30,4 +29,3 @@ case "$1" in
 esac
 
 #DEBHELPER#
-
