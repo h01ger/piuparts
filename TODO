@@ -64,9 +64,6 @@ for 0.46:
 - consider hardlinking instead of copying the logfiles to htdocs
   (and fall back to copying if linking fails)
 
-- copy/move .kpr files to htdocs?
-  why? if you want to debug things look in the file system -- AnBe
-
 - piuparts-slave should do the rescheduling of old logs and do so with
   lowest precedence, that is, only when there are no new logs to be tested.
 
