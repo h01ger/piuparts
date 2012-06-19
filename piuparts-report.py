@@ -427,6 +427,7 @@ class Config(piupartslib.conf.Config):
                 "distro": None,
                 "area": None,
                 "arch": None,
+                "upgrade-test-distros": None,
                 "max-reserved": 1,
                 "doc-root": "/",
             },

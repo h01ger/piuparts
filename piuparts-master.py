@@ -57,6 +57,7 @@ class Config(piupartslib.conf.Config):
                 "distro": None,
                 "area": None,
                 "arch": None,
+                "upgrade-test-distros": None,
             },
             defaults_section=defaults_section)
 
