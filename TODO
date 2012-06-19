@@ -25,6 +25,13 @@ for 0.46:
 - use cdn.debian.net as mirror default (instead of "your.mirror.here") and provide
   a debconf template to overwrite this.
 
+- rework known_problems:
+  - use a number prefix for sorting
+  - add title information
+  - piuparts-report: "discover" the available known_problems, dont hardcode the list
+  - drop _issue/_error duplication, have flags inside to indicate thether to generate
+    _issues.tpl (pass/) and/or _error.tpl (fail/ bugged/ affected/)
+
 - in maintainer view: sort buggy states up again
 
 - more stats and graphs:
