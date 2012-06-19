@@ -371,7 +371,7 @@ class PackagesDB:
                     more += dep_pkg.dependencies()
         return circular
 
-    def _compute_package_state(self, package):
+    def _lookup_package_state(self, package):
         if self._logdb.log_exists(package, [self._ok]):
             return "successfully-tested"
         if self._logdb.log_exists(package, [self._fail] + self._morefail):
@@ -381,6 +381,9 @@ class PackagesDB:
         if not package.is_testable():
             return "essential-required"
 
+        return "unknown"
+
+    def _compute_package_state(self, package):
         # First attempt to resolve (still-unresolved) multiple alternative depends
         # Definitely sub-optimal, but improvement over blindly selecting first one
         # Select the first alternative in the highest of the following states:
@@ -472,26 +475,30 @@ class PackagesDB:
         if self._in_state is not None:
             return
 
-        todo = []
-
         self._find_all_packages()
-        package_names = self._packages.keys()
 
         self._package_state = {}
-        for package_name in package_names:
-            self._package_state[package_name] = "unknown"
-
         self._in_state = {}
         for state in self._states:
             self._in_state[state] = []
+        todo = []
 
-        while package_names:
+        for package_name, package in self._packages.iteritems():
+            state = self._lookup_package_state(package)
+            assert state in self._states
+            self._package_state[package_name] = state
+            if state == "unknown":
+                todo.append(package_name)
+            else:
+                self._in_state[state].append(package_name)
+
+        while todo:
+            package_names = todo
             todo = []
             done = []
             for package_name in package_names:
-                package = self._packages[package_name]
                 if self._package_state[package_name] == "unknown":
-                    state = self._compute_package_state(package)
+                    state = self._compute_package_state(self._packages[package_name])
                     assert state in self._states
                     if state == "unknown":
                         todo.append(package_name)
@@ -503,7 +510,6 @@ class PackagesDB:
                 # If we didn't do anything this time, we sure aren't going
                 # to do anything the next time either.
                 break
-            package_names = todo
 
         self._in_state["unknown"] = todo
 
