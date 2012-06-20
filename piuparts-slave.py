@@ -326,6 +326,12 @@ class Section:
             self._error_wait_until = time.time() + 12 * 3600
             return 0
 
+        if not self._config["distro"] and (not self._config["upgrade-test-distros"] \
+                                           or not self._config["upgrade-test-distros"].split()):
+            logging.error("neither 'distro' nor 'upgrade-test-distros' configured")
+            self._error_wait_until = time.time() + 3600
+            return 0
+
         lock = open(os.path.join(self._slave_directory, "slave.lock"), "we")
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -384,11 +390,6 @@ class Section:
 
         if self._config["upgrade-test-distros"]:
             distros += self._config["upgrade-test-distros"].split()
-
-        if not distros:
-            logging.error("neither 'distro' nor 'upgrade-test-distros' configured")
-            self._error_wait_until = time.time() + 3600
-            return 0
 
         packages_files = {}
         for distro in distros:
