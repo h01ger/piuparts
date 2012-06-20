@@ -320,6 +320,14 @@ class Section:
 
         os.chdir(oldcwd)
 
+    def _count_submittable_logs(self):
+        files = 0
+        for logdir in ["pass", "fail", "untestable"]:
+            for basename in os.listdir(os.path.join(self._slave_directory, logdir)):
+                if basename.endswith(".log"):
+                    files += 1
+        return files
+
     def precedence(self):
         return int(self._config["precedence"])
 
