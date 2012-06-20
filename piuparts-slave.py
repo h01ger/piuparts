@@ -254,6 +254,16 @@ class Slave:
         else:
             raise MasterIsCrazy()
 
+    def unreserve(self, filename):
+        basename = os.path.basename(filename)
+        package, rest = basename.split("_", 1)
+        version = rest[:-len(".log")]
+        logging.info("Unreserve: %s %s" % (package, version))
+        self._writeline("unreserve", package, version)
+        line = self._readline()
+        if line != "ok\n":
+            raise MasterNotOK()
+
     def _reserved_filename(self, name, version):
         return os.path.join("reserved",  "%s_%s.log" % (name, version))
 
@@ -390,7 +400,7 @@ class Section:
         return 0
 
 
-    def _talk_to_master(self, fetch=False):
+    def _talk_to_master(self, fetch=False, unreserve=False):
         flush = self._count_submittable_logs() > 0
         fetch = fetch and not self._slave.get_reserved()
         if not flush and not fetch:
@@ -414,6 +424,14 @@ class Section:
                             fullname = os.path.join(logdir, basename)
                             self._slave.send_log(self._config.section, logdir, fullname)
                             os.remove(fullname)
+
+                if unreserve:
+                    for logdir in ["new", "reserved"]:
+                        for basename in os.listdir(logdir):
+                            if basename.endswith(".log"):
+                                fullname = os.path.join(logdir, basename)
+                                self._slave.unreserve(fullname)
+                                os.remove(fullname)
 
                 if fetch:
                     max_reserved = int(self._config["max-reserved"])
@@ -480,7 +498,7 @@ class Section:
             self._slave.forget_reserved(package_name, version)
             if interrupted:
                 break
-        self._talk_to_master()
+        self._talk_to_master(unreserve=interrupted)
         if interrupted:
             raise KeyboardInterrupt
         return test_count
