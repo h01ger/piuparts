@@ -43,6 +43,7 @@ get_config_value SECTIONS global sections
 #
 # archive old log files
 #
+TOTAL=0
 OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
@@ -62,6 +63,7 @@ for SECTION in $SECTIONS ; do
 				echo $SECTION
 			fi
 			for LOG in $OLDLOGS ; do
+				TOTAL=$(($TOTAL + 1))
 				mv -v $LOG archive/$(echo $LOG|cut -d"/" -f1)/
 			done
 		fi
@@ -74,3 +76,6 @@ for SECTION in $SECTIONS ; do
 	cd "$OLDPWD"
 done
 
+if [ "$TOTAL" -gt "0" ]; then
+	echo "Archived $TOTAL old logfiles."
+fi
