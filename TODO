@@ -4,6 +4,15 @@ ahings to do for piuparts
 Please also check the BTS, especially the bugs with a severity
 higher than wishlist!
 
+for 0.45:
+
+- piuparts/0.44 -> piuparts/0.45 upgrade tests
+- /etc/piuparts/piuparts.conf migration
+- should piuparts.conf be a conffile or config file?
+
+- RELEASE!
+
+
 for 0.46:
 
 - sanitize directory structure:
