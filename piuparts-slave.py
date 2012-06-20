@@ -479,8 +479,10 @@ class Section:
                             "Package %s not found\n" % package_name)
             self._slave.forget_reserved(package_name, version)
             if interrupted:
-                raise KeyboardInterrupt
+                break
         self._talk_to_master()
+        if interrupted:
+            raise KeyboardInterrupt
         return test_count
 
 

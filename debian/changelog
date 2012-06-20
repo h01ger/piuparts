@@ -34,6 +34,7 @@ piuparts (0.46) UNRELEASED; urgency=low
       precedence settings.
     - Skip connection to master if we have reserved but no submittable logs.
     - Submit finished logs after completing all reserved logs in a section.
+    - Send finished logs to master if interrupted with a single Ctrl-C.
     - Add SIGHUP handler that triggers flushing finished logs.  Flushing (all
       sections) will be done after the current test has finished.
   * piuparts-report.py:
