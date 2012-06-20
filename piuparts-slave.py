@@ -345,15 +345,6 @@ class Section:
         return ret
 
     def _run(self):
-        if os.path.exists("idle.stamp"):
-            statobj = os.stat("idle.stamp")
-            age = time.time() - statobj[stat.ST_MTIME]
-            ttl = int(self._config["idle-sleep"]) - age
-            if age >= 0 and ttl > 0:
-                logging.info("idle")
-                self._idle_wait_until = time.time() + ttl
-                return 0
-
         try:
             self._connect_to_master()
         except KeyboardInterrupt:
@@ -384,11 +375,7 @@ class Section:
 
         if not self._slave.get_reserved():
             self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
-            create_file("idle.stamp", "%d" % time.time())
             return 0
-        else:
-            if os.path.exists("idle.stamp"):
-                os.unlink("idle.stamp")
 
         if self._config["distro"]:
             distros = [self._config["distro"]]

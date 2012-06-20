@@ -148,6 +148,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Pass a version qualified package name (foo=1.2-3) to piuparts to ensure
       the correct package version gets tested.
     - Increase verboseness for untestable packages.
+    - Remove idle.stamp functionality.
   * piuparts-report.py:
     - Remove known_circular_depends handling.
     - Exclude obsolete states from generated report.
