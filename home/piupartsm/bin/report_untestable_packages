@@ -47,7 +47,7 @@ get_config_value DAYS global reschedule-untestable-days 7
 
 LOGS=`mktemp`
 for SECTION in $SECTIONS ; do
-	test -d $MASTER/$SECTION || continue
+	test -d $MASTER/$SECTION/untestable || continue
 	find $MASTER/$SECTION/untestable/ -mtime +$DAYS -name "*.log" 2>/dev/null >> $LOGS
 done
 if [ -s $LOGS ] ; then

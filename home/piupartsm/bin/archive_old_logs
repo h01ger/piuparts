@@ -46,8 +46,8 @@ get_config_value SECTIONS global sections
 OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
-	mkdir -p $MASTER/$SECTION/archive
 	cd $MASTER/$SECTION
+	mkdir -p pass bugged affected fail
 	mkdir -p archive/pass archive/bugged archive/affected archive/fail
 	test -f archive/stamp || touch -d @0 archive/stamp  # start at the epoch
 	touch -d yesterday archive/stamp.new  # look back one more day the next time we will be run

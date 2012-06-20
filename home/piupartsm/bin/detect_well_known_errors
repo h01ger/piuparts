@@ -65,6 +65,7 @@ do
 	date
 	echo $SECTION:
 	cd $MASTER/$SECTION
+	mkdir -p pass bugged affected fail
 
 	#
 	# remove outdated *.bug files

@@ -48,6 +48,7 @@ FILE=`mktemp`
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 	for subdir in fail bugged affected ; do
+		test -d $MASTER/$SECTION/$subdir || continue
 		rgrep -l -E "tar( \(child\))?: .*.tar.gz: Cannot open: No such file or directory" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "tar: .*: No space left on device" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "gzip: stdin: invalid compressed data--crc error" $MASTER/$SECTION/$subdir >> $FILE
