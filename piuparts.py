@@ -287,6 +287,7 @@ class Settings:
             "/var/mail/.*",
             "/var/run/.*",
             # package management
+            "/etc/apt/trusted.gpg.d/.*.gpg~",
             "/var/lib/apt/lists/.*",
             "/var/lib/dpkg/alternatives/.*",
             "/var/lib/dpkg/triggers/.*",

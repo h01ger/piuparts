@@ -63,6 +63,7 @@ piuparts (0.45) UNRELEASED; urgency=low
       + /boot/grub/
       + /etc/X11/default-display-manager
       + /etc/aliases.db
+      + /etc/apt/trusted.gpg.d/.*.gpg~
       + /etc/network/interfaces
       + /etc/news/whoami
       + /usr/share/keyrings/debian-archive-removed-keys.gpg~
