@@ -84,6 +84,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Remove metapackage build directory on error exit.  (Closes: #663702)
     - Don't remove eatmydata when minimizing a chroot.  (Closes: #658962)
     - Add support for version-qualified package arguments (--apt foo=1.2-3).
+    - Switch fallback mirror to http://cdn.debian.net/debian.
   * piuparts.conf:
     - Defaults for all [section] settings can be set in the [global] section.
     - Change master-command to not include the section name so that it can be

@@ -84,7 +84,7 @@ class DebianDefaults(Defaults):
         return ["main", "contrib", "non-free"]
 
     def get_mirror(self):
-        return [("http://ftp.debian.org/debian", self.get_components())]
+        return [("http://cdn.debian.net/debian", self.get_components())]
 
     def get_distribution(self):
         return ["sid"]
