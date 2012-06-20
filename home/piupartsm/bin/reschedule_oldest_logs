@@ -48,6 +48,7 @@ get_config_value COUNT      global reschedule-old-count 200
 get_config_value FAIL_AGE   global reschedule-fail-days 30
 get_config_value FAIL_COUNT global reschedule-fail-count 25
 
+TOTAL=0
 LOGS=`mktemp`
 OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
@@ -62,7 +63,9 @@ for SECTION in $SECTIONS ; do
 		find pass fail affected -name "*.log" -mtime +$_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_COUNT > $LOGS
 		find fail affected -name "*.log" -mtime +$_FAIL_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_FAIL_COUNT >> $LOGS
 		if [ -s $LOGS ]; then
-			echo $SECTION: $(wc -l $LOGS | awk '{ print $1 }')
+			COUNT=$(wc -l $LOGS | awk '{ print $1 }')
+			TOTAL=$(($TOTAL + $COUNT))
+			echo "$SECTION: $COUNT"
 			ls -dtl $(cat $LOGS)
 			sort -u $LOGS | xargs rm 2>/dev/null
 			echo
@@ -73,3 +76,7 @@ for SECTION in $SECTIONS ; do
 	fi
 done
 rm $LOGS
+
+if [ "$TOTAL" -gt "0" ]; then
+	echo "Rescheduled $TOTAL logs"
+fi
