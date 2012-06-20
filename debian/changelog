@@ -168,6 +168,8 @@ piuparts (0.45) UNRELEASED; urgency=low
     --warn-on-leftovers-after-purge is not used.
     (Closes: #668752)
   * Ship custom scripts in the piuparts package.
+  * Comment sudoers and crontabs shipped in the master/slave packages,
+    requiring explicit editing after installation to activate them.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source

@@ -52,6 +52,7 @@ install-conf:
 
 	install -d $(etcdir)/sudoers.d
 	install -m 440 conf/piuparts.sudoers $(etcdir)/sudoers.d/piuparts
+	sed -i -r '/^[^#]+/s/^/#/' $(etcdir)/sudoers.d/piuparts
 
 	install -d $(etcdir)/apache2/conf.d
 	install -m 0644 conf/piuparts.apache $(etcdir)/apache2/conf.d
