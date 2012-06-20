@@ -209,9 +209,11 @@ def main():
         setup_logging(logging.DEBUG, config["log-file"])
 
         if not os.path.exists(os.path.join(master_directory, section)):
-          os.makedirs(os.path.join(master_directory, section))
+            os.makedirs(os.path.join(master_directory, section))
 
-        lock = open(os.path.join(master_directory, section, "master.lock"), "we")
+        os.chdir(master_directory)
+
+        lock = open(os.path.join(section, "master.lock"), "we")
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
