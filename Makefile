@@ -109,4 +109,5 @@ check:
 	python unittests.py
 
 clean:
-	rm -rf piuparts.1 piuparts.1.xml piuparts.1.html piuparts README.xml README.html docbook-xsl.css piuparts.html
+	rm -f piuparts.1 piuparts.1.xml piuparts.1.html piuparts README.xml README.html docbook-xsl.css piuparts.html
+	rm -f *.pyc piupartslib/*.pyc

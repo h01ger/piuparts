@@ -76,7 +76,11 @@ holger@piatti:~$ sudo /home/piupartss/bin/slave_run
 
 There are several cronjobs installed via '~piupartsm/crontab' and '~piupartss/crontab') which monitor the slave and the host it's running on.
 
-It's possible to kill the slave any time by pressing CTRL-C, the currently done test will be redone.
+It's possible to kill the slave any time by pressing Ctrl-C.
+Pressing Ctrl-C once will wait for the current test to finish,
+pressing twice will abort the currently running test (which will be redone).
+Clean termination may take some time and can be aborted by a third Ctrl-C,
+but that may leave temporary directories and processes around.
 
 === Joining an existing slave session
 
@@ -111,7 +115,7 @@ More checks should be added as we become aware of them.
 
 == Authors
 
-Last updated: February 2011
+Last updated: June 2012
 
 Holger Levsen <holger@debian.org>
 Luk Claes <luk@debian.org>

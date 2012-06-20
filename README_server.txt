@@ -2,11 +2,12 @@ The piuparts-server package installs a piuparts server along the lines of
 http://piuparts.debian.org/.
 
 Before running the server, edit /etc/piuparts.conf appropriately, to define
-'sections' to be tested (e.g. 'sid') and define references to the Debian mirror
-and Packages files. Note that the server can place a significant load on the
+'sections' to be tested (e.g. 'sid') and define references to the Debian
+mirror. Note that the server can place a significant load on the
 repository. Consider setting up a local mirror, or a caching proxy for http
 and apt-get, to reduce the load.
 
+Edit /etc/sudoers.d/piuparts to grant permissions to the piupartss user.
 Start the server using /usr/sbin/piuparts_slave_run, which will launch a
 'screen' session. The slave will launch a master process via ssh, as needed,
 to retrieve work and return results. Use /usr/sbin/piuparts_slave_join to

@@ -343,7 +343,7 @@ Success: ok
 ----
 
 Slave informs master it cannot test the desired version of a
-package (perhaps it went away from the mirror?).
+package and the package should be rescheduled by the master.
 
 ----
 Command: pass <packagename> <packageversion>
@@ -372,8 +372,8 @@ Command: untestable <packagename> <packageversion>
 Success: ok
 ----
 
-Slave reports that a particular package is untestable, possibly
-because it insists on interacting with the user.
+Slave informs master it cannot test the desired version of a
+package (perhaps it went away from the mirror?).
 
 ----
 Command: status
@@ -381,7 +381,8 @@ Success: ok <package-state>=<count> <package-state>=<count>...
 ----
 Slave asks master to report the number of packages in all
 different states. The "status" command should only be issued
-after all "pass" and "fail" commands.
+after all logs have been transmitted ("pass", "fail", and
+"untestable" commands).
 
 In all cases, if the master cannot respond with "ok" (e.g.,
 because of a disk error storing a log file), it aborts and the

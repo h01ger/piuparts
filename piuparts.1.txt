@@ -20,7 +20,7 @@ By default, piuparts can do three different tests:
 
 . A simple install-purge test within one Debian distribution (chosen with the '-d' option, unstable by default). It sets up the chroot with the desired distribution, then installs and purges the packages, and reports problems.
 
-. A simple install-upgrade-purge test within one Debian distribution. This test is like the install-purge test, but install the packages first via *apt-get* and then from the package files given on the command line. If the command line has package names (option '-a' used), or the packages are not known to *apt-get* (new packages), this test is skipped, otherwise it is performed automatically.
+. A simple install-upgrade-purge test within one Debian distribution. This test is like the install-purge test, but install the packages first via *apt-get* and then from the package files given on the command line. If the command line has package names (option '--apt' used), or no tested package is known to *apt-get* (new packages), this test is skipped, otherwise it is performed automatically.
 
 . An upgrade test between Debian releases. This test is enabled by using the '-d' option multiple times and disables the other two tests. It sets up the chroot with the first distribution named, then upgrades it to each successive one, and then remembers the directory tree state at the end. After this, it starts over with the chroot of the first distribution, installs the desired packages (via *apt-get*), and does the successive upgrading (via *apt-get dist-upgrade*). Then, if package files (and not just package names) were given on the command line, it installs them. Finally, it reports problems against the state of the directory tree at the last distribution compared with the state without the packages having been installed. This test can be quite slow to execute.
 +
@@ -63,10 +63,10 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This option will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages. 'This option shall normally not be used.' (See #466118.)
 
 *--dpkg-noforce-unsafe-io*::
-  Prevent running dpkg with --force-unsafe-io.  --force-unsafe-io causes dpkg to skip certain file system syncs known to cause substantial performance degradation on some filesystems.  Thus, including this option reverts to safe but slower behavior.
+  Prevent running dpkg with --force-unsafe-io.  --force-unsafe-io causes dpkg to skip certain file system syncs known to cause substantial performance degradation on some filesystems.  Thus, including this option reverts to safe but slower behavior.  The --dpkg-noforce-unsafe-io is required for running tests on distributions older than squeeze.
 
 *--no-eatmydata*::
-  Prevent use of eatmydata.
+  Prevent use of eatmydata.  The --no-eatmydata option is required for running tests on squeeze or older distributions.
 
 *--extra-old-packages*='pkg1[,pkg2]...'::
   Install additional old packages before upgrading.  Allows testing package renames/merges where the old package is no longer available in the new distribution and the new one utilizes Conflicts/Replaces.  The argument is a comma separated list of package names and the option can be given multiple times.
@@ -104,7 +104,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   snapshot (default: 1G)
 
 *-l* 'filename', *--log-file*='filename'::
-  Write log file to _filename_ in addition to the standard output.
+  Append log file to _filename_ in addition to the standard output.
 
 *--log-level*='level'::
   Display messages from loglevel LEVEL, possible values are: error, info, dump, debug. The default is dump.
@@ -172,6 +172,8 @@ Note that file: addresses works if the directories are made accessible from with
 
 *-t directory, --tmpdir*='directory'::
   Use directory as the place where temporary files and directories are created. The default is the environment variable *TMPDIR*, or _/tmp_ if not set.
++
+Note: the temporary directory must *not* be mounted with the _nodev_ or _nosuid_ mount option.
 
 *-v, --verbose*::
   This option no longer has any meaning, but it is still accepted for backwards compatibility.
@@ -240,5 +242,5 @@ Lars Wirzenius (liw@iki.fi) and others
 
 DATE
 ----
-2011-12-06
+2012-06-22
 
