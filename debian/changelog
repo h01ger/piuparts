@@ -22,6 +22,7 @@ piuparts (0.46) UNRELEASED; urgency=low
     - Flush finished logs from sections that have processing postponed due to
       precedence settings.
     - Skip connection to master if we have reserved but no submittable logs.
+    - Submit finished logs after completing all reserved logs in a section.
   * piuparts-report.py:
   * Simplify running piuparts from GIT.
   * Reorganize layout in the GIT repository to reduce path nesting and length.

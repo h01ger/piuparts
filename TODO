@@ -7,8 +7,6 @@ higher than wishlist!
 
 for 0.46:
 
-- flush finished logs before processing another section (AnBe)
-
 - master controlled recycling (AnBe)
 
 - make piuparts-master + piuparts-slave packages work out-of-the-box

@@ -471,6 +471,7 @@ class Section:
             self._slave.forget_reserved(package_name, version)
             if interrupted:
                 raise KeyboardInterrupt
+        self._talk_to_master()
         return test_count
 
 
