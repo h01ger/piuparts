@@ -47,6 +47,7 @@ get_config_value SECTIONS global sections
 DAYS=2
 LOGS=`mktemp`
 for SECTION in $SECTIONS ; do
+	test -d $MASTER/$SECTION || continue
 	find $MASTER/$SECTION/reserved/ -mtime +$DAYS -name "*.log" 2>/dev/null >> $LOGS
 done
 if [ -s $LOGS ] ; then

@@ -43,7 +43,9 @@ get_config_value SECTIONS global sections
 #
 # archive old log files
 #
+OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
+	test -d $MASTER/$SECTION || continue
 	mkdir -p $MASTER/$SECTION/archive
 	cd $MASTER/$SECTION
 	mkdir -p archive/pass archive/bugged archive/affected archive/fail
@@ -69,5 +71,6 @@ for SECTION in $SECTIONS ; do
 		echo
 	fi
 	mv archive/stamp.new archive/stamp
+	cd "$OLDPWD"
 done
 

@@ -46,6 +46,7 @@ get_config_value SECTIONS global sections
 
 FILE=`mktemp`
 for SECTION in $SECTIONS ; do
+	test -d $MASTER/$SECTION || continue
 	for subdir in fail bugged affected ; do
 		rgrep -l "Cannot initiate the connection to" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l "Hash Sum mismatch" $MASTER/$SECTION/$subdir >> $FILE

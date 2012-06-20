@@ -47,7 +47,7 @@ export PYTHONPATH=$PIUPARTS_PREFIX/lib/python2.6/dist-packages:$PIUPARTS_PREFIX/
 OLDPWD=$(pwd)
 OUTPUT=$(mktemp)
 for SECTION in $SECTIONS ; do
-	if [ -d $MASTER/$SECTION ]; then
+	test -d $MASTER/$SECTION || continue
 		cd $MASTER/$SECTION
 		$PIUPARTS_PREFIX/share/piuparts/piuparts-analyze 2>&1 > $OUTPUT
 		if [ -s $OUTPUT ]; then
@@ -56,6 +56,5 @@ for SECTION in $SECTIONS ; do
 			echo
 		fi
 		cd "$OLDPWD"
-	fi
 done
 rm $OUTPUT

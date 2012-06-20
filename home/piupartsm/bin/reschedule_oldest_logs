@@ -52,6 +52,7 @@ TOTAL=0
 LOGS=`mktemp`
 OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
+	test -d $MASTER/$SECTION || continue
 	get_config_value RESCHEDULE $SECTION auto-reschedule yes
 	if [ "$RESCHEDULE" = "yes" ]; then
 		get_config_value _AGE        $SECTION reschedule-old-days $AGE
