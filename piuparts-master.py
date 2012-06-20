@@ -127,7 +127,6 @@ class Master(Protocol):
             "untestable": self._untestable,
         }
         self._binary_db = piupartslib.packagesdb.PackagesDB(prefix=section)
-        self._binary_db.create_subdirs()
         self._binary_db.read_packages_file(packages_file)
         self._writeline("hello")
 

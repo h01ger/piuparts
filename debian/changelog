@@ -127,6 +127,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Compute dependency cycles and test packages on such cycles if all
       non-circular dependencies are satisfied.
     - Consider any combination of two error states for the blocking count.
+    - Always run create_subdirs() during initialization.
   * piuparts-master.py:
     - Remove known_circular_depends handling.
     - Reduce logfile verboseness: do not include received logs.
