@@ -260,7 +260,8 @@ class Section:
     def __init__(self, section):
         self._config = Config(section=section, defaults_section="global")
         self._config.read(CONFIG_FILE)
-        self._sleep_until = 0
+        self._error_wait_until = 0
+        self._idle_wait_until = 0
         self._slave_directory = os.path.abspath(self._config["slave-directory"])
         if not os.path.exists(self._slave_directory):
             os.makedirs(self._slave_directory)
@@ -308,8 +309,11 @@ class Section:
     def precedence(self):
         return int(self._config["precedence"])
 
+    def sleep_until(self):
+        return max(self._error_wait_until, self._idle_wait_until)
+
     def run(self):
-        if time.time() < self._sleep_until:
+        if time.time() < self.sleep_until():
             return 0
 
         logging.info("-------------------------------------------")
@@ -319,7 +323,7 @@ class Section:
 
         if int(self._config["max-reserved"]) == 0:
             logging.info("disabled")
-            self._sleep_until = time.time() + 12 * 3600
+            self._error_wait_until = time.time() + 12 * 3600
             return 0
 
         lock = open(os.path.join(self._slave_directory, "slave.lock"), "we")
@@ -327,7 +331,7 @@ class Section:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
             logging.info("busy")
-            self._sleep_until = time.time() + 900
+            self._error_wait_until = time.time() + 900
             lock.close()
             return 0
 
@@ -344,10 +348,10 @@ class Section:
         if os.path.exists("idle.stamp"):
             statobj = os.stat("idle.stamp")
             age = time.time() - statobj[stat.ST_MTIME]
-            ttl = 3600 - age
+            ttl = int(self._config["idle-sleep"]) - age
             if age >= 0 and ttl > 0:
                 logging.info("idle")
-                self._sleep_until = time.time() + ttl
+                self._idle_wait_until = time.time() + ttl
                 return 0
 
         try:
@@ -356,11 +360,11 @@ class Section:
             raise
         except MasterIsBusy:
             logging.error("master is busy")
-            self._sleep_until = time.time() + random.randrange(60, 180)
+            self._error_wait_until = time.time() + random.randrange(60, 180)
             return 0
         except:
             logging.error("connection to master failed")
-            self._sleep_until = time.time() + 900
+            self._error_wait_until = time.time() + 900
             return 0
 
         for logdir in ["pass", "fail", "untestable"]:
@@ -379,7 +383,7 @@ class Section:
         self._slave.close()
 
         if not self._slave.get_reserved():
-            self._sleep_until = time.time() + 3600
+            self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
             create_file("idle.stamp", "%d" % time.time())
             return 0
         else:
@@ -396,7 +400,7 @@ class Section:
 
         if not distros:
             logging.error("neither 'distro' nor 'upgrade-test-distros' configured")
-            self._sleep_until = time.time() + 3600
+            self._error_wait_until = time.time() + 3600
             return 0
 
         packages_files = {}
@@ -406,7 +410,7 @@ class Section:
                     packages_files[distro] = fetch_packages_file(self._config, distro)
                 except IOError:
                     logging.error("failed to fetch packages file for %s" % distro)
-                    self._sleep_until = time.time() + 900
+                    self._error_wait_until = time.time() + 900
                     return 0
         if self._config["distro"]:
             packages_file = packages_files[self._config["distro"]]
@@ -678,7 +682,7 @@ def main():
 
         if test_count == 0:
             now = time.time()
-            sleep_until = min([now + int(global_config["idle-sleep"])] + [section._sleep_until for section in sections])
+            sleep_until = min([now + int(global_config["idle-sleep"])] + [section.sleep_until() for section in sections])
             if (sleep_until > now):
                 to_sleep = max(60, sleep_until - now)
                 logging.info("Nothing to do, sleeping for %d seconds." % to_sleep)
