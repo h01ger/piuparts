@@ -422,13 +422,16 @@ class Section:
                 if version == package["Version"]:
                     test_package(self._config, package, packages_files)
                 else:
+                    logging.info("Cannot test %s/%s %s" % (self._config.section, package_name, version))
                     create_file(os.path.join("untestable",
                                 log_name(package_name, version)),
-                                "%s %s not found" % (package_name, version))
+                                "%s %s not found, %s is available\n" \
+                                    % (package_name, version, package["Version"]))
             else:
+                logging.info("Cannot test %s/%s %s" % (self._config.section, package_name, version))
                 create_file(os.path.join("untestable",
                             log_name(package_name, version)),
-                            "Package %s not found" % package_name)
+                            "Package %s not found\n" % package_name)
             self._slave.forget_reserved(package_name, version)
             if interrupted:
                 raise KeyboardInterrupt
