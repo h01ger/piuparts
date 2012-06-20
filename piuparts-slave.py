@@ -372,7 +372,7 @@ class Section:
                 logging.info("busy")
                 self._error_wait_until = time.time() + 900
             else:
-                if self._talk_to_master():
+                if self._talk_to_master(fetch=do_processing):
                     if do_processing:
                         if not self._slave.get_reserved():
                             self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
@@ -383,7 +383,12 @@ class Section:
         return 0
 
 
-    def _talk_to_master(self):
+    def _talk_to_master(self, fetch=False):
+        flush = self._count_submittable_logs() > 0
+        fetch = fetch and not self._slave.get_reserved()
+        if not flush and not fetch:
+            return True
+
         try:
             self._connect_to_master()
         except KeyboardInterrupt:
@@ -403,12 +408,11 @@ class Section:
                             self._slave.send_log(self._config.section, logdir, fullname)
                             os.remove(fullname)
 
-                if not self._slave.get_reserved():
+                if fetch:
                     max_reserved = int(self._config["max-reserved"])
                     while len(self._slave.get_reserved()) < max_reserved and self._slave.reserve():
                         pass
-
-                self._slave.get_status(self._config.section)
+                    self._slave.get_status(self._config.section)
             except MasterNotOK:
                 logging.error("master did not respond with 'ok'")
                 self._error_wait_until = time.time() + 900

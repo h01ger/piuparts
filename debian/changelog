@@ -21,6 +21,7 @@ piuparts (0.46) UNRELEASED; urgency=low
       packages: skip the section but keep the slave running.
     - Flush finished logs from sections that have processing postponed due to
       precedence settings.
+    - Skip connection to master if we have reserved but no submittable logs.
   * piuparts-report.py:
   * Simplify running piuparts from GIT.
   * Reorganize layout in the GIT repository to reduce path nesting and length.
