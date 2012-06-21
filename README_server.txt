@@ -1,7 +1,9 @@
 The piuparts-server package installs a piuparts server along the lines of
 http://piuparts.debian.org/.
 
-Before running the server, edit /etc/piuparts.conf appropriately, to define
+Before running the server, edit /etc/piuparts.conf appropriately (install
+piuparts-slave (which ships that file), too, or use the template
+/usr/share/doc/piuparts-master/piuparts.conf.sample), to define
 'sections' to be tested (e.g. 'sid') and define references to the Debian
 mirror. Note that the server can place a significant load on the
 repository. Consider setting up a local mirror, or a caching proxy for http

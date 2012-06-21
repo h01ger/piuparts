@@ -1,6 +1,5 @@
 etc/apache2/conf.d/piuparts.apache
 etc/cron.d/piuparts-master
-etc/piuparts/piuparts.conf
 #etc/piuparts/known_problems/
 usr/share/piuparts/htdocs/*
 usr/share/piuparts/master/*

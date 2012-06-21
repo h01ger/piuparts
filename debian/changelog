@@ -178,6 +178,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     requiring explicit editing after installation to activate them.
   * Bump debhelper and dpkg dependencies for using dpkg-maintscript-helper.
   * Remove obsolete /etc/piuparts/piuparts.conf from old piuparts package.
+  * Ship /etc/piuparts/piuparts.conf in the piuparts-slave package.
 
   [ Leo Iannacone ]
   * piuparts.py: add --existing-chroot option, specify a directory as source
