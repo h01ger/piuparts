@@ -67,7 +67,7 @@ Description: piuparts master components
  A master/slave piuparts installation is used for testing complete archives
  as it is done on http://piuparts.debian.org/.
  .
- This package provides the piuparts-master, which needs one or more slave to
+ This package provides the piuparts-master, which needs one or more slaves to
  operate. It also contains piuparts-reports to generate web pages with the
  testing results as well as documentation.
 
