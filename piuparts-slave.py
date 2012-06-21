@@ -312,8 +312,13 @@ class Section:
     def sleep_until(self):
         return max(self._error_wait_until, self._idle_wait_until)
 
-    def run(self):
+
+    def run(self, precedence=None):
         if time.time() < self.sleep_until():
+            return 0
+
+        do_processing = precedence is None or self.precedence() <= precedence
+        if not do_processing:
             return 0
 
         logging.info("-------------------------------------------")
@@ -662,11 +667,10 @@ def main():
         precedence = None
 
         for section in sorted(sections, key=lambda section: section.precedence()):
-            if precedence is None or section.precedence() <= precedence:
-                processed = section.run()
-                if processed > 0:
-                    test_count += processed
-                    precedence = section.precedence()
+            processed = section.run(precedence=precedence)
+            if processed > 0:
+                test_count += processed
+                precedence = section.precedence()
 
         if test_count == 0:
             now = time.time()
