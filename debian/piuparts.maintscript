@@ -1,0 +1,1 @@
+rm_conffile /etc/piuparts/piuparts.conf 0.45~
