@@ -338,20 +338,19 @@ class Section:
             return 0
 
         with open(os.path.join(self._slave_directory, "slave.lock"), "we") as lock:
+            oldcwd = os.getcwd()
+            os.chdir(self._slave_directory)
             try:
                 fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except IOError:
                 logging.info("busy")
                 self._error_wait_until = time.time() + 900
-                return 0
+            else:
+                return self._run()
+            finally:
+                os.chdir(oldcwd)
+        return 0
 
-            oldcwd = os.getcwd()
-            os.chdir(self._slave_directory)
-
-            ret = self._run()
-
-            os.chdir(oldcwd)
-            return ret
 
     def _run(self):
         try:
