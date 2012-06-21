@@ -17,6 +17,11 @@ case "$1" in
         adduser --system --quiet --home $userhome/$user --ingroup $pgroup \
                 --shell /bin/sh $user
 
+	if ! [ -d $userhome/$user ]; then
+		mkdir -m 0755 $userhome/$user
+		chown $user:$pgroup $userhome/$user
+	fi
+
         touch $userhome/$user/.profile
         chown $user:$pgroup $userhome/$user/.profile
 
