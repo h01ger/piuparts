@@ -132,6 +132,7 @@ piuparts (0.45) UNRELEASED; urgency=low
     - Remove known_circular_depends handling.
     - Reduce logfile verboseness: do not include received logs.
     - Always chdir to master_directory, do not rely on being run from there.
+    - Record timestamps of submitted logs in submissions.txt.
   * piuparts-slave.py:
     - Randomize waiting time (between 60 and 180 seconds) if master is busy.
     - Sleep until the next section can be tried, but at least 1 minute.

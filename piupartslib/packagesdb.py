@@ -283,6 +283,7 @@ class PackagesDB:
             pformat = self.prefix + "/%s"
         else:
             pformat = "%s"
+        self._submissions = pformat % "submissions.txt"
         if ok:
             self._ok = pformat % ok
         if fail:
@@ -573,6 +574,10 @@ class PackagesDB:
         if "/" in str:
             raise Exception("'/' in (partial) filename: %s" % str)
 
+    def _record_submission(self, category, package, version):
+        with open(self._submissions, "a") as submissions:
+            submissions.write("%d %s %s %s\n" % (time.time(), category, package, version))
+
     def unreserve_package(self, package, version):
         self._check_for_acceptability_as_filename(package)
         self._check_for_acceptability_as_filename(version)
@@ -583,6 +588,7 @@ class PackagesDB:
         self._check_for_acceptability_as_filename(version)
         if self._logdb.create(self._ok, package, version, log):
             self._logdb.remove(self._reserved, package, version)
+            self._record_submission("pass", package, version)
         else:
             raise Exception("Log file exists already: %s (%s)" %
                                 (package, version))
@@ -592,6 +598,7 @@ class PackagesDB:
         self._check_for_acceptability_as_filename(version)
         if self._logdb.create(self._fail, package, version, log):
             self._logdb.remove(self._reserved, package, version)
+            self._record_submission("fail", package, version)
         else:
             raise Exception("Log file exists already: %s (%s)" %
                                 (package, version))
@@ -601,6 +608,7 @@ class PackagesDB:
         self._check_for_acceptability_as_filename(version)
         if self._logdb.create(self._evil, package, version, log):
             self._logdb.remove(self._reserved, package, version)
+            self._record_submission("untestable", package, version)
         else:
             raise Exception("Log file exists already: %s (%s)" %
                                 (package, version))
