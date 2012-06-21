@@ -340,11 +340,15 @@ class Section:
             return 0
 
         do_processing = precedence is None or self.precedence() <= precedence
-        if not do_processing:
+        if not do_processing and self._count_submittable_logs() == 0:
             return 0
 
         logging.info("-------------------------------------------")
-        logging.info("Running section %s (precedence=%d)" % (self._config.section, self.precedence()))
+        action = "Running"
+        if not do_processing:
+            action = "Flushing"
+        logging.info("%s section %s (precedence=%d)" \
+                     % (action, self._config.section, self.precedence()))
         self._config = Config(section=self._config.section, defaults_section="global")
         self._config.read(CONFIG_FILE)
 
