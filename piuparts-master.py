@@ -28,6 +28,7 @@ import logging
 import ConfigParser
 import os
 import fcntl
+import time
 
 import piupartslib
 
