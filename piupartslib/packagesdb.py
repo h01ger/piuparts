@@ -27,6 +27,7 @@ Lars Wirzenius <liw@iki.fi>
 import dircache
 import os
 import tempfile
+import time
 import UserDict
 import apt_pkg
 
