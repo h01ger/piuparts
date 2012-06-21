@@ -337,23 +337,21 @@ class Section:
             self._error_wait_until = time.time() + 3600
             return 0
 
-        lock = open(os.path.join(self._slave_directory, "slave.lock"), "we")
-        try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except IOError:
-            logging.info("busy")
-            self._error_wait_until = time.time() + 900
-            lock.close()
-            return 0
+        with open(os.path.join(self._slave_directory, "slave.lock"), "we") as lock:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except IOError:
+                logging.info("busy")
+                self._error_wait_until = time.time() + 900
+                return 0
 
-        oldcwd = os.getcwd()
-        os.chdir(self._slave_directory)
+            oldcwd = os.getcwd()
+            os.chdir(self._slave_directory)
 
-        ret = self._run()
+            ret = self._run()
 
-        os.chdir(oldcwd)
-        lock.close()
-        return ret
+            os.chdir(oldcwd)
+            return ret
 
     def _run(self):
         try:
