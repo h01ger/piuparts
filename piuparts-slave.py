@@ -346,13 +346,13 @@ class Section:
                 logging.info("busy")
                 self._error_wait_until = time.time() + 900
             else:
-                return self._run()
+                return self._process()
             finally:
                 os.chdir(oldcwd)
         return 0
 
 
-    def _run(self):
+    def _talk_to_master(self):
         try:
             self._connect_to_master()
         except KeyboardInterrupt:
@@ -380,6 +380,13 @@ class Section:
 
         self._slave.get_status(self._config.section)
         self._slave.close()
+
+        return True
+
+
+    def _process(self):
+        if not self._talk_to_master():
+            return 0
 
         if not self._slave.get_reserved():
             self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
