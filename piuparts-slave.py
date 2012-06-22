@@ -379,28 +379,29 @@ class Section:
         except MasterIsBusy:
             logging.error("master is busy")
             self._error_wait_until = time.time() + random.randrange(60, 180)
-            return 0
         except:
             logging.error("connection to master failed")
             self._error_wait_until = time.time() + 900
-            return 0
+        else:
+            try:
+                for logdir in ["pass", "fail", "untestable"]:
+                    for basename in os.listdir(logdir):
+                        if basename.endswith(".log"):
+                            fullname = os.path.join(logdir, basename)
+                            self._slave.send_log(self._config.section, logdir, fullname)
+                            os.remove(fullname)
 
-        for logdir in ["pass", "fail", "untestable"]:
-            for basename in os.listdir(logdir):
-                if basename.endswith(".log"):
-                    fullname = os.path.join(logdir, basename)
-                    self._slave.send_log(self._config.section, logdir, fullname)
-                    os.remove(fullname)
+                if not self._slave.get_reserved():
+                    max_reserved = int(self._config["max-reserved"])
+                    while len(self._slave.get_reserved()) < max_reserved and self._slave.reserve():
+                        pass
 
-        if not self._slave.get_reserved():
-            max_reserved = int(self._config["max-reserved"])
-            while len(self._slave.get_reserved()) < max_reserved and self._slave.reserve():
-                pass
-
-        self._slave.get_status(self._config.section)
-        self._slave.close()
-
-        return True
+                self._slave.get_status(self._config.section)
+            else:
+                return True
+        finally:
+            self._slave.close()
+        return False
 
 
     def _process(self):
