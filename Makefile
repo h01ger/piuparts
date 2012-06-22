@@ -58,6 +58,15 @@ install-conf:
 	install -d $(etcdir)/piuparts/scripts
 	install org/piuparts.debian.org/etc/scripts/* $(etcdir)/piuparts/scripts
 
+install-conf-4-running-from-git:
+	install -d $(DESTDIR)$(etcdir)/piuparts
+	install -m 0644 home/piupartsm/crontab $(DESTDIR)$(etcdir)/piuparts/crontab-master
+	install -m 0644 home/piupartss/crontab $(DESTDIR)$(etcdir)/piuparts/crontab-slave
+	install -m 0644 home/piupartsm/.forward $(DESTDIR)$(etcdir)/piuparts/forward-master
+	install -m 0644 home/piupartss/.forward $(DESTDIR)$(etcdir)/piuparts/forward-slave
+	install -m 0644 org/piuparts.debian.org/etc/piuparts.conf.* $(DESTDIR)$(etcdir)/piuparts/
+	cp -a org/piuparts.debian.org/etc/scripts* $(etcdir)/piuparts
+
 build:
 	for file in piuparts piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
 		sed -e 's/__PIUPARTS_VERSION__/$(version)/g' $$file.py > $$file ; done
@@ -79,6 +88,9 @@ install:
 
 	for fl in home/piupartsm/bin/* ; do\
             if [ -f $$fl ] ; then install $$fl $(sharedir)/piuparts/master ; fi ; done
+
+	install -d $(DESTDIR)$(sharedir)/piuparts/master/known_problems
+	install -m 0644 home/piupartsm/bin/known_problems/*.conf $(DESTDIR)$(sharedir)/piuparts/master/known_problems/
 
 	install -d $(sharedir)/piuparts/slave
 

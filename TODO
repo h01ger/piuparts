@@ -13,10 +13,6 @@ for 0.46:
   org/piuparts.debian.org/htdocs/* ==> htdocs/
   org/piuparts.debian.org/etc/piuparts.conf.* ==> ???
 
-- simplify update-piuparts-setup,
-  use the Makefile,
-  don't install files in user homes, just put a single bin link if needed
-
 - make piuparts-master + piuparts-slave packages work out-of-the-box
 
 - ship sane minimal sudoers in p-s.deb than can be enabled by default

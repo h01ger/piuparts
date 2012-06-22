@@ -39,27 +39,25 @@ fi
 #
 # create $PIUPARTS_PREFIX
 #
-if [ ! -d $PIUPARTS_PREFIX/ ] ; then
-	sudo mkdir -p $PIUPARTS_PREFIX/
-	sudo chown piupartss:piuparts $PIUPARTS_PREFIX/
-	sudo chmod 775 $PIUPARTS_PREFIX/
+if [ ! -d $PIUPARTS_PREFIX ] ; then
+	sudo mkdir -p $PIUPARTS_PREFIX
+	sudo chown piupartss:piuparts $PIUPARTS_PREFIX
+	sudo chmod 0775 $PIUPARTS_PREFIX
 fi
 
 #
 # update source
 #
-if [ ! -d $PIUPARTS_PREFIX/src/ ] ; then
-	sudo mkdir -p $PIUPARTS_PREFIX/src/
-	cd $PIUPARTS_PREFIX/src/
-	sudo chown piupartss:piuparts $PIUPARTS_PREFIX/src
-	sudo chmod 755 $PIUPARTS_PREFIX/src
+if [ ! -d $PIUPARTS_PREFIX/src ] ; then
+	mkdir -p $PIUPARTS_PREFIX/src
+	chmod 0755 $PIUPARTS_PREFIX/src
+	cd $PIUPARTS_PREFIX/src
 	git clone git://git.debian.org/git/piuparts/piuparts.git
 	cd piuparts
-	git checkout piatti
+	git checkout develop
 fi
 cd $PIUPARTS_PREFIX/src/piuparts
 pwd
-SRCDIR=$(pwd)
 # git checkout branch if $1 is given
 if [ ! -z "$1" ] ; then
 	git checkout $1
@@ -71,50 +69,58 @@ if [ ! -z "$2" ] ; then
 	git pull $2 $1
 fi
 
-sudo make prefix=$PIUPARTS_PREFIX docdir=$PIUPARTS_HTDOCS/doc install install-doc
+#
+# install everything from GIT into PIUPARTS_PREFIX
+#
+make build build-doc
+sudo make	prefix=$PIUPARTS_PREFIX \
+		docdir=$PIUPARTS_HTDOCS/doc \
+		htdocsdir=$PIUPARTS_HTDOCS \
+		install install-doc install-conf-4-running-from-git
+make clean
 
 #
 # create working dir
 #
-sudo mkdir -p $PIUPARTS_TEMPDIR
+mkdir -p $PIUPARTS_TEMPDIR
 
 #
-# update slave home, mostly scripts
+# update slave home
 #
 cd
-cp -r $SRCDIR/home/piupartss/* .
-cp -r $SRCDIR/home/piupartss/.forward .
 pwd
-crontab crontab
+test ! -L bin || rm bin
+test ! -d bin || mv bin bin.old
+ln -sf $PIUPARTS_PREFIX/share/piuparts/slave bin
+cp $PIUPARTS_PREFIX/etc/piuparts/forward-slave .forward
+crontab $PIUPARTS_PREFIX/etc/piuparts/crontab-slave
 
 #
-# update master home, that's mostly crontab to run piuparts-reports
+# update master home
 #
-# this is done as piupartsm user, as else ~piupartsm needs to be writeable
-# by the group, which prevents ssh logins...
-#
-cd ~piupartsm
-
-sudo su - piupartsm -c "cp -r $SRCDIR/home/piupartsm/* . ; cp -ax $SRCDIR/home/piupartsm/.forward ."
-sudo su - piupartsm -c "crontab crontab"
-
+ssh piupartsm@localhost "
+set -e
+test ! -L bin || rm bin
+test ! -d bin || mv bin bin.old
+ln -sf $PIUPARTS_PREFIX/share/piuparts/master bin
+cp $PIUPARTS_PREFIX/etc/piuparts/forward-master .forward
+crontab $PIUPARTS_PREFIX/etc/piuparts/crontab-master
+"
 
 #
 # update $PIUPARTS_PREFIX
 #
-cd $PIUPARTS_PREFIX/
+cd $PIUPARTS_PREFIX
 pwd
-cp -r $SRCDIR/org/piuparts.debian.org/* .
 mkdir -p master slave backup
 sudo chown piupartss:piuparts slave
 sudo chown piupartsm:piuparts master htdocs backup
-sudo chmod 775 master slave htdocs
-# create tango links
-sudo ln -sf /usr/share/icons/Tango/24x24/status/sunny.png htdocs/images/sunny.png
-sudo ln -sf /usr/share/icons/Tango/24x24/status/weather-severe-alert.png htdocs/images/weather-severe-alert.png
-# to support multiple host with this setup
+# to support multiple hosts with this setup
 HOSTNAME=`hostname`
-cd $PIUPARTS_PREFIX/etc
+cd $PIUPARTS_PREFIX/etc/piuparts
+pwd
+sudo chown piupartss:piuparts . piuparts.conf.*
+chmod 0664 piuparts.conf.*
 ln -sf piuparts.conf.$HOSTNAME piuparts.conf
 
-
+echo "Update finished."
