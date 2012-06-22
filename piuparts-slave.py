@@ -346,7 +346,12 @@ class Section:
                 logging.info("busy")
                 self._error_wait_until = time.time() + 900
             else:
-                return self._process()
+                if self._talk_to_master():
+                    if do_processing:
+                        if not self._slave.get_reserved():
+                            self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
+                        else:
+                            return self._process()
             finally:
                 os.chdir(oldcwd)
         return 0
@@ -385,13 +390,6 @@ class Section:
 
 
     def _process(self):
-        if not self._talk_to_master():
-            return 0
-
-        if not self._slave.get_reserved():
-            self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
-            return 0
-
         if self._config["distro"]:
             distros = [self._config["distro"]]
         else:
