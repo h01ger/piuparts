@@ -4,6 +4,11 @@ piuparts (0.46) UNRELEASED; urgency=low
   * enjoy! 
 
   [ Andreas Beckmann ]
+  * piuparts.py:
+  * piupartslib/packagesdb.py:
+  * piuparts-master.py:
+  * piuparts-slave.py:
+  * piuparts-report.py:
   * Simplify running piuparts from GIT.
 
  -- Holger Levsen <holger@debian.org>  Thu, 21 Jun 2012 22:25:57 +0200

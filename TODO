@@ -7,6 +7,15 @@ higher than wishlist!
 
 for 0.46:
 
+- flush finished logs before processing another section (AnBe)
+
+- master controlled recycling (AnBe)
+
+- slave: robust exception handling while communicating to slave
+
+- master: duplicate log submission handling
+  break the slave: send -> master: reject infinite loop
+
 - sanitize directory structure:
   org/piuparts.debian.org/etc/scripts* ==> custom-scripts/
   org/piuparts.debian.org/htdocs/templates/mail/* ==> bug-templates/
@@ -28,6 +37,7 @@ for 0.46:
 
 - split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and
   /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
+  debconfify piuparts.conf? allow preseeding of mirror, master, ...
 
 - conf/piuparts.sudoers should be split for master+slave packages.
 
