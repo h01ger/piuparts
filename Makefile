@@ -8,6 +8,7 @@ docdir = $(prefix)/share/doc/piuparts/
 svrdocdir = $(prefix)/share/doc/piuparts-master
 site26 = $(libdir)/python2.6/dist-packages
 site27 = $(libdir)/python2.7/dist-packages
+htdocsdir	 = $(sharedir)/piuparts/htdocs
 etcdir = $(prefix)/etc
 distribution=${shell dpkg-parsechangelog | sed -n 's/^Distribution: *//p'}
 ifeq ($(distribution),UNRELEASED)
@@ -86,20 +87,22 @@ install:
 
 	cp -r home/piupartss/bin/* $(sharedir)/piuparts/slave
 
-	install -d $(sharedir)/piuparts/htdocs
+	install -d $(DESTDIR)$(htdocsdir)
 	for file in org/piuparts.debian.org/htdocs/* ; do\
             if [ -f $$file ] ; then \
-                install -m 0644 $$file $(sharedir)/piuparts/htdocs ;\
+                install -m 0644 $$file $(DESTDIR)$(htdocsdir) ;\
             fi \
         done
 
-	install -d $(sharedir)/piuparts/htdocs/images
-	install -m 0644 org/piuparts.debian.org/htdocs/images/* $(sharedir)/piuparts/htdocs/images
+	install -d $(DESTDIR)$(htdocsdir)/images
+	install -m 0644 org/piuparts.debian.org/htdocs/images/* $(DESTDIR)$(htdocsdir)/images/
+	ln -sf /usr/share/icons/Tango/24x24/status/sunny.png $(DESTDIR)$(htdocsdir)/images/sunny.png
+	ln -sf /usr/share/icons/Tango/24x24/status/weather-severe-alert.png $(DESTDIR)$(htdocsdir)/images/weather-severe-alert.png
 
-	install -d $(sharedir)/piuparts/htdocs/templates/mail
+	install -d $(DESTDIR)$(htdocsdir)/templates/mail
 	for file in org/piuparts.debian.org/htdocs/templates/mail/* ; do\
 		if [ -f $$file ] ; then \
-			install -m 0644 $$file $(sharedir)/piuparts/htdocs/templates/mail ;\
+			install -m 0644 $$file $(DESTDIR)$(htdocsdir)/templates/mail ;\
 		fi \
 	done
 
