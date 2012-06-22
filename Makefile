@@ -5,37 +5,34 @@ mandir = $(sharedir)/man
 man1dir = $(mandir)/man1
 libdir = $(prefix)/lib
 docdir = $(prefix)/share/doc/piuparts/
-svrdocdir = $(prefix)/share/doc/piuparts-master
 site26 = $(libdir)/python2.6/dist-packages
 site27 = $(libdir)/python2.7/dist-packages
 htdocsdir	 = $(sharedir)/piuparts/htdocs
 etcdir = $(prefix)/etc
+
 distribution=${shell dpkg-parsechangelog | sed -n 's/^Distribution: *//p'}
 ifeq ($(distribution),UNRELEASED)
-version=${shell echo "`dpkg-parsechangelog | sed -n 's/^Version: *//p'`~`date +%Y%m%d%H%M`~`git describe --tags --dirty`"}
+version		:= ${shell echo "`dpkg-parsechangelog | sed -n 's/^Version: *//p'`~`date +%Y%m%d%H%M`~`git describe --dirty`"}
 else
-version=${shell dpkg-parsechangelog | sed -n 's/^Version: *//p'}
+version		:= ${shell dpkg-parsechangelog | sed -n 's/^Version: *//p'}
 endif
 
-ignore = -I fdmount -N
 
-all: install-conf install-doc install
+all: install install-doc
+
+build-doc:
+	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README.txt
+	a2x -f manpage piuparts.1.txt
+	a2x --copy -f xhtml piuparts.1.txt
 
 install-doc:
-	# build and install manual
-	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README.txt
 	install -d $(docdir)/
 	for file in README.txt README.html docbook-xsl.css ; do \
 	    install -m 0644 $$file $(docdir)/ ; done
-	# build and install manpage
-	a2x -f manpage piuparts.1.txt
 	install -d $(man1dir)
 	install -m 0644 piuparts.1 $(man1dir)
 	gzip -9f $(man1dir)/piuparts.1
-	a2x --copy -f xhtml piuparts.1.txt
 	install -m 0644 piuparts.1.html $(docdir)
-	install -d $(svrdocdir)/
-	install -m 0755 README_server.txt $(svrdocdir)/
 
 install-conf:
 	install -d $(etcdir)/piuparts
@@ -61,17 +58,17 @@ install-conf:
 	install -d $(etcdir)/piuparts/scripts
 	install org/piuparts.debian.org/etc/scripts/* $(etcdir)/piuparts/scripts
 
+build:
+	for file in piuparts piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
+		sed -e 's/__PIUPARTS_VERSION__/$(version)/g' $$file.py > $$file ; done
+
 install:
 	install -d $(sbindir)
-	sed -e 's/__PIUPARTS_VERSION__/$(version)/g' piuparts.py > piuparts
-	install piuparts $(sbindir)/piuparts
-	rm piuparts
+	install -m 0755 piuparts $(DESTDIR)$(sbindir)/piuparts
 
 	install -d $(sharedir)/piuparts
 	for file in piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
-	    sed -e 's/__PIUPARTS_VERSION__/$(version)/g' $$file.py > $$file ; \
-	    install -m 0755 $$file $(sharedir)/piuparts/$$file ; \
-	    rm $$file ; done
+		install -m 0755 $$file $(DESTDIR)$(sharedir)/piuparts/$$file ; done
 
 	install -d $(site26)/piupartslib
 	install -d $(site27)/piupartslib
@@ -112,5 +109,6 @@ check:
 	python unittests.py
 
 clean:
-	rm -f piuparts.1 piuparts.1.xml piuparts.1.html piuparts README.xml README.html docbook-xsl.css piuparts.html
+	rm -f piuparts piuparts-slave piuparts-master piuparts-report piuparts-analyze
+	rm -f piuparts.1 piuparts.1.xml piuparts.1.html README.xml README.html docbook-xsl.css piuparts.html
 	rm -f *.pyc piupartslib/*.pyc
