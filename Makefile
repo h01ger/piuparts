@@ -39,8 +39,8 @@ install-conf:
 	install -m 0644 conf/piuparts.conf.sample $(etcdir)/piuparts/piuparts.conf
 
 	install -d $(etcdir)/cron.d
-	install -m 0644 home/piupartsm/crontab $(etcdir)/cron.d/piuparts-master
-	install -m 0644 home/piupartss/crontab $(etcdir)/cron.d/piuparts-slave
+	install -m 0644 conf/crontab-master $(DESTDIR)$(etcdir)/cron.d/piuparts-master
+	install -m 0644 conf/crontab-slave $(DESTDIR)$(etcdir)/cron.d/piuparts-slave
 	sed -i -r '/^[^#]+/s/^/#/' $(etcdir)/cron.d/piuparts-*
 
 	install -d $(etcdir)/piuparts/known_problems
@@ -57,8 +57,8 @@ install-conf:
 
 install-conf-4-running-from-git:
 	install -d $(DESTDIR)$(etcdir)/piuparts
-	install -m 0644 home/piupartsm/crontab $(DESTDIR)$(etcdir)/piuparts/crontab-master
-	install -m 0644 home/piupartss/crontab $(DESTDIR)$(etcdir)/piuparts/crontab-slave
+	install -m 0644 conf/crontab-master $(DESTDIR)$(etcdir)/piuparts/
+	install -m 0644 conf/crontab-slave $(DESTDIR)$(etcdir)/piuparts/
 	install -m 0644 instances/forward.* $(DESTDIR)$(etcdir)/piuparts/
 	install -m 0644 instances/piuparts.conf.* $(DESTDIR)$(etcdir)/piuparts/
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
