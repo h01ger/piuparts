@@ -55,9 +55,6 @@ install-conf:
 	install -d $(etcdir)/apache2/conf.d
 	install -m 0644 conf/piuparts.apache $(etcdir)/apache2/conf.d
 
-	install -d $(etcdir)/piuparts/scripts
-	install org/piuparts.debian.org/etc/scripts/* $(etcdir)/piuparts/scripts
-
 install-conf-4-running-from-git:
 	install -d $(DESTDIR)$(etcdir)/piuparts
 	install -m 0644 home/piupartsm/crontab $(DESTDIR)$(etcdir)/piuparts/crontab-master
@@ -65,7 +62,6 @@ install-conf-4-running-from-git:
 	install -m 0644 home/piupartsm/.forward $(DESTDIR)$(etcdir)/piuparts/forward-master
 	install -m 0644 home/piupartss/.forward $(DESTDIR)$(etcdir)/piuparts/forward-slave
 	install -m 0644 org/piuparts.debian.org/etc/piuparts.conf.* $(DESTDIR)$(etcdir)/piuparts/
-	cp -a org/piuparts.debian.org/etc/scripts* $(etcdir)/piuparts
 
 build:
 	for file in piuparts piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
@@ -97,23 +93,20 @@ install:
 	cp -r home/piupartss/bin/* $(sharedir)/piuparts/slave
 
 	install -d $(DESTDIR)$(htdocsdir)
-	for file in org/piuparts.debian.org/htdocs/* ; do\
-            if [ -f $$file ] ; then \
-                install -m 0644 $$file $(DESTDIR)$(htdocsdir) ;\
-            fi \
-        done
+	install -m 0644 htdocs/*.* $(DESTDIR)$(htdocsdir)/
 
 	install -d $(DESTDIR)$(htdocsdir)/images
-	install -m 0644 org/piuparts.debian.org/htdocs/images/* $(DESTDIR)$(htdocsdir)/images/
+	install -m 0644 htdocs/images/*.* $(DESTDIR)$(htdocsdir)/images/
 	ln -sf /usr/share/icons/Tango/24x24/status/sunny.png $(DESTDIR)$(htdocsdir)/images/sunny.png
 	ln -sf /usr/share/icons/Tango/24x24/status/weather-severe-alert.png $(DESTDIR)$(htdocsdir)/images/weather-severe-alert.png
 
 	install -d $(DESTDIR)$(htdocsdir)/templates/mail
-	for file in org/piuparts.debian.org/htdocs/templates/mail/* ; do\
-		if [ -f $$file ] ; then \
-			install -m 0644 $$file $(DESTDIR)$(htdocsdir)/templates/mail ;\
-		fi \
-	done
+	install -m 0644 bug-templates/*.mail $(DESTDIR)$(htdocsdir)/templates/mail/
+
+	install -d $(DESTDIR)$(etcdir)/piuparts
+	for d in $$(ls custom-scripts) ; do \
+		install -d $(DESTDIR)$(etcdir)/piuparts/$$d ; \
+		install -m 0755 custom-scripts/$$d/* $(DESTDIR)$(etcdir)/piuparts/$$d/ ; done
 
 
 check:

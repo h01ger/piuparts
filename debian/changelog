@@ -10,6 +10,10 @@ piuparts (0.46) UNRELEASED; urgency=low
   * piuparts-slave.py:
   * piuparts-report.py:
   * Simplify running piuparts from GIT.
+  * Reorganize layout in the GIT repository to reduce path nesting and length.
+  * Makefile:
+    - Separate build and install targets.
+    - Adjust for new layout, cleanup, simplify.
 
  -- Holger Levsen <holger@debian.org>  Thu, 21 Jun 2012 22:25:57 +0200
 
