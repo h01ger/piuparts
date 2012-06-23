@@ -88,12 +88,15 @@ mkdir -p master slave backup
 sudo chown piupartss:piuparts slave
 sudo chown piupartsm:piuparts master htdocs backup
 # to support multiple hosts with this setup
-HOSTNAME=`hostname`
 cd $PIUPARTS_PREFIX/etc/piuparts
 pwd
 sudo chown piupartss:piuparts . piuparts.conf.*
 chmod 0664 piuparts.conf.*
-ln -sf piuparts.conf.$HOSTNAME piuparts.conf
+HOSTNAME=$(hostname)
+for f in piuparts.conf forward
+do
+	ln -sf $f.$HOSTNAME $f
+done
 
 #
 # create working dir
@@ -108,7 +111,7 @@ pwd
 test ! -L bin || rm bin
 test ! -d bin || mv bin bin.old
 ln -sf $PIUPARTS_PREFIX/share/piuparts/slave bin
-cp $PIUPARTS_PREFIX/etc/piuparts/forward-slave .forward
+cp $PIUPARTS_PREFIX/etc/piuparts/forward .forward
 crontab $PIUPARTS_PREFIX/etc/piuparts/crontab-slave
 
 #
@@ -119,7 +122,7 @@ set -e
 test ! -L bin || rm bin
 test ! -d bin || mv bin bin.old
 ln -sf $PIUPARTS_PREFIX/share/piuparts/master bin
-cp $PIUPARTS_PREFIX/etc/piuparts/forward-master .forward
+cp $PIUPARTS_PREFIX/etc/piuparts/forward .forward
 crontab $PIUPARTS_PREFIX/etc/piuparts/crontab-master
 "
 

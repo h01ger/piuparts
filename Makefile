@@ -59,8 +59,7 @@ install-conf-4-running-from-git:
 	install -d $(DESTDIR)$(etcdir)/piuparts
 	install -m 0644 home/piupartsm/crontab $(DESTDIR)$(etcdir)/piuparts/crontab-master
 	install -m 0644 home/piupartss/crontab $(DESTDIR)$(etcdir)/piuparts/crontab-slave
-	install -m 0644 home/piupartsm/.forward $(DESTDIR)$(etcdir)/piuparts/forward-master
-	install -m 0644 home/piupartss/.forward $(DESTDIR)$(etcdir)/piuparts/forward-slave
+	install -m 0644 instances/forward.* $(DESTDIR)$(etcdir)/piuparts/
 	install -m 0644 instances/piuparts.conf.* $(DESTDIR)$(etcdir)/piuparts/
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
 	install -m 0755 update-piuparts-setup $(DESTDIR)$(sharedir)/piuparts/slave/
