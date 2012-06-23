@@ -62,6 +62,8 @@ install-conf-4-running-from-git:
 	install -m 0644 home/piupartsm/.forward $(DESTDIR)$(etcdir)/piuparts/forward-master
 	install -m 0644 home/piupartss/.forward $(DESTDIR)$(etcdir)/piuparts/forward-slave
 	install -m 0644 instances/piuparts.conf.* $(DESTDIR)$(etcdir)/piuparts/
+	install -d $(DESTDIR)$(sharedir)/piuparts/slave
+	install -m 0755 update-piuparts-setup $(DESTDIR)$(sharedir)/piuparts/slave/
 
 build:
 	for file in piuparts piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
