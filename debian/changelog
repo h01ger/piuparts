@@ -8,6 +8,7 @@ piuparts (0.46) UNRELEASED; urgency=low
   * piupartslib/packagesdb.py:
   * piuparts-master.py:
   * piuparts-slave.py:
+    - Fix stopping the currently running test (Ctrl-C Ctrl-C).
   * piuparts-report.py:
   * Simplify running piuparts from GIT.
   * Reorganize layout in the GIT repository to reduce path nesting and length.
