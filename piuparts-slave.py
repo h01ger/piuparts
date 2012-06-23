@@ -504,7 +504,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
     except KeyboardInterrupt:
         print '\nSlave interrupted by the user, cleaning up...'
         try:
-            kill_subprocess(p, kill_all)
+            terminate_subprocess(p, kill_all)
         except KeyboardInterrupt:
             print '\nTerminating piuparts was interrupted... manual cleanup still neccessary.'
             raise
