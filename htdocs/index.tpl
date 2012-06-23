@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2012-06-21</b> piuparts 0.45 has been released, featuring piuparts-master and piuparts-slave packages to ease installation of such a setup. If you run piuparts in master/slave mode, please let us know.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2012-06-04</b> Wheezy freeze is approaching and lots of uploads happening. Old piatti hardware has problems keeping up with the pace of uploads, number of packages and distros being tested! :-) Piatti is about six years old...
      </td>
     </tr>
