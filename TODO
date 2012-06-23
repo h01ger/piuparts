@@ -16,12 +16,6 @@ for 0.46:
 - master: duplicate log submission handling
   break the slave: send -> master: reject infinite loop
 
-- sanitize directory structure:
-  org/piuparts.debian.org/etc/piuparts.conf.* ==> ???
-  home/*/crontab ==> ???
-  home/*/.forward ==> ???
-  home/*/bin ==> ???
-
 - make piuparts-master + piuparts-slave packages work out-of-the-box
 
 - ship sane minimal sudoers in p-s.deb than can be enabled by default
@@ -45,6 +39,7 @@ for 0.46:
 
 - use cdn.debian.net as mirror default (instead of "your.mirror.here") and provide
   a debconf template to overwrite this.
+  or http.debian.net ?
 
 - rework known_problems:
   - use a number prefix for sorting

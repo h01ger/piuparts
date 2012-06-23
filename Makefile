@@ -43,11 +43,6 @@ install-conf:
 	install -m 0644 conf/crontab-slave $(DESTDIR)$(etcdir)/cron.d/piuparts-slave
 	sed -i -r '/^[^#]+/s/^/#/' $(etcdir)/cron.d/piuparts-*
 
-	install -d $(etcdir)/piuparts/known_problems
-	for fl in home/piupartsm/bin/known_problems/* ; do\
-            install -m 0644 $$fl $(etcdir)/piuparts/known_problems; \
-        done
-
 	install -d $(etcdir)/sudoers.d
 	install -m 440 conf/piuparts.sudoers $(etcdir)/sudoers.d/piuparts
 	sed -i -r '/^[^#]+/s/^/#/' $(etcdir)/sudoers.d/piuparts
@@ -82,16 +77,13 @@ install:
 	install -m 0644 piupartslib/*.py $(site27)/piupartslib
 
 	install -d $(sharedir)/piuparts/master
-
-	for fl in home/piupartsm/bin/* ; do\
-            if [ -f $$fl ] ; then install $$fl $(sharedir)/piuparts/master ; fi ; done
+	install -m 0755 master-bin/* $(DESTDIR)$(sharedir)/piuparts/master
 
 	install -d $(DESTDIR)$(sharedir)/piuparts/master/known_problems
-	install -m 0644 home/piupartsm/bin/known_problems/*.conf $(DESTDIR)$(sharedir)/piuparts/master/known_problems/
+	install -m 0644 known_problems/*.conf $(DESTDIR)$(sharedir)/piuparts/master/known_problems/
 
 	install -d $(sharedir)/piuparts/slave
-
-	cp -r home/piupartss/bin/* $(sharedir)/piuparts/slave
+	install -m 0755 slave-bin/* $(DESTDIR)$(sharedir)/piuparts/slave
 
 	install -d $(DESTDIR)$(htdocsdir)
 	install -m 0644 htdocs/*.* $(DESTDIR)$(htdocsdir)/
@@ -108,6 +100,9 @@ install:
 	for d in $$(ls custom-scripts) ; do \
 		install -d $(DESTDIR)$(etcdir)/piuparts/$$d ; \
 		install -m 0755 custom-scripts/$$d/* $(DESTDIR)$(etcdir)/piuparts/$$d/ ; done
+
+	#install -d $(DESTDIR)$(etcdir)/piuparts/known_problems
+	#install -m 0644 known_problems/*.conf $(DESTDIR)$(etcdir)/piuparts/known_problems/
 
 
 check:
