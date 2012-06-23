@@ -80,6 +80,22 @@ sudo make	prefix=$PIUPARTS_PREFIX \
 make clean
 
 #
+# update $PIUPARTS_PREFIX
+#
+cd $PIUPARTS_PREFIX
+pwd
+mkdir -p master slave backup
+sudo chown piupartss:piuparts slave
+sudo chown piupartsm:piuparts master htdocs backup
+# to support multiple hosts with this setup
+HOSTNAME=`hostname`
+cd $PIUPARTS_PREFIX/etc/piuparts
+pwd
+sudo chown piupartss:piuparts . piuparts.conf.*
+chmod 0664 piuparts.conf.*
+ln -sf piuparts.conf.$HOSTNAME piuparts.conf
+
+#
 # create working dir
 #
 mkdir -p $PIUPARTS_TEMPDIR
@@ -106,21 +122,5 @@ ln -sf $PIUPARTS_PREFIX/share/piuparts/master bin
 cp $PIUPARTS_PREFIX/etc/piuparts/forward-master .forward
 crontab $PIUPARTS_PREFIX/etc/piuparts/crontab-master
 "
-
-#
-# update $PIUPARTS_PREFIX
-#
-cd $PIUPARTS_PREFIX
-pwd
-mkdir -p master slave backup
-sudo chown piupartss:piuparts slave
-sudo chown piupartsm:piuparts master htdocs backup
-# to support multiple hosts with this setup
-HOSTNAME=`hostname`
-cd $PIUPARTS_PREFIX/etc/piuparts
-pwd
-sudo chown piupartss:piuparts . piuparts.conf.*
-chmod 0664 piuparts.conf.*
-ln -sf piuparts.conf.$HOSTNAME piuparts.conf
 
 echo "Update finished."
