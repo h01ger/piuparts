@@ -6,8 +6,8 @@
 #
 
 [global]
-#sections = sid wheezy squeeze2wheezy
-sections = testing2sid wheezy
+#sections = sid wheezy squeeze2wheezy testing2sid
+sections = wheezy
 master-host = localhost
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
