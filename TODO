@@ -61,8 +61,6 @@ for 0.46:
   - generate http://piuparts.debian.org/stable/states.png + testing.png
     from existing data
 
-- piuparts-report.py: fix another FIXME in main()
-
 - sometimes a chroot doesn't get removed on piatti - find out
   why and fix it.
 - slave_run: cleanup stale proc mountpoints

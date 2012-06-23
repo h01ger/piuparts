@@ -1,7 +1,7 @@
 piuparts (0.46) UNRELEASED; urgency=low
 
   [ Holger Levsen ]
-  * enjoy! 
+  * piuparts-report: drop in-code index.tpl stub.
 
   [ Andreas Beckmann ]
   * piuparts.py:

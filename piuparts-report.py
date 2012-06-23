@@ -302,39 +302,6 @@ ANALYSIS_BODY_TEMPLATE = """
    </table>
 """
 
-# this template is normally replaced with from $htdocs
-# FIXME: once piatti.git is merged, drop this template here and always use that from $htdocs
-INDEX_BODY_TEMPLATE = """
-   <table class="righttable">
-    <tr class="titlerow">
-     <td class="titlecell">
-      piuparts
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      piuparts is a tool for testing that .deb packages can be installed, upgraded, and removed without problems. The
-      name, a variant of something suggested by Tollef Fog Heen, is short for "<em>p</em>ackage <em>i</em>nstallation,
-      <em>up</em>grading <em>a</em>nd <em>r</em>emoval <em>t</em>esting <em>s</em>uite".
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      It does this by  creating a minimal Debian installation in a chroot, and installing,
-      upgrading, and removing packages in that environment, and comparing the state of the directory tree before and after.
-      piuparts reports any files that have been added, removed, or modified during this process.
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
-      piuparts is meant as a quality assurance tool for people who create .deb packages to test them before they upload them to the Debian package archive.
-      See the <a href="$doc_root/doc/README.html" target="_blank">piuparts README</a> for a quick intro
-      and then read the <a href="$doc_root/doc/piuparts.1.html" target="_blank">piuparts manpage</a> to learn about all the fancy options!
-     </td>
-    </tr>
-    </table>
-"""
-
 
 title_by_dir = {
     "pass": "PASSED piuparts logs",
@@ -1304,12 +1271,9 @@ def main():
 
         # static pages
         logging.debug("Writing static pages")
-        # FIXME: simplify code once piatti.git is merged
-        INDEX_BODY = INDEX_BODY_TEMPLATE
         for page in ("index", "bug_howto"):
           tpl = os.path.join(output_directory,page+".tpl")
-          if os.path.isfile(tpl):
-            INDEX_BODY = "".join(read_file(tpl))
+          INDEX_BODY = "".join(read_file(tpl))
           htmlpage = string.Template(HTML_HEADER + INDEX_BODY + HTML_FOOTER)
           write_file(os.path.join(output_directory,page+".html"), htmlpage.safe_substitute( {
                                  "page_title": "About piuparts.d.o and News",
