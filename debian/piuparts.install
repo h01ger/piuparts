@@ -1,3 +1,2 @@
 /usr/sbin/piuparts
-/etc/piuparts/scripts/
-org/piuparts.debian.org/etc/scripts-*	etc/piuparts/
+/etc/piuparts/scripts*

@@ -17,10 +17,10 @@ for 0.46:
   break the slave: send -> master: reject infinite loop
 
 - sanitize directory structure:
-  org/piuparts.debian.org/etc/scripts* ==> custom-scripts/
-  org/piuparts.debian.org/htdocs/templates/mail/* ==> bug-templates/
-  org/piuparts.debian.org/htdocs/* ==> htdocs/
   org/piuparts.debian.org/etc/piuparts.conf.* ==> ???
+  home/*/crontab ==> ???
+  home/*/.forward ==> ???
+  home/*/bin ==> ???
 
 - make piuparts-master + piuparts-slave packages work out-of-the-box
 
@@ -57,6 +57,7 @@ for 0.46:
 
 - more stats and graphs:
   - packages processed per day (in total and per slave)
+    * master writes submissions.txt per section since 0.45
   - # of open bugs with tag piuparts
   - generate http://piuparts.debian.org/stable/states.png + testing.png
     from existing data
