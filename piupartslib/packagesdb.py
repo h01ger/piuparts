@@ -224,6 +224,12 @@ class LogDB:
         self._evict(full_name)
 
 
+class LogfileExists(Exception):
+
+    def __init__(self, path, package, version):
+        self.args = (path, package, version)
+
+
 class PackagesDB:
 
     # keep in sync with piuparts-report.py: emphasize_reason()
@@ -595,8 +601,7 @@ class PackagesDB:
             self._logdb.remove(self._reserved, package, version)
             self._record_submission("pass", package, version)
         else:
-            raise Exception("Log file exists already: %s (%s)" %
-                                (package, version))
+            raise LogfileExists(self._ok, package, version)
 
     def fail_package(self, package, version, log):
         self._check_for_acceptability_as_filename(package)
@@ -605,8 +610,7 @@ class PackagesDB:
             self._logdb.remove(self._reserved, package, version)
             self._record_submission("fail", package, version)
         else:
-            raise Exception("Log file exists already: %s (%s)" %
-                                (package, version))
+            raise LogfileExists(self._fail, package, version)
 
     def make_package_untestable(self, package, version, log):
         self._check_for_acceptability_as_filename(package)
@@ -615,8 +619,7 @@ class PackagesDB:
             self._logdb.remove(self._reserved, package, version)
             self._record_submission("untestable", package, version)
         else:
-            raise Exception("Log file exists already: %s (%s)" %
-                                (package, version))
+            raise LogfileExists(self._evil, package, version)
 
     def calc_rrdep_counts(self):
         """Calculate recursive reverse dependency counts for Packages"""
