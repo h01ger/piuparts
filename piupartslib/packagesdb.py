@@ -214,10 +214,10 @@ class LogDB:
         full_name = os.path.join(subdir, self._log_name(package, version))
         try:
             os.link(temp_name, full_name)
-        except OSError, detail:
-            os.remove(temp_name)
+        except OSError:
             return False
-        os.remove(temp_name)
+        finally:
+            os.remove(temp_name)
         self._evict(full_name)
         return True
 
