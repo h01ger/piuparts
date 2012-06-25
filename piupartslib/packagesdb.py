@@ -202,6 +202,7 @@ class LogDB:
 
     def create(self, subdir, package, version, contents):
         (fd, temp_name) = tempfile.mkstemp(dir=subdir)
+        assert os.write(fd, contents) == len(contents)
         os.close(fd)
 
         # tempfile.mkstemp sets the file mode to be readable only by owner.
@@ -217,9 +218,6 @@ class LogDB:
             os.remove(temp_name)
             return False
         os.remove(temp_name)
-        f = self.open_file(full_name, "w")
-        f.write(contents)
-        f.close()
         self._evict(full_name)
         return True
 
