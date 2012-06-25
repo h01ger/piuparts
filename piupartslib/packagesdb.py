@@ -24,7 +24,6 @@ Lars Wirzenius <liw@iki.fi>
 """
 
 
-import dircache
 import os
 import tempfile
 import time
@@ -162,9 +161,6 @@ class PackagesFile(UserDict.UserDict):
 
 
 class LogDB:
-
-    def listdir(self, dirname):
-        return dircache.listdir(dirname)
 
     def exists(self, pathname):
         try:
