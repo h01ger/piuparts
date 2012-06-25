@@ -189,8 +189,10 @@ class Slave:
 
     def close(self):
         logging.debug("Closing connection to master")
-        self._from_master.close()
-        self._to_master.close()
+        if self._from_master is not None:
+            self._from_master.close()
+        if self._to_master is not None:
+            self._to_master.close()
         self._from_master = self._to_master = None
         logging.info("Connection to master closed")
 
