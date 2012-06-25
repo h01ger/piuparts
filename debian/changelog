@@ -9,6 +9,8 @@ piuparts (0.46) UNRELEASED; urgency=low
       + /var/lib/cdebconf/{questions,templates}.dat-old
   * piupartslib/packagesdb.py:
   * piuparts-master.py:
+    - Accept and discard duplicate log submissions, preventing the slave from
+      retrying infinitely.
   * piuparts-slave.py:
     - Fix stopping the currently running test (Ctrl-C Ctrl-C).
   * piuparts-report.py:

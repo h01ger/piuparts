@@ -31,6 +31,7 @@ import fcntl
 import time
 
 import piupartslib
+from piupartslib.packagesdb import LogfileExists
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
@@ -181,19 +182,31 @@ class Master(Protocol):
     def _pass(self, command, args):
         self._check_args(2, command, args)
         log = self._read_long_part()
-        self._binary_db.pass_package(args[0], args[1], log)
+        try:
+            self._binary_db.pass_package(args[0], args[1], log)
+        except LogfileExists:
+            logging.info("Ignoring duplicate submission: %s %s %s"
+                         % ("pass", args[0], args[1]))
         self._short_response("ok")
 
     def _fail(self, command, args):
         self._check_args(2, command, args)
         log = self._read_long_part()
-        self._binary_db.fail_package(args[0], args[1], log)
+        try:
+            self._binary_db.fail_package(args[0], args[1], log)
+        except LogfileExists:
+            logging.info("Ignoring duplicate submission: %s %s %s"
+                         % ("fail", args[0], args[1]))
         self._short_response("ok")
 
     def _untestable(self, command, args):
         self._check_args(2, command, args)
         log = self._read_long_part()
-        self._binary_db.make_package_untestable(args[0], args[1], log)
+        try:
+            self._binary_db.make_package_untestable(args[0], args[1], log)
+        except LogfileExists:
+            logging.info("Ignoring duplicate submission: %s %s %s"
+                         % ("untestable", args[0], args[1]))
         self._short_response("ok")
 
 def main():
