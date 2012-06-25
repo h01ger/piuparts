@@ -176,6 +176,14 @@ class LogDB:
             cache[pathname] = os.path.exists(pathname)
         return cache[pathname]
 
+    def _evict(self, pathname):
+        try:
+            cache = self.exists_cache
+            if pathname in cache:
+                del cache[pathname]
+        except AttributeError:
+            pass
+
     def open_file(self, pathname, mode):
         return file(pathname, mode)
 
@@ -212,12 +220,14 @@ class LogDB:
         f = self.open_file(full_name, "w")
         f.write(contents)
         f.close()
+        self._evict(full_name)
         return True
 
     def remove(self, subdir, package, version):
         full_name = os.path.join(subdir, self._log_name(package, version))
         if self.exists(full_name):
             self.remove_file(full_name)
+        self._evict(full_name)
 
 
 class PackagesDB:
