@@ -232,7 +232,7 @@ def main():
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
             print 'busy'
-            sys.exit(1)
+            sys.exit(0)
 
         logging.info("Fetching %s" % config.get_packages_url())
         packages_file = piupartslib.open_packages_url(config.get_packages_url())
