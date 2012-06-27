@@ -198,7 +198,8 @@ class LogDB:
 
     def create(self, subdir, package, version, contents):
         (fd, temp_name) = tempfile.mkstemp(dir=subdir)
-        assert os.write(fd, contents) == len(contents)
+        if os.write(fd, contents) != len(contents):
+            raise Exception("Partial write?")
         os.close(fd)
 
         # tempfile.mkstemp sets the file mode to be readable only by owner.
