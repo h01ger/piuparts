@@ -263,6 +263,7 @@ class Settings:
             # home directories of system accounts
             "/var/lib/gozerbot/",
             "/var/lib/nagios/",         # nagios* (#668756)
+            "/var/lib/onioncat/",       # onioncat
             "/var/lib/rbldns/",
             "/var/spool/powerdns/",     # pdns-server (#531134), pdns-recursor (#531135)
             # work around #316521 dpkg: incomplete cleanup of empty directories

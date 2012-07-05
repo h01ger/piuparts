@@ -7,6 +7,7 @@ piuparts (0.46) UNRELEASED; urgency=low
   * piuparts.py:
     - Add to ignored_files:
       + /var/lib/cdebconf/{questions,templates}.dat-old
+      + /var/lib/onioncat/
   * piupartslib/dependencyparser.py:
     - Package names may now have a ":any" qualification in some cases.  Extend
       the parser to recognize and discard this suffix.
