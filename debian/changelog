@@ -10,6 +10,8 @@ piuparts (0.46) UNRELEASED; urgency=low
       + /var/lib/onioncat/
     - Fix some leftover directories getting incorrectly accounted to the
       package being tested instead of the dependencies in --warn-on-others mode.
+    - Implement --install-purge-install option: test purging with all
+      dependencies still installed; re-install after purge.
   * piupartslib/dependencyparser.py:
     - Package names may now have a ":any" qualification in some cases.  Extend
       the parser to recognize and discard this suffix.

@@ -82,6 +82,12 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *-I* 'regexp', *--ignore-regexp*='regexp'::
   Add a regular expression pattern to the list of patterns for filenames to be ignored when comparing changes before and after installation. This option can be used as many times as necessary.
 
+*--install-purge-install*::
+  Purge package after installation and reinstall. All depedencies are installed during purge.
+
+*--install-remove-install*::
+  Remove package after installation and reinstall. For testing installation in config-files-remaining state.
+
 *-k, --keep-tmpdir*::
   Don't remove the temporary directory for the chroot when the program ends.
 

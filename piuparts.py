@@ -2074,8 +2074,14 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
 
     chroot.install_packages(package_files, packages)
 
+    if settings.install_purge_install:
+        chroot.purge_packages(packages)
+        logging.info("Reinstalling after purge")
+        chroot.install_packages(package_files, packages)
+
     if settings.install_remove_install:
         chroot.remove_packages(packages)
+        logging.info("Reinstalling after remove")
         chroot.install_packages(package_files, packages)
 
     chroot.check_for_no_processes()
@@ -2428,6 +2434,10 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Skip install and purge test.")
 
+    parser.add_option("--install-purge-install",
+                      action="store_true", default=False,
+                      help="Purge package after installation and reinstall.")
+
     parser.add_option("--install-remove-install",
                       action="store_true", default=False,
                       help="Remove package after installation and reinstall. For testing installation in config-files-remaining state.")
@@ -2551,6 +2561,7 @@ def parse_command_line():
     # tests and checks
     settings.no_install_purge_test = opts.no_install_purge_test
     settings.no_upgrade_test = opts.no_upgrade_test
+    settings.install_purge_install = opts.install_purge_install
     settings.install_remove_install = opts.install_remove_install
     settings.list_installed_files = opts.list_installed_files
     [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
