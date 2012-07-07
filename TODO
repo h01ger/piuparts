@@ -11,8 +11,6 @@ for 0.46:
 
 - master controlled recycling (AnBe)
 
-- slave: robust exception handling while communicating to slave
-
 - make piuparts-master + piuparts-slave packages work out-of-the-box
 
 - ship sane minimal sudoers in p-s.deb than can be enabled by default

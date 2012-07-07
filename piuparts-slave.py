@@ -379,7 +379,7 @@ class Section:
         except MasterIsBusy:
             logging.error("master is busy")
             self._error_wait_until = time.time() + random.randrange(60, 180)
-        except:
+        except (MasterIsCrazy, MasterCommunicationFailed):
             logging.error("connection to master failed")
             self._error_wait_until = time.time() + 900
         else:
@@ -397,6 +397,12 @@ class Section:
                         pass
 
                 self._slave.get_status(self._config.section)
+            except MasterNotOK:
+                logging.error("master did not respond with 'ok'")
+                self._error_wait_until = time.time() + 900
+            except (MasterIsCrazy, MasterCommunicationFailed):
+                logging.error("communication with master failed")
+                self._error_wait_until = time.time() + 900
             else:
                 return True
         finally:

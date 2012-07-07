@@ -17,6 +17,8 @@ piuparts (0.46) UNRELEASED; urgency=low
       retrying infinitely.
   * piuparts-slave.py:
     - Fix stopping the currently running test (Ctrl-C Ctrl-C).
+    - Handle master communication exceptions while sending logs or reserving
+      packages: skip the section but keep the slave running.
   * piuparts-report.py:
   * Simplify running piuparts from GIT.
   * Reorganize layout in the GIT repository to reduce path nesting and length.
