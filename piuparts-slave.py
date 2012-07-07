@@ -124,6 +124,12 @@ class MasterDidNotGreet(Exception):
         self.args = "Master did not start with 'hello'"
 
 
+class MasterCommunicationFailed(Exception):
+
+    def __init__(self):
+        self.args = "Communication with master failed"
+
+
 class MasterIsCrazy(Exception):
 
     def __init__(self):
@@ -141,15 +147,21 @@ class Slave:
         self._master_command = None
 
     def _readline(self):
-        line = self._from_master.readline()
+        try:
+            line = self._from_master.readline()
+        except IOError:
+            raise MasterCommunicationFailed()
         logging.debug("<< " + line.rstrip())
         return line
 
     def _writeline(self, *words):
         line = " ".join(words)
         logging.debug(">> " + line)
-        self._to_master.write(line + "\n")
-        self._to_master.flush()
+        try:
+            self._to_master.write(line + "\n")
+            self._to_master.flush()
+        except IOError:
+            raise MasterCommunicationFailed()
 
     def set_master_host(self, host):
         logging.debug("Setting master host to %s" % host)
