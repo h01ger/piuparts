@@ -2023,7 +2023,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
     # Install packages into the chroot.
     os.environ["PIUPARTS_PHASE"] = "install"
 
-    if settings.warn_on_others:
+    if settings.warn_on_others or settings.install_purge_install:
         # Create a metapackage with dependencies from the given packages
         if package_files:
             control_infos = []
@@ -2069,13 +2069,24 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
         # modifications were caused by the actual packages we are testing,
         # rather than by their dependencies.
         deps_info = chroot.save_meta_data()
+
+        if settings.install_purge_install:
+            # save chroot state with all deps installed
+            chroot_state_with_deps = {}
+            chroot_state_with_deps["tree"] = deps_info
+            chroot_state_with_deps["selections"] = chroot.get_selections()
+            chroot_state_with_deps["diversions"] = chroot.get_diversions()
     else:
         deps_info = None
 
     chroot.install_packages(package_files, packages)
 
     if settings.install_purge_install:
+        file_owners = chroot.get_files_owned_by_packages()
         chroot.purge_packages(packages)
+        logging.info("Validating chroot after purge")
+        if not check_results(chroot, chroot_state_with_deps, file_owners, deps_info=deps_info):
+            return False
         logging.info("Reinstalling after purge")
         chroot.install_packages(package_files, packages)
 

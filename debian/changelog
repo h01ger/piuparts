@@ -12,6 +12,9 @@ piuparts (0.46) UNRELEASED; urgency=low
       package being tested instead of the dependencies in --warn-on-others mode.
     - Implement --install-purge-install option: test purging with all
       dependencies still installed; re-install after purge.
+    - Install the dependencies and snapshot the chroot before the
+      --install-purge-install test. Check that the chroot after purge matches
+      the snapshot.  (Closes: #668713)
   * piupartslib/dependencyparser.py:
     - Package names may now have a ":any" qualification in some cases.  Extend
       the parser to recognize and discard this suffix.
