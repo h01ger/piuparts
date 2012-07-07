@@ -1071,6 +1071,12 @@ class Chroot:
             logging.debug("The package did not modify any file.\n")
 
 
+    def install_packages(self, package_files, packages):
+        if package_files:
+            self.install_package_files(package_files, packages)
+        else:
+            self.install_packages_by_name(packages)
+
     def install_package_files(self, package_files, packages = None):
         if package_files:
             self.copy_files(package_files, "tmp")
@@ -2066,17 +2072,11 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
     else:
         deps_info = None
 
-    if package_files:
-        chroot.install_package_files(package_files, packages)
-    else:
-        chroot.install_packages_by_name(packages)
+    chroot.install_packages(package_files, packages)
 
     if settings.install_remove_install:
         chroot.remove_packages(packages)
-        if package_files:
-            chroot.install_package_files(package_files)
-        else:
-            chroot.install_packages_by_name(packages)
+        chroot.install_packages(package_files, packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -2111,7 +2111,7 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
 
     # Then from the package files.
     os.environ["PIUPARTS_PHASE"] = "upgrade"
-    chroot.install_package_files(package_files, packages)
+    chroot.install_packages(package_files, packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -2242,7 +2242,7 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     if settings.install_remove_install:
         chroot.install_packages_by_name(packages)
 
-    chroot.install_package_files(package_files, packages_qualified)
+    chroot.install_packages(package_files, packages_qualified)
 
     chroot.check_for_no_processes()
 
