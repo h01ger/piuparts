@@ -1125,11 +1125,13 @@ class Chroot:
     def remove_packages(self, packages):
         """Remove packages in a chroot."""
         if packages:
+            packages = [p.split("=", 1)[0].strip() for p in packages]
             self.run(["apt-get", "remove"] + packages, ignore_errors=True)
 
     def purge_packages(self, packages):
         """Purge packages in a chroot."""
         if packages:
+            packages = [p.split("=", 1)[0].strip() for p in packages]
             self.run(["dpkg", "--purge"] + packages, ignore_errors=True)
 
     def restore_selections(self, selections, packages):
