@@ -1,0 +1,27 @@
+To: submit@bugs.debian.org
+Subject: fails to install, purge, and install again
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package failed to install,
+remove+purge, and install again.
+
+Like a plain failure on initial install this makes the package too buggy
+for a release, thus the severity.
+
+This is often a problem with the home directory of a system user:
+the user is not deleted during purge (which is fine), but the home
+directory is removed. Since the user already exists on the next
+installation, adduser won't recreate the home.
+
+From the attached log (scroll to the bottom...):
+
+
+
+cheers,
