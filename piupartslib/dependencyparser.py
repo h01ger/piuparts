@@ -152,7 +152,7 @@ class DependencyParser:
         version-number ::= epoch? upstream-version debian-revision?
         arch-restriction ::= "[" arch-name arch-name* "]" |
                               "[" "!" arch-name ("!" arch-name)* "]"
-        package-name ::= alphanumeric name-char name-char*
+        package-name ::= alphanumeric name-char name-char* ":any"?
         epoch ::= integer ":"
         upstream-version ::= alphanumeric version-char*
             -- policy says "should start with digit", but not all packages do
@@ -237,6 +237,7 @@ class DependencyParser:
         return SimpleDependency(name, op, version, arch)
 
     _name_pat = re.compile(r"[a-zA-Z0-9][a-zA-Z0-9+._-]+")
+    _any_suffix_pat = re.compile(r":any")
 
     def _parse_package_name(self):
         self._cursor.skip_whitespace()
@@ -246,6 +247,8 @@ class DependencyParser:
         if not m:
             raise DependencySyntaxError("Expected a package name",
                                         self._cursor)
+        if self._cursor.match(self._any_suffix_pat):
+            pass
         return m.group()
 
     _op_pat = re.compile(r"(<<|<=|=|>=|>>|<(?![<=])|>(?![>=]))")

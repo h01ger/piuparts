@@ -198,7 +198,8 @@ class LogDB:
 
     def create(self, subdir, package, version, contents):
         (fd, temp_name) = tempfile.mkstemp(dir=subdir)
-        assert os.write(fd, contents) == len(contents)
+        if os.write(fd, contents) != len(contents):
+            raise Exception("Partial write?")
         os.close(fd)
 
         # tempfile.mkstemp sets the file mode to be readable only by owner.
@@ -295,17 +296,22 @@ class PackagesDB:
         else:
             pformat = "%s"
         self._submissions = pformat % "submissions.txt"
+        self._all = []
         if ok:
             self._ok = pformat % ok
+            self._all.append(self._ok)
         if fail:
             self._fail = pformat % fail
+            self._all.append(self._fail)
         if evil:
             self._evil = pformat % evil
+            self._all.append(self._evil)
         if reserved:
             self._reserved = pformat % reserved
+            self._all.append(self._reserved)
         if morefail:
             self._morefail = [pformat % s for s in morefail]
-        self._all = [self._ok, self._fail, self._evil, self._reserved] + self._morefail
+            self._all.extend(self._morefail)
 
     def create_subdirs(self):
         for sdir in self._all:

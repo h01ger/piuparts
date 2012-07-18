@@ -263,6 +263,7 @@ class Settings:
             # home directories of system accounts
             "/var/lib/gozerbot/",
             "/var/lib/nagios/",         # nagios* (#668756)
+            "/var/lib/onioncat/",       # onioncat
             "/var/lib/rbldns/",
             "/var/spool/powerdns/",     # pdns-server (#531134), pdns-recursor (#531135)
             # work around #316521 dpkg: incomplete cleanup of empty directories
@@ -1124,11 +1125,13 @@ class Chroot:
     def remove_packages(self, packages):
         """Remove packages in a chroot."""
         if packages:
+            packages = [p.split("=", 1)[0].strip() for p in packages]
             self.run(["apt-get", "remove"] + packages, ignore_errors=True)
 
     def purge_packages(self, packages):
         """Purge packages in a chroot."""
         if packages:
+            packages = [p.split("=", 1)[0].strip() for p in packages]
             self.run(["dpkg", "--purge"] + packages, ignore_errors=True)
 
     def restore_selections(self, selections, packages):
