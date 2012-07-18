@@ -49,6 +49,8 @@ piupartss       ALL=(ALL) NOPASSWD: ALL
 
         DocumentRoot /org/piuparts.debian.org/htdocs
 
+        DefaultType text/plain
+
         HostnameLookups Off
         UseCanonicalName Off
         ServerSignature On

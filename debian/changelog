@@ -42,6 +42,7 @@ piuparts (0.46) UNRELEASED; urgency=low
   * Makefile:
     - Separate build and install targets.
     - Adjust for new layout, cleanup, simplify.
+  * conf/piuparts.apache: Set DefaultType text/plain (for the logfiles).
   * New helper script: master-bin/reclassify_bugged.
   * New custom script post_setup_forbid_home: replace /home with a file to
     prevent creating home directories there.  (Closes: #677332)

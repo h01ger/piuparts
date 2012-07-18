@@ -5,6 +5,8 @@ Alias /piuparts /var/lib/piuparts/htdocs
   Allow from all
 
   Options indexes
+
+  DefaultType text/plain
 </Directory>
 
 
