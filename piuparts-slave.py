@@ -124,6 +124,12 @@ class MasterDidNotGreet(Exception):
         self.args = "Master did not start with 'hello'"
 
 
+class MasterCommunicationFailed(Exception):
+
+    def __init__(self):
+        self.args = "Communication with master failed"
+
+
 class MasterIsCrazy(Exception):
 
     def __init__(self):
@@ -141,15 +147,21 @@ class Slave:
         self._master_command = None
 
     def _readline(self):
-        line = self._from_master.readline()
+        try:
+            line = self._from_master.readline()
+        except IOError:
+            raise MasterCommunicationFailed()
         logging.debug("<< " + line.rstrip())
         return line
 
     def _writeline(self, *words):
         line = " ".join(words)
         logging.debug(">> " + line)
-        self._to_master.write(line + "\n")
-        self._to_master.flush()
+        try:
+            self._to_master.write(line + "\n")
+            self._to_master.flush()
+        except IOError:
+            raise MasterCommunicationFailed()
 
     def set_master_host(self, host):
         logging.debug("Setting master host to %s" % host)
@@ -189,8 +201,10 @@ class Slave:
 
     def close(self):
         logging.debug("Closing connection to master")
-        self._from_master.close()
-        self._to_master.close()
+        if self._from_master is not None:
+            self._from_master.close()
+        if self._to_master is not None:
+            self._to_master.close()
         self._from_master = self._to_master = None
         logging.info("Connection to master closed")
 
@@ -306,18 +320,35 @@ class Section:
 
         os.chdir(oldcwd)
 
+    def _count_submittable_logs(self):
+        files = 0
+        for logdir in ["pass", "fail", "untestable"]:
+            for basename in os.listdir(os.path.join(self._slave_directory, logdir)):
+                if basename.endswith(".log"):
+                    files += 1
+        return files
+
     def precedence(self):
         return int(self._config["precedence"])
 
     def sleep_until(self):
         return max(self._error_wait_until, self._idle_wait_until)
 
-    def run(self):
+
+    def run(self, precedence=None):
         if time.time() < self.sleep_until():
             return 0
 
+        do_processing = precedence is None or self.precedence() <= precedence
+        if not do_processing and self._count_submittable_logs() == 0:
+            return 0
+
         logging.info("-------------------------------------------")
-        logging.info("Running section %s (precedence=%d)" % (self._config.section, self.precedence()))
+        action = "Running"
+        if not do_processing:
+            action = "Flushing"
+        logging.info("%s section %s (precedence=%d)" \
+                     % (action, self._config.section, self.precedence()))
         self._config = Config(section=self._config.section, defaults_section="global")
         self._config.read(CONFIG_FILE)
 
@@ -332,25 +363,32 @@ class Section:
             self._error_wait_until = time.time() + 3600
             return 0
 
-        lock = open(os.path.join(self._slave_directory, "slave.lock"), "we")
-        try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except IOError:
-            logging.info("busy")
-            self._error_wait_until = time.time() + 900
-            lock.close()
-            return 0
+        with open(os.path.join(self._slave_directory, "slave.lock"), "we") as lock:
+            oldcwd = os.getcwd()
+            os.chdir(self._slave_directory)
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except IOError:
+                logging.info("busy")
+                self._error_wait_until = time.time() + 900
+            else:
+                if self._talk_to_master(fetch=do_processing):
+                    if do_processing:
+                        if not self._slave.get_reserved():
+                            self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
+                        else:
+                            return self._process()
+            finally:
+                os.chdir(oldcwd)
+        return 0
 
-        oldcwd = os.getcwd()
-        os.chdir(self._slave_directory)
 
-        ret = self._run()
+    def _talk_to_master(self, fetch=False):
+        flush = self._count_submittable_logs() > 0
+        fetch = fetch and not self._slave.get_reserved()
+        if not flush and not fetch:
+            return True
 
-        os.chdir(oldcwd)
-        lock.close()
-        return ret
-
-    def _run(self):
         try:
             self._connect_to_master()
         except KeyboardInterrupt:
@@ -358,31 +396,37 @@ class Section:
         except MasterIsBusy:
             logging.error("master is busy")
             self._error_wait_until = time.time() + random.randrange(60, 180)
-            return 0
-        except:
+        except (MasterIsCrazy, MasterCommunicationFailed):
             logging.error("connection to master failed")
             self._error_wait_until = time.time() + 900
-            return 0
+        else:
+            try:
+                for logdir in ["pass", "fail", "untestable"]:
+                    for basename in os.listdir(logdir):
+                        if basename.endswith(".log"):
+                            fullname = os.path.join(logdir, basename)
+                            self._slave.send_log(self._config.section, logdir, fullname)
+                            os.remove(fullname)
 
-        for logdir in ["pass", "fail", "untestable"]:
-            for basename in os.listdir(logdir):
-                if basename.endswith(".log"):
-                    fullname = os.path.join(logdir, basename)
-                    self._slave.send_log(self._config.section, logdir, fullname)
-                    os.remove(fullname)
+                if fetch:
+                    max_reserved = int(self._config["max-reserved"])
+                    while len(self._slave.get_reserved()) < max_reserved and self._slave.reserve():
+                        pass
+                    self._slave.get_status(self._config.section)
+            except MasterNotOK:
+                logging.error("master did not respond with 'ok'")
+                self._error_wait_until = time.time() + 900
+            except (MasterIsCrazy, MasterCommunicationFailed):
+                logging.error("communication with master failed")
+                self._error_wait_until = time.time() + 900
+            else:
+                return True
+        finally:
+            self._slave.close()
+        return False
 
-        if not self._slave.get_reserved():
-            max_reserved = int(self._config["max-reserved"])
-            while len(self._slave.get_reserved()) < max_reserved and self._slave.reserve():
-                pass
 
-        self._slave.get_status(self._config.section)
-        self._slave.close()
-
-        if not self._slave.get_reserved():
-            self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
-            return 0
-
+    def _process(self):
         if self._config["distro"]:
             distros = [self._config["distro"]]
         else:
@@ -427,6 +471,7 @@ class Section:
             self._slave.forget_reserved(package_name, version)
             if interrupted:
                 raise KeyboardInterrupt
+        self._talk_to_master()
         return test_count
 
 
@@ -662,11 +707,10 @@ def main():
         precedence = None
 
         for section in sorted(sections, key=lambda section: section.precedence()):
-            if precedence is None or section.precedence() <= precedence:
-                processed = section.run()
-                if processed > 0:
-                    test_count += processed
-                    precedence = section.precedence()
+            processed = section.run(precedence=precedence)
+            if processed > 0:
+                test_count += processed
+                precedence = section.precedence()
 
         if test_count == 0:
             now = time.time()
