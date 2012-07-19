@@ -129,11 +129,19 @@ class Master(Protocol):
             "untestable": self._untestable,
         }
         self._section = section
-        self._package_databases = {}
+        self._package_databases = None
+        # start with a dummy _binary_db (without Packages file), sufficient
+        # for submitting finished logs
         self._binary_db = piupartslib.packagesdb.PackagesDB(prefix=section)
-        self._load_package_database(section)
-        self._binary_db = self._package_databases[section]
         self._writeline("hello")
+
+    def _init_db(self):
+        if self._package_databases is not None:
+            return
+
+        self._package_databases = {}
+        self._load_package_database(self._section)
+        self._binary_db = self._package_databases[self._section]
 
     def _load_package_database(self, section):
         config = Config(section=section, defaults_section="global")
@@ -168,6 +176,7 @@ class Master(Protocol):
 
     def _status(self, command, args):
         self._check_args(0, command, args)
+        self._init_db()
         stats = ""
         total = 0
         for state in self._binary_db.get_states():
@@ -179,6 +188,7 @@ class Master(Protocol):
 
     def _reserve(self, command, args):
         self._check_args(0, command, args)
+        self._init_db()
         package = self._binary_db.reserve_package()
         if package is None:
             self._short_response("error")
