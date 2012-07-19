@@ -118,7 +118,7 @@ class Master(Protocol):
         "successfully-tested",
     )
 
-    def __init__(self, input, output, packages_file, section=None):
+    def __init__(self, input, output, section):
         Protocol.__init__(self, input, output)
         self._commands = {
             "status": self._status,
@@ -128,9 +128,22 @@ class Master(Protocol):
             "fail": self._fail,
             "untestable": self._untestable,
         }
+        self._section = section
+        self._package_databases = {}
         self._binary_db = piupartslib.packagesdb.PackagesDB(prefix=section)
-        self._binary_db.read_packages_file(packages_file)
+        self._load_package_database(section)
+        self._binary_db = self._package_databases[section]
         self._writeline("hello")
+
+    def _load_package_database(self, section):
+        config = Config(section=section, defaults_section="global")
+        config.read(CONFIG_FILE)
+        db = piupartslib.packagesdb.PackagesDB(prefix=section)
+        self._package_databases[section] = db
+        logging.info("Fetching %s" % config.get_packages_url())
+        packages_file = piupartslib.open_packages_url(config.get_packages_url())
+        db.read_packages_file(packages_file)
+        packages_file.close()
 
     def do_transaction(self):
         line = self._readline()
@@ -209,6 +222,7 @@ class Master(Protocol):
                          % ("untestable", args[0], args[1]))
         self._short_response("ok")
 
+
 def main():
     # piuparts-master is always called by the slave with a section as argument
     if len(sys.argv) == 2:
@@ -234,13 +248,9 @@ def main():
             print 'busy'
             sys.exit(0)
 
-        logging.info("Fetching %s" % config.get_packages_url())
-        packages_file = piupartslib.open_packages_url(config.get_packages_url())
-
-        m = Master(sys.stdin, sys.stdout, packages_file, section=section)
+        m = Master(sys.stdin, sys.stdout, section)
         while m.do_transaction():
             pass
-        packages_file.close()
     else:
         print 'piuparts-master needs to be called with a valid sectionname as argument, exiting...'
         sys.exit(1)
