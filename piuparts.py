@@ -1851,8 +1851,9 @@ def prune_files_list(files, depsfiles):
     list of removed elements.
     """
     warn = []
-    for vfile in depsfiles:
-        if vfile in files:
+    depfiles_names = [x[0] for x in depsfiles]
+    for vfile in files[:]:
+        if vfile[0] in depfiles_names:
             files.remove(vfile)
             warn.append(vfile)
     return warn
@@ -1982,7 +1983,7 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
                       file_list(modified, file_owners))
         ok = False
 
-    if ok and settings.warn_on_others and deps_info is not None:
+    if settings.warn_on_others and deps_info is not None:
         if warnnew:
             msg = ("Warning: Package purging left files on system:\n" +
                    file_list(warnnew, file_owners) + \
