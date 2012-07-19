@@ -697,18 +697,22 @@ def create_chroot(config, tarball, distro):
     output_name = tarball + ".log"
     logging.debug("Opening log file %s" % output_name)
     logging.info("Creating new tarball %s" % tarball)
-    command = "%s -ad %s -s %s.new -m %s dpkg" % \
-                (config["piuparts-cmd"], distro, tarball, config["mirror"])
+    command = config["piuparts-cmd"].split()
+    if config["mirror"]:
+        command.extend(["--mirror", config["mirror"]])
+    command.extend(["-d", distro])
+    command.extend(["-s", tarball + ".new"])
+    command.extend(["--apt", "dpkg"])
     output = file(output_name, "w")
     output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n\n",
                                time.gmtime()))
-    output.write("Executing: " + command)
-    logging.debug("Executing: " + command)
-    f = os.popen("{ %s; } 2>&1" % command, "r")
-    for line in f:
+    output.write("Executing: " + " ".join(command) + "\n\n")
+    logging.debug("Executing: " + " ".join(command))
+    p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    for line in p.stdout:
         output.write(line)
         logging.debug(">> " + line.rstrip())
-    f.close()
+    p.wait()
     output.write(time.strftime("\nEnd: %Y-%m-%d %H:%M:%S %Z\n",
                                time.gmtime()))
     output.close()
