@@ -50,6 +50,7 @@ get_config_value FAIL_COUNT global reschedule-fail-count 25
 
 TOTAL=0
 LOGS=`mktemp`
+LOGS2=`mktemp`
 OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
@@ -60,16 +61,20 @@ for SECTION in $SECTIONS ; do
 		get_config_value _FAIL_AGE   $SECTION reschedule-fail-days $FAIL_AGE
 		get_config_value _FAIL_COUNT $SECTION reschedule-fail-count $FAIL_COUNT
 		cd $MASTER/$SECTION
-		mkdir -p pass fail affected
+		mkdir -p pass fail affected recycle
 		# FIXME: we ignore bugged here - ptyhon-bts is really the way to go
 		find pass fail affected -name "*.log" -mtime +$_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_COUNT > $LOGS
 		find fail affected -name "*.log" -mtime +$_FAIL_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_FAIL_COUNT >> $LOGS
+		sort -u $LOGS > $LOGS2
+		for log in $(cat $LOGS2) ; do
+			test -f recycle/$(basename "$log") || echo "$log"
+		done > $LOGS
 		if [ -s $LOGS ]; then
 			COUNT=$(wc -l $LOGS | awk '{ print $1 }')
 			TOTAL=$(($TOTAL + $COUNT))
 			echo "$SECTION: $COUNT"
 			ls -dtl $(cat $LOGS)
-			sort -u $LOGS | xargs rm 2>/dev/null
+			ln -f $(cat $LOGS) recycle/
 			echo
 			echo "#########################################################"
 			echo
@@ -77,7 +82,7 @@ for SECTION in $SECTIONS ; do
 		cd $OLDPWD
 	fi
 done
-rm $LOGS
+rm $LOGS $LOGS2
 
 if [ "$TOTAL" -gt "0" ]; then
 	echo "Rescheduled $TOTAL logs"
