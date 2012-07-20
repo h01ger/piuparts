@@ -324,6 +324,19 @@ class PackagesDB:
             if not os.path.exists(sdir):
                 os.makedirs(sdir)
 
+    def enable_recycling(self):
+        if self._recycle_mode:
+            return True
+        if self._packages is not None:
+            logging.info("too late for recycling")
+            return False
+        for basename in os.listdir(self._recycle):
+            if basename.endswith(".log"):
+                self._recycle_mode = True
+                return True
+        logging.info("nothing to recycle")
+        return False
+
     def read_packages_file(self, input):
         self._packages_files.append(PackagesFile(input))
         self._packages = None
