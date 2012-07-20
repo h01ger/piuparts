@@ -380,6 +380,8 @@ class Section:
 
         logging.info("-------------------------------------------")
         action = "Running"
+        if recycle:
+            action = "Recycling"
         if not do_processing:
             action = "Flushing"
         logging.info("%s section %s (precedence=%d)" \
@@ -772,6 +774,15 @@ def main():
             # clear SIGHUP state after flushing all sections
             got_sighup = False
             continue
+
+        if test_count == 0:
+            # try to recycle old logs
+            # round robin recycling of all sections is ensured by the recycle_wait_until timestamps
+            idle_until = min([section.sleep_until() for section in sections])
+            for section in sorted(sections, key=lambda section: section.sleep_until(recycle=True)):
+                test_count += section.run(recycle=True)
+                if test_count > 0 and idle_until < time.time():
+                    break
 
         if test_count == 0:
             now = time.time()

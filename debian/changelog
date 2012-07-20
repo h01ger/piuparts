@@ -47,6 +47,10 @@ piuparts (0.46) UNRELEASED; urgency=low
     - Try to unreserve all reserved logs after interrupt.
     - Add SIGHUP handler that triggers flushing finished logs.  Flushing (all
       sections) will be done after the current test has finished.
+    - Enter logfile recycling mode if no section has packages left for regular
+      processing.  Recycle logfiles until a section becomes available for
+      regular processing.  If no logfiles could be recycled, retry after an
+      hour.
   * piuparts-report.py:
   * Simplify running piuparts from GIT.
   * Reorganize layout in the GIT repository to reduce path nesting and length.
