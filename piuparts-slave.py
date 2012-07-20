@@ -582,6 +582,7 @@ def test_package(config, package, packages_files):
         command = base_command[:]
         command.extend(["-b", config["chroot-tgz"]])
         command.extend(["-d", config["distro"]])
+        command.append("--no-upgrade-test")
         if config["keep-sources-list"] in ["yes", "true"]:
             command.append("--keep-sources-list")
         command.extend(["--apt", "%s=%s" % (package["Package"], package["Version"])])
