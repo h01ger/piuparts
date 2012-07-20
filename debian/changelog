@@ -24,6 +24,8 @@ piuparts (0.46) UNRELEASED; urgency=low
     - Implement logfile recycling mode:
       + logfiles to be recycled should be hardlinked from pass/, fail/, ... to
         recycle/
+      + treat packages with logfile in recycle/ as initially "unknown" and
+        compute state ("waiting[-for-dependency]-to-be-tested")
   * piuparts-master.py:
     - Accept and discard duplicate log submissions, preventing the slave from
       retrying infinitely.

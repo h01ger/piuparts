@@ -285,6 +285,7 @@ class PackagesDB:
         self._packages = None
         self._in_state = None
         self._package_state = {}
+        self._recycle_mode = False
         self.set_subdirs(ok="pass", fail="fail", evil="untestable",
                          reserved="reserved", morefail=["bugged", "affected"],
                          recycle="recycle")
@@ -376,6 +377,8 @@ class PackagesDB:
         return circular
 
     def _lookup_package_state(self, package):
+        if self._recycle_mode and self._logdb.log_exists(package, [self._recycle]):
+            return "unknown"
         if self._logdb.log_exists(package, [self._ok]):
             return "successfully-tested"
         if self._logdb.log_exists(package, [self._fail] + self._morefail):
