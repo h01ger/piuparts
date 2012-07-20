@@ -286,10 +286,11 @@ class PackagesDB:
         self._in_state = None
         self._package_state = {}
         self.set_subdirs(ok="pass", fail="fail", evil="untestable",
-                         reserved="reserved", morefail=["bugged", "affected"])
+                         reserved="reserved", morefail=["bugged", "affected"],
+                         recycle="recycle")
         self.create_subdirs()
 
-    def set_subdirs(self, ok=None, fail=None, evil=None, reserved=None, morefail=None):
+    def set_subdirs(self, ok=None, fail=None, evil=None, reserved=None, morefail=None, recycle=None):
         # Prefix all the subdirs with the prefix
         if self.prefix:
             pformat = self.prefix + "/%s"
@@ -312,6 +313,9 @@ class PackagesDB:
         if morefail:
             self._morefail = [pformat % s for s in morefail]
             self._all.extend(self._morefail)
+        if recycle:
+            self._recycle = pformat % recycle
+            self._all.append(self._recycle)
 
     def create_subdirs(self):
         for sdir in self._all:
