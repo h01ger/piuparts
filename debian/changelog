@@ -36,6 +36,7 @@ piuparts (0.46) UNRELEASED; urgency=low
   * Makefile:
     - Separate build and install targets.
     - Adjust for new layout, cleanup, simplify.
+  * New helper script: master-bin/reclassify_bugged.
 
  -- Holger Levsen <holger@debian.org>  Thu, 21 Jun 2012 22:25:57 +0200
 
