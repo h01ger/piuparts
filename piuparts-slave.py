@@ -292,6 +292,7 @@ class Section:
         self._config.read(CONFIG_FILE)
         self._error_wait_until = 0
         self._idle_wait_until = 0
+        self._recycle_wait_until = 0
         self._slave_directory = os.path.abspath(self._config["slave-directory"])
         if not os.path.exists(self._slave_directory):
             os.makedirs(self._slave_directory)
@@ -347,12 +348,14 @@ class Section:
     def precedence(self):
         return int(self._config["precedence"])
 
-    def sleep_until(self):
+    def sleep_until(self, recycle=False):
+        if recycle:
+            return max(self._error_wait_until, self._recycle_wait_until)
         return max(self._error_wait_until, self._idle_wait_until)
 
 
-    def run(self, precedence=None):
-        if time.time() < self.sleep_until():
+    def run(self, precedence=None, recycle=False):
+        if time.time() < self.sleep_until(recycle=recycle):
             return 0
 
         do_processing = not got_sighup and \
@@ -393,6 +396,8 @@ class Section:
                     if do_processing:
                         if not self._slave.get_reserved():
                             self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
+                            if recycle:
+                                self._recycle_wait_until = self._idle_wait_until + 3600
                         else:
                             return self._process()
             finally:
@@ -498,6 +503,7 @@ class Section:
             self._slave.forget_reserved(package_name, version)
             if interrupted:
                 break
+        self._recycle_wait_until = time.time()
         self._talk_to_master(unreserve=interrupted)
         if interrupted:
             raise KeyboardInterrupt
