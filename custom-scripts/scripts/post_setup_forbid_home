@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	dpkg)
+		# skip while creating the tarball
+		exit 0
+		;;
+esac
+
+case $PIUPARTS_DISTRIBUTION in
+	lenny|squeeze)
+		exit 0
+		;;
+esac
+
+if [ -d /home ]; then
+	echo "Disabling /home"
+	mv /home /home.orig
+	echo "This is a dummy file to prevent creating directories in /home" > /home
+	chmod 000 /home
+fi
