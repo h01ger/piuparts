@@ -24,6 +24,7 @@ Lars Wirzenius <liw@iki.fi>
 """
 
 
+import logging
 import os
 import tempfile
 import time
@@ -593,9 +594,19 @@ class PackagesDB:
         return self.get_pkg_names_in_state("waiting-to-be-tested")
 
     def reserve_package(self):
+        all_but_recycle = [x for x in self._all if x != self._recycle]
         pset = self._find_packages_ready_for_testing()
         while (len(pset)):
             p = self.get_package(pset.pop())
+            if self._recycle_mode and self._logdb.log_exists(p, [self._recycle]):
+                for vdir in all_but_recycle:
+                    if self._logdb.log_exists(p, [vdir]):
+                        self._logdb.remove(vdir, p["Package"], p["Version"])
+                        logging.info("Recycled %s %s %s" % (vdir, p["Package"], p["Version"]))
+            if self._logdb.log_exists(p, all_but_recycle):
+                continue
+            if self._logdb.log_exists(p, [self._recycle]):
+                self._logdb.remove(self._recycle, p["Package"], p["Version"])
             if self._logdb.create(self._reserved, p["Package"], p["Version"], ""):
                 return p
         return None

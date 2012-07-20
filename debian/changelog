@@ -26,6 +26,7 @@ piuparts (0.46) UNRELEASED; urgency=low
         recycle/
       + treat packages with logfile in recycle/ as initially "unknown" and
         compute state ("waiting[-for-dependency]-to-be-tested")
+      + delete old logfile while reserving such a package
   * piuparts-master.py:
     - Accept and discard duplicate log submissions, preventing the slave from
       retrying infinitely.
