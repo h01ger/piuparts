@@ -142,6 +142,12 @@ class MasterIsCrazy(Exception):
         self.args = "Master said something unexpected"
 
 
+class MasterCantRecycle(Exception):
+
+    def __init__(self):
+        self.args = "Master has nothing to recycle"
+
+
 class Slave:
 
     def __init__(self):
@@ -240,6 +246,13 @@ class Slave:
         else:
             raise MasterIsCrazy()
 
+    def enable_recycling(self):
+        self._writeline("recycle")
+        line = self._readline()
+        words = line.split()
+        if line != "ok\n":
+            raise MasterCantRecycle()
+
     def reserve(self):
         self._writeline("reserve")
         line = self._readline()
@@ -314,12 +327,14 @@ class Section:
 
         self._slave = Slave()
 
-    def _connect_to_master(self):
+    def _connect_to_master(self, recycle=False):
         self._slave.set_master_host(self._config["master-host"])
         self._slave.set_master_user(self._config["master-user"])
         self._slave.set_master_directory(self._config["master-directory"])
         self._slave.set_master_command(self._config["master-command"] + " " + self._config.section)
         self._slave.connect_to_master(self._config["log-file"])
+        if recycle:
+            self._slave.enable_recycling()
 
     def _check_tarball(self):
         oldcwd = os.getcwd()
@@ -392,7 +407,7 @@ class Section:
                 logging.info("busy")
                 self._error_wait_until = time.time() + 900
             else:
-                if self._talk_to_master(fetch=do_processing):
+                if self._talk_to_master(fetch=do_processing, recycle=recycle):
                     if do_processing:
                         if not self._slave.get_reserved():
                             self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
@@ -405,19 +420,22 @@ class Section:
         return 0
 
 
-    def _talk_to_master(self, fetch=False, unreserve=False):
+    def _talk_to_master(self, fetch=False, unreserve=False, recycle=False):
         flush = self._count_submittable_logs() > 0
         fetch = fetch and not self._slave.get_reserved()
         if not flush and not fetch:
             return True
 
         try:
-            self._connect_to_master()
+            self._connect_to_master(recycle=recycle)
         except KeyboardInterrupt:
             raise
         except MasterIsBusy:
             logging.error("master is busy")
             self._error_wait_until = time.time() + random.randrange(60, 180)
+        except MasterCantRecycle:
+            logging.error("master has nothing to recycle")
+            self._recycle_wait_until = max(time.time(), self._idle_wait_until) + 3600
         except (MasterIsCrazy, MasterCommunicationFailed):
             logging.error("connection to master failed")
             self._error_wait_until = time.time() + 900
