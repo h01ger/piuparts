@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+test "$PIUPARTS_TEST" = "install" || exit 0
+
+if [ ! -f /etc/apt/apt.conf.d/piuparts-debug-problemresolver ]
+then
+	echo "Enabling Debug::pkgProblemResolver"
+	echo 'Debug::pkgProblemResolver "true";' >> /etc/apt/apt.conf.d/piuparts-debug-problemresolver
+	echo 'Debug::pkgProblemResolver::ShowScores "true";' >> /etc/apt/apt.conf.d/piuparts-debug-problemresolver
+fi
