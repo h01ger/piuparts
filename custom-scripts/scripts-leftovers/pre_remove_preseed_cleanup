@@ -20,6 +20,10 @@ dbconfig_enable_purge()
 #
 
 case ${PIUPARTS_OBJECTS%%=*} in
+	cvsd)
+		log_debug
+		echo "cvsd cvsd/remove_chroot boolean true" | debconf-set-selections
+		;;
 	docbookwiki)
 		log_debug
 		echo "docbookwiki docbookwiki/purge_books boolean true" | debconf-set-selections
