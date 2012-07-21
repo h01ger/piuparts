@@ -28,7 +28,7 @@ import sys
 import stat
 import time
 import logging
-from signal import alarm, signal, SIGALRM, SIGINT, SIGKILL
+from signal import alarm, signal, SIGALRM, SIGINT, SIGKILL, SIGHUP
 import subprocess
 import fcntl
 import random
@@ -43,6 +43,7 @@ MAX_WAIT_TEST_RUN = 45*60
 
 interrupted = False
 old_sigint_handler = None
+got_sighup = False
 
 def setup_logging(log_level, log_file_name):
     logger = logging.getLogger()
@@ -104,6 +105,11 @@ def sigint_handler(signum, frame):
     print '\nSlave interrupted by the user, waiting for the current test to finish.'
     print 'Press Ctrl-C again to abort now.'
     signal(SIGINT, old_sigint_handler)
+
+def sighup_handler(signum, frame):
+    global got_sighup
+    got_sighup = True
+    print 'SIGHUP: Will flush finished logs.'
 
 
 class MasterIsBusy(Exception):
@@ -339,7 +345,8 @@ class Section:
         if time.time() < self.sleep_until():
             return 0
 
-        do_processing = precedence is None or self.precedence() <= precedence
+        do_processing = not got_sighup and \
+                (precedence is None or self.precedence() <= precedence)
         if not do_processing and self._count_submittable_logs() == 0:
             return 0
 
@@ -471,6 +478,8 @@ class Section:
             self._slave.forget_reserved(package_name, version)
             if interrupted:
                 raise KeyboardInterrupt
+            if got_sighup:
+                break
         self._talk_to_master()
         return test_count
 
@@ -687,6 +696,7 @@ def create_file(filename, contents):
 
 def main():
     setup_logging(logging.INFO, None)
+    signal(SIGHUP, sighup_handler)
 
     # For supporting multiple architectures and suites, we take command-line
     # argument(s) referring to section(s) in the configuration file.
@@ -712,6 +722,12 @@ def main():
             if processed > 0:
                 test_count += processed
                 precedence = section.precedence()
+
+        global got_sighup
+        if test_count == 0 and got_sighup:
+            # clear SIGHUP state after flushing all sections
+            got_sighup = False
+            continue
 
         if test_count == 0:
             now = time.time()
