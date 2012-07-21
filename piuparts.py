@@ -942,7 +942,7 @@ class Chroot:
         """Create a policy-rc.d that prevents daemons from running."""
         full_name = self.relative("usr/sbin/policy-rc.d")
         create_file(full_name, "#!/bin/sh\nexit 101\n")
-        os.chmod(full_name, 0777)
+        os.chmod(full_name, 0755)
         logging.debug("Created policy-rc.d and chmodded it.")
 
     def setup_minimal_chroot(self):
