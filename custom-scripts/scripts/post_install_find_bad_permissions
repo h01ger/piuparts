@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+# find world writables without sticky bit
+BADPERMS=$(find / -mount ! -type l ! -type c -perm -o+w ! -perm -1000)
+
+if [ -n "$BADPERMS" ]; then
+	echo "ERROR: BAD PERMISSIONS"
+	ls -lad $BADPERMS
+	exit 1
+fi

@@ -39,6 +39,8 @@ piuparts (0.46) UNRELEASED; urgency=low
   * New helper script: master-bin/reclassify_bugged.
   * New custom script post_setup_forbid_home: replace /home with a file to
     prevent creating home directories there.  (Closes: #677332)
+  * New custom script post_install_find_bad_permissions: look for world
+    writable directories without sticky bit set.
 
  -- Holger Levsen <holger@debian.org>  Thu, 21 Jun 2012 22:25:57 +0200
 
