@@ -6,9 +6,10 @@ piuparts (0.46) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
-    - Add to ignored_files:
+    - Add to ignored_files/ignored_patterns:
       + /var/lib/cdebconf/{questions,templates}.dat-old
       + /var/lib/onioncat/
+      + /var/lib/vmm/(./.*)?    (Closes: #682184)
     - Fix some leftover directories getting incorrectly accounted to the
       package being tested instead of the dependencies in --warn-on-others mode.
     - Implement --install-purge-install option: test purging with all

@@ -302,6 +302,7 @@ class Settings:
             "/var/lib/mercurial-server/.*",
             "/var/lib/onak/.*",
             "/var/lib/openvswitch/(pki/.*)?",
+            "/var/lib/vmm/(./.*)?",                     #682184
             "/var/log/exim/.*",
             "/var/log/exim4/.*",
             "/var/spool/exim/.*",
