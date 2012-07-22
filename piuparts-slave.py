@@ -253,6 +253,15 @@ class Slave:
         if line != "ok\n":
             raise MasterCantRecycle()
 
+    def get_idle(self):
+        self._writeline("idle")
+        line = self._readline()
+        words = line.split()
+        if words and words[0] == "ok":
+            return int(words[1])
+        else:
+            raise MasterIsCrazy()
+
     def reserve(self):
         self._writeline("reserve")
         line = self._readline()
@@ -460,6 +469,14 @@ class Section:
 
                 if fetch:
                     max_reserved = int(self._config["max-reserved"])
+                    idle = self._slave.get_idle()
+                    if idle > 0:
+                        logging.info("idle (%d)" % idle)
+                        if not recycle:
+                            self._idle_wait_until = time.time() + idle
+                        else:
+                            self._recycle_wait_until = time.time() + idle
+                        return 0
                     while len(self._slave.get_reserved()) < max_reserved and self._slave.reserve():
                         pass
                     self._slave.get_status(self._config.section)

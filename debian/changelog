@@ -61,6 +61,8 @@ piuparts (0.46) UNRELEASED; urgency=low
       processing.  Recycle logfiles until a section becomes available for
       regular processing.  If no logfiles could be recycled, retry after an
       hour.
+    - Issue "idle" command before "reserve" and skip status computation and
+      reserving if master is idle.
   * piuparts-report.py:
   * Simplify running piuparts from GIT.
   * Reorganize layout in the GIT repository to reduce path nesting and length.
