@@ -339,6 +339,20 @@ command. It will return "error" if no more logfiles are marked
 for rechecking or the command is issued too late.
 
 ----
+Command: idle
+Success: ok <int>
+----
+Slave asks master whether it remembers having no packages
+available at a previous "reserve" command. Returns 0 (not known
+to be idle or timeout expired) or the number of seconds until
+the master wants to recompute the package state. This command
+should be given after "recycle" and logfile submission, but
+before "reserve" or "status" commands. If the slave closes the
+connection without issuing a "reserve" or "status" command, the
+expensive Packages file parsing and status computation will be
+skipped.
+
+----
 Command: reserve
 Success: ok <packagename> <packageversion>
 Failure: error

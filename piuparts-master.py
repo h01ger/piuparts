@@ -29,6 +29,7 @@ import ConfigParser
 import os
 import fcntl
 import time
+import random
 
 import piupartslib
 from piupartslib.packagesdb import LogfileExists
@@ -122,6 +123,7 @@ class Master(Protocol):
         Protocol.__init__(self, input, output)
         self._commands = {
             "recycle": self._recycle,
+            "idle": self._idle,
             "status": self._status,
             "reserve": self._reserve,
             "unreserve": self._unreserve,
@@ -171,6 +173,18 @@ class Master(Protocol):
             open(self._idle_stamp, "w").close()
             os.utime(self._idle_stamp, (-1, self._binary_db._stamp))
 
+    def _get_idle_status(self):
+        """ Returns number of seconds a cached idle status is still valid, or 0 if not known to be idle. """
+        if not os.path.exists(self._idle_stamp):
+            return 0
+        stamp_mtime = os.path.getmtime(self._idle_stamp)
+        ttl = stamp_mtime + 3600 - time.time()
+        if ttl <= 0:
+            return 0  # stamp expired
+        if stamp_mtime < self._binary_db.get_mtime():
+            return 0  # stamp outdated
+        return ttl + random.randrange(120)
+
 
     def do_transaction(self):
         line = self._readline()
@@ -201,6 +215,10 @@ class Master(Protocol):
             self._short_response("ok")
         else:
             self._short_response("error")
+
+    def _idle(self, command, args):
+        self._check_args(0, command, args)
+        self._short_response("ok", "%d" % self._get_idle_status())
 
     def _status(self, command, args):
         self._check_args(0, command, args)
