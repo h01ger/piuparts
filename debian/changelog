@@ -10,18 +10,22 @@ piuparts (0.46) UNRELEASED; urgency=low
       + /var/lib/cdebconf/{questions,templates}.dat-old
       + /var/lib/onioncat/
       + /var/lib/vmm/(./.*)?    (Closes: #682184)
-    - Fix some leftover directories getting incorrectly accounted to the
-      package being tested instead of the dependencies in --warn-on-others mode.
+    - Fix some leftover files and directories getting incorrectly accounted to
+      the package being tested instead of the dependencies in --warn-on-others
+      mode.
     - Implement --install-purge-install option: test purging with all
       dependencies still installed; re-install after purge.
     - Install the dependencies and snapshot the chroot before the
-      --install-purge-install test. Check that the chroot after purge matches
+      --install-purge-install test.  Check that the chroot after purge matches
       the snapshot.  (Closes: #668713)
   * piupartslib/dependencyparser.py:
     - Package names may now have a ":any" qualification in some cases.  Extend
       the parser to recognize and discard this suffix.
   * piupartslib/packagesdb.py:
-    - Implement logfile recycling mode:
+    - Implement logfile recycling mode that avoids getting a large backlog of
+      untested packages due to uncoordinated log deletion.  Delay log deletion
+      and give preference to packages (or versions) that have not yet been
+      tested.  (Closes: #670150)
       + logfiles to be recycled should be hardlinked from pass/, fail/, ... to
         recycle/
       + recycling can be enabled if recycle/ is not empty
