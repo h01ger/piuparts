@@ -33,6 +33,8 @@ piuparts (0.46) UNRELEASED; urgency=low
       retrying infinitely.
     - Delay loading the Packages file which is only needed for "status" and
       "reserve" commands, but not for submitting logs.
+    - Add "recycle" command to enter logfile recycling mode (needs to be
+      issued before "status" or "reserve").
   * piuparts-slave.py:
     - Fix stopping the currently running test (Ctrl-C Ctrl-C).
     - Handle master communication exceptions while sending logs or reserving

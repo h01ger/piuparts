@@ -121,6 +121,7 @@ class Master(Protocol):
     def __init__(self, input, output, section):
         Protocol.__init__(self, input, output)
         self._commands = {
+            "recycle": self._recycle,
             "status": self._status,
             "reserve": self._reserve,
             "unreserve": self._unreserve,
@@ -129,6 +130,7 @@ class Master(Protocol):
             "untestable": self._untestable,
         }
         self._section = section
+        self._recycle_mode = False
         self._package_databases = None
         # start with a dummy _binary_db (without Packages file), sufficient
         # for submitting finished logs
@@ -142,6 +144,8 @@ class Master(Protocol):
         self._package_databases = {}
         self._load_package_database(self._section)
         self._binary_db = self._package_databases[self._section]
+        if self._recycle_mode:
+            self._binary_db.enable_recycling()
 
     def _load_package_database(self, section):
         config = Config(section=section, defaults_section="global")
@@ -174,10 +178,20 @@ class Master(Protocol):
             for name in self._binary_db.get_pkg_names_in_state(st):
                 logging.debug("%s : %s\n" % (st,name))
 
+    def _recycle(self, command, args):
+        self._check_args(0, command, args)
+        if self._binary_db.enable_recycling():
+            self._recycle_mode = True
+            self._short_response("ok")
+        else:
+            self._short_response("error")
+
     def _status(self, command, args):
         self._check_args(0, command, args)
         self._init_db()
         stats = ""
+        if self._binary_db._recycle_mode:
+            stats += "(recycle) "
         total = 0
         for state in self._binary_db.get_states():
             count = len(self._binary_db.get_pkg_names_in_state(state))

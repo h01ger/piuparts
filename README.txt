@@ -327,6 +327,18 @@ The slave shall not speak until the master has spoken.
 Commands and responses in this protocol:
 
 ----
+Command: recycle
+Success: ok
+Failure: error
+----
+Slave asks master to enable logfile recycling mode. In this mode
+logfiles that have been marked for rechecking will be deleted
+and reissued in subsequent "reserve" commands. The "recycle"
+command must be issued before the first "reserve" (or "status")
+command. It will return "error" if no more logfiles are marked
+for rechecking or the command is issued too late.
+
+----
 Command: reserve
 Success: ok <packagename> <packageversion>
 Failure: error
