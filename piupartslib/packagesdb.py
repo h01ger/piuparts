@@ -496,6 +496,8 @@ class PackagesDB:
         if self._in_state is not None:
             return
 
+        self._stamp = time.time()
+
         self._find_all_packages()
 
         self._package_state = {}
