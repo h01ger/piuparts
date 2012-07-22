@@ -131,6 +131,8 @@ class Master(Protocol):
         }
         self._section = section
         self._recycle_mode = False
+        self._idle_mode = None
+        self._idle_stamp = os.path.join(section, "idle.stamp")
         self._package_databases = None
         # start with a dummy _binary_db (without Packages file), sufficient
         # for submitting finished logs
@@ -157,6 +159,19 @@ class Master(Protocol):
         db.read_packages_file(packages_file)
         packages_file.close()
 
+    def _clear_idle(self):
+        if not self._idle_mode is False:
+            self._idle_mode = False
+            if os.path.exists(self._idle_stamp):
+                os.unlink(self._idle_stamp)
+
+    def _set_idle(self):
+        if not self._idle_mode is True:
+            self._idle_mode = True
+            open(self._idle_stamp, "w").close()
+            os.utime(self._idle_stamp, (-1, self._binary_db._stamp))
+
+
     def do_transaction(self):
         line = self._readline()
         if line:
@@ -181,6 +196,7 @@ class Master(Protocol):
     def _recycle(self, command, args):
         self._check_args(0, command, args)
         if self._binary_db.enable_recycling():
+            self._idle_stamp = os.path.join(self._section, "recycle.stamp")
             self._recycle_mode = True
             self._short_response("ok")
         else:
@@ -205,8 +221,10 @@ class Master(Protocol):
         self._init_db()
         package = self._binary_db.reserve_package()
         if package is None:
+            self._set_idle()
             self._short_response("error")
         else:
+            self._clear_idle()
             self._short_response("ok",
                                  package["Package"],
                                  package["Version"])
