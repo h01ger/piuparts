@@ -59,7 +59,7 @@ piuparts (0.46) UNRELEASED; urgency=low
     - Adjust for new layout, cleanup, simplify.
   * conf/piuparts.apache: Set DefaultType text/plain (for the logfiles).
   * reschedule_oldest_logs: Hardlink old logfiles to recycle/ instead of
-    deleting them.
+    deleting them.  Cleanup obsolete rescheduling requests.
   * New helper script: master-bin/reclassify_bugged.
   * New custom script post_setup_forbid_home: replace /home with a file to
     prevent creating home directories there.  (Closes: #677332)

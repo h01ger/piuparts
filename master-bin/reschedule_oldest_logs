@@ -49,14 +49,26 @@ get_config_value FAIL_AGE   global reschedule-fail-days 30
 get_config_value FAIL_COUNT global reschedule-fail-count 25
 
 TOTAL=0
+UNSCHEDULE=0
 LOGS=`mktemp`
 LOGS2=`mktemp`
+OBSOLETE=$(mktemp)
 OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
-	>$LOGS
 	cd $MASTER/$SECTION
-	mkdir -p pass fail affected recycle
+	mkdir -p pass fail bugged affected recycle
+
+	# Clean up obsolete rescheduling requests
+	for log in $(find recycle/ -name '*.log' | cut -d"/" -f2) ; do
+		for dir in pass bugged affected fail ; do
+			test ! -e "$dir/$log" || continue 2
+		done
+		echo "recycle/$log"
+	done | sort > $OBSOLETE
+
+	# Reschedule old logs
+	>$LOGS
 	get_config_value RESCHEDULE $SECTION auto-reschedule yes
 	if [ "$RESCHEDULE" = "yes" ]; then
 		get_config_value _AGE        $SECTION reschedule-old-days $AGE
@@ -71,20 +83,31 @@ for SECTION in $SECTIONS ; do
 			test -f recycle/$(basename "$log") || echo "$log"
 		done > $LOGS
 	fi
-	if [ -s $LOGS ]; then
+
+	if [ -s $LOGS ] || [ -s $OBSOLETE ]; then
 		COUNT=$(wc -l $LOGS | awk '{ print $1 }')
 		TOTAL=$(($TOTAL + $COUNT))
-		echo "$SECTION: $COUNT"
-		ls -dtl $(cat $LOGS)
-		ln -f $(cat $LOGS) recycle/
+		UCOUNT=$(wc -l $OBSOLETE | awk '{ print $1 }')
+		UNSCHEDULE=$(($UNSCHEDULE + $UCOUNT))
+		echo "$SECTION: $COUNT/$UCOUNT"
+		if [ -s $LOGS ]; then
+			ls -dtl $(cat $LOGS)
+			ln -f $(cat $LOGS) recycle/
+		fi
+		if [ -s $OBSOLETE ]; then
+			rm -fv $(cat $OBSOLETE)
+		fi
 		echo
 		echo "#########################################################"
 		echo
 	fi
 	cd $OLDPWD
 done
-rm $LOGS $LOGS2
+rm $LOGS $LOGS2 $OBSOLETE
 
 if [ "$TOTAL" -gt "0" ]; then
-	echo "Rescheduled $TOTAL logs"
+	echo "Rescheduled $TOTAL logs."
+fi
+if [ "$UNSCHEDULE" -gt "0" ]; then
+	echo "Cancelled $UNSCHEDULE outdated rescheduling requests."
 fi
