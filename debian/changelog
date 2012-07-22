@@ -11,6 +11,7 @@ piuparts (0.48) UNRELEASED; urgency=low
     - Add debsums, processes, and broken-symlinks check after the first purge
       in --install-purge-install mode.
     - Add --install-recommends option, disabled by default.
+    - Mark temporary directories with a .piuparts.tmpdir file.
   * piuparts.conf:
     - New per section settings: expire-old-days, expire-fail-days (defaulting
       to 0 which means expiration is disabled).

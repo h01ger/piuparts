@@ -509,6 +509,7 @@ def make_metapackage(name, depends, conflicts):
 
     tmpdir = tempfile.mkdtemp(dir=settings.tmpdir)
     panic_handler_id = do_on_panic(lambda: shutil.rmtree(tmpdir))
+    create_file(os.path.join(tmpdir, ".piuparts.tmpdir"), "metapackage creation")
     old_umask = os.umask(0)
     os.makedirs(os.path.join(tmpdir, name, 'DEBIAN'), mode = 0755)
     os.umask(old_umask)
@@ -747,6 +748,7 @@ class Chroot:
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
         self.name = tempfile.mkdtemp(dir=settings.tmpdir)
+        create_file(os.path.join(self.name, ".piuparts.tmpdir"), "chroot")
         os.chmod(self.name, 0755)
         logging.debug("Created temporary directory %s" % self.name)
 
@@ -813,6 +815,8 @@ class Chroot:
                 run(['schroot', '--end-session', '--chroot', "session:" + self.schroot_session])
             if not settings.schroot:
                 shutil.rmtree(self.name)
+                if os.path.exists(self.name):
+                    create_file(os.path.join(self.name, ".piuparts.tmpdir"), "removal failed")
                 logging.debug("Removed directory tree at %s" % self.name)
         elif settings.keep_tmpdir:
             if settings.schroot:
