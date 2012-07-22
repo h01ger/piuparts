@@ -1,4 +1,4 @@
-ahings to do for piuparts
+things to do for piuparts
 =========================
 
 Please also check the BTS, especially the bugs with a severity
@@ -9,37 +9,24 @@ for 0.46:
 
 - master controlled recycling (AnBe)
 
-- make piuparts-master + piuparts-slave packages work out-of-the-box
-
-- ship sane minimal sudoers in p-s.deb than can be enabled by default
-  do we really need anything else than running piuparts as root?
-
-- verify that all scripts in $user/bin/ also work from master-slave packages
-  eventually enable some conjobs in the packages
-
-- slave.postinst should setup ~piupartss/.ssh/known_hosts from /etc/ssh,
-  even if only for localhost
-- slave.postinst should setup ~piupartsm/.ssh/authorized_keys using triggers
+- make piuparts-master + piuparts-slave packages work out-of-the-box:
+  - conf/piuparts.sudoers should be split for master+slave packages.
+  - ship sane minimal sudoers in p-s.deb than can be enabled by default
+    do we really need anything else than running piuparts as root?
+  - verify that all scripts in $user/bin/ also work from master-slave packages
+    eventually enable some conjobs in the packages
+  - slave.postinst should setup ~piupartss/.ssh/known_hosts from /etc/ssh,
+    even if only for localhost
+  - slave.postinst should setup ~piupartsm/.ssh/authorized_keys using triggers
     dpkg-trigger piuparts-master-please-install-the-slave-key
-
-- split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and
-  /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
-  debconfify piuparts.conf? allow preseeding of mirror, master, ...
-
-- conf/piuparts.sudoers should be split for master+slave packages.
+  - split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and
+    /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
+    debconfify piuparts.conf? allow preseeding of mirror, master, ...
 
 - merge/cleanup README_piatti.txt and README_server.txt?
 
 - use cdn.debian.net as mirror default (instead of "your.mirror.here") and provide
-  a debconf template to overwrite this.
-  or http.debian.net ?
-
-- rework known_problems:
-  - use a number prefix for sorting
-  - add title information
-  - piuparts-report: "discover" the available known_problems, dont hardcode the list
-  - drop _issue/_error duplication, have flags inside to indicate thether to generate
-    _issues.tpl (pass/) and/or _error.tpl (fail/ bugged/ affected/)
+  a debconf template to overwrite this.  or http.debian.net ?
 
 - in maintainer view: sort buggy states up again
 
@@ -53,8 +40,7 @@ for 0.46:
 - sometimes a chroot doesn't get removed on piatti - find out
   why and fix it.
 - slave_run: cleanup stale proc mountpoints
-  -> there is ~piupartss/bin/slave_cleanup now, maybe it should be executed
-  at the beginning of slave_run?
+  -> there is ~piupartss/bin/slave_cleanup which should be executed at the beginning of slave_run
 
 - consider hardlinking instead of copying the logfiles to htdocs
   (and fall back to copying if linking fails)
@@ -62,16 +48,23 @@ for 0.46:
 - piuparts-slave should do the rescheduling of old logs and do so with
   lowest precedence, that is, only when there are no new logs to be tested.
 
+
+for 0.47:
+
+- re-read all documentation carefully
+
 - generate piuparts.1.txt automatically from piuparts.py - see
   this blog post for a nice howto:
   http://andialbrecht.wordpress.com/2009/03/17/creating-a-man-page-with-distutils-and-optparse/
 
-- re-read all documentation carefully
+- rework known_problems:
+  - use a number prefix for sorting
+  - add title information
+  - piuparts-report: "discover" the available known_problems, dont hardcode the list
+  - drop _issue/_error duplication, have flags inside to indicate thether to generate
+    _issues.tpl (pass/) and/or _error.tpl (fail/ bugged/ affected/)
 
-
-for 0.47:
-
-- accect a PIUPARTS_CONF environment variable everywhere to point to a different piuparts.conf
+- accecpt a PIUPARTS_CONF environment variable everywhere to point to a different piuparts.conf
 - read PIUPARTS_CONF or piuparts.conf everywhere to allow overriding builtin defaults
 - have all paths etc. configurable in piuparts.conf for simple reconfiguration
 
@@ -124,9 +117,6 @@ for 0.48 and later:
 
 - monitor: master.log grows to fast and there is no mechanism to stop it
   - use logrotate
-
-
-for 0.50 and later:
 
 - really support multiple architectures:
   - piuparts-report should have a list of available arch and list
