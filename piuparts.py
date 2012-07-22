@@ -814,7 +814,7 @@ class Chroot:
                 logging.debug("Terminate schroot session '%s'" % self.name)
                 run(['schroot', '--end-session', '--chroot', "session:" + self.schroot_session])
             if not settings.schroot:
-                shutil.rmtree(self.name)
+                run(['rm', '-rf', '--one-file-system', self.name])
                 if os.path.exists(self.name):
                     create_file(os.path.join(self.name, ".piuparts.tmpdir"), "removal failed")
                 logging.debug("Removed directory tree at %s" % self.name)
