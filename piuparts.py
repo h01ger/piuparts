@@ -2084,7 +2084,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
 
     if settings.install_purge_install:
         file_owners = chroot.get_files_owned_by_packages()
-        chroot.purge_packages(packages)
+        chroot.restore_selections(chroot_state_with_deps["selections"], packages)
         logging.info("Validating chroot after purge")
         if not check_results(chroot, chroot_state_with_deps, file_owners, deps_info=deps_info):
             return False
