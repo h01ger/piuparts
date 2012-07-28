@@ -459,6 +459,8 @@ class Section:
         test_count = 0
         self._check_tarball()
         for package_name, version in self._slave.get_reserved():
+            if got_sighup:
+                break
             test_count += 1
             if package_name in packages_file:
                 package = packages_file[package_name]
@@ -478,8 +480,6 @@ class Section:
             self._slave.forget_reserved(package_name, version)
             if interrupted:
                 raise KeyboardInterrupt
-            if got_sighup:
-                break
         self._talk_to_master()
         return test_count
 
