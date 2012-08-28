@@ -164,7 +164,7 @@ can run several scripts in every step, they are run in
 alphabetical order.
 
 The scripts need to be executable and are run *inside* the piuparts
-chroot and only can be shell scripts, if you want to run Python or
+chroot and can only be shell scripts. If you want to run Python or
 Perl scripts, you have to install Python or Perl. The chroot where
 piuparts is run is minized and does not include Perl.
 
