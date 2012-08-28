@@ -163,10 +163,10 @@ The script prefix determines in which step it is executed. You
 can run several scripts in every step, they are run in
 alphabetical order.
 
-The scripts are run *inside* the piuparts chroot and only can be
-shell scripts, if you want to run Python or Perl scripts, you
-have to install Python or Perl. The chroot where piuparts is run
-is minized and does not include Perl.
+The scripts need to be executable and are run *inside* the piuparts
+chroot and only can be shell scripts, if you want to run Python or
+Perl scripts, you have to install Python or Perl. The chroot where
+piuparts is run is minized and does not include Perl.
 
 The variable PIUPARTS_OBJECTS is set to the packages currently
 being tested (seperated by spaces, if applicable) or the .changes
