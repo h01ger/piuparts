@@ -23,7 +23,7 @@ set -e
 
 SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
 
-if [ $(ps fax|grep piuparts-slave|grep -v grep |wc -l) = 0 ] ; then
+if [ $(ps fax|grep piuparts-slave|grep -v grep |wc -l) = !0 ] ; then
   screen -R -S piuparts-slave-screen
 else
   echo "piuparts-slave not running!"
