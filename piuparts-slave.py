@@ -142,6 +142,12 @@ class MasterIsCrazy(Exception):
         self.args = "Master said something unexpected"
 
 
+class MasterCantRecycle(Exception):
+
+    def __init__(self):
+        self.args = "Master has nothing to recycle"
+
+
 class Slave:
 
     def __init__(self):
@@ -240,6 +246,22 @@ class Slave:
         else:
             raise MasterIsCrazy()
 
+    def enable_recycling(self):
+        self._writeline("recycle")
+        line = self._readline()
+        words = line.split()
+        if line != "ok\n":
+            raise MasterCantRecycle()
+
+    def get_idle(self):
+        self._writeline("idle")
+        line = self._readline()
+        words = line.split()
+        if words and words[0] == "ok":
+            return int(words[1])
+        else:
+            raise MasterIsCrazy()
+
     def reserve(self):
         self._writeline("reserve")
         line = self._readline()
@@ -253,6 +275,16 @@ class Slave:
             return False
         else:
             raise MasterIsCrazy()
+
+    def unreserve(self, filename):
+        basename = os.path.basename(filename)
+        package, rest = basename.split("_", 1)
+        version = rest[:-len(".log")]
+        logging.info("Unreserve: %s %s" % (package, version))
+        self._writeline("unreserve", package, version)
+        line = self._readline()
+        if line != "ok\n":
+            raise MasterNotOK()
 
     def _reserved_filename(self, name, version):
         return os.path.join("reserved",  "%s_%s.log" % (name, version))
@@ -282,6 +314,7 @@ class Section:
         self._config.read(CONFIG_FILE)
         self._error_wait_until = 0
         self._idle_wait_until = 0
+        self._recycle_wait_until = 0
         self._slave_directory = os.path.abspath(self._config["slave-directory"])
         if not os.path.exists(self._slave_directory):
             os.makedirs(self._slave_directory)
@@ -303,12 +336,14 @@ class Section:
 
         self._slave = Slave()
 
-    def _connect_to_master(self):
+    def _connect_to_master(self, recycle=False):
         self._slave.set_master_host(self._config["master-host"])
         self._slave.set_master_user(self._config["master-user"])
         self._slave.set_master_directory(self._config["master-directory"])
         self._slave.set_master_command(self._config["master-command"] + " " + self._config.section)
         self._slave.connect_to_master(self._config["log-file"])
+        if recycle:
+            self._slave.enable_recycling()
 
     def _check_tarball(self):
         oldcwd = os.getcwd()
@@ -337,12 +372,14 @@ class Section:
     def precedence(self):
         return int(self._config["precedence"])
 
-    def sleep_until(self):
+    def sleep_until(self, recycle=False):
+        if recycle:
+            return max(self._error_wait_until, self._recycle_wait_until)
         return max(self._error_wait_until, self._idle_wait_until)
 
 
-    def run(self, precedence=None):
-        if time.time() < self.sleep_until():
+    def run(self, precedence=None, recycle=False):
+        if time.time() < self.sleep_until(recycle=recycle):
             return 0
 
         do_processing = not got_sighup and \
@@ -352,6 +389,8 @@ class Section:
 
         logging.info("-------------------------------------------")
         action = "Running"
+        if recycle:
+            action = "Recycling"
         if not do_processing:
             action = "Flushing"
         logging.info("%s section %s (precedence=%d)" \
@@ -379,10 +418,12 @@ class Section:
                 logging.info("busy")
                 self._error_wait_until = time.time() + 900
             else:
-                if self._talk_to_master(fetch=do_processing):
+                if self._talk_to_master(fetch=do_processing, recycle=recycle):
                     if do_processing:
                         if not self._slave.get_reserved():
                             self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
+                            if recycle:
+                                self._recycle_wait_until = self._idle_wait_until + 3600
                         else:
                             return self._process()
             finally:
@@ -390,20 +431,23 @@ class Section:
         return 0
 
 
-    def _talk_to_master(self, fetch=False):
+    def _talk_to_master(self, fetch=False, unreserve=False, recycle=False):
         flush = self._count_submittable_logs() > 0
         fetch = fetch and not self._slave.get_reserved()
         if not flush and not fetch:
             return True
 
         try:
-            self._connect_to_master()
+            self._connect_to_master(recycle=recycle)
         except KeyboardInterrupt:
             raise
         except MasterIsBusy:
             logging.error("master is busy")
             self._error_wait_until = time.time() + random.randrange(60, 180)
-        except (MasterIsCrazy, MasterCommunicationFailed):
+        except MasterCantRecycle:
+            logging.error("master has nothing to recycle")
+            self._recycle_wait_until = max(time.time(), self._idle_wait_until) + 3600
+        except (MasterDidNotGreet, MasterIsCrazy, MasterCommunicationFailed):
             logging.error("connection to master failed")
             self._error_wait_until = time.time() + 900
         else:
@@ -415,8 +459,24 @@ class Section:
                             self._slave.send_log(self._config.section, logdir, fullname)
                             os.remove(fullname)
 
+                if unreserve:
+                    for logdir in ["new", "reserved"]:
+                        for basename in os.listdir(logdir):
+                            if basename.endswith(".log"):
+                                fullname = os.path.join(logdir, basename)
+                                self._slave.unreserve(fullname)
+                                os.remove(fullname)
+
                 if fetch:
                     max_reserved = int(self._config["max-reserved"])
+                    idle = self._slave.get_idle()
+                    if idle > 0:
+                        logging.info("idle (%d)" % idle)
+                        if not recycle:
+                            self._idle_wait_until = time.time() + idle
+                        else:
+                            self._recycle_wait_until = time.time() + idle
+                        return 0
                     while len(self._slave.get_reserved()) < max_reserved and self._slave.reserve():
                         pass
                     self._slave.get_status(self._config.section)
@@ -459,6 +519,8 @@ class Section:
         test_count = 0
         self._check_tarball()
         for package_name, version in self._slave.get_reserved():
+            if got_sighup:
+                break
             test_count += 1
             if package_name in packages_file:
                 package = packages_file[package_name]
@@ -477,10 +539,11 @@ class Section:
                             "Package %s not found\n" % package_name)
             self._slave.forget_reserved(package_name, version)
             if interrupted:
-                raise KeyboardInterrupt
-            if got_sighup:
                 break
-        self._talk_to_master()
+        self._recycle_wait_until = time.time()
+        self._talk_to_master(unreserve=interrupted)
+        if interrupted:
+            raise KeyboardInterrupt
         return test_count
 
 
@@ -634,18 +697,22 @@ def create_chroot(config, tarball, distro):
     output_name = tarball + ".log"
     logging.debug("Opening log file %s" % output_name)
     logging.info("Creating new tarball %s" % tarball)
-    command = "%s -ad %s -s %s.new -m %s dpkg" % \
-                (config["piuparts-cmd"], distro, tarball, config["mirror"])
+    command = config["piuparts-cmd"].split()
+    if config["mirror"]:
+        command.extend(["--mirror", config["mirror"]])
+    command.extend(["-d", distro])
+    command.extend(["-s", tarball + ".new"])
+    command.extend(["--apt", "dpkg"])
     output = file(output_name, "w")
     output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n\n",
                                time.gmtime()))
-    output.write("Executing: " + command)
-    logging.debug("Executing: " + command)
-    f = os.popen("{ %s; } 2>&1" % command, "r")
-    for line in f:
+    output.write("Executing: " + " ".join(command) + "\n\n")
+    logging.debug("Executing: " + " ".join(command))
+    p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    for line in p.stdout:
         output.write(line)
         logging.debug(">> " + line.rstrip())
-    f.close()
+    p.wait()
     output.write(time.strftime("\nEnd: %Y-%m-%d %H:%M:%S %Z\n",
                                time.gmtime()))
     output.close()
@@ -728,6 +795,15 @@ def main():
             # clear SIGHUP state after flushing all sections
             got_sighup = False
             continue
+
+        if test_count == 0:
+            # try to recycle old logs
+            # round robin recycling of all sections is ensured by the recycle_wait_until timestamps
+            idle_until = min([section.sleep_until() for section in sections])
+            for section in sorted(sections, key=lambda section: section.sleep_until(recycle=True)):
+                test_count += section.run(recycle=True)
+                if test_count > 0 and idle_until < time.time():
+                    break
 
         if test_count == 0:
             now = time.time()

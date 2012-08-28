@@ -24,6 +24,7 @@ Lars Wirzenius <liw@iki.fi>
 """
 
 
+import logging
 import os
 import tempfile
 import time
@@ -285,11 +286,13 @@ class PackagesDB:
         self._packages = None
         self._in_state = None
         self._package_state = {}
+        self._recycle_mode = False
         self.set_subdirs(ok="pass", fail="fail", evil="untestable",
-                         reserved="reserved", morefail=["bugged", "affected"])
+                         reserved="reserved", morefail=["bugged", "affected"],
+                         recycle="recycle")
         self.create_subdirs()
 
-    def set_subdirs(self, ok=None, fail=None, evil=None, reserved=None, morefail=None):
+    def set_subdirs(self, ok=None, fail=None, evil=None, reserved=None, morefail=None, recycle=None):
         # Prefix all the subdirs with the prefix
         if self.prefix:
             pformat = self.prefix + "/%s"
@@ -312,11 +315,30 @@ class PackagesDB:
         if morefail:
             self._morefail = [pformat % s for s in morefail]
             self._all.extend(self._morefail)
+        if recycle:
+            self._recycle = pformat % recycle
+            self._all.append(self._recycle)
 
     def create_subdirs(self):
         for sdir in self._all:
             if not os.path.exists(sdir):
                 os.makedirs(sdir)
+
+    def enable_recycling(self):
+        if self._recycle_mode:
+            return True
+        if self._packages is not None:
+            logging.info("too late for recycling")
+            return False
+        for basename in os.listdir(self._recycle):
+            if basename.endswith(".log"):
+                self._recycle_mode = True
+                return True
+        logging.info("nothing to recycle")
+        return False
+
+    def get_mtime(self):
+        return max([os.path.getmtime(sdir) for sdir in self._all])
 
     def read_packages_file(self, input):
         self._packages_files.append(PackagesFile(input))
@@ -371,7 +393,9 @@ class PackagesDB:
                     more += dep_pkg.dependencies()
         return circular
 
-    def _compute_package_state(self, package):
+    def _lookup_package_state(self, package):
+        if self._recycle_mode and self._logdb.log_exists(package, [self._recycle]):
+            return "unknown"
         if self._logdb.log_exists(package, [self._ok]):
             return "successfully-tested"
         if self._logdb.log_exists(package, [self._fail] + self._morefail):
@@ -381,6 +405,9 @@ class PackagesDB:
         if not package.is_testable():
             return "essential-required"
 
+        return "unknown"
+
+    def _compute_package_state(self, package):
         # First attempt to resolve (still-unresolved) multiple alternative depends
         # Definitely sub-optimal, but improvement over blindly selecting first one
         # Select the first alternative in the highest of the following states:
@@ -472,26 +499,32 @@ class PackagesDB:
         if self._in_state is not None:
             return
 
-        todo = []
+        self._stamp = time.time()
 
         self._find_all_packages()
-        package_names = self._packages.keys()
 
         self._package_state = {}
-        for package_name in package_names:
-            self._package_state[package_name] = "unknown"
-
         self._in_state = {}
         for state in self._states:
             self._in_state[state] = []
+        todo = []
 
-        while package_names:
+        for package_name, package in self._packages.iteritems():
+            state = self._lookup_package_state(package)
+            assert state in self._states
+            self._package_state[package_name] = state
+            if state == "unknown":
+                todo.append(package_name)
+            else:
+                self._in_state[state].append(package_name)
+
+        while todo:
+            package_names = todo
             todo = []
             done = []
             for package_name in package_names:
-                package = self._packages[package_name]
                 if self._package_state[package_name] == "unknown":
-                    state = self._compute_package_state(package)
+                    state = self._compute_package_state(self._packages[package_name])
                     assert state in self._states
                     if state == "unknown":
                         todo.append(package_name)
@@ -503,7 +536,6 @@ class PackagesDB:
                 # If we didn't do anything this time, we sure aren't going
                 # to do anything the next time either.
                 break
-            package_names = todo
 
         self._in_state["unknown"] = todo
 
@@ -580,9 +612,19 @@ class PackagesDB:
         return self.get_pkg_names_in_state("waiting-to-be-tested")
 
     def reserve_package(self):
+        all_but_recycle = [x for x in self._all if x != self._recycle]
         pset = self._find_packages_ready_for_testing()
         while (len(pset)):
             p = self.get_package(pset.pop())
+            if self._recycle_mode and self._logdb.log_exists(p, [self._recycle]):
+                for vdir in all_but_recycle:
+                    if self._logdb.log_exists(p, [vdir]):
+                        self._logdb.remove(vdir, p["Package"], p["Version"])
+                        logging.info("Recycled %s %s %s" % (vdir, p["Package"], p["Version"]))
+            if self._logdb.log_exists(p, all_but_recycle):
+                continue
+            if self._logdb.log_exists(p, [self._recycle]):
+                self._logdb.remove(self._recycle, p["Package"], p["Version"])
             if self._logdb.create(self._reserved, p["Package"], p["Version"], ""):
                 return p
         return None

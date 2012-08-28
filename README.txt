@@ -163,10 +163,10 @@ The script prefix determines in which step it is executed. You
 can run several scripts in every step, they are run in
 alphabetical order.
 
-The scripts are run *inside* the piuparts chroot and only can be
-shell scripts, if you want to run Python or Perl scripts, you
-have to install Python or Perl. The chroot where piuparts is run
-is minized and does not include Perl.
+The scripts need to be executable and are run *inside* the piuparts
+chroot and can only be shell scripts. If you want to run Python or
+Perl scripts, you have to install Python or Perl. The chroot where
+piuparts is run is minized and does not include Perl.
 
 The variable PIUPARTS_OBJECTS is set to the packages currently
 being tested (seperated by spaces, if applicable) or the .changes
@@ -325,6 +325,32 @@ The communication always starts with the master saying "hello".
 The slave shall not speak until the master has spoken.
 
 Commands and responses in this protocol:
+
+----
+Command: recycle
+Success: ok
+Failure: error
+----
+Slave asks master to enable logfile recycling mode. In this mode
+logfiles that have been marked for rechecking will be deleted
+and reissued in subsequent "reserve" commands. The "recycle"
+command must be issued before the first "reserve" (or "status")
+command. It will return "error" if no more logfiles are marked
+for rechecking or the command is issued too late.
+
+----
+Command: idle
+Success: ok <int>
+----
+Slave asks master whether it remembers having no packages
+available at a previous "reserve" command. Returns 0 (not known
+to be idle or timeout expired) or the number of seconds until
+the master wants to recompute the package state. This command
+should be given after "recycle" and logfile submission, but
+before "reserve" or "status" commands. If the slave closes the
+connection without issuing a "reserve" or "status" command, the
+expensive Packages file parsing and status computation will be
+skipped.
 
 ----
 Command: reserve

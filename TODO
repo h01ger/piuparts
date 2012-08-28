@@ -7,8 +7,6 @@ higher than wishlist!
 
 for 0.46:
 
-- master controlled recycling (AnBe)
-
 - make piuparts-master + piuparts-slave packages work out-of-the-box:
   - conf/piuparts.sudoers should be split for master+slave packages.
   - ship sane minimal sudoers in p-s.deb than can be enabled by default
@@ -44,9 +42,6 @@ for 0.46:
 
 - consider hardlinking instead of copying the logfiles to htdocs
   (and fall back to copying if linking fails)
-
-- piuparts-slave should do the rescheduling of old logs and do so with
-  lowest precedence, that is, only when there are no new logs to be tested.
 
 
 for 0.47:

@@ -49,36 +49,65 @@ get_config_value FAIL_AGE   global reschedule-fail-days 30
 get_config_value FAIL_COUNT global reschedule-fail-count 25
 
 TOTAL=0
+UNSCHEDULE=0
 LOGS=`mktemp`
+LOGS2=`mktemp`
+OBSOLETE=$(mktemp)
 OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
+	cd $MASTER/$SECTION
+	mkdir -p pass fail bugged affected recycle
+
+	# Clean up obsolete rescheduling requests
+	for log in $(find recycle/ -name '*.log' | cut -d"/" -f2) ; do
+		for dir in pass bugged affected fail ; do
+			test ! -e "$dir/$log" || continue 2
+		done
+		echo "recycle/$log"
+	done | sort > $OBSOLETE
+
+	# Reschedule old logs
+	>$LOGS
 	get_config_value RESCHEDULE $SECTION auto-reschedule yes
 	if [ "$RESCHEDULE" = "yes" ]; then
 		get_config_value _AGE        $SECTION reschedule-old-days $AGE
 		get_config_value _COUNT      $SECTION reschedule-old-count $COUNT
 		get_config_value _FAIL_AGE   $SECTION reschedule-fail-days $FAIL_AGE
 		get_config_value _FAIL_COUNT $SECTION reschedule-fail-count $FAIL_COUNT
-		cd $MASTER/$SECTION
-		mkdir -p pass fail affected
 		# FIXME: we ignore bugged here - ptyhon-bts is really the way to go
 		find pass fail affected -name "*.log" -mtime +$_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_COUNT > $LOGS
 		find fail affected -name "*.log" -mtime +$_FAIL_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_FAIL_COUNT >> $LOGS
-		if [ -s $LOGS ]; then
-			COUNT=$(wc -l $LOGS | awk '{ print $1 }')
-			TOTAL=$(($TOTAL + $COUNT))
-			echo "$SECTION: $COUNT"
-			ls -dtl $(cat $LOGS)
-			sort -u $LOGS | xargs rm 2>/dev/null
-			echo
-			echo "#########################################################"
-			echo
-		fi
-		cd $OLDPWD
+		sort -u $LOGS > $LOGS2
+		for log in $(cat $LOGS2) ; do
+			test -f recycle/$(basename "$log") || echo "$log"
+		done > $LOGS
 	fi
+
+	if [ -s $LOGS ] || [ -s $OBSOLETE ]; then
+		COUNT=$(wc -l $LOGS | awk '{ print $1 }')
+		TOTAL=$(($TOTAL + $COUNT))
+		UCOUNT=$(wc -l $OBSOLETE | awk '{ print $1 }')
+		UNSCHEDULE=$(($UNSCHEDULE + $UCOUNT))
+		echo "$SECTION: $COUNT/$UCOUNT"
+		if [ -s $LOGS ]; then
+			ls -dtl $(cat $LOGS)
+			ln -f $(cat $LOGS) recycle/
+		fi
+		if [ -s $OBSOLETE ]; then
+			rm -fv $(cat $OBSOLETE)
+		fi
+		echo
+		echo "#########################################################"
+		echo
+	fi
+	cd $OLDPWD
 done
-rm $LOGS
+rm $LOGS $LOGS2 $OBSOLETE
 
 if [ "$TOTAL" -gt "0" ]; then
-	echo "Rescheduled $TOTAL logs"
+	echo "Rescheduled $TOTAL logs."
+fi
+if [ "$UNSCHEDULE" -gt "0" ]; then
+	echo "Cancelled $UNSCHEDULE outdated rescheduling requests."
 fi

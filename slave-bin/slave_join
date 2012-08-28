@@ -23,10 +23,10 @@ set -e
 
 SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
 
-if [ -f $SCREENLOG ] ; then
+if [ $(ps fax|grep piuparts-slave|grep -v grep |wc -l) = 0 ] ; then
   screen -R -S piuparts-slave-screen
 else
-  echo "$SCREENLOG does not exist, slave not running!"
+  echo "piuparts-slave not running!"
   echo
   echo "ps faxu | grep piuparts"
   ps faxu | grep piuparts

@@ -29,6 +29,7 @@ import ConfigParser
 import os
 import fcntl
 import time
+import random
 
 import piupartslib
 from piupartslib.packagesdb import LogfileExists
@@ -121,6 +122,8 @@ class Master(Protocol):
     def __init__(self, input, output, section):
         Protocol.__init__(self, input, output)
         self._commands = {
+            "recycle": self._recycle,
+            "idle": self._idle,
             "status": self._status,
             "reserve": self._reserve,
             "unreserve": self._unreserve,
@@ -129,6 +132,9 @@ class Master(Protocol):
             "untestable": self._untestable,
         }
         self._section = section
+        self._recycle_mode = False
+        self._idle_mode = None
+        self._idle_stamp = os.path.join(section, "idle.stamp")
         self._package_databases = None
         # start with a dummy _binary_db (without Packages file), sufficient
         # for submitting finished logs
@@ -142,6 +148,8 @@ class Master(Protocol):
         self._package_databases = {}
         self._load_package_database(self._section)
         self._binary_db = self._package_databases[self._section]
+        if self._recycle_mode:
+            self._binary_db.enable_recycling()
 
     def _load_package_database(self, section):
         config = Config(section=section, defaults_section="global")
@@ -152,6 +160,31 @@ class Master(Protocol):
         packages_file = piupartslib.open_packages_url(config.get_packages_url())
         db.read_packages_file(packages_file)
         packages_file.close()
+
+    def _clear_idle(self):
+        if not self._idle_mode is False:
+            self._idle_mode = False
+            if os.path.exists(self._idle_stamp):
+                os.unlink(self._idle_stamp)
+
+    def _set_idle(self):
+        if not self._idle_mode is True:
+            self._idle_mode = True
+            open(self._idle_stamp, "w").close()
+            os.utime(self._idle_stamp, (-1, self._binary_db._stamp))
+
+    def _get_idle_status(self):
+        """ Returns number of seconds a cached idle status is still valid, or 0 if not known to be idle. """
+        if not os.path.exists(self._idle_stamp):
+            return 0
+        stamp_mtime = os.path.getmtime(self._idle_stamp)
+        ttl = stamp_mtime + 3600 - time.time()
+        if ttl <= 0:
+            return 0  # stamp expired
+        if stamp_mtime < self._binary_db.get_mtime():
+            return 0  # stamp outdated
+        return ttl + random.randrange(120)
+
 
     def do_transaction(self):
         line = self._readline()
@@ -174,10 +207,25 @@ class Master(Protocol):
             for name in self._binary_db.get_pkg_names_in_state(st):
                 logging.debug("%s : %s\n" % (st,name))
 
+    def _recycle(self, command, args):
+        self._check_args(0, command, args)
+        if self._binary_db.enable_recycling():
+            self._idle_stamp = os.path.join(self._section, "recycle.stamp")
+            self._recycle_mode = True
+            self._short_response("ok")
+        else:
+            self._short_response("error")
+
+    def _idle(self, command, args):
+        self._check_args(0, command, args)
+        self._short_response("ok", "%d" % self._get_idle_status())
+
     def _status(self, command, args):
         self._check_args(0, command, args)
         self._init_db()
         stats = ""
+        if self._binary_db._recycle_mode:
+            stats += "(recycle) "
         total = 0
         for state in self._binary_db.get_states():
             count = len(self._binary_db.get_pkg_names_in_state(state))
@@ -191,8 +239,10 @@ class Master(Protocol):
         self._init_db()
         package = self._binary_db.reserve_package()
         if package is None:
+            self._set_idle()
             self._short_response("error")
         else:
+            self._clear_idle()
             self._short_response("ok",
                                  package["Package"],
                                  package["Version"])
