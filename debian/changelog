@@ -3,6 +3,8 @@ piuparts (0.46) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * piuparts-report: drop in-code index.tpl stub.
   * slave-join: fix bug preventing detection that the slave is not running.
+  * piuparts: call schroot with session: argument, thanks to Stephan Sürken
+    for the patch. (Closes: #686360)
 
   [ Andreas Beckmann ]
   * piuparts.py:
