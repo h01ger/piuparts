@@ -804,7 +804,7 @@ class Chroot:
                 run(['lvremove', '-f', self.lvm_snapshot])
             if settings.schroot:
                 logging.debug("Terminate schroot session '%s'" % self.name)
-                run(['schroot', '--end-session', '--chroot', self.schroot_session])
+                run(['schroot', '--end-session', '--chroot', "session:" + self.schroot_session])
             if not settings.schroot:
                 shutil.rmtree(self.name)
                 logging.debug("Removed directory tree at %s" % self.name)
@@ -849,7 +849,7 @@ class Chroot:
     def setup_from_schroot(self, schroot):
         self.schroot_session = schroot.split(":")[1] + "-" + str(uuid.uuid1()) + "-piuparts"
         run(['schroot', '--begin-session', '--chroot', schroot , '--session-name', self.schroot_session])
-        ret_code, output = run(['schroot', '--chroot', self.schroot_session, '--location'])
+        ret_code, output = run(['schroot', '--chroot', "session:" + self.schroot_session, '--location'])
         self.name = output.strip()
         logging.info("New schroot session in '%s'" % self.name);
 
@@ -879,7 +879,7 @@ class Chroot:
                                                  'usr/bin/eatmydata')):
             prefix.append('eatmydata')
         if settings.schroot:
-            return run(["schroot", "--preserve-environment", "--run-session", "--chroot", self.schroot_session, "--directory", "/", "-u", "root", "--"] + prefix + command,
+            return run(["schroot", "--preserve-environment", "--run-session", "--chroot", "session:" + self.schroot_session, "--directory", "/", "-u", "root", "--"] + prefix + command,
                    ignore_errors=ignore_errors, timeout=settings.max_command_runtime)
         else:
             return run(["chroot", self.name] + prefix + command,
