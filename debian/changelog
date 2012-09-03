@@ -1,4 +1,4 @@
-piuparts (0.46) UNRELEASED; urgency=low
+piuparts (0.46) unstable; urgency=low
 
   [ Holger Levsen ]
   * piuparts-report: drop in-code index.tpl stub.
@@ -80,7 +80,7 @@ piuparts (0.46) UNRELEASED; urgency=low
   * New custom script post_install_find_bad_permissions: look for world
     writable directories without sticky bit set.
 
- -- Holger Levsen <holger@debian.org>  Thu, 21 Jun 2012 22:25:57 +0200
+ -- Holger Levsen <holger@debian.org>  Mon, 03 Sep 2012 15:28:04 +0200
 
 piuparts (0.45) unstable; urgency=low
 
