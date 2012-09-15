@@ -1,1 +1,2 @@
 rm_conffile /etc/piuparts/piuparts.conf 0.45~
+mv_conffile /etc/piuparts/scripts/post_install_find_bad_permissions /etc/piuparts/scripts/pre_remove_50_find_bad_permissions 0.47~

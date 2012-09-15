@@ -7,6 +7,9 @@ piuparts (0.47) UNRELEASED; urgency=low
   * piuparts-report.py:
   * New custom script pre_remove_50_find_missing_copyright: check for missing
     /usr/share/doc/$package/copyright files.  (Closes: #683685)
+  * Rename custom script post_install_find_bad_permissions to
+    pre_remove_50_find_bad_permissions to avoid early failures during upgrade
+    tests that may be fixed in a later version.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Sat, 15 Sep 2012 06:25:05 +0200
 
