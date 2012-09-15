@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+failed=
+for pkg in ${PIUPARTS_OBJECTS%%=*}
+do
+	docdir="/usr/share/doc/$pkg"
+	copyright="$docdir/copyright"
+	if [ ! -f "$copyright" ]
+	then
+		failed="$failed $copyright"
+		echo "MISSING COPYRIGHT FILE: $copyright"
+		ls -lad "$docdir" || true
+		ls -la "$docdir/" || true
+	fi
+done
+
+test -z "$failed" || exit 1
