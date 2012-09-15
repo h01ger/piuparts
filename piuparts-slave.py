@@ -681,6 +681,7 @@ def test_package(config, package, packages_files):
             output.write(f)
 
     output.write("\n")
+    output.write("ret=%d\n" % ret)
     output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n",
                                time.gmtime()))
     output.close()
