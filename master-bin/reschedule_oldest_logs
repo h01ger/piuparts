@@ -48,6 +48,8 @@ get_config_value COUNT      global reschedule-old-count 200
 get_config_value FAIL_AGE   global reschedule-fail-days 30
 get_config_value FAIL_COUNT global reschedule-fail-count 25
 
+get_config_value AUTO_RESCHEDULE	global auto-reschedule yes
+
 TOTAL=0
 UNSCHEDULE=0
 LOGS=`mktemp`
@@ -69,7 +71,7 @@ for SECTION in $SECTIONS ; do
 
 	# Reschedule old logs
 	>$LOGS
-	get_config_value RESCHEDULE $SECTION auto-reschedule yes
+	get_config_value RESCHEDULE $SECTION auto-reschedule $AUTO_RESCHEDULE
 	if [ "$RESCHEDULE" = "yes" ]; then
 		get_config_value _AGE        $SECTION reschedule-old-days $AGE
 		get_config_value _COUNT      $SECTION reschedule-old-count $COUNT
