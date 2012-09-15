@@ -50,11 +50,23 @@ get_config_value FAIL_COUNT global reschedule-fail-count 25
 
 get_config_value AUTO_RESCHEDULE	global auto-reschedule yes
 
+
+list_logs()
+{
+	__AGE="$1"
+	__COUNT="$2"
+	shift 2
+	find "$@" -name "*.log" -mtime +$__AGE \
+		| xargs --no-run-if-empty -n99999 -s999999 ls -dt \
+		| tail -n $__COUNT
+}
+
+
 TOTAL=0
 UNSCHEDULE=0
-LOGS=`mktemp`
-LOGS2=`mktemp`
+LOGS=$(mktemp)
 OBSOLETE=$(mktemp)
+UNSORTED=$(mktemp)
 OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
@@ -78,11 +90,12 @@ for SECTION in $SECTIONS ; do
 		get_config_value _FAIL_AGE   $SECTION reschedule-fail-days $FAIL_AGE
 		get_config_value _FAIL_COUNT $SECTION reschedule-fail-count $FAIL_COUNT
 		# FIXME: we ignore bugged here - ptyhon-bts is really the way to go
-		find pass fail affected -name "*.log" -mtime +$_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_COUNT > $LOGS
-		find fail affected -name "*.log" -mtime +$_FAIL_AGE | xargs --no-run-if-empty -n99999 -s999999 ls -dt | tail -n $_FAIL_COUNT >> $LOGS
-		sort -u $LOGS > $LOGS2
-		for log in $(cat $LOGS2) ; do
-			test -f recycle/$(basename "$log") || echo "$log"
+		>$UNSORTED
+		list_logs $_AGE      $_COUNT      pass fail affected >> $UNSORTED
+		list_logs $_FAIL_AGE $_FAIL_COUNT      fail affected >> $UNSORTED
+		for log in $(sort -u $UNSORTED) ; do
+			# skip if already scheduled
+			test -f "recycle/${log#*/}" || echo "$log"
 		done > $LOGS
 	fi
 
@@ -105,7 +118,9 @@ for SECTION in $SECTIONS ; do
 	fi
 	cd $OLDPWD
 done
-rm $LOGS $LOGS2 $OBSOLETE
+rm $LOGS
+rm $OBSOLETE
+rm $UNSORTED
 
 if [ "$TOTAL" -gt "0" ]; then
 	echo "Rescheduled $TOTAL logs."
