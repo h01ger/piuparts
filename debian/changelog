@@ -14,6 +14,8 @@ piuparts (0.47) UNRELEASED; urgency=low
     pre_remove_50_find_bad_permissions to avoid early failures during upgrade
     tests that may be fixed in a later version.
   * Remove post_purge_dbconfig_cleanup custom script.
+  * reschedule_oldest_logs: Refactored.
+    - Fix duplicate variable name usage that soemetimes prevented recycling.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Sat, 15 Sep 2012 06:25:05 +0200
 
