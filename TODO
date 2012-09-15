@@ -59,7 +59,7 @@ for 0.48:
   - drop _issue/_error duplication, have flags inside to indicate thether to generate
     _issues.tpl (pass/) and/or _error.tpl (fail/ bugged/ affected/)
 
-- accecpt a PIUPARTS_CONF environment variable everywhere to point to a different piuparts.conf
+- accept a PIUPARTS_CONF environment variable everywhere to point to a different piuparts.conf
 - read PIUPARTS_CONF or piuparts.conf everywhere to allow overriding builtin defaults
 - have all paths etc. configurable in piuparts.conf for simple reconfiguration
 

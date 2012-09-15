@@ -1,3 +1,13 @@
+piuparts (0.47) UNRELEASED; urgency=low
+
+  [ Andreas Beckmann ]
+  * piuparts.py:
+  * piuparts-master.py:
+  * piuparts-slave.py:
+  * piuparts-report.py:
+
+ -- Andreas Beckmann <debian@abeckmann.de>  Sat, 15 Sep 2012 06:25:05 +0200
+
 piuparts (0.46) unstable; urgency=low
 
   [ Holger Levsen ]
@@ -65,7 +75,6 @@ piuparts (0.46) unstable; urgency=low
       hour.
     - Issue "idle" command before "reserve" and skip status computation and
       reserving if master is idle.
-  * piuparts-report.py:
   * Simplify running piuparts from GIT.
   * Reorganize layout in the GIT repository to reduce path nesting and length.
   * Makefile:
