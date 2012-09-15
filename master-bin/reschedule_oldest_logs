@@ -85,11 +85,11 @@ for SECTION in $SECTIONS ; do
 	fi
 
 	if [ -s $LOGS ] || [ -s $OBSOLETE ]; then
-		COUNT=$(wc -l $LOGS | awk '{ print $1 }')
-		TOTAL=$(($TOTAL + $COUNT))
+		RCOUNT=$(wc -l $LOGS | awk '{ print $1 }')
+		TOTAL=$(($TOTAL + $RCOUNT))
 		UCOUNT=$(wc -l $OBSOLETE | awk '{ print $1 }')
 		UNSCHEDULE=$(($UNSCHEDULE + $UCOUNT))
-		echo "$SECTION: $COUNT/$UCOUNT"
+		echo "$SECTION: $RCOUNT/$UCOUNT"
 		if [ -s $LOGS ]; then
 			ls -dtl $(cat $LOGS)
 			ln -f $(cat $LOGS) recycle/

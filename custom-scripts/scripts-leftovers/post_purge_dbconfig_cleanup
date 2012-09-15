@@ -1,8 +1,0 @@
-#!/bin/sh
-set -e
-
-# If we didn't purge dbconfig-common (because it's fake-essential)
-# empty its logfile.
-if [ -f /var/log/dbconfig-common/dbc.log ]; then
-	>/var/log/dbconfig-common/dbc.log
-fi

@@ -42,6 +42,9 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	nova-common)
 		dbconfig_enable_purge nova-common
 		;;
+	otrs2)
+		dbconfig_enable_purge otrs2
+		;;
 	pdns-backend-sqlite)
 		dbconfig_enable_purge pdns-backend-sqlite
 		;;

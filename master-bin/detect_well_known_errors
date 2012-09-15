@@ -110,6 +110,7 @@ do
 	find pass bugged affected fail -name '*.log' | \
 	while read log
 	do
+		test -f "$log" || continue
 		kpr="${log%.log}.kpr"
 		if [ ! -f "$kpr" ]; then
 			> "$kpr"
