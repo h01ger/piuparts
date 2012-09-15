@@ -2,7 +2,7 @@
 set -e
 
 # find world writables without sticky bit
-BADPERMS=$(find / -mount ! -type l ! -type c ! -type s -perm -o+w ! -perm -1000)
+BADPERMS=$(find / -mount ! -type l ! -type c ! -type p ! -type s -perm -o+w ! -perm -1000)
 
 if [ -n "$BADPERMS" ]; then
 	echo "ERROR: BAD PERMISSIONS"
