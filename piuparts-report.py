@@ -459,16 +459,18 @@ def maintainer_subdir(maintainer):
     return maintainer.lower()[:1]
 
 
-def find_files_with_suffix(dir,suffix):
-    files=[name for name in os.listdir(dir) if name.endswith(suffix)]
-    # sort by age
-    content = {}
-    for vfile in files:
-      content[vfile] = os.path.getmtime(os.path.join(dir,vfile))
-    # Sort keys, based on time stamps
-    files = content.keys()
-    files.sort(lambda x,y: cmp(content[x],content[y]))
-    return files
+def find_files_with_suffix(vdir, suffix):
+    pairs = []  # (mtime, name)
+    for name in os.listdir(vdir):
+        if name.endswith(suffix):
+            try:
+                if os.path.isfile(os.path.join(vdir, name)):
+                    mtime = os.path.getmtime(os.path.join(vdir, name))
+                    pairs.append((mtime, name))
+            except OSError:
+                pass
+    # sort by mtime
+    return [x[1] for x in sorted(pairs)]
 
 def update_file(source, target):
     if os.path.exists(target):

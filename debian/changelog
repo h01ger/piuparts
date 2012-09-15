@@ -5,6 +5,7 @@ piuparts (0.47) UNRELEASED; urgency=low
   * piuparts-master.py:
   * piuparts-slave.py:
   * piuparts-report.py:
+    - Rewrite find_files_with_suffix(), handle disappearing files.
   * New custom script pre_remove_50_find_missing_copyright: check for missing
     /usr/share/doc/$package/copyright files.  (Closes: #683685)
   * Rename custom script post_install_find_bad_permissions to
