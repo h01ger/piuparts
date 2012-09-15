@@ -2,6 +2,8 @@ piuparts (0.47) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Add to ignored_files/ignored_patterns:
+      + /var/log/dbconfig-common/dbc.log
   * piuparts-master.py:
   * piuparts-slave.py:
   * piuparts-report.py:
@@ -11,6 +13,7 @@ piuparts (0.47) UNRELEASED; urgency=low
   * Rename custom script post_install_find_bad_permissions to
     pre_remove_50_find_bad_permissions to avoid early failures during upgrade
     tests that may be fixed in a later version.
+  * Remove post_purge_dbconfig_cleanup custom script.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Sat, 15 Sep 2012 06:25:05 +0200
 

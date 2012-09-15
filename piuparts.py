@@ -239,6 +239,7 @@ class Settings:
             "/var/log/apt/history.log",
             "/var/log/apt/term.log",
             "/var/log/bootstrap.log",
+            "/var/log/dbconfig-common/dbc.log",
             "/var/log/dpkg.log",
             # system logfiles
             "/var/log/auth.log",
