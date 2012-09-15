@@ -461,12 +461,6 @@ def maintainer_subdir(maintainer):
 
 def find_files_with_suffix(dir,suffix):
     files=[name for name in os.listdir(dir) if name.endswith(suffix)]
-    subdirs=os.listdir(dir)
-    for subdir in subdirs:
-      if os.path.isdir(os.path.join(dir,subdir)):
-        for name_in_subdir in os.listdir(os.path.join(dir,subdir)):
-          if name_in_subdir.endswith(suffix):
-            files += [os.path.join(dir,subdir, name_in_subdir)]
     # sort by age
     content = {}
     for vfile in files:
