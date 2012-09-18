@@ -195,7 +195,7 @@ do
 	#
 	# report unknown failures
 	#
-	find fail -name "*.log" > $LOGS
+	find bugged affected fail -name "*.log" > $LOGS
 	grep -f $LOGS $KNOWNLOGS > $KNOWNFAILURES
 	grep -v -f $KNOWNFAILURES $LOGS > $UNKNOWNLOGS
 	if [ -s $UNKNOWNLOGS ] ; then
