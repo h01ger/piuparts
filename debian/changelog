@@ -4,6 +4,7 @@ piuparts (0.47) UNRELEASED; urgency=low
   * piuparts.py:
     - Add to ignored_files/ignored_patterns:
       + /var/log/dbconfig-common/dbc.log
+    - Print a final message before terminating in the panic() handler.
   * piuparts-master.py:
   * piuparts-slave.py:
   * piuparts-report.py:

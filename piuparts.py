@@ -384,6 +384,7 @@ def panic(exit=1):
     for i in range(counter):
         if i in on_panic_hooks:
             on_panic_hooks[i]()
+    logging.error("piuparts run ends.")
     sys.exit(exit)
 
 
