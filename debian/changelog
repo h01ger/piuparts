@@ -20,6 +20,7 @@ piuparts (0.47) UNRELEASED; urgency=low
     - Fix duplicate variable name usage that sometimes prevented recycling.
     - Support a [global] auto-reschedule=no setting.
   * detect_well_known_errors: Unclassified logs may still be bugged.
+  * detect_piuparts_issues: Detect incomplete logfiles.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Sat, 15 Sep 2012 06:25:05 +0200
 
