@@ -664,8 +664,12 @@ def test_package(config, package, packages_files):
         if not f or f[-1] != '\n':
             f += '\n'
         output.write(f)
+        lastline = f.split('\n')[-2]
         if ret < 0:
             output.write(" *** Process KILLED - exceed maximum run time ***\n")
+        elif not "piuparts run ends" in lastline:
+            ret += 1024
+            output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n");
 
     if ret == 0 and config["upgrade-test-chroot-tgz"] and upgrade_testable(config, package, packages_files):
         command = base_command[:]
@@ -679,8 +683,12 @@ def test_package(config, package, packages_files):
         if not f or f[-1] != '\n':
             f += '\n'
         output.write(f)
+        lastline = f.split('\n')[-2]
         if ret < 0:
             output.write(" *** Process KILLED - exceed maximum run time ***\n")
+        elif not "piuparts run ends" in lastline:
+            ret += 1024
+            output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n");
 
     output.write("\n")
     output.write("ret=%d\n" % ret)

@@ -7,6 +7,7 @@ piuparts (0.47) UNRELEASED; urgency=low
     - Print a final message before terminating in the panic() handler.
   * piuparts-master.py:
   * piuparts-slave.py:
+    - Detect incomplete piuparts output and ensure such tests fail.
   * piuparts-report.py:
     - Rewrite find_files_with_suffix(), handle disappearing files.
   * New custom script pre_remove_50_find_missing_copyright: check for missing
