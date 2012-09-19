@@ -661,10 +661,11 @@ def test_package(config, package, packages_files):
 
         output.write("Executing: %s\n" % " ".join(command))
         ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
+        if not f or f[-1] != '\n':
+            f += '\n'
+        output.write(f)
         if ret < 0:
-            output.write(f + "\n *** Process KILLED - exceed maximum run time ***\n")
-        else:
-            output.write(f)
+            output.write(" *** Process KILLED - exceed maximum run time ***\n")
 
     if ret == 0 and config["upgrade-test-chroot-tgz"] and upgrade_testable(config, package, packages_files):
         command = base_command[:]
@@ -675,10 +676,11 @@ def test_package(config, package, packages_files):
 
         output.write("Executing: %s\n" % " ".join(command))
         ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
+        if not f or f[-1] != '\n':
+            f += '\n'
+        output.write(f)
         if ret < 0:
             output.write(" *** Process KILLED - exceed maximum run time ***\n")
-        else:
-            output.write(f)
 
     output.write("\n")
     output.write("ret=%d\n" % ret)
