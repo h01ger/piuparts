@@ -1,0 +1,47 @@
+To: submit@bugs.debian.org
+Subject: modifies conffiles (policy 10.7.3):
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package modifies conffiles.
+This is forbidden by the policy, see
+http://www.debian.org/doc/debian-policy/ch-files.html#s-config-files
+
+10.7.3: "[...] The easy way to achieve this behavior is to make the
+configuration file a conffile. [...] This implies that the default
+version will be part of the package distribution, and must not be
+modified by the maintainer scripts during installation (or at any
+other time)."
+
+Note that once a package ships a modified version of that conffile,
+dpkg will prompt the user for an action how to handle the upgrade of
+this modified conffile (that was not modified by the user).
+
+Further in 10.7.3: "[...] must not ask unnecessary questions
+(particularly during upgrades) [...]"
+
+If a configuration file is customized by a maintainer script after
+having asked some debconf questions, it may not be marked as a
+conffile. Instead a template could be installed in /usr/share and used
+by the postinst script to fill in the custom values and create (or
+update) the configuration file (preserving any user modifications!).
+This file must be removed during postrm purge.
+ucf(1) may help with these tasks.
+See also http://wiki.debian.org/DpkgConffileHandling
+
+In https://lists.debian.org/debian-devel/2012/09/msg00412.html and
+followups it has been agreed that these bugs are to be filed with
+severity serious.
+
+debsums reports modification of the following files,
+from the attached log (scroll to the bottom...):
+
+
+
+cheers,
