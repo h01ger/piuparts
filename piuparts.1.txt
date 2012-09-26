@@ -122,6 +122,9 @@ The 'components' that are used for a mirror can also be set with this option: a 
 +
 Note that file: addresses works if the directories are made accessible from within the chroot with '--bindmount'.
 
+*--no-debsums*::
+  Don't run debsums to check for modified or missing files.
+
 *--no-diversions*::
   Don't check for broken diversions.
 

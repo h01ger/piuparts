@@ -5,6 +5,8 @@ piuparts (0.47) UNRELEASED; urgency=low
     - Add to ignored_files/ignored_patterns:
       + /var/log/dbconfig-common/dbc.log
     - Print a final message before terminating in the panic() handler.
+    - Add support for running debsums before package removal, enabled by
+      default. May be disabled via --no-debsums.
   * piuparts-master.py:
   * piuparts-slave.py:
     - Detect incomplete piuparts output and ensure such tests fail.

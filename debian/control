@@ -23,6 +23,7 @@ Pre-Depends:
  dpkg (>= 1.15.7.2~),
 Depends:
  debootstrap,
+ debsums,
  lsb-release,
  lsof,
  python-debian,

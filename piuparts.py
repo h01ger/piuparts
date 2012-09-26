@@ -161,6 +161,7 @@ class Settings:
         self.extra_old_packages = []
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
+        self.check_debsums = True
         self.check_broken_diversions = True
         self.check_broken_symlinks = True
         self.warn_broken_symlinks = True
@@ -1131,6 +1132,16 @@ class Chroot:
         added = [ln for ln in post_install_diversions if not ln in pre_install_diversions]
         return (removed, added)
 
+    def check_debsums(self, ignore_errors=False):
+        if not settings.check_debsums:
+            return
+        (status, output) = run(["debsums", "--root", self.name, "-ac"], ignore_errors=True)
+        if status != 0:
+            logging.error("FAIL: debsums reports modifications inside the chroot:\n%s" %
+                          indent_string(output.replace(self.name, "")))
+            if not ignore_errors:
+                panic()
+
     def remove_packages(self, packages):
         """Remove packages in a chroot."""
         if packages:
@@ -1168,6 +1179,8 @@ class Chroot:
                             if state == "purge"]
         deps_to_install = [name for name, state in deps.iteritems()
                           if state == "install"]
+
+        self.check_debsums()
 
         # Run custom scripts before removing all packages.
         self.run_scripts("pre_remove")
@@ -2492,6 +2505,10 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Skip testing the output from the logrotate files.")
 
+    parser.add_option("--no-debsums",
+                      action="store_true", default=False,
+                      help="Skip running debsums in the chroot.")
+
     parser.add_option("--skip-minimize",
                       action="store_true", default=True,
                       help="Skip minimize chroot step. This is the default now.")
@@ -2581,6 +2598,7 @@ def parse_command_line():
     [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
     settings.skip_cronfiles_test = opts.skip_cronfiles_test
     settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test
+    settings.check_debsums = not opts.no_debsums
     settings.check_broken_diversions = not opts.no_diversions
     settings.check_broken_symlinks = not opts.no_symlinks
     settings.warn_broken_symlinks = not opts.fail_on_broken_symlinks
