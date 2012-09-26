@@ -25,6 +25,9 @@ piuparts (0.47) UNRELEASED; urgency=low
   * detect_piuparts_issues: Detect incomplete logfiles.
   * New bug template: modifies_conffiles.
   * New known problem: Modifying conffiles or other shipped files.
+  * New custom script post_distupgrade_hack_debsums to work around #687611
+    which makes all debsum checks fail due to modification of
+    /usr/share/keyrings/debian-archive-removed-keys.gpg during upgrades.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Sat, 15 Sep 2012 06:25:05 +0200
 

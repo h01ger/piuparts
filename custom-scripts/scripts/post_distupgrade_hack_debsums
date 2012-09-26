@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+# http://bugs.debian.org/687611
+if [ -f /usr/share/keyrings/debian-archive-removed-keys.gpg~ ]; then
+	echo "FIXING /usr/share/keyrings/debian-archive-removed-keys.gpg~"
+	mv -v /usr/share/keyrings/debian-archive-removed-keys.gpg~ /usr/share/keyrings/debian-archive-removed-keys.gpg
+fi
