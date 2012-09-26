@@ -354,6 +354,7 @@ linktarget_by_template = [
     ("command_not_found_error.tpl", "due to a 'command not found' error"),
     ("files_in_usr_local_error.tpl", "due to files in /usr/local"),
     ("overwrite_other_packages_files_error.tpl", "due to overwriting other packages files"),
+    ("debsums_mismatch_error.tpl", "due to modifying conffiles or other shipped files"),
     ("alternatives_after_purge_error.tpl", "due to forgotten alternatives after purge"),
     ("owned_files_by_many_packages_error.tpl", "due to owned files by many packages"),
     ("owned_files_after_purge_error.tpl", "due to owned files existing after purge"),

@@ -24,6 +24,7 @@ piuparts (0.47) UNRELEASED; urgency=low
   * detect_well_known_errors: Unclassified logs may still be bugged.
   * detect_piuparts_issues: Detect incomplete logfiles.
   * New bug template: modifies_conffiles.
+  * New known problem: Modifying conffiles or other shipped files.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Sat, 15 Sep 2012 06:25:05 +0200
 
