@@ -85,6 +85,9 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *--install-purge-install*::
   Purge package after installation and reinstall. All depedencies are installed during purge.
 
+*--install-recommends*::
+  Enable installation of Recommends.
+
 *--install-remove-install*::
   Remove package after installation and reinstall. For testing installation in config-files-remaining state.
 

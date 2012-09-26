@@ -10,6 +10,7 @@ piuparts (0.48) UNRELEASED; urgency=low
       ( test $(dirname $x) != $(readlink -f $(dirname $x)) )
     - Add debsums, processes, and broken-symlinks check after the first purge
       in --install-purge-install mode.
+    - Add --install-recommends option, disabled by default.
   * piuparts-master.py:
     - Enable recycling before initializing the real package db.
   * piuparts-slave.py:

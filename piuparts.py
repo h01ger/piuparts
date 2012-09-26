@@ -141,6 +141,7 @@ class Settings:
         self.debian_distros = []
         self.keep_sources_list = False
         self.do_not_verify_signatures = False
+        self.install_recommends = False
         self.scriptsdirs = []
         self.bindmounts = []
         # chroot setup
@@ -901,11 +902,9 @@ class Chroot:
 
     def create_apt_conf(self):
         """Create /etc/apt/apt.conf.d/piuparts inside the chroot."""
-        lines = [
-            'APT::Get::Assume-Yes "yes";\n',
-            'APT::Install-Recommends "0";\n',
-            'APT::Install-Suggests "0";\n',
-            ]
+        lines = ['APT::Get::Assume-Yes "yes";\n']
+        lines.append('APT::Install-Recommends "%d";\n' % int(settings.install_recommends))
+        lines.append('APT::Install-Suggests "0";\n')
         lines.append('APT::Get::AllowUnauthenticated "%s";\n' % settings.apt_unauthenticated)
         if "HTTP_PROXY" in os.environ:
             proxy = os.environ["HTTP_PROXY"]
@@ -2443,6 +2442,10 @@ def parse_command_line():
                            "expressions for filenames to be " +
                            "ignored when comparing changes to chroot.")
 
+    parser.add_option("--install-recommends",
+                      action="store_true", default=False,
+                      help="Enable the installation of Recommends.")
+
     parser.add_option("-k", "--keep-tmpdir",
                       action="store_true", default=False,
                       help="Don't remove the temporary directory for the " +
@@ -2616,6 +2619,7 @@ def parse_command_line():
     else:
       settings.keyringoption="--keyring=%s" % settings.keyring
       settings.apt_unauthenticated="No"
+    settings.install_recommends = opts.install_recommends
     settings.eatmydata = not opts.no_eatmydata
     settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
     settings.dpkg_force_confdef = opts.dpkg_force_confdef
