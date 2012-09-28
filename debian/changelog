@@ -1,4 +1,4 @@
-piuparts (0.47) UNRELEASED; urgency=low
+piuparts (0.47) unstable; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -6,8 +6,7 @@ piuparts (0.47) UNRELEASED; urgency=low
       + /var/log/dbconfig-common/dbc.log
     - Print a final message before terminating in the panic() handler.
     - Add support for running debsums before package removal, enabled by
-      default. May be disabled via --no-debsums.
-  * piuparts-master.py:
+      default. May be disabled via --no-debsums. Add debsums as dependency.
   * piuparts-slave.py:
     - Detect incomplete piuparts output and ensure such tests fail.
   * piuparts-report.py:
@@ -29,7 +28,7 @@ piuparts (0.47) UNRELEASED; urgency=low
     which makes all debsum checks fail due to modification of
     /usr/share/keyrings/debian-archive-removed-keys.gpg during upgrades.
 
- -- Andreas Beckmann <debian@abeckmann.de>  Sat, 15 Sep 2012 06:25:05 +0200
+ -- Holger Levsen <holger@debian.org>  Fri, 28 Sep 2012 13:24:47 +0200
 
 piuparts (0.46) unstable; urgency=low
 
