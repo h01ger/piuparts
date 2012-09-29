@@ -1,3 +1,13 @@
+piuparts (0.48) UNRELEASED; urgency=low
+
+  [ Andreas Beckmann ]
+  * piuparts.py:
+  * piuparts-master.py:
+  * piuparts-slave.py:
+  * piuparts-report.py:
+
+ -- Andreas Beckmann <debian@abeckmann.de>  Sat, 29 Sep 2012 14:42:10 +0200
+
 piuparts (0.47) unstable; urgency=low
 
   [ Andreas Beckmann ]
