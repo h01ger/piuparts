@@ -10,6 +10,9 @@ for 0.48:
 - turn debsums dependency into a recommends and make piuparts.py refuse to run
   if debsums is not installed and no --no-debsums options is given.
 
+- ensure --scriptsdir does not copy *.dpkg-* backup files
+  (as that would mean running them in the chroot)
+
 - make piuparts-master + piuparts-slave packages work out-of-the-box:
   - conf/piuparts.sudoers should be split for master+slave packages.
   - ship sane minimal sudoers in p-s.deb than can be enabled by default
@@ -91,6 +94,13 @@ for 0.49:
   /etc/piuparts/templates/ and not be included in the python
   source
 
+- check the logfiles (especially pass/) for
+  * "Exception in thread"
+  * java stacktraces
+  * "Can't locate .* in @INC"
+
+- test main without contrib/non-free in sources.list
+
 
 for 0.50 and later:
 
@@ -137,6 +147,12 @@ for 0.50 and later:
 - commandline-switches for all programms
 
 - move shell cronjobs functionality into master, slave & report
+
+- document that it's highly recommended to run a proxy or mirror on
+  localhost - running multiple slaves on a fast host can easily
+  saturate a 100 Mbit link :-)
+- there could be a config option that sets appropriate configuration
+  for master, slave, and (especially) piuparts
 
 
 1.0 should really have automated testing of piuparts itself...
