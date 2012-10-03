@@ -1144,6 +1144,18 @@ class Chroot:
             if not ignore_errors:
                 panic()
 
+    def list_paths_with_symlinks(self):
+        file_owners = self.get_files_owned_by_packages()
+        bad = []
+        for f in sorted(file_owners.keys()):
+            dn, fn = os.path.split(f)
+            dc = canonicalize_path(self.name, dn)
+            if dn != dc:
+                bad.append("%s != %s (%s)" %(f, os.path.join(dc, fn), ", ".join(file_owners[f])))
+        if bad:
+            logging.info("dirname part contains a symlink:\n%s" %
+                         indent_string("\n".join(bad)))
+
     def remove_packages(self, packages):
         """Remove packages in a chroot."""
         if packages:
@@ -1182,6 +1194,7 @@ class Chroot:
         deps_to_install = [name for name, state in deps.iteritems()
                           if state == "install"]
 
+        self.list_paths_with_symlinks()
         self.check_debsums()
 
         # Run custom scripts before removing all packages.

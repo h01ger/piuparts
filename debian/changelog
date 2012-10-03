@@ -5,6 +5,9 @@ piuparts (0.48) UNRELEASED; urgency=low
     - Ignore *.dpkg-* conffile backups found in --scriptsdir directories.
     - Report attributes (for reference and current file) in case of file
       modification.
+    - Report paths of installed files that contain symlinks (for better
+      debugging of the problems caused by such a setup).
+      ( test $(dirname $x) != $(readlink -f $(dirname $x)) )
   * piuparts-master.py:
     - Enable recycling before initializing the real package db.
   * piuparts-slave.py:
