@@ -21,7 +21,7 @@ idle-sleep = 1800
 max-tgz-age = 604800
 # rescheduling settings
 reschedule-old-days = 90
-reschedule-old-count = 150
+reschedule-old-count = 250
 reschedule-fail-days = 30
 reschedule-fail-count = 25
 
