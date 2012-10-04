@@ -1235,7 +1235,7 @@ class Section:
         self._section_names = section_names
         self._output_directory = os.path.abspath(os.path.join(output_directory, self._config.section))
         if not os.path.exists(self._output_directory):
-            os.mkdir(self._output_directory)
+            os.makedirs(self._output_directory)
 
         oldcwd = os.getcwd()
         os.chdir(self._master_directory)
