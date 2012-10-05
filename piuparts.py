@@ -785,7 +785,9 @@ class Chroot:
             for sdir in settings.scriptsdirs:
                 logging.debug("Copying scriptsdir %s to %s" % (sdir, dest))
                 for sfile in os.listdir(sdir):
-                    if (sfile.startswith("post_") or sfile.startswith("pre_")) and os.path.isfile(os.path.join(sdir, sfile)):
+                    if (sfile.startswith("post_") or sfile.startswith("pre_")) \
+                            and not ".dpkg-" in sfile \
+                            and os.path.isfile(os.path.join(sdir, sfile)):
                         shutil.copy(os.path.join(sdir, sfile), dest)
 
         # Run custom scripts after creating the chroot.

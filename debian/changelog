@@ -2,6 +2,7 @@ piuparts (0.48) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Ignore *.dpkg-* conffile backups found in --scriptsdir directories.
   * piuparts-master.py:
     - Enable recycling before initializing the real package db.
   * piuparts-slave.py:

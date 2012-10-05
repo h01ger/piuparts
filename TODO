@@ -10,9 +10,6 @@ for 0.48:
 - turn debsums dependency into a recommends and make piuparts.py refuse to run
   if debsums is not installed and no --no-debsums options is given.
 
-- ensure --scriptsdir does not copy *.dpkg-* backup files
-  (as that would mean running them in the chroot)
-
 - make piuparts-master + piuparts-slave packages work out-of-the-box:
   - conf/piuparts.sudoers should be split for master+slave packages.
   - ship sane minimal sudoers in p-s.deb than can be enabled by default
