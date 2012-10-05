@@ -14,12 +14,17 @@ piuparts (0.48) UNRELEASED; urgency=low
   * piuparts.conf:
     - New per section settings: expire-old-days, expire-fail-days (defaulting
       to 0 which means expiration is disabled).
+    - Split and rename piuparts-cmd into piuparts-command ([global] setting
+      that should include all common flags) and piuparts-flags (for additional
+      section-specific flags).
   * piuparts-master.py:
     - Enable recycling before initializing the real package db.
     - Enable logging by default and set default log-file to
       $SECTION/master.log. Use "/dev/null" to disable logging.
   * piuparts-slave.py:
     - Retry sections with higher precedence more often.
+    - Construct the piuparts command line from the new config options
+      piuparts-command and piuparts-flags.
   * piuparts-report.py:
     - Don't hardcode section names, always show all known_problem reports.
   * detect_piuparts_issues: Catch the chroot running out of space.

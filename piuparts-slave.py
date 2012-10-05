@@ -78,7 +78,8 @@ class Config(piupartslib.conf.Config):
                 "master-command": None,
                 "log-file": "piuparts-master.log",
                 "mirror": None,
-                "piuparts-cmd": "sudo piuparts",
+                "piuparts-command": "sudo piuparts",
+                "piuparts-flags": "",
                 "distro": None,
                 "area": None,
                 "chroot-tgz": None,
@@ -650,7 +651,9 @@ def test_package(config, package, packages_files):
     package.dump(output)
     output.write("\n")
 
-    base_command = config["piuparts-cmd"].split()
+    base_command = config["piuparts-command"].split()
+    if config["piuparts-flags"]:
+        base_command.extend(config["piuparts-flags"].split())
     if config["mirror"]:
         base_command.extend(["--mirror", config["mirror"]])
 
@@ -713,7 +716,9 @@ def create_chroot(config, tarball, distro):
     output_name = tarball + ".log"
     logging.debug("Opening log file %s" % output_name)
     logging.info("Creating new tarball %s" % tarball)
-    command = config["piuparts-cmd"].split()
+    command = config["piuparts-command"].split()
+    if config["piuparts-flags"]:
+        command.extend(config["piuparts-flags"].split())
     if config["mirror"]:
         command.extend(["--mirror", config["mirror"]])
     command.extend(["-d", distro])

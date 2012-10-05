@@ -18,6 +18,7 @@ master-directory = /var/lib/piuparts/master
 output-directory = /var/lib/piuparts/htdocs
 doc-root = /piuparts/
 master-command = python /usr/share/piuparts/piuparts-master
+piuparts-command = sudo piuparts --scriptsdir /etc/piuparts/scripts --tmpdir /var/tmp
 idle-sleep = 300
 max-tgz-age = 604800
 expire-old-days = 120
@@ -32,7 +33,7 @@ reschedule-fail-count = 25
 [sid]
 precedence = 1
 description = "Debian sid / main"
-piuparts-cmd = sudo piuparts --no-symlinks --scriptsdir /etc/piuparts/scripts/ --tmpdir /var/tmp
+piuparts-flags = --no-symlinks
 # mirror = http://cdn.debian.net/debian
 distro = sid
 # area = main

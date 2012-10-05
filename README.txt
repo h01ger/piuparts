@@ -464,7 +464,9 @@ section, too, and will serve as defaults for all other sections
 
 * "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "$SECTION/master.log". To disable logging, set it to "/dev/null".
 
-* "piuparts-cmd" is the command the slave uses to start piuparts. It should include 'sudo' if necessary so that piuparts runs with sufficient priviledges to do its testing (and that means root priviledges).
+* "piuparts-command" is the command the slave uses to start piuparts. It should include 'sudo' if necessary so that piuparts runs with sufficient priviledges to do its testing (and that means root priviledges). This command should be given in the [global] section and include all flags that are common for all sections.
+
+* "piuparts-flags" are appended to "piuparts-command" and should contain the section-specific flags.
 
 * "mirror" tells the slave which mirror it is to use. The slave gives this to piuparts when it runs it. The URLs for Packages and Sources files will be generated from this setting, too. Default (for fetching Packages/Sources): "http://cdn.debian.net/debian".
 
