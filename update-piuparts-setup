@@ -28,7 +28,7 @@ fi
 
 PIUPARTS_PREFIX=/org/piuparts.debian.org
 PIUPARTS_HTDOCS=$PIUPARTS_PREFIX/htdocs
-PIUPARTS_TEMPDIR=$PIUPARTS_PREFIX/tmp
+PIUPARTS_TMPDIR=$PIUPARTS_PREFIX/tmp
 
 # please cleanup yourself
 cd
@@ -101,7 +101,7 @@ done
 #
 # create working dir
 #
-mkdir -p $PIUPARTS_TEMPDIR
+mkdir -p $PIUPARTS_TMPDIR
 
 #
 # update slave home

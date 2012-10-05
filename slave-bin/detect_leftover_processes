@@ -37,7 +37,7 @@ get_config_value()
 }
 
 get_config_value MASTER global master-directory
-get_config_value PIUPARTS_TEMPDIR global tempdir /org/piuparts.debian.org/tmp
+get_config_value PIUPARTS_TMPDIR global tmpdir /org/piuparts.debian.org/tmp
 
 #
 # find processes running in deleted chroots
@@ -47,9 +47,9 @@ get_config_value PIUPARTS_TEMPDIR global tempdir /org/piuparts.debian.org/tmp
 MONITORDIR=$MASTER/monitor-slave
 LOCKFILE="$MONITORDIR/leftover_processes"
 
-OUTPUT=$(sudo ls  --color=never -lad /proc/*/root 2>/dev/null|grep "$PIUPARTS_TEMPDIR" | grep "(deleted)")
+OUTPUT=$(sudo ls  --color=never -lad /proc/*/root 2>/dev/null|grep "$PIUPARTS_TMPDIR" | grep "(deleted)")
 if [ "$OUTPUT" != "" ] && [ "$(cat $LOCKFILE)" != "$OUTPUT" ] ; then
-	echo "Found processes running with a deleted chroot in $PIUPARTS_TEMPDIR"
+	echo "Found processes running with a deleted chroot in $PIUPARTS_TMPDIR"
 	echo "This is usually because of 'FAIL: Processes are running inside chroot' which usually"
 	echo "means the packages violates 'must use invoke-rc.d (policy 9.3.3.2)'."
 	echo

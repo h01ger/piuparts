@@ -36,16 +36,16 @@ get_config_value()
 	eval "$1"='"$value"'
 }
 
-get_config_value PIUPARTS_TEMPDIR global tempdir /org/piuparts.debian.org/tmp
+get_config_value PIUPARTS_TMPDIR global tmpdir /org/piuparts.debian.org/tmp
 
 
-LS_TMP=$(ls --color=never -l $PIUPARTS_TEMPDIR)
+LS_TMP=$(ls --color=never -l "$PIUPARTS_TMPDIR")
 if [ "$(echo "$LS_TMP" | wc -l)" -gt 12 ] ; then
-	echo "More than ten directories in $PIUPARTS_TEMPDIR detected!"
+	echo "More than ten directories in $PIUPARTS_TMPDIR detected!"
 	echo
 	echo "$LS_TMP"
 	echo
-	echo "$(du -shx $PIUPARTS_TEMPDIR 2>/dev/null)"
+	echo "$(du -shx "$PIUPARTS_TMPDIR" 2>/dev/null)"
 	echo
 	echo "One is normal for piuparts operation, more is not."
 	echo "Please investigate and cleanup."

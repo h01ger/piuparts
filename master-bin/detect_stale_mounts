@@ -36,16 +36,16 @@ get_config_value()
 	eval "$1"='"$value"'
 }
 
-get_config_value PIUPARTS_TEMPDIR global tempdir /org/piuparts.debian.org/tmp
+get_config_value PIUPARTS_TMPDIR global tmpdir /org/piuparts.debian.org/tmp
 
 
 FILE=`mktemp`
 cp /proc/mounts $FILE
 
-if [ "$(grep -v trash $FILE | grep -c $PIUPARTS_TEMPDIR )" -gt 1 ] ; then
-	echo "More than one mountpoint below $PIUPARTS_TEMPDIR detected!"
+if [ "$(grep -v trash $FILE | grep -c "$PIUPARTS_TMPDIR" )" -gt 1 ] ; then
+	echo "More than one mountpoint below $PIUPARTS_TMPDIR detected!"
 	echo
-	grep $PIUPARTS_TEMPDIR $FILE
+	grep "$PIUPARTS_TMPDIR" $FILE
 	echo
 	echo "Zero or one mountpoint is normal for piuparts operation, more is not."
 	echo "Please investigate and cleanup."

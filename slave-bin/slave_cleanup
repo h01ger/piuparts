@@ -48,16 +48,16 @@ get_config_value()
 	eval "$1"='"$value"'
 }
 
-get_config_value PIUPARTS_TEMPDIR global tempdir /org/piuparts.debian.org/tmp
+get_config_value PIUPARTS_TMPDIR global tmpdir /org/piuparts.debian.org/tmp
 
 
 # umount all mount points (should be none on boot, but this script can also be called at other times)
-for MOUNTPOINT in $(tac /proc/mounts | cut -d " " -f 2 | grep $PIUPARTS_TEMPDIR/)
+for MOUNTPOINT in $(tac /proc/mounts | cut -d " " -f 2 | grep "$PIUPARTS_TMPDIR/")
 do
-	sudo umount $MOUNTPOINT
+	sudo umount "$MOUNTPOINT"
 done
 
 # cleanup tmp
-sudo rm -rf --one-file-system $PIUPARTS_TEMPDIR
-mkdir -p $PIUPARTS_TEMPDIR
+sudo rm -rf --one-file-system "$PIUPARTS_TMPDIR"
+mkdir -p "$PIUPARTS_TMPDIR"
 
