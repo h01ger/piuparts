@@ -11,6 +11,8 @@ piuparts (0.48) UNRELEASED; urgency=low
     - Add debsums, processes, and broken-symlinks check after the first purge
       in --install-purge-install mode.
     - Add --install-recommends option, disabled by default.
+  * piuparts.conf:
+    - New per section settings: expire-old-days, expire-fail-days.
   * piuparts-master.py:
     - Enable recycling before initializing the real package db.
     - Enable logging by default and set default log-file to
@@ -18,6 +20,10 @@ piuparts (0.48) UNRELEASED; urgency=low
   * piuparts-slave.py:
   * piuparts-report.py:
   * detect_piuparts_issues: Catch the chroot running out of space.
+  * reschedule_oldest_logs: Implement logfile expiration. Delete logfiles that
+    are marked for recycling and are older than expire-{old,fail}-days. This
+    will put the package into dependency-failed-testing or similar state.
+    expire-*-days needs to be greater than reschedule-*-days to enable this.
   * New bug template: copyright_file_missing_after_upgrade.
   * New known problem: Installing something over existing symlinks.
 

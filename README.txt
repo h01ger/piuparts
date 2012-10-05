@@ -506,13 +506,17 @@ values are set in the scripts.
 
 * "reschedule-untestable-days" (global) sets the rescheduling delay for untestable packages (e.g. due to unsatisfied dependencies).
 
-* "reschedule-old-days" (global, section) and the following three settings define the rescheduling scheme for passed and failed packages.
+* "reschedule-old-days" (global, section) and the following five settings define the rescheduling scheme for passed and failed packages. Logs that are marked for recycling but are older than expire-*-days will be deleted, moving the package to dependency-failed-testing state. expire-*-days needs to be greater than reschedule-*-days to enable expiration.
 
 * "reschedule-old-count" (global, section)
 
 * "reschedule-fail-days" (global, section)
 
 * "reschedule-fail-count" (global, section)
+
+* "expire-old-days" (global, section)
+
+* "expire-fail-days" (global, section)
 
 * "auto-reschedule" (section) can be set to "no" to disable rescheduling of passed and failed packages.
 

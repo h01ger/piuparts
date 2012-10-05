@@ -20,11 +20,14 @@ doc-root = /piuparts/
 master-command = python /usr/share/piuparts/piuparts-master
 idle-sleep = 300
 max-tgz-age = 604800
+expire-old-days = 120
 reschedule-old-days = 90
 reschedule-old-count = 150
+expire-fail-days = 45
 reschedule-fail-days = 30
 reschedule-fail-count = 25
 #bts-from
+
 
 [sid]
 precedence = 1

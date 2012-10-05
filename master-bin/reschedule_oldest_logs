@@ -42,9 +42,14 @@ get_config_value SECTIONS global sections
 #
 # reschedule 200 oldest log files, if they are older than 180 days
 # reschedule 25 oldest fail log files, if they are older than 30 days
+# delete $reschedule-old-count oldest logfiles, if they are scheduled
+#   for recycling and older than $expire-old-days
+#   and $expire-old-days > $reschedule-old-days
 #
+get_config_value EXPIRE_AGE global expire-old-days 0
 get_config_value AGE        global reschedule-old-days 180
 get_config_value COUNT      global reschedule-old-count 200
+get_config_value EXPIRE_FAIL_AGE global expire-fail-days 0
 get_config_value FAIL_AGE   global reschedule-fail-days 30
 get_config_value FAIL_COUNT global reschedule-fail-count 25
 
@@ -63,9 +68,11 @@ list_logs()
 
 
 TOTAL=0
+TOTAL_EXPIRED=0
 UNSCHEDULE=0
 LOGS=$(mktemp)
 OBSOLETE=$(mktemp)
+EXPIRED=$(mktemp)
 UNSORTED=$(mktemp)
 OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
@@ -83,13 +90,27 @@ for SECTION in $SECTIONS ; do
 
 	# Reschedule old logs
 	>$LOGS
+	>$EXPIRED
 	get_config_value RESCHEDULE $SECTION auto-reschedule $AUTO_RESCHEDULE
 	if [ "$RESCHEDULE" = "yes" ]; then
+		get_config_value _EXPIRE_AGE $SECTION expire-old-days $EXPIRE_AGE
 		get_config_value _AGE        $SECTION reschedule-old-days $AGE
 		get_config_value _COUNT      $SECTION reschedule-old-count $COUNT
+		get_config_value _EXPIRE_FAIL_AGE $SECTION expire-fail-days $EXPIRE_FAIL_AGE
 		get_config_value _FAIL_AGE   $SECTION reschedule-fail-days $FAIL_AGE
 		get_config_value _FAIL_COUNT $SECTION reschedule-fail-count $FAIL_COUNT
 		# FIXME: we ignore bugged here - ptyhon-bts is really the way to go
+		>$UNSORTED
+		if [ "$_EXPIRE_AGE" -gt "$_AGE" ]; then
+			list_logs $_EXPIRE_AGE      $_COUNT      pass fail affected >> $UNSORTED
+		fi
+		if [ "$_EXPIRE_FAIL_AGE" -gt "$_FAIL_AGE" ]; then
+			list_logs $_EXPIRE_FAIL_AGE $_FAIL_COUNT      fail affected >> $UNSORTED
+		fi
+		for log in $(sort -u $UNSORTED) ; do
+			# the log needs to be scheduled for recycling before it gets expired
+			test -f "recycle/${log#*/}" && echo "$log"
+		done > $EXPIRED
 		>$UNSORTED
 		list_logs $_AGE      $_COUNT      pass fail affected >> $UNSORTED
 		list_logs $_FAIL_AGE $_FAIL_COUNT      fail affected >> $UNSORTED
@@ -99,15 +120,21 @@ for SECTION in $SECTIONS ; do
 		done > $LOGS
 	fi
 
-	if [ -s $LOGS ] || [ -s $OBSOLETE ]; then
+	if [ -s $LOGS ] || [ -s $OBSOLETE ] || [ -s $EXPIRED ]; then
 		RCOUNT=$(wc -l $LOGS | awk '{ print $1 }')
 		TOTAL=$(($TOTAL + $RCOUNT))
+		ECOUNT=$(wc -l $EXPIRED | awk '{ print $1 }')
+		TOTAL_EXPIRED=$(($TOTAL_EXPIRED + $ECOUNT))
 		UCOUNT=$(wc -l $OBSOLETE | awk '{ print $1 }')
 		UNSCHEDULE=$(($UNSCHEDULE + $UCOUNT))
-		echo "$SECTION: $RCOUNT/$UCOUNT"
+		echo "$SECTION: $RCOUNT/$ECOUNT/$UCOUNT"
 		if [ -s $LOGS ]; then
 			ls -dtl $(cat $LOGS)
 			ln -f $(cat $LOGS) recycle/
+		fi
+		if [ -s $EXPIRED ]; then
+			ls -dtl $(cat $EXPIRED)
+			rm -fv $(cat $EXPIRED)
 		fi
 		if [ -s $OBSOLETE ]; then
 			rm -fv $(cat $OBSOLETE)
@@ -120,10 +147,14 @@ for SECTION in $SECTIONS ; do
 done
 rm $LOGS
 rm $OBSOLETE
+rm $EXPIRED
 rm $UNSORTED
 
 if [ "$TOTAL" -gt "0" ]; then
 	echo "Rescheduled $TOTAL logs."
+fi
+if [ "$TOTAL_EXPIRED" -gt "0" ]; then
+	echo "Deleted $TOTAL_EXPIRED expired logs."
 fi
 if [ "$UNSCHEDULE" -gt "0" ]; then
 	echo "Cancelled $UNSCHEDULE outdated rescheduling requests."
