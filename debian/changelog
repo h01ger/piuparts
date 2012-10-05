@@ -24,7 +24,7 @@ piuparts (0.48) UNRELEASED; urgency=low
   * piuparts-slave.py:
     - Retry sections with higher precedence more often.
     - Construct the piuparts command line from the new config options
-      piuparts-command and piuparts-flags.
+      piuparts-command, piuparts-flags, and tmpdir.
   * piuparts-report.py:
     - Don't hardcode section names, always show all known_problem reports.
   * detect_piuparts_issues: Catch the chroot running out of space.

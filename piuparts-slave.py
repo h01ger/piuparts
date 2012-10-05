@@ -80,6 +80,7 @@ class Config(piupartslib.conf.Config):
                 "mirror": None,
                 "piuparts-command": "sudo piuparts",
                 "piuparts-flags": "",
+                "tmpdir": "/tmp/piuparts",
                 "distro": None,
                 "area": None,
                 "chroot-tgz": None,
@@ -656,6 +657,8 @@ def test_package(config, package, packages_files):
         base_command.extend(config["piuparts-flags"].split())
     if config["mirror"]:
         base_command.extend(["--mirror", config["mirror"]])
+    if config["tmpdir"]:
+        base_command.extend(["--tmpdir", config["tmpdir"]])
 
     ret = 0
     if config["chroot-tgz"]:
@@ -721,6 +724,8 @@ def create_chroot(config, tarball, distro):
         command.extend(config["piuparts-flags"].split())
     if config["mirror"]:
         command.extend(["--mirror", config["mirror"]])
+    if config["tmpdir"]:
+        command.extend(["--tmpdir", config["tmpdir"]])
     command.extend(["-d", distro])
     command.extend(["-s", tarball + ".new"])
     command.extend(["--apt", "dpkg"])
