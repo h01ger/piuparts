@@ -17,6 +17,8 @@ piuparts (0.48) UNRELEASED; urgency=low
     - Split and rename piuparts-cmd into piuparts-command ([global] setting
       that should include all common flags) and piuparts-flags (for additional
       section-specific flags).
+    - Rename the tempdir setting to tmpdir, this will be used for the --tmpdir
+      argument of piuparts, too.
   * piuparts-master.py:
     - Enable recycling before initializing the real package db.
     - Enable logging by default and set default log-file to

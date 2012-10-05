@@ -468,6 +468,8 @@ section, too, and will serve as defaults for all other sections
 
 * "piuparts-flags" are appended to "piuparts-command" and should contain the section-specific flags.
 
+* "tmpdir" is the scratch area where piuparts will create the chroots. Note: the filesystem where this is located may not be mounted with the nodev or nosuid options. The default is "/tmp/piuparts". The scripts that are monitoring this directory for leftover mountpoints and chroots only evaluate the [global] setting.
+
 * "mirror" tells the slave which mirror it is to use. The slave gives this to piuparts when it runs it. The URLs for Packages and Sources files will be generated from this setting, too. Default (for fetching Packages/Sources): "http://cdn.debian.net/debian".
 
 * "distro" is the distribution the slave should tell piuparts to use for basic install/purge testing. No default.
@@ -503,8 +505,6 @@ values are set in the scripts.
 * "prefix" (global) sets the prefix of the piuparts installation, e.g. for finding $prefix/share/piuparts/ .
 
 * "urlbase" (global) is the base url of the webserver serving this piuparts instance. Used to provide links to logfiles in email reports.
-
-* "tempdir" (global) is the temporary directory to be monitored for leftover mountpoints and chroots.
 
 * "reschedule-untestable-days" (global) sets the rescheduling delay for untestable packages (e.g. due to unsatisfied dependencies).
 
