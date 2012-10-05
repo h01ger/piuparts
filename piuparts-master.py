@@ -148,13 +148,13 @@ class Master(Protocol):
         self._package_databases = {}
         self._load_package_database(self._section)
         self._binary_db = self._package_databases[self._section]
-        if self._recycle_mode:
-            self._binary_db.enable_recycling()
 
     def _load_package_database(self, section):
         config = Config(section=section, defaults_section="global")
         config.read(CONFIG_FILE)
         db = piupartslib.packagesdb.PackagesDB(prefix=section)
+        if self._recycle_mode and self._section == section:
+            db.enable_recycling()
         self._package_databases[section] = db
         logging.info("Fetching %s" % config.get_packages_url())
         packages_file = piupartslib.open_packages_url(config.get_packages_url())
