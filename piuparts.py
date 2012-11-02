@@ -2296,20 +2296,19 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     os.environ["PIUPARTS_PHASE"] = "install"
 
+    distupgrade_packages = packages
     known_packages = chroot.get_known_packages(packages + settings.extra_old_packages)
     chroot.install_packages_by_name(known_packages)
 
     if settings.install_remove_install:
         chroot.remove_packages(packages)
+        distupgrade_packages = []
 
     chroot.check_for_no_processes()
 
     os.environ["PIUPARTS_PHASE"] = "distupgrade"
 
-    if not settings.install_remove_install:
-        chroot.upgrade_to_distros(settings.debian_distros[1:], packages)
-    else:
-        chroot.upgrade_to_distros(settings.debian_distros[1:], [])
+    chroot.upgrade_to_distros(settings.debian_distros[1:], distupgrade_packages)
 
     chroot.check_for_no_processes()
 
