@@ -1783,6 +1783,32 @@ def objects_are_different(pair1, pair2):
         return m1.st_size != m2.st_size # or m1.st_mtime != m2.st_mtime
     return False
 
+def format_object_attributes(pair):
+    (st, target) = pair
+    ft = ""
+    if stat.S_ISDIR(st.st_mode):
+        ft += "d"
+    if stat.S_ISCHR(st.st_mode):
+        ft += "c"
+    if stat.S_ISBLK(st.st_mode):
+        ft += "b"
+    if stat.S_ISREG(st.st_mode):
+        ft += "-"
+    if stat.S_ISFIFO(st.st_mode):
+        ft += "p"
+    if stat.S_ISLNK(st.st_mode):
+        ft += "l"
+    if stat.S_ISSOCK(st.st_mode):
+        ft += "s"
+    res = "(%d, %d, %s %o, %d, %s)" % (
+            st.st_uid,
+            st.st_gid,
+            ft,
+            st.st_mode,
+            st.st_size,
+            target)
+    return res
+
 
 def diff_meta_data(tree1, tree2):
     """Compare two dir trees and return list of new files (only in 'tree2'),
@@ -1812,6 +1838,8 @@ def diff_meta_data(tree1, tree2):
     for name in tree1.keys()[:]:
         if name in tree2:
             if objects_are_different(tree1[name], tree2[name]):
+                logging.debug("Modified(uid, gid, mode, size, target): %s %s != %s" % \
+                        (name, format_object_attributes(tree1[name]), format_object_attributes(tree2[name])))
                 modified.append((name, tree1[name]))
             del tree1[name]
             del tree2[name]
