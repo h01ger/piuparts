@@ -6,6 +6,7 @@ piuparts (0.48) UNRELEASED; urgency=low
     - Enable recycling before initializing the real package db.
   * piuparts-slave.py:
   * piuparts-report.py:
+  * detect_piuparts_issues: Catch the chroot running out of space.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Sat, 29 Sep 2012 14:42:10 +0200
 
