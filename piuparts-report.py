@@ -346,6 +346,7 @@ linktarget_by_template = [
     ("owned_files_after_purge_issue.tpl", "but logfile contains owned files existing after purge"),
     ("unowned_files_after_purge_issue.tpl", "but logfile contains unowned files after purge"),
     ("maintainer_script_issue.tpl", "but logfile contains maintainer script failures"),
+    ("installs_over_symlink_issue.tpl", "but package installs something over existing symlinks"),
     ("broken_symlinks_issue.tpl", "but logfile contains 'broken symlinks'"),
     ("packages_have_been_kept_back_issue.tpl", "but logfile contains 'packages have been kept back'"),
 
@@ -376,6 +377,7 @@ linktarget_by_template = [
     ("unknown_purge_error.tpl", "due to purge failed due to an unknown reason"),
     ("cron_error_after_removal_error.tpl", "due to errors from cronjob after removal"),
     ("logrotate_error_after_removal_error.tpl", "due to errors from logrotate after removal"),
+    ("installs_over_symlink_error.tpl", "...and package installs something over existing symlinks"),
     ("broken_symlinks_error.tpl", "...and logfile also contains 'broken symlinks'"),
     ("unknown_failures.tpl", "due to unclassified failures"),
 ]
