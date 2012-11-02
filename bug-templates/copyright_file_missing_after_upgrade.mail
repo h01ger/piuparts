@@ -1,0 +1,28 @@
+To: submit@bugs.debian.org
+Subject: copyright file missing after upgrade (policy 12.5)
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+a test with piuparts revealed that your package misses the copyright
+file after an upgrade from squeeze to wheezy, which is a violation of
+Policy 12.5:
+http://www.debian.org/doc/debian-policy/ch-docs.html#s-copyrightfile
+
+After the upgrade /usr/share/doc/$PACKAGE/ is just an empty directory.
+
+From the attached log (scroll to the bottom...):
+(from 'ls -lad /u/s/d/$PKG' and 'ls -la /u/s/d/$PKG/')
+
+
+
+Additional info may be available here:
+http://wiki.debian.org/MissingCopyrightFile
+
+
+cheers,
