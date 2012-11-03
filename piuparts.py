@@ -1959,9 +1959,18 @@ def get_package_names_from_package_files(package_files):
     vlist = []
     for filename in package_files:
         (status, output) = run(["dpkg", "--info", filename])
+        p = None
+        v = None
         for line in [line.lstrip() for line in output.split("\n")]:
-            if line[:len("Package:")] == "Package:":
-                vlist.append(line.split(":", 1)[1].strip())
+            if line.startswith("Package:"):
+                p = line.split(":", 1)[1].strip()
+            if line.startswith("Version:"):
+                v = line.split(":", 1)[1].strip()
+        if p is not None:
+            if v is not None:
+                vlist.append(p + "=" + v)
+            else:
+                vlist.append(p)
     return vlist
 
 # Method to process a changes file, returning a list of all the .deb packages
