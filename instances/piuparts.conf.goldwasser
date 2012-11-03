@@ -39,6 +39,7 @@ piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --wa
 upgrade-test-distros = testing sid
 upgrade-test-chroot-tgz = testing.tar.gz
 max-reserved = 50
+reschedule-old-count = 0
 log-file = testing2sid.log
 
 
@@ -48,7 +49,7 @@ piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --wa
 distro = wheezy
 chroot-tgz = wheezy.tar.gz
 max-reserved = 50
-auto-reschedule = no
+reschedule-old-count = 0
 log-file = wheezy.log
 
 
@@ -58,6 +59,6 @@ piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --wa
 upgrade-test-distros = squeeze wheezy
 upgrade-test-chroot-tgz = squeeze.tar.gz
 max-reserved = 50
-auto-reschedule = no
+reschedule-old-count = 0
 log-file = squeeze2wheezy.log
 

@@ -46,7 +46,7 @@ description = Debian main: package installation in sid and dist-upgrade to testi
 piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 upgrade-test-distros = testing sid
 upgrade-test-chroot-tgz = testing.tar.gz
-auto-reschedule = no
+reschedule-old-count = 0
 max-reserved = 100
 log-file = testing2sid.log
 
@@ -78,7 +78,7 @@ piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --wa
 distro = squeeze
 chroot-tgz = squeeze.tar.gz
 max-reserved = 50
-auto-reschedule = no
+reschedule-old-count = 0
 log-file = squeeze.log
 
 
