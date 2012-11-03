@@ -462,7 +462,7 @@ section, too, and will serve as defaults for all other sections
 
 * "min-tgz-retry-delay" is used to specify the minimum time (in seconds) between attempts to recreate a tarball which was created more than "max-tgz-age" seconds ago. The default is 21600 seconds, which is 6h.
 
-* "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "/dev/null", that is, log messages are not put in a file.
+* "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "$SECTION/master.log". To disable logging, set it to "/dev/null".
 
 * "piuparts-cmd" is the command the slave uses to start piuparts. It should include 'sudo' if necessary so that piuparts runs with sufficient priviledges to do its testing (and that means root priviledges).
 

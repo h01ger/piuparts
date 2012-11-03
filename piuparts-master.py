@@ -294,12 +294,13 @@ def main():
         config = Config(section=section, defaults_section="global")
         config.read(CONFIG_FILE)
 
-        setup_logging(logging.DEBUG, config["log-file"])
-
         if not os.path.exists(os.path.join(master_directory, section)):
             os.makedirs(os.path.join(master_directory, section))
 
         os.chdir(master_directory)
+
+        logfile = config["log-file"] or os.path.join(section, "master.log")
+        setup_logging(logging.DEBUG, logfile)
 
         lock = open(os.path.join(section, "master.lock"), "we")
         try:

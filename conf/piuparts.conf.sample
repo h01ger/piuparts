@@ -39,7 +39,6 @@ upgrade-test-distros =
 upgrade-test-chroot-tgz =
 max-reserved = 50
 debug = no
-log-file = sid-master.log
 
 
 ## another example:

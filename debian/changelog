@@ -13,6 +13,8 @@ piuparts (0.48) UNRELEASED; urgency=low
     - Add --install-recommends option, disabled by default.
   * piuparts-master.py:
     - Enable recycling before initializing the real package db.
+    - Enable logging by default and set default log-file to
+      $SECTION/master.log. Use "/dev/null" to disable logging.
   * piuparts-slave.py:
   * piuparts-report.py:
   * detect_piuparts_issues: Catch the chroot running out of space.
