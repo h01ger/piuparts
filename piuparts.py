@@ -1109,6 +1109,23 @@ class Chroot:
 
             remove_files([self.relative(name) for name in tmp_files])
 
+    def install_packages_by_name(self, packages):
+        if packages:
+            self.run_scripts("pre_install")
+
+            self.run(["apt-cache", "policy"])
+            self.run(["apt-cache", "policy"] + [p.split("=", 1)[0].strip() for p in packages])
+
+            if settings.list_installed_files:
+                pre_info = self.save_meta_data()
+                self.run(["apt-get", "-y", "install"] + packages)
+                self.list_installed_files (pre_info, self.save_meta_data())
+            else:
+                self.run(["apt-get", "-y", "install"] + packages)
+
+            self.run_scripts("post_install")
+
+
     def get_selections(self):
         """Get current package selections in a chroot."""
         (status, output) = self.run(["dpkg", "--get-selections", "*"])
@@ -1278,22 +1295,6 @@ class Chroot:
                         vdict[pathname] = [pkg]
                 f.close()
         return vdict
-
-    def install_packages_by_name(self, packages):
-        if packages:
-            self.run_scripts("pre_install")
-
-            self.run(["apt-cache", "policy"])
-            self.run(["apt-cache", "policy"] + [p.split("=", 1)[0].strip() for p in packages])
-
-            if settings.list_installed_files:
-                pre_info = self.save_meta_data()
-                self.run(["apt-get", "-y", "install"] + packages)
-                self.list_installed_files (pre_info, self.save_meta_data())
-            else:
-                self.run(["apt-get", "-y", "install"] + packages)
-
-            self.run_scripts("post_install")
 
 
     def check_for_no_processes(self):
