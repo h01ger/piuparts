@@ -78,7 +78,7 @@ piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --wa
 distro = squeeze
 chroot-tgz = squeeze.tar.gz
 max-reserved = 50
-reschedule-old-count = 0
+reschedule-old-count = 50
 log-file = squeeze.log
 
 
