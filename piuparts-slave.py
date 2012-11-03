@@ -378,12 +378,10 @@ class Section:
         return max(self._error_wait_until, self._idle_wait_until)
 
 
-    def run(self, precedence=None, recycle=False):
+    def run(self, do_processing=True, recycle=False):
         if time.time() < self.sleep_until(recycle=recycle):
             return 0
 
-        do_processing = not got_sighup and \
-                (precedence is None or self.precedence() <= precedence)
         if not do_processing and self._count_submittable_logs() == 0:
             return 0
 
@@ -425,7 +423,11 @@ class Section:
                             if recycle:
                                 self._recycle_wait_until = self._idle_wait_until + 3600
                         else:
-                            return self._process()
+                            processed = self._process()
+                            # put this section at the end of the round-robin runnable queue
+                            self._idle_wait_until = time.time()
+                            self._recycle_wait_until = time.time()
+                            return processed
             finally:
                 os.chdir(oldcwd)
         return 0
@@ -471,6 +473,7 @@ class Section:
                     max_reserved = int(self._config["max-reserved"])
                     idle = self._slave.get_idle()
                     if idle > 0:
+                        idle = min(idle, int(self._config["idle-sleep"]))
                         logging.info("idle (%d)" % idle)
                         if not recycle:
                             self._idle_wait_until = time.time() + idle
@@ -540,7 +543,6 @@ class Section:
             self._slave.forget_reserved(package_name, version)
             if interrupted:
                 break
-        self._recycle_wait_until = time.time()
         self._talk_to_master(unreserve=interrupted)
         if interrupted:
             raise KeyboardInterrupt
@@ -792,16 +794,12 @@ def main():
                 for section_name in section_names]
 
     while True:
-        test_count = 0
-        precedence = None
-
-        for section in sorted(sections, key=lambda section: section.precedence()):
-            processed = section.run(precedence=precedence)
-            if processed > 0:
-                test_count += processed
-                precedence = section.precedence()
-
         global got_sighup
+        test_count = 0
+
+        for section in sorted(sections, key=lambda section: (section.precedence(), section.sleep_until())):
+            test_count += section.run(do_processing=(test_count == 0 and not got_sighup))
+
         if test_count == 0 and got_sighup:
             # clear SIGHUP state after flushing all sections
             got_sighup = False

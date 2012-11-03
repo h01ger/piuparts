@@ -19,6 +19,7 @@ piuparts (0.48) UNRELEASED; urgency=low
     - Enable logging by default and set default log-file to
       $SECTION/master.log. Use "/dev/null" to disable logging.
   * piuparts-slave.py:
+    - Retry sections with higher precedence more often.
   * piuparts-report.py:
   * detect_piuparts_issues: Catch the chroot running out of space.
   * reschedule_oldest_logs: Implement logfile expiration. Delete logfiles that
