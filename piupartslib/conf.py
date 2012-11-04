@@ -68,6 +68,13 @@ class Config(UserDict.UserDict):
                 return distros[-1]
         return None
 
+    def get_final_distro(self):
+        if self["upgrade-test-distros"] is not None:
+            distros = self["upgrade-test-distros"].split()
+            if distros:
+                return distros[-1]
+        return self.get_distro()
+
     def get_area(self):
         if self["area"] is not None:
             return self["area"]
