@@ -2076,6 +2076,8 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
        Assume 'root' is a directory already populated with a working
        chroot, with packages in states given by 'selections'."""
 
+    deps_info = None
+
     os.environ["PIUPARTS_TEST"] = "install"
     chroot.run_scripts("pre_test")
 
@@ -2135,8 +2137,9 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
             chroot_state_with_deps["tree"] = deps_info
             chroot_state_with_deps["selections"] = chroot.get_selections()
             chroot_state_with_deps["diversions"] = chroot.get_diversions()
-    else:
-        deps_info = None
+
+    chroot.check_for_no_processes()
+    chroot.check_for_broken_symlinks()
 
     chroot.install_packages(package_files, packages)
 
@@ -2180,6 +2183,7 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
 
     # First install via apt-get.
     os.environ["PIUPARTS_PHASE"] = "install"
+
     chroot.install_packages_by_name(old_packages)
 
     chroot.check_for_no_processes()
@@ -2190,6 +2194,7 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
 
     # Then from the package files.
     os.environ["PIUPARTS_PHASE"] = "upgrade"
+
     chroot.install_packages(package_files, packages)
 
     chroot.check_for_no_processes()
@@ -2324,10 +2329,12 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     file_owners = chroot.get_files_owned_by_packages()
 
+    # Remove all packages from the chroot that weren't in the reference chroot.
     chroot.restore_selections(chroot_state["selections"], packages)
-    result = check_results(chroot, chroot_state, file_owners)
 
     chroot.check_for_no_processes()
+
+    result = check_results(chroot, chroot_state, file_owners)
 
     chroot.remove()
 
