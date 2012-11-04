@@ -635,9 +635,12 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
 def test_package(config, package, packages_files):
     global old_sigint_handler
     old_sigint_handler = signal(SIGINT, sigint_handler)
-    logging.info("Testing package %s/%s %s" % (config.section, package["Package"], package["Version"]))
 
-    output_name = log_name(package["Package"], package["Version"])
+    pname = package["Package"]
+    pvers = package["Version"]
+    logging.info("Testing package %s/%s %s" % (config.section, pname, pvers))
+
+    output_name = log_name(pname, pvers)
     logging.debug("Opening log file %s" % output_name)
     new_name = os.path.join("new", output_name)
     output = file(new_name, "we")
@@ -659,7 +662,7 @@ def test_package(config, package, packages_files):
         command.append("--no-upgrade-test")
         if config["keep-sources-list"] in ["yes", "true"]:
             command.append("--keep-sources-list")
-        command.extend(["--apt", "%s=%s" % (package["Package"], package["Version"])])
+        command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
         output.write("Executing: %s\n" % " ".join(command))
         ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
@@ -678,7 +681,7 @@ def test_package(config, package, packages_files):
         command.extend(["-b", config["upgrade-test-chroot-tgz"]])
         for distro in config["upgrade-test-distros"].split():
             command.extend(["-d", distro])
-        command.extend(["--apt", "%s=%s" % (package["Package"], package["Version"])])
+        command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
         output.write("Executing: %s\n" % " ".join(command))
         ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
