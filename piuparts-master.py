@@ -161,6 +161,18 @@ class Master(Protocol):
         packages_file = piupartslib.open_packages_url(packages_url)
         db.read_packages_file(packages_file)
         packages_file.close()
+        if config.get_distro() != config.get_final_distro():
+            # take version numbers (or None) from final distro
+            packages_url = config.get_packages_url(distro=config.get_final_distro())
+            logging.info("Fetching %s" % packages_url)
+            packages_file = piupartslib.open_packages_url(packages_url)
+            db2 = piupartslib.packagesdb.PackagesFile(packages_file)
+            packages_file.close()
+            for package in db.get_all_packages().values():
+                if package["Package"] in db2:
+                    package["Version"] = db2[package["Package"]]["Version"]
+                else:
+                    package["Version"] = "None"
 
     def _clear_idle(self):
         if not self._idle_mode is False:

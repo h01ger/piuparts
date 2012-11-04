@@ -1,6 +1,11 @@
 piuparts (0.49) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
+  * Add support for dist-upgrade tests of "disappearing" packages:
+    - master/report: Get candidate packages from distro in the "distro"
+      setting in piuparts.conf and (target) versions to test from last distro
+      entry in "upgrade-test-distros". In case a package no longer exists, use
+      a pseudo-version "None".  (Closes: #656438)
   * piuparts.py:
     - Do not try to install unavailable packages (pseudo-version None) after
       dist-upgrade.
