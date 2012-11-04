@@ -2816,7 +2816,7 @@ def main():
     logging.info("FAQ available at http://wiki.debian.org/piuparts/FAQ")
     logging.info("-" * 78)
     logging.info("piuparts version %s starting up." % VERSION)
-    logging.info("Command line arguments: %s" % " ".join(sys.argv))
+    logging.info("Command line arguments: '%s'" % "' '".join(sys.argv))
     logging.info("Running on: %s %s %s %s %s" % os.uname())
 
     # Make sure debconf does not ask questions and stop everything.
