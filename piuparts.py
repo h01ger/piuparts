@@ -2316,9 +2316,6 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     os.environ["PIUPARTS_PHASE"] = "upgrade"
 
-    if settings.install_remove_install:
-        chroot.install_packages_by_name(packages)
-
     chroot.install_packages(package_files, packages_qualified)
 
     chroot.check_for_no_processes()
