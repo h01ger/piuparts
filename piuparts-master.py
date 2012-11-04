@@ -156,8 +156,9 @@ class Master(Protocol):
         if self._recycle_mode and self._section == section:
             db.enable_recycling()
         self._package_databases[section] = db
-        logging.info("Fetching %s" % config.get_packages_url())
-        packages_file = piupartslib.open_packages_url(config.get_packages_url())
+        packages_url = config.get_packages_url()
+        logging.info("Fetching %s" % packages_url)
+        packages_file = piupartslib.open_packages_url(packages_url)
         db.read_packages_file(packages_file)
         packages_file.close()
 
