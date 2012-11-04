@@ -26,7 +26,6 @@ idle-sleep = 86400
 
 [sid]
 description = Debian sid / main: package installation, removal and purge test.
-piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp --scriptsdir /etc/piuparts/scripts-leftovers
 piuparts-flags = --scriptsdir /etc/piuparts/scripts-leftovers
 distro = sid
 chroot-tgz = sid.tar.gz
@@ -38,7 +37,6 @@ log-file = sid.log
 
 [testing2sid]
 description = Debian main: package installation in testing and dist-upgrade to sid, then removal and purge test.
-piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 piuparts-flags = --warn-on-leftovers-after-purge
 upgrade-test-distros = testing sid
 upgrade-test-chroot-tgz = testing.tar.gz
@@ -49,7 +47,6 @@ log-file = testing2sid.log
 
 [wheezy]
 description = Debian wheezy / main: package installation, removal and purge test.
-piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 piuparts-flags = --warn-on-leftovers-after-purge
 distro = wheezy
 chroot-tgz = wheezy.tar.gz
@@ -60,7 +57,6 @@ log-file = wheezy.log
 
 [squeeze2wheezy]
 description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
-piuparts-cmd = sudo /org/piuparts.debian.org/sbin/piuparts --warn-on-others --warn-on-leftovers-after-purge --skip-logrotatefiles-test --no-eatmydata --dpkg-noforce-unsafe-io --scriptsdir /etc/piuparts/scripts/ --tmpdir /org/piuparts.debian.org/tmp
 piuparts-flags = --warn-on-leftovers-after-purge --no-eatmydata --dpkg-noforce-unsafe-io
 upgrade-test-distros = squeeze wheezy
 upgrade-test-chroot-tgz = squeeze.tar.gz
