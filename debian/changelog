@@ -21,6 +21,7 @@ piuparts (0.48) UNRELEASED; urgency=low
   * piuparts-slave.py:
     - Retry sections with higher precedence more often.
   * piuparts-report.py:
+    - Don't hardcode section names, always show all known_problem reports.
   * detect_piuparts_issues: Catch the chroot running out of space.
   * reschedule_oldest_logs: Implement logfile expiration. Delete logfiles that
     are marked for recycling and are older than expire-{old,fail}-days. These
