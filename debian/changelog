@@ -12,7 +12,8 @@ piuparts (0.48) UNRELEASED; urgency=low
       in --install-purge-install mode.
     - Add --install-recommends option, disabled by default.
   * piuparts.conf:
-    - New per section settings: expire-old-days, expire-fail-days.
+    - New per section settings: expire-old-days, expire-fail-days (defaulting
+      to 0 which means expiration is disabled).
   * piuparts-master.py:
     - Enable recycling before initializing the real package db.
     - Enable logging by default and set default log-file to
@@ -21,8 +22,10 @@ piuparts (0.48) UNRELEASED; urgency=low
   * piuparts-report.py:
   * detect_piuparts_issues: Catch the chroot running out of space.
   * reschedule_oldest_logs: Implement logfile expiration. Delete logfiles that
-    are marked for recycling and are older than expire-{old,fail}-days. This
-    will put the package into dependency-failed-testing or similar state.
+    are marked for recycling and are older than expire-{old,fail}-days. These
+    packages have not been retested because of some dependency problem making
+    the package currently untestable. Deleting the log will cause the package
+    to be moved to dependency-failed-testing or similar state.
     expire-*-days needs to be greater than reschedule-*-days to enable this.
   * New bug template: copyright_file_missing_after_upgrade.
   * New known problem: Installing something over existing symlinks.
@@ -37,7 +40,8 @@ piuparts (0.47) unstable; urgency=low
       + /var/log/dbconfig-common/dbc.log
     - Print a final message before terminating in the panic() handler.
     - Add support for running debsums before package removal, enabled by
-      default. May be disabled via --no-debsums. Add debsums as dependency.
+      default. May be disabled via --no-debsums.  (Closes: #687538)
+    - Add debsums as dependency.
   * piuparts-slave.py:
     - Detect incomplete piuparts output and ensure such tests fail.
   * piuparts-report.py:
