@@ -580,13 +580,13 @@ class Section:
         self._doc_root = doc_root
 
         logging.debug("Loading and parsing Packages file")
-        logging.info("Fetching %s" % self._config.get_packages_url())
-        packages_file = piupartslib.open_packages_url(self._config.get_packages_url())
-        self._binary_db = piupartslib.packagesdb.PackagesDB(prefix=self._master_directory)
-        self._binary_db.read_packages_file(packages_file)
+        oldcwd = os.getcwd()
+        os.chdir(master_directory)
+        self._package_databases = {}
+        self._load_package_database(section)
+        self._binary_db = self._package_databases[section]
         self._binary_db.calc_rrdep_counts()
-
-        packages_file.close()
+        os.chdir(oldcwd)
 
         logging.info("Fetching %s" % self._config.get_sources_url())
         sources_file = piupartslib.open_packages_url(self._config.get_sources_url())
@@ -595,6 +595,17 @@ class Section:
         sources_file.close()
 
         self._log_name_cache = {}
+
+    def _load_package_database(self, section):
+        config = Config(section=section, defaults_section="global")
+        config.read(CONFIG_FILE)
+        db = piupartslib.packagesdb.PackagesDB(prefix=section)
+        self._package_databases[section] = db
+        packages_url = config.get_packages_url()
+        logging.info("Fetching %s" % packages_url)
+        packages_file = piupartslib.open_packages_url(packages_url)
+        db.read_packages_file(packages_file)
+        packages_file.close()
 
     def write_log_list_page(self, filename, title, preface, logs):
         packages = {}
