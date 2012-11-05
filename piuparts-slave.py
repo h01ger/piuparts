@@ -677,6 +677,10 @@ def test_package(config, pname, pvers, packages_files):
             # and (usually) in the target distro
             distro = distros[-1]
             if not pname in packages_files[distro]:
+                # the package may "disappear" in the distupgrade target distro
+                if pvers == "None":
+                    pass
+                else:
                     output.write("Package %s not found in %s\n" % (pname, distro))
                     ret = -10004
             else:
