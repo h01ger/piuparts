@@ -516,10 +516,6 @@ class Section:
                     logging.error("failed to fetch packages file for %s" % distro)
                     self._error_wait_until = time.time() + 900
                     return 0
-        if self._config["distro"]:
-            packages_file = packages_files[self._config["distro"]]
-        else:
-            packages_file = packages_files[distro]
 
         test_count = 0
         self._check_tarball()
@@ -527,21 +523,7 @@ class Section:
             if got_sighup:
                 break
             test_count += 1
-            if package_name in packages_file:
-                package = packages_file[package_name]
-                if version == package["Version"]:
-                    test_package(self._config, package_name, version, packages_files, package)
-                else:
-                    logging.info("Cannot test %s/%s %s" % (self._config.section, package_name, version))
-                    create_file(os.path.join("untestable",
-                                log_name(package_name, version)),
-                                "%s %s not found, %s is available\n" \
-                                    % (package_name, version, package["Version"]))
-            else:
-                logging.info("Cannot test %s/%s %s" % (self._config.section, package_name, version))
-                create_file(os.path.join("untestable",
-                            log_name(package_name, version)),
-                            "Package %s not found\n" % package_name)
+            test_package(self._config, package_name, version, packages_files)
             self._slave.forget_reserved(package_name, version)
             if interrupted:
                 break
@@ -620,7 +602,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
     return p.returncode,stdout
 
 
-def test_package(config, pname, pvers, packages_files, package):
+def test_package(config, pname, pvers, packages_files):
     global old_sigint_handler
     old_sigint_handler = signal(SIGINT, sigint_handler)
 
@@ -632,9 +614,6 @@ def test_package(config, pname, pvers, packages_files, package):
     output = file(new_name, "we")
     output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n",
                                time.gmtime()))
-    output.write("\n")
-    package.dump(output)
-    output.write("\n")
 
     base_command = config["piuparts-command"].split()
     if config["piuparts-flags"]:
