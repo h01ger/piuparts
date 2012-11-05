@@ -530,7 +530,7 @@ class Section:
             if package_name in packages_file:
                 package = packages_file[package_name]
                 if version == package["Version"]:
-                    test_package(self._config, package, packages_files)
+                    test_package(self._config, package_name, version, packages_files, package)
                 else:
                     logging.info("Cannot test %s/%s %s" % (self._config.section, package_name, version))
                     create_file(os.path.join("untestable",
@@ -634,12 +634,10 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
     return p.returncode,stdout
 
 
-def test_package(config, package, packages_files):
+def test_package(config, pname, pvers, packages_files, package):
     global old_sigint_handler
     old_sigint_handler = signal(SIGINT, sigint_handler)
 
-    pname = package["Package"]
-    pvers = package["Version"]
     logging.info("Testing package %s/%s %s" % (config.section, pname, pvers))
 
     output_name = log_name(pname, pvers)
@@ -660,8 +658,10 @@ def test_package(config, package, packages_files):
     if config["tmpdir"]:
         base_command.extend(["--tmpdir", config["tmpdir"]])
 
+    subdir = "fail"
     ret = 0
-    if config["chroot-tgz"]:
+
+    if ret == 0 and config["chroot-tgz"]:
         command = base_command[:]
         command.extend(["-b", config["chroot-tgz"]])
         command.extend(["-d", config["distro"]])
@@ -706,9 +706,7 @@ def test_package(config, package, packages_files):
     output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n",
                                time.gmtime()))
     output.close()
-    if ret != 0:
-        subdir = "fail"
-    else:
+    if ret == 0:
         subdir = "pass"
     os.rename(new_name, os.path.join(subdir, output_name))
     logging.debug("Done with %s: %s (%d)" % (output_name, subdir, ret))
