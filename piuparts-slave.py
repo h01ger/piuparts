@@ -555,20 +555,6 @@ def log_name(package, version):
     return "%s_%s.log" % (package, version)
 
 
-def upgrade_testable(config, package, packages_files):
-    if config["upgrade-test-distros"]:
-        distros = config["upgrade-test-distros"].split()
-        if not distros:
-            return False
-
-        for distro in distros:
-            if not package["Package"] in packages_files[distro]:
-                return False
-        return True
-    else:
-        return False
-
-
 def run_test_with_timeout(cmd, maxwait, kill_all=True):
 
     def terminate_subprocess(p, kill_all):
@@ -698,7 +684,39 @@ def test_package(config, pname, pvers, packages_files, package):
             ret += 1024
             output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n");
 
-    if ret == 0 and config["upgrade-test-chroot-tgz"] and upgrade_testable(config, package, packages_files):
+    if ret == 0 and config["upgrade-test-chroot-tgz"]:
+        distros = config["upgrade-test-distros"].split()
+        if distros:
+            # the package must exist in at least one of the older distros
+            for distro in distros[:-1]:
+                if pname in packages_files[distro]:
+                    break
+            else:
+                output.write("Package %s not found in any old distribution\n" % pname)
+                ret = -10003
+
+            # and (usually) in the target distro
+            distro = distros[-1]
+            if not pname in packages_files[distro]:
+                    output.write("Package %s not found in %s\n" % (pname, distro))
+                    ret = -10004
+            else:
+                package = packages_files[distro][pname]
+                if pvers != package["Version"]:
+                    output.write("Package %s %s not found in %s, %s is available\n" % (pname, pvers, distro, package["Version"]))
+                    ret = -10005
+
+            for distro in distros:
+                output.write("\n[%s]\n" % distro)
+                if pname in packages_files[distro]:
+                    packages_files[distro][pname].dump(output)
+            output.write("\n")
+        else:
+            ret = -10010
+        if ret != 0:
+            subdir = "untestable"
+
+    if ret == 0 and config["upgrade-test-chroot-tgz"]:
         command = base_command[:]
         command.extend(["-b", config["upgrade-test-chroot-tgz"]])
         for distro in config["upgrade-test-distros"].split():
