@@ -662,6 +662,22 @@ def test_package(config, pname, pvers, packages_files, package):
     ret = 0
 
     if ret == 0 and config["chroot-tgz"]:
+        distro = config["distro"]
+        if not pname in packages_files[distro]:
+            output.write("Package %s not found in %s\n" % (pname, distro))
+            ret = -10001
+        else:
+            package = packages_files[distro][pname]
+            if pvers != package["Version"]:
+                output.write("Package %s %s not found in %s, %s is available\n" % (pname, pvers, distro, package["Version"]))
+                ret = -10002
+            output.write("\n")
+            package.dump(output)
+            output.write("\n")
+        if ret != 0:
+            subdir = "untestable"
+
+    if ret == 0 and config["chroot-tgz"]:
         command = base_command[:]
         command.extend(["-b", config["chroot-tgz"]])
         command.extend(["-d", config["distro"]])
