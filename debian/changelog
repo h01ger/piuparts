@@ -2,6 +2,8 @@ piuparts (0.49) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Do not try to install unavailable packages (pseudo-version None) after
+      dist-upgrade.
   * piuparts.conf:
   * piuparts-master.py:
   * piuparts-slave.py:
