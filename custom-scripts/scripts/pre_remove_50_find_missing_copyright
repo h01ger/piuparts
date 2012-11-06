@@ -4,13 +4,21 @@ set -e
 failed=
 for pkg in ${PIUPARTS_OBJECTS%%=*}
 do
+	# skip check if the package is not installed
+	dpkg-query -s "$pkg" >/dev/null 2>&1 || continue
+	status="$(dpkg-query -W -f '${Status}' $pkg)"
+	test "$status" != "unknown ok not-installed" || continue
+	test "$status" != "deinstall ok config-files" || continue
+
 	docdir="/usr/share/doc/$pkg"
 	copyright="$docdir/copyright"
 	if [ ! -f "$copyright" ]
 	then
 		failed="$failed $copyright"
 		echo "MISSING COPYRIGHT FILE: $copyright"
+		echo "# ls -lad $docdir"
 		ls -lad "$docdir" || true
+		echo "# ls -la $docdir/"
 		ls -la "$docdir/" || true
 	fi
 done
