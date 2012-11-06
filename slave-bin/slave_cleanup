@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Copyright 2012 Holger Levsen (holger@layer-acht.org)
 #
@@ -21,10 +22,9 @@
 #
 # - this should only be run (automatically) on boot
 #
-set -e
 
 # do nothing if piuparts-slave is running
-if [ "$(ps fax|grep piuparts-slave|grep -v grep)" != "" ] ; then
+if [ "$(ps fax|grep share/piuparts/piuparts-slave|grep -v grep)" != "" ] ; then
 	exit 0
 fi
 
@@ -58,6 +58,11 @@ do
 done
 
 # cleanup tmp
-sudo rm -rf --one-file-system "$PIUPARTS_TMPDIR"
 mkdir -p "$PIUPARTS_TMPDIR"
-
+for dir in $(ls -d1 "$PIUPARTS_TMPDIR"/*/ 2>/dev/null || true)
+do
+	if sudo test -f "$dir/.piuparts.tmpdir"; then
+		sudo rm -rf --one-file-system "$dir"
+		test ! -d "$dir" || sudo touch "$dir/.piuparts.tmpdir"
+	fi
+done

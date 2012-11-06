@@ -38,6 +38,7 @@ piuparts (0.48) UNRELEASED; urgency=low
     the package currently untestable. Deleting the log will cause the package
     to be moved to dependency-failed-testing or similar state.
     expire-*-days needs to be greater than reschedule-*-days to enable this.
+  * slave_cleanup: Only remove directories containing a .piuparts.tmpdir file.
   * New bug template: copyright_file_missing_after_upgrade.
   * New known problem: Installing something over existing symlinks.
 
