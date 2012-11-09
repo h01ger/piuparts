@@ -117,8 +117,8 @@ HTML_HEADER = """
     <tr class="normalrow">
      <td class="contentcell">
       piuparts.d.o configuration:<br>
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob_plain;f=org/piuparts.debian.org/etc/piuparts.conf.piatti" target="_blank">piuparts.conf.piatti</a><br>
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=tree;f=org/piuparts.debian.org/etc/scripts" target="_blank">scripts</a>
+      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob_plain;f=instances/piuparts.conf.piatti" target="_blank">piuparts.conf.piatti</a><br>
+      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=tree;f=custom-scripts" target="_blank">scripts</a>
      </td>
     </tr>
     <tr class="normalrow">
