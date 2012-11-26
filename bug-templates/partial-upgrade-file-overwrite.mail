@@ -1,0 +1,56 @@
+To: submit@bugs.debian.org
+Subject: FOO: missing Breaks+Replaces: BAR (<< VBAR)
+
+Package: FOO
+Version: VFOO
+Severity: serious
+User: treinen@debian.org
+Usertags: edos-file-overwrite
+
+Architecture: amd64
+Distribution: squeeze->wheezy (partial) upgrade
+
+Hi,
+
+automatic installation tests of packages that share a file and at the
+same time do not conflict by their package dependency relationships has
+detected the following problem:
+
+
+This is a serious bug as it makes installation/upgrade fail, and
+violates sections 7.6.1 and 10.1 of the policy.
+
+As this problem can be demonstrated during partial upgrades from squeeze
+to wheezy (but not within squeeze or wheezy itself), this indicates a
+missing or insufficiently versioned Replaces+Breaks relationship.
+But since this particular upgrade ordering is not forbidden by any
+dependency relationship, it is possible that apt (or $PACKAGE_MANAGER)
+will use this erroneus path on squeeze->wheezy upgrades.
+
+Here is a list of files that are known to be shared by both packages
+(according to the Contents files for squeeze and wheezy on amd64, which
+may be slightly out of sync):
+
+
+The following relationships are currently defined:
+
+  Package:
+  Conflicts: n/a
+  Breaks:    n/a
+  Replaces:  n/a
+
+The following relationships should be added for a clean takeover of
+these files
+(http://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces):
+
+  Package:
+  Breaks:
+  Replaces:
+
+
+Cheers,
+
+
+
+PS: for more information about the detection of file overwrite errors
+of this kind see http://edos.debian.net/file-overwrites/.
