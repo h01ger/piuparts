@@ -1,3 +1,15 @@
+piuparts (0.49) UNRELEASED; urgency=low
+
+  [ Andreas Beckmann ]
+  * piuparts.py:
+  * piuparts.conf:
+  * piuparts-master.py:
+  * piuparts-slave.py:
+  * piuparts-report.py:
+  * New bug template: partial-upgrade-file-overwrite.
+
+ -- Andreas Beckmann <debian@abeckmann.de>  Fri, 30 Nov 2012 13:11:25 +0100
+
 piuparts (0.48) unstable; urgency=low
 
   [ Andreas Beckmann ]
