@@ -38,6 +38,7 @@ log-file = sid.log
 [testing2sid]
 description = Debian main: package installation in testing and dist-upgrade to sid, then removal and purge test.
 piuparts-flags = --warn-on-leftovers-after-purge
+distro = testing
 upgrade-test-distros = testing sid
 upgrade-test-chroot-tgz = testing.tar.gz
 max-reserved = 50
@@ -58,6 +59,7 @@ log-file = wheezy.log
 [squeeze2wheezy]
 description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
 piuparts-flags = --warn-on-leftovers-after-purge --no-eatmydata --dpkg-noforce-unsafe-io
+distro = squeeze
 upgrade-test-distros = squeeze wheezy
 upgrade-test-chroot-tgz = squeeze.tar.gz
 max-reserved = 50
