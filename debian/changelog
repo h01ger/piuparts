@@ -1,4 +1,4 @@
-piuparts (0.48) UNRELEASED; urgency=low
+piuparts (0.48) unstable; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -42,7 +42,7 @@ piuparts (0.48) UNRELEASED; urgency=low
   * New bug template: copyright_file_missing_after_upgrade.
   * New known problem: Installing something over existing symlinks.
 
- -- Andreas Beckmann <debian@abeckmann.de>  Sat, 29 Sep 2012 14:42:10 +0200
+ -- Holger Levsen <holger@debian.org>  Fri, 30 Nov 2012 12:12:09 +0100
 
 piuparts (0.47) unstable; urgency=low
 
