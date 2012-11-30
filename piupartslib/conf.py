@@ -54,7 +54,7 @@ class Config(UserDict.UserDict):
             elif key in self._mandatory:
                 raise MissingMandatorySetting(filename, key)
 
-    def get_mirror(self):
+    def get_mirror(self, distro=None):
         if self["mirror"] is not None:
             return self["mirror"]
         return "http://cdn.debian.net/debian"
@@ -92,10 +92,10 @@ class Config(UserDict.UserDict):
         if distro is None:
             distro = self.get_distro()
         return "%s/dists/%s/%s/binary-%s/Packages.bz2" % \
-                (self.get_mirror(), distro, self.get_area(), self.get_arch())
+                (self.get_mirror(distro), distro, self.get_area(), self.get_arch())
 
     def get_sources_url(self):
         return "%s/dists/%s/%s/source/Sources.bz2" % \
-                (self.get_mirror(), self.get_distro(), self.get_area())
+                (self.get_mirror(self.get_distro()), self.get_distro(), self.get_area())
 
 # vi:set et ts=4 sw=4 :
