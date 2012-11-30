@@ -6,6 +6,7 @@ piuparts (0.49) UNRELEASED; urgency=low
   * piuparts-master.py:
   * piuparts-slave.py:
   * piuparts-report.py:
+    - Hardlink the logfiles to the htdocs tree (with copy as fallback).
   * New bug template: partial-upgrade-file-overwrite.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Fri, 30 Nov 2012 13:11:25 +0100

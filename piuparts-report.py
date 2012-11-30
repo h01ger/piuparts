@@ -483,13 +483,20 @@ def update_file(source, target):
         except OSError:
             pass
         else:
-            if aa.st_size == bb.st_size and aa.st_mtime < bb.st_mtime:
+            if aa.st_size == bb.st_size and aa.st_mtime <= bb.st_mtime:
                 return
+        try:
+            os.remove(target)
+        except:
+            pass
     try:
-        shutil.copyfile(source, target)
-    except IOError as (errno, strerror):
-        logging.error("failed to copy %s to %s: I/O error(%d): %s" \
-                       % (source, target, errno, strerror))
+        os.link(source, target)
+    except OSError:
+        try:
+            shutil.copyfile(source, target)
+        except IOError as (errno, strerror):
+            logging.error("failed to copy %s to %s: I/O error(%d): %s" \
+                           % (source, target, errno, strerror))
 
 
 def copy_logs(logs_by_dir, output_dir):
