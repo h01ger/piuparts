@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+#
+# deal with exceptions:
+#
+case ${PIUPARTS_OBJECTS%%=*} in
+	dovecot-core)
+		# #330519 - does not remove certificates on purge
+		log_debug
+		rm -fv /etc/dovecot/dovecot.pem /etc/dovecot/private/dovecot.pem
+		;;
+esac
