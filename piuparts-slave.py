@@ -202,7 +202,7 @@ class Slave:
         ssh_cmdline = "cd %s; %s 2> %s.$$ && rm %s.$$" % \
                       (self._master_directory or ".",
                       self._master_command, log_file, log_file)
-        p = subprocess.Popen(["ssh", user + self._master_host, ssh_cmdline],
+        p = subprocess.Popen(["ssh", "-x", user + self._master_host, ssh_cmdline],
                        stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self._to_master = p.stdin
         self._from_master = p.stdout
