@@ -63,7 +63,7 @@ for 0.49:
 - read PIUPARTS_CONF or piuparts.conf everywhere to allow overriding builtin defaults
 - have all paths etc. configurable in piuparts.conf for simple reconfiguration
 
-- write reportbug(-like) wrapper for mass bug filing (start
+- write reportbug-like wrapper for mass bug filing (start
   simple, make it more sophisticated later).
 
 - rewrite piuparts-analyze to run over all sections and cache BTS responses
