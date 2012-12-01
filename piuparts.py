@@ -1080,19 +1080,20 @@ class Chroot:
             logging.debug("The package did not modify any file.\n")
 
 
-    def install_packages(self, package_files, packages):
+    def install_packages(self, package_files, packages, with_scripts=True):
         if package_files:
-            self.install_package_files(package_files, packages)
+            self.install_package_files(package_files, packages, with_scripts=with_scripts)
         else:
-            self.install_packages_by_name(packages)
+            self.install_packages_by_name(packages, with_scripts=with_scripts)
 
-    def install_package_files(self, package_files, packages = None):
+    def install_package_files(self, package_files, packages=None, with_scripts=False):
         if package_files:
             self.copy_files(package_files, "tmp")
             tmp_files = [os.path.basename(a) for a in package_files]
             tmp_files = [os.path.join("tmp", name) for name in tmp_files]
 
-            self.run_scripts("pre_install")
+            if with_scripts:
+                self.run_scripts("pre_install")
 
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
@@ -1109,13 +1110,15 @@ class Chroot:
 
             logging.info ("Installation of %s ok", tmp_files)
 
-            self.run_scripts("post_install")
+            if with_scripts:
+                self.run_scripts("post_install")
 
             remove_files([self.relative(name) for name in tmp_files])
 
-    def install_packages_by_name(self, packages):
+    def install_packages_by_name(self, packages, with_scripts=True):
         if packages:
-            self.run_scripts("pre_install")
+            if with_scripts:
+                self.run_scripts("pre_install")
 
             self.run(["apt-cache", "policy"])
             self.run(["apt-cache", "policy"] + [p.split("=", 1)[0].strip() for p in packages])
@@ -1127,7 +1130,8 @@ class Chroot:
             else:
                 self.run(["apt-get", "-y", "install"] + packages)
 
-            self.run_scripts("post_install")
+            if with_scripts:
+                self.run_scripts("post_install")
 
 
     def get_selections(self):
