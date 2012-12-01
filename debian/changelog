@@ -32,6 +32,8 @@ piuparts (0.49) UNRELEASED; urgency=low
     - Hardlink the logfiles to the htdocs tree (with copy as fallback).
   * post_setup_squeeze-fake-essential: Restrict fake-essential install-info to
     the 4 packages that actually need this.
+  * New custom script: pre_remove_40_find_obsolete_conffiles, report obsolete
+    conffiles after package upgrades. Suggested by Michael Biebl.
   * pre_remove_50_find_missing_copyright: Skip check for packages that are not
     installed or have only config files remaining.
   * post_remove_cleanup: Cleanup dovecot certificates.

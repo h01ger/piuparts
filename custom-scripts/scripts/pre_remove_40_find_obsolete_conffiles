@@ -1,0 +1,27 @@
+#!/bin/sh
+set -e
+
+for pkg in ${PIUPARTS_OBJECTS%%=*}
+do
+	dpkg-query -W -f='${Conffiles}\n' $pkg | \
+		grep ' obsolete$' | \
+		while read file md5expected obs
+		do
+			info="OBSOLETE CONFFILE $file REGISTERED BY $pkg"
+			query=$(dpkg-query -S $file)
+			owner=${query%: ${file}}
+			if [ "$owner" != "$pkg" ]; then
+				info="${info} OWNER CHANGED TO $owner"
+			fi
+			if [ ! -f "$file" ]; then
+				info="${info} (MISSING)"
+			else
+				md5=$(md5sum "$file" | awk '{ print $1 }')
+				if [ "$md5expected" != "$md5" ]; then
+					info="${info} (MODIFIED)"
+				fi
+			fi
+
+			echo "$info"
+		done
+done
