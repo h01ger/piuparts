@@ -364,7 +364,6 @@ linktarget_by_template = [
     ("disappeared_files_after_purge_error.tpl", "due to files having disappeared after purge"),
     ("diversion_error.tpl", "due to diversions being modified after purge"),
     ("processes_running_error.tpl", "due to leaving processes running behind"),
-    ("excessive_output_error.tpl", "due to being terminated after excessive output"),
     ("resource_violation_error.tpl", "due to resource violation"),
     ("conffile_prompt_error.tpl", "due to prompting due to modified conffiles"),
     ("db_setup_error.tpl", "due to failing to setup a database"),
