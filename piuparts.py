@@ -138,6 +138,7 @@ class Settings:
         self.args_are_package_files = True
         # distro setup
         self.debian_mirrors = []
+        self.extra_repos = []
         self.debian_distros = []
         self.keep_sources_list = False
         self.do_not_verify_signatures = False
@@ -901,6 +902,8 @@ class Chroot:
         for mirror, components in settings.debian_mirrors:
             lines.append("deb %s %s %s\n" %
                          (mirror, distro, " ".join(components)))
+        for repo in settings.extra_repos:
+            lines.append(repo + "\n")
         create_file(self.relative("etc/apt/sources.list"),
                     "".join(lines))
 
@@ -2505,6 +2508,11 @@ def parse_command_line():
                       default=[],
                       help="Which Debian mirror to use.")
 
+    parser.add_option("--extra-repo", action="append",
+                      default=[],
+                      help="Additional (unparsed) lines to be appended to sources.list, e.g. " +
+                      "'deb <URL> <distrib> <components>' or 'deb file://</bind/mount> ./'")
+
     parser.add_option("--no-diversions", action="store_true",
                       default=False,
                       help="Don't check for broken diversions.")
@@ -2676,6 +2684,8 @@ def parse_command_line():
     settings.pedantic_purge_test = opts.pedantic_purge_test
     if not settings.pedantic_purge_test:
       settings.ignored_patterns += settings.non_pedantic_ignore_patterns
+
+    settings.extra_repos = opts.extra_repo
 
     log_file_name = opts.log_file
 

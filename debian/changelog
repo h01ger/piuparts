@@ -11,6 +11,10 @@ piuparts (0.49) UNRELEASED; urgency=low
   * piuparts.py:
     - Run custom scripts only once if dependencies are installed via a
       metapackage.
+    - Add --extra-repo=<sources.list line> option for adding extra
+      package sources, e.g. backports, security or local repositories.
+      The argument must be a valid line (including whitespace) that is added
+      to sources.list verbatim. The option may be repeated to add more lines.
   * piuparts.conf:
   * piupartslib/conf.py:
     - Add get_final_distro() method.

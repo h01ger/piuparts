@@ -76,6 +76,13 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   a new one with debootstrap. This is similar to '--basetgz', but the contents
   are not archived.
 
+*--extra-repo*='deb-line'::
+  Provide an additional (unparsed) line to be appended to sources.list, e.g.
+    'deb <URL> <distrib> <components>' or
+    'deb file:// </bind/mount> ./'
+  Useful for e.g. backports, security or local repositories that cannot be
+  handled by '--mirror'. May be repeated to add more than one line.
+
 *-i* 'filename', *--ignore*='filename'::
   Add a filename to the list of filenames to be ignored when comparing changes before and after installation. By default, piuparts ignores files that always change during a package installation and uninstallation, such as *dpkg* status files. The filename should be relative to the root of the chroot (e.g., _var/lib/dpkg/status_). This option can be used as many times as necessary.
 
