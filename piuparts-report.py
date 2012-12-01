@@ -349,6 +349,7 @@ linktarget_by_template = [
     ("installs_over_symlink_issue.tpl", "but package installs something over existing symlinks"),
     ("broken_symlinks_issue.tpl", "but logfile contains 'broken symlinks'"),
     ("packages_have_been_kept_back_issue.tpl", "but logfile contains 'packages have been kept back'"),
+    ("obsolete_conffiles_issue.tpl", "but logfile reports obsolete conffiles"),
 
     ("dependency_error.tpl", "due to unsatisfied dependencies"),
     ("packages_have_been_kept_back_error.tpl", "...and logfile also contains 'packages have been kept back'"),
