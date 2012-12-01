@@ -4,7 +4,8 @@ Notes about the piuparts installation on piatti.debian.org
 == ToDo
 
 - review sudoers and come up with (a bit) more restrictive one
-- there should be a 2nd group of piuparts-people. those who can sudo into piupartsm to process logfiles. maybe make that the qa-group
+- there should be a 2nd group of piuparts-people. those who can sudo into
+  piupartsm to process logfiles. maybe make that the qa-group
 
 == Installation
 
