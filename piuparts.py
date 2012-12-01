@@ -2092,6 +2092,8 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
     # Install packages into the chroot.
     os.environ["PIUPARTS_PHASE"] = "install"
 
+    chroot.run_scripts("pre_install")
+
     if settings.warn_on_others or settings.install_purge_install:
         # Create a metapackage with dependencies from the given packages
         if package_files:
@@ -2127,7 +2129,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
         panic_handler_id = do_on_panic(cleanup_metapackage)
 
         # Install the metapackage
-        chroot.install_package_files([metapackage])
+        chroot.install_package_files([metapackage], with_scripts=False)
         # Now remove it
         metapackagename = os.path.basename(metapackage)[:-4]
         chroot.purge_packages([metapackagename])
@@ -2149,7 +2151,9 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
-    chroot.install_packages(package_files, packages)
+    chroot.install_packages(package_files, packages, with_scripts=False)
+
+    chroot.run_scripts("post_install")
 
     if settings.install_purge_install:
         file_owners = chroot.get_files_owned_by_packages()

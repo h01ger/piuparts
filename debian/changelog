@@ -9,6 +9,8 @@ piuparts (0.49) UNRELEASED; urgency=low
     - slave: Support pseudo-version "None".
     - piuparts: Do not try to install unavailable packages after dist-upgrade.
   * piuparts.py:
+    - Run custom scripts only once if dependencies are installed via a
+      metapackage.
   * piuparts.conf:
   * piupartslib/conf.py:
     - Add get_final_distro() method.
