@@ -77,7 +77,8 @@ Run the following script under *your* user account you will start piuparts-slave
 holger@piatti:~$ sudo /home/piupartss/bin/slave_run
 ----
 
-There are several cronjobs installed via '~piupartsm/crontab' and '~piupartss/crontab') which monitor the slave and the host it's running on.
+There are several cronjobs installed via '~piupartsm/crontab' and
+'~piupartss/crontab') which monitor the slave and the host it's running on.
 
 It's possible to kill the slave any time by pressing Ctrl-C.
 Pressing Ctrl-C once will wait for the current test to finish,
