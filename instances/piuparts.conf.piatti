@@ -67,7 +67,7 @@ log-file = wheezy.log
 [squeeze2wheezy]
 precedence = 3
 description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
-piuparts-flags = --warn-on-leftovers-after-purge --no-eatmydata
+piuparts-flags = --warn-on-leftovers-after-purge --no-eatmydata -i /etc/shells
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
 upgrade-test-chroot-tgz = squeeze.tar.gz
@@ -78,7 +78,7 @@ log-file = squeeze2wheezy.log
 [squeeze]
 precedence = 5
 description = Debian squeeze / main: package installation, removal and purge test.
-piuparts-flags = --warn-on-leftovers-after-purge --no-eatmydata --scriptsdir /etc/piuparts/scripts-squeeze
+piuparts-flags = --warn-on-leftovers-after-purge --no-eatmydata --scriptsdir /etc/piuparts/scripts-squeeze -i /etc/shells
 distro = squeeze
 chroot-tgz = squeeze.tar.gz
 max-reserved = 50
@@ -91,7 +91,7 @@ log-file = squeeze.log
 max-reserved = 0
 precedence = 99
 description = Debian main: package installation in lenny and dist-upgrade to squeeze, then removal and purge test.
-piuparts-flags = --warn-on-leftovers-after-purge --dpkg-noforce-unsafe-io --no-eatmydata --scriptsdir /etc/piuparts/scripts-squeeze
+piuparts-flags = --warn-on-leftovers-after-purge --dpkg-noforce-unsafe-io --no-eatmydata --scriptsdir /etc/piuparts/scripts-squeeze -i /etc/shells
 distro = lenny
 upgrade-test-distros = lenny squeeze
 upgrade-test-chroot-tgz = lenny.tar.gz

@@ -58,7 +58,7 @@ log-file = wheezy.log
 
 [squeeze2wheezy]
 description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
-piuparts-flags = --warn-on-leftovers-after-purge --no-eatmydata --dpkg-noforce-unsafe-io
+piuparts-flags = --warn-on-leftovers-after-purge --no-eatmydata --dpkg-noforce-unsafe-io -i /etc/shells
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
 upgrade-test-chroot-tgz = squeeze.tar.gz
