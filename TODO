@@ -78,9 +78,8 @@ for 0.50:
 - support for extra-packages-url (for backports, security, etc)
 
 - make it possible to call aptitude (or similar) instead of
-  apt-get and allow to override the commandline arguments of the
-  used program (to be able to test with and without recommended
-  packages or authentication).
+  apt-get and allow to override the commandline arguments to be able to test 
+  with and without recommended packages or authentication.
 
 - piuparts-slave: timestamps to log messages
 
