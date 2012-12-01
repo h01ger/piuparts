@@ -380,6 +380,7 @@ linktarget_by_template = [
     ("logrotate_error_after_removal_error.tpl", "due to errors from logrotate after removal"),
     ("installs_over_symlink_error.tpl", "...and package installs something over existing symlinks"),
     ("broken_symlinks_error.tpl", "...and logfile also contains 'broken symlinks'"),
+    ("obsolete_conffiles_error.tpl", "...and logfile reports obsolete conffiles"),
     ("unknown_failures.tpl", "due to unclassified failures"),
 ]
 
