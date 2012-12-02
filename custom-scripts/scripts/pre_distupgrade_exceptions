@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
+
+	# dpkg 1.16 does not like the bad cnews version number cr.g7-40.4
+	# cnews was removed after lenny
+	case ${PIUPARTS_OBJECTS%%=*} in
+		cnews)
+				log_debug
+				dpkg --purge cnews
+				;;
+	esac
+
+fi
