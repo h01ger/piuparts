@@ -107,6 +107,14 @@ if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 				;;
 	esac
 
+	# prefer inn over cnews (bad version number cr.g7-40.4)
+	case ${PIUPARTS_OBJECTS%%=*} in
+		newsx|post-faq)
+				log_debug
+				apt-get -y install inn
+				;;
+	esac
+
 	# allow lenny kernel image installation in chroot
 	for flavor in amd64 openvz-amd64 vserver-amd64 xen-amd64 486 686 686-bigmem openvz-686 vserver-686 vserver-686-bigmem xen-686
 	do
