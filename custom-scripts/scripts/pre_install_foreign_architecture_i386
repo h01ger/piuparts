@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+test "$PIUPARTS_PHASE" = "install" || exit 0
+
+case "$PIUPARTS_DISTRIBUTION" in
+	wheezy|testing|sid|experimental) ;;
+	*) exit 0 ;;
+esac
+
+test "$(dpkg --print-architecture)" = "amd64" || exit 0
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	ia32-libs|ia32-libs-gtk) ;;
+	libwine-unstable|libwine-*-unstable) ;;
+	boinc-nvidia-cuda|teamspeak-client) ;;
+	*) exit 0 ;;
+esac
+
+echo "Enabling foreign architecture i386 for $PIUPARTS_OBJECTS"
+dpkg --add-architecture i386
+apt-get update
