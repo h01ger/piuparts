@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+
+case "$PIUPARTS_DISTRIBUTION" in
+	squeeze) ;;
+	*) exit 0 ;;
+esac
+
+case "$PIUPARTS_DISTRIBUTION_NEXT" in
+	wheezy|testing|sid|experimental) ;;
+	*) exit 0 ;;
+esac
+
+test "$(dpkg --print-architecture)" = "amd64" || exit 0
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	ia32-libs|ia32-libs-gtk) ;;
+	*) exit 0 ;;
+esac
+
+echo "Enabling foreign architecture i386 for $PIUPARTS_OBJECTS"
+apt-get update
+apt-get -y install apt dpkg
+dpkg --add-architecture i386
