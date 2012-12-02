@@ -80,4 +80,7 @@ if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 		echo "linux-image-2.6.26-2-$flavor linux-image-2.6.26-2-$flavor/preinst/lilo-initrd-2.6.26-2-$flavor boolean false"
 	done | debconf-set-selections
 
+	# deterministic /bin/sh on upgrades
+	echo "dash dash/sh boolean true" | debconf-set-selections
+
 fi
