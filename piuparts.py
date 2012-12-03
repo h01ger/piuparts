@@ -2146,7 +2146,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
             # We have package names.  Use apt to get all their control
             # information.
             apt_cache_args = ["apt-cache", "show"]
-            apt_cache_args.extend(packages)
+            apt_cache_args.extend([p.split("=", 1)[0].strip() for p in packages])
             returncode, output = chroot.run(apt_cache_args)
             control_infos = deb822.Deb822.iter_paragraphs(output.splitlines())
 

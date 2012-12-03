@@ -3,6 +3,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   [ Andreas Beckmann ]
   * piuparts.py:
     - Call dpkg-deb with --nocheck to allow bad version numbers.
+    - Pass unqualified package names to apt-cache show for lenny support.
   * piuparts.conf:
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:
