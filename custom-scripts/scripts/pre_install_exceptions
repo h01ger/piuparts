@@ -73,6 +73,40 @@ fi
 
 if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 
+	# install undeclared dependencies
+	case ${PIUPARTS_OBJECTS%%=*} in
+		clamav-getfiles)
+				#603082
+				log_debug
+				apt-get -y install curl
+				;;
+		debian-edu-artwork-usplash)
+				# postinst fails without update-initramfs
+				log_debug
+				apt-get -y install initramfs-tools
+				;;
+		gforge-shell-postgresql|gforge-plugin-scmcvs|gforge-plugin-scmsvn)
+				#604218
+				log_debug
+				apt-get -y install libcap2
+				;;
+		otrs2)
+				#561889
+				log_debug
+				apt-get -y install libapache2-mod-perl2
+				;;
+		tftpd-hpa)
+				#522780
+				log_debug
+				apt-get -y install update-inetd
+				;;
+		ttf-beteckna)
+				#502707
+				log_debug
+				apt-get -y install defoma
+				;;
+	esac
+
 	# allow lenny kernel image installation in chroot
 	for flavor in amd64 openvz-amd64 vserver-amd64 xen-amd64 486 686 686-bigmem openvz-686 vserver-686 vserver-686-bigmem xen-686
 	do
