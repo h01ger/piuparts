@@ -5,6 +5,18 @@ log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
 }
 
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		crm114)
+				#562946
+				log_debug
+				echo "crm114 crm114/forceupgrade boolean true" | debconf-set-selections
+				;;
+	esac
+
+fi
+
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 
 	# dpkg 1.16 does not like the bad cnews version number cr.g7-40.4
