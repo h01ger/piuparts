@@ -189,6 +189,19 @@ Note that file: addresses works if the directories are made accessible from with
 *--skip-logrotatefiles-test*::
   Skip testing the output from the logrotate files left in the system after remove a package.
 
+*--testdebs-repo='deb-line'::
+  Provide an additional (unparsed) line to be appended to sources.list, e.g.
+    'deb <URL> <distrib> <components>' or
+    'deb file:// </bind/mount> ./'
+  The "testdebs" repository provides the packages to be tested (and some
+  additional dependencies, if needed, e.g. all packages built from the same
+  source package as the (binary) package being tested) and can be used for
+  testing complex installation and upgrade scenarios involving dependencies
+  that are not yet in the archive. This repository will be available only
+  for installing the target packages. Dependency resolution will be done by
+  apt-get. The packages to be tested can be passed as .debs or as package
+  names (with '--apt').
+
 *-t directory, --tmpdir*='directory'::
   Use directory as the place where temporary files and directories are created. The default is the environment variable *TMPDIR*, or _/tmp_ if not set.
 +
