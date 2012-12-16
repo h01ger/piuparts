@@ -139,6 +139,7 @@ class Settings:
         # distro setup
         self.debian_mirrors = []
         self.extra_repos = []
+        self.testdebs_repo = None
         self.debian_distros = []
         self.keep_sources_list = False
         self.do_not_verify_signatures = False
@@ -906,6 +907,18 @@ class Chroot:
             lines.append(repo + "\n")
         create_file(self.relative("etc/apt/sources.list"),
                     "".join(lines))
+
+    def enable_testdebs_repo(self, update=True):
+        if settings.testdebs_repo:
+            logging.debug("enabling testdebs repository '%s'" % settings.testdebs_repo)
+            create_file(self.relative("etc/apt/sources.list.d/piuparts-testdebs-repo.list"), settings.testdebs_repo + "\n")
+            if update:
+                self.run(["apt-get", "update"])
+
+    def disable_testdebs_repo(self):
+        if settings.testdebs_repo:
+            logging.debug("disabling testdebs repository")
+            remove_files([self.relative("etc/apt/sources.list.d/piuparts-testdebs-repo.list")])
 
     def create_apt_conf(self):
         """Create /etc/apt/apt.conf.d/piuparts inside the chroot."""
@@ -2522,6 +2535,10 @@ def parse_command_line():
                       help="Additional (unparsed) lines to be appended to sources.list, e.g. " +
                       "'deb <URL> <distrib> <components>' or 'deb file://</bind/mount> ./'")
 
+    parser.add_option("--testdebs-repo",
+                      help="A repository that contains the packages to be tested, e.g. " +
+                      "'deb <URL> <distrib> <components>...' or 'deb file://</bind/mount> ./'")
+
     parser.add_option("--no-diversions", action="store_true",
                       default=False,
                       help="Don't check for broken diversions.")
@@ -2695,6 +2712,7 @@ def parse_command_line():
       settings.ignored_patterns += settings.non_pedantic_ignore_patterns
 
     settings.extra_repos = opts.extra_repo
+    settings.testdebs_repo = opts.testdebs_repo
 
     log_file_name = opts.log_file
 
