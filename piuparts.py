@@ -1103,6 +1103,9 @@ class Chroot:
             self.install_packages_by_name(packages, with_scripts=with_scripts)
 
     def install_package_files(self, package_files, packages=None, with_scripts=False):
+        if packages and settings.testdebs_repo:
+            self.install_packages_by_name(packages)
+            return
         if package_files:
             self.copy_files(package_files, "tmp")
             tmp_files = [os.path.basename(a) for a in package_files]
@@ -2117,6 +2120,8 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
     # Install packages into the chroot.
     os.environ["PIUPARTS_PHASE"] = "install"
 
+    chroot.enable_testdebs_repo()
+
     chroot.run_scripts("pre_install")
 
     if settings.warn_on_others or settings.install_purge_install:
@@ -2202,6 +2207,8 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
 
     file_owners = chroot.get_files_owned_by_packages()
 
+    chroot.disable_testdebs_repo()
+
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state["selections"], packages)
 
@@ -2232,12 +2239,16 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
     # Then from the package files.
     os.environ["PIUPARTS_PHASE"] = "upgrade"
 
+    chroot.enable_testdebs_repo()
+
     chroot.install_packages(package_files, packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
     file_owners = chroot.get_files_owned_by_packages()
+
+    chroot.disable_testdebs_repo()
 
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state["selections"], packages)
