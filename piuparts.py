@@ -170,6 +170,7 @@ class Settings:
         self.warn_broken_symlinks = True
         self.warn_on_others = False
         self.warn_on_leftovers_after_purge = False
+        self.distupgrade_to_testdebs = False
         self.ignored_files = [
             # piuparts state
             "/usr/sbin/policy-rc.d",
@@ -2365,13 +2366,22 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     os.environ["PIUPARTS_PHASE"] = "distupgrade"
 
     chroot.upgrade_to_distros(settings.debian_distros[1:-1], distupgrade_packages)
+
+    if settings.distupgrade_to_testdebs:
+        chroot.enable_testdebs_repo(update=False)
+
     chroot.upgrade_to_distros(settings.debian_distros[-1:], distupgrade_packages)
 
     chroot.check_for_no_processes()
 
     os.environ["PIUPARTS_PHASE"] = "upgrade"
 
+    if not settings.distupgrade_to_testdebs:
+        chroot.enable_testdebs_repo()
+
     chroot.install_packages(package_files, [p for p in packages_qualified if not p.endswith("=None")])
+
+    chroot.disable_testdebs_repo()
 
     chroot.check_for_no_processes()
 
@@ -2479,6 +2489,10 @@ def parse_command_line():
     parser.add_option("--do-not-verify-signatures", default=False,
                       action='store_true',
                       help="Do not verify signatures from the Release files when running debootstrap.")
+
+    parser.add_option("--distupgrade-to-testdebs", default=False,
+                      action='store_true',
+                      help="Use the testdebs repository as distupgrade target.")
 
     parser.add_option("-e", "--existing-chroot", metavar="DIR",
                       help="Use DIR as the contents of the initial " +
@@ -2721,6 +2735,7 @@ def parse_command_line():
     settings.pedantic_purge_test = opts.pedantic_purge_test
     if not settings.pedantic_purge_test:
       settings.ignored_patterns += settings.non_pedantic_ignore_patterns
+    settings.distupgrade_to_testdebs = opts.distupgrade_to_testdebs
 
     settings.extra_repos = opts.extra_repo
     settings.testdebs_repo = opts.testdebs_repo

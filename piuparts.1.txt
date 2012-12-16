@@ -76,6 +76,11 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   a new one with debootstrap. This is similar to '--basetgz', but the contents
   are not archived.
 
+*--distupgrade-to-testdebs*::
+  Use the "testdebs" repository to override the packages in the distupgrade
+  target distribution. This allows to test complex upgrade paths before the
+  packages enter the archive.
+
 *--extra-repo*='deb-line'::
   Provide an additional (unparsed) line to be appended to sources.list, e.g.
     'deb <URL> <distrib> <components>' or

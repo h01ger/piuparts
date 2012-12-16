@@ -20,6 +20,9 @@ piuparts (0.49) UNRELEASED; urgency=low
       to be tested (and additional dependencies that are not yet in the
       archive) in a repository to enable dependency resolution with apt-get.
       Use for complex install and upgrade scenarios.
+    - Add --distupgrade-to-testdebs option. During distupgrade tests override
+      packages from the target distro with the packages from the testdebs
+      repository. This allows doing distupgrade tests before uploading.
   * piuparts.conf:
   * piupartslib/conf.py:
     - Add get_final_distro() method.
