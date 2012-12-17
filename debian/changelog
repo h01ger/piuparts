@@ -25,6 +25,8 @@ piuparts (0.49) UNRELEASED; urgency=low
   * piuparts-slave.py:
     - Disable X forwarding while connecting to master.
     - Move checks for package existence to test_package().
+  * piuparts-analyze.py:
+    - Sort bugs and try the newest bug first.
   * piuparts-report.py:
     - Fix URLs to piatti's config.
     - Hardlink the logfiles to the htdocs tree (with copy as fallback).

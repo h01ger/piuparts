@@ -238,10 +238,14 @@ def all_piuparts_bugs():
 
 
 def piuparts_bugs_in(package):
-    return debianbts.get_bugs('package', package, 'bugs', all_piuparts_bugs())
+    bugs = debianbts.get_bugs('package', package, 'bugs', all_piuparts_bugs())
+    bugs.sort(reverse=True)
+    return bugs
 
 def piuparts_bugs_affecting(package):
-    return debianbts.get_bugs('affects', package, 'bugs', all_piuparts_bugs())
+    bugs = debianbts.get_bugs('affects', package, 'bugs', all_piuparts_bugs())
+    bugs.sort(reverse=True)
+    return bugs
 
 
 def main():
