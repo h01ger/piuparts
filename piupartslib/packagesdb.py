@@ -619,6 +619,9 @@ class PackagesDB:
                 return self._package_state[provider]
             else:
                 return "virtual"
+        if package_name in ["ia32-libs-i386", "ia32-libs-gtk-i386"]:
+            # HACK! these are arch=i386 packages needed on amd64
+            return "essential-required"
         return "does-not-exist"
 
     def _find_packages_ready_for_testing(self):
