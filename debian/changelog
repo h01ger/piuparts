@@ -19,6 +19,8 @@ piuparts (0.49) UNRELEASED; urgency=low
   * piupartslib/conf.py:
     - Add get_final_distro() method.
     - Add optional distro argument to get_mirror() method.
+  * piupartslib/packagesdb.py:
+    - Speed up LogDB by fetching existing files with os.listdir().
   * piuparts-master.py:
   * piuparts-slave.py:
     - Disable X forwarding while connecting to master.

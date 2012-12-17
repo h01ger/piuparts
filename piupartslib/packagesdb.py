@@ -181,6 +181,16 @@ class LogDB:
         except AttributeError:
             pass
 
+    def bulk_load_dir(self, dirname):
+        try:
+            cache = self.exists_cache
+        except AttributeError:
+            self.exists_cache = {}
+            cache = self.exists_cache
+        for basename in os.listdir(dirname):
+            if basename.endswith(".log"):
+                cache[os.path.join(dirname, basename)] = True
+
     def open_file(self, pathname, mode):
         return file(pathname, mode)
 
@@ -500,6 +510,9 @@ class PackagesDB:
             return
 
         self._stamp = time.time()
+
+        for subdir in self._all:
+            self._logdb.bulk_load_dir(subdir)
 
         self._find_all_packages()
 
