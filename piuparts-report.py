@@ -342,6 +342,7 @@ state_by_dir = {
 linktarget_by_template = [
     ("initdscript_lsb_header_issue.tpl", "but logfile contains update-rc.d issues"),
     ("command_not_found_issue.tpl", "but logfile contains 'command not found'"),
+    ("debsums_mismatch_issue.tpl", "but logfile contains modified conffiles or other shipped files"),
     ("alternatives_after_purge_issue.tpl", "but logfile contains forgotten alternatives"),
     ("owned_files_after_purge_issue.tpl", "but logfile contains owned files existing after purge"),
     ("unowned_files_after_purge_issue.tpl", "but logfile contains unowned files after purge"),
