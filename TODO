@@ -7,10 +7,6 @@ wishlist!
 
 for 0.49:
 
-*** Q: What is the problem with a Depends: debsums ? ***
-- turn debsums dependency into a recommends and make piuparts.py refuse to run
-  if debsums is not installed and no --no-debsums options is given.
-
 - make piuparts-master + piuparts-slave packages work out-of-the-box:
   - conf/piuparts.sudoers should be split for master+slave packages.
   - ship sane minimal sudoers in p-s.deb than can be enabled by default do we
