@@ -137,9 +137,6 @@ The 'components' that are used for a mirror can also be set with this option: a 
 +
 Note that file: addresses works if the directories are made accessible from within the chroot with '--bindmount'.
 
-*--no-debsums*::
-  Don't run debsums to check for modified or missing files.
-
 *--no-diversions*::
   Don't check for broken diversions.
 
@@ -217,6 +214,9 @@ Note: the temporary directory must *not* be mounted with the _nodev_ or _nosuid_
 
 *-V, --version*::
   Write out the version number of the program.
+
+*--warn-on-debsums-errors*::
+  Print a warning rather than failing if debsums reports modified files.
 
 *--warn-on-leftovers-after-purge*::
   Print a warning rather than failing if files are left behind after purge.

@@ -78,7 +78,7 @@ log-file = squeeze2wheezy.log
 [squeeze]
 precedence = 5
 description = Debian squeeze / main: package installation, removal and purge test.
-piuparts-flags = --warn-on-leftovers-after-purge --no-eatmydata --scriptsdir /etc/piuparts/scripts-squeeze -i /etc/shells
+piuparts-flags = --warn-on-leftovers-after-purge --no-eatmydata --scriptsdir /etc/piuparts/scripts-squeeze --warn-on-debsums-errors -i /etc/shells
 distro = squeeze
 chroot-tgz = squeeze.tar.gz
 max-reserved = 50

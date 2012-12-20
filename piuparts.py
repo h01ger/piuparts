@@ -164,13 +164,13 @@ class Settings:
         self.extra_old_packages = []
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
-        self.check_debsums = True
         self.check_broken_diversions = True
         self.check_broken_symlinks = True
         self.warn_broken_symlinks = True
         self.warn_on_others = False
         self.warn_on_leftovers_after_purge = False
         self.distupgrade_to_testdebs = False
+        self.warn_on_debsums_errors = False
         self.ignored_files = [
             # piuparts state
             "/usr/sbin/policy-rc.d",
@@ -1178,14 +1178,12 @@ class Chroot:
         added = [ln for ln in post_install_diversions if not ln in pre_install_diversions]
         return (removed, added)
 
-    def check_debsums(self, ignore_errors=False):
-        if not settings.check_debsums:
-            return
+    def check_debsums(self):
         (status, output) = run(["debsums", "--root", self.name, "-ac"], ignore_errors=True)
         if status != 0:
             logging.error("FAIL: debsums reports modifications inside the chroot:\n%s" %
                           indent_string(output.replace(self.name, "")))
-            if not ignore_errors:
+            if not settings.warn_on_debsums_errors:
                 panic()
 
     def list_paths_with_symlinks(self):
@@ -2630,10 +2628,6 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Skip testing the output from the logrotate files.")
 
-    parser.add_option("--no-debsums",
-                      action="store_true", default=False,
-                      help="Skip running debsums in the chroot.")
-
     parser.add_option("--skip-minimize",
                       action="store_true", default=True,
                       help="Skip minimize chroot step. This is the default now.")
@@ -2670,6 +2664,11 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Print a warning rather than failing if "
                            "files are left behind after purge.")
+
+    parser.add_option("--warn-on-debsums-errors",
+                      action="store_true", default=False,
+                      help="Print a warning rather than failing if "
+                           "debsums reports modified files.")
 
     parser.add_option("--fail-on-broken-symlinks", action="store_true",
                       default=False,
@@ -2724,12 +2723,12 @@ def parse_command_line():
     [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
     settings.skip_cronfiles_test = opts.skip_cronfiles_test
     settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test
-    settings.check_debsums = not opts.no_debsums
     settings.check_broken_diversions = not opts.no_diversions
     settings.check_broken_symlinks = not opts.no_symlinks
     settings.warn_broken_symlinks = not opts.fail_on_broken_symlinks
     settings.warn_on_others = opts.warn_on_others
     settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
+    settings.warn_on_debsums_errors = opts.warn_on_debsums_errors
     settings.ignored_files += opts.ignore
     settings.ignored_patterns += opts.ignore_regex
     settings.pedantic_purge_test = opts.pedantic_purge_test
