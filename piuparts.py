@@ -139,6 +139,7 @@ class Settings:
         # distro setup
         self.debian_mirrors = []
         self.extra_repos = []
+        self.testdebs_repo = None
         self.debian_distros = []
         self.keep_sources_list = False
         self.do_not_verify_signatures = False
@@ -169,6 +170,7 @@ class Settings:
         self.warn_broken_symlinks = True
         self.warn_on_others = False
         self.warn_on_leftovers_after_purge = False
+        self.distupgrade_to_testdebs = False
         self.ignored_files = [
             # piuparts state
             "/usr/sbin/policy-rc.d",
@@ -907,6 +909,18 @@ class Chroot:
         create_file(self.relative("etc/apt/sources.list"),
                     "".join(lines))
 
+    def enable_testdebs_repo(self, update=True):
+        if settings.testdebs_repo:
+            logging.debug("enabling testdebs repository '%s'" % settings.testdebs_repo)
+            create_file(self.relative("etc/apt/sources.list.d/piuparts-testdebs-repo.list"), settings.testdebs_repo + "\n")
+            if update:
+                self.run(["apt-get", "update"])
+
+    def disable_testdebs_repo(self):
+        if settings.testdebs_repo:
+            logging.debug("disabling testdebs repository")
+            remove_files([self.relative("etc/apt/sources.list.d/piuparts-testdebs-repo.list")])
+
     def create_apt_conf(self):
         """Create /etc/apt/apt.conf.d/piuparts inside the chroot."""
         lines = ['APT::Get::Assume-Yes "yes";\n']
@@ -1090,6 +1104,9 @@ class Chroot:
             self.install_packages_by_name(packages, with_scripts=with_scripts)
 
     def install_package_files(self, package_files, packages=None, with_scripts=False):
+        if packages and settings.testdebs_repo:
+            self.install_packages_by_name(packages)
+            return
         if package_files:
             self.copy_files(package_files, "tmp")
             tmp_files = [os.path.basename(a) for a in package_files]
@@ -1959,9 +1976,18 @@ def get_package_names_from_package_files(package_files):
     vlist = []
     for filename in package_files:
         (status, output) = run(["dpkg", "--info", filename])
+        p = None
+        v = None
         for line in [line.lstrip() for line in output.split("\n")]:
-            if line[:len("Package:")] == "Package:":
-                vlist.append(line.split(":", 1)[1].strip())
+            if line.startswith("Package:"):
+                p = line.split(":", 1)[1].strip()
+            if line.startswith("Version:"):
+                v = line.split(":", 1)[1].strip()
+        if p is not None:
+            if v is not None:
+                vlist.append(p + "=" + v)
+            else:
+                vlist.append(p)
     return vlist
 
 # Method to process a changes file, returning a list of all the .deb packages
@@ -2095,6 +2121,8 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
     # Install packages into the chroot.
     os.environ["PIUPARTS_PHASE"] = "install"
 
+    chroot.enable_testdebs_repo()
+
     chroot.run_scripts("pre_install")
 
     if settings.warn_on_others or settings.install_purge_install:
@@ -2180,6 +2208,8 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
 
     file_owners = chroot.get_files_owned_by_packages()
 
+    chroot.disable_testdebs_repo()
+
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state["selections"], packages)
 
@@ -2210,12 +2240,16 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
     # Then from the package files.
     os.environ["PIUPARTS_PHASE"] = "upgrade"
 
+    chroot.enable_testdebs_repo()
+
     chroot.install_packages(package_files, packages)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
     file_owners = chroot.get_files_owned_by_packages()
+
+    chroot.disable_testdebs_repo()
 
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state["selections"], packages)
@@ -2332,13 +2366,22 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     os.environ["PIUPARTS_PHASE"] = "distupgrade"
 
     chroot.upgrade_to_distros(settings.debian_distros[1:-1], distupgrade_packages)
+
+    if settings.distupgrade_to_testdebs:
+        chroot.enable_testdebs_repo(update=False)
+
     chroot.upgrade_to_distros(settings.debian_distros[-1:], distupgrade_packages)
 
     chroot.check_for_no_processes()
 
     os.environ["PIUPARTS_PHASE"] = "upgrade"
 
+    if not settings.distupgrade_to_testdebs:
+        chroot.enable_testdebs_repo()
+
     chroot.install_packages(package_files, [p for p in packages_qualified if not p.endswith("=None")])
+
+    chroot.disable_testdebs_repo()
 
     chroot.check_for_no_processes()
 
@@ -2447,6 +2490,10 @@ def parse_command_line():
                       action='store_true',
                       help="Do not verify signatures from the Release files when running debootstrap.")
 
+    parser.add_option("--distupgrade-to-testdebs", default=False,
+                      action='store_true',
+                      help="Use the testdebs repository as distupgrade target.")
+
     parser.add_option("-e", "--existing-chroot", metavar="DIR",
                       help="Use DIR as the contents of the initial " +
                            "chroot, instead of building a new one with " +
@@ -2512,6 +2559,10 @@ def parse_command_line():
                       default=[],
                       help="Additional (unparsed) lines to be appended to sources.list, e.g. " +
                       "'deb <URL> <distrib> <components>' or 'deb file://</bind/mount> ./'")
+
+    parser.add_option("--testdebs-repo",
+                      help="A repository that contains the packages to be tested, e.g. " +
+                      "'deb <URL> <distrib> <components>...' or 'deb file://</bind/mount> ./'")
 
     parser.add_option("--no-diversions", action="store_true",
                       default=False,
@@ -2684,8 +2735,10 @@ def parse_command_line():
     settings.pedantic_purge_test = opts.pedantic_purge_test
     if not settings.pedantic_purge_test:
       settings.ignored_patterns += settings.non_pedantic_ignore_patterns
+    settings.distupgrade_to_testdebs = opts.distupgrade_to_testdebs
 
     settings.extra_repos = opts.extra_repo
+    settings.testdebs_repo = opts.testdebs_repo
 
     log_file_name = opts.log_file
 
