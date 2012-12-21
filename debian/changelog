@@ -47,7 +47,8 @@ piuparts (0.49) UNRELEASED; urgency=low
   * pre_remove_50_find_missing_copyright: Skip check for packages that are not
     installed or have only config files remaining.
   * post_remove_cleanup: Cleanup dovecot certificates.
-  * Add support for installing and upgrading to ia32-libs/wheezy/amd64.
+  * Add support for installing and upgrading to the multiarch ia32-libs* in
+    wheezy/sid on amd64.  (Closes: #679780)
   * Merge known problem analyses excessive_output and runtime_exceeded into
     new known problem resource_violation.
   * New known problem: Leaving obsolete conffiles after upgrade.
