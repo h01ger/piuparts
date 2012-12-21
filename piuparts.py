@@ -142,6 +142,7 @@ class Settings:
         self.testdebs_repo = None
         self.debian_distros = []
         self.keep_sources_list = False
+        self.keyring = None
         self.do_not_verify_signatures = False
         self.install_recommends = False
         self.scriptsdirs = []
@@ -159,6 +160,7 @@ class Settings:
         # tests and checks
         self.no_install_purge_test = False
         self.no_upgrade_test = False
+        self.distupgrade_to_testdebs = False
         self.install_remove_install = False
         self.list_installed_files = False
         self.extra_old_packages = []
@@ -171,6 +173,7 @@ class Settings:
         self.warn_on_others = False
         self.warn_on_leftovers_after_purge = False
         self.distupgrade_to_testdebs = False
+        self.warn_on_debsums_errors = False
         self.ignored_files = [
             # piuparts state
             "/usr/sbin/policy-rc.d",
@@ -2681,11 +2684,17 @@ def parse_command_line():
 
     (opts, args) = parser.parse_args()
 
+    defaults = DefaultsFactory().new_defaults()
+
     settings.defaults = opts.defaults
     settings.keep_tmpdir = opts.keep_tmpdir
     settings.single_changes_list = opts.single_changes_list
     settings.args_are_package_files = not opts.apt
     # distro setup
+    settings.debian_mirrors = [parse_mirror_spec(x, defaults.get_components())
+                               for x in opts.mirror]
+    settings.extra_repos = opts.extra_repo
+    settings.testdebs_repo = opts.testdebs_repo
     settings.debian_distros = opts.distribution
     settings.keep_sources_list = opts.keep_sources_list
     settings.keyring = opts.keyring
@@ -2718,6 +2727,7 @@ def parse_command_line():
     # tests and checks
     settings.no_install_purge_test = opts.no_install_purge_test
     settings.no_upgrade_test = opts.no_upgrade_test
+    settings.distupgrade_to_testdebs = opts.distupgrade_to_testdebs
     settings.install_purge_install = opts.install_purge_install
     settings.install_remove_install = opts.install_remove_install
     settings.list_installed_files = opts.list_installed_files
@@ -2735,17 +2745,8 @@ def parse_command_line():
     settings.pedantic_purge_test = opts.pedantic_purge_test
     if not settings.pedantic_purge_test:
       settings.ignored_patterns += settings.non_pedantic_ignore_patterns
-    settings.distupgrade_to_testdebs = opts.distupgrade_to_testdebs
-
-    settings.extra_repos = opts.extra_repo
-    settings.testdebs_repo = opts.testdebs_repo
 
     log_file_name = opts.log_file
-
-    defaults = DefaultsFactory().new_defaults()
-
-    settings.debian_mirrors = [parse_mirror_spec(x, defaults.get_components())
-                               for x in opts.mirror]
 
     if opts.adt_virt is None:
         settings.adt_virt = None
