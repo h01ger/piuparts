@@ -23,6 +23,7 @@ piuparts (0.49) UNRELEASED; urgency=low
     - Add --distupgrade-to-testdebs option. During distupgrade tests override
       packages from the target distro with the packages from the testdebs
       repository. This allows doing distupgrade tests before uploading.
+    - Enable upgrade tests if both --apt and --testdebs-repo are given.
   * piuparts.conf:
   * piupartslib/conf.py:
     - Add get_final_distro() method.
