@@ -1105,7 +1105,7 @@ class Chroot:
 
     def install_package_files(self, package_files, packages=None, with_scripts=False):
         if packages and settings.testdebs_repo:
-            self.install_packages_by_name(packages)
+            self.install_packages_by_name(packages, with_scripts=with_scripts)
             return
         if package_files:
             self.copy_files(package_files, "tmp")
