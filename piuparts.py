@@ -2837,7 +2837,7 @@ def process_packages(package_list):
             logging.info("PASS: Installation and purging test.")
 
         if not settings.no_upgrade_test:
-            if not settings.args_are_package_files:
+            if not settings.args_are_package_files and not settings.testdebs_repo:
                 logging.info("Can't test upgrades: -a or --apt option used.")
             else:
                 packages_to_query = [p.split("=", 1)[0].strip() for p in packages]
