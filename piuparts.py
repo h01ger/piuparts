@@ -172,7 +172,6 @@ class Settings:
         self.warn_broken_symlinks = True
         self.warn_on_others = False
         self.warn_on_leftovers_after_purge = False
-        self.distupgrade_to_testdebs = False
         self.warn_on_debsums_errors = False
         self.ignored_files = [
             # piuparts state
