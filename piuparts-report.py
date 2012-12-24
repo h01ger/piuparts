@@ -1042,8 +1042,8 @@ class Section:
                      + "<td class=\"contentcell2\" colspan=\"3\">" \
                      + "<a href=\"%s\">" \
                        % "states.png" \
-                     + "<img src=\"/%s/%s\" height=\"450\" width=\"800\" alt=\"Binary package states in %s\">" \
-                       % (self._config.section, "states.png", self._config.section) \
+                     + "<img src=\"%s\" height=\"450\" width=\"800\" alt=\"Binary package states in %s\">" \
+                       % ("states.png", self._config.section) \
                      + "</a></td></tr>\n"
 
         return stats_html
