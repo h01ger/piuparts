@@ -56,7 +56,7 @@ piuparts (0.49) UNRELEASED; urgency=low
   * New bug template: partial-upgrade-file-overwrite.
 
   [ Holger Levsen ]
-  * README.txt: 
+  * README.txt:
     - reformat with shorter line lengths (Closes: #603873).
     - fix some typos.
 

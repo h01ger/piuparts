@@ -265,7 +265,7 @@ has tested already, and to get more work.
 
 To set this up for yourself, the following steps should suffice:
 
-. Pick a machine to run the master. It cannot be a chroot, but 
+. Pick a machine to run the master. It cannot be a chroot, but
  basically any real (or properly virtualized) Debian system is good
  enough.
 . Install piuparts on it.
