@@ -74,13 +74,13 @@ pbuilder. If you are not a pbuilder user, you can create this
 tarball with the command (again, as root):
 
 ----
-# pbuilder create
+# pbuilder --create
 ----
 
 then you only have to remember to update this tarball with:
 
 ----
-# pbuilder update
+# pbuilder --update
 ----
 
 To run piuparts using this tarball:
@@ -128,9 +128,13 @@ from a previous installation are remaining, but the package itself
 was removed inbetween.
 This exercises different code paths in the maintainer scripts.
 
-. Installation and purging test: install, remove, install again and purge.
-. Installation, upgrade and purging test: install the old version, remove, install the new version and purge.
-. Distupgrade test: install the version from the first distribution, remove, distupgrade to the last distribution, install the new version.
+. Installation and purging test: install, remove, install again
+ and purge.
+. Installation, upgrade and purging test: install the old version,
+ remove, install the new version and purge.
+. Distupgrade test: install the version from the first
+ distribution, remove, distupgrade to the last distribution,
+ install the new version.
 
 === Analyzing piuparts results
 
@@ -166,7 +170,7 @@ alphabetical order.
 The scripts need to be executable and are run *inside* the piuparts
 chroot and can only be shell scripts. If you want to run Python or
 Perl scripts, you have to install Python or Perl. The chroot where
-piuparts is run is minized and does not include Perl.
+piuparts is run is minimized and does not include Perl.
 
 The variable PIUPARTS_OBJECTS is set to the packages currently
 being tested (seperated by spaces, if applicable) or the .changes
@@ -175,15 +179,19 @@ will be set to the (one) package being tested at a time.
 
 Depending on the current test, the variable PIUPARTS_TEST is set
 to
+
 . 'install' (installation and purging test),
 . 'upgrade' (installation, upgrade and purging tests) or
 . 'distupgrade'.
 
 During the 'upgrade' and 'distupgrade' tests, the variable
 PIUPARTS_PHASE is set to one of the following values:
-. 'install' while initially installing the packages from the repository,
+
+. 'install' while initially installing the packages from the
+ repository,
 . 'upgrade' when upgrading to the .debs,
-. 'distupgrade' while reinstalling the packages after 'apt-get dist-upgrade' to ensure they were not removed accidently
+. 'distupgrade' while reinstalling the packages after
+ 'apt-get dist-upgrade' to ensure they were not removed accidently
 During the 'install' test, the PIUPARTS_PHASE variable is set to
 'install'.
 
@@ -238,7 +246,7 @@ exit 0
 ----
 #!/bin/sh
 
-echo "$PIUPARTS_OBJECT will now get tested."
+echo "$PIUPARTS_OBJECTS will now get tested."
 exit 0
 ----
 
@@ -257,18 +265,29 @@ has tested already, and to get more work.
 
 To set this up for yourself, the following steps should suffice:
 
-. Pick a machine to run the master. It cannot be a chroot, but basically any real (or properly virtualized) Debian system is good enough.
+. Pick a machine to run the master. It cannot be a chroot, but 
+ basically any real (or properly virtualized) Debian system is good
+ enough.
 . Install piuparts on it.
 . Create an account for the master.
 . Configure '/etc/piuparts/piuparts.conf' appropriately.
-. Pick one or more slaves to run the slave. You can use the machine running the master also as a slave. Etch is fine, it can even be in a chroot.
+. Pick one or more slaves to run the slave. You can use the machine
+ running the master also as a slave. Etch is fine, it can even be
+ in a chroot.
 . Install piuparts on it.
-. Configure '/etc/piuparts/piuparts.conf' appropriately - if master and slave share the machine, they also share the config file.
-. Create an account for the slave. This must be different from the master account.
+. Configure '/etc/piuparts/piuparts.conf' appropriately - if master
+ and slave share the machine, they also share the config file.
+. Create an account for the slave. This must be different from the
+ master account.
 . Create an ssh keypair for the slave. No passphrase.
 . Add the slave's public key to the master's '.ssh/authorized_keys'
-. Configure sudo on the slave machine to allow the slave account run '/usr/sbin/piuparts' as root without password (otherwise you'll be typing in a password all the time).
-. Run '/usr/share/piuparts/piuparts-slave' on the slave accounts. Packages that are installed want to use '/dev/tty', so you can't do this from cron. Also, you'll want to keep an eye on what is happening, to catch runaway processes and stuff.
+. Configure sudo on the slave machine to allow the slave account
+ run '/usr/sbin/piuparts' as root without password (otherwise
+ you'll be typing in a password all the time).
+. Run '/usr/share/piuparts/piuparts-slave' on the slave accounts.
+ Packages that are installed want to use '/dev/tty', so you can't
+ do this from cron. Also, you'll want to keep an eye on what is
+ happening, to catch runaway processes and stuff.
 . The logs go into the master account, into subdirectories.
 
 Please note that running piuparts this way is somewhat risky, to
@@ -425,6 +444,7 @@ piuparts-master, piuparts-slave and piuparts-report share the
 configuration file '/etc/piuparts/piuparts.conf'. The syntax is
 defined by the Python ConfigParser class, and is, briefly, like
 this:
+
 ----
     [master]
     foo = bar
@@ -435,17 +455,28 @@ this:
 These settings have to be placed in the [global] section and are
 used for all further sections.
 
-* "sections" defaults to sid and defines which sections should be processed in master-slave mode. Each section defined here has to have a section with the section specific settings explained below. The first section defined should always be sid, because the data from first section a package is in is used for the source package html report.
+* "sections" defaults to sid and defines which sections should be
+ processed in master-slave mode. Each section defined here has to
+ have a section with the section specific settings explained below.
+ The first section defined should always be sid, because the data
+ from first section a package is in is used for the source package
+ html report.
 
-* "master-host" is the host where the master exists. The slave will give this host to ssh. This option is mandatory.
+* "master-host" is the host where the master exists. The slave will
+ give this host to ssh. This option is mandatory.
 
-* "master-user" is the username of the master. The slave will log in using this username. This option is mandatory.
+* "master-user" is the username of the master. The slave will log in
+ using this username. This option is mandatory.
 
-* "master-directory" is the directory where the master keeps its files. Can be relative to the master's home directory.
+* "master-directory" is the directory where the master keeps its
+ files. Can be relative to the master's home directory.
 
-* "output-directory" is the directory where piuparts-report places the logfiles, generated html files, charts, ... that can be served by a webserver.
+* "output-directory" is the directory where piuparts-report places
+ the logfiles, generated html files, charts, ... that can be
+ served by a webserver.
 
-* "doc-root" is the location where the webserver will serve the piuparts report from. Default: "/".
+* "doc-root" is the location where the webserver will serve the
+ piuparts report from. Default: "/".
 
 ==== section specific configuration
 
@@ -454,43 +485,111 @@ is being run. All these keys can be specified in the [global]
 section, too, and will serve as defaults for all other sections
 (overriding the builtin defaults).
 
-* "master-command" is the command to run on master-host to start the master. When the master has been installed from the Debian package, the command is 'python /usr/share/piuparts/piuparts-master'.  The section name will be given as a command line argument to this command.
+* "master-command" is the command to run on master-host to start
+ the master. When the master has been installed from the Debian
+ package, the command is
+ 'python /usr/share/piuparts/piuparts-master'.
+ The section name will be given as a command line argument to this
+ command.
 
-* "idle-sleep" is the length of time the slave should wait before querying the master again if the master didn't have any new packages to test. In seconds, so a value of 300 would mean five minutes, and that seems to be a good value when there are fairly few slaves per master. The default is 300 seconds.
+* "idle-sleep" is the length of time the slave should wait before
+ querying the master again if the master didn't have any new
+ packages to test. In seconds, so a value of 300 would mean five
+ minutes, and that seems to be a good value when there are fairly
+ few slaves per master. The default is 300 seconds.
 
-* "max-tgz-age" is used to specify the maximum age (in seconds) after which basesystem tarballs will be recreated. If recreation fails, the old tarball will be used again. The default is 2592000 seconds, which is 30 days.
+* "max-tgz-age" is used to specify the maximum age (in seconds)
+ after which basesystem tarballs will be recreated. If recreation
+ fails, the old tarball will be used again. The default is 2592000
+ seconds, which is 30 days.
 
-* "min-tgz-retry-delay" is used to specify the minimum time (in seconds) between attempts to recreate a tarball which was created more than "max-tgz-age" seconds ago. The default is 21600 seconds, which is 6h.
+* "min-tgz-retry-delay" is used to specify the minimum time (in
+ seconds) between attempts to recreate a tarball which was created
+ more than "max-tgz-age" seconds ago. The default is 21600 seconds,
+ which is 6h.
 
-* "log-file" is the name of a file to where the master should write its log messages. In the default configuration file it is "$SECTION/master.log". To disable logging, set it to "/dev/null".
+* "log-file" is the name of a file to where the master should write
+ its log messages. In the default configuration file it is
+ "$SECTION/master.log". To disable logging, set it to "/dev/null".
 
-* "piuparts-command" is the command the slave uses to start piuparts. It should include 'sudo' if necessary so that piuparts runs with sufficient priviledges to do its testing (and that means root priviledges). This command should be given in the [global] section and include all flags that are common for all sections.
+* "piuparts-command" is the command the slave uses to start
+ piuparts. It should include 'sudo' if necessary so that piuparts
+ runs with sufficient priviledges to do its testing (and that
+ means root priviledges). This command should be given in the
+ [global] section and include all flags that are common for all
+ sections.
 
-* "piuparts-flags" are appended to "piuparts-command" and should contain the section-specific flags.
+* "piuparts-flags" are appended to "piuparts-command" and should
+ contain the section-specific flags.
 
-* "tmpdir" is the scratch area where piuparts will create the chroots. Note: the filesystem where this is located may not be mounted with the nodev or nosuid options. The default is "/tmp/piuparts". The scripts that are monitoring this directory for leftover mountpoints and chroots only evaluate the [global] setting.
+* "tmpdir" is the scratch area where piuparts will create the
+ chroots. Note: the filesystem where this is located may not be
+ mounted with the nodev or nosuid options. The default is
+ "/tmp/piuparts". The scripts that are monitoring this directory
+ for leftover mountpoints and chroots only evaluate the [global]
+ setting.
 
-* "mirror" tells the slave which mirror it is to use. The slave gives this to piuparts when it runs it. The URLs for Packages and Sources files will be generated from this setting, too. Default (for fetching Packages/Sources): "http://cdn.debian.net/debian".
+* "mirror" tells the slave which mirror it is to use. The slave
+ gives this to piuparts when it runs it. The URLs for Packages and
+ Sources files will be generated from this setting, too. Default
+ (for fetching Packages/Sources): "http://cdn.debian.net/debian".
 
-* "distro" is the distribution the slave should tell piuparts to use for basic install/purge testing. No default.
+* "distro" is the distribution the slave should tell piuparts to
+ use for basic install/purge testing. No default.
 
-* "area" is the archive area to use, set to one of main, contrib, non-free. Default: "main".
+* "area" is the archive area to use, set to one of main, contrib,
+ non-free. Default: "main".
 
-* "arch" is the architecture to use. Default: dpkg --print-architecture.
+* "arch" is the architecture to use. Default: dpkg
+ --print-architecture.
 
-* "chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the basic install/purge testing. If the tarball doesn't exist, the slave creates it. This can be left empty if only upgrade tests should be run.
+* "chroot-tgz" is the name of the file the slave should use for
+ the tarball to keep the chroot for the basic install/purge
+ testing. If the tarball doesn't exist, the slave creates it.
+ This can be left empty if only upgrade tests should be run.
 
-* "upgrade-test-distros" is the space delimited list of distributions the slave should use for testing upgrades between distributions (i.e., Debian versions). Currently, "squeeze wheezy sid" is a good choice.  Leave this unset if you do not want to run upgrade tests.
+* "upgrade-test-distros" is the space delimited list of
+ distributions the slave should use for testing upgrades
+ between distributions (i.e., Debian versions). Currently,
+ "squeeze wheezy sid" is a good choice.  Leave this unset if you
+ do not want to run upgrade tests.
 
-* "upgrade-test-chroot-tgz" is the name of the file the slave should use for the tarball to keep the chroot for the first distribution in upgrade-test-distros. If the file does not exist, the slave creates it. This can be left empty if only basic tests should be run.
+* "upgrade-test-chroot-tgz" is the name of the file the slave
+ should use for the tarball to keep the chroot for the first
+ distribution in upgrade-test-distros. If the file does not exist,
+ the slave creates it. This can be left empty if only basic tests
+ should be run.
 
-* "max-reserved" is the maximum number of packages the slave will reserve at once. It should be large enough that the host that runs master is not unduly stressed by frequent ssh logins and running master (both of which take quite a bit of CPU cycles), yet at the same time it should not be so large that one slave grabs so many packages all other slaves just sit idle. The number obviously depends on the speed of the slave. A good value seems to be enough to let the slave test packages for about an hour before reporting results and reserving more. For a contemporary AMD64 machine with a reasonably fast disk subsystem the value 50 seems to work fine. To disable a section set this to 0.
+* "max-reserved" is the maximum number of packages the slave will
+ reserve at once. It should be large enough that the host that
+ runs master is not unduly stressed by frequent ssh logins and
+ running master (both of which take quite a bit of CPU cycles),
+ yet at the same time it should not be so large that one slave
+ grabs so many packages all other slaves just sit idle. The number
+ obviously depends on the speed of the slave. A good value seems
+ to be enough to let the slave test packages for about an hour
+ before reporting results and reserving more. For a contemporary
+ AMD64 machine with a reasonably fast disk subsystem the value 50
+ seems to work fine. To disable a section set this to 0.
 
-* "keep-sources-list" controls whether the slave runs piuparts with the '--keep-sources-list' option.  This option does not apply to upgrade tests.  The value should be "yes" or "no", with the default being "no".  Use this option for dists that you need a custom sources.list for, such as "stable-proposed-updates".
+* "keep-sources-list" controls whether the slave runs piuparts
+ with the '--keep-sources-list' option.  This option does not
+ apply to upgrade tests.  The value should be "yes" or "no", with
+ the default being "no".  Use this option for dists that you need
+ a custom sources.list for, such as "stable-proposed-updates".
 
-* "precedence" controls the order the sections are being processed by the slave. Sections with a larger precedence value will be run only if all sections with a smaller precedence value are idle, i.e. master does not have any packages that this slave could test. Sections with the same precedence value will be processed round-robin until they are all idle (or a more important section has packages to be tested). The default is 1.
+* "precedence" controls the order the sections are being processed
+ by the slave. Sections with a larger precedence value will be run
+ only if all sections with a smaller precedence value are idle,
+ i.e. master does not have any packages that this slave could
+ test. Sections with the same precedence value will be processed
+ round-robin until they are all idle (or a more important section
+ has packages to be tested). The default is 1.
 
-* "debug" tells the slave whether to log debug level messages. The value should be "yes" or "no", with the default being "no". piuparts itself currently always produces debug output and there is no way to disable that.
+* "debug" tells the slave whether to log debug level messages. The
+ value should be "yes" or "no", with the default being "no".
+ piuparts itself currently always produces debug output and there
+ is no way to disable that.
 
 Some of the configuration items are not required, but it is best
 to set them all to be sure what the configuration actually is.
@@ -502,13 +601,23 @@ configuration settings are used by the scripts in '~piuparts?/bin/'
 used to run piuparts.debian.org. They are all optional, default
 values are set in the scripts.
 
-* "prefix" (global) sets the prefix of the piuparts installation, e.g. for finding $prefix/share/piuparts/ .
+* "prefix" (global) sets the prefix of the piuparts installation,
+ e.g. for finding $prefix/share/piuparts/ .
 
-* "urlbase" (global) is the base url of the webserver serving this piuparts instance. Used to provide links to logfiles in email reports.
+* "urlbase" (global) is the base url of the webserver serving this
+ piuparts instance. Used to provide links to logfiles in email
+ reports.
 
-* "reschedule-untestable-days" (global) sets the rescheduling delay for untestable packages (e.g. due to unsatisfied dependencies).
+* "reschedule-untestable-days" (global) sets the rescheduling
+ delay for untestable packages (e.g. due to unsatisfied
+ dependencies).
 
-* "reschedule-old-days" (global, section) and the following five settings define the rescheduling scheme for passed and failed packages. Logs that are marked for recycling but are older than expire-*-days will be deleted, moving the package to dependency-failed-testing state. expire-*-days needs to be greater than reschedule-*-days to enable expiration.
+* "reschedule-old-days" (global, section) and the following five
+ settings define the rescheduling scheme for passed and failed
+ packages. Logs that are marked for recycling but are older than
+ expire-(old|fail)-days will be deleted, moving the package to
+ dependency-failed-testing state. expire-(old|fail)-days needs to
+ be greater than reschedule-(old|fail)-days to enable expiration.
 
 * "reschedule-old-count" (global, section)
 
@@ -520,7 +629,8 @@ values are set in the scripts.
 
 * "expire-fail-days" (global, section)
 
-* "auto-reschedule" (section) can be set to "no" to disable rescheduling of passed and failed packages.
+* "auto-reschedule" (section) can be set to "no" to disable
+ rescheduling of passed and failed packages.
 
 
 === Running piuparts in master-slave mode, piuparts-report and the setup on piuparts.debian.org
