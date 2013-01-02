@@ -53,6 +53,11 @@ piuparts (0.49) UNRELEASED; urgency=low
   * New known problem: Leaving obsolete conffiles after upgrade.
   * New bug template: partial-upgrade-file-overwrite.
 
+  [ Holger Levsen ]
+  * README.txt: 
+    - reformat with shorter line lengths (Closes: #603873).
+    - fix some typos.
+
  -- Andreas Beckmann <debian@abeckmann.de>  Fri, 30 Nov 2012 13:11:25 +0100
 
 piuparts (0.48) unstable; urgency=low
