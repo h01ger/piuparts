@@ -145,23 +145,30 @@ class Settings:
         self.keyring = None
         self.do_not_verify_signatures = False
         self.install_recommends = False
+        self.eatmydata = True
+        self.dpkg_force_unsafe_io = True
+        self.dpkg_force_confdef = False
         self.scriptsdirs = []
         self.bindmounts = []
         # chroot setup
         self.basetgz = None
         self.savetgz = None
         self.lvm_volume = None
+        self.lvm_snapshot_size = "1G"
+        self.adt_virt = None
         self.existing_chroot = None
         self.schroot = None
         self.end_meta = None
         self.save_end_meta = None
         self.skip_minimize = True
+        self.minimize = False
         self.debfoster_options = None
         # tests and checks
         self.no_install_purge_test = False
         self.no_upgrade_test = False
         self.distupgrade_to_testdebs = False
         self.install_remove_install = False
+        self.install_purge_install = False
         self.list_installed_files = False
         self.extra_old_packages = []
         self.skip_cronfiles_test = False
@@ -172,6 +179,7 @@ class Settings:
         self.warn_on_others = False
         self.warn_on_leftovers_after_purge = False
         self.warn_on_debsums_errors = False
+        self.pedantic_purge_test = False
         self.ignored_files = [
             # piuparts state
             "/usr/sbin/policy-rc.d",
@@ -2681,9 +2689,10 @@ def parse_command_line():
 
     (opts, args) = parser.parse_args()
 
+    settings.defaults = opts.defaults
     defaults = DefaultsFactory().new_defaults()
 
-    settings.defaults = opts.defaults
+    settings.tmpdir = opts.tmpdir
     settings.keep_tmpdir = opts.keep_tmpdir
     settings.single_changes_list = opts.single_changes_list
     settings.args_are_package_files = not opts.apt
@@ -2706,6 +2715,7 @@ def parse_command_line():
     settings.eatmydata = not opts.no_eatmydata
     settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
     settings.dpkg_force_confdef = opts.dpkg_force_confdef
+    settings.scriptsdirs = opts.scriptsdir
     settings.bindmounts += opts.bindmount
     # chroot setup
     settings.basetgz = opts.basetgz
@@ -2737,25 +2747,18 @@ def parse_command_line():
     settings.warn_on_others = opts.warn_on_others
     settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
     settings.warn_on_debsums_errors = opts.warn_on_debsums_errors
+    settings.pedantic_purge_test = opts.pedantic_purge_test
     settings.ignored_files += opts.ignore
     settings.ignored_patterns += opts.ignore_regex
-    settings.pedantic_purge_test = opts.pedantic_purge_test
     if not settings.pedantic_purge_test:
       settings.ignored_patterns += settings.non_pedantic_ignore_patterns
-
-    log_file_name = opts.log_file
 
     if opts.adt_virt is None:
         settings.adt_virt = None
     else:
         settings.adt_virt = VirtServ(opts.adt_virt)
 
-    if opts.tmpdir is not None:
-        settings.tmpdir = opts.tmpdir
-        if not os.path.isdir(settings.tmpdir):
-            logging.error("Temporary directory is not a directory: %s" %
-                          settings.tmpdir)
-            panic()
+    log_file_name = opts.log_file
 
     if opts.log_level == "error":
         setup_logging(logging.ERROR, log_file_name)
@@ -2774,7 +2777,11 @@ def parse_command_line():
         else:
             settings.tmpdir = "/tmp"
 
-    settings.scriptsdirs = opts.scriptsdir
+    if not os.path.isdir(settings.tmpdir):
+        logging.error("Temporary directory is not a directory: %s" %
+                      settings.tmpdir)
+        panic()
+
     for sdir in settings.scriptsdirs:
         if not os.path.isdir(sdir):
             logging.error("Scripts directory is not a directory: %s" % sdir)
