@@ -348,13 +348,23 @@ def process_section( section, config, problem_list ):
 
     update_html( section, logdict, problem_list, failures, config )
 
+    return( del_cnt, add_cnt, failures )
+
 def detect_well_known_errors( config, problem_list ):
 
     for section in config['sections'].split(" "):
         print time.strftime( "%a %b %2d %H:%M:%S %Z %Y", time.localtime() )
         print "%s:" % section
 
-        process_section( section, config, problem_list )
+        ( del_cnt, add_cnt, failures ) = \
+                  process_section( section, config, problem_list )
+
+        print "parsed logfiles: %d removed, %d added" % (del_cnt, add_cnt)
+
+        for prob in problem_list:
+            pcount = len(failures.filtered(prob.name))
+            if pcount:
+                print "%7d %s" % (pcount, prob.name)
 
     print time.strftime( "%a %b %2d %H:%M:%S %Z %Y", time.localtime() )
 
