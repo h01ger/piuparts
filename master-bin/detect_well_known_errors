@@ -65,10 +65,6 @@ PKG_ERROR_TPL = \
 $BUG</li>
 """
 
-PKG_ISSUE_TPL = \
-"""<li><a href=\"$LOG\">$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>
-"""
-
 class WKE_Config( piupartslib.conf.Config ):
     """Configuration parameters for Well Known Errors"""
 
@@ -315,15 +311,10 @@ def update_html( section, logdict, problem_list, failures, config ):
         os.mkdir( html_dir )
 
     for problem in problem_list:
-        if problem.name[-11:] == "_error.conf":
-           ptpl = PKG_ERROR_TPL
-        else:
-           ptpl = PKG_ISSUE_TPL
-
         update_tpl( html_dir, section, problem,
                     failures.filtered(problem.name),
                     logdict,
-                    ptpl, PROB_TPL )
+                    PKG_ERROR_TPL, PROB_TPL )
 
     # Make a failure list of all failed packages that don't show up as known
     failedpkgs = set([x for x in logdict.keys()

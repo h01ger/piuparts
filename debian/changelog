@@ -31,6 +31,7 @@ piuparts (0.51) UNRELEASED; urgency=low
   * detect_well_known_errors:
     - Replace the bash script with an equivalent Python script.
     - Minor HTML syntax fix.
+    - Minor template integration.
 
  -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
 
