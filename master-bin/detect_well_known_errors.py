@@ -11,11 +11,10 @@ from collections import namedtuple
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 KPR_DIRS = ( 'pass', 'bugged', 'affected', 'fail' )
 
-# tmp-use new extensions, so python script can be developed alongside the bash
-KPR_EXT = '.kprn'
+KPR_EXT = '.kpr'
 BUG_EXT = '.bug'
 LOG_EXT = '.log'
-TPL_EXT = '.tpln'
+TPL_EXT = '.tpl'
 
 # note that there is an extra /tr in here
 PROB_TPL = \
