@@ -33,7 +33,6 @@ BUG_EXT = '.bug'
 LOG_EXT = '.log'
 TPL_EXT = '.tpl'
 
-# note that there is an extra /tr in here
 PROB_TPL = \
 """<table class="righttable"><tr class="titlerow"><td class="titlecell">
 $HEADER in $SECTION
@@ -42,7 +41,7 @@ $HELPTEXT
 <p>The commandline to find these logs is: <pre>
 COMMAND='$COMMAND'
 </pre></p>
-</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">
+</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr><tr class="normalrow"><td class="contentcell2" colspan="3">
 <ul>
 $PACKAGE_LIST</ul>
 <p>Affected packages in $SECTION: $COUNT</p></td></tr></table>
@@ -53,7 +52,7 @@ UNKNOWN_TPL = \
 Packages with failures not yet well known detected in $SECTION
 </td></tr><tr class="normalrow"><td class="contentcell2">
 <p>Please investigate and improve detection of known error types!</p>
-</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">
+</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr><tr class="normalrow"><td class="contentcell2" colspan="3">
 <ul>
 $PACKAGE_LIST
 </ul>
