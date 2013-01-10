@@ -82,6 +82,14 @@ def get_where( logpath ):
     """Convert a path to a log file to the 'where' component (e.g. 'pass')"""
     return( logpath.split('/')[-2] )
 
+def replace_ext( fpath, newext ):
+    basename = os.path.splitext( os.path.split(fpath)[1] )[0]
+    return('/'.join( fpath.split('/')[:-1] + [basename + newext] ))
+
+def get_kpr_path( logpath ):
+    """Return the kpr file path for a particular log path"""
+    return( replace_ext( logpath, KPR_EXT ) )
+
 def get_file_dict( workdirs, ext ):
     """For files in [workdirs] with extension 'ext', create a dict of
        <pkgname>_<version>: <path>"""
@@ -118,6 +126,35 @@ def clean_cache_files( logdict, cachedict, skipnewer=False ):
 
     return( count )
 
+def make_kprs( logdict, kprdict, problem_list ):
+    """Create kpr files, as necessary, so every log file has one
+       kpr entries are e.g.
+           fail/xorg-docs_1:1.6-1.log broken_symlinks_error.conf"""
+
+    needs_kpr = set(logdict.keys()).difference(set(kprdict.keys()))
+
+    for pkg_spec in needs_kpr:
+        logpath = logdict[pkg_spec]
+
+        try:
+            lb = open( logpath, 'r' )
+            logbody = lb.read()
+            lb.close()
+
+            where = get_where( logpath )
+
+            kf = open( get_kpr_path(logpath), 'a')
+
+            for problem in problem_list:
+                if( problem.has_problem( logbody, where ) ):
+                    kf.write( "%s/%s.log %s\n" % (where, pkg_spec, problem.name) )
+
+            kf.close()
+        except IOError:
+            print "File error processing %s" % logpath
+
+    return( len(needs_kpr) )
+
 def process_section( section, config, problem_list ):
     """ Update .bug and .kpr files for logs in this section """
 
@@ -134,6 +171,10 @@ def process_section( section, config, problem_list ):
 
     del_cnt = clean_cache_files( logdict, kprdict )
     clean_cache_files( logdict, bugdict, True )
+
+    (kprdict, bugdict) = [get_file_dict(workdirs,x) for x in [KPR_EXT, BUG_EXT]]
+
+    add_cnt = make_kprs( logdict, kprdict, problem_list )
 
 def detect_well_known_errors( config, problem_list ):
 
