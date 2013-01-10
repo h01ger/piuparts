@@ -15,6 +15,44 @@ KPR_DIRS = ( 'pass', 'bugged', 'affected', 'fail' )
 KPR_EXT = '.kprn'
 BUG_EXT = '.bug'
 LOG_EXT = '.log'
+TPL_EXT = '.tpln'
+
+# note that there is an extra /tr in here
+PROB_TPL = \
+"""<table class="righttable"><tr class="titlerow"><td class="titlecell">
+$HEADER in $SECTION
+</td></tr><tr class="normalrow"><td class="contentcell2">
+$HELPTEXT
+<p>The commandline to find these logs is: <pre>
+COMMAND='$COMMAND'
+</pre></p>
+</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">
+<ul>
+$PACKAGE_LIST</ul>
+<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>
+"""
+
+UNKNOWN_TPL = \
+"""<table class="righttable"><tr class="titlerow"><td class="titlecell">
+Packages with failures not yet well known detected in $SECTION
+</td></tr><tr class="normalrow"><td class="contentcell2">
+<p>Please investigate and improve detection of known error types!</p>
+</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">
+<ul>
+$PACKAGE_LIST
+</ul>
+<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>
+"""
+
+PKG_ERROR_TPL = \
+"""<li><a href=\"$LOG\">$LOG</a>
+    (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)
+$BUG</li>
+"""
+
+PKG_ISSUE_TPL = \
+"""<li><a href=\"$LOG\">$LOG</a> (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)</li>
+"""
 
 class WKE_Config( piupartslib.conf.Config ):
     """Configuration parameters for Well Known Errors"""
@@ -27,6 +65,7 @@ class WKE_Config( piupartslib.conf.Config ):
                 "sections": "sid",
                 "master-directory": "/var/lib/piuparts/master/",
                 "known-problem-directory": "/usr/share/piuparts/known_problems",
+                "output-directory": "/var/lib/piuparts/htdocs/",
             }, "" )
 
 class Problem():
@@ -131,6 +170,9 @@ def replace_ext( fpath, newext ):
     basename = os.path.splitext( os.path.split(fpath)[1] )[0]
     return('/'.join( fpath.split('/')[:-1] + [basename + newext] ))
 
+def get_pkg( pkgspec ):
+    return( pkgspec.split('_')[0] )
+
 def get_kpr_path( logpath ):
     """Return the kpr file path for a particular log path"""
     return( replace_ext( logpath, KPR_EXT ) )
@@ -148,6 +190,25 @@ def get_file_dict( workdirs, ext ):
                     = os.path.join(dir,fl)
 
     return filedict
+
+def get_pkgspec( logpath ):
+    """For a log full file spec, return the pkgspec (<pkg>_<version)"""
+    return( logpath.split('/')[-1] )
+
+def get_bug_text(logpath):
+    bugpath = replace_ext(logpath, BUG_EXT)
+
+    txt = ""
+    if os.path.exists(bugpath):
+        bf = open( bugpath, 'r' )
+        txt = bf.read()
+        bf.close()
+
+    return txt
+
+def section_path( logpath ):
+    """Convert a full log path name to one relative to the section directory"""
+    return( '/'.join( [get_where(logpath), get_pkgspec(logpath)] ) )
 
 def mtime( path ):
     return os.path.getmtime(path)
@@ -200,6 +261,67 @@ def make_kprs( logdict, kprdict, problem_list ):
 
     return( len(needs_kpr) )
 
+def populate_tpl( tmpl, vals ):
+
+    for key in vals:
+        tmpl = re.sub( "\$%s" % key, str(vals[key]), tmpl )
+
+    return tmpl
+
+def update_tpl( basedir, section, problem, failures, logdict, ftpl, ptpl ):
+
+    pkg_text = ""
+    for failure in failures:
+
+            pkg_text += populate_tpl(ftpl, {
+                                'LOG': section_path(logdict[failure.pkgspec]),
+                                'PACKAGE': get_pkg(failure.pkgspec),
+                                'BUG': get_bug_text(logdict[failure.pkgspec]),
+                                   } )
+
+    if len(pkg_text):
+        pf = open(os.path.join(basedir, failures[0].problem[:-5] + TPL_EXT),'w')
+        tpl_text = populate_tpl( ptpl, {
+                                'HEADER': problem.HEADER,
+                                'SECTION': section,
+                                'HELPTEXT': problem.HELPTEXT,
+                                'COMMAND': problem.COMMAND,
+                                'PACKAGE_LIST': pkg_text,
+                                'COUNT': len(failures),
+                                } )
+
+        pf.write( tpl_text )
+        pf.close()
+
+def update_html( section, logdict, problem_list, failures, config ):
+
+    html_dir = os.path.join( config['output-directory'], section )
+    if not os.path.exists( html_dir ):
+        os.mkdir( html_dir )
+
+    for problem in problem_list:
+        if problem.name[-11:] == "_error.conf":
+           ptpl = PKG_ERROR_TPL
+        else:
+           ptpl = PKG_ISSUE_TPL
+
+        update_tpl( html_dir, section, problem,
+                    failures.filtered(problem.name),
+                    logdict,
+                    ptpl, PROB_TPL )
+
+    # Make a failure list of all failed packages that don't show up as known
+    failedpkgs = set([x for x in logdict.keys()
+                     if get_where(logdict[x]) != 'pass'])
+    knownfailpkgs = set([failure.pkgspec for failure in failures.failures])
+    unknownsasfailures = [make_failure("","unknown_failures.conf",x)
+                         for x in failedpkgs.difference(knownfailpkgs)]
+    unknownsasfailures = sorted( unknownsasfailures, lambda x: logdict[x] )
+
+    update_tpl( html_dir, section, problem_list[0], unknownsasfailures,
+                logdict,
+                PKG_ERROR_TPL, UNKNOWN_TPL, )
+
 def process_section( section, config, problem_list ):
     """ Update .bug and .kpr files for logs in this section """
 
@@ -223,6 +345,8 @@ def process_section( section, config, problem_list ):
 
     failures = FailureManager( logdict )
     failures.sort_by_path()
+
+    update_html( section, logdict, problem_list, failures, config )
 
 def detect_well_known_errors( config, problem_list ):
 
