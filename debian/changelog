@@ -27,6 +27,10 @@ piuparts (0.51) UNRELEASED; urgency=low
     suppress some purge failures in wheezy.
   * New known problem: Database setup failure (issue).
 
+  [ David Steele ]
+  * detect_well_known_errors:
+    - Replace the bash script with an equivalent Python script.
+
  -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
 
 piuparts (0.50) unstable; urgency=low
