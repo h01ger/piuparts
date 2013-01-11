@@ -26,6 +26,7 @@ import subprocess
 from collections import namedtuple
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
+DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
 KPR_DIRS = ( 'pass', 'bugged', 'affected', 'fail' )
 
 KPR_EXT = '.kpr'
@@ -78,6 +79,19 @@ class WKE_Config( piupartslib.conf.Config ):
                 "known-problem-directory": "/usr/share/piuparts/known_problems",
                 "output-directory": "/var/lib/piuparts/htdocs/",
             }, "" )
+
+class WKE_Section_Config( piupartslib.conf.Config ):
+
+    def __init__( self, section ):
+        self.section = section
+
+        piupartslib.conf.Config.__init__( self, self.section,
+            {
+                "distro": None,
+                "mirror": None,
+                "area": None,
+                "arch": None,
+            }, "",  defaults_section="global" )
 
 class Problem():
     """ Encapsulate a particular known problem """
@@ -166,6 +180,19 @@ class FailureManager():
 
     def sort_by_path( self ):
         self.failures.sort(key=lambda x: self.logdict[x.pkgspec])
+
+    def sort_by_rdeps( self, pkgsdb ):
+        self.pkgsdb = pkgsdb
+
+        def keyfunc( x, pkgsdb=self.pkgsdb, logdict=self.logdict):
+            try:
+                rdeps = pkgsdb.get_package(get_pkg(x.pkgspec)).rrdep_count()
+            except KeyError:
+                rdeps = 0
+
+            return( (-rdeps, logdict[x.pkgspec]) )
+
+        self.failures.sort( key=keyfunc )
 
     def filtered( self, problem ):
         return([x for x in self.failures if problem==x.problem])
@@ -322,13 +349,22 @@ def update_html( section, logdict, problem_list, failures, config ):
     knownfailpkgs = set([failure.pkgspec for failure in failures.failures])
     unknownsasfailures = [make_failure("","unknown_failures.conf",x)
                          for x in failedpkgs.difference(knownfailpkgs)]
-    unknownsasfailures = sorted( unknownsasfailures, lambda x: logdict[x] )
+
+    def keyfunc( x, pkgsdb=pkgsdb, logdict=logdict):
+        try:
+            rdeps = pkgsdb.get_package(get_pkg(x.pkgspec)).rrdep_count()
+        except KeyError:
+            rdeps = 0
+
+        return( (-rdeps, logdict[x.pkgspec]) )
+
+    unknownsasfailures.sort( key=keyfunc )
 
     update_tpl( html_dir, section, problem_list[0], unknownsasfailures,
                 logdict,
                 PKG_ERROR_TPL, UNKNOWN_TPL, )
 
-def process_section( section, config, problem_list ):
+def process_section( section, config, problem_list, pkgsdb=None ):
     """ Update .bug and .kpr files for logs in this section """
 
     sectiondir = os.path.join( config['master-directory'], section )
@@ -349,8 +385,32 @@ def process_section( section, config, problem_list ):
 
     add_cnt = make_kprs( logdict, kprdict, problem_list )
 
+    if not pkgsdb:
+        oldcwd = os.getcwd()
+        os.chdir(config['master-directory'])
+
+        section_config = WKE_Section_Config( section )
+        section_config.read( CONFIG_FILE )
+
+        distro_config = piupartslib.conf.DistroConfig(
+                        DISTRO_CONFIG_FILE, section_config["mirror"])
+
+        pkgsdb = piupartslib.packagesdb.PackagesDB(prefix=section)
+
+        pkgs_url = distro_config.get_packages_url(
+                   section_config.get_distro(),
+                   section_config.get_area(),
+                   section_config.get_arch() )
+        pkg_fl = piupartslib.open_packages_url(pkgs_url)
+        pkgsdb.read_packages_file(pkg_fl)
+        pkg_fl.close()
+
+        pkgsdb.calc_rrdep_counts()
+
+        os.chdir(oldcwd)
+
     failures = FailureManager( logdict )
-    failures.sort_by_path()
+    failures.sort_by_rdeps(pkgsdb)
 
     update_html( section, logdict, problem_list, failures, config )
 
