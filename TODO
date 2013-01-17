@@ -13,6 +13,7 @@ for 0.50:
     really need anything else than running piuparts as root?
   - verify that all scripts in $user/bin/ also work from master-slave packages
     eventually enable some conjobs in the packages
+  - remove references to /org/piuparts.debian.org from the stock packages
   - slave.postinst should setup ~piupartss/.ssh/known_hosts from /etc/ssh, even
     if only for localhost
   - slave.postinst should setup ~piupartsm/.ssh/authorized_keys using triggers
