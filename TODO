@@ -61,6 +61,7 @@ for 0.51:
   - replace COMMAND with INCLUDE and EXCLUDE regular expressions, replacing the
     existing shell calls, for an orders-of-magnitude speed improvement in kpr
     creation
+  - rework known problems to a python-friendlier format
 
 - accept a PIUPARTS_CONF environment variable everywhere to point to a different
   piuparts.conf
