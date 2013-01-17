@@ -58,6 +58,9 @@ for 0.51:
     list
   - drop _issue/_error duplication, have flags inside to indicate thether to
     generate _issues.tpl (pass/) and/or _error.tpl (fail/ bugged/ affected/)
+  - replace COMMAND with INCLUDE and EXCLUDE regular expressions, replacing the
+    existing shell calls, for an orders-of-magnitude speed improvement in kpr
+    creation
 
 - accept a PIUPARTS_CONF environment variable everywhere to point to a different
   piuparts.conf
