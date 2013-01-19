@@ -19,10 +19,10 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		# allow testing of the fake essential packages
 		exit 0
 		;;
-	konqueror|konq-plugins|mozart-doc|texlive-full)
+	gosa-desktop|kde-core|kde-full|kde-plasma-desktop|kde-standard|kdebase-apps|konqueror|konq-plugins|mozart-doc|texlive-full)
 		# work around #601961: apt: wrongly thinks install-info is essential
 		if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
-			FAILS_TO_REMOVE="install-info"
+			FAILS_TO_REMOVE="$FAILS_TO_REMOVE install-info"
 		fi
 		;;
 esac
