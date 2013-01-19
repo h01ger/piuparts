@@ -9,6 +9,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * piuparts-slave.py:
   * piuparts-analyze.py:
   * piuparts-report.py:
+  * post_distupgrade_exceptions: Handle libdb4.8 removal in wheezy.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Tue, 15 Jan 2013 11:51:43 +0100
 
