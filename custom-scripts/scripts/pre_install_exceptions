@@ -18,7 +18,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	live-config-upstart)	log_debug
 				PIUPARTS_OBJECTS=upstart
 				;;
-	clvm|dtc-xen|ganeti2|mylvmbackup|redhat-cluster-suite)
+	clvm|dtc-xen|ganeti|ganeti2|mini-buildd-bld|mylvmbackup|redhat-cluster-suite)
 				log_debug
 				PIUPARTS_OBJECTS=lvm2
 				;;
