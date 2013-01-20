@@ -25,6 +25,11 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			FAILS_TO_REMOVE="$FAILS_TO_REMOVE install-info"
 		fi
 		;;
+	drupal6|moodle|moodle-book|moodle-debian-edu-theme|scuttle)
+		if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
+			USED_DURING_PURGE="$USED_DURING_PURGE wwwconfig-common"
+		fi
+		;;
 esac
 
 echo "*** Adding fake essential packages ***"
