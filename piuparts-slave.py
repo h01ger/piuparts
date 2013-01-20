@@ -68,7 +68,6 @@ class Config(piupartslib.conf.Config):
         piupartslib.conf.Config.__init__(self, section,
             {
                 "sections": "slave",
-                "slave-directory": section,
                 "idle-sleep": 300,
                 "max-tgz-age": 2592000,
                 "min-tgz-retry-delay": 21600,
@@ -317,7 +316,7 @@ class Section:
         self._error_wait_until = 0
         self._idle_wait_until = 0
         self._recycle_wait_until = 0
-        self._slave_directory = os.path.abspath(self._config["slave-directory"])
+        self._slave_directory = os.path.abspath(section)
         if not os.path.exists(self._slave_directory):
             os.makedirs(self._slave_directory)
 
