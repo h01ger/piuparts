@@ -2,6 +2,7 @@ piuparts (0.50) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Call dpkg-deb with --nocheck to allow bad version numbers.
   * piuparts.conf:
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:

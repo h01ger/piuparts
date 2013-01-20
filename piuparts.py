@@ -543,7 +543,7 @@ def make_metapackage(name, depends, conflicts):
     create_file(os.path.join(tmpdir, name, 'DEBIAN', 'control'),
                 control.dump())
 
-    run(['dpkg-deb', '-b', os.path.join(tmpdir, name)])
+    run(['dpkg-deb', '-b', '--nocheck', os.path.join(tmpdir, name)])
     dont_do_on_panic(panic_handler_id)
     return os.path.join(tmpdir, name) + '.deb'
 
