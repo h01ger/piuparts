@@ -15,6 +15,7 @@ sections = sid
 master-host = localhost
 master-user = piupartsm
 master-directory = /var/lib/piuparts/master
+slave-directory = /var/lib/piuparts/slave
 output-directory = /var/lib/piuparts/htdocs
 doc-root = /piuparts/
 master-command = python /usr/share/piuparts/piuparts-master

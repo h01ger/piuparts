@@ -471,6 +471,9 @@ used for all further sections.
 * "master-directory" is the directory where the master keeps its
  files. Can be relative to the master's home directory.
 
+* "slave-directory" is the directory where the slave keeps its
+ files. Can be relative to the slave's home directory.
+
 * "output-directory" is the directory where piuparts-report places
  the logfiles, generated html files, charts, ... that can be
  served by a webserver.
