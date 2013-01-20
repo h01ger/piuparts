@@ -32,6 +32,7 @@ move the failed log to ./bugged as well.
 
 
 import os
+import sys
 import re
 import shutil
 import subprocess
@@ -43,6 +44,7 @@ apt_pkg.init_system()
 
 error_pattern = re.compile(r"(?<=\n).*error.*\n?", flags=re.IGNORECASE)
 chroot_pattern = re.compile(r"tmp/tmp.*?'")
+distro = "?"
 
 
 def find_logs(directory):
@@ -127,7 +129,16 @@ def get_bug_versions(bug):
     """Gets a list of only the version numbers for which the bug is found.
     Newest versions are returned first."""
     # debianbts returns it in the format package/1.2.3 or 1.2.3 which will become 1.2.3
-    return list(reversed(sorted([x.rsplit('/', 1)[-1] for x in debianbts.get_status((bug,))[0].found_versions], cmp=apt_pkg.version_compare))) or ['~']
+    versions = []
+    for found_version in debianbts.get_status((bug,))[0].found_versions:
+        v = found_version.rsplit('/', 1)[-1]
+        if v == "None":
+            # only allow the distro-qualified "$distro/None" version
+            if found_version == distro + "/" + v:
+                versions.append(v)
+        else:
+            versions.append(v)
+    return list(reversed(sorted(versions, cmp=apt_pkg.version_compare))) or ['~']
 
 
 def write_bug_file(failed_log, bugs):
@@ -249,6 +260,9 @@ def piuparts_bugs_affecting(package):
 
 
 def main():
+    if len(sys.argv) > 1:
+        global distro
+        distro = sys.argv[1]
     mark_logs_with_reported_bugs()
     report_packages_with_many_logs()
 
