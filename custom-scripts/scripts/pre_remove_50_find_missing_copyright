@@ -7,6 +7,12 @@ do
 	# ignore failures for some old packages with many rdepends
 	ignore=
 	case "${pkg}_${PIUPARTS_DISTRIBUTION}" in
+		gij_lenny)			ignore=1 ;;
+		gnumeric-common_lenny)		ignore=1 ;;  #554201
+		libuim6_lenny)			ignore=1 ;;  #554204
+		libuim-data_lenny)		ignore=1 ;;  #554200
+		postgresql-8.3-plsh)		ignore=1 ;;
+		vlc_lenny)			ignore=1 ;;  #687657
 		cdd-common_squeeze)		ignore=1 ;;  #692946
 		libcucul0_wheezy)		ignore=1 ;;  # removed
 	esac
