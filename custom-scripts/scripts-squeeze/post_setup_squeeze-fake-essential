@@ -30,6 +30,11 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			USED_DURING_PURGE="$USED_DURING_PURGE wwwconfig-common"
 		fi
 		;;
+	octave-audio|octave-symbolic|octave-vrml)
+		if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
+			USED_DURING_PURGE="$USED_DURING_PURGE octave3.0"
+		fi
+		;;
 esac
 
 echo "*** Adding fake essential packages ***"
