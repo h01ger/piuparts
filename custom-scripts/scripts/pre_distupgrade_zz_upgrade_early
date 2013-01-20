@@ -1,0 +1,26 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+# packages to upgrade early
+EARLY=
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
+
+	if dpkg-query -s "octave3.0" >/dev/null 2>&1
+	then
+		#696377
+		EARLY="$EARLY libblas3gf liblapack3gf"
+	fi
+
+fi
+
+if [ -n "$EARLY" ]; then
+	log_debug
+	echo "Upgrading early: $EARLY"
+	apt-get update
+	apt-get -y install $EARLY
+fi
