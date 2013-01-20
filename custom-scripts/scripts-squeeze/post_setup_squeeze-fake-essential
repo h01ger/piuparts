@@ -35,6 +35,12 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			USED_DURING_PURGE="$USED_DURING_PURGE octave3.0"
 		fi
 		;;
+	ttf-beteckna)
+		#502707
+		if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
+			USED_DURING_PURGE="$USED_DURING_PURGE defoma"
+		fi
+		;;
 esac
 
 echo "*** Adding fake essential packages ***"
