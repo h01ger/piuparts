@@ -4,6 +4,13 @@ set -e
 failed=
 for pkg in ${PIUPARTS_OBJECTS%%=*}
 do
+	# ignore failures for some old packages with many rdepends
+	ignore=
+	case "${pkg}_${PIUPARTS_DISTRIBUTION}" in
+		cdd-common_squeeze)		ignore=1 ;;  #692946
+		libcucul0_wheezy)		ignore=1 ;;  # removed
+	esac
+
 	# skip check if the package is not installed
 	dpkg-query -s "$pkg" >/dev/null 2>&1 || continue
 	status="$(dpkg-query -W -f '${Status}' $pkg)"
@@ -14,7 +21,11 @@ do
 	copyright="$docdir/copyright"
 	if [ ! -f "$copyright" ]
 	then
-		failed="$failed $copyright"
+		if [ -n "$ignore" ]; then
+			echo "ignoring failure of $pkg on $PIUPARTS_DISTRIBUTION"
+		else
+			failed="$failed $copyright"
+		fi
 		echo "MISSING COPYRIGHT FILE: $copyright"
 		echo "# ls -lad $docdir"
 		ls -lad "$docdir" || true
