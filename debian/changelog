@@ -20,6 +20,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * Add several exceptions for lenny and lenny2squeeze tests.
   * slave_{run,join}: Rename the screen session to "piuparts_slave_screen".
   * slave_{run,join,cleanup}: Use pgrep to find running processes.
+  * detect_leftover_processes: Move statefile to slave-directory.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Tue, 15 Jan 2013 11:51:43 +0100
 
