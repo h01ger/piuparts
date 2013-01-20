@@ -18,6 +18,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * pre_remove_50_find_bad_permissions: Add some exceptions.
   * pre_remove_50_find_missing_copyright: Add some exceptions.
   * Add several exceptions for lenny and lenny2squeeze tests.
+  * slave_{run,join}: Rename the screen session to "piuparts_slave_screen".
 
  -- Andreas Beckmann <debian@abeckmann.de>  Tue, 15 Jan 2013 11:51:43 +0100
 

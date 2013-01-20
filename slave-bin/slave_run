@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Copyright 2009-2011 Holger Levsen (holger@layer-acht.org)
 #
@@ -19,8 +20,8 @@
 #
 # run piuparts-slave in screen so that a screendump can be mailed via cron to monitor the slave
 #
-set -e
 
+SESSIONNAME=piuparts_slave_screen
 SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
 MONITORDIR=/org/piuparts.debian.org/master/monitor-slave
 export PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
@@ -31,7 +32,7 @@ rm -f $SCREENLOG					# used by ~piupartsm/bin/detect_slave_problems
 rm -f $MONITORDIR/*					# used by several scripts to only warn once a day
 
 trap "cat $SCREENLOG | mail -s 'slave abnormaly ended' piupartsm ; rm $SCREENLOG; exit" TERM EXIT
-screen -L -d -m -S piuparts-slave-screen su - piupartss -c "cd /org/piuparts.debian.org/slave && PYTHONPATH=$PYTHONPATH python ../share/piuparts/piuparts-slave"
+screen -L -d -m -S $SESSIONNAME su - piupartss -c "cd /org/piuparts.debian.org/slave && PYTHONPATH=$PYTHONPATH python ../share/piuparts/piuparts-slave"
 trap - TERM EXIT
 
 echo "piuparts-slave has been started."

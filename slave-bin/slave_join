@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
 #
@@ -19,12 +20,11 @@
 #
 # reattach to an existing slave session
 #
-set -e
 
-SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
+SESSIONNAME=piuparts_slave_screen
 
 if [ $(ps fax|grep piuparts-slave|grep -v grep |wc -l) != 0 ] ; then
-  screen -R -S piuparts-slave-screen
+  screen -R -S $SESSIONNAME
 else
   echo "piuparts-slave not running!"
   echo
