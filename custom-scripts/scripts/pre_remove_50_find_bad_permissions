@@ -1,6 +1,19 @@
 #!/bin/sh
 set -e
 
+if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	bcron-run|capisuite|debbugs|raccess4vbox3|sxid)
+		for file in /etc/citadel/netconfigs/7 /etc/citadel/refcount_adjustments.dat /etc/citadel/citadel.control
+		do
+			test ! -f "$file" || chmod -c o-w "$file"
+		done
+		;;
+esac
+
+fi
+
 # find world writables without sticky bit
 BADPERMS=$(find / -mount ! -type l ! -type c ! -type p ! -type s -perm -o+w ! -perm -1000)
 
