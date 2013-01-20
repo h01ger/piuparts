@@ -57,6 +57,20 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				;;
 esac
 
+if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		bootcd-ia64)
+				if [ "$PIUPARTS_TEST" = "distupgrade" ] && [ "$(uname -m)" = "x86_64" ]; then
+					#622690: bootcd-ia64 has a Pre-Depends/Depends cycle that apt cannot resolve
+					log_debug
+					apt-get -y install bootcd-i386
+				fi
+				;;
+	esac
+
+fi
+
 # allow lenny kernel image installation in chroot
 if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 	for flavor in amd64 openvz-amd64 vserver-amd64 xen-amd64 486 686 686-bigmem openvz-686 vserver-686 vserver-686-bigmem xen-686
