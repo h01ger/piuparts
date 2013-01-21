@@ -10,19 +10,45 @@ Usertags: piuparts
 Hi,
 
 a test with piuparts revealed that your package misses the copyright
-file after an upgrade from squeeze to wheezy, which is a violation of
-Policy 12.5:
+file after an upgrade, which is a violation of Policy 12.5:
 http://www.debian.org/doc/debian-policy/ch-docs.html#s-copyrightfile
 
 After the upgrade /usr/share/doc/$PACKAGE/ is just an empty directory.
 
+This was observed on the following upgrade paths:
+
+
 From the attached log (scroll to the bottom...):
-(from 'ls -lad /u/s/d/$PKG' and 'ls -la /u/s/d/$PKG/')
 
 
 
 Additional info may be available here:
 http://wiki.debian.org/MissingCopyrightFile
+
+Note that dpkg intentionally does not replace directories with symlinks
+and vice versa, you need the maintainer scripts to do this.
+See in particular the end of point 4 in
+http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-unpackphase
+
+For switching from a directory to a symlink the *postinst* script
+should do something like this:
+
+	DOCDIR=/usr/share/doc/@@PACKAGE@@
+	DOCLINK=@@OTHERPACKAGE@@
+
+	if [ -d $DOCDIR ] && [ ! -L $DOCDIR ]; then
+		rmdir $DOCDIR
+		ln -s $DOCLINK $DOCDIR
+	fi
+
+For switching from a symlink to a directory, the *preinst* script
+should do something like this:
+
+	DOCDIR=/usr/share/doc/@@PACKAGE@@
+
+	if [ -L $DOCDIR ]; then
+		rm $DOCDIR
+	fi
 
 
 cheers,
