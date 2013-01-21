@@ -19,6 +19,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * pre_remove_50_find_missing_copyright: Add some exceptions.
   * Add several exceptions for lenny and lenny2squeeze tests.
   * slave_{run,join}: Rename the screen session to "piuparts_slave_screen".
+  * slave_{run,join,cleanup}: Use pgrep to find running processes.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Tue, 15 Jan 2013 11:51:43 +0100
 

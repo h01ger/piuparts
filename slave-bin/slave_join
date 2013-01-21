@@ -23,7 +23,7 @@ set -e
 
 SESSIONNAME=piuparts_slave_screen
 
-if [ $(ps fax|grep piuparts-slave|grep -v grep |wc -l) != 0 ] ; then
+if pgrep -f "SCREEN.*$SESSIONNAME" >/dev/null ; then
   screen -R -S $SESSIONNAME
 else
   echo "piuparts-slave not running!"

@@ -23,11 +23,6 @@ set -e
 # - this should only be run (automatically) on boot
 #
 
-# do nothing if piuparts-slave is running
-if [ "$(ps fax|grep share/piuparts/piuparts-slave|grep -v grep)" != "" ] ; then
-	exit 0
-fi
-
 
 PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
 [ -f "$PIUPARTS_CONF" ] || exit 0
@@ -50,6 +45,11 @@ get_config_value()
 
 get_config_value PIUPARTS_TMPDIR global tmpdir /org/piuparts.debian.org/tmp
 
+
+# do nothing if piuparts-slave is running
+if pgrep -f share/piuparts/piuparts-slave >/dev/null ; then
+	exit 0
+fi
 
 # umount all mount points (should be none on boot, but this script can also be called at other times)
 for MOUNTPOINT in $(tac /proc/mounts | cut -d " " -f 2 | grep "$PIUPARTS_TMPDIR/")

@@ -26,8 +26,12 @@ SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
 MONITORDIR=/org/piuparts.debian.org/master/monitor-slave
 export PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
 
+if pgrep -f share/piuparts/piuparts-slave ; then
+	# slave is running
+	exit 0
+fi
+
 cd /org/piuparts.debian.org/slave
-(ps fax|grep -v grep| grep piuparts-slave ) && exit 0
 rm -f $SCREENLOG					# used by ~piupartsm/bin/detect_slave_problems
 rm -f $MONITORDIR/*					# used by several scripts to only warn once a day
 
