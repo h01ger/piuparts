@@ -504,7 +504,7 @@ section, too, and will serve as defaults for all other sections
 * "max-tgz-age" is used to specify the maximum age (in seconds)
  after which basesystem tarballs will be recreated. If recreation
  fails, the old tarball will be used again. The default is 2592000
- seconds, which is 30 days.
+ seconds, which is 30 days. A value of 0 disables recreation.
 
 * "min-tgz-retry-delay" is used to specify the minimum time (in
  seconds) between attempts to recreate a tarball which was created

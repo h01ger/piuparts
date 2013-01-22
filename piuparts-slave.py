@@ -760,10 +760,10 @@ def create_chroot(config, tarball, distro):
         os.rename(tarball + ".new", tarball)
 
 def create_or_replace_chroot_tgz(config, tgz, distro):
+    max_tgz_age = int(config["max-tgz-age"])
+    min_tgz_retry_delay = int(config["min-tgz-retry-delay"])
     forced = 0
-    if os.path.exists(tgz):
-        max_tgz_age = int(config["max-tgz-age"])
-        min_tgz_retry_delay = int(config["min-tgz-retry-delay"])
+    if os.path.exists(tgz) and max_tgz_age > 0:
         now = time.time()
         statobj = os.stat(tgz)
         # stat.ST_MTIME is actually time file was initially created

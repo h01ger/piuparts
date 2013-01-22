@@ -14,6 +14,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * piupartslib/packagesdb.py:
   * piuparts-master.py:
   * piuparts-slave.py:
+    - Tarball recreation can be disabled by setting max-tgz-age to 0.
   * piuparts-analyze.py:
     - Add support for magic "$DISTRO/None" versions.
   * piuparts-report.py:
