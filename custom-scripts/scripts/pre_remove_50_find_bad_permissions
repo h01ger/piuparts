@@ -51,6 +51,13 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			test ! -d "$dir" || chmod -c o-w "$dir"
 		done
 		;;
+	linpopup)
+		# package removed in squeeze
+		for file in /var/lib/linpopup/messages.dat
+		do
+			test ! -f "$file" || chmod -c o-w "$file"
+		done
+		;;
 esac
 
 
