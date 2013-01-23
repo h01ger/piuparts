@@ -107,6 +107,13 @@ class Problem():
 
         self.init_problem()
 
+        self.inc_re = re.compile( self.INCLUDE )
+
+        if "EXCLUDE" in self.__dict__:
+            self.exc_re = re.compile( self.EXCLUDE )
+        else:
+            self.exc_re = None
+
     def init_problem(self):
         """Load problem file parameters (HELPTEXT="foo" -> self.HELPTEXT)"""
 
@@ -135,13 +142,12 @@ class Problem():
         """Does the log text 'logbody' contain this known problem?"""
 
         if where in self.WHERE:
-
-            s = subprocess.Popen( self.COMMAND, stdin=subprocess.PIPE,
-                 stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True )
-            s.communicate( logbody )
-
-            if s.returncode != 1:
-                return( True )
+            if self.inc_re.search( logbody, re.MULTILINE ):
+                for line in logbody.splitlines():
+                    if self.inc_re.search( line ):
+                        if self.exc_re == None \
+                               or not self.exc_re.search(line):
+                            return( True )
 
         return( False )
 
