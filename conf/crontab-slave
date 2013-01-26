@@ -10,6 +10,11 @@
 @reboot $HOME/bin/slave_cleanup ; sudo $HOME/bin/slave_run
 
 #
+# monitor slave session every hour
+#
+16 * * * * $HOME/bin/detect_slave_problems
+
+#
 # monitor for problems every six hours
 #
 23 */6 * * * $HOME/bin/detect_leftover_processes
