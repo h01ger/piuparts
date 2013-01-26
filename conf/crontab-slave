@@ -14,3 +14,7 @@
 #
 23 */6 * * * $HOME/bin/detect_leftover_processes
 
+#
+# monitor for cruft in the temporary directory once a day
+#
+00  0 * * * $HOME/bin/detect_tmp_cruft
