@@ -16,6 +16,10 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
+#
+# check for stale mounts and chroots in $PIUPARTS_TMPDIR
+#
+
 
 PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
 [ -f "$PIUPARTS_CONF" ] || exit 0
@@ -39,6 +43,20 @@ get_config_value()
 get_config_value PIUPARTS_TMPDIR global tmpdir /org/piuparts.debian.org/tmp
 
 
+MOUNTS="$(mktemp)"
+cp /proc/mounts "$MOUNTS"
+
+if [ "$(grep -v trash "$MOUNTS" | grep -c "$PIUPARTS_TMPDIR")" -gt 1 ] ; then
+	echo "More than one mountpoint below $PIUPARTS_TMPDIR detected!"
+	echo
+	grep "$PIUPARTS_TMPDIR" "$MOUNTS"
+	echo
+	echo "Zero or one mountpoint is normal for piuparts operation, more is not."
+	echo "Please investigate and cleanup."
+	echo
+fi
+rm "$MOUNTS"
+
 LS_TMP=$(ls --color=never -l "$PIUPARTS_TMPDIR")
 if [ "$(echo "$LS_TMP" | wc -l)" -gt 12 ] ; then
 	echo "More than ten directories in $PIUPARTS_TMPDIR detected!"
@@ -49,5 +67,6 @@ if [ "$(echo "$LS_TMP" | wc -l)" -gt 12 ] ; then
 	echo
 	echo "One is normal for piuparts operation, more is not."
 	echo "Please investigate and cleanup."
+	echo
 fi
 

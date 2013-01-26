@@ -21,6 +21,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * slave_{run,join}: Rename the screen session to "piuparts_slave_screen".
   * slave_{run,join,cleanup}: Use pgrep to find running processes.
   * detect_leftover_processes: Move statefile to slave-directory.
+  * detect_stale_mounts: Merge into detect_tmp_cruft.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Tue, 15 Jan 2013 11:51:43 +0100
 
