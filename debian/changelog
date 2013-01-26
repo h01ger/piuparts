@@ -34,6 +34,8 @@ piuparts (0.51) UNRELEASED; urgency=low
     - Sort known error and issue packages by reverse dependency count.
       (Closes: #698526)
     - Add a PTS link to issue and error summary entries.
+    - Replace the known_problem COMMAND with INCLUDE and EXCLUDE, and replace
+      grep shell calls with python re modules calls, for a 10x speedup.
     - Minor HTML syntax fix.
     - Minor template integration.
 
