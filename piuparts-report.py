@@ -380,6 +380,7 @@ linktarget_by_template = [
     ("packages_have_been_kept_back_issue.tpl", "but logfile contains 'packages have been kept back'"),
     ("needs_rebuild_issue.tpl", "but logfile recommends to rebuild some packages"),
     ("obsolete_conffiles_issue.tpl", "but logfile reports obsolete conffiles"),
+    ("missing_md5sums_issue.tpl", "but logfile reports missing md5sums"),
 
     ("dependency_error.tpl", "due to unsatisfied dependencies"),
     ("packages_have_been_kept_back_error.tpl", "...and logfile also contains 'packages have been kept back'"),
@@ -412,6 +413,7 @@ linktarget_by_template = [
     ("broken_symlinks_error.tpl", "...and logfile also contains 'broken symlinks'"),
     ("inadequate_error.tpl", "due to logfile containing inadequate errors"),
     ("obsolete_conffiles_error.tpl", "...and logfile reports obsolete conffiles"),
+    ("missing_md5sums_error.tpl", "...and logfile reports missing md5sums"),
     ("unknown_failures.tpl", "due to unclassified failures"),
 ]
 

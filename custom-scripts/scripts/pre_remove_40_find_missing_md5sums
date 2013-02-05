@@ -1,0 +1,43 @@
+#!/bin/sh
+set -e
+
+for pkg in ${PIUPARTS_OBJECTS%%=*}
+do
+	# skip check if the package is not installed
+	dpkg-query -s "$pkg" >/dev/null 2>&1 || continue
+	status="$(dpkg-query -W -f '${Status}' $pkg)"
+	test "$status" != "unknown ok not-installed" || continue
+	test "$status" != "deinstall ok config-files" || continue
+
+	md5file="/var/lib/dpkg/info/$pkg.md5sums"
+	test -f "$md5file" || md5file="/var/lib/dpkg/info/$pkg:$(dpkg --print-architecture).md5sums"
+	if [ ! -f "$md5file" ]; then
+		echo "MD5SUM FILE NOT FOUND FOR $pkg"
+		continue
+	fi
+
+	f1=/var/run/f1.$$
+	sed -r 's%^[0-9a-f]{32}  %/%' "$md5file" | sort >$f1
+
+	f2=/var/run/f2.$$
+	>$f2
+	dpkg -L "$pkg" | sort | \
+	while read f ; do
+		if [ -d "$f" ]; then
+			: # ignore directories
+		elif [ -L "$f" ]; then
+			: # ignore links
+		elif [ -z "${f%%/etc/*}" ]; then
+			: # ignore files in /etc - probably conffiles
+		elif [ ! -e "$f" ]; then
+			echo "${pkg}: MISSING OBJECT $f"
+		else
+			echo "$f" >> $f2
+		fi
+	done
+
+	comm -13 $f1 $f2 | sed "s/^/${pkg}: FILE WITHOUT MD5SUM /"
+	comm -23 $f1 $f2 | sed "s/^/${pkg}: MD5SUM WITHOUT FILE /"
+
+	rm -f $f1 $f2
+done
