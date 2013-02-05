@@ -240,6 +240,7 @@ class Settings:
             "/var/lib/cdebconf/questions.dat-old",
             "/var/lib/cdebconf/templates.dat",
             "/var/lib/cdebconf/templates.dat-old",
+            "/var/lib/dpkg/arch",
             "/var/lib/dpkg/available",
             "/var/lib/dpkg/available-old",
             "/var/lib/dpkg/diversions",
