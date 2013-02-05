@@ -510,7 +510,11 @@ class Section:
         for distro in distros:
             if distro not in packages_files:
                 try:
-                    packages_files[distro] = fetch_packages_file(self._config, distro)
+                    packages_url = self._config.get_packages_url(distro)
+                    logging.debug("Fetching %s" % packages_url)
+                    f = piupartslib.open_packages_url(packages_url)
+                    packages_files[distro] = piupartslib.packagesdb.PackagesFile(f)
+                    f.close()
                 except IOError:
                     logging.error("failed to fetch packages file for %s" % distro)
                     self._error_wait_until = time.time() + 900
@@ -784,15 +788,6 @@ def create_or_replace_chroot_tgz(config, tgz, distro):
                 logging.info("Failed to create ... reverting to old %s" % tgz)
             else:
                 os.unlink(tgz + ".old")
-
-def fetch_packages_file(config, distro):
-    packages_url = config.get_packages_url(distro)
-    logging.debug("Fetching %s" % packages_url)
-    f = piupartslib.open_packages_url(packages_url)
-    packages_file = piupartslib.packagesdb.PackagesFile(f)
-    f.close()
-
-    return packages_file
 
 
 def create_file(filename, contents):
