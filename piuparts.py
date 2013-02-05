@@ -921,8 +921,14 @@ class Chroot:
 
     def enable_testdebs_repo(self, update=True):
         if settings.testdebs_repo:
-            logging.debug("enabling testdebs repository '%s'" % settings.testdebs_repo)
-            create_file(self.relative("etc/apt/sources.list.d/piuparts-testdebs-repo.list"), settings.testdebs_repo + "\n")
+            if settings.testdebs_repo.startswith("deb"):
+                debline = settings.testdebs_repo
+            elif settings.testdebs_repo.startswith("/"):
+                debline = "deb file://%s ./" % settings.testdebs_repo
+            else:
+                debline = "deb %s ./" % settings.testdebs_repo
+            logging.debug("enabling testdebs repository '%s'" % debline)
+            create_file(self.relative("etc/apt/sources.list.d/piuparts-testdebs-repo.list"), debline + "\n")
             if update:
                 self.run(["apt-get", "update"])
 
@@ -2570,7 +2576,8 @@ def parse_command_line():
 
     parser.add_option("--testdebs-repo",
                       help="A repository that contains the packages to be tested, e.g. " +
-                      "'deb <URL> <distrib> <components>...' or 'deb file://</bind/mount> ./'")
+                      "'deb <URL> <distrib> <components>...' or 'deb file://</bind/mount> ./'," +
+                      "plain URLs or local paths are permitted, too.")
 
     parser.add_option("--no-diversions", action="store_true",
                       default=False,

@@ -192,9 +192,11 @@ Note that file: addresses works if the directories are made accessible from with
   Skip testing the output from the logrotate files left in the system after remove a package.
 
 *--testdebs-repo='deb-line'::
-  Provide an additional (unparsed) line to be appended to sources.list, e.g.
+  Provide an additional line to be appended to sources.list, e.g.
     'deb <URL> <distrib> <components>' or
     'deb file:// </bind/mount> ./'
+  If only an URL or local path is given as argument, "deb", "file://", and
+  "./" will be prepended/appended as needed.
   The "testdebs" repository provides the packages to be tested (and some
   additional dependencies, if needed, e.g. all packages built from the same
   source package as the (binary) package being tested) and can be used for
