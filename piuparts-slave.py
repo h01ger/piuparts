@@ -669,15 +669,15 @@ def test_package(config, pname, pvers, packages_files):
     if ret == 0 and config["upgrade-test-chroot-tgz"]:
         distros = config["upgrade-test-distros"].split()
         if distros:
-            # the package must exist in at least one of the older distros
-            for distro in distros[:-1]:
+            # the package must exist somewhere
+            for distro in distros:
                 if pname in packages_files[distro]:
                     break
             else:
-                output.write("Package %s not found in any old distribution\n" % pname)
+                output.write("Package %s not found in any distribution\n" % pname)
                 ret = -10003
 
-            # and (usually) in the target distro
+            # the package must have the correct version in the distupgrade target distro
             distro = distros[-1]
             if not pname in packages_files[distro]:
                 # the package may "disappear" in the distupgrade target distro
