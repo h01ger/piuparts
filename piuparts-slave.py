@@ -90,6 +90,7 @@ class Config(piupartslib.conf.Config):
                 "keep-sources-list": "no",
                 "arch": None,
                 "precedence": "1",
+                "slave-load-max": None,
             },
             defaults_section=defaults_section)
 
@@ -337,6 +338,35 @@ class Section:
 
         self._slave = Slave()
 
+
+    def _throttle_if_overloaded(self):
+        global interrupted
+        if interrupted or got_sighup:
+            return
+        if self._config["slave-load-max"] is None:
+            return
+        load_max = float(self._config["slave-load-max"])
+        if load_max < 1.0:
+            return
+        if os.getloadavg()[0] <= load_max:
+            return
+        load_resume = max(load_max - 1.0, 0.9)
+        secs = random.randrange(30, 90)
+        while True:
+            load = os.getloadavg()[0]
+            if load <= load_resume:
+                break
+            logging.info("Sleeping due to high load (%.2f)" % load)
+            try:
+                time.sleep(secs)
+            except KeyboardInterrupt:
+                interrupted = True
+            if interrupted or got_sighup:
+                break
+            if secs < 300:
+                secs += random.randrange(30, 90)
+
+
     def _connect_to_master(self, recycle=False):
         self._slave.set_master_host(self._config["master-host"])
         self._slave.set_master_user(self._config["master-user"])
@@ -385,6 +415,8 @@ class Section:
     def run(self, do_processing=True, recycle=False):
         if time.time() < self.sleep_until(recycle=recycle):
             return 0
+
+        self._throttle_if_overloaded()
 
         if interrupted or got_sighup:
             do_processing = False
@@ -534,13 +566,12 @@ class Section:
         test_count = 0
         self._check_tarball()
         for package_name, version in self._slave.get_reserved():
-            if got_sighup:
+            self._throttle_if_overloaded()
+            if interrupted or got_sighup:
                 break
             test_count += 1
             test_package(self._config, package_name, version, packages_files)
             self._slave.forget_reserved(package_name, version)
-            if interrupted:
-                break
         self._talk_to_master(unreserve=interrupted)
         return test_count
 

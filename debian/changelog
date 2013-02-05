@@ -19,6 +19,7 @@ piuparts (0.50) UNRELEASED; urgency=low
       + known-problem-directory (for known_problem definitions)
       + backup-directory (for the master script prepare_backup)
       + PYTHONPATH (to find the python modules in non-default path setups)
+      + slave-load-max
     - Setting tmpdir is now mandatory for master/slave operation.
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:
@@ -32,6 +33,10 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Fix SIGHUP handling while recycling.
     - Flush and unreserve all sections on interrupt.
     - Add support for running piuparts under /usr/bin/timeout.
+    - Check system load frequently and enter sleep mode if threshold
+      (piuparts.conf global setting slave-load-max) is exceeded. Operation
+      will be resumed after load drops below 'slave-load-max - 1.0'. Disabled
+      by default.
   * piuparts-analyze.py:
     - Add support for magic "$DISTRO/None" versions.
   * piuparts-report.py:

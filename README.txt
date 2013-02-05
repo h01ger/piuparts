@@ -489,6 +489,11 @@ used for all further sections.
 * "doc-root" is the location where the webserver will serve the
  piuparts report from. Default: "/".
 
+* "slave-load-max" specifies the system load limit when
+ piuparts-slave will enter sleep mode. Operation will be resumed
+ after load drops below 'slave-load-max - 1.0'. Floating point
+ value. Defaults to 0 (= disabled).
+
 ==== section specific configuration
 
 The section specific settings will be reloaded each time a section
