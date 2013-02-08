@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Copyright 2009 Holger Levsen (holger@layer-acht.org)
 #
@@ -69,4 +70,3 @@ if [ "$(echo "$LS_TMP" | wc -l)" -gt 12 ] ; then
 	echo "Please investigate and cleanup."
 	echo
 fi
-

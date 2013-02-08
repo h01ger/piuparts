@@ -18,7 +18,7 @@ set -e
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #
-# cleanup /org/piuparts.debian.org/tmp/
+# cleanup old chroots etc. in $PIUPARTS_TMPDIR
 #
 # - this should only be run (automatically) on boot
 #

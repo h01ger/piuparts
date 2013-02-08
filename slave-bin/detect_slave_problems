@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
 #
@@ -16,10 +17,10 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-HOSTNAME=`hostname`
-if [ "$HOSTNAME" != "piatti" ] ; then
-	exit 0
-fi
+#
+# this scripts monitors the output of piuparts-slave
+# when running in screen started by ~piupartss/bin/slave_run
+#
 
 
 PIUPARTS_CONF=${PIUPARTS_CONF:-/etc/piuparts/piuparts.conf}
@@ -41,14 +42,15 @@ get_config_value()
 	eval "$1"='"$value"'
 }
 
+
+HOSTNAME=`hostname`
+if [ "$HOSTNAME" != "piatti" ] ; then
+	exit 0
+fi
+
+
 get_config_value MASTER global master-directory
-get_config_value SECTIONS global sections
 
-
-#
-# this scripts monitors the output of piuparts-slave
-# when running in screen started by ~piupartss/bin/slave_run
-#
 
 SCREENLOG=$MASTER/../slave/screenlog.0
 MONITORDIR=$MASTER/monitor-slave
@@ -67,10 +69,14 @@ difference=$(( $unixtime - $stamptime ))
 # FIXME: parse config file for duration...
 if [ ! -f $LOCKFILE ] && [ ${difference} -ge 1860 ] ; then
 	{
-		echo "Either a test is running for a very long time (but no test should run longer than an hour), piuparts-slave hangs or is not running at all or wasn't started with ~piupartss/bin/slave_run - please investigate and take appropriate measures!"
+		echo "Either a test is running for a very long time (but no test"
+		echo "should run longer than an hour), piuparts-slave hangs or is"
+		echo "not running at all or wasn't started with"
+		echo "~piupartss/bin/slave_run - please investigate and take"
+		echo "appropriate measures!"
 		echo
 		tail $SCREENLOG
-	} | mail -s "problem with piuparts-slave detected" piupartsm
+	} | mail -s "problem with piuparts-slave detected" piupartss
 	touch $LOCKFILE
 	chmod 660 $LOCKFILE
 fi

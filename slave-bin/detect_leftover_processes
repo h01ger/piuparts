@@ -44,6 +44,7 @@ get_config_value()
 get_config_value SLAVEROOT global slave-directory
 get_config_value PIUPARTS_TMPDIR global tmpdir /org/piuparts.debian.org/tmp
 
+
 STATEFILE=$SLAVEROOT/leftover_processes
 
 # clear the statefile daily and whine again
@@ -57,12 +58,12 @@ if [ -z "$OUTPUT" ]; then
 	rm -f $STATEFILE
 elif [ "$(cat $STATEFILE 2>/dev/null)" != "$OUTPUT" ]; then
 	echo "Found processes running with a deleted chroot in $PIUPARTS_TMPDIR"
-	echo "This is usually because of 'FAIL: Processes are running inside chroot' which usually"
-	echo "means the package violates 'must use invoke-rc.d (policy 9.3.3.2)'."
+	echo "This is usually because of 'FAIL: Processes are running inside chroot' which"
+	echo "usually means the package violates 'must use invoke-rc.d (policy 9.3.3.2)'."
 	echo
 	echo "$OUTPUT"
 	echo
 	echo "Please cleanup manually."
-	echo "#522918 has been filed to make this manual operation unneeded."
+	echo "Since #522918 has been fixed this should no longer happen."
 	echo "$OUTPUT" > $STATEFILE
 fi
