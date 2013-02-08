@@ -1,0 +1,50 @@
+To: submit@bugs.debian.org
+Subject: unhandled symlink to directory conversion: /usr/share/doc/PACKAGE
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+an upgrade test with piuparts revealed that your package installs files
+over existing symlinks and possibly overwrites files owned by other
+packages. This usually means an old version of the package shipped a
+symlink but that was later replaced by a real (and non-empty)
+directory. This kind of overwriting another package's files cannot be
+detected by dpkg.
+
+This was observed on the following upgrade paths:
+
+
+For /usr/share/doc/PACKAGE this may not be problematic as long as both
+packages are installed, ship byte-for-byte identical files and are
+upgraded in lockstep. But once one of the involved packages gets
+removed, the other one will lose its documentation files, too,
+including the copyright file, which is a violation of Policy 12.5:
+http://www.debian.org/doc/debian-policy/ch-docs.html#s-copyrightfile
+
+For other overwritten locations anything interesting may happen.
+
+Note that dpkg intentionally does not replace directories with symlinks
+and vice versa, you need the maintainer scripts to do this.
+See in particular the end of point 4 in
+http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-unpackphase
+
+For switching from a symlink to a directory, the *preinst* script
+should do something like this:
+
+	DOCDIR=/usr/share/doc/@@PACKAGE@@
+
+	if [ -L $DOCDIR ]; then
+		rm $DOCDIR
+	fi
+
+
+From the attached log (usually somewhere in the middle...):
+
+
+
+cheers,
