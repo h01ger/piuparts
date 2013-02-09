@@ -42,6 +42,16 @@ get_config_value()
 	eval "$1"='"$value"'
 }
 
+# outputs file age in seconds (or 0 if the file does not exist)
+file_age()
+{
+	local ctime now
+	test -e "$1" || echo "0"
+	ctime=$(stat -c %Z "$1" 2>/dev/null || echo 0)
+	now=$(date +%s)
+	echo $(($now - $ctime))
+}
+
 
 HOSTNAME=`hostname`
 if [ "$HOSTNAME" != "piatti" ] ; then
@@ -61,9 +71,7 @@ cd $MONITORDIR
 chown piupartsm:piuparts $MONITORDIR
 chmod 775 $MONITORDIR
 
-stamptime=$(/usr/bin/stat -c %Z $SCREENLOG 2>/dev/null || echo 0)
-unixtime=$(date +%s)
-difference=$(( $unixtime - $stamptime ))
+difference=$(file_age $SCREENLOG)
 
 # dont complain, if already complained and screenlog is younger than 31 min (=1800 sec) - the slave likes to sleep that long
 # FIXME: parse config file for duration...
