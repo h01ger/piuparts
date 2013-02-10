@@ -8,6 +8,8 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Pass unqualified package names to apt-cache show for lenny support.
     - Support plain URLs or local paths as --testdebs-repo argument and
       prepend/append "deb", "file://", and "./" as needed.
+    - Improve the "dirname part contains a symlink" test and report
+      overwritten files owned by other packages as failures.
   * piuparts.conf:
     - New global setting slave-directory.
   * piupartslib/conf.py:

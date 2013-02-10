@@ -1206,14 +1206,26 @@ class Chroot:
     def list_paths_with_symlinks(self):
         file_owners = self.get_files_owned_by_packages()
         bad = []
+        overwrites = False
         for f in sorted(file_owners.keys()):
             dn, fn = os.path.split(f)
             dc = canonicalize_path(self.name, dn)
             if dn != dc:
-                bad.append("%s != %s (%s)" %(f, os.path.join(dc, fn), ", ".join(file_owners[f])))
+                fc = os.path.join(dc, fn)
+                of = ", ".join(file_owners[f])
+                if fc in file_owners:
+                    overwrites = True
+                    ofc = ", ".join(file_owners[fc])
+                else:
+                    ofc = "?"
+                bad.append("%s (%s) != %s (%s)" %(f, of, fc, ofc))
         if bad:
-            logging.info("dirname part contains a symlink:\n%s" %
-                         indent_string("\n".join(bad)))
+            if overwrites:
+                logging.error("FAIL: silently overwrites files via directory symlinks:\n" +
+                        indent_string("\n".join(bad)))
+            else:
+                logging.info("dirname part contains a symlink:\n" +
+                        indent_string("\n".join(bad)))
 
     def remove_packages(self, packages):
         """Remove packages in a chroot."""
