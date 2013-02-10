@@ -60,19 +60,11 @@ fi
 
 
 get_config_value SLAVEROOT global slave-directory
-get_config_value MASTER global master-directory
 get_config_value IDLE_SLEEP global idle-sleep 1800
 
 
 SCREENLOG=$SLAVEROOT/screenlog.0
-MONITORDIR=$MASTER/monitor-slave
-LOCKFILE="$MONITORDIR/slave-problems"
 STATEFILE=$SLAVEROOT/slave-problems
-
-mkdir -p $MONITORDIR
-cd $MONITORDIR
-chown piupartsm:piuparts $MONITORDIR
-chmod 775 $MONITORDIR
 
 # clear the statefile daily and whine again
 test $(file_age $STATEFILE) -lt 86000 || rm -f $STATEFILE
@@ -94,13 +86,3 @@ elif [ ! -f $STATEFILE ]; then
 	} | mail -s "problem with piuparts-slave detected" piupartss
 	touch $STATEFILE
 fi
-
-#
-# cleanup $LOCKFILE once a day to remind daily
-#
-
-HOUR=`date +%H`
-if [ "$HOUR" = "00" ] ; then
-	rm -f $LOCKFILE
-fi
-
