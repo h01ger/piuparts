@@ -60,6 +60,7 @@ fi
 
 
 get_config_value MASTER global master-directory
+get_config_value IDLE_SLEEP global idle-sleep 1800
 
 
 SCREENLOG=$MASTER/../slave/screenlog.0
@@ -71,11 +72,12 @@ cd $MONITORDIR
 chown piupartsm:piuparts $MONITORDIR
 chmod 775 $MONITORDIR
 
-difference=$(file_age $SCREENLOG)
-
-# dont complain, if already complained and screenlog is younger than 31 min (=1800 sec) - the slave likes to sleep that long
-# FIXME: parse config file for duration...
-if [ ! -f $LOCKFILE ] && [ ${difference} -ge 1860 ] ; then
+# Only complain if screenlog is older than $IDLE_SPEEP + 1 minute (the slave
+# likes to sleep that long) and the problem is new or was not reported within
+# the previous 24 hours.
+if [ $(file_age $SCREENLOG) -le $(($IDLE_SLEEP + 60)) ]; then
+	rm -f $LOCKFILE
+elif [ ! -f $LOCKFILE ]; then
 	{
 		echo "Either a test is running for a very long time (but no test"
 		echo "should run longer than an hour), piuparts-slave hangs or is"
