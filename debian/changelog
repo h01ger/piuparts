@@ -14,6 +14,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - New global setting slave-directory.
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:
+    - Add Package.waiting_count() and friends, populated in calc_rrdep_count.
   * piuparts-master.py:
   * piuparts-slave.py:
     - Tarball recreation can be disabled by setting max-tgz-age to 0.

@@ -60,6 +60,7 @@ class Package(UserDict.UserDict):
         self._parsed_alt_deps = {}
         self._rrdep_count = None
         self._block_count = None
+        self._waiting_count = None
 
     def _parse_dependencies(self, header_name):
         if header_name in self._parsed_deps:
@@ -135,6 +136,15 @@ class Package(UserDict.UserDict):
 
     def set_block_count(self, val):
         self._block_count = val
+
+    def waiting_count(self):
+        """Get the number of packages waiting for this package"""
+        if self._waiting_count == None:
+            raise Exception('Waiting count has not been calculated')
+        return(self._waiting_count)
+
+    def set_waiting_count(self, val):
+        self._waiting_count = val
 
     def dump(self, output_file):
         output_file.write("".join(self.headers))
@@ -564,6 +574,9 @@ class PackagesDB:
     def get_error_states(self):
         return [x for x in self._propagate_error_state.keys() if x in self._states]
 
+    def get_waiting_states(self):
+        return [x for x in self._propagate_waiting_state.keys() if x in self._states]
+
     def get_pkg_names_in_state(self, state):
         self._compute_package_states()
         return set(self._in_state[state])
@@ -691,6 +704,7 @@ class PackagesDB:
         self._find_all_packages()       # populate _packages
         self._compute_package_states()  # populate _package_state
         error_states = self.get_error_states()
+        waiting_states = self.get_waiting_states()
 
         # create a reverse dependency dictionary.
         # entries consist of a one-level list of reverse dependency package names,
@@ -730,6 +744,13 @@ class PackagesDB:
             else:
                 block_list = []
             self._packages[pkg_name].set_block_count( len(block_list) )
+
+            if self._package_state[pkg_name] in waiting_states:
+                waiting_list = [x for x in rrdep_list
+                              if self._package_state[x] in waiting_states]
+            else:
+                waiting_list = []
+            self._packages[pkg_name].set_waiting_count(len(waiting_list))
 
 
 # vi:set et ts=4 sw=4 :
