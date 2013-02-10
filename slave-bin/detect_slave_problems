@@ -59,25 +59,30 @@ if [ "$HOSTNAME" != "piatti" ] ; then
 fi
 
 
+get_config_value SLAVEROOT global slave-directory
 get_config_value MASTER global master-directory
 get_config_value IDLE_SLEEP global idle-sleep 1800
 
 
-SCREENLOG=$MASTER/../slave/screenlog.0
+SCREENLOG=$SLAVEROOT/screenlog.0
 MONITORDIR=$MASTER/monitor-slave
 LOCKFILE="$MONITORDIR/slave-problems"
+STATEFILE=$SLAVEROOT/slave-problems
 
 mkdir -p $MONITORDIR
 cd $MONITORDIR
 chown piupartsm:piuparts $MONITORDIR
 chmod 775 $MONITORDIR
 
+# clear the statefile daily and whine again
+test $(file_age $STATEFILE) -lt 86000 || rm -f $STATEFILE
+
 # Only complain if screenlog is older than $IDLE_SPEEP + 1 minute (the slave
 # likes to sleep that long) and the problem is new or was not reported within
 # the previous 24 hours.
 if [ $(file_age $SCREENLOG) -le $(($IDLE_SLEEP + 60)) ]; then
-	rm -f $LOCKFILE
-elif [ ! -f $LOCKFILE ]; then
+	rm -f $STATEFILE
+elif [ ! -f $STATEFILE ]; then
 	{
 		echo "Either a test is running for a very long time (but no test"
 		echo "should run longer than an hour), piuparts-slave hangs or is"
@@ -87,8 +92,7 @@ elif [ ! -f $LOCKFILE ]; then
 		echo
 		tail $SCREENLOG
 	} | mail -s "problem with piuparts-slave detected" piupartss
-	touch $LOCKFILE
-	chmod 660 $LOCKFILE
+	touch $STATEFILE
 fi
 
 #
