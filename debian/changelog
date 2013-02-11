@@ -13,6 +13,8 @@ piuparts (0.50) UNRELEASED; urgency=low
   * piuparts-analyze.py:
     - Add support for magic "$DISTRO/None" versions.
   * piuparts-report.py:
+  * Makefile:
+    - Perform syntax check on *.py before installation.
   * pre_install_exceptions: Handle bootcd-ia64 installation in squeeze.
   * post_distupgrade_exceptions: Handle libdb4.8 removal in wheezy.
   * pre_remove_50_find_bad_permissions: Add some exceptions.

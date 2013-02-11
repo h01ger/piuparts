@@ -59,8 +59,12 @@ install-conf-4-running-from-git:
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
 	install -m 0755 update-piuparts-setup $(DESTDIR)$(sharedir)/piuparts/slave/
 
-build:
-	for file in piuparts piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
+python-syntax-check:
+	@set -e -x; $(foreach py,$(wildcard *.py piupartslib/*.py),python -m py_compile $(py);)
+
+build: python-syntax-check
+	@set -e -x ; \
+		for file in piuparts piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
 		sed -e 's/__PIUPARTS_VERSION__/$(version)/g' $$file.py > $$file ; done
 
 install:
