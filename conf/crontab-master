@@ -12,11 +12,8 @@
 0 0 * * * $HOME/bin/generate_daily_report
 
 #
-# make sure slave is reminded daily (and also monitored if not started with ~piupartss/bin/slave_run)
-#
-42 0 * * * mkdir -p /org/piuparts.debian.org/master/monitor-slave/ ; rm -f /org/piuparts.debian.org/master/monitor-slave/* ; cp /org/piuparts.debian.org/slave/screenlog.0 /org/piuparts.debian.org/master/monitor-slave/screenlog.new ; chmod -f 775 /org/piuparts.debian.org/master/monitor-slave/screenlog.new
-
 # reschedule old logs twice a day
+#
 00 3,15 * * * $HOME/bin/reschedule_oldest_logs
 
 #

@@ -27,6 +27,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Move to slave-bin and run from slave crontab.
     - Use idle-sleep setting from piuparts.conf.
     - Move statefile to slave-directory.
+  * master: Get rid of the monitor-slave directory.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Tue, 15 Jan 2013 11:51:43 +0100
 

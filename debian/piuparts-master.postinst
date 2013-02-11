@@ -43,11 +43,14 @@ case "$1" in
     done
 
     install -d -o $muser -g $pgroup -m 0755 $userhome/master
-    install -d -o $muser -g $pgroup -m 0755 $userhome/master/monitor-slave
     install -d -o $muser -g $pgroup -m 0755 $userhome/backup
 
     install -d -o $muser -g $pgroup -m 0755 $userhome/htdocs
     cp -rf $scriptroot/htdocs/* $userhome/htdocs/
+
+    if dpkg --compare-versions "$2" lt-nl "0.50" ; then
+        rm -rf $userhome/master/monitor-slave
+    fi
 
     ;;
 
