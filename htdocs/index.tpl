@@ -179,7 +179,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-11-06</b>: The lists of known circular depends is now taken from <a href="http://debian.semistable.com/debgraph.out.html" target="_blank">http://debian.semistable.com/debgraph.out.html</a> and maintained seperatedly (and maually) for each tested distribution in piuparts.conf - this is not optimal (which would be piuparts detecting them automatically) but much better than the hardcoded list which we had in the piuparts library since December 2009.
+      <b>2010-11-06</b>: The lists of known circular depends is now taken from <a href="http://debian.semistable.com/debgraph.out.html" target="_blank">http://debian.semistable.com/debgraph.out.html</a> and maintained separately (and manually) for each tested distribution in piuparts.conf - this is not optimal (which would be piuparts detecting them automatically) but much better than the hardcoded list which we had in the piuparts library since December 2009.
      </td>
     </tr>
     <tr class="normalrow">
@@ -209,7 +209,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-02-25</b>: Since yesterday, squeeze and lenny2squeeze are being tested with "-warn-on-leftovers-after-purge" making piuparts only warn about leftover files after purge. This has two effects: an decrease in the number of failed logs to process, to better focus on more important problems and second, more packages will be tested, as less packages are (seen as) buggy. Today all failed packages in squeeze and lenny2squeeze have been rescheduled for testing.
+      <b>2010-02-25</b>: Since yesterday, squeeze and lenny2squeeze are being tested with "--warn-on-leftovers-after-purge" making piuparts only warn about leftover files after purge. This has two effects: an decrease in the number of failed logs to process, to better focus on more important problems and second, more packages will be tested, as less packages are (seen as) buggy. Today all failed packages in squeeze and lenny2squeeze have been rescheduled for testing.
      </td>
     </tr>
      <tr class="normalrow">
@@ -229,7 +229,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-12-24</b>: Enable work-in-progress code to enable testing of packages with circular depends. This will allow testing of 5-6000 more packages in sid and squeeze, see #526046 and the 0.39 changelog for details. The list of packages with circular depends is currently hard-coded and will probably become a configuration option but not auto detected. But that's code yet to be written :-)
+      <b>2009-12-24</b>: Enable work-in-progress code to enable testing of packages with circular depends. This will allow testing of 5-6000 more packages in sid and squeeze, see <a href="http://bugs.debian.org/526046" target="_blank">#526046</a> and the 0.39 changelog for details. The list of packages with circular depends is currently hard-coded and will probably become a configuration option but not auto detected. But that's code yet to be written :-)
      </td>
     </tr>
     <tr class="normalrow">
@@ -264,7 +264,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-09-16</b>: Reschedule testing for 233 failing packages in sid which were affected by #545949. No packages in squeeze were affected.
+      <b>2009-09-16</b>: Reschedule testing for 233 failing packages in sid which were affected by <a href="http://bugs.debian.org/545949" target="_blank">#545949</a>. No packages in squeeze were affected.
      </td>
     </tr>
     <tr class="normalrow">
@@ -274,7 +274,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-06-06</b>: Reschedule testing for 163 successful and 27 failing packages in sid which were affected by #530501. Once openssh 1:5.1p1-6 has reached squeeze, this will be done again with 194 packages there.
+      <b>2009-06-06</b>: Reschedule testing for 163 successful and 27 failing packages in sid which were affected by <a href="http://bugs.debian.org/530501" target="_blank">#530501</a>. Once openssh 1:5.1p1-6 has reached squeeze, this will be done again with 194 packages there.
      </td>
     </tr>
     <tr class="normalrow">
@@ -284,7 +284,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-05-11</b>: Filed #528266 and made piuparts ignore files in /tmp after purge. This got rid of 20 failures in sid and 14 in squeeze.
+      <b>2009-05-11</b>: Filed <a href="http://bugs.debian.org/528266" target="_blank">#528266</a> and made piuparts ignore files in /tmp after purge. This got rid of 20 failures in sid and 14 in squeeze.
      </td>
     </tr>
     <tr class="normalrow">
@@ -304,7 +304,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-04-18</b>: Deleted all 14 failed logfiles which complained about <code>/var/games</code> being present after purge, as this ain't an issue, see #524461.
+      <b>2009-04-18</b>: Deleted all 14 failed logfiles which complained about <code>/var/games</code> being present after purge, as this ain't an issue, see <a href="http://bugs.debian.org/524461" target="_blank">#524461</a>.
      </td>
     </tr>
     <tr class="normalrow">
@@ -329,17 +329,17 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2006-09-29</b>: Lars <a href="http://lists.debian.org/debian-devel/2006/09/msg01068.html" target="_blank">seeks help maintaining piuparts</a>.
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
       <b>2006-10-02</b>: <a href="http://bugs.debian.org/390754" target="_blank">#390754 O: piuparts -- package installation, upgrading and removal testing tool"</a>
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2006-10-02</b>: <a href="http://bugs.debian.org/317033" target="_blank">#317033 ITP: piuparts -- .deb package installation, upgrading, and removal testing tool</a>
+      <b>2006-09-29</b>: Lars <a href="http://lists.debian.org/debian-devel/2006/09/msg01068.html" target="_blank">seeks help maintaining piuparts</a>.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2005-07-05</b>: <a href="http://bugs.debian.org/317033" target="_blank">#317033 ITP: piuparts -- .deb package installation, upgrading, and removal testing tool</a>
      </td>
     </tr>
     <tr class="normalrow">
