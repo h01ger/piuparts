@@ -2100,16 +2100,16 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
                    "than by packages\nbeing explicitly tested.\n")
             logging.info(msg)
         if warnremoved:
-            msg = ("After purging files have dissappeared:\n" +
+            msg = ("After purging files have disappeared:\n" +
                    file_list(warnremoved, file_owners) +
                    "This seems to have been caused by dependencies rather "
-                   "than by packages\nbbeing explicitly tested.\n")
+                   "than by packages\nbeing explicitly tested.\n")
             logging.info(msg)
         if warnmodified:
             msg = ("After purging files have been modified:\n" +
                    file_list(warnmodified, file_owners) +
                    "This seems to have been caused by dependencies rather "
-                   "than by packages\nbbeing explicitly tested.\n")
+                   "than by packages\nbeing explicitly tested.\n")
             logging.info(msg)
 
     return ok
