@@ -282,6 +282,9 @@ class Settings:
             "/var/lib/onioncat/",       # onioncat
             "/var/lib/rbldns/",
             "/var/spool/powerdns/",     # pdns-server (#531134), pdns-recursor (#531135)
+            # work around broken symlinks
+            "/usr/lib/python2.6/dist-packages/python-support.pth",  #635493 and #385775
+            "/usr/lib/python2.7/dist-packages/python-support.pth",
             # work around #316521 dpkg: incomplete cleanup of empty directories
             "/etc/apache2/",
             "/etc/apache2/conf.d/",

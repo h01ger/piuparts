@@ -4,6 +4,9 @@ piuparts (0.50) UNRELEASED; urgency=low
   * piuparts.py:
     - Add to ignored_files:
       + /var/lib/dpkg/arch
+      + /usr/lib/python2.[67]/dist-packages/python-support.pth
+        broken symlinks caused by python-support (see #635493 and #385775,
+        thanks David Steele)
     - Call dpkg-deb with --nocheck to allow bad version numbers.
     - Pass unqualified package names to apt-cache show for lenny support.
     - Support plain URLs or local paths as --testdebs-repo argument and
