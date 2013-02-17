@@ -912,12 +912,13 @@ class Chroot:
         """Create an /etc/apt/sources.list with a given distro."""
         lines = []
         for mirror, components in settings.debian_mirrors:
-            lines.append("deb %s %s %s\n" %
+            lines.append("deb %s %s %s" %
                          (mirror, distro, " ".join(components)))
         for repo in settings.extra_repos:
-            lines.append(repo + "\n")
+            lines.append(repo)
         create_file(self.relative("etc/apt/sources.list"),
-                    "".join(lines))
+                    "\n".join(lines) + "\n")
+        logging.debug("sources.list:\n" + indent_string("\n".join(lines)))
 
     def enable_testdebs_repo(self, update=True):
         if settings.testdebs_repo:
