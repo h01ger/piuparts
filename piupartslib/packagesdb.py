@@ -26,6 +26,7 @@ Lars Wirzenius <liw@iki.fi>
 
 import logging
 import os
+import random
 import tempfile
 import time
 import UserDict
@@ -307,6 +308,7 @@ class PackagesDB:
         self._in_state = None
         self._package_state = {}
         self._recycle_mode = False
+        self._candidates_for_testing = None
         self.set_subdirs(ok="pass", fail="fail", evil="untestable",
                          reserved="reserved", morefail=["bugged", "affected"],
                          recycle="recycle")
@@ -638,13 +640,22 @@ class PackagesDB:
         return "does-not-exist"
 
     def _find_packages_ready_for_testing(self):
-        return self.get_pkg_names_in_state("waiting-to-be-tested")
+        if self._candidates_for_testing is None:
+            package_names = self.get_pkg_names_in_state("waiting-to-be-tested")
+            if len(package_names) > 1:
+                self.calc_rrdep_counts()
+                tuples = [(self.get_package(pn).waiting_count(), random.random(), pn)
+                        for pn in package_names]
+                self._candidates_for_testing = [self.get_package(x[2])
+                        for x in sorted(tuples, reverse = True)]
+            else:
+                self._candidates_for_testing = [self.get_package(pn)
+                        for pn in package_names]
+        return self._candidates_for_testing
 
     def reserve_package(self):
         all_but_recycle = [x for x in self._all if x != self._recycle]
-        pset = self._find_packages_ready_for_testing()
-        while (len(pset)):
-            p = self.get_package(pset.pop())
+        for p in self._find_packages_ready_for_testing():
             if self._recycle_mode and self._logdb.log_exists(p, [self._recycle]):
                 for vdir in all_but_recycle:
                     if self._logdb.log_exists(p, [vdir]):

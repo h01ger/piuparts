@@ -16,6 +16,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * piupartslib/packagesdb.py:
     - Add Package.waiting_count() and friends, populated in calc_rrdep_count.
   * piuparts-master.py:
+    - Sort packages to be tested by importance, i.e. descending waiting_count.
   * piuparts-slave.py:
     - Tarball recreation can be disabled by setting max-tgz-age to 0.
     - Relax package existence checks to allow distupgrading to backports.
