@@ -43,6 +43,8 @@ for 0.50:
   ~piupartss/bin/slave_cleanup which should be executed at the beginning of
   slave_run
 
+- handle .udebs more gracefully, see #699160 for details.
+
 
 for 0.51:
 
