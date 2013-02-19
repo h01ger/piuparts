@@ -33,6 +33,7 @@ piuparts (0.51) UNRELEASED; urgency=low
     - Replace the bash script with an equivalent Python script.
     - Sort known error and issue packages by reverse dependency count.
       (Closes: #698526)
+    - Add a PTS link to issue and error summary entries.
     - Minor HTML syntax fix.
     - Minor template integration.
 
