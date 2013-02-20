@@ -364,7 +364,10 @@ class Section:
 
     def _count_submittable_logs(self):
         files = 0
-        for logdir in ["pass", "fail", "untestable"]:
+        subdirs = ["pass", "fail", "untestable"]
+        if interrupted:
+            subdirs += ["reserved", "new"]
+        for logdir in subdirs:
             for basename in os.listdir(os.path.join(self._slave_directory, logdir)):
                 if basename.endswith(".log"):
                     files += 1
@@ -420,7 +423,7 @@ class Section:
                 logging.info("busy")
                 self._error_wait_until = time.time() + 900
             else:
-                if self._talk_to_master(fetch=do_processing, recycle=recycle):
+                if self._talk_to_master(fetch=do_processing, recycle=recycle, unreserve=interrupted):
                     if do_processing:
                         if not self._slave.get_reserved():
                             self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
@@ -538,8 +541,6 @@ class Section:
             if interrupted:
                 break
         self._talk_to_master(unreserve=interrupted)
-        if interrupted:
-            raise KeyboardInterrupt
         return test_count
 
 
@@ -842,6 +843,9 @@ def main():
                 test_count += section.run(recycle=True)
                 if test_count > 0 and idle_until < time.time():
                     break
+
+        if interrupted:
+            raise KeyboardInterrupt
 
         if test_count == 0 and not got_sighup:
             now = time.time()

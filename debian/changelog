@@ -23,6 +23,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Tarball recreation can be disabled by setting max-tgz-age to 0.
     - Relax package existence checks to allow distupgrading to backports.
     - Fix SIGHUP handling while recycling.
+    - Flush and unreserve all sections on interrupt.
   * piuparts-analyze.py:
     - Add support for magic "$DISTRO/None" versions.
   * piuparts-report.py:
