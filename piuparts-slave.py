@@ -383,6 +383,9 @@ class Section:
         if time.time() < self.sleep_until(recycle=recycle):
             return 0
 
+        if interrupted or got_sighup:
+            do_processing = False
+
         if not do_processing and self._count_submittable_logs() == 0:
             return 0
 
@@ -425,9 +428,13 @@ class Section:
                                 self._recycle_wait_until = self._idle_wait_until + 3600
                         else:
                             processed = self._process()
-                            # put this section at the end of the round-robin runnable queue
-                            self._idle_wait_until = time.time()
-                            self._recycle_wait_until = time.time()
+                            if got_sighup and self._slave.get_reserved():
+                                # keep this section at the front of the round-robin runnable queue
+                                pass
+                            else:
+                                # put this section at the end of the round-robin runnable queue
+                                self._idle_wait_until = time.time()
+                                self._recycle_wait_until = time.time()
                             return processed
             finally:
                 os.chdir(oldcwd)
@@ -820,7 +827,7 @@ def main():
         test_count = 0
 
         for section in sorted(sections, key=lambda section: (section.precedence(), section.sleep_until())):
-            test_count += section.run(do_processing=(test_count == 0 and not got_sighup))
+            test_count += section.run(do_processing=(test_count == 0))
 
         if test_count == 0 and got_sighup:
             # clear SIGHUP state after flushing all sections
@@ -836,7 +843,7 @@ def main():
                 if test_count > 0 and idle_until < time.time():
                     break
 
-        if test_count == 0:
+        if test_count == 0 and not got_sighup:
             now = time.time()
             sleep_until = min([now + int(global_config["idle-sleep"])] + [section.sleep_until() for section in sections])
             if (sleep_until > now):
