@@ -11,6 +11,7 @@ sections = wheezy
 master-host = localhost
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
+prefix = /org/piuparts.debian.org
 master-directory = /org/piuparts.debian.org/master/
 slave-directory = /org/piuparts.debian.org/slave
 output-directory = /org/piuparts.debian.org/htdocs/
