@@ -8,13 +8,13 @@
 
 
 override_dh_auto_build:
-	$(MAKE) build build-doc
+	$(MAKE) prefix=/usr build build-doc
 
 override_dh_auto_test:
 	echo "unittests are disabled as they haven't been run at build time since years and thus are broken..."
 
 override_dh_auto_install:
-	$(MAKE) prefix=$(CURDIR)/debian/tmp/usr etcdir=$(CURDIR)/debian/tmp/etc install install-doc install-conf
+	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp prefix=/usr etcdir=/etc install install-doc install-conf
 
 override_dh_python2:
 	dh_python2 -p piuparts-master -p piuparts-slave /usr/share/piuparts

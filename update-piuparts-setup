@@ -72,7 +72,8 @@ fi
 #
 # install everything from GIT into PIUPARTS_PREFIX
 #
-make build build-doc
+make		prefix=$PIUPARTS_PREFIX \
+		build build-doc
 sudo make	prefix=$PIUPARTS_PREFIX \
 		docdir=$PIUPARTS_HTDOCS/doc \
 		htdocsdir=$PIUPARTS_HTDOCS \
