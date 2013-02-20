@@ -30,6 +30,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * debian/rules: Set 'prefix' and 'DESTDIR' for build and install.
   * lib/read_config.sh: Factored out the piuparts.conf reading function that
     is used by all master/slave shell scripts. Shipped in piuparts.common.
+    - Add support for RFC822 line continuation (wrap + indent) and comments.
   * master-bin/slave-bin: Switch to sourcing read_config.sh.
   * pre_install_exceptions: Handle bootcd-ia64 installation in squeeze.
   * post_distupgrade_exceptions: Handle libdb4.8 removal in wheezy.

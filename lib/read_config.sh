@@ -1,4 +1,4 @@
-# Copyright © 2011 Andreas Beckmann <debian@abeckmann.de>
+# Copyright © 2011, 2013 Andreas Beckmann <anbe@debian.org>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -30,7 +30,7 @@ get_config_value()
 	test -n "$1" && test "$1" = "$(echo "$1" | tr -c -d '[:alnum:]_')" || exit 1
 	section="$2"
 	key="$3"
-	value="$(sed -rn '\#^\['"$section"'\]#,/^\[/ {/^'"$key"'\s*=/ {s/^'"$key"'\s*=\s*//; s/\s*$//; p}}' "$PIUPARTS_CONF")"
+	value="$(sed -rn '\#^\['"$section"'\]#,/^\[/ {/^'"$key"'\s*=/,/^[^ \t#]/ {/^#/d; /^'"$key"'\s*=|^\s/!d; s/^'"$key"'\s*=\s*//; s/^\s*//; s/\s*$//; /^$/d; p}}' "$PIUPARTS_CONF")"
 	test -n "$value" || value="$4"
 	if [ -z "$value" ]; then
 		echo "'$key' not set in section [$section] of $PIUPARTS_CONF, exiting." >&2
