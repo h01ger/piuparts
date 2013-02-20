@@ -31,10 +31,13 @@ get_config_value()
 	section="$2"
 	key="$3"
 	value="$(sed -rn '\#^\['"$section"'\]#,/^\[/ {/^'"$key"'\s*=/,/^[^ \t#]/ {/^#/d; /^'"$key"'\s*=|^\s/!d; s/^'"$key"'\s*=\s*//; s/^\s*//; s/\s*$//; /^$/d; p}}' "$PIUPARTS_CONF")"
-	test -n "$value" || value="$4"
 	if [ -z "$value" ]; then
-		echo "'$key' not set in section [$section] of $PIUPARTS_CONF, exiting." >&2
-		exit 1
+		if [ -n "${4+set}" ]; then
+			value="$4"
+		else
+			echo "'$key' not set in section [$section] of $PIUPARTS_CONF, exiting." >&2
+			exit 1
+		fi
 	fi
 	eval "$1"='"$value"'
 }
