@@ -26,6 +26,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * Makefile:
     - Add DESTDIR support.
     - Perform syntax check on *.py before installation.
+    - Add support for applying substitutions in master/slave scripts.
   * debian/rules: Set 'prefix' and 'DESTDIR' for build and install.
   * lib/read_config.sh: Factored out the piuparts.conf reading function that
     is used by all master/slave shell scripts. Shipped in piuparts.common.

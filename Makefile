@@ -59,10 +59,18 @@ install-conf-4-running-from-git:
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
 	install -m 0755 update-piuparts-setup $(DESTDIR)$(sharedir)/piuparts/slave/
 
+SCRIPTS_TEMPLATES	 = $(wildcard master-bin/*.in slave-bin/*.in)
+SCRIPTS_GENERATED	 = $(SCRIPTS_TEMPLATES:.in=)
+
+%: %.in
+	sed -r \
+		-e "s%@sharedir@%$(sharedir)%g" \
+		$< > $@
+
 python-syntax-check:
 	@set -e -x; $(foreach py,$(wildcard *.py piupartslib/*.py),python -m py_compile $(py);)
 
-build: python-syntax-check
+build: python-syntax-check $(SCRIPTS_GENERATED)
 	@set -e -x ; \
 		for file in piuparts piuparts-slave piuparts-master piuparts-report piuparts-analyze; do \
 		sed -e 's/__PIUPARTS_VERSION__/$(version)/g' $$file.py > $$file ; done
@@ -83,13 +91,13 @@ install:
 	install -m 0644 lib/*.sh $(DESTDIR)$(sharedir)/piuparts/lib/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts/master
-	install -m 0755 master-bin/* $(DESTDIR)$(sharedir)/piuparts/master
+	install -m 0755 $(filter-out %.in,$(wildcard master-bin/*)) $(DESTDIR)$(sharedir)/piuparts/master/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts/master/known_problems
 	install -m 0644 known_problems/*.conf $(DESTDIR)$(sharedir)/piuparts/master/known_problems/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
-	install -m 0755 slave-bin/* $(DESTDIR)$(sharedir)/piuparts/slave
+	install -m 0755 $(filter-out %.in,$(wildcard slave-bin/*)) $(DESTDIR)$(sharedir)/piuparts/slave/
 
 	install -d $(DESTDIR)$(htdocsdir)
 	install -m 0644 htdocs/*.* $(DESTDIR)$(htdocsdir)/
@@ -120,3 +128,4 @@ clean:
 	rm -f piuparts piuparts-slave piuparts-master piuparts-report piuparts-analyze
 	rm -f piuparts.1 piuparts.1.xml piuparts.1.html README.xml README.html docbook-xsl.css piuparts.html
 	rm -f *.pyc piupartslib/*.pyc
+	rm -f $(SCRIPTS_GENERATED)
