@@ -21,6 +21,10 @@ set -e
 # run piuparts-slave in screen so that a screendump can be mailed via cron to monitor the slave
 #
 
+
+. @sharedir@/piuparts/lib/read_config.sh
+
+
 SESSIONNAME=piuparts_slave_screen
 SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
 export PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
