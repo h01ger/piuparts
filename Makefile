@@ -79,6 +79,9 @@ install:
 	install -m 0644 piupartslib/*.py $(DESTDIR)$(site26)/piupartslib/
 	install -m 0644 piupartslib/*.py $(DESTDIR)$(site27)/piupartslib/
 
+	install -d $(DESTDIR)$(sharedir)/piuparts/lib
+	install -m 0644 lib/*.sh $(DESTDIR)$(sharedir)/piuparts/lib/
+
 	install -d $(DESTDIR)$(sharedir)/piuparts/master
 	install -m 0755 master-bin/* $(DESTDIR)$(sharedir)/piuparts/master
 
