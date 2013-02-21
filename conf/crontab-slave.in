@@ -3,19 +3,19 @@
 #
 # start slave_run automatically after reboots
 #
-@reboot $HOME/bin/slave_cleanup ; sudo $HOME/bin/slave_run
+@reboot @sharedir@/piuparts/slave/slave_cleanup ; sudo @sharedir@/piuparts/slave/slave_run
 
 #
 # monitor slave session every hour
 #
-16 * * * * $HOME/bin/detect_slave_problems
+16 * * * * @sharedir@/piuparts/slave/detect_slave_problems
 
 #
 # monitor for problems every six hours
 #
-23 */6 * * * $HOME/bin/detect_leftover_processes
+23 */6 * * * @sharedir@/piuparts/slave/detect_leftover_processes
 
 #
 # monitor for cruft in the temporary directory once a day
 #
-00  0 * * * $HOME/bin/detect_tmp_cruft
+00  0 * * * @sharedir@/piuparts/slave/detect_tmp_cruft

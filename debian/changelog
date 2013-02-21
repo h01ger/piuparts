@@ -32,6 +32,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     is used by all master/slave shell scripts. Shipped in piuparts.common.
     - Add support for RFC822 line continuation (wrap + indent) and comments.
   * master-bin/slave-bin: Switch to sourcing read_config.sh.
+  * conf/crontab*: Substitute @sharedir@ at build time.
   * pre_install_exceptions: Handle bootcd-ia64 installation in squeeze.
   * post_distupgrade_exceptions: Handle libdb4.8 removal in wheezy.
   * pre_remove_50_find_bad_permissions: Add some exceptions.
