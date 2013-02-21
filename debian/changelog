@@ -57,6 +57,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Move statefile to slave-directory.
   * master: Get rid of the monitor-slave directory.
   * New bug template: unhandled_symlink_to_directory_conversion.
+  * New bug template: installs_over_existing_symlink.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Tue, 15 Jan 2013 11:51:43 +0100
 

@@ -1,0 +1,44 @@
+To: submit@bugs.debian.org
+Subject: directory vs. symlink conflict:
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package installs files over
+an existing symlink shipped or created by another package.
+
+Your package ships:
+
+
+but package CONFLICTOR ships:
+
+
+Installing something over existing symlinks is considered bad practice.
+See e.g. http://lists.debian.org/87ehlevcrf.fsf@windlord.stanford.edu
+
+It may break in subtle ways and dpkg cannot detect this as a problem.
+* Your package might silently overwrite files installed at the symlink
+  destination by other packages.
+* If the package shipping the symlink decides to make the link point
+  somewhere else (or turn it into a real directory), the files owned
+  by your package "will be lost" somewhere in the filesystem.
+* Depending on installation order the problematic path will be created
+  either as a symlink or a directory: the package installed first will
+  "win" and all others have "lost".
+  Note that dpkg intentionally does not replace directories with
+  symlinks and vice versa, see in particular the end of point 4 in
+  http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-unpackphase
+  (Note: Adding Pre-Depends is *not* a solution.)
+
+Please move the files shipped in your package to the "real" location.
+
+From the attached log (usually somewhere in the middle...):
+
+
+
+cheers,
