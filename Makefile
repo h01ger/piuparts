@@ -59,7 +59,7 @@ install-conf-4-running-from-git:
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
 	install -m 0755 update-piuparts-setup $(DESTDIR)$(sharedir)/piuparts/slave/
 
-SCRIPTS_TEMPLATES	 = $(wildcard master-bin/*.in slave-bin/*.in)
+SCRIPTS_TEMPLATES	 = $(wildcard master-bin/*.in slave-bin/*.in conf/*.in)
 SCRIPTS_GENERATED	 = $(SCRIPTS_TEMPLATES:.in=)
 
 %: %.in
