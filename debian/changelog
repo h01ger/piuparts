@@ -25,6 +25,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * piuparts-analyze.py:
     - Add support for magic "$DISTRO/None" versions.
   * piuparts-report.py:
+    - Call r.dev_off() after generating a plot.  (Closes: #657799)
   * Makefile:
     - Add DESTDIR support.
     - Perform syntax check on *.py before installation.

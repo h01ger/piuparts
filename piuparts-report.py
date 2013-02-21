@@ -1037,6 +1037,7 @@ class Section:
           main="Binary packages per state in '+self._config.section+'", \
           xlab="", ylab="Number of binary packages", space=0.1, border=0)')
         r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
+        r.dev_off()
 
         stats_html = "<tr class=\"normalrow\"> " \
                      + "<td class=\"contentcell2\" colspan=\"3\">" \
