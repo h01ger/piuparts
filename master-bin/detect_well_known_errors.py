@@ -64,6 +64,20 @@ class Problem():
 
         self.WHERE = self.WHERE.split(" ")
 
+    def has_problem(self, logbody, where):
+        """Does the log text 'logbody' contain this known problem?"""
+
+        if where in self.WHERE:
+
+            s = subprocess.Popen( self.COMMAND, stdin=subprocess.PIPE,
+                 stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True )
+            s.communicate( logbody )
+
+            if s.returncode != 1:
+                return( True )
+
+        return( False )
+
 def get_where( logpath ):
     """Convert a path to a log file to the 'where' component (e.g. 'pass')"""
     return( logpath.split('/')[-2] )
