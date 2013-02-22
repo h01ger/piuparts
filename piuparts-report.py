@@ -412,7 +412,7 @@ def setup_logging(log_level, log_file_name):
     logger.setLevel(log_level)
 
     formatter = logging.Formatter(fmt="%(asctime)s %(message)s",
-                                  datefmt="%H:%M")
+                                  datefmt="%H:%M:%S")
 
     handler = logging.StreamHandler(sys.stderr)
     handler.setFormatter(formatter)
@@ -811,7 +811,7 @@ class Section:
 
 
     def create_maintainer_summaries(self, maintainers, source_data):
-        logging.debug("Writing maintainer summaries in %s" % self._output_directory)
+        logging.debug("Writing %d maintainer summaries in %s" % (len(maintainers), self._output_directory))
         maintainer_dir = os.path.join(self._output_directory, "maintainer")
         if not os.path.exists(maintainer_dir):
             os.mkdir(maintainer_dir)
@@ -994,7 +994,7 @@ class Section:
 
 
     def create_package_summaries(self, logs_by_dir):
-        logging.debug("Writing package templates in %s" % self._config.section)
+        logging.debug("Writing source summaries in %s" % self._config.section)
 
         maintainers = {}
         source_binary_rows = {}
