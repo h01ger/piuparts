@@ -22,7 +22,7 @@
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
 get_config_value PYTHONPATH global PYTHONPATH ''
-get_config_value DEBEMAIL global bts-from
+get_config_value DEBEMAIL global bts-from ''
 
 
 export PYTHONPATH

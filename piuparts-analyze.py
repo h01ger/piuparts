@@ -167,8 +167,9 @@ def mark_bugged_version(failed_log, bugged_log):
 
 
 def bts_update_found(bugnr, newversion):
-    #subprocess.check_call(('bts', 'found', bugnr, newversion))
-    print(' '.join(('bts', 'found', str(bugnr), newversion)))
+    if "DEBEMAIL" in os.environ and os.environ["DEBEMAIL"]:
+        #subprocess.check_call(('bts', 'found', bugnr, newversion))
+        print(' '.join(('bts', 'found', str(bugnr), newversion)))
 
 
 def mark_logs_with_reported_bugs():
