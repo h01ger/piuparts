@@ -27,9 +27,9 @@
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
 get_config_value HTDOCS global output-directory
+get_config_value PROBLEMDIR global known-problem-directory @sharedir@/piuparts/known_problems
 
 
-PROBLEMDIR=@sharedir@/piuparts/known_problems
 PROBLEMS=$(ls $PROBLEMDIR)
 OLDPWD=$(pwd)
 

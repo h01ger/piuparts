@@ -29,6 +29,7 @@ PYTHONPATH = /org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.
 master-directory = /org/piuparts.debian.org/master
 slave-directory = /org/piuparts.debian.org/slave
 output-directory = /org/piuparts.debian.org/htdocs
+known-problem-directory = /org/piuparts.debian.org/share/piuparts/known_problems
 backup-directory = /org/piuparts.debian.org/backup
 tmpdir = /org/piuparts.debian.org/tmp
 doc-root = /

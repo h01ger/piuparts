@@ -16,6 +16,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * piuparts.conf:
     - New global settings:
       + slave-directory
+      + known-problem-directory (for known_problem definitions)
       + backup-directory (for the master script prepare_backup)
       + PYTHONPATH (to find the python modules in non-default path setups)
     - Setting tmpdir is now mandatory for master/slave operation.
