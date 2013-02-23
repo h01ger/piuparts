@@ -24,10 +24,13 @@ set -e
 
 . @sharedir@/piuparts/lib/read_config.sh
 
+get_config_value PYTHONPATH global PYTHONPATH ''
+
+
+export PYTHONPATH
 
 SESSIONNAME=piuparts_slave_screen
 SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
-export PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
 
 if pgrep -f share/piuparts/piuparts-slave ; then
 	# slave is running

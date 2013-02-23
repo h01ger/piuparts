@@ -21,11 +21,11 @@
 
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
-get_config_value PIUPARTS_PREFIX global prefix /org/piuparts.debian.org
+get_config_value PYTHONPATH global PYTHONPATH ''
 get_config_value DEBEMAIL global bts-from
 
 
-export PYTHONPATH=$PIUPARTS_PREFIX/lib/python2.6/dist-packages:$PIUPARTS_PREFIX/lib/python2.7/dist-packages
+export PYTHONPATH
 
 OLDPWD=$(pwd)
 OUTPUT=$(mktemp)

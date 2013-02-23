@@ -49,6 +49,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * prepare_backup:
     - Get paths from piuparts.conf.
     - Prepare a copy of submissions.txt, too.
+  * master-bin/slave-bin: Use PYTHONPATH from piuparts.conf.
   * piuparts-slave.deb: Use /var/cache/piuparts/tmp as tmpdir.
   * pre_install_exceptions: Handle bootcd-ia64 installation in squeeze.
   * post_distupgrade_exceptions: Handle libdb4.8 removal in wheezy.

@@ -23,10 +23,10 @@ get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
 get_config_value HTDOCS global output-directory
 get_config_value URLBASE global urlbase http://piuparts.debian.org
-get_config_value PIUPARTS_PREFIX global prefix /org/piuparts.debian.org
+get_config_value PYTHONPATH global PYTHONPATH ''
 
 
-export PYTHONPATH=$PIUPARTS_PREFIX/lib/python2.6/dist-packages:$PIUPARTS_PREFIX/lib/python2.7/dist-packages
+export PYTHONPATH
 
 LOCKFILE=$HTDOCS/daily.lock
 if [ -e $LOCKFILE ]; then
