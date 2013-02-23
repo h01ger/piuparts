@@ -11,7 +11,9 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Improve the "dirname part contains a symlink" test and report
       overwritten files owned by other packages as failures.
   * piuparts.conf:
-    - New global setting slave-directory.
+    - New global settings:
+      + slave-directory
+      + backup-directory (for the master script prepare_backup)
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:
     - Add Package.waiting_count() and friends, populated in calc_rrdep_count.

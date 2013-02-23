@@ -478,6 +478,14 @@ used for all further sections.
  the logfiles, generated html files, charts, ... that can be
  served by a webserver.
 
+* "backup-directory" is the directory where the prepare_backup
+ script will place copies of the history data needed to generate the
+ plots. This directory should be included in system backups while
+ the logfiles and html pages in 'master-directory' and
+ 'output-directory' (several GB of data) are regeneratable with some
+ effort and can be excluded from backups. By default this is
+ undefined meaning that no backups of the history data will be made.
+
 * "doc-root" is the location where the webserver will serve the
  piuparts report from. Default: "/".
 
