@@ -38,7 +38,7 @@ file_age()
 }
 
 get_config_value SLAVEROOT global slave-directory
-get_config_value PIUPARTS_TMPDIR global tmpdir /org/piuparts.debian.org/tmp
+get_config_value PIUPARTS_TMPDIR global tmpdir
 
 
 STATEFILE=$SLAVEROOT/leftover_processes

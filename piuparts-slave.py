@@ -79,7 +79,7 @@ class Config(piupartslib.conf.Config):
                 "mirror": None,
                 "piuparts-command": "sudo piuparts",
                 "piuparts-flags": "",
-                "tmpdir": "/tmp/piuparts",
+                "tmpdir": None,
                 "distro": None,
                 "area": None,
                 "chroot-tgz": None,

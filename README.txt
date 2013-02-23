@@ -534,11 +534,11 @@ section, too, and will serve as defaults for all other sections
  contain the section-specific flags.
 
 * "tmpdir" is the scratch area where piuparts will create the
- chroots. Note: the filesystem where this is located may not be
- mounted with the nodev or nosuid options. The default is
- "/tmp/piuparts". The scripts that are monitoring this directory
- for leftover mountpoints and chroots only evaluate the [global]
- setting.
+ chroots. Note: the filesystem where this is located must not be
+ mounted with the nodev or nosuid options. This is a mandatory
+ setting with no default. The scripts that are monitoring this
+ directory for leftover mountpoints and chroots only evaluate the
+ [global] setting.
 
 * "mirror" tells the slave which mirror it is to use. The slave
  gives this to piuparts when it runs it. The URLs for Packages and

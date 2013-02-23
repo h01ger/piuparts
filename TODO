@@ -8,6 +8,7 @@ wishlist!
 for 0.50:
 
 - make piuparts-master + piuparts-slave packages work out-of-the-box:
+  * piuparts-slave.postrm purge: clean up /var/cache/piuparts/tmp/
   - conf/piuparts.sudoers should be split for master+slave packages.
   - ship sane minimal sudoers in p-s.deb than can be enabled by default do we
     really need anything else than running piuparts and piuparts_slave_*

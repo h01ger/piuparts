@@ -17,6 +17,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - New global settings:
       + slave-directory
       + backup-directory (for the master script prepare_backup)
+    - Setting tmpdir is now mandatory for master/slave operation.
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:
     - Add Package.waiting_count() and friends, populated in calc_rrdep_count.
@@ -47,6 +48,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * prepare_backup:
     - Get paths from piuparts.conf.
     - Prepare a copy of submissions.txt, too.
+  * piuparts-slave.deb: Use /var/cache/piuparts/tmp as tmpdir.
   * pre_install_exceptions: Handle bootcd-ia64 installation in squeeze.
   * post_distupgrade_exceptions: Handle libdb4.8 removal in wheezy.
   * pre_remove_50_find_bad_permissions: Add some exceptions.

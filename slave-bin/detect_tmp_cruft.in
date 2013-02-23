@@ -24,7 +24,7 @@ set -e
 
 . @sharedir@/piuparts/lib/read_config.sh
 
-get_config_value PIUPARTS_TMPDIR global tmpdir /org/piuparts.debian.org/tmp
+get_config_value PIUPARTS_TMPDIR global tmpdir
 
 
 MOUNTS="$(mktemp)"
