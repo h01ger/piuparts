@@ -18,6 +18,7 @@ master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
 piuparts-command =
 	sudo
+	timeout -s INT -k 5m 35m
 	/org/piuparts.debian.org/sbin/piuparts
 	--skip-logrotatefiles-test
 	--warn-on-others
