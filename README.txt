@@ -612,6 +612,10 @@ configuration settings are used by the scripts in '~piuparts?/bin/'
 used to run piuparts.debian.org. They are all optional, default
 values are set in the scripts.
 
+* "PYTHONPATH" (global) sets the search path to the piupartslib
+ python modules if they are not installed in their default location
+ in /usr.
+
 * "prefix" (global) sets the prefix of the piuparts installation,
  e.g. for finding $prefix/share/piuparts/ .
 

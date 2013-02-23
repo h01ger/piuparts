@@ -11,6 +11,7 @@ sections = wheezy
 master-host = localhost
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
+PYTHONPATH = /org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
 prefix = /org/piuparts.debian.org
 master-directory = /org/piuparts.debian.org/master/
 slave-directory = /org/piuparts.debian.org/slave
