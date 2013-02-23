@@ -17,13 +17,6 @@ set -e
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-
-. @sharedir@/piuparts/lib/read_config.sh
-
-get_config_value MASTER global master-directory
-get_config_value SECTIONS global sections
-
-
 #
 # backup statistiscs files to a single directory for DSA to backup
 # piuparts.d.o's state is not backupped
@@ -31,8 +24,17 @@ get_config_value SECTIONS global sections
 #         which produces a gigabyte of logfiles to be saved, for basically
 #         not much value)
 #
-BACKUPDIR=/org/piuparts.debian.org/backup
-HTDOCS=/org/piuparts.debian.org/htdocs
+
+
+. @sharedir@/piuparts/lib/read_config.sh
+
+get_config_value SECTIONS global sections
+get_config_value MASTER global master-directory
+get_config_value HTDOCS global output-directory
+get_config_value BACKUPDIR global backup-directory ''
+
+
+test -n "$BACKUPDIR" || exit 0
 
 for SECTION in $SECTIONS ; do
 	if [ -f $HTDOCS/$SECTION/counts.txt ]; then
