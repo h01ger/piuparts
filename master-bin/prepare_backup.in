@@ -37,8 +37,11 @@ get_config_value BACKUPDIR global backup-directory ''
 test -n "$BACKUPDIR" || exit 0
 
 for SECTION in $SECTIONS ; do
+	mkdir -p $BACKUPDIR/$SECTION
+	if [ -f $MASTER/$SECTION/submissions.txt ]; then
+		cp $MASTER/$SECTION/submissions.txt $BACKUPDIR/$SECTION/
+	fi
 	if [ -f $HTDOCS/$SECTION/counts.txt ]; then
-		mkdir -p $BACKUPDIR/$SECTION
 		cp $HTDOCS/$SECTION/counts.txt $BACKUPDIR/$SECTION/
 	fi
 done
