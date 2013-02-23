@@ -67,6 +67,8 @@ piuparts (0.50) UNRELEASED; urgency=low
   * slave_{run,join}: Rename the screen session to "piuparts_slave_screen".
   * slave_cleanup: Use pgrep to find running piuparts-slave processes.
   * slave_{run,join}: Use screen -ls to find running screen sessions.
+  * slave_join: Use 'script /dev/null' hack if needed to get a writable tty.
+    This avoids running the piuparts-slave screen session as root.
   * detect_leftover_processes: Move statefile to slave-directory.
   * detect_stale_mounts: Merge into detect_tmp_cruft.
   * detect_tmp_cruft: Move to slave-bin and run from slave crontab.

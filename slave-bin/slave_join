@@ -34,4 +34,9 @@ if screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
   exit 1
 fi
 
-screen -R -S $SESSIONNAME
+if [ -w $(tty) ]; then
+	screen -x -S $SESSIONNAME
+else
+	# use script hack to get a new writable tty
+	script -q -c "screen -x -S $SESSIONNAME" /dev/null
+fi
