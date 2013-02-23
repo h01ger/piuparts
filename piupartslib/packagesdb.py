@@ -641,16 +641,14 @@ class PackagesDB:
 
     def _find_packages_ready_for_testing(self):
         if self._candidates_for_testing is None:
-            package_names = self.get_pkg_names_in_state("waiting-to-be-tested")
-            if len(package_names) > 1:
+            self._candidates_for_testing = [self.get_package(pn)
+                    for pn in self.get_pkg_names_in_state("waiting-to-be-tested")]
+            if len(self._candidates_for_testing) > 1:
                 self.calc_rrdep_counts()
-                tuples = [(self.get_package(pn).waiting_count(), random.random(), pn)
-                        for pn in package_names]
-                self._candidates_for_testing = [self.get_package(x[2])
+                tuples = [(p.waiting_count(), random.random(), p)
+                        for p in self._candidates_for_testing]
+                self._candidates_for_testing = [x[2]
                         for x in sorted(tuples, reverse = True)]
-            else:
-                self._candidates_for_testing = [self.get_package(pn)
-                        for pn in package_names]
         return self._candidates_for_testing
 
     def reserve_package(self):
