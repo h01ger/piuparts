@@ -33,7 +33,7 @@ for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 		cd $MASTER/$SECTION
 		get_config_value DISTROS $SECTION upgrade-test-distros " "
-		$PIUPARTS_PREFIX/share/piuparts/piuparts-analyze ${DISTROS##* } 2>&1 > $OUTPUT
+		@sharedir@/piuparts/piuparts-analyze ${DISTROS##* } 2>&1 > $OUTPUT
 		if [ -s $OUTPUT ]; then
 			echo $SECTION
 			cat $OUTPUT

@@ -34,4 +34,5 @@ for SECTION in $SECTIONS ; do
 		cd "$OLDPWD"
 	fi
 done
-~/bin/report_newly_bugged_packages
+
+@sharedir@/piuparts/master/report_newly_bugged_packages

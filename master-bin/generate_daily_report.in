@@ -41,7 +41,7 @@ date > $LOCKFILE
 #
 OUTPUT=$(mktemp)
 for SCRIPT in detect_network_issues detect_piuparts_issues archive_old_logs report_newly_bugged_packages ; do
-  ~/bin/$SCRIPT 2>&1 > $OUTPUT
+  @sharedir@/piuparts/master/$SCRIPT 2>&1 > $OUTPUT
   if [ -s $OUTPUT ] ; then
 	cat $OUTPUT | mail -s $SCRIPT $LOGNAME
   fi
@@ -69,11 +69,13 @@ done | sed s#^$MASTER#$URLBASE# >> $DAILYREPORT
 
 echo "" >> $DAILYREPORT
 date >> $DAILYREPORT
-~/bin/detect_well_known_errors 2>&1 >> $DAILYREPORT
+@sharedir@/piuparts/master/detect_well_known_errors 2>&1 >> $DAILYREPORT
 
 echo "" >> $DAILYREPORT
 date >> $DAILYREPORT
-nice python $PIUPARTS_PREFIX/share/piuparts/piuparts-report 2>&1 >> $DAILYREPORT 2>&1
+nice \
+	@sharedir@/piuparts/piuparts-report \
+	>> $DAILYREPORT 2>&1
 date >> $DAILYREPORT
 
 cat $DAILYREPORT | mail -s piuparts-report $LOGNAME
