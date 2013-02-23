@@ -65,7 +65,8 @@ piuparts (0.50) UNRELEASED; urgency=low
   * pre_remove_50_find_missing_copyright: Add some exceptions.
   * Add several exceptions for lenny and lenny2squeeze tests.
   * slave_{run,join}: Rename the screen session to "piuparts_slave_screen".
-  * slave_{run,join,cleanup}: Use pgrep to find running processes.
+  * slave_cleanup: Use pgrep to find running piuparts-slave processes.
+  * slave_{run,join}: Use screen -ls to find running screen sessions.
   * detect_leftover_processes: Move statefile to slave-directory.
   * detect_stale_mounts: Merge into detect_tmp_cruft.
   * detect_tmp_cruft: Move to slave-bin and run from slave crontab.

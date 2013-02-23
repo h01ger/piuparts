@@ -32,9 +32,11 @@ export PYTHONPATH
 SESSIONNAME=piuparts_slave_screen
 SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
 
-if pgrep -f share/piuparts/piuparts-slave ; then
-	# slave is running
-	exit 0
+if ! screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
+	echo "piuparts-slave is already running!"
+	echo
+	screen -ls
+	exit 1
 fi
 
 cd /org/piuparts.debian.org/slave

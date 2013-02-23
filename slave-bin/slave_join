@@ -23,11 +23,15 @@ set -e
 
 SESSIONNAME=piuparts_slave_screen
 
-if pgrep -f "SCREEN.*$SESSIONNAME" >/dev/null ; then
-  screen -R -S $SESSIONNAME
-else
+if screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
   echo "piuparts-slave not running!"
   echo
   echo "ps faxu | grep piuparts"
   ps faxu | grep piuparts
+  echo
+  echo "screen -ls"
+  screen -ls
+  exit 1
 fi
+
+screen -R -S $SESSIONNAME
