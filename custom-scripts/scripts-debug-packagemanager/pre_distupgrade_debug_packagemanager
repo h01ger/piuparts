@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+if [ ! -f /etc/apt/apt.conf.d/piuparts-debug-packagemanager ]
+then
+	echo "Enabling Debug::pkgPackageManager"
+	echo 'Debug::pkgPackageManager "true";' >> /etc/apt/apt.conf.d/piuparts-debug-packagemanager
+fi

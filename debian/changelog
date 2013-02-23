@@ -61,6 +61,8 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Use idle-sleep setting from piuparts.conf.
     - Move statefile to slave-directory.
   * master: Get rid of the monitor-slave directory.
+  * New script to enable Debug::pkgPackageManager during upgrades:
+    scripts-debug-packagemanager/pre_distupgrade_debug_packagemanager
   * New bug template: unhandled_symlink_to_directory_conversion.
   * New bug template: installs_over_existing_symlink.
 
