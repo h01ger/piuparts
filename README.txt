@@ -616,9 +616,6 @@ values are set in the scripts.
  python modules if they are not installed in their default location
  in /usr.
 
-* "prefix" (global) sets the prefix of the piuparts installation,
- e.g. for finding $prefix/share/piuparts/ .
-
 * "urlbase" (global) is the base url of the webserver serving this
  piuparts instance. Used to provide links to logfiles in email
  reports.
