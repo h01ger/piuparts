@@ -610,7 +610,11 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
             raise
         raise
 
-    return p.returncode,stdout
+    ret = p.returncode
+    if ret in [124, 137]:
+        # process was terminated by the timeout command
+        ret = -ret
+    return ret,stdout
 
 
 def test_package(config, pname, pvers, packages_files):

@@ -30,6 +30,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Relax package existence checks to allow distupgrading to backports.
     - Fix SIGHUP handling while recycling.
     - Flush and unreserve all sections on interrupt.
+    - Add support for running piuparts under /usr/bin/timeout.
   * piuparts-analyze.py:
     - Add support for magic "$DISTRO/None" versions.
   * piuparts-report.py:
