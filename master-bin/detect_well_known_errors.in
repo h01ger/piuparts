@@ -29,7 +29,7 @@ get_config_value SECTIONS global sections
 get_config_value HTDOCS global output-directory
 
 
-PROBLEMDIR="$HOME/bin/known_problems"
+PROBLEMDIR=@sharedir@/piuparts/known_problems
 PROBLEMS=$(ls $PROBLEMDIR)
 OLDPWD=$(pwd)
 
@@ -139,7 +139,7 @@ do
 			echo '</td></tr><tr class="normalrow"><td class="contentcell2">' >> $OUTPUT
 			echo "$HELPTEXT" >> $OUTPUT
                         echo "<p>The commandline to find these logs is: <pre>" >> $OUTPUT
-			grep --color=never COMMAND ~/bin/known_problems/$problem |sed -e "s#| #| \\ \n  #g" >> $OUTPUT
+			grep --color=never COMMAND $PROBLEMDIR/$problem |sed -e "s#| #| \\ \n  #g" >> $OUTPUT
 			echo "</pre></p>" >> $OUTPUT
 			echo '</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr></tr><tr class="normalrow"><td class="contentcell2" colspan="3">' >> $OUTPUT
 			echo "<ul>" >> $OUTPUT

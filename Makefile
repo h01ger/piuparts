@@ -93,8 +93,8 @@ install:
 	install -d $(DESTDIR)$(sharedir)/piuparts/master
 	install -m 0755 $(filter-out %.in,$(wildcard master-bin/*)) $(DESTDIR)$(sharedir)/piuparts/master/
 
-	install -d $(DESTDIR)$(sharedir)/piuparts/master/known_problems
-	install -m 0644 known_problems/*.conf $(DESTDIR)$(sharedir)/piuparts/master/known_problems/
+	install -d $(DESTDIR)$(sharedir)/piuparts/known_problems
+	install -m 0644 known_problems/*.conf $(DESTDIR)$(sharedir)/piuparts/known_problems/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
 	install -m 0755 $(filter-out %.in,$(wildcard slave-bin/*)) $(DESTDIR)$(sharedir)/piuparts/slave/

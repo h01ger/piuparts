@@ -3,6 +3,7 @@ etc/cron.d/piuparts-master
 #etc/piuparts/known_problems/
 usr/share/piuparts/htdocs/*
 usr/share/piuparts/master/*
+usr/share/piuparts/known_problems/*
 usr/share/piuparts/piuparts-analyze
 usr/share/piuparts/piuparts-master
 usr/share/piuparts/piuparts-report
