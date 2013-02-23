@@ -95,6 +95,8 @@ piuparts (0.50) UNRELEASED; urgency=low
   * Add several exceptions for lenny and lenny2squeeze tests.
   * New script to enable Debug::pkgPackageManager during upgrades:
     scripts-debug-packagemanager/pre_distupgrade_debug_packagemanager
+  * New known problem: Packages that need to be rebuild or updated for newer
+    tools, e.g. due to obsolete install-info or tex-common usage.
   * New bug template: unhandled_symlink_to_directory_conversion.
   * New bug template: installs_over_existing_symlink.
 
