@@ -643,6 +643,9 @@ class PackagesDB:
         if self._candidates_for_testing is None:
             self._candidates_for_testing = [self.get_package(pn)
                     for pn in self.get_pkg_names_in_state("waiting-to-be-tested")]
+            self._candidates_for_testing = [p for p in self._candidates_for_testing
+                    if not self._logdb.log_exists(p, [self._reserved]) or \
+                            self._logdb.log_exists(p, [self._recycle])]
             if len(self._candidates_for_testing) > 1:
                 self.calc_rrdep_counts()
                 tuples = [(p.waiting_count(), random.random(), p)
@@ -650,6 +653,9 @@ class PackagesDB:
                 self._candidates_for_testing = [x[2]
                         for x in sorted(tuples, reverse = True)]
         return self._candidates_for_testing
+
+    def _remove_unavailable_candidate(self, p):
+        self._candidates_for_testing.remove(p)
 
     def reserve_package(self):
         all_but_recycle = [x for x in self._all if x != self._recycle]
@@ -660,6 +666,7 @@ class PackagesDB:
                         self._logdb.remove(vdir, p["Package"], p["Version"])
                         logging.info("Recycled %s %s %s" % (vdir, p["Package"], p["Version"]))
             if self._logdb.log_exists(p, all_but_recycle):
+                self._remove_unavailable_candidate(p)
                 continue
             if self._logdb.log_exists(p, [self._recycle]):
                 self._logdb.remove(self._recycle, p["Package"], p["Version"])

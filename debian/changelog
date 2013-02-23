@@ -20,6 +20,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:
     - Add Package.waiting_count() and friends, populated in calc_rrdep_count.
+    - Optimize reserve() and skip unavailable candidates.
   * piuparts-master.py:
     - Sort packages to be tested by importance, i.e. descending waiting_count.
   * piuparts-slave.py:
