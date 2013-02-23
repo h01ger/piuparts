@@ -41,7 +41,7 @@ cd /org/piuparts.debian.org/slave
 rm -f $SCREENLOG					# used by ~piupartsm/bin/detect_slave_problems
 
 trap "cat $SCREENLOG | mail -s 'slave abnormaly ended' piupartsm ; rm $SCREENLOG; exit" TERM EXIT
-screen -L -d -m -S $SESSIONNAME su - piupartss -c "cd /org/piuparts.debian.org/slave && PYTHONPATH=$PYTHONPATH python ../share/piuparts/piuparts-slave"
+screen -L -d -m -S $SESSIONNAME @sharedir@/piuparts/piuparts-slave
 trap - TERM EXIT
 
 echo "piuparts-slave has been started."

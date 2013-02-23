@@ -3,7 +3,7 @@
 #
 # start slave_run automatically after reboots
 #
-@reboot @sharedir@/piuparts/slave/slave_cleanup ; sudo @sharedir@/piuparts/slave/slave_run
+@reboot @sharedir@/piuparts/slave/slave_cleanup ; @sharedir@/piuparts/slave/slave_run
 
 #
 # monitor slave session every hour
