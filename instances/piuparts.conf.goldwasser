@@ -8,19 +8,20 @@
 [global]
 #sections = sid wheezy squeeze2wheezy testing2sid
 sections = wheezy
+#
+mirror = http://ftp.de.debian.org/debian/
 master-host = localhost
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
 PYTHONPATH = /org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
-master-directory = /org/piuparts.debian.org/master/
+master-directory = /org/piuparts.debian.org/master
 slave-directory = /org/piuparts.debian.org/slave
-output-directory = /org/piuparts.debian.org/htdocs/
+output-directory = /org/piuparts.debian.org/htdocs
 backup-directory = /org/piuparts.debian.org/backup
+tmpdir = /org/piuparts.debian.org/tmp
 doc-root = /
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master
 piuparts-command = sudo /org/piuparts.debian.org/sbin/piuparts --skip-logrotatefiles-test --warn-on-others --scriptsdir /etc/piuparts/scripts
-tmpdir = /org/piuparts.debian.org/tmp
-mirror = http://ftp.de.debian.org/debian/
 # this value is too high for production (it will cause piuparts-slave to sleep
 # for a whole day) but useful for testing master-slave mode, for running on a
 # test system 24/7 without causing load for 24/7

@@ -1,26 +1,21 @@
 #
 # This is the configuration file for piuparts running in master-slave mode.
 #
-# The sample file does not set all required values, to prevent the
-# master from being run accidentally.
-#
 # You MUST make sure that master-host, master-user, master-directory, and
-# mirror are also set correctly. The sample file does not set it at
-# all, to prevent the master from being run accidentally.
-#
+# mirror are also set correctly.
 #
 
 [global]
 sections = sid
 master-host = localhost
 master-user = piupartsm
+master-command = python /usr/share/piuparts/piuparts-master
+piuparts-command = sudo piuparts --scriptsdir /etc/piuparts/scripts
 master-directory = /var/lib/piuparts/master
 slave-directory = /var/lib/piuparts/slave
 output-directory = /var/lib/piuparts/htdocs
-doc-root = /piuparts/
-master-command = python /usr/share/piuparts/piuparts-master
-piuparts-command = sudo piuparts --scriptsdir /etc/piuparts/scripts
 tmpdir = /var/cache/piuparts/tmp
+doc-root = /piuparts/
 idle-sleep = 300
 max-tgz-age = 604800
 expire-old-days = 120

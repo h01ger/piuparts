@@ -7,19 +7,20 @@
 
 [global]
 sections = sid testing2sid wheezy squeeze2wheezy squeeze lenny2squeeze
+#
+mirror = http://piatti.debian.org/debian/
 master-host = localhost
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
 PYTHONPATH = /org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
-master-directory = /org/piuparts.debian.org/master/
+master-directory = /org/piuparts.debian.org/master
 slave-directory = /org/piuparts.debian.org/slave
-output-directory = /org/piuparts.debian.org/htdocs/
+output-directory = /org/piuparts.debian.org/htdocs
 backup-directory = /org/piuparts.debian.org/backup
+tmpdir = /org/piuparts.debian.org/tmp
 doc-root = /
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master
 piuparts-command = sudo /org/piuparts.debian.org/sbin/piuparts --skip-logrotatefiles-test --warn-on-others --scriptsdir /etc/piuparts/scripts
-tmpdir = /org/piuparts.debian.org/tmp
-mirror = http://piatti.debian.org/debian/
 # 30*60
 idle-sleep = 1800
 # 60*60*24*7
