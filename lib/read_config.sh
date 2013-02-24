@@ -30,7 +30,16 @@ get_config_value()
 	test -n "$1" && test "$1" = "$(echo "$1" | tr -c -d '[:alnum:]_')" || exit 1
 	section="$2"
 	key="$3"
+
+	# First select the [$section] block (\#^\[$section\]#) (use # as
+	# marker because $section may contain slashes) up to the start of the
+	# next section (/^\[/). The select the $key=value, this may be wrapped
+	# with indented lines and comment lines embedded. The $key=value is
+	# over once we hit the next key (or any line not starting with # or
+	# whitespace. Throw away comments (/^#/d), the following key, remove
+	# our $key= part, trim the value, remove empty lines, and print it.
 	value="$(sed -rn '\#^\['"$section"'\]#,/^\[/ {/^'"$key"'\s*=/,/^[^ \t#]/ {/^#/d; /^'"$key"'\s*=|^\s/!d; s/^'"$key"'\s*=\s*//; s/^\s*//; s/\s*$//; /^$/d; p}}' "$PIUPARTS_CONF")"
+
 	if [ -z "$value" ]; then
 		if [ -n "${4+set}" ]; then
 			value="$4"
