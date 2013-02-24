@@ -122,6 +122,7 @@ piuparts (0.50) UNRELEASED; urgency=low
 
   [David Steele]
   * Replace the Tango icon symlinks with copies.
+  * Make the Tango weather icons required for master.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Tue, 15 Jan 2013 11:51:43 +0100
 

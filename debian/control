@@ -50,6 +50,7 @@ Depends:
  adduser,
  openssh-server,
  python-debianbts,
+ tango-icon-theme,
  ${misc:Depends},
  ${python:Depends}
 Recommends:
@@ -58,7 +59,6 @@ Recommends:
  python-rpy,
  r-base-dev,
  r-recommended,
- tango-icon-theme
 Breaks:
  piuparts (<= 0.44)
 Replaces:
