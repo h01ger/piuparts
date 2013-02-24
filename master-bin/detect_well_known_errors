@@ -49,7 +49,7 @@ $PACKAGE_LIST</ul>
 
 UNKNOWN_TPL = \
 """<table class="righttable"><tr class="titlerow"><td class="titlecell">
-Packages with failures not yet well known detected in $SECTION
+Packages with unknown failures detected in $SECTION
 </td></tr><tr class="normalrow"><td class="contentcell2">
 <p>Please investigate and improve detection of known error types!</p>
 </td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr><tr class="normalrow"><td class="contentcell2" colspan="3">
