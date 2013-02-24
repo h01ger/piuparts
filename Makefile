@@ -127,8 +127,6 @@ install: build-stamp
 
 	install -d $(DESTDIR)$(htdocsdir)/images
 	install -m 0644 htdocs/images/*.* $(DESTDIR)$(htdocsdir)/images/
-	ln -sf /usr/share/icons/Tango/24x24/status/sunny.png $(DESTDIR)$(htdocsdir)/images/sunny.png
-	ln -sf /usr/share/icons/Tango/24x24/status/weather-severe-alert.png $(DESTDIR)$(htdocsdir)/images/weather-severe-alert.png
 
 	install -d $(DESTDIR)$(htdocsdir)/templates/mail
 	install -m 0644 bug-templates/*.mail $(DESTDIR)$(htdocsdir)/templates/mail/

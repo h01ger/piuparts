@@ -120,6 +120,9 @@ piuparts (0.50) UNRELEASED; urgency=low
   * Mention http://piuparts.debian.org in README.txt prominently.
   * Mention github clone in htdocs/index.tpl.
 
+  [David Steele]
+  * Replace the Tango icon symlinks with copies.
+
  -- Andreas Beckmann <debian@abeckmann.de>  Tue, 15 Jan 2013 11:51:43 +0100
 
 piuparts (0.49) unstable; urgency=low

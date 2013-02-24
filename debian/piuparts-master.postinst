@@ -48,6 +48,18 @@ case "$1" in
     install -d -o $muser -g $pgroup -m 0755 $userhome/htdocs
     cp -rf $scriptroot/htdocs/* $userhome/htdocs/
 
+    for icon in weather-severe-alert.png sunny.png
+    do
+        if [ -h $userhome/htdocs/images/$icon ] ; then
+            rm -f $userhome/htdocs/images/$icon
+        fi
+
+        if [ -e /usr/share/icons/Tango/24x24/status/$icon ] ; then
+            cp -f /usr/share/icons/Tango/24x24/status/$icon $userhome/htdocs/images/$icon
+        fi
+    done
+
+
     if dpkg --compare-versions "$2" lt-nl "0.50" ; then
         rm -rf $userhome/master/monitor-slave
     fi
