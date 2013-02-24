@@ -33,13 +33,6 @@ if ! `echo $SLAVENUM | grep -E -e "^[0-9]{1}$" >/dev/null` ; then
    exit
 fi
 
-get_config_value PYTHONPATH global PYTHONPATH ''
-get_config_value SLAVEROOT global slave-directory
-get_config_value PIUPARTS_TMPDIR global tmpdir
-
-
-export PYTHONPATH
-
 SLAVEROOTDIR=/var/lib/piuparts/slave
 SLAVEDIR=$SLAVEROOTDIR/$SLAVENUM
 
