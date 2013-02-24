@@ -433,7 +433,8 @@ class Section:
                             processed = self._process()
                             if got_sighup and self._slave.get_reserved():
                                 # keep this section at the front of the round-robin runnable queue
-                                pass
+                                self._idle_wait_until = 0
+                                self._recycle_wait_until = 0
                             else:
                                 # put this section at the end of the round-robin runnable queue
                                 self._idle_wait_until = time.time()
