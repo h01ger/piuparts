@@ -59,11 +59,6 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Prepare a copy of submissions.txt, too.
   * master-bin/slave-bin: Use PYTHONPATH from piuparts.conf.
   * piuparts-slave.deb: Use /var/cache/piuparts/tmp as tmpdir.
-  * pre_install_exceptions: Handle bootcd-ia64 installation in squeeze.
-  * post_distupgrade_exceptions: Handle libdb4.8 removal in wheezy.
-  * pre_remove_50_find_bad_permissions: Add some exceptions.
-  * pre_remove_50_find_missing_copyright: Add some exceptions.
-  * Add several exceptions for lenny and lenny2squeeze tests.
   * slave_{run,join}: Rename the screen session to "piuparts_slave_screen".
   * slave_cleanup: Use pgrep to find running piuparts-slave processes.
   * slave_{run,join}: Use screen -ls to find running screen sessions.
@@ -79,6 +74,11 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Use idle-sleep setting from piuparts.conf.
     - Move statefile to slave-directory.
   * master: Get rid of the monitor-slave directory.
+  * pre_install_exceptions: Handle bootcd-ia64 installation in squeeze.
+  * post_distupgrade_exceptions: Handle libdb4.8 removal in wheezy.
+  * pre_remove_50_find_bad_permissions: Add some exceptions.
+  * pre_remove_50_find_missing_copyright: Add some exceptions.
+  * Add several exceptions for lenny and lenny2squeeze tests.
   * New script to enable Debug::pkgPackageManager during upgrades:
     scripts-debug-packagemanager/pre_distupgrade_debug_packagemanager
   * New bug template: unhandled_symlink_to_directory_conversion.
