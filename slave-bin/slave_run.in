@@ -26,6 +26,7 @@ set -e
 
 get_config_value PYTHONPATH global PYTHONPATH ''
 get_config_value SLAVEROOT global slave-directory
+get_config_value PIUPARTS_TMPDIR global tmpdir
 
 
 export PYTHONPATH
@@ -39,6 +40,9 @@ if ! screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
 	screen -ls
 	exit 1
 fi
+
+# ensure the temporary directory exists
+mkdir -p $PIUPARTS_TMPDIR
 
 mkdir -p $SLAVEROOT
 cd $SLAVEROOT

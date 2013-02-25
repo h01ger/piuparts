@@ -70,6 +70,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * slave_join: Use 'script /dev/null' hack if needed to get a writable tty.
     This avoids running the piuparts-slave screen session as root.
   * slave_run: Get paths etc. from piuparts.conf.
+  * slave_run: Ensure the tmpdir exists, this could be on tmpfs.
   * detect_leftover_processes: Move statefile to slave-directory.
   * detect_stale_mounts: Merge into detect_tmp_cruft.
   * detect_tmp_cruft: Move to slave-bin and run from slave crontab.
