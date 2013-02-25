@@ -12,7 +12,7 @@ test "$(dpkg --print-architecture)" = "amd64" || exit 0
 
 case ${PIUPARTS_OBJECTS%%=*} in
 	ia32-libs|ia32-libs-gtk) ;;
-	libwine-unstable|libwine-*-unstable) ;;
+	libwine-unstable|libwine-*-unstable|wine|wine-unstable) ;;
 	boinc-nvidia-cuda|teamspeak-client) ;;
 	*) exit 0 ;;
 esac
