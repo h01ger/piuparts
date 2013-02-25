@@ -18,7 +18,7 @@ set -e
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #
-# run piuparts-slave in screen so that a screendump can be mailed via cron to monitor the slave
+# Run piuparts-slave in screen to allow interactive control later on.
 #
 
 
@@ -49,8 +49,6 @@ cd $SLAVEROOT
 
 rm -f $SCREENLOG
 
-trap "cat $SCREENLOG | mail -s 'slave abnormaly ended' piupartsm ; rm $SCREENLOG; exit" TERM EXIT
 screen -L -d -m -S $SESSIONNAME @sharedir@/piuparts/piuparts-slave
-trap - TERM EXIT
 
 echo "piuparts-slave has been started."
