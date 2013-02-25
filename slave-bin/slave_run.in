@@ -25,12 +25,13 @@ set -e
 . @sharedir@/piuparts/lib/read_config.sh
 
 get_config_value PYTHONPATH global PYTHONPATH ''
+get_config_value SLAVEROOT global slave-directory
 
 
 export PYTHONPATH
 
 SESSIONNAME=piuparts_slave_screen
-SCREENLOG=/org/piuparts.debian.org/slave/screenlog.0
+SCREENLOG=$SLAVEROOT/screenlog.0
 
 if ! screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
 	echo "piuparts-slave is already running!"
@@ -39,8 +40,10 @@ if ! screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
 	exit 1
 fi
 
-cd /org/piuparts.debian.org/slave
-rm -f $SCREENLOG					# used by ~piupartsm/bin/detect_slave_problems
+mkdir -p $SLAVEROOT
+cd $SLAVEROOT
+
+rm -f $SCREENLOG
 
 trap "cat $SCREENLOG | mail -s 'slave abnormaly ended' piupartsm ; rm $SCREENLOG; exit" TERM EXIT
 screen -L -d -m -S $SESSIONNAME @sharedir@/piuparts/piuparts-slave
