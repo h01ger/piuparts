@@ -55,6 +55,13 @@ case ${PIUPARTS_OBJECTS%%=*} in
 					apt-get -y install udev
 				fi
 				;;
+	bugzilla3)
+			# checksetup.pl goes into infinite loop asking for them
+			log_debug
+			echo "bugzilla3 bugzilla3/bugzilla_admin_name string bz@local.host" | debconf-set-selections
+			echo "bugzilla3 bugzilla3/bugzilla_admin_real_name string Bz" | debconf-set-selections
+			echo "bugzilla3 bugzilla3/bugzilla_admin_pwd password bzbzbzbz" | debconf-set-selections
+			;;
 esac
 
 if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
