@@ -320,6 +320,7 @@ class PackagesDB:
         self._dependency_databases = []
         self._recycle_mode = False
         self._candidates_for_testing = None
+        self._rdeps = None
         self.set_subdirs(ok="pass", fail="fail", evil="untestable",
                          reserved="reserved", morefail=["bugged", "affected"],
                          recycle="recycle")
@@ -758,25 +759,31 @@ class PackagesDB:
         else:
             raise LogfileExists(self._evil, package, version)
 
+    def _get_rdep_dict(self):
+        """Return dict of one-level reverse dependencies by package"""
+
+        if self._rdeps is None:
+            self._find_all_packages()       # populate _packages
+
+            self._rdeps = {}
+            for pkg_name in self._packages.keys():
+                # use the Packages dependencies() method for a conservative count
+                for dep in self._packages[pkg_name].dependencies():
+                    if dep in self._rdeps:
+                        self._rdeps[dep].append( pkg_name )
+                    else:
+                        self._rdeps[dep] = [pkg_name]
+
+        return( self._rdeps )
+
     def calc_rrdep_counts(self):
         """Calculate recursive reverse dependency counts for Packages"""
 
-        self._find_all_packages()       # populate _packages
         self._compute_package_states()  # populate _package_state
         error_states = self.get_error_states()
         waiting_states = self.get_waiting_states()
 
-        # create a reverse dependency dictionary.
-        # entries consist of a one-level list of reverse dependency package names,
-        # by package name
-        rdeps = {}
-        for pkg_name in self._packages.keys():
-            # use the Packages dependencies() method for a conservative count
-            for dep in self._packages[pkg_name].dependencies():
-                if dep in rdeps:
-                    rdeps[dep].append(pkg_name)
-                else:
-                    rdeps[dep] = [pkg_name]
+        rdeps = self._get_rdep_dict()
 
         def recurse_rdeps(pkg_name, rdeps, rrdep_dict):
             """ Recurse through the reverse dep arrays to determine the recursive
