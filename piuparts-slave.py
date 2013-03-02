@@ -77,6 +77,7 @@ class Config(piupartslib.conf.Config):
                 "master-directory": ".",
                 "master-command": None,
                 "log-file": "piuparts-master.log",
+                "proxy": None,
                 "mirror": None,
                 "piuparts-command": "sudo piuparts",
                 "piuparts-flags": "",
@@ -855,6 +856,8 @@ def main():
     section_names = []
     global_config = Config(section="global")
     global_config.read(CONFIG_FILE)
+    if global_config["proxy"]:
+        os.environ["http_proxy"] = global_config["proxy"]
     if len(sys.argv) > 1:
         section_names = sys.argv[1:]
     else:

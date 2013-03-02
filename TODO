@@ -141,11 +141,6 @@ http://docs.python.org/library/logging.html
 
 - move shell cronjobs functionality into master, slave & report
 
-- document that it's highly recommended to run a proxy or mirror on localhost -
-  running multiple slaves on a fast host can easily saturate a 100 Mbit link :-)
-- there could be a config option that sets appropriate configuration for master,
-  slave, and (especially) piuparts
-
 
 1.0 should really have automated testing of piuparts itself...
 -----------------------------------------------------------------

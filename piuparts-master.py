@@ -57,6 +57,7 @@ class Config(piupartslib.conf.Config):
             {
                 "log-file": None,
                 "master-directory": ".",
+                "proxy": None,
                 "mirror": None,
                 "distro": None,
                 "area": None,
@@ -305,6 +306,8 @@ def main():
     if len(sys.argv) == 2:
         global_config = Config(section="global")
         global_config.read(CONFIG_FILE)
+        if global_config["proxy"]:
+            os.environ["http_proxy"] = global_config["proxy"]
         master_directory = global_config["master-directory"]
 
         section = sys.argv[1]
