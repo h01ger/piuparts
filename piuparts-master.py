@@ -36,6 +36,7 @@ from piupartslib.packagesdb import LogfileExists
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
+DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
 
 
 def setup_logging(log_level, log_file_name):
@@ -152,18 +153,21 @@ class Master(Protocol):
     def _load_package_database(self, section):
         config = Config(section=section, defaults_section="global")
         config.read(CONFIG_FILE)
+        distro_config = piupartslib.conf.DistroConfig(DISTRO_CONFIG_FILE, config["mirror"])
         db = piupartslib.packagesdb.PackagesDB(prefix=section)
         if self._recycle_mode and self._section == section:
             db.enable_recycling()
         self._package_databases[section] = db
-        packages_url = config.get_packages_url()
+        packages_url = distro_config.get_packages_url(
+                config.get_distro(), config.get_area(), config.get_arch())
         logging.info("Fetching %s" % packages_url)
         packages_file = piupartslib.open_packages_url(packages_url)
         db.read_packages_file(packages_file)
         packages_file.close()
         if config.get_distro() != config.get_final_distro():
             # take version numbers (or None) from final distro
-            packages_url = config.get_packages_url(distro=config.get_final_distro())
+            packages_url = distro_config.get_packages_url(
+                    config.get_final_distro(), config.get_area(), config.get_arch())
             logging.info("Fetching %s" % packages_url)
             packages_file = piupartslib.open_packages_url(packages_url)
             db2 = piupartslib.packagesdb.PackagesFile(packages_file)

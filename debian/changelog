@@ -32,6 +32,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Optimize reserve() and skip unavailable candidates.
   * piuparts-master.py:
     - Sort packages to be tested by importance, i.e. descending waiting_count.
+    - Use distros.conf to compute URLs.
   * piuparts-slave.py:
     - Tarball recreation can be disabled by setting max-tgz-age to 0.
     - Relax package existence checks to allow distupgrading to backports.
