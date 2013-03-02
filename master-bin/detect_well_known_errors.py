@@ -231,7 +231,7 @@ class FailureManager():
             pkg_obj = pkgsdb.get_package(get_pkg(x.pkgspec))
 
             if not pkg_obj is None:
-                rdeps = pkg_obj.rrdep_count()
+                rdeps = pkgsdb.rrdep_count(pkg_obj)
             else:
                 rdeps = 0
 
@@ -383,7 +383,7 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
 
         if not pkg_obj is None:
             src_pkg = source_pkg(pkgspec, pkgsdb)
-            rdep_cnt = pkg_obj.rrdep_count()
+            rdep_cnt = pkgsdb.rrdep_count(pkgsdb.get_package(bin_pkg))
         else:
             src_pkg = bin_pkg
             rdep_cnt = 0
@@ -439,7 +439,7 @@ def update_html(section, logdict, problem_list, failures, config, pkgsdb):
         pkg_obj =  pkgsdb.get_package(get_pkg(x.pkgspec))
 
         if not pkg_obj is None:
-            rdeps = pkg_obj.rrdep_count()
+            rdeps = pkgsdb.rrdep_count(pkg_obj)
         else:
             rdeps = 0
 
@@ -492,7 +492,6 @@ def process_section(section, config, problem_list,
                     section_config.get_arch()))
 
         pkgsdb.compute_package_states()
-        pkgsdb.calc_rrdep_counts()
 
     failures = FailureManager(logdict)
     failures.sort_by_bugged_and_rdeps(pkgsdb)

@@ -633,7 +633,6 @@ class Section:
         self._load_package_database(section, master_directory)
         self._binary_db = self._package_databases[section]
         self._binary_db.compute_package_states()
-        self._binary_db.calc_rrdep_counts()
 
         self._source_db = piupartslib.packagesdb.PackagesDB()
         self._source_db.load_packages_urls(
@@ -1257,24 +1256,18 @@ class Section:
                 with_counts = True
                 aside = " (reverse deps, blocked pkgs)"
 
-            def cmp_func(a, b):
-                """Sort by block count first"""
-                rrdep_cmp = cmp(a.block_count(), b.block_count())
-                if rrdep_cmp != 0:
-                    return -rrdep_cmp
-                else:
-                    return cmp(a["Package"], b["Package"])
-
             names = self._binary_db.get_pkg_names_in_state(state)
             packages = [self._binary_db.get_package(name) for name in names]
-            packages.sort(cmp_func)
+            packages.sort( key =
+                           lambda x: (-self._binary_db.block_count(x),x["Package"]))
 
             for package in packages:
                 vlist += "<li id=\"%s\">%s" % (
                                          package["Package"],
                                          self.link_to_source_summary(package["Package"]))
                 if with_counts:
-                    vlist += " (%d, %d)" % (package.rrdep_count(), package.block_count())
+                    vlist += " (%d, %d)" % (self._binary_db.rrdep_count(package), \
+                                            self._binary_db.block_count(package))
                 vlist += " (%s)" % html_protect(package["Maintainer"])
                 all_deps = package.all_dependencies()
                 if all_deps:
