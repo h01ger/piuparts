@@ -1,2 +1,3 @@
+etc/piuparts/distros.conf
 usr/lib/*
 usr/share/piuparts/lib/*

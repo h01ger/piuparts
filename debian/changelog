@@ -21,6 +21,10 @@ piuparts (0.50) UNRELEASED; urgency=low
       + PYTHONPATH (to find the python modules in non-default path setups)
       + slave-load-max
     - Setting tmpdir is now mandatory for master/slave operation.
+  * distros.conf: New configuration file to describe full distributions (e.g.
+    sid, squeeze) and partial distributions (e.g. squeeze/security,
+    squeeze-backports, experimental) along with their dependencies (e.g. base
+    distribution) and non-default mirrors. Shipped in package piuparts-common.
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:
     - Add Package.waiting_count() and friends, populated in calc_rrdep_count.

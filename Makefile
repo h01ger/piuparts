@@ -72,6 +72,7 @@ install-doc: build-stamp
 install-conf: build-stamp
 	install -d $(DESTDIR)$(etcdir)/piuparts
 	install -m 0644 conf/piuparts.conf.sample $(DESTDIR)$(etcdir)/piuparts/piuparts.conf
+	install -m 0644 conf/distros.conf $(DESTDIR)$(etcdir)/piuparts/
 
 	install -d $(DESTDIR)$(etcdir)/cron.d
 	install -m 0644 conf/crontab-master $(DESTDIR)$(etcdir)/cron.d/piuparts-master
@@ -89,6 +90,7 @@ install-conf-4-running-from-git: build-stamp
 	install -d $(DESTDIR)$(etcdir)/piuparts
 	install -m 0644 conf/crontab-master $(DESTDIR)$(etcdir)/piuparts/
 	install -m 0644 conf/crontab-slave $(DESTDIR)$(etcdir)/piuparts/
+	install -m 0644 conf/distros.conf $(DESTDIR)$(etcdir)/piuparts/
 	install -m 0644 instances/forward.* $(DESTDIR)$(etcdir)/piuparts/
 	install -m 0644 instances/piuparts.conf.* $(DESTDIR)$(etcdir)/piuparts/
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
