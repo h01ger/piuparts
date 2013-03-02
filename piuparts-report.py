@@ -613,15 +613,12 @@ class Section:
         self._doc_root = doc_root
 
         logging.debug("Loading and parsing Packages file")
-        oldcwd = os.getcwd()
-        os.chdir(master_directory)
         self._packagedb_cache = packagedb_cache
         self._package_databases = {}
-        self._load_package_database(section)
+        self._load_package_database(section, master_directory)
         self._binary_db = self._package_databases[section]
         self._binary_db.compute_package_states()
         self._binary_db.calc_rrdep_counts()
-        os.chdir(oldcwd)
 
         sources_url = self._distro_config.get_sources_url(
                 self._config.get_distro(), self._config.get_area())
@@ -633,7 +630,7 @@ class Section:
 
         self._log_name_cache = {}
 
-    def _load_package_database(self, section):
+    def _load_package_database(self, section, master_directory):
         if section in self._package_databases:
             return
         elif section in self._packagedb_cache:
@@ -646,12 +643,13 @@ class Section:
             # this is a base database eligible for caching
             # only cache the most recent base database
             self._packagedb_cache.clear()
-        db = piupartslib.packagesdb.PackagesDB(prefix=section)
+        sectiondir = os.path.join(master_directory, section)
+        db = piupartslib.packagesdb.PackagesDB(prefix=sectiondir)
         self._package_databases[section] = db
         if config["depends-sections"]:
             deps = config["depends-sections"].split()
             for dep in deps:
-                self._load_package_database(dep)
+                self._load_package_database(dep, master_directory)
             db.set_dependency_databases([self._package_databases[dep] for dep in deps])
         else:
             # only cache the big base databases that don't have additional dependencies

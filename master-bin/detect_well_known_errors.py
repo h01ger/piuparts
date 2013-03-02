@@ -481,13 +481,11 @@ def process_section( section, config, problem_list,
     add_cnt = make_kprs( logdict, kprdict, problem_list )
 
     if not pkgsdb:
-        oldcwd = os.getcwd()
-        os.chdir(config['master-directory'])
-
         distro_config = piupartslib.conf.DistroConfig(
                         DISTRO_CONFIG_FILE, section_config["mirror"])
 
-        pkgsdb = piupartslib.packagesdb.PackagesDB(prefix=section)
+        sectiondir = os.path.join(config['master-directory'], section)
+        pkgsdb = piupartslib.packagesdb.PackagesDB(prefix=sectiondir)
 
         pkgs_url = distro_config.get_packages_url(
                    section_config.get_distro(),
@@ -499,8 +497,6 @@ def process_section( section, config, problem_list,
 
         pkgsdb.compute_package_states()
         pkgsdb.calc_rrdep_counts()
-
-        os.chdir(oldcwd)
 
     failures = FailureManager( logdict )
     failures.sort_by_bugged_and_rdeps(pkgsdb)
