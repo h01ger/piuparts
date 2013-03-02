@@ -98,4 +98,78 @@ class Config(UserDict.UserDict):
         return "%s/dists/%s/%s/source/Sources.bz2" % \
                 (self.get_mirror(self.get_distro()), self.get_distro(), self.get_area())
 
+
+class DistroConfig(UserDict.UserDict):
+
+    def __init__(self, filename, mirror):
+        UserDict.UserDict.__init__(self)
+        self._mirror = mirror
+        self._defaults = {
+                "uri": None,
+                "distribution": None,
+                "components": None,
+                "depends": None,
+            }
+        cp = ConfigParser.SafeConfigParser()
+        cp.read(filename)
+        for section in cp.sections():
+            self[section] = dict(self._defaults)
+            for key in self._defaults.keys():
+                if cp.has_option(section, key):
+                    self[section][key] = cp.get(section, key)
+
+    def get(self, section, key=None):
+        if not section in self.keys():
+            self[section] = dict(self._defaults, distribution=section)
+        if not key is None:
+            return self[section][key]
+        return self[section]
+
+    def get_mirror(self, distro):
+        return self.get(distro, "uri") or self._mirror
+
+    def get_distribution(self, distro):
+        return self.get(distro, "distribution") or distro
+
+    def get_packages_url(self, distro, area, arch):
+        return "%s/dists/%s/%s/binary-%s/Packages.bz2" % (
+                self.get_mirror(distro),
+                self.get_distribution(distro),
+                area, arch)
+
+    def get_sources_url(self, distro, area):
+        return "%s/dists/%s/%s/source/Sources.bz2" % (
+                self.get_mirror(distro),
+                self.get_distribution(distro),
+                area)
+
+    def _expand_depends(self, distro):
+        todo = [distro]
+        done = []
+        seen = []
+        while todo:
+            curr = todo[0]
+            todo = todo[1:]
+            if not curr in seen:
+                seen.append(curr)
+                todo = done + (self.get(curr, "depends") or "").split() + [ curr ] + todo
+                done = []
+            elif not curr in done:
+                done.append(curr)
+        return done
+
+    def get_deb_lines(self, distro, components):
+        lines = []
+        for d in self._expand_depends(distro):
+            if not self[d]["uri"] is None and self[d]["uri"] == "None":
+                next  # skip virtual section
+            for c in components:
+                if self[d]["components"] is None or c in self[d]["components"].split():
+                    lines.append("deb %s %s %s" % (
+                        self.get_mirror(d),
+                        self.get_distribution(d),
+                        c))
+        return lines
+
+
 # vi:set et ts=4 sw=4 :
