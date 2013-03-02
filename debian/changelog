@@ -48,6 +48,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Add support for magic "$DISTRO/None" versions.
   * piuparts-report.py:
     - Call r.dev_off() after generating a plot.  (Closes: #657799)
+    - Use distros.conf to compute URLs.
   * Makefile:
     - Add DESTDIR support.
     - Overhaul. Add dependencies between build and install targets.

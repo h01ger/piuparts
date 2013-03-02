@@ -44,6 +44,7 @@ import piupartslib
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
+DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
 
 
 HTML_HEADER = """
@@ -570,6 +571,8 @@ class Section:
     def __init__(self, section, master_directory, doc_root):
         self._config = Config(section=section, defaults_section="global")
         self._config.read(CONFIG_FILE)
+        self._distro_config = piupartslib.conf.DistroConfig(
+                DISTRO_CONFIG_FILE, self._config["mirror"])
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
 
@@ -591,8 +594,10 @@ class Section:
         self._binary_db.calc_rrdep_counts()
         os.chdir(oldcwd)
 
-        logging.info("Fetching %s" % self._config.get_sources_url())
-        sources_file = piupartslib.open_packages_url(self._config.get_sources_url())
+        sources_url = self._distro_config.get_sources_url(
+                self._config.get_distro(), self._config.get_area())
+        logging.info("Fetching %s" % sources_url)
+        sources_file = piupartslib.open_packages_url(sources_url)
         self._source_db = piupartslib.packagesdb.PackagesDB()
         self._source_db.read_packages_file(sources_file)
         sources_file.close()
@@ -604,14 +609,16 @@ class Section:
         config.read(CONFIG_FILE)
         db = piupartslib.packagesdb.PackagesDB(prefix=section)
         self._package_databases[section] = db
-        packages_url = config.get_packages_url()
+        packages_url = self._distro_config.get_packages_url(
+                config.get_distro(), config.get_area(), config.get_arch())
         logging.info("Fetching %s" % packages_url)
         packages_file = piupartslib.open_packages_url(packages_url)
         db.read_packages_file(packages_file)
         packages_file.close()
         if config.get_distro() != config.get_final_distro():
             # take version numbers (or None) from final distro
-            packages_url = config.get_packages_url(distro=config.get_final_distro())
+            packages_url = self._distro_config.get_packages_url(
+                    config.get_final_distro(), config.get_area(), config.get_arch())
             logging.info("Fetching %s" % packages_url)
             packages_file = piupartslib.open_packages_url(packages_url)
             db2 = piupartslib.packagesdb.PackagesFile(packages_file)
@@ -1128,6 +1135,8 @@ class Section:
 
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell2\" colspan=\"2\">%d</td></tr>\n" % total_packages
         htmlpage = string.Template(HTML_HEADER + SECTION_INDEX_BODY_TEMPLATE + HTML_FOOTER)
+        packages_url = self._distro_config.get_packages_url(
+                self._config.get_distro(), self._config.get_area(), self._config.get_arch())
         write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
             "page_title": html_protect(self._config.section+" statistics"),
             "section_navigation": create_section_navigation(self._section_names,self._config.section,self._doc_root),
@@ -1135,7 +1144,7 @@ class Section:
             "section": html_protect(self._config.section),
             "description": html_protect(self._config["description"]),
             "tablerows": tablerows,
-            "packagesurl": html_protect(self._config.get_packages_url()),
+            "packagesurl": html_protect(packages_url),
             "doc_root": self._doc_root,
            }))
 
