@@ -63,9 +63,9 @@ class Package(UserDict.UserDict):
             self[name.strip()] = value.strip()
         self._parsed_deps = {}
         self._parsed_alt_deps = {}
-        self._rrdep_count = None
-        self._block_count = None
-        self._waiting_count = None
+        self.rrdep_cnt = None
+        self.block_cnt = None
+        self.waiting_cnt = None
 
     def _parse_dependencies(self, header_name):
         if header_name in self._parsed_deps:
@@ -126,30 +126,30 @@ class Package(UserDict.UserDict):
 
     def rrdep_count(self):
         """Get the recursive dependency count, if it has been calculated"""
-        if self._rrdep_count == None:
+        if self.rrdep_cnt == None:
             raise Exception('Reverse dependency count has not been calculated')
-        return self._rrdep_count
+        return(self.rrdep_cnt)
 
     def set_rrdep_count(self, val):
-        self._rrdep_count = val
+        self.rrdep_cnt = val
 
     def block_count(self):
         """Get the number of packages blocked by this package"""
-        if self._block_count == None:
+        if self.block_cnt == None:
             raise Exception('Block count has not been calculated')
-        return self._block_count
+        return(self.block_cnt)
 
     def set_block_count(self, val):
-        self._block_count = val
+        self.block_cnt = val
 
     def waiting_count(self):
         """Get the number of packages waiting for this package"""
-        if self._waiting_count == None:
+        if self.waiting_cnt == None:
             raise Exception('Waiting count has not been calculated')
-        return self._waiting_count
+        return(self.waiting_cnt)
 
     def set_waiting_count(self, val):
-        self._waiting_count = val
+        self.waiting_cnt = val
 
     def dump(self, output_file):
         output_file.write("".join(self.headers))
@@ -817,6 +817,24 @@ class PackagesDB:
             pkg.set_waiting_count(len(waiting_list))
         else:
             pkg.set_waiting_count(0)
+
+    def block_count(self, pkg):
+        if pkg.block_cnt is None:
+            self._calc_rrdep_pkg_counts(pkg)
+
+        return pkg.block_cnt
+
+    def rrdep_count(self, pkg):
+        if pkg.rrdep_cnt is None:
+            self._calc_rrdep_pkg_counts(pkg)
+
+        return pkg.rrdep_cnt
+
+    def waiting_count(self, pkg):
+        if pkg.waiting_cnt is None:
+            self._calc_rrdep_pkg_counts(pkg)
+
+        return pkg.waiting_cnt
 
     def calc_rrdep_counts(self):
         """Calculate recursive reverse dependency counts for Packages"""
