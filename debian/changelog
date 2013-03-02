@@ -43,6 +43,7 @@ piuparts (0.50) UNRELEASED; urgency=low
       (piuparts.conf global setting slave-load-max) is exceeded. Operation
       will be resumed after load drops below 'slave-load-max - 1.0'. Disabled
       by default.
+    - Use distros.conf to compute URLs.
   * piuparts-analyze.py:
     - Add support for magic "$DISTRO/None" versions.
   * piuparts-report.py:

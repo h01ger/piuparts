@@ -39,6 +39,7 @@ import piupartslib.packagesdb
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
+DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
 MAX_WAIT_TEST_RUN = 45*60
 
 interrupted = False
@@ -434,6 +435,8 @@ class Section:
                      % (action, self._config.section, self.precedence()))
         self._config = Config(section=self._config.section, defaults_section="global")
         self._config.read(CONFIG_FILE)
+        self._distro_config = piupartslib.conf.DistroConfig(
+                DISTRO_CONFIG_FILE, self._config["mirror"])
 
         if int(self._config["max-reserved"]) == 0:
             logging.info("disabled")
@@ -553,7 +556,8 @@ class Section:
         for distro in distros:
             if distro not in packages_files:
                 try:
-                    packages_url = self._config.get_packages_url(distro)
+                    packages_url = self._distro_config.get_packages_url(
+                            distro, self._config.get_area(), self._config.get_arch())
                     logging.debug("Fetching %s" % packages_url)
                     f = piupartslib.open_packages_url(packages_url)
                     packages_files[distro] = piupartslib.packagesdb.PackagesFile(f)
