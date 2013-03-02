@@ -781,6 +781,43 @@ class PackagesDB:
 
         return( self._rdeps )
 
+    def _calc_rrdep_pkg_counts(self, pkg):
+
+        pkg_name = pkg['Package']
+        self._compute_package_states()  # populate _package_state
+
+        # calc full recursive reverse dependency package set
+        rrdep_set = set()
+        rdeps = self._get_rdep_dict()
+        next_level = set([pkg_name])
+
+        while next_level:
+            rrdep_set |= next_level
+            new_pkgs = next_level
+            next_level = set([y for x in new_pkgs if x in rdeps for y in rdeps[x]])
+            next_level -= rrdep_set
+
+        rrdep_set.remove(pkg_name)
+
+        # calculate and set the metrics
+        pkg.set_rrdep_count(len(rrdep_set))
+
+        error_states = self.get_error_states()
+        if self._package_state[pkg_name] in error_states:
+            block_list = [x for x in rrdep_set
+                          if self._package_state[x] in error_states]
+            pkg.set_block_count(len(block_list))
+        else:
+            pkg.set_block_count(0)
+
+        waiting_states = self.get_waiting_states()
+        if self._package_state[pkg_name] in waiting_states:
+            waiting_list = [x for x in rrdep_set
+                            if self._package_state[x] in waiting_states]
+            pkg.set_waiting_count(len(waiting_list))
+        else:
+            pkg.set_waiting_count(0)
+
     def calc_rrdep_counts(self):
         """Calculate recursive reverse dependency counts for Packages"""
 
