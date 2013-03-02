@@ -13,6 +13,7 @@ piuparts (0.50) UNRELEASED; urgency=low
       prepend/append "deb", "file://", and "./" as needed.
     - Improve the "dirname part contains a symlink" test and report
       overwritten files owned by other packages as failures.
+    - Add --proxy=URL option.
   * piuparts.conf:
     - New global settings:
       + proxy
@@ -45,7 +46,8 @@ piuparts (0.50) UNRELEASED; urgency=low
       (piuparts.conf global setting slave-load-max) is exceeded. Operation
       will be resumed after load drops below 'slave-load-max - 1.0'. Disabled
       by default.
-    - Use piuparts.conf global proxy setting as http_proxy.
+    - Use piuparts.conf global proxy setting as http_proxy and pass it to
+      piuparts via --proxy.
     - Use distros.conf to compute URLs.
   * piuparts-analyze.py:
     - Add support for magic "$DISTRO/None" versions.

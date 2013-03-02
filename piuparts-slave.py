@@ -670,6 +670,8 @@ def test_package(config, pname, pvers, packages_files):
     base_command = config["piuparts-command"].split()
     if config["piuparts-flags"]:
         base_command.extend(config["piuparts-flags"].split())
+    if "http_proxy" in os.environ:
+        base_command.extend(["--proxy", os.environ["http_proxy"]])
     if config["mirror"]:
         base_command.extend(["--mirror", config["mirror"]])
     if config["tmpdir"]:
@@ -789,6 +791,8 @@ def create_chroot(config, tarball, distro):
     command = config["piuparts-command"].split()
     if config["piuparts-flags"]:
         command.extend(config["piuparts-flags"].split())
+    if "http_proxy" in os.environ:
+        command.extend(["--proxy", os.environ["http_proxy"]])
     if config["mirror"]:
         command.extend(["--mirror", config["mirror"]])
     if config["tmpdir"]:
