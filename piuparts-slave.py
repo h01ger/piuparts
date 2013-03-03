@@ -668,15 +668,25 @@ def test_package(config, pname, pvers, packages_files):
     if not basetgz:
         ret = -11111
 
-    base_command = config["piuparts-command"].split()
+    command = config["piuparts-command"].split()
     if config["piuparts-flags"]:
-        base_command.extend(config["piuparts-flags"].split())
+        command.extend(config["piuparts-flags"].split())
     if "http_proxy" in os.environ:
-        base_command.extend(["--proxy", os.environ["http_proxy"]])
+        command.extend(["--proxy", os.environ["http_proxy"]])
     if config["mirror"]:
-        base_command.extend(["--mirror", config["mirror"]])
+        command.extend(["--mirror", config["mirror"]])
     if config["tmpdir"]:
-        base_command.extend(["--tmpdir", config["tmpdir"]])
+        command.extend(["--tmpdir", config["tmpdir"]])
+    command.extend(["-b", basetgz])
+    if not distupgrade:
+        command.extend(["-d", config.get_distro()])
+        command.append("--no-upgrade-test")
+    else:
+        for distro in config.get_distros():
+            command.extend(["-d", distro])
+    if config["keep-sources-list"] in ["yes", "true"]:
+        command.append("--keep-sources-list")
+    command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
     subdir = "fail"
 
@@ -695,15 +705,6 @@ def test_package(config, pname, pvers, packages_files):
             output.write("\n")
         if ret != 0:
             subdir = "untestable"
-
-    if ret == 0 and not distupgrade:
-        command = base_command[:]
-        command.extend(["-b", config["chroot-tgz"]])
-        command.extend(["-d", config.get_distro()])
-        command.append("--no-upgrade-test")
-        if config["keep-sources-list"] in ["yes", "true"]:
-            command.append("--keep-sources-list")
-        command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
     if ret == 0 and distupgrade:
         distros = config.get_distros()
@@ -740,13 +741,6 @@ def test_package(config, pname, pvers, packages_files):
             ret = -10010
         if ret != 0:
             subdir = "untestable"
-
-    if ret == 0 and distupgrade:
-        command = base_command[:]
-        command.extend(["-b", config["upgrade-test-chroot-tgz"]])
-        for distro in config.get_distros():
-            command.extend(["-d", distro])
-        command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
     if ret == 0:
         output.write("Executing: %s\n" % " ".join(command))
