@@ -47,6 +47,7 @@ idle-sleep = 1800
 # 60*60*24*7
 max-tgz-age = 604800
 # rescheduling settings
+max-reserved = 50
 expire-old-days = 120
 reschedule-old-days = 90
 reschedule-old-count = 150
@@ -130,8 +131,6 @@ log-file = squeeze.log
 
 
 [lenny2squeeze]
-# lenny2squeeze is disabled with max-reserved=0
-max-reserved = 0
 precedence = 99
 piuparts-flags =
 	--warn-on-leftovers-after-purge
@@ -142,6 +141,7 @@ piuparts-flags =
 distro = lenny
 upgrade-test-distros = lenny squeeze
 upgrade-test-chroot-tgz = lenny.tar.gz
-auto-reschedule = no
+reschedule-old-days = 0
+reschedule-fail-days = 0
 log-file = lenny2squeeze.log
 
