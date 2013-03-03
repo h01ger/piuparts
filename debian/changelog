@@ -56,6 +56,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Call r.dev_off() after generating a plot.  (Closes: #657799)
     - Use piuparts.conf global proxy setting as http_proxy.
     - Use distros.conf to compute URLs.
+    - Generate/prepend/append a default description.
   * Makefile:
     - Add DESTDIR support.
     - Overhaul. Add dependencies between build and install targets.

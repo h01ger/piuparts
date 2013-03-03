@@ -559,6 +559,11 @@ section, too, and will serve as defaults for all other sections
  directory for leftover mountpoints and chroots only evaluate the
  [global] setting.
 
+* "description" is a synopsis of the test used in the report. A
+ default description will be generated if this is not set or will
+ be prepended (appended) if the description starts (ends) with
+ '+'.
+
 * "mirror" tells the slave which mirror it is to use. The slave
  gives this to piuparts when it runs it. The URLs for Packages and
  Sources files will be generated from this setting, too. Default

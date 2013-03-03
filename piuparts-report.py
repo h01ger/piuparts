@@ -1139,12 +1139,32 @@ class Section:
         htmlpage = string.Template(HTML_HEADER + SECTION_INDEX_BODY_TEMPLATE + HTML_FOOTER)
         packages_url = self._distro_config.get_packages_url(
                 self._config.get_distro(), self._config.get_area(), self._config.get_arch())
+        vendor = "Debian"
+        if len(self._config.get_distros()) > 1:
+            description = "%s %s: package installation in %s" % (
+                vendor,
+                self._config.get_area(),
+                self._config.get_start_distro())
+            for distro in self._config.get_distros()[1:]:
+                description += ", dist-upgrade to %s" % distro
+            description += ", removal, and purge test."
+        else:
+            description = "%s %s / %s: package installation, removal, and purge test." % (
+                vendor,
+                self._config.get_distro(),
+                self._config.get_area())
+        if self._config["description"].startswith("+"):
+            description = description + " " + self._config["description"][1:]
+        elif self._config["description"].endswith("+"):
+            description = self._config["description"][:-1] + " " + description
+        elif self._config["description"]:
+            description = self._config["description"]
         write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
             "page_title": html_protect(self._config.section+" statistics"),
             "section_navigation": create_section_navigation(self._section_names,self._config.section,self._doc_root),
             "time": time.strftime("%Y-%m-%d %H:%M %Z"),
             "section": html_protect(self._config.section),
-            "description": html_protect(self._config["description"]),
+            "description": html_protect(description),
             "tablerows": tablerows,
             "packagesurl": html_protect(packages_url),
             "doc_root": self._doc_root,
