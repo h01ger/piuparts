@@ -107,6 +107,7 @@ class DistroConfig(UserDict.UserDict):
                 "uri": None,
                 "distribution": None,
                 "components": None,
+                "target-release": None,
                 "depends": None,
             }
         cp = ConfigParser.SafeConfigParser()
@@ -141,6 +142,12 @@ class DistroConfig(UserDict.UserDict):
                 self.get_mirror(distro),
                 self.get_distribution(distro),
                 area)
+
+    def get_target_flags(self, distro):
+        tr = self.get(distro, "target-release")
+        if tr:
+            return ["-t", tr]
+        return []
 
     def _expand_depends(self, distro):
         todo = [distro]
