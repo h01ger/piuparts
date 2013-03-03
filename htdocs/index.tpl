@@ -47,6 +47,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2013-03-02</b> While the <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git">piuparts.git repo on Alioth</a> will continue to be the main repo, there is also a <a href="https://github.com/h01ger/piuparts">piuparts clone on github</a>, for those who prefer to send pull requests that way.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2012-06-21</b> piuparts 0.45 has been released, featuring piuparts-master and piuparts-slave packages to ease installation of such a setup. If you run piuparts in master/slave mode, please let us know.
      </td>
     </tr>
