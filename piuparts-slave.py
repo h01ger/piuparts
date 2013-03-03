@@ -617,7 +617,7 @@ class Section:
 
         subdir = "fail"
 
-        if ret == 0 and not distupgrade:
+        if not distupgrade:
             distro = self._config.get_distro()
             if not pname in packages_files[distro]:
                 output.write("Package %s not found in %s\n" % (pname, distro))
@@ -630,10 +630,7 @@ class Section:
                 output.write("\n")
                 package.dump(output)
                 output.write("\n")
-            if ret != 0:
-                subdir = "untestable"
-
-        if ret == 0 and distupgrade:
+        else:
             distros = self._config.get_distros()
             if distros:
                 # the package must exist somewhere
@@ -666,8 +663,8 @@ class Section:
                 output.write("\n")
             else:
                 ret = -10010
-            if ret != 0:
-                subdir = "untestable"
+        if ret != 0:
+            subdir = "untestable"
 
         if ret == 0:
             output.write("Executing: %s\n" % " ".join(command))
