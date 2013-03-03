@@ -22,6 +22,7 @@ Architecture: all
 Pre-Depends:
  dpkg (>= 1.15.7.2~),
 Depends:
+ piuparts-common (= ${binary:Version}),
  debootstrap,
  debsums,
  lsb-release,

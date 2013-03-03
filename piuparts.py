@@ -56,6 +56,11 @@ try:
 except ImportError:
     from debian_bundle import deb822
 
+import piupartslib.conf
+
+DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
+
+
 class Defaults:
 
     """Default settings which depend on flavor of Debian.
@@ -915,7 +920,9 @@ class Chroot:
     def create_apt_sources(self, distro):
         """Create an /etc/apt/sources.list with a given distro."""
         lines = []
-        for mirror, components in settings.debian_mirrors:
+        lines.extend(settings.distro_config.get_deb_lines(
+            distro, settings.debian_mirrors[0][1]))
+        for mirror, components in settings.debian_mirrors[1:]:
             lines.append("deb %s %s %s" %
                          (mirror, distro, " ".join(components)))
         for repo in settings.extra_repos:
@@ -1008,7 +1015,7 @@ class Chroot:
             options.append('--include=eatmydata')
             options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
         run(prefix + ["debootstrap", "--variant=minbase"] + options +
-            [settings.debian_distros[0], self.name, settings.debian_mirrors[0][0]])
+            [settings.debian_distros[0], self.name, settings.distro_config.get_mirror(settings.debian_distros[0])])
         self.bootstrapped = True
 
     def minimize(self):
@@ -2827,6 +2834,9 @@ def parse_command_line():
         settings.debian_mirrors = find_default_debian_mirrors()
         if not settings.debian_mirrors:
             settings.debian_mirrors = defaults.get_mirror()
+
+    settings.distro_config = piupartslib.conf.DistroConfig(
+                DISTRO_CONFIG_FILE, settings.debian_mirrors[0][0])
 
     if settings.keep_sources_list and \
        (not settings.basetgz or len(settings.debian_distros) > 1):

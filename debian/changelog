@@ -14,6 +14,9 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Improve the "dirname part contains a symlink" test and report
       overwritten files owned by other packages as failures.
     - Add --proxy=URL option.
+    - piuparts.deb: Add Depends: piuparts-common for piupartslib.
+    - Use distros.conf to generate mirror configuration. This enables more
+      complex scenarios involving partial distributions and dist-upgrades.
   * piuparts.conf:
     - New global settings:
       + proxy
