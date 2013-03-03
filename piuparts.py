@@ -1145,18 +1145,22 @@ class Chroot:
             if with_scripts:
                 self.run_scripts("pre_install")
 
+            apt_get_install = ["apt-get", "-yf"]
+            apt_get_install.extend(settings.distro_config.get_target_flags(
+                os.environ["PIUPARTS_DISTRIBUTION"]))
+            apt_get_install.append("install")
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
 
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
                 self.list_installed_files (pre_info, self.save_meta_data())
 
-                self.run(["apt-get", "-yf", "install"])
+                self.run(apt_get_install)
                 self.list_installed_files (pre_info, self.save_meta_data())
 
             else:
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
-                self.run(["apt-get", "-yf", "install"])
+                self.run(apt_get_install)
 
             logging.info ("Installation of %s ok", tmp_files)
 
@@ -1173,12 +1177,17 @@ class Chroot:
             self.run(["apt-cache", "policy"])
             self.run(["apt-cache", "policy"] + [p.split("=", 1)[0].strip() for p in packages])
 
+            apt_get_install = ["apt-get", "-y"]
+            apt_get_install.extend(settings.distro_config.get_target_flags(
+                os.environ["PIUPARTS_DISTRIBUTION"]))
+            apt_get_install.append("install")
+            apt_get_install.extend(packages)
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
-                self.run(["apt-get", "-y", "install"] + packages)
+                self.run(apt_get_install)
                 self.list_installed_files (pre_info, self.save_meta_data())
             else:
-                self.run(["apt-get", "-y", "install"] + packages)
+                self.run(apt_get_install)
 
             if with_scripts:
                 self.run_scripts("post_install")

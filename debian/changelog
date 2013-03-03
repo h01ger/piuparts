@@ -17,6 +17,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - piuparts.deb: Add Depends: piuparts-common for piupartslib.
     - Use distros.conf to generate mirror configuration. This enables more
       complex scenarios involving partial distributions and dist-upgrades.
+    - Use apt-get -t <target-release> if set in distros.conf.
   * piuparts.conf:
     - New global settings:
       + proxy
