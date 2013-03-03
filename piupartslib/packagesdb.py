@@ -594,8 +594,14 @@ class PackagesDB:
         self._find_all_packages()
         return name in self._packages
 
-    def get_package(self, name):
-        return self._packages[name]
+    def get_package(self, name, recurse=False):
+        if name in self._packages:
+            return self._packages[name]
+        elif recurse:
+            for db in self._dependency_databases:
+                if db.has_package(name):
+                    return db.get_package(name)
+        return None
 
     def get_providers(self, name, recurse=True):
         providers = []
