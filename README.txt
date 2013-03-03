@@ -588,20 +588,19 @@ section, too, and will serve as defaults for all other sections
 * "chroot-tgz" is the name of the file the slave should use for
  the tarball to keep the chroot for the basic install/purge
  testing. If the tarball doesn't exist, the slave creates it.
- This can be left empty if only upgrade tests should be run.
 
 * "upgrade-test-distros" is the space delimited list of
  distributions the slave should use for testing upgrades
  between distributions (i.e., Debian versions). Using "partial"
  distributions as defined in distros.conf is possible. Currently,
- "squeeze wheezy sid" is a good choice.  Leave this unset if you
- do not want to run upgrade tests.
+ "squeeze wheezy sid" is a good choice.
+ Setting this switches from doing install/purge tests to
+ dist-upgrade tests. Not set by default.
 
 * "upgrade-test-chroot-tgz" is the name of the file the slave
  should use for the tarball to keep the chroot for the first
  distribution in upgrade-test-distros. If the file does not exist,
- the slave creates it. This can be left empty if only basic tests
- should be run.
+ the slave creates it.
 
 * "max-reserved" is the maximum number of packages the slave will
  reserve at once. It should be large enough that the host that

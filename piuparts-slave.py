@@ -658,6 +658,16 @@ def test_package(config, pname, pvers, packages_files):
     output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n",
                                time.gmtime()))
 
+    distupgrade = len(config.get_distros()) > 1
+    ret = 0
+
+    if not distupgrade:
+        basetgz = config["chroot-tgz"]
+    else:
+        basetgz = config["upgrade-test-chroot-tgz"]
+    if not basetgz:
+        ret = -11111
+
     base_command = config["piuparts-command"].split()
     if config["piuparts-flags"]:
         base_command.extend(config["piuparts-flags"].split())
@@ -669,9 +679,8 @@ def test_package(config, pname, pvers, packages_files):
         base_command.extend(["--tmpdir", config["tmpdir"]])
 
     subdir = "fail"
-    ret = 0
 
-    if ret == 0 and config["chroot-tgz"]:
+    if ret == 0 and not distupgrade:
         distro = config.get_distro()
         if not pname in packages_files[distro]:
             output.write("Package %s not found in %s\n" % (pname, distro))
@@ -687,7 +696,7 @@ def test_package(config, pname, pvers, packages_files):
         if ret != 0:
             subdir = "untestable"
 
-    if ret == 0 and config["chroot-tgz"]:
+    if ret == 0 and not distupgrade:
         command = base_command[:]
         command.extend(["-b", config["chroot-tgz"]])
         command.extend(["-d", config.get_distro()])
@@ -696,19 +705,7 @@ def test_package(config, pname, pvers, packages_files):
             command.append("--keep-sources-list")
         command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
-        output.write("Executing: %s\n" % " ".join(command))
-        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
-        if not f or f[-1] != '\n':
-            f += '\n'
-        output.write(f)
-        lastline = f.split('\n')[-2]
-        if ret < 0:
-            output.write(" *** Process KILLED - exceed maximum run time ***\n")
-        elif not "piuparts run ends" in lastline:
-            ret += 1024
-            output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n");
-
-    if ret == 0 and config["upgrade-test-chroot-tgz"]:
+    if ret == 0 and distupgrade:
         distros = config.get_distros()
         if distros:
             # the package must exist somewhere
@@ -744,13 +741,14 @@ def test_package(config, pname, pvers, packages_files):
         if ret != 0:
             subdir = "untestable"
 
-    if ret == 0 and config["upgrade-test-chroot-tgz"]:
+    if ret == 0 and distupgrade:
         command = base_command[:]
         command.extend(["-b", config["upgrade-test-chroot-tgz"]])
         for distro in config.get_distros():
             command.extend(["-d", distro])
         command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
+    if ret == 0:
         output.write("Executing: %s\n" % " ".join(command))
         ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
         if not f or f[-1] != '\n':

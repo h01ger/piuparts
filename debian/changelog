@@ -63,6 +63,9 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Use piuparts.conf global proxy setting as http_proxy and pass it to
       piuparts via --proxy.
     - Use distros.conf to compute URLs.
+    - Use the upgrade-test-distros setting to select between install/purge
+      test (if unset) and dist-upgrade test (if there are at least 2 distros).
+      Drop support for running both tests for a section.
   * piuparts-analyze.py:
     - Add support for magic "$DISTRO/None" versions.
   * piuparts-report.py:
