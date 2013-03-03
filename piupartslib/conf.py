@@ -72,6 +72,12 @@ class Config(UserDict.UserDict):
             return distros[-1]
         return None
 
+    def get_start_distro(self):
+        distros = self.get_distros()
+        if distros:
+            return distros[0]
+        return self["distro"]
+
     def get_final_distro(self):
         distros = self.get_distros()
         if distros:
