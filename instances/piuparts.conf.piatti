@@ -20,6 +20,7 @@ master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
 piuparts-command =
 	sudo
+	env PYTHONPATH=%(PYTHONPATH)s
 	timeout -s INT -k 5m 35m
 	/org/piuparts.debian.org/sbin/piuparts
 	--skip-logrotatefiles-test
