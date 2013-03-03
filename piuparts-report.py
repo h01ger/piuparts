@@ -397,6 +397,7 @@ class Config(piupartslib.conf.Config):
                 "sections": "report",
                 "output-directory": "html",
                 "master-directory": ".",
+                "depends-sections": None,
                 "description": "",
                 "proxy": None,
                 "mirror": None,
@@ -607,10 +608,18 @@ class Section:
         self._log_name_cache = {}
 
     def _load_package_database(self, section):
+        if section in self._package_databases:
+            return
+
         config = Config(section=section, defaults_section="global")
         config.read(CONFIG_FILE)
         db = piupartslib.packagesdb.PackagesDB(prefix=section)
         self._package_databases[section] = db
+        if config["depends-sections"]:
+            deps = config["depends-sections"].split()
+            for dep in deps:
+                self._load_package_database(dep)
+            db.set_dependency_databases([self._package_databases[dep] for dep in deps])
         packages_url = self._distro_config.get_packages_url(
                 config.get_distro(), config.get_area(), config.get_arch())
         logging.info("Fetching %s" % packages_url)

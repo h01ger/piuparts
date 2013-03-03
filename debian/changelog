@@ -61,6 +61,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Use piuparts.conf global proxy setting as http_proxy.
     - Use distros.conf to compute URLs.
     - Generate/prepend/append a default description.
+    - Load depends-sections for package lookup in partial distros.
   * Makefile:
     - Add DESTDIR support.
     - Overhaul. Add dependencies between build and install targets.
