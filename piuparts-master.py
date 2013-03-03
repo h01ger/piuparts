@@ -63,6 +63,7 @@ class Config(piupartslib.conf.Config):
                 "area": None,
                 "arch": None,
                 "upgrade-test-distros": None,
+                "depends-sections": None,
             },
             defaults_section=defaults_section)
 
@@ -152,6 +153,9 @@ class Master(Protocol):
         self._binary_db = self._package_databases[self._section]
 
     def _load_package_database(self, section):
+        if section in self._package_databases:
+            return
+
         config = Config(section=section, defaults_section="global")
         config.read(CONFIG_FILE)
         distro_config = piupartslib.conf.DistroConfig(DISTRO_CONFIG_FILE, config["mirror"])
@@ -159,6 +163,11 @@ class Master(Protocol):
         if self._recycle_mode and self._section == section:
             db.enable_recycling()
         self._package_databases[section] = db
+        if config["depends-sections"]:
+            deps = config["depends-sections"].split()
+            for dep in deps:
+                self._load_package_database(dep)
+            db.set_dependency_databases([self._package_databases[dep] for dep in deps])
         packages_url = distro_config.get_packages_url(
                 config.get_distro(), config.get_area(), config.get_arch())
         logging.info("Fetching %s" % packages_url)

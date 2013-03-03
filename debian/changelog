@@ -40,6 +40,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Sort packages to be tested by importance, i.e. descending waiting_count.
     - Use piuparts.conf global proxy setting as http_proxy.
     - Use distros.conf to compute URLs.
+    - Load depends-sections for package lookup in partial distros.
   * piuparts-slave.py:
     - Tarball recreation can be disabled by setting max-tgz-age to 0.
     - Relax package existence checks to allow distupgrading to backports.
