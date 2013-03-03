@@ -385,12 +385,12 @@ class Section:
         tarball = self._config["chroot-tgz"]
         if tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
-                                         self._config["distro"])
+                                         self._config.get_distro())
 
         tarball = self._config["upgrade-test-chroot-tgz"]
         if self._config["upgrade-test-distros"] and tarball:
             create_or_replace_chroot_tgz(self._config, tarball,
-                                         self._config["upgrade-test-distros"].split()[0])
+                                         self._config.get_start_distro())
 
         os.chdir(oldcwd)
 
@@ -444,8 +444,7 @@ class Section:
             self._error_wait_until = time.time() + 12 * 3600
             return 0
 
-        if not self._config["distro"] and (not self._config["upgrade-test-distros"] \
-                                           or not self._config["upgrade-test-distros"].split()):
+        if not self._config.get_distro() and not self._config.get_distros():
             logging.error("neither 'distro' nor 'upgrade-test-distros' configured")
             self._error_wait_until = time.time() + 3600
             return 0
@@ -545,16 +544,8 @@ class Section:
 
 
     def _process(self):
-        if self._config["distro"]:
-            distros = [self._config["distro"]]
-        else:
-            distros = []
-
-        if self._config["upgrade-test-distros"]:
-            distros += self._config["upgrade-test-distros"].split()
-
         packages_files = {}
-        for distro in distros:
+        for distro in [self._config.get_distro()] + self._config.get_distros():
             if distro not in packages_files:
                 try:
                     packages_url = self._distro_config.get_packages_url(
@@ -681,7 +672,7 @@ def test_package(config, pname, pvers, packages_files):
     ret = 0
 
     if ret == 0 and config["chroot-tgz"]:
-        distro = config["distro"]
+        distro = config.get_distro()
         if not pname in packages_files[distro]:
             output.write("Package %s not found in %s\n" % (pname, distro))
             ret = -10001
@@ -699,7 +690,7 @@ def test_package(config, pname, pvers, packages_files):
     if ret == 0 and config["chroot-tgz"]:
         command = base_command[:]
         command.extend(["-b", config["chroot-tgz"]])
-        command.extend(["-d", config["distro"]])
+        command.extend(["-d", config.get_distro()])
         command.append("--no-upgrade-test")
         if config["keep-sources-list"] in ["yes", "true"]:
             command.append("--keep-sources-list")
@@ -718,7 +709,7 @@ def test_package(config, pname, pvers, packages_files):
             output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n");
 
     if ret == 0 and config["upgrade-test-chroot-tgz"]:
-        distros = config["upgrade-test-distros"].split()
+        distros = config.get_distros()
         if distros:
             # the package must exist somewhere
             for distro in distros:
@@ -756,7 +747,7 @@ def test_package(config, pname, pvers, packages_files):
     if ret == 0 and config["upgrade-test-chroot-tgz"]:
         command = base_command[:]
         command.extend(["-b", config["upgrade-test-chroot-tgz"]])
-        for distro in config["upgrade-test-distros"].split():
+        for distro in config.get_distros():
             command.extend(["-d", distro])
         command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
