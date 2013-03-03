@@ -28,6 +28,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     squeeze-backports, experimental) along with their dependencies (e.g. base
     distribution) and non-default mirrors. Shipped in package piuparts-common.
   * piupartslib/conf.py:
+    - Add get_distros() method.
     - Add class DistroConfig for reading distros.conf.
   * piupartslib/packagesdb.py:
     - Add Package.waiting_count() and friends, populated in calc_rrdep_count.
