@@ -393,10 +393,13 @@ class PackagesDB:
             more = more[1:]
             if dep not in deps:
                 deps.append(dep)
-                if dep in self._packages:
-                    more += self._packages[dep].dependencies()
-                elif dep in self._virtual_packages:
-                    more += self._packages[self._virtual_packages[dep][0]].dependencies()
+                dep_pkg = self.get_package(dep, recurse=True)
+                if dep_pkg is None:
+                    providers = self.get_providers(dep)
+                    if providers:
+                        dep_pkg = self.get_package(providers[0], recurse=True)
+                if dep_pkg is not None:
+                    more += dep_pkg.dependencies()
         return deps
 
     def _get_dependency_cycle(self, package_name):
@@ -408,12 +411,11 @@ class PackagesDB:
             more = more[1:]
             if dep not in deps:
                 deps.append(dep)
-                if dep in self._packages:
-                    dep_pkg = self._packages[dep]
-                elif dep in self._virtual_packages:
-                    dep_pkg = self._packages[self._virtual_packages[dep][0]]
-                else:
-                    dep_pkg = None
+                dep_pkg = self.get_package(dep, recurse=True)
+                if dep_pkg is None:
+                    providers = self.get_providers(dep)
+                    if providers:
+                        dep_pkg = self.get_package(providers[0], recurse=True)
                 if dep_pkg is not None and package_name in self._get_recursive_dependencies(dep_pkg):
                     circular.append(dep)
                     more += dep_pkg.dependencies()
