@@ -22,6 +22,8 @@ piuparts (0.50) UNRELEASED; urgency=low
       + backup-directory (for the master script prepare_backup)
       + PYTHONPATH (to find the python modules in non-default path setups)
       + slave-load-max
+    - New per-section settings:
+      + depends-sections
     - Setting tmpdir is now mandatory for master/slave operation.
   * distros.conf: New configuration file to describe full distributions (e.g.
     sid, squeeze) and partial distributions (e.g. squeeze/security,
@@ -33,6 +35,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * piupartslib/packagesdb.py:
     - Add Package.waiting_count() and friends, populated in calc_rrdep_count.
     - Optimize reserve() and skip unavailable candidates.
+    - Add method: set_dependency_databases().
   * piuparts-master.py:
     - Sort packages to be tested by importance, i.e. descending waiting_count.
     - Use piuparts.conf global proxy setting as http_proxy.

@@ -307,6 +307,7 @@ class PackagesDB:
         self._packages = None
         self._in_state = None
         self._package_state = {}
+        self._dependency_databases = []
         self._recycle_mode = False
         self._candidates_for_testing = None
         self.set_subdirs(ok="pass", fail="fail", evil="untestable",
@@ -365,6 +366,9 @@ class PackagesDB:
     def read_packages_file(self, input):
         self._packages_files.append(PackagesFile(input))
         self._packages = None
+
+    def set_dependency_databases(self, dependency_databases=[]):
+        self._dependency_databases = list(dependency_databases)
 
     def _find_all_packages(self):
         if self._packages is None:
@@ -542,6 +546,9 @@ class PackagesDB:
                 todo.append(package_name)
             else:
                 self._in_state[state].append(package_name)
+
+        for db in self._dependency_databases:
+            db._compute_package_states()
 
         while todo:
             package_names = todo
