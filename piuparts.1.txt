@@ -161,6 +161,12 @@ Note that file: addresses works if the directories are made accessible from with
 *--pedantic-purge-test*::
   Be pedantic when checking if a purged package leaves files behind. If this option is not set, files left in _/tmp_ are ignored.")
 
+*--proxy='URL'*::
+  Use the proxy at URL to access the Debian mirror(s). Takes precedence over
+  the 'http_proxy' environment variable. Using a local proxy is recommended
+  because piuparts may use large amounts of bandwidth to repeatedly download
+  the same files.
+
 *-s* 'filename', *--save*='filename'::
   Save the chroot, after it has been set up, as a tarball into _filename_. It can then be used with '-b'.
 

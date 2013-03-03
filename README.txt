@@ -494,6 +494,16 @@ used for all further sections.
  after load drops below 'slave-load-max - 1.0'. Floating point
  value. Defaults to 0 (= disabled).
 
+* "proxy" sets the http_proxy that will be used for fetching
+ Packages files etc. (by master/slave/report) and .debs etc. (by
+ piuparts). This will override a http_proxy setting in the
+ environment. By default (no value being set) the http_proxy
+ variable from the environment will be used (and no proxy will be
+ used if this is not set). It is highly recommended to use a proxy
+ running on localhost (e.g. installing squid and using a setting of
+ "http://localhost:3128") due to the high bandwidth consumption of
+ piuparts and repeated downloading of the same files.
+
 ==== section specific configuration
 
 The section specific settings will be reloaded each time a section

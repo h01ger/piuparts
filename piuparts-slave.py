@@ -77,6 +77,7 @@ class Config(piupartslib.conf.Config):
                 "master-directory": ".",
                 "master-command": None,
                 "log-file": "piuparts-master.log",
+                "proxy": None,
                 "mirror": None,
                 "piuparts-command": "sudo piuparts",
                 "piuparts-flags": "",
@@ -669,6 +670,8 @@ def test_package(config, pname, pvers, packages_files):
     base_command = config["piuparts-command"].split()
     if config["piuparts-flags"]:
         base_command.extend(config["piuparts-flags"].split())
+    if "http_proxy" in os.environ:
+        base_command.extend(["--proxy", os.environ["http_proxy"]])
     if config["mirror"]:
         base_command.extend(["--mirror", config["mirror"]])
     if config["tmpdir"]:
@@ -788,6 +791,8 @@ def create_chroot(config, tarball, distro):
     command = config["piuparts-command"].split()
     if config["piuparts-flags"]:
         command.extend(config["piuparts-flags"].split())
+    if "http_proxy" in os.environ:
+        command.extend(["--proxy", os.environ["http_proxy"]])
     if config["mirror"]:
         command.extend(["--mirror", config["mirror"]])
     if config["tmpdir"]:
@@ -855,6 +860,8 @@ def main():
     section_names = []
     global_config = Config(section="global")
     global_config.read(CONFIG_FILE)
+    if global_config["proxy"]:
+        os.environ["http_proxy"] = global_config["proxy"]
     if len(sys.argv) > 1:
         section_names = sys.argv[1:]
     else:

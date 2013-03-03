@@ -397,6 +397,7 @@ class Config(piupartslib.conf.Config):
                 "output-directory": "html",
                 "master-directory": ".",
                 "description": "",
+                "proxy": None,
                 "mirror": None,
                 "distro": None,
                 "area": None,
@@ -1294,6 +1295,8 @@ def main():
 
     global_config = Config(section="global")
     global_config.read(CONFIG_FILE)
+    if global_config["proxy"]:
+        os.environ["http_proxy"] = global_config["proxy"]
     section_names = global_config["sections"].split()
     master_directory = global_config["master-directory"]
     output_directory = global_config["output-directory"]

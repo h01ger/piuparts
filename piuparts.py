@@ -137,6 +137,7 @@ class Settings:
         self.single_changes_list = False
         self.args_are_package_files = True
         # distro setup
+        self.proxy = None
         self.debian_mirrors = []
         self.extra_repos = []
         self.testdebs_repo = None
@@ -947,8 +948,10 @@ class Chroot:
         lines.append('APT::Install-Recommends "%d";\n' % int(settings.install_recommends))
         lines.append('APT::Install-Suggests "0";\n')
         lines.append('APT::Get::AllowUnauthenticated "%s";\n' % settings.apt_unauthenticated)
-        if "HTTP_PROXY" in os.environ:
-            proxy = os.environ["HTTP_PROXY"]
+        if settings.proxy:
+            proxy = settings.proxy
+        elif "http_proxy" in os.environ:
+            proxy = os.environ["http_proxy"]
         else:
             proxy = None;
             pat = re.compile(r"^Acquire::http::Proxy\s+\"([^\"]+)\"", re.I);
@@ -2640,6 +2643,9 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Be pedantic when checking if a purged package leaves files behind. If this option is not set, files left in /tmp are ignored.")
 
+    parser.add_option("--proxy", metavar="URL",
+                      help="Use the proxy at URL for accessing the mirrors.")
+
     parser.add_option("-s", "--save", metavar="FILENAME",
                       help="Save the chroot into FILENAME.")
 
@@ -2721,6 +2727,9 @@ def parse_command_line():
     settings.single_changes_list = opts.single_changes_list
     settings.args_are_package_files = not opts.apt
     # distro setup
+    settings.proxy = opts.proxy
+    if settings.proxy:
+        os.environ["http_proxy"] = settings.proxy
     settings.debian_mirrors = [parse_mirror_spec(x, defaults.get_components())
                                for x in opts.mirror]
     settings.extra_repos = opts.extra_repo

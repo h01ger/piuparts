@@ -7,7 +7,8 @@ piuparts-slave (which ships that file), too, or use the template
 'sections' to be tested (e.g. 'sid') and define references to the Debian
 mirror. Note that the server can place a significant load on the
 repository. Consider setting up a local mirror, or a caching proxy for http
-and apt-get, to reduce the load.
+and apt-get, to reduce the load. Running multiple slaves on a fast host can
+easily saturate a 100 MBit link.
 
 Edit /etc/sudoers.d/piuparts to grant permissions to the piupartss user.
 Start the server using /usr/sbin/piuparts_slave_run, which will launch a
