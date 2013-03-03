@@ -49,7 +49,7 @@ reschedule-fail-count = 15
 
 [sid]
 precedence = 1
-description = Debian sid / main: package installation, removal and purge test.
+description = + Fails if there are leftover files after purge.
 piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-leftovers
 # Once there are no packages left which leave files on purge behind,
@@ -62,7 +62,6 @@ log-file = sid.log
 
 [testing2sid]
 precedence = 4
-description = Debian main: package installation in sid and dist-upgrade to testing, then removal and purge test.
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 distro = testing
@@ -75,7 +74,6 @@ log-file = testing2sid.log
 
 [wheezy]
 precedence = 2
-description = Debian wheezy / main: package installation, removal and purge test.
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 distro = wheezy
@@ -86,7 +84,6 @@ log-file = wheezy.log
 
 [squeeze2wheezy]
 precedence = 3
-description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 	--no-eatmydata
@@ -100,7 +97,6 @@ log-file = squeeze2wheezy.log
 
 [squeeze]
 precedence = 5
-description = Debian squeeze / main: package installation, removal and purge test.
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 	--no-eatmydata
@@ -118,7 +114,6 @@ log-file = squeeze.log
 # lenny2squeeze is disabled with max-reserved=0
 max-reserved = 0
 precedence = 99
-description = Debian main: package installation in lenny and dist-upgrade to squeeze, then removal and purge test.
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 	--dpkg-noforce-unsafe-io

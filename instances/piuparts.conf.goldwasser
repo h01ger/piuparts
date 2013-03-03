@@ -39,7 +39,7 @@ idle-sleep = 86400
 
 
 [sid]
-description = Debian sid / main: package installation, removal and purge test.
+description = + Fails if there are leftover files after purge.
 piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-leftovers
 distro = sid
@@ -51,7 +51,6 @@ log-file = sid.log
 
 
 [testing2sid]
-description = Debian main: package installation in testing and dist-upgrade to sid, then removal and purge test.
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 distro = testing
@@ -63,7 +62,6 @@ log-file = testing2sid.log
 
 
 [wheezy]
-description = Debian wheezy / main: package installation, removal and purge test.
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 distro = wheezy
@@ -74,7 +72,6 @@ log-file = wheezy.log
 
 
 [squeeze2wheezy]
-description = Debian main: package installation in squeeze and dist-upgrade to wheezy, then removal and purge test.
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 	--no-eatmydata
