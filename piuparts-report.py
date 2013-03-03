@@ -571,7 +571,7 @@ def get_email_address(maintainer):
 
 class Section:
 
-    def __init__(self, section, master_directory, doc_root):
+    def __init__(self, section, master_directory, doc_root, packagedb_cache={}):
         self._config = Config(section=section, defaults_section="global")
         self._config.read(CONFIG_FILE)
         self._distro_config = piupartslib.conf.DistroConfig(
@@ -591,6 +591,7 @@ class Section:
         logging.debug("Loading and parsing Packages file")
         oldcwd = os.getcwd()
         os.chdir(master_directory)
+        self._packagedb_cache = packagedb_cache
         self._package_databases = {}
         self._load_package_database(section)
         self._binary_db = self._package_databases[section]
@@ -610,6 +611,13 @@ class Section:
     def _load_package_database(self, section):
         if section in self._package_databases:
             return
+        elif section in self._packagedb_cache:
+            self._package_databases[section] = self._packagedb_cache[section]
+            return
+        elif not config["depends-sections"]:
+            # this is a base database eligible for caching
+            # only cache the most recent base database
+            self._packagedb_cache.clear()
 
         config = Config(section=section, defaults_section="global")
         config.read(CONFIG_FILE)
@@ -620,6 +628,9 @@ class Section:
             for dep in deps:
                 self._load_package_database(dep)
             db.set_dependency_databases([self._package_databases[dep] for dep in deps])
+        else:
+            # only cache the big base databases that don't have additional dependencies
+            self._packagedb_cache[section] = db
         packages_url = self._distro_config.get_packages_url(
                 config.get_distro(), config.get_area(), config.get_arch())
         logging.info("Fetching %s" % packages_url)
@@ -1337,8 +1348,9 @@ def main():
         doc_root = doc_root[:-1]
 
     if os.path.exists(master_directory):
+        packagedb_cache = {}
         for section_name in section_names:
-            section = Section(section_name, master_directory, doc_root)
+            section = Section(section_name, master_directory, doc_root, packagedb_cache=packagedb_cache)
             section.generate_output(output_directory=output_directory, section_names=section_names)
 
         # static pages
