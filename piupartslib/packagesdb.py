@@ -597,10 +597,14 @@ class PackagesDB:
     def get_package(self, name):
         return self._packages[name]
 
-    def get_providers(self, name):
+    def get_providers(self, name, recurse=True):
+        providers = []
         if name in self._virtual_packages:
-            return self._virtual_packages[name]
-        return []
+            providers.extend(self._virtual_packages[name])
+        if recurse:
+            for db in self._dependency_databases:
+                providers.extend(db.get_providers(name, recurse=False))
+        return providers
 
     def get_all_packages(self):
         self._find_all_packages()
