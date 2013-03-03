@@ -3,7 +3,13 @@
 #
 # For more information on this setup see http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob;f=README_piatti.txt
 #
-#
+
+[DEFAULT]
+flags-start-squeeze =
+	--no-eatmydata
+	-i /etc/shells
+flags-end-squeeze =
+	--scriptsdir /etc/piuparts/scripts-squeeze
 
 [global]
 sections =
@@ -87,8 +93,7 @@ log-file = wheezy.log
 precedence = 3
 piuparts-flags =
 	--warn-on-leftovers-after-purge
-	--no-eatmydata
-	-i /etc/shells
+	%(flags-start-squeeze)s
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
 upgrade-test-chroot-tgz = squeeze.tar.gz
@@ -100,10 +105,9 @@ log-file = squeeze2wheezy.log
 precedence = 5
 piuparts-flags =
 	--warn-on-leftovers-after-purge
-	--no-eatmydata
-	--scriptsdir /etc/piuparts/scripts-squeeze
 	--warn-on-debsums-errors
-	-i /etc/shells
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
 distro = squeeze
 chroot-tgz = squeeze.tar.gz
 max-reserved = 50
@@ -118,10 +122,9 @@ precedence = 99
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 	--dpkg-noforce-unsafe-io
-	--no-eatmydata
-	--scriptsdir /etc/piuparts/scripts-squeeze
 	--warn-on-debsums-errors
-	-i /etc/shells
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
 distro = lenny
 upgrade-test-distros = lenny squeeze
 upgrade-test-chroot-tgz = lenny.tar.gz

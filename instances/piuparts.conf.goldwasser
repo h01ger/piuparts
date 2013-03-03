@@ -3,7 +3,11 @@
 #
 # For more information on this setup see http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob;f=README_piatti.txt
 #
-#
+
+[DEFAULT]
+flags-start-squeeze =
+	--no-eatmydata
+	-i /etc/shells
 
 [global]
 sections =
@@ -75,9 +79,7 @@ log-file = wheezy.log
 [squeeze2wheezy]
 piuparts-flags =
 	--warn-on-leftovers-after-purge
-	--no-eatmydata
-	--dpkg-noforce-unsafe-io
-	-i /etc/shells
+	%(flags-start-squeeze)s
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
 upgrade-test-chroot-tgz = squeeze.tar.gz
