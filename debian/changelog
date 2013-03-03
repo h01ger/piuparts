@@ -32,6 +32,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     sid, squeeze) and partial distributions (e.g. squeeze/security,
     squeeze-backports, experimental) along with their dependencies (e.g. base
     distribution) and non-default mirrors. Shipped in package piuparts-common.
+    Also allows setting a target-release (for apt-get -t ...).
   * piupartslib/conf.py:
     - Add methods: get_distros(), get_start_distro().
     - Add class DistroConfig for reading distros.conf.
