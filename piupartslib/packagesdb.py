@@ -124,33 +124,6 @@ class Package(UserDict.UserDict):
         """Are we testable at all? Required aren't."""
         return self.get("Priority", "") != "required"
 
-    def rrdep_count(self):
-        """Get the recursive dependency count, if it has been calculated"""
-        if self.rrdep_cnt == None:
-            raise Exception('Reverse dependency count has not been calculated')
-        return(self.rrdep_cnt)
-
-    def set_rrdep_count(self, val):
-        self.rrdep_cnt = val
-
-    def block_count(self):
-        """Get the number of packages blocked by this package"""
-        if self.block_cnt == None:
-            raise Exception('Block count has not been calculated')
-        return(self.block_cnt)
-
-    def set_block_count(self, val):
-        self.block_cnt = val
-
-    def waiting_count(self):
-        """Get the number of packages waiting for this package"""
-        if self.waiting_cnt == None:
-            raise Exception('Waiting count has not been calculated')
-        return(self.waiting_cnt)
-
-    def set_waiting_count(self, val):
-        self.waiting_cnt = val
-
     def dump(self, output_file):
         output_file.write("".join(self.headers))
 
@@ -799,23 +772,23 @@ class PackagesDB:
         rrdep_set.remove(pkg_name)
 
         # calculate and set the metrics
-        pkg.set_rrdep_count(len(rrdep_set))
+        pkg.rrdep_cnt = len(rrdep_set)
 
         error_states = self.get_error_states()
         if self._package_state[pkg_name] in error_states:
             block_list = [x for x in rrdep_set
                           if self._package_state[x] in error_states]
-            pkg.set_block_count(len(block_list))
+            pkg.block_cnt = len(block_list)
         else:
-            pkg.set_block_count(0)
+            pkg.block_cnt = 0
 
         waiting_states = self.get_waiting_states()
         if self._package_state[pkg_name] in waiting_states:
             waiting_list = [x for x in rrdep_set
                             if self._package_state[x] in waiting_states]
-            pkg.set_waiting_count(len(waiting_list))
+            pkg.waiting_cnt = len(waiting_list)
         else:
-            pkg.set_waiting_count(0)
+            pkg.waiting_cnt = 0
 
     def block_count(self, pkg):
         if pkg.block_cnt is None:
@@ -834,49 +807,6 @@ class PackagesDB:
             self._calc_rrdep_pkg_counts(pkg)
 
         return pkg.waiting_cnt
-
-    def calc_rrdep_counts(self):
-        """Calculate recursive reverse dependency counts for Packages"""
-
-        self._compute_package_states()  # populate _package_state
-        error_states = self.get_error_states()
-        waiting_states = self.get_waiting_states()
-
-        rdeps = self._get_rdep_dict()
-
-        def recurse_rdeps(pkg_name, rdeps, rrdep_dict):
-            """ Recurse through the reverse dep arrays to determine the recursive
-                dependency count for a package. rrdep_dict.keys() contains the
-                accumulation of rdeps encountered"""
-
-            # are there any rdeps for this package?
-            if pkg_name in rdeps:
-                for rdep in rdeps[pkg_name]:
-                    # break circular dependency loops
-                    if not rdep in rrdep_dict:
-                        rrdep_dict[rdep] = 1
-                        rrdep_dict = recurse_rdeps(rdep, rdeps, rrdep_dict)
-
-            return rrdep_dict
-
-        # calculate all of the rrdeps and block counts
-        for pkg_name in self._packages.keys():
-            rrdep_list = recurse_rdeps(pkg_name, rdeps, {}).keys()
-            self._packages[pkg_name].set_rrdep_count(len(rrdep_list))
-
-            if self._package_state[pkg_name] in error_states:
-                block_list = [x for x in rrdep_list
-                              if self._package_state[x] in error_states]
-            else:
-                block_list = []
-            self._packages[pkg_name].set_block_count(len(block_list))
-
-            if self._package_state[pkg_name] in waiting_states:
-                waiting_list = [x for x in rrdep_list
-                              if self._package_state[x] in waiting_states]
-            else:
-                waiting_list = []
-            self._packages[pkg_name].set_waiting_count(len(waiting_list))
 
 
 # vi:set et ts=4 sw=4 :
