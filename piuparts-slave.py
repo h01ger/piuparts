@@ -566,17 +566,17 @@ class Section:
             if interrupted or got_sighup:
                 break
             test_count += 1
-            self._test_package(self._config, package_name, version, packages_files)
+            self._test_package(package_name, version, packages_files)
             self._slave.forget_reserved(package_name, version)
         self._talk_to_master(unreserve=interrupted)
         return test_count
 
 
-    def _test_package(self, config, pname, pvers, packages_files):
+    def _test_package(self, pname, pvers, packages_files):
         global old_sigint_handler
         old_sigint_handler = signal(SIGINT, sigint_handler)
 
-        logging.info("Testing package %s/%s %s" % (config.section, pname, pvers))
+        logging.info("Testing package %s/%s %s" % (self._config.section, pname, pvers))
 
         output_name = log_name(pname, pvers)
         logging.debug("Opening log file %s" % output_name)
@@ -585,40 +585,40 @@ class Section:
         output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n",
                                    time.gmtime()))
 
-        distupgrade = len(config.get_distros()) > 1
+        distupgrade = len(self._config.get_distros()) > 1
         ret = 0
 
         if not distupgrade:
-            basetgz = config["chroot-tgz"]
+            basetgz = self._config["chroot-tgz"]
         else:
-            basetgz = config["upgrade-test-chroot-tgz"]
+            basetgz = self._config["upgrade-test-chroot-tgz"]
         if not basetgz:
             ret = -11111
 
-        command = config["piuparts-command"].split()
-        if config["piuparts-flags"]:
-            command.extend(config["piuparts-flags"].split())
+        command = self._config["piuparts-command"].split()
+        if self._config["piuparts-flags"]:
+            command.extend(self._config["piuparts-flags"].split())
         if "http_proxy" in os.environ:
             command.extend(["--proxy", os.environ["http_proxy"]])
-        if config["mirror"]:
-            command.extend(["--mirror", config["mirror"]])
-        if config["tmpdir"]:
-            command.extend(["--tmpdir", config["tmpdir"]])
+        if self._config["mirror"]:
+            command.extend(["--mirror", self._config["mirror"]])
+        if self._config["tmpdir"]:
+            command.extend(["--tmpdir", self._config["tmpdir"]])
         command.extend(["-b", basetgz])
         if not distupgrade:
-            command.extend(["-d", config.get_distro()])
+            command.extend(["-d", self._config.get_distro()])
             command.append("--no-upgrade-test")
         else:
-            for distro in config.get_distros():
+            for distro in self._config.get_distros():
                 command.extend(["-d", distro])
-        if config["keep-sources-list"] in ["yes", "true"]:
+        if self._config["keep-sources-list"] in ["yes", "true"]:
             command.append("--keep-sources-list")
         command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
         subdir = "fail"
 
         if ret == 0 and not distupgrade:
-            distro = config.get_distro()
+            distro = self._config.get_distro()
             if not pname in packages_files[distro]:
                 output.write("Package %s not found in %s\n" % (pname, distro))
                 ret = -10001
@@ -634,7 +634,7 @@ class Section:
                 subdir = "untestable"
 
         if ret == 0 and distupgrade:
-            distros = config.get_distros()
+            distros = self._config.get_distros()
             if distros:
                 # the package must exist somewhere
                 for distro in distros:
