@@ -87,6 +87,7 @@ class Config(piupartslib.conf.Config):
                 "chroot-tgz": None,
                 "upgrade-test-distros": None,
                 "upgrade-test-chroot-tgz": None,
+                "basetgz-directory": ".",
                 "max-reserved": 1,
                 "debug": "no",
                 "keep-sources-list": "no",
@@ -316,6 +317,8 @@ class Section:
     def __init__(self, section):
         self._config = Config(section=section, defaults_section="global")
         self._config.read(CONFIG_FILE)
+        self._distro_config = piupartslib.conf.DistroConfig(
+                DISTRO_CONFIG_FILE, self._config["mirror"])
         self._error_wait_until = 0
         self._idle_wait_until = 0
         self._recycle_wait_until = 0
@@ -377,6 +380,12 @@ class Section:
         self._slave.connect_to_master(self._config["log-file"])
         if recycle:
             self._slave.enable_recycling()
+
+
+    def _get_tarball(self):
+        basetgz = self._config["chroot-tgz"] or \
+                self._distro_config.get_basetgz(self._config.get_start_distro())
+        return os.path.join(self._config["basetgz-directory"], basetgz)
 
     def _check_tarball(self):
         oldcwd = os.getcwd()

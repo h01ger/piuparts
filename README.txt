@@ -589,6 +589,10 @@ section, too, and will serve as defaults for all other sections
  the tarball to keep the chroot for the basic install/purge
  testing. If the tarball doesn't exist, the slave creates it.
 
+* "basetgz-directory" is the directory where "chroot-tgz" (or the
+ automatically selected default name) is located. The default is
+ '.'.
+
 * "upgrade-test-distros" is the space delimited list of
  distributions the slave should use for testing upgrades
  between distributions (i.e., Debian versions). Using "partial"

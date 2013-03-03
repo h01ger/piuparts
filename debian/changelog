@@ -29,6 +29,7 @@ piuparts (0.50) UNRELEASED; urgency=low
       + slave-load-max
     - New per-section settings:
       + depends-sections
+      + basetgz-directory
     - Setting tmpdir is now mandatory for master/slave operation.
   * distros.conf:
     - New configuration file to describe full distributions (e.g.  sid,
