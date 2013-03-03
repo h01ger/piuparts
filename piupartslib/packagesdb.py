@@ -632,7 +632,7 @@ class PackagesDB:
         else:
           return self._packages[package_name][header]
 
-    def get_package_state(self, package_name, resolve_virtual=True):
+    def get_package_state(self, package_name, resolve_virtual=True, recurse=True):
         if package_name in self._package_state:
             return self._package_state[package_name]
         if package_name in self._virtual_packages:
@@ -641,6 +641,11 @@ class PackagesDB:
                 return self._package_state[provider]
             else:
                 return "virtual"
+        if recurse:
+            for db in self._dependency_databases:
+                state = db.get_package_state(package_name, resolve_virtual=resolve_virtual, recurse=False)
+                if state != "does-not-exist":
+                    return state
         if package_name in ["ia32-libs-i386", "ia32-libs-gtk-i386"]:
             # HACK! these are arch=i386 packages needed on amd64
             return "essential-required"
