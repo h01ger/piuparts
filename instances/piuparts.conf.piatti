@@ -74,7 +74,6 @@ piuparts-flags =
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
 distro = sid
-chroot-tgz = sid.tar.gz
 max-reserved = 150
 log-file = sid.log
 
@@ -85,7 +84,6 @@ piuparts-flags =
 	--warn-on-leftovers-after-purge
 distro = testing
 upgrade-test-distros = testing sid
-upgrade-test-chroot-tgz = testing.tar.gz
 reschedule-old-count = 0
 max-reserved = 100
 log-file = testing2sid.log
@@ -96,7 +94,6 @@ precedence = 2
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 distro = wheezy
-chroot-tgz = wheezy.tar.gz
 max-reserved = 100
 log-file = wheezy.log
 
@@ -108,7 +105,6 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
-upgrade-test-chroot-tgz = squeeze.tar.gz
 max-reserved = 100
 log-file = squeeze2wheezy.log
 
@@ -135,7 +131,6 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
 distro = squeeze
-chroot-tgz = squeeze.tar.gz
 max-reserved = 50
 reschedule-old-count = 50
 log-file = squeeze.log
@@ -152,7 +147,6 @@ piuparts-flags =
 	%(flags-end-squeeze)s
 distro = lenny
 upgrade-test-distros = lenny squeeze
-upgrade-test-chroot-tgz = lenny.tar.gz
 reschedule-old-count = 0
 reschedule-fail-count = 0
 log-file = lenny2squeeze.log
