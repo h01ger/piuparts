@@ -586,8 +586,10 @@ section, too, and will serve as defaults for all other sections
  --print-architecture.
 
 * "chroot-tgz" is the name of the file the slave should use for
- the tarball to keep the chroot for the basic install/purge
- testing. If the tarball doesn't exist, the slave creates it.
+ the tarball containing the base chroot. The default name is
+ generated automatically from the "distro" or "upgrade-test-distros"
+ setting.  Overriding the default should no longer be necceessary.
+ If the tarball doesn't exist, the slave creates it.
 
 * "basetgz-directory" is the directory where "chroot-tgz" (or the
  automatically selected default name) is located. The default is

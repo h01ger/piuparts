@@ -330,9 +330,6 @@ class Section:
             self._logger = logging.getLogger()
             self._logger.setLevel(logging.DEBUG)
 
-        if self._config["chroot-tgz"] and not self._config["distro"]:
-          logging.info("The option --chroot-tgz needs --distro.")
-
         if int(self._config["max-reserved"]) > 0:
             self._check_tarball()
 
@@ -391,10 +388,8 @@ class Section:
         oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
 
-        tarball = self._config["chroot-tgz"]
-        if tarball:
-            create_or_replace_chroot_tgz(self._config, tarball,
-                                         self._config.get_distro())
+        create_or_replace_chroot_tgz(self._config, self._get_tarball(),
+                                     self._config.get_start_distro())
 
         tarball = self._config["upgrade-test-chroot-tgz"]
         if self._config["upgrade-test-distros"] and tarball:
@@ -597,13 +592,6 @@ class Section:
         distupgrade = len(self._config.get_distros()) > 1
         ret = 0
 
-        if not distupgrade:
-            basetgz = self._config["chroot-tgz"]
-        else:
-            basetgz = self._config["upgrade-test-chroot-tgz"]
-        if not basetgz:
-            ret = -11111
-
         command = self._config["piuparts-command"].split()
         if self._config["piuparts-flags"]:
             command.extend(self._config["piuparts-flags"].split())
@@ -613,7 +601,7 @@ class Section:
             command.extend(["--mirror", self._config["mirror"]])
         if self._config["tmpdir"]:
             command.extend(["--tmpdir", self._config["tmpdir"]])
-        command.extend(["-b", basetgz])
+        command.extend(["-b", self._get_tarball()])
         if not distupgrade:
             command.extend(["-d", self._config.get_distro()])
             command.append("--no-upgrade-test")
