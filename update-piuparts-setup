@@ -81,6 +81,21 @@ sudo make	prefix=$PIUPARTS_PREFIX \
 make clean
 
 #
+# install copies of the weather icons
+# to avoid needing FollowSymlinks in the apache config
+#
+for icon in weather-severe-alert.png sunny.png
+do
+	if [ -h $PIUPARTS_HTDOCS/images/$icon ] ; then
+		sudo rm -f $PIUPARTS_HTDOCS/images/$icon
+	fi
+
+	if [ -e /usr/share/icons/Tango/24x24/status/$icon ] ; then
+		sudo cp -f /usr/share/icons/Tango/24x24/status/$icon $PIUPARTS_HTDOCS/images/$icon
+	fi
+done
+
+#
 # update $PIUPARTS_PREFIX
 #
 cd $PIUPARTS_PREFIX
