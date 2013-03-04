@@ -32,7 +32,7 @@ OUTPUT=$(mktemp)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 		cd $MASTER/$SECTION
-		get_config_value DISTROS $SECTION upgrade-test-distros " "
+		get_config_value DISTROS $SECTION upgrade-test-distros ''
 		@sharedir@/piuparts/piuparts-analyze ${DISTROS##* } 2>&1 > $OUTPUT
 		if [ -s $OUTPUT ]; then
 			echo $SECTION
