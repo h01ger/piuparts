@@ -67,9 +67,6 @@ for 0.51:
 
 - accept a PIUPARTS_CONF environment variable everywhere to point to a different
   piuparts.conf
-- read PIUPARTS_CONF or piuparts.conf everywhere to allow overriding builtin
-  defaults
-- have all paths etc. configurable in piuparts.conf for simple reconfiguration
 
 - write reportbug-like wrapper for mass bug filing (start simple, make it more
   sophisticated later).
@@ -82,11 +79,8 @@ for 0.51:
 - find_default_debian_mirrors: if parts[2] contains a / (think stable/updates
   for security.d.o), you can't ignore this, it will break later...
 
-- support for extra-packages-url (for backports, security, etc)
-
 - make it possible to call aptitude (or similar) instead of apt-get and allow to
-  override the commandline arguments to be able to test with and without
-  recommended packages or authentication.
+  override the commandline arguments.
 
 - piuparts-slave: timestamps to log messages
 
@@ -94,7 +88,9 @@ for 0.51:
   /etc/piuparts/templates/ and not be included in the python source
 
 - check the logfiles (especially pass/) for
-  * "Exception in thread" java stacktraces "Can't locate .* in @INC"
+  * "Exception in thread"
+  * java stacktraces
+  * "Can't locate .* in @INC"
 
 - test main without contrib/non-free in sources.list
 

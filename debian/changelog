@@ -14,7 +14,8 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Improve the "dirname part contains a symlink" test and report
       overwritten files owned by other packages as failures.
     - Add --proxy=URL option.
-    - piuparts.deb: Add Depends: piuparts-common for piupartslib.
+    - piuparts.deb: Add Depends: piuparts-common for using distros.conf and
+      piupartslib.
     - Use distros.conf to generate mirror configuration. This enables more
       complex scenarios involving partial distributions and dist-upgrades.
     - Use apt-get -t <target-release> if set in distros.conf.
@@ -29,11 +30,13 @@ piuparts (0.50) UNRELEASED; urgency=low
     - New per-section settings:
       + depends-sections
     - Setting tmpdir is now mandatory for master/slave operation.
-  * distros.conf: New configuration file to describe full distributions (e.g.
-    sid, squeeze) and partial distributions (e.g. squeeze/security,
-    squeeze-backports, experimental) along with their dependencies (e.g. base
-    distribution) and non-default mirrors. Shipped in package piuparts-common.
-    Also allows setting a target-release (for apt-get -t ...).
+  * distros.conf:
+    - New configuration file to describe full distributions (e.g.  sid,
+      squeeze) and partial distributions (e.g. squeeze/security,
+      squeeze-backports, experimental) along with their dependencies (e.g.
+      base distribution) and non-default mirrors.  (Closes: #699028)
+    - Allows setting a target-release (for apt-get -t ...).  (Closes: #687995)
+    - Shipped in package piuparts-common.
   * piupartslib/conf.py:
     - Add methods: get_distros(), get_start_distro().
     - Add class DistroConfig for reading distros.conf.
@@ -115,7 +118,7 @@ piuparts (0.50) UNRELEASED; urgency=low
 
   [ Holger Levsen ]
   * Mention http://piuparts.debian.org in README.txt prominently.
-  * Mention github clone in htdocs/index.tpl. 
+  * Mention github clone in htdocs/index.tpl.
 
  -- Andreas Beckmann <debian@abeckmann.de>  Tue, 15 Jan 2013 11:51:43 +0100
 
