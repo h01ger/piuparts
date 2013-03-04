@@ -30,6 +30,7 @@ piuparts (0.50) UNRELEASED; urgency=low
     - New per-section settings:
       + depends-sections
       + basetgz-directory
+    - Obsolete settings: upgrade-test-chroot-tgz.
     - Setting tmpdir is now mandatory for master/slave operation.
   * distros.conf:
     - New configuration file to describe full distributions (e.g.  sid,

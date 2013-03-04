@@ -86,7 +86,6 @@ class Config(piupartslib.conf.Config):
                 "area": None,
                 "chroot-tgz": None,
                 "upgrade-test-distros": None,
-                "upgrade-test-chroot-tgz": None,
                 "basetgz-directory": ".",
                 "max-reserved": 1,
                 "debug": "no",
@@ -390,11 +389,6 @@ class Section:
 
         create_or_replace_chroot_tgz(self._config, self._get_tarball(),
                                      self._config.get_start_distro())
-
-        tarball = self._config["upgrade-test-chroot-tgz"]
-        if self._config["upgrade-test-distros"] and tarball:
-            create_or_replace_chroot_tgz(self._config, tarball,
-                                         self._config.get_start_distro())
 
         os.chdir(oldcwd)
 
