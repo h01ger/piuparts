@@ -614,13 +614,13 @@ class Section:
         elif section in self._packagedb_cache:
             self._package_databases[section] = self._packagedb_cache[section]
             return
-        elif not config["depends-sections"]:
-            # this is a base database eligible for caching
-            # only cache the most recent base database
-            self._packagedb_cache.clear()
 
         config = Config(section=section, defaults_section="global")
         config.read(CONFIG_FILE)
+        if not config["depends-sections"]:
+            # this is a base database eligible for caching
+            # only cache the most recent base database
+            self._packagedb_cache.clear()
         db = piupartslib.packagesdb.PackagesDB(prefix=section)
         self._package_databases[section] = db
         if config["depends-sections"]:
