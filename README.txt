@@ -570,7 +570,14 @@ section, too, and will serve as defaults for all other sections
  (for fetching Packages/Sources): "http://cdn.debian.net/debian".
 
 * "distro" is the distribution the slave should tell piuparts to
- use for basic install/purge testing. No default.
+ use for basic install/purge testing. It is also possible to use a
+ "partial" distribution as defined in distros.conf. No default.
+ If 'upgrade-test-distros' is set, this selects the distribution
+ that will be used for getting the packages to be tested. Defaults
+ to the last entry in 'upgrade-test-distros', but other useful
+ settings are the first entry (to test upgrades of "disappearing"
+ packages) or the restricted set in a partial distribution (e.g.
+ stable to backports to testing).
 
 * "area" is the archive area to use, set to one of main, contrib,
  non-free. Default: "main".
@@ -585,7 +592,8 @@ section, too, and will serve as defaults for all other sections
 
 * "upgrade-test-distros" is the space delimited list of
  distributions the slave should use for testing upgrades
- between distributions (i.e., Debian versions). Currently,
+ between distributions (i.e., Debian versions). Using "partial"
+ distributions as defined in distros.conf is possible. Currently,
  "squeeze wheezy sid" is a good choice.  Leave this unset if you
  do not want to run upgrade tests.
 
