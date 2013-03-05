@@ -153,3 +153,9 @@ clean:
 	rm -f piuparts.1 piuparts.1.xml piuparts.1.html README.xml README.html docbook-xsl.css piuparts.html
 	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc
 	rm -f $(SCRIPTS_GENERATED)
+
+
+# for maintainer convenience only
+tg-deps:
+	tg summary --graphviz | dot -T png -o deps.png
+	xli deps.png &
