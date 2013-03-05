@@ -566,10 +566,132 @@ class Section:
             if interrupted or got_sighup:
                 break
             test_count += 1
-            test_package(self._config, package_name, version, packages_files)
+            self._test_package(self._config, package_name, version, packages_files)
             self._slave.forget_reserved(package_name, version)
         self._talk_to_master(unreserve=interrupted)
         return test_count
+
+
+    def _test_package(self, config, pname, pvers, packages_files):
+        global old_sigint_handler
+        old_sigint_handler = signal(SIGINT, sigint_handler)
+
+        logging.info("Testing package %s/%s %s" % (config.section, pname, pvers))
+
+        output_name = log_name(pname, pvers)
+        logging.debug("Opening log file %s" % output_name)
+        new_name = os.path.join("new", output_name)
+        output = file(new_name, "we")
+        output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n",
+                                   time.gmtime()))
+
+        distupgrade = len(config.get_distros()) > 1
+        ret = 0
+
+        if not distupgrade:
+            basetgz = config["chroot-tgz"]
+        else:
+            basetgz = config["upgrade-test-chroot-tgz"]
+        if not basetgz:
+            ret = -11111
+
+        command = config["piuparts-command"].split()
+        if config["piuparts-flags"]:
+            command.extend(config["piuparts-flags"].split())
+        if "http_proxy" in os.environ:
+            command.extend(["--proxy", os.environ["http_proxy"]])
+        if config["mirror"]:
+            command.extend(["--mirror", config["mirror"]])
+        if config["tmpdir"]:
+            command.extend(["--tmpdir", config["tmpdir"]])
+        command.extend(["-b", basetgz])
+        if not distupgrade:
+            command.extend(["-d", config.get_distro()])
+            command.append("--no-upgrade-test")
+        else:
+            for distro in config.get_distros():
+                command.extend(["-d", distro])
+        if config["keep-sources-list"] in ["yes", "true"]:
+            command.append("--keep-sources-list")
+        command.extend(["--apt", "%s=%s" % (pname, pvers)])
+
+        subdir = "fail"
+
+        if ret == 0 and not distupgrade:
+            distro = config.get_distro()
+            if not pname in packages_files[distro]:
+                output.write("Package %s not found in %s\n" % (pname, distro))
+                ret = -10001
+            else:
+                package = packages_files[distro][pname]
+                if pvers != package["Version"]:
+                    output.write("Package %s %s not found in %s, %s is available\n" % (pname, pvers, distro, package["Version"]))
+                    ret = -10002
+                output.write("\n")
+                package.dump(output)
+                output.write("\n")
+            if ret != 0:
+                subdir = "untestable"
+
+        if ret == 0 and distupgrade:
+            distros = config.get_distros()
+            if distros:
+                # the package must exist somewhere
+                for distro in distros:
+                    if pname in packages_files[distro]:
+                        break
+                else:
+                    output.write("Package %s not found in any distribution\n" % pname)
+                    ret = -10003
+
+                # the package must have the correct version in the distupgrade target distro
+                distro = distros[-1]
+                if not pname in packages_files[distro]:
+                    # the package may "disappear" in the distupgrade target distro
+                    if pvers == "None":
+                        pass
+                    else:
+                        output.write("Package %s not found in %s\n" % (pname, distro))
+                        ret = -10004
+                else:
+                    package = packages_files[distro][pname]
+                    if pvers != package["Version"]:
+                        output.write("Package %s %s not found in %s, %s is available\n" % (pname, pvers, distro, package["Version"]))
+                        ret = -10005
+
+                for distro in distros:
+                    output.write("\n[%s]\n" % distro)
+                    if pname in packages_files[distro]:
+                        packages_files[distro][pname].dump(output)
+                output.write("\n")
+            else:
+                ret = -10010
+            if ret != 0:
+                subdir = "untestable"
+
+        if ret == 0:
+            output.write("Executing: %s\n" % " ".join(command))
+            ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
+            if not f or f[-1] != '\n':
+                f += '\n'
+            output.write(f)
+            lastline = f.split('\n')[-2]
+            if ret < 0:
+                output.write(" *** Process KILLED - exceed maximum run time ***\n")
+            elif not "piuparts run ends" in lastline:
+                ret += 1024
+                output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n");
+
+        output.write("\n")
+        output.write("ret=%d\n" % ret)
+        output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n",
+                                   time.gmtime()))
+        output.close()
+        if ret == 0:
+            subdir = "pass"
+        os.rename(new_name, os.path.join(subdir, output_name))
+        logging.debug("Done with %s: %s (%d)" % (output_name, subdir, ret))
+        signal(SIGINT, old_sigint_handler)
 
 
 def log_name(package, version):
@@ -643,128 +765,6 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
         # process was terminated by the timeout command
         ret = -ret
     return ret,stdout
-
-
-def test_package(config, pname, pvers, packages_files):
-    global old_sigint_handler
-    old_sigint_handler = signal(SIGINT, sigint_handler)
-
-    logging.info("Testing package %s/%s %s" % (config.section, pname, pvers))
-
-    output_name = log_name(pname, pvers)
-    logging.debug("Opening log file %s" % output_name)
-    new_name = os.path.join("new", output_name)
-    output = file(new_name, "we")
-    output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n",
-                               time.gmtime()))
-
-    distupgrade = len(config.get_distros()) > 1
-    ret = 0
-
-    if not distupgrade:
-        basetgz = config["chroot-tgz"]
-    else:
-        basetgz = config["upgrade-test-chroot-tgz"]
-    if not basetgz:
-        ret = -11111
-
-    command = config["piuparts-command"].split()
-    if config["piuparts-flags"]:
-        command.extend(config["piuparts-flags"].split())
-    if "http_proxy" in os.environ:
-        command.extend(["--proxy", os.environ["http_proxy"]])
-    if config["mirror"]:
-        command.extend(["--mirror", config["mirror"]])
-    if config["tmpdir"]:
-        command.extend(["--tmpdir", config["tmpdir"]])
-    command.extend(["-b", basetgz])
-    if not distupgrade:
-        command.extend(["-d", config.get_distro()])
-        command.append("--no-upgrade-test")
-    else:
-        for distro in config.get_distros():
-            command.extend(["-d", distro])
-    if config["keep-sources-list"] in ["yes", "true"]:
-        command.append("--keep-sources-list")
-    command.extend(["--apt", "%s=%s" % (pname, pvers)])
-
-    subdir = "fail"
-
-    if ret == 0 and not distupgrade:
-        distro = config.get_distro()
-        if not pname in packages_files[distro]:
-            output.write("Package %s not found in %s\n" % (pname, distro))
-            ret = -10001
-        else:
-            package = packages_files[distro][pname]
-            if pvers != package["Version"]:
-                output.write("Package %s %s not found in %s, %s is available\n" % (pname, pvers, distro, package["Version"]))
-                ret = -10002
-            output.write("\n")
-            package.dump(output)
-            output.write("\n")
-        if ret != 0:
-            subdir = "untestable"
-
-    if ret == 0 and distupgrade:
-        distros = config.get_distros()
-        if distros:
-            # the package must exist somewhere
-            for distro in distros:
-                if pname in packages_files[distro]:
-                    break
-            else:
-                output.write("Package %s not found in any distribution\n" % pname)
-                ret = -10003
-
-            # the package must have the correct version in the distupgrade target distro
-            distro = distros[-1]
-            if not pname in packages_files[distro]:
-                # the package may "disappear" in the distupgrade target distro
-                if pvers == "None":
-                    pass
-                else:
-                    output.write("Package %s not found in %s\n" % (pname, distro))
-                    ret = -10004
-            else:
-                package = packages_files[distro][pname]
-                if pvers != package["Version"]:
-                    output.write("Package %s %s not found in %s, %s is available\n" % (pname, pvers, distro, package["Version"]))
-                    ret = -10005
-
-            for distro in distros:
-                output.write("\n[%s]\n" % distro)
-                if pname in packages_files[distro]:
-                    packages_files[distro][pname].dump(output)
-            output.write("\n")
-        else:
-            ret = -10010
-        if ret != 0:
-            subdir = "untestable"
-
-    if ret == 0:
-        output.write("Executing: %s\n" % " ".join(command))
-        ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
-        if not f or f[-1] != '\n':
-            f += '\n'
-        output.write(f)
-        lastline = f.split('\n')[-2]
-        if ret < 0:
-            output.write(" *** Process KILLED - exceed maximum run time ***\n")
-        elif not "piuparts run ends" in lastline:
-            ret += 1024
-            output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n");
-
-    output.write("\n")
-    output.write("ret=%d\n" % ret)
-    output.write(time.strftime("End: %Y-%m-%d %H:%M:%S %Z\n",
-                               time.gmtime()))
-    output.close()
-    if ret == 0:
-        subdir = "pass"
-    os.rename(new_name, os.path.join(subdir, output_name))
-    logging.debug("Done with %s: %s (%d)" % (output_name, subdir, ret))
-    signal(SIGINT, old_sigint_handler)
 
 
 def create_chroot(config, tarball, distro):
