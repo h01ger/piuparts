@@ -50,10 +50,12 @@ max-tgz-age = 604800
 max-reserved = 50
 expire-old-days = 120
 reschedule-old-days = 90
-reschedule-old-count = 15 # should be 150
+reschedule-old-count = 15
+# reschedule-old-count should be 150
 expire-fail-days = 15
 reschedule-fail-days = 10
-reschedule-fail-count = 5 # should be 15
+reschedule-fail-count = 5
+# reschedule-fail-count should be 15
 
 
 [sid]
@@ -132,7 +134,8 @@ log-file = squeeze.log
 
 
 [lenny2squeeze]
-precedence = 4 # was and should be 99
+precedence = 4
+# precedence was and should be 99
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 	--dpkg-noforce-unsafe-io
