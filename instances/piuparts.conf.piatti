@@ -103,7 +103,7 @@ max-reserved = 100
 log-file = squeeze2wheezy.log
 
 
-[squeeze2bpo2wheezy/main]
+[squeeze2bpo2wheezy]
 precedence = 6
 piuparts-flags =
 	--warn-on-leftovers-after-purge
@@ -114,6 +114,7 @@ arch = amd64
 area = main
 upgrade-test-distros = squeeze squeeze-backports wheezy
 upgrade-test-chroot-tgz = squeeze.tar.gz
+log-file = squeeze2bpo2wheezy.log
 
 
 [squeeze]
