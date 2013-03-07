@@ -29,6 +29,8 @@ piuparts (0.50) UNRELEASED; urgency=low
       + slave-load-max
     - New per-section settings:
       + depends-sections
+      + basetgz-directory
+    - Obsolete settings: upgrade-test-chroot-tgz.
     - Setting tmpdir is now mandatory for master/slave operation.
   * distros.conf:
     - New configuration file to describe full distributions (e.g.  sid,
@@ -63,6 +65,9 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Use piuparts.conf global proxy setting as http_proxy and pass it to
       piuparts via --proxy.
     - Use distros.conf to compute URLs.
+    - Use the upgrade-test-distros setting to select between install/purge
+      test (if unset) and dist-upgrade test (if there are at least 2 distros).
+      Drop support for running both tests for a section.
   * piuparts-analyze.py:
     - Add support for magic "$DISTRO/None" versions.
   * piuparts-report.py:

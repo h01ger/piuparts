@@ -36,7 +36,6 @@ distro = sid
 # arch = amd64
 chroot-tgz = sid.tar.gz
 upgrade-test-distros =
-upgrade-test-chroot-tgz =
 max-reserved = 50
 debug = no
 
