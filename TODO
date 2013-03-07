@@ -53,6 +53,8 @@ for 0.6x:
 - generate piuparts.1.txt automatically from piuparts.py - see this blog post
   for a nice howto:
   http://andialbrecht.wordpress.com/2009/03/17/creating-a-man-page-with-distutils-and-optparse/
+  - though this seems pretty complicated... maybe rather grep for
+    parser.add_option and help= in piuparts.py ?!
 
 - rework known_problems:
   - use a number prefix for sorting
