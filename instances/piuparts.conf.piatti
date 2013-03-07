@@ -72,7 +72,7 @@ log-file = sid.log
 
 
 [testing2sid]
-precedence = 4
+precedence = 5
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 distro = testing
@@ -106,7 +106,7 @@ log-file = squeeze2wheezy.log
 
 
 [squeeze2bpo2wheezy]
-precedence = 6
+precedence = 4
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 	%(flags-start-squeeze)s
