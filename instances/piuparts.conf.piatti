@@ -54,8 +54,8 @@ master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages
 idle-sleep = 1800
 # 60*60*24*7
 max-tgz-age = 604800
-# rescheduling settings
 max-reserved = 50
+# rescheduling settings
 expire-old-days = 120
 reschedule-old-days = 90
 reschedule-old-count = 15
@@ -74,7 +74,6 @@ piuparts-flags =
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
 distro = sid
-max-reserved = 150
 log-file = sid.log
 
 
@@ -85,7 +84,6 @@ piuparts-flags =
 distro = testing
 upgrade-test-distros = testing sid
 reschedule-old-count = 0
-max-reserved = 100
 log-file = testing2sid.log
 
 
@@ -94,7 +92,6 @@ precedence = 2
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 distro = wheezy
-max-reserved = 100
 log-file = wheezy.log
 
 
@@ -105,7 +102,6 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
-max-reserved = 100
 log-file = squeeze2wheezy.log
 
 
@@ -131,7 +127,6 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
 distro = squeeze
-max-reserved = 50
 reschedule-old-count = 50
 log-file = squeeze.log
 

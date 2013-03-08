@@ -42,6 +42,7 @@ master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages
 # for a whole day) but useful for testing master-slave mode, for running on a
 # test system 24/7 without causing load for 24/7
 idle-sleep = 86400
+max-reserved = 50
 
 
 [sid]
@@ -49,7 +50,6 @@ description = + Fails if there are leftover files after purge.
 piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-leftovers
 distro = sid
-max-reserved = 50
 log-file = sid.log
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
@@ -60,7 +60,6 @@ piuparts-flags =
 	--warn-on-leftovers-after-purge
 distro = testing
 upgrade-test-distros = testing sid
-max-reserved = 50
 reschedule-old-count = 0
 log-file = testing2sid.log
 
@@ -69,7 +68,6 @@ log-file = testing2sid.log
 piuparts-flags =
 	--warn-on-leftovers-after-purge
 distro = wheezy
-max-reserved = 50
 reschedule-old-count = 0
 log-file = wheezy.log
 
@@ -80,7 +78,6 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
-max-reserved = 50
 reschedule-old-count = 0
 log-file = squeeze2wheezy.log
 
