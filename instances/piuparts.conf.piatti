@@ -152,7 +152,7 @@ piuparts-flags =
 distro = lenny
 upgrade-test-distros = lenny squeeze
 upgrade-test-chroot-tgz = lenny.tar.gz
-reschedule-old-days = 0
-reschedule-fail-days = 0
+reschedule-old-count = 0
+reschedule-fail-count = 0
 log-file = lenny2squeeze.log
 
