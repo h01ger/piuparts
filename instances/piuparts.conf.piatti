@@ -5,10 +5,17 @@
 #
 
 [DEFAULT]
+# common flags for starting a test in squeeze (or lenny)
 flags-start-squeeze =
+# eatmydata was added post-squeeze
 	--no-eatmydata
+# up to squeeze a non-empty /etc/shells was shipped, actually installing
+# and removing a shell would remove its entry from /etc/shells
 	-i /etc/shells
+
+# common flags for tests ending in squeeze
 flags-end-squeeze =
+# extra fake-essential packages for successfully purging in squeeze
 	--scriptsdir /etc/piuparts/scripts-squeeze
 
 [global]
