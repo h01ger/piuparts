@@ -579,12 +579,12 @@ class Section:
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
 
-        self._master_directory = os.path.abspath(os.path.join(master_directory, \
-                                                         self._config.section))
-        if not os.path.exists(self._master_directory):
+        self._section_directory = os.path.abspath(os.path.join(master_directory, \
+                                                               self._config.section))
+        if not os.path.exists(self._section_directory):
             logging.debug("Warning: %s did not exist, now created. Did you ever let the slave work?"
-                           % self._master_directory)
-            os.makedirs(self._master_directory)
+                           % self._section_directory)
+            os.makedirs(self._section_directory)
 
         self._doc_root = doc_root
 
@@ -1322,7 +1322,7 @@ class Section:
             os.makedirs(self._output_directory)
 
         oldcwd = os.getcwd()
-        os.chdir(self._master_directory)
+        os.chdir(self._section_directory)
         self.generate_html()
         os.chdir(oldcwd)
 
