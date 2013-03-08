@@ -101,7 +101,7 @@ install: build-stamp
 	install -m 0755 piuparts $(DESTDIR)$(sbindir)/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts
-	install -m 0755 piuparts-slave piuparts-master piuparts-report piuparts-analyze $(DESTDIR)$(sharedir)/piuparts/
+	install -m 0755 piuparts-slave piuparts-master-backend piuparts-report piuparts-analyze $(DESTDIR)$(sharedir)/piuparts/
 
 	install -d $(DESTDIR)$(site26)/piupartslib
 	install -d $(DESTDIR)$(site27)/piupartslib

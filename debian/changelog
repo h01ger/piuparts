@@ -5,7 +5,8 @@ piuparts (0.51) UNRELEASED; urgency=low
   * piuparts.conf:
   * distros.conf:
   * piupartslib/packagesdb.py:
-  * piuparts-master.py:
+  * Rename piuparts-master.py to piuparts-master-backend.py
+  * piuparts-master-backend.py:
   * piuparts-slave.py:
   * piuparts-analyze.py:
   * piuparts-report.py:
