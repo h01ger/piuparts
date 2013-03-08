@@ -161,6 +161,7 @@ class Slave:
         self._master_user = None
         self._master_directory = "."
         self._master_command = None
+        self._section = None
 
     def _readline(self):
         try:
@@ -195,15 +196,19 @@ class Slave:
         logging.debug("Setting master command to %s" % cmd)
         self._master_command = cmd
 
+    def set_section(self, section):
+        logging.debug("Setting section to %s" % section)
+        self._section = section
+
     def connect_to_master(self, log_file):
         logging.info("Connecting to %s" % self._master_host)
         if self._master_user:
             user = self._master_user + "@"
         else:
             user = ""
-        ssh_cmdline = "cd %s; %s 2> %s.$$ && rm %s.$$" % \
+        ssh_cmdline = "cd %s; %s %s 2> %s.$$ && rm %s.$$" % \
                       (self._master_directory or ".",
-                      self._master_command, log_file, log_file)
+                      self._master_command, self._section, log_file, log_file)
         p = subprocess.Popen(["ssh", "-x", user + self._master_host, ssh_cmdline],
                        stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self._to_master = p.stdin
@@ -372,7 +377,8 @@ class Section:
         self._slave.set_master_host(self._config["master-host"])
         self._slave.set_master_user(self._config["master-user"])
         self._slave.set_master_directory(self._config["master-directory"])
-        self._slave.set_master_command(self._config["master-command"] + " " + self._config.section)
+        self._slave.set_master_command(self._config["master-command"])
+        self._slave.set_section(self._config.section)
         self._slave.connect_to_master(self._config["log-file"])
         if recycle:
             self._slave.enable_recycling()
