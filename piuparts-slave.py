@@ -584,7 +584,6 @@ class Section:
                                    time.gmtime()))
 
         distupgrade = len(self._config.get_distros()) > 1
-        ret = 0
 
         command = self._config["piuparts-command"].split()
         if self._config["piuparts-flags"]:
@@ -607,6 +606,7 @@ class Section:
         command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
         subdir = "fail"
+        ret = 0
 
         if not distupgrade:
             distro = self._config.get_distro()
