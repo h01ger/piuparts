@@ -289,3 +289,4 @@ DATE
 ----
 2012-06-22
 
+// vim: set filetype=asciidoc:

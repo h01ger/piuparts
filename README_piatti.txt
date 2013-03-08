@@ -124,3 +124,4 @@ Last updated: June 2012
 Holger Levsen <holger@debian.org>
 Luk Claes <luk@debian.org>
 
+// vim: set filetype=asciidoc:

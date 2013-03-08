@@ -687,3 +687,5 @@ you run piuparts in master-slave mode), you need to 'apt-get
 install python-rpy r-recommended r-base-dev'. For more
 information see
 link:http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob;f=README_piatti.txt[http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob;f=README_piatti.txt].
+
+// vim: set filetype=asciidoc:
