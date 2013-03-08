@@ -47,6 +47,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2013-03-16</b> Thanks to the great work of Andreas Beckmann incomplete suites, like backports or experimental, can and also are being tested now.
+        piuparts release 0.50 offers much greater flexibility for configuring and selecting (partial) suites and different mirrors and therefore easily enables testing of nearly arbitrary upgrade paths.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2013-03-02</b> While the <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git">piuparts.git repo on Alioth</a> will continue to be the main repo, there is also a <a href="https://github.com/h01ger/piuparts">piuparts clone on github</a>, for those who prefer to send pull requests that way.
      </td>
     </tr>
