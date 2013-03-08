@@ -6,6 +6,8 @@ piuparts (0.51) UNRELEASED; urgency=low
   * distros.conf:
   * piupartslib/packagesdb.py:
   * Rename piuparts-master.py to piuparts-master-backend.py
+  * piuparts-master: New.
+    - Wrapper shell script to simplify calling the master from the slave.
   * piuparts-master-backend.py:
   * piuparts-slave.py:
   * piuparts-analyze.py:

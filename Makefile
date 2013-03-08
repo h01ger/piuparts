@@ -20,7 +20,7 @@ endif
 
 # generate several scripts, conffiles, ... from templates (*.in, *.py)
 # by substituting placeholders
-SCRIPTS_TEMPLATES	 = $(wildcard master-bin/*.in slave-bin/*.in conf/*.in)
+SCRIPTS_TEMPLATES	 = $(wildcard *.in master-bin/*.in slave-bin/*.in conf/*.in)
 SCRIPTS_PYTHON_BINARY	 = $(wildcard *.py)
 SCRIPTS_GENERATED	 = $(SCRIPTS_TEMPLATES:.in=) $(SCRIPTS_PYTHON_BINARY:.py=)
 DOCS_GENERATED		 = piuparts.1 piuparts.1.html README.html
@@ -101,7 +101,7 @@ install: build-stamp
 	install -m 0755 piuparts $(DESTDIR)$(sbindir)/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts
-	install -m 0755 piuparts-slave piuparts-master-backend piuparts-report piuparts-analyze $(DESTDIR)$(sharedir)/piuparts/
+	install -m 0755 piuparts-slave piuparts-master piuparts-master-backend piuparts-report piuparts-analyze $(DESTDIR)$(sharedir)/piuparts/
 
 	install -d $(DESTDIR)$(site26)/piupartslib
 	install -d $(DESTDIR)$(site27)/piupartslib
