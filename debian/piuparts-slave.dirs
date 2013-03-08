@@ -1,2 +1,3 @@
 var/lib/piuparts
+var/cache/piuparts/basetgz
 var/cache/piuparts/tmp

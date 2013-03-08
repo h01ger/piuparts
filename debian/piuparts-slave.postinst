@@ -59,6 +59,8 @@ case "$1" in
     install -d -o $suser -g $pgroup -m 0755 $userhome/slave
     install -d -o $suser -g $pgroup -m 0755 $userhome/slave/0
 
+    chown $suser:$pgroup /var/cache/piuparts/basetgz
+
     ;;
 
   abort-upgrade|abort-remove|abort-deconfigure)

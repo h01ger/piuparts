@@ -19,6 +19,9 @@ case "$1" in
         rmdir /etc/piuparts || true
     fi
 
+    rm -rf /var/cache/piuparts/basetgz/*.log
+    rm -rf /var/cache/piuparts/basetgz/*.tar.gz
+
     ;;
   upgrade|remove|failed-upgrade|abort-install|abort-upgrade)
     ;;

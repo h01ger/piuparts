@@ -13,6 +13,7 @@ master-command = python /usr/share/piuparts/piuparts-master
 piuparts-command = sudo piuparts --scriptsdir /etc/piuparts/scripts
 master-directory = /var/lib/piuparts/master
 slave-directory = /var/lib/piuparts/slave
+basetgz-directory = /var/cache/piuparts/basetgz
 output-directory = /var/lib/piuparts/htdocs
 tmpdir = /var/cache/piuparts/tmp
 doc-root = /piuparts/
