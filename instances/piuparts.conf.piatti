@@ -43,6 +43,7 @@ piuparts-command =
 PYTHONPATH = /org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
 master-directory = /org/piuparts.debian.org/master
 slave-directory = /org/piuparts.debian.org/slave
+basetgz-directory = /org/piuparts.debian.org/slave/basetgz
 output-directory = /org/piuparts.debian.org/htdocs
 known-problem-directory = /org/piuparts.debian.org/share/piuparts/known_problems
 backup-directory = /org/piuparts.debian.org/backup

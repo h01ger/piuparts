@@ -100,8 +100,8 @@ done
 #
 cd $PIUPARTS_PREFIX
 pwd
-mkdir -p master slave backup
-sudo chown piupartss:piuparts slave
+mkdir -p master slave slave/basetgz backup
+sudo chown piupartss:piuparts slave slave/basetgz
 sudo chown piupartsm:piuparts master htdocs backup
 # to support multiple hosts with this setup
 cd $PIUPARTS_PREFIX/etc/piuparts
