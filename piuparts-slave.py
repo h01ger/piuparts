@@ -74,7 +74,6 @@ class Config(piupartslib.conf.Config):
                 "min-tgz-retry-delay": 21600,
                 "master-host": None,
                 "master-user": None,
-                "master-directory": ".",
                 "master-command": None,
                 "log-file": "piuparts-master.log",
                 "proxy": None,
@@ -159,7 +158,6 @@ class Slave:
         self._from_master = None
         self._master_host = None
         self._master_user = None
-        self._master_directory = "."
         self._master_command = None
         self._section = None
 
@@ -187,10 +185,6 @@ class Slave:
     def set_master_user(self, user):
         logging.debug("Setting master user to %s" % user)
         self._master_user = user
-
-    def set_master_directory(self, dir):
-        logging.debug("Setting master directory to %s" % dir)
-        self._master_directory = dir
 
     def set_master_command(self, cmd):
         logging.debug("Setting master command to %s" % cmd)
@@ -374,7 +368,6 @@ class Section:
     def _connect_to_master(self, recycle=False):
         self._slave.set_master_host(self._config["master-host"])
         self._slave.set_master_user(self._config["master-user"])
-        self._slave.set_master_directory(self._config["master-directory"])
         self._slave.set_master_command(self._config["master-command"])
         self._slave.set_section(self._config.section)
         self._slave.connect_to_master(self._config["log-file"])
