@@ -5,7 +5,27 @@
 #
 
 [DEFAULT]
-# common flags for starting a test in squeeze (or lenny)
+# these are needed always
+flags-base =
+# see http://bugs.debian.org/604807
+	--skip-logrotatefiles-test
+# restrict to problems in the package being tested
+	--warn-on-others
+# default exceptions
+	--scriptsdir /etc/piuparts/scripts
+
+# default flags, only warning on leftover files
+flags-default =
+	%(flags-base)s
+	--warn-on-leftovers-after-purge
+
+# like default flags, but failing on leftover files
+flags-leftovers =
+	%(flags-base)s
+# perform some additional cleanup
+	--scriptsdir /etc/piuparts/scripts-leftovers
+
+# common flags for starting a test in squeeze
 flags-start-squeeze =
 # eatmydata was added post-squeeze
 	--no-eatmydata
@@ -17,6 +37,16 @@ flags-start-squeeze =
 flags-end-squeeze =
 # extra fake-essential packages for successfully purging in squeeze
 	--scriptsdir /etc/piuparts/scripts-squeeze
+# debsums failures won't be fixed in squeeze
+	--warn-on-debsums-errors
+
+# common flags for starting a test in lenny
+flags-start-lenny =
+# dpkg --force-unsafe-io was added in squeeze
+	--dpkg-noforce-unsafe-io
+# same flags needed as in squeeze
+        %(flags-start-squeeze)s
+
 
 [global]
 sections =
@@ -38,9 +68,6 @@ piuparts-command =
 	env PYTHONPATH=%(PYTHONPATH)s
 	timeout -s INT -k 5m 35m
 	/org/piuparts.debian.org/sbin/piuparts
-	--skip-logrotatefiles-test
-	--warn-on-others
-	--scriptsdir /etc/piuparts/scripts
 PYTHONPATH = /org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
 master-directory = /org/piuparts.debian.org/master
 slave-directory = /org/piuparts.debian.org/slave
@@ -71,7 +98,7 @@ reschedule-fail-count = 5
 precedence = 1
 description = + Fails if there are leftover files after purge.
 piuparts-flags =
-	--scriptsdir /etc/piuparts/scripts-leftovers
+	%(flags-leftovers)s
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
 distro = sid
@@ -81,7 +108,7 @@ log-file = sid.log
 [testing2sid]
 precedence = 4
 piuparts-flags =
-	--warn-on-leftovers-after-purge
+	%(flags-default)s
 distro = testing
 upgrade-test-distros = testing sid
 reschedule-old-count = 0
@@ -91,20 +118,19 @@ log-file = testing2sid.log
 [sid2experimental]
 precedence = 5
 piuparts-flags =
-	--warn-on-leftovers-after-purge
+	%(flags-default)s
 depends-sections = sid
 distro = experimental
 arch = amd64
 area = main
 upgrade-test-distros = sid experimental
-upgrade-test-chroot-tgz = sid.tar.gz
 log-file = sid2experimental.log
 
 
 [wheezy]
 precedence = 2
 piuparts-flags =
-	--warn-on-leftovers-after-purge
+	%(flags-default)s
 distro = wheezy
 log-file = wheezy.log
 
@@ -112,7 +138,7 @@ log-file = wheezy.log
 [squeeze2wheezy]
 precedence = 3
 piuparts-flags =
-	--warn-on-leftovers-after-purge
+	%(flags-default)s
 	%(flags-start-squeeze)s
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
@@ -122,7 +148,7 @@ log-file = squeeze2wheezy.log
 [squeeze2bpo2wheezy]
 precedence = 5
 piuparts-flags =
-	--warn-on-leftovers-after-purge
+	%(flags-default)s
 	%(flags-start-squeeze)s
 depends-sections = squeeze
 distro = squeeze-backports
@@ -137,8 +163,7 @@ log-file = squeeze2bpo2wheezy.log
 precedence = 5
 # precedence should be 6
 piuparts-flags =
-	--warn-on-leftovers-after-purge
-	--warn-on-debsums-errors
+	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
 distro = squeeze
@@ -150,10 +175,8 @@ log-file = squeeze.log
 precedence = 5
 # precedence was and should be 99
 piuparts-flags =
-	--warn-on-leftovers-after-purge
-	--dpkg-noforce-unsafe-io
-	--warn-on-debsums-errors
-	%(flags-start-squeeze)s
+	%(flags-default)s
+	%(flags-start-lenny)s
 	%(flags-end-squeeze)s
 distro = lenny
 upgrade-test-distros = lenny squeeze

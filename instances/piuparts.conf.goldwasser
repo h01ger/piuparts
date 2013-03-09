@@ -5,8 +5,32 @@
 #
 
 [DEFAULT]
+# these are needed always
+flags-base =
+# see http://bugs.debian.org/604807
+	--skip-logrotatefiles-test
+# restrict to problems in the package being tested
+	--warn-on-others
+# default exceptions
+	--scriptsdir /etc/piuparts/scripts
+
+# default flags, only warning on leftover files
+flags-default =
+	%(flags-base)s
+	--warn-on-leftovers-after-purge
+
+# like default flags, but failing on leftover files
+flags-leftovers =
+	%(flags-base)s
+# perform some additional cleanup
+	--scriptsdir /etc/piuparts/scripts-leftovers
+
+# common flags for starting a test in squeeze
 flags-start-squeeze =
+# eatmydata was added post-squeeze
 	--no-eatmydata
+# up to squeeze a non-empty /etc/shells was shipped, actually installing
+# and removing a shell would remove its entry from /etc/shells
 	-i /etc/shells
 
 [global]
@@ -25,9 +49,6 @@ piuparts-command =
 	env PYTHONPATH=%(PYTHONPATH)s
 	timeout -s INT -k 5m 35m
 	/org/piuparts.debian.org/sbin/piuparts
-	--skip-logrotatefiles-test
-	--warn-on-others
-	--scriptsdir /etc/piuparts/scripts
 PYTHONPATH = /org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
 master-directory = /org/piuparts.debian.org/master
 slave-directory = /org/piuparts.debian.org/slave
@@ -48,7 +69,7 @@ max-reserved = 50
 [sid]
 description = + Fails if there are leftover files after purge.
 piuparts-flags =
-	--scriptsdir /etc/piuparts/scripts-leftovers
+	%(flags-leftovers)s
 distro = sid
 log-file = sid.log
 # Once there are no packages left which leave files on purge behind,
@@ -57,7 +78,7 @@ log-file = sid.log
 
 [testing2sid]
 piuparts-flags =
-	--warn-on-leftovers-after-purge
+	%(flags-default)s
 distro = testing
 upgrade-test-distros = testing sid
 reschedule-old-count = 0
@@ -66,7 +87,7 @@ log-file = testing2sid.log
 
 [wheezy]
 piuparts-flags =
-	--warn-on-leftovers-after-purge
+	%(flags-default)s
 distro = wheezy
 reschedule-old-count = 0
 log-file = wheezy.log
@@ -74,7 +95,7 @@ log-file = wheezy.log
 
 [squeeze2wheezy]
 piuparts-flags =
-	--warn-on-leftovers-after-purge
+	%(flags-default)s
 	%(flags-start-squeeze)s
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
