@@ -18,6 +18,8 @@ piuparts (0.51) UNRELEASED; urgency=low
     - Get the 'master-directory' from piuparts.conf and chdir there.
     - Get the (global) 'log-file' from piuparts.conf and handle the error
       logging. No longer uses the section specific logfile name for errors.
+  * Allow the master-command to be set in ~piupartsm/.ssh/authorized_keys to
+    restrict ssh keys to only run piuparts-master.
   * piuparts-master-backend.py:
     - Raise CommandSyntaxError on unknown commands.
     - Add "section" command:
@@ -45,6 +47,9 @@ piuparts (0.51) UNRELEASED; urgency=low
   * Makefile:
   * detect_well_known_errors:
     - Skip sections that don't exist in piuparts.conf.
+  * piuparts-slave.deb:
+    - Restrict the ssh key added to master's authorized_keys to only run
+      piuparts-master.
   * scripts-wheezy/post_setup_wheezy-fake-essential: New custom script to
     suppress some purge failures in wheezy.
   * New known problem: Database setup failure (issue).
@@ -169,6 +174,8 @@ piuparts (0.50) unstable; urgency=low
     - Use /var/cache/piuparts/tmp as tmpdir.
     - Use /var/cache/piuparts/basetgz as basetgz-directory.
     - Populate ~piupartss/.ssh/known_hosts with localhost's hostkey.
+    - Restrict the ssh key added to master's authorized_keys to only run
+      piuparts-master.
   * slave_{run,join}: Rename the screen session to "piuparts_slave_screen".
   * slave_cleanup: Use pgrep to find running piuparts-slave processes.
   * slave_{run,join}: Use screen -ls to find running screen sessions.

@@ -272,19 +272,22 @@ To set this up for yourself, the following steps should suffice:
 . Pick a machine to run the master. It cannot be a chroot, but
  basically any real (or properly virtualized) Debian system is good
  enough.
-. Install piuparts on it.
-. Create an account for the master.
+. Install the package piuparts-master on it.
+. Create an account for the master (the package creates piupartsm).
 . Configure '/etc/piuparts/piuparts.conf' appropriately.
 . Pick one or more slaves to run the slave. You can use the machine
  running the master also as a slave. Etch is fine, it can even be
  in a chroot.
-. Install piuparts on it.
+. Install the package piuparts-slave on it.
 . Configure '/etc/piuparts/piuparts.conf' appropriately - if master
  and slave share the machine, they also share the config file.
 . Create an account for the slave. This must be different from the
- master account.
+ master account. (The package creates piupartss.)
 . Create an ssh keypair for the slave. No passphrase.
 . Add the slave's public key to the master's '.ssh/authorized_keys'
+ The key should be restricted to only allow running
+ 'piuparts-master' by prefixing it with
+ 'command="/usr/share/piuparts/piuparts-master",no-pty,no-port-forwarding '
 . Configure sudo on the slave machine to allow the slave account
  run '/usr/sbin/piuparts' as root without password (otherwise
  you'll be typing in a password all the time).

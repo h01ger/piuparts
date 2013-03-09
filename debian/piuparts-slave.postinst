@@ -55,7 +55,8 @@ if [ "$1" = "configure" ] ; then
     fi
 
     if [ -d $userhome/$muser/.ssh ] && [ ! -e $userhome/$muser/.ssh/authorized_keys ] ; then
-        cat $userhome/$suser/.ssh/id_rsa.pub >>$userhome/$muser/.ssh/authorized_keys
+        sed 's#^#command="'"$scriptroot"'/piuparts-master",no-pty,no-port-forwarding #' \
+		$userhome/$suser/.ssh/id_rsa.pub >>$userhome/$muser/.ssh/authorized_keys
         chown $muser:$pgroup $userhome/$muser/.ssh/authorized_keys
         chmod 0600 $userhome/$muser/.ssh/authorized_keys
     fi
