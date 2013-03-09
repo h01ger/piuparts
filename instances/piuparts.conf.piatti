@@ -22,6 +22,7 @@ flags-end-squeeze =
 sections =
 	sid
 	testing2sid
+	sid2experimental
 	wheezy
 	squeeze2wheezy
 	squeeze2bpo2wheezy
@@ -85,6 +86,19 @@ distro = testing
 upgrade-test-distros = testing sid
 reschedule-old-count = 0
 log-file = testing2sid.log
+
+
+[sid2experimental]
+precedence = 4
+piuparts-flags =
+	--warn-on-leftovers-after-purge
+depends-sections = sid
+distro = experimental
+arch = amd64
+area = main
+upgrade-test-distros = sid experimental
+upgrade-test-chroot-tgz = sid.tar.gz
+log-file = sid2experimental.log
 
 
 [wheezy]
