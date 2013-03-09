@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+test "$PIUPARTS_DISTRIBUTION" = "experimental" || exit 0
+
+# apt-get -t experimental dist-upgrade may pull in too many
+# packages that are not co-installable in experimental
+# so maintain a list of packages in the sid base system
+# that are in experimental, too, and don't cause problems
+
+PKGS=""
+PKGS="$PKGS libc6"
+PKGS="$PKGS libstdc++6"
+PKGS="$PKGS gcc-4.7-base"
+PKGS="$PKGS ncurses-bin"
+PKGS="$PKGS libcomerr2 libss2"
+PKGS="$PKGS libsepol1"
+PKGS="$PKGS libsemanage1"
+PKGS="$PKGS perl-base"
+PKGS="$PKGS apt libapt-pkg4.12"
+
+apt-get -y -t experimental install $PKGS
