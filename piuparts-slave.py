@@ -75,7 +75,6 @@ class Config(piupartslib.conf.Config):
                 "master-host": None,
                 "master-user": None,
                 "master-command": None,
-                "log-file": "piuparts-master.log",
                 "proxy": None,
                 "mirror": None,
                 "piuparts-command": "sudo piuparts",
@@ -194,7 +193,7 @@ class Slave:
         logging.debug("Setting section to %s" % section)
         self._section = section
 
-    def connect_to_master(self, log_file):
+    def connect_to_master(self):
         logging.info("Connecting to %s" % self._master_host)
         ssh_command = ["ssh", "-x"]
         if self._master_user:
@@ -370,7 +369,7 @@ class Section:
         self._slave.set_master_user(self._config["master-user"])
         self._slave.set_master_command(self._config["master-command"])
         self._slave.set_section(self._config.section)
-        self._slave.connect_to_master(self._config["log-file"])
+        self._slave.connect_to_master()
         if recycle:
             self._slave.enable_recycling()
 
