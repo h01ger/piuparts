@@ -74,6 +74,7 @@ mirror = http://piatti.debian.org/debian/
 master-host = localhost
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
+master-command = /org/piuparts.debian.org/share/piuparts/piuparts-master
 piuparts-command =
 	sudo
 	env PYTHONPATH=%(PYTHONPATH)s
@@ -88,7 +89,6 @@ known-problem-directory = /org/piuparts.debian.org/share/piuparts/known_problems
 backup-directory = /org/piuparts.debian.org/backup
 tmpdir = /org/piuparts.debian.org/tmp
 doc-root = /
-master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages /org/piuparts.debian.org/share/piuparts/piuparts-master
 # 30*60
 idle-sleep = 1800
 max-tgz-age = 0
