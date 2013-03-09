@@ -80,8 +80,7 @@ doc-root = /
 master-command = PYTHONPATH=/org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages python /org/piuparts.debian.org/share/piuparts/piuparts-master
 # 30*60
 idle-sleep = 1800
-# 60*60*24*7
-max-tgz-age = 604800
+max-tgz-age = 0
 max-reserved = 50
 # rescheduling settings
 expire-old-days = 120
@@ -103,6 +102,8 @@ piuparts-flags =
 # --pedantic-purge-test should be added
 distro = sid
 log-file = sid.log
+# 3 days (60*60*24*3)
+max-tgz-age = 259200
 
 
 [testing2sid]
@@ -133,6 +134,8 @@ piuparts-flags =
 	%(flags-default)s
 distro = wheezy
 log-file = wheezy.log
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
 
 
 [squeeze2wheezy]
@@ -169,6 +172,8 @@ piuparts-flags =
 distro = squeeze
 reschedule-old-count = 50
 log-file = squeeze.log
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
 
 
 [lenny2squeeze]
