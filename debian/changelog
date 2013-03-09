@@ -37,6 +37,8 @@ piuparts (0.51) UNRELEASED; urgency=low
       reduces the number of ssh connections attempted while checking idle
       sections. Close the connection before processing packages, before going
       to sleep, and after communication errors.
+    - Support empty master-command if the command is set in master's
+      .ssh/authorized_keys file.
   * piuparts-analyze.py:
   * piuparts-report.py:
     - Skip sections that don't exist in piuparts.conf.

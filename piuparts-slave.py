@@ -216,7 +216,7 @@ class Slave:
         if self._master_user:
             ssh_command.extend(["-l", self._master_user])
         ssh_command.append(self._master_host)
-        ssh_command.append(self._master_command)
+        ssh_command.append(self._master_command or "command-is-set-in-authorized_keys")
         p = subprocess.Popen(ssh_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self._to_master = p.stdin
         self._from_master = p.stdout
