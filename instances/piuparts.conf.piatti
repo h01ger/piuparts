@@ -85,12 +85,10 @@ max-reserved = 50
 # rescheduling settings
 expire-old-days = 120
 reschedule-old-days = 90
-reschedule-old-count = 15
-# reschedule-old-count should be 150
+reschedule-old-count = 150
 expire-fail-days = 15
 reschedule-fail-days = 10
-reschedule-fail-count = 5
-# reschedule-fail-count should be 15
+reschedule-fail-count = 15
 
 
 [sid]
