@@ -93,7 +93,8 @@ piuparts (0.50) UNRELEASED; urgency=low
     - Get paths from piuparts.conf.
     - Prepare a copy of submissions.txt, too.
   * master-bin/slave-bin: Use PYTHONPATH from piuparts.conf.
-  * piuparts-slave.deb: Use /var/cache/piuparts/tmp as tmpdir.
+  * piuparts-slave.deb:
+    - Use /var/cache/piuparts/tmp as tmpdir.
     - Use /var/cache/piuparts/basetgz as basetgz-directory.
   * slave_{run,join}: Rename the screen session to "piuparts_slave_screen".
   * slave_cleanup: Use pgrep to find running piuparts-slave processes.

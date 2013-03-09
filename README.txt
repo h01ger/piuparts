@@ -637,6 +637,53 @@ section, too, and will serve as defaults for all other sections
  piuparts itself currently always produces debug output and there
  is no way to disable that.
 
+* "PYTHONPATH" (global) sets the search path to the piupartslib
+ python modules if they are not installed in their default location
+ in /usr.
+
+* "reschedule-untestable-days" (global) sets the rescheduling
+ delay for untestable packages (e.g. due to unsatisfied
+ dependencies). This is handled by the 'report_untestable_packages'
+ script and the default is "7" days.
+
+* "reschedule-old-days" (global, section) and the following five
+ settings define the rescheduling scheme that it performed by the
+ 'reschedule_oldest_logs' script. Passed/failed logs that are
+ older than reschedule-(old|fail)-days will be marked for
+ rechecking (limited to reschedule-(old|fail)-count). Only packages
+ that are actually testable will be reissued by piuparts-master (and
+ the "old" log will be deleted at that time).  Logs that are marked
+ for recycling but have not been rechecked due to missing/failing
+ dependecies will be deleted anyway if they are older than
+ expire-(old|fail)-days.
+
+* "reschedule-old-count" (global, section) is the maximum number of
+ passed logs that will be marked for recycling. Set to 0 to disable
+ rescheduling passed logs.
+
+* "expire-old-days" (global, section) can be set to a value larger
+ than 'reschedule-old-days' to delete logs older than the setting
+ that are marked for recycling but haven't been rechecked due to
+ failing or missing dependecies. Disabled by default ("0").
+
+* "reschedule-fail-days" (global, section) sets the minimum age of
+ failing logs (fail/*.log or affected/*.log) before they will be
+ rechecked.
+
+* "reschedule-fail-count" (global, section) is the maximum number
+ of failed logs that will be marked for recycling. Set to 0 to
+ disable rescheduling failed logs.
+
+* "expire-fail-days" (global, section) can be set to a value larger
+ than 'reschedule-fail-days' to delete logs older than the setting
+ that are marked for recycling but haven't been rechecked due to
+ failing or missing dependecies. Disabled by default ("0").
+
+* "auto-reschedule" (section) can be set to "no" to disable
+ rescheduling of passed and failed packages. To disable only
+ rescheduling one of passed or failed logs, set the corresponding
+ -count variable to zero.
+
 Some of the configuration items are not required, but it is best
 to set them all to be sure what the configuration actually is.
 
@@ -647,37 +694,9 @@ configuration settings are used by the scripts in '~piuparts?/bin/'
 used to run piuparts.debian.org. They are all optional, default
 values are set in the scripts.
 
-* "PYTHONPATH" (global) sets the search path to the piupartslib
- python modules if they are not installed in their default location
- in /usr.
-
 * "urlbase" (global) is the base url of the webserver serving this
  piuparts instance. Used to provide links to logfiles in email
  reports.
-
-* "reschedule-untestable-days" (global) sets the rescheduling
- delay for untestable packages (e.g. due to unsatisfied
- dependencies).
-
-* "reschedule-old-days" (global, section) and the following five
- settings define the rescheduling scheme for passed and failed
- packages. Logs that are marked for recycling but are older than
- expire-(old|fail)-days will be deleted, moving the package to
- dependency-failed-testing state. expire-(old|fail)-days needs to
- be greater than reschedule-(old|fail)-days to enable expiration.
-
-* "reschedule-old-count" (global, section)
-
-* "reschedule-fail-days" (global, section)
-
-* "reschedule-fail-count" (global, section)
-
-* "expire-old-days" (global, section)
-
-* "expire-fail-days" (global, section)
-
-* "auto-reschedule" (section) can be set to "no" to disable
- rescheduling of passed and failed packages.
 
 
 === Running piuparts in master-slave mode, piuparts-report and the setup on piuparts.debian.org
