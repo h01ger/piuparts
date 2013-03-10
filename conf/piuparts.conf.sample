@@ -2,11 +2,12 @@
 # This is the configuration file for piuparts running in master-slave mode.
 #
 # You MUST make sure that master-host, master-user, master-directory, and
-# mirror are also set correctly.
+# mirror are set correctly.
 #
 
 [global]
 sections = sid
+mirror = http://cdn.debian.net/debian
 master-host = localhost
 master-user = piupartsm
 master-command = /usr/share/piuparts/piuparts-master
@@ -19,6 +20,7 @@ tmpdir = /var/cache/piuparts/tmp
 doc-root = /piuparts/
 idle-sleep = 300
 max-tgz-age = 604800
+max-reserved = 50
 expire-old-days = 120
 reschedule-old-days = 90
 reschedule-old-count = 150
@@ -31,19 +33,15 @@ reschedule-fail-count = 25
 precedence = 1
 description = "Debian sid / main"
 piuparts-flags = --no-symlinks
-# mirror = http://cdn.debian.net/debian
 distro = sid
 # area = main
 # arch = amd64
-chroot-tgz = sid.tar.gz
 upgrade-test-distros =
-max-reserved = 50
 debug = no
 
 
 ## another example:
 ## [s-p-u-i386]
-## # mirror = http://cdn.debian.net/debian
 ## distro = stable-proposed-updates
 ## # area = main
 ## arch = i386

@@ -29,7 +29,7 @@ for 0.5x:
 
 - merge/cleanup README_piatti.txt and README_server.txt?
 
-- use cdn.debian.net as mirror default (instead of "your.mirror.here") and
+- use cdn.debian.net as mirror default and
   provide a debconf template to overwrite this.  or http.debian.net ?
 
 - in maintainer view: sort buggy states up again
