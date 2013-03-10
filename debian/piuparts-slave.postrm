@@ -3,8 +3,8 @@ set -e
 
 user=piupartss
 
-case "$1" in
-  purge)
+if [ "$1" = "purge" ] ; then
+
     rm -rf /var/lib/piuparts/$user
 
     if [ -d /var/lib/piuparts/slave ] ; then
@@ -22,13 +22,7 @@ case "$1" in
     rm -rf /var/cache/piuparts/basetgz/*.log
     rm -rf /var/cache/piuparts/basetgz/*.tar.gz
 
-    ;;
-  upgrade|remove|failed-upgrade|abort-install|abort-upgrade)
-    ;;
-  *)
-    echo "postrm called with unknown argument \`$1'" >&2
-    exit 1
-    ;;
-esac
+fi
+
 
 #DEBHELPER#

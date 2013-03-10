@@ -7,8 +7,7 @@ suser=piupartss
 scriptroot=/usr/share/piuparts
 userhome=/var/lib/piuparts
 
-case "$1" in
-  configure)
+if [ "$1" = "configure" ] ; then
 
     addgroup --system --quiet $pgroup
 
@@ -61,15 +60,7 @@ case "$1" in
 
     chown $suser:$pgroup /var/cache/piuparts/basetgz
 
-    ;;
-
-  abort-upgrade|abort-remove|abort-deconfigure)
-    ;;
-  *)
-    echo "postinst called with unknown argument \`$1'" >&2
-    exit 1
-    ;;
-esac
+fi
 
 
 #DEBHELPER#

@@ -6,8 +6,7 @@ muser=piupartsm
 scriptroot=/usr/share/piuparts
 userhome=/var/lib/piuparts
 
-case "$1" in
-  configure)
+if [ "$1" = "configure" ] ; then
 
     addgroup --system --quiet $pgroup
 
@@ -64,15 +63,7 @@ case "$1" in
         rm -rf $userhome/master/monitor-slave
     fi
 
-    ;;
-
-  abort-upgrade|abort-remove|abort-deconfigure)
-    ;;
-  *)
-    echo "postinst called with unknown argument \`$1'" >&2
-    exit 1
-    ;;
-esac
+fi
 
 
 #DEBHELPER#
