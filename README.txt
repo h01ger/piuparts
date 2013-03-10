@@ -517,8 +517,7 @@ section, too, and will serve as defaults for all other sections
 
 * "master-command" is the command to run on master-host to start
  the master. When the master has been installed from the Debian
- package, the command is
- 'python /usr/share/piuparts/piuparts-master'.
+ package, the command is '/usr/share/piuparts/piuparts-master'.
  The section name will be given as a command line argument to this
  command.
 

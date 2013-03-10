@@ -9,7 +9,7 @@
 sections = sid
 master-host = localhost
 master-user = piupartsm
-master-command = python /usr/share/piuparts/piuparts-master
+master-command = /usr/share/piuparts/piuparts-master
 piuparts-command = sudo piuparts --scriptsdir /etc/piuparts/scripts
 master-directory = /var/lib/piuparts/master
 slave-directory = /var/lib/piuparts/slave
