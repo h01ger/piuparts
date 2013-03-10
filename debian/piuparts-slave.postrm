@@ -11,13 +11,9 @@ if [ "$1" = "purge" ] ; then
         rm -rf /var/lib/piuparts/slave
     fi
 
-    if [ -d /var/lib/piuparts ] ; then
-        rmdir /var/lib/piuparts || true
-    fi
+    rmdir /var/lib/piuparts 2>/dev/null || true
 
-    if [ -d /etc/piuparts ] ; then
-        rmdir /etc/piuparts || true
-    fi
+    rmdir /etc/piuparts 2>/dev/null || true
 
     rm -rf /var/cache/piuparts/basetgz/*.log
     rm -rf /var/cache/piuparts/basetgz/*.tar.gz

@@ -4,9 +4,7 @@ set -e
 if [ "$1" = "purge" ] ; then
 
     # may be left over from a previous version
-    if [ -d /etc/piuparts ] ; then
-        rmdir /etc/piuparts || true
-    fi
+    rmdir /etc/piuparts 2>/dev/null || true
 
 fi
 
