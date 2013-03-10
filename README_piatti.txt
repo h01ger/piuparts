@@ -19,8 +19,8 @@ Create an SSH keypair for piupartss and put it into ~/.ssh/authorized_keys of th
 === '/etc/sudoers' for piatti
 
 ----
-# The piuparts slave needs to handle chroots
-piupartss       ALL=(ALL) NOPASSWD: ALL
+# The piuparts slave needs to handle chroots.
+piupartss       ALL = NOPASSWD: ALL
 
 #piuparts admins
 %piuparts       ALL=(piupartss) ALL

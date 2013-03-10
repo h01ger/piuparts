@@ -23,6 +23,10 @@ for 0.5x:
     /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
     debconfify piuparts.conf? allow preseeding of mirror, master, ...
 
+- sudoers FIXME: the piupartsm user should be very unprivileged
+  (since it may be used for remote ssh access to run the slave)
+  granting permssions to %piuparts works against this
+
 - merge/cleanup README_piatti.txt and README_server.txt?
 
 - use cdn.debian.net as mirror default (instead of "your.mirror.here") and
