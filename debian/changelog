@@ -96,6 +96,7 @@ piuparts (0.50) UNRELEASED; urgency=low
   * piuparts-slave.deb:
     - Use /var/cache/piuparts/tmp as tmpdir.
     - Use /var/cache/piuparts/basetgz as basetgz-directory.
+    - Populate ~piupartss/.ssh/known_hosts with localhost's hostkey.
   * slave_{run,join}: Rename the screen session to "piuparts_slave_screen".
   * slave_cleanup: Use pgrep to find running piuparts-slave processes.
   * slave_{run,join}: Use screen -ls to find running screen sessions.
