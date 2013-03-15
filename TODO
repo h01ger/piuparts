@@ -15,22 +15,15 @@ for 0.5x:
     as root?
   - verify that all scripts in $user/bin/ also work from master-slave packages
     eventually enable some conjobs in the packages
-  - slave.postinst should setup ~piupartss/.ssh/known_hosts from /etc/ssh, even
-    if only for localhost
-  - slave.postinst should setup ~piupartsm/.ssh/authorized_keys using triggers
-    dpkg-trigger piuparts-master-please-install-the-slave-key
   - split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and
     /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
     debconfify piuparts.conf? allow preseeding of mirror, master, ...
 
-- sudoers FIXME: the piupartsm user should be very unprivileged
+- sudoers: the piupartsm user should be very unprivileged
   (since it may be used for remote ssh access to run the slave)
   granting permssions to %piuparts works against this
 
 - merge/cleanup README_piatti.txt and README_server.txt?
-
-- use cdn.debian.net as mirror default and
-  provide a debconf template to overwrite this.  or http.debian.net ?
 
 - in maintainer view: sort buggy states up again
 
@@ -52,7 +45,6 @@ for 0.5x:
 
 
 for 0.6x:
-
 
 - generate piuparts.1.txt automatically from piuparts.py - see this blog post
   for a nice howto:
