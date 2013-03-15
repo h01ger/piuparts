@@ -1,3 +1,18 @@
+piuparts (0.51) UNRELEASED; urgency=low
+
+  [ Andreas Beckmann ]
+  * piuparts.py:
+  * piuparts.conf:
+  * distros.conf:
+  * piupartslib/packagesdb.py:
+  * piuparts-master.py:
+  * piuparts-slave.py:
+  * piuparts-analyze.py:
+  * piuparts-report.py:
+  * Makefile:
+
+ -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
+
 piuparts (0.50) unstable; urgency=low
 
   [ Andreas Beckmann ]

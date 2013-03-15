@@ -13,15 +13,20 @@ for 0.5x:
   - ship sane minimal sudoers in p-s.deb than can be enabled by default do we
     really need anything else than running piuparts and piuparts_slave_*
     as root?
+  * the shipped crontabs are not suitable from cron.d/ due to missing user
+    column
   - verify that all scripts in $user/bin/ also work from master-slave packages
     eventually enable some conjobs in the packages
+  - slave.postinst should setup ~piupartsm/.ssh/authorized_keys using triggers
+    dpkg-trigger piuparts-master-please-install-the-slave-key
+    + the current method only works if -slave is configured after -master
   - split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and
     /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
     debconfify piuparts.conf? allow preseeding of mirror, master, ...
 
 - sudoers: the piupartsm user should be very unprivileged
   (since it may be used for remote ssh access to run the slave)
-  granting permssions to %piuparts works against this
+  granting permissions to %piuparts works against this
 
 - merge/cleanup README_piatti.txt and README_server.txt?
 
@@ -42,6 +47,8 @@ for 0.5x:
 - handle .udebs more gracefully, see #699160 for details.
 
 - re-read all documentation carefully and update were needed.
+
+- add a sample config with all possible keys set to some useful value
 
 
 for 0.6x:
@@ -77,6 +84,10 @@ for 0.6x:
 
 - find_default_debian_mirrors: if parts[2] contains a / (think stable/updates
   for security.d.o), you can't ignore this, it will break later...
+  + with distros.conf this may no longer be needed
+  + check whether find_default_debian_mirrors produces something useful if
+    sources.list does not exist (and sources.list.d/*.list is there instead)
+  + maybe parse 'apt-cache policy' to get the mirror list instead
 
 - make it possible to call aptitude (or similar) instead of apt-get and allow to
   override the commandline arguments.
