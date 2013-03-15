@@ -18,7 +18,8 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	live-config-upstart)	log_debug
 				PIUPARTS_OBJECTS=upstart
 				;;
-	clvm|dtc-xen|ganeti|ganeti2|mini-buildd-bld|mylvmbackup|redhat-cluster-suite)
+	clvm|dtc-xen|ganeti|ganeti2|mylvmbackup|redhat-cluster-suite)
+				# skip mini-buildd-bld here due to resource violation, see below
 				log_debug
 				PIUPARTS_OBJECTS=lvm2
 				;;
@@ -73,6 +74,11 @@ if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
 					log_debug
 					apt-get -y install bootcd-i386
 				fi
+				;;
+		mini-buildd-bld|mini-buildd-rep)
+				#632955, #656746 - time limit exceeded during install
+				log_debug
+				exit 1
 				;;
 	esac
 
