@@ -676,7 +676,7 @@ class PackagesDB:
                         for p in self._candidates_for_testing]
                 self._candidates_for_testing = [x[2]
                         for x in sorted(tuples, reverse = True)]
-        return self._candidates_for_testing
+        return self._candidates_for_testing[:]
 
     def _remove_unavailable_candidate(self, p):
         self._candidates_for_testing.remove(p)
