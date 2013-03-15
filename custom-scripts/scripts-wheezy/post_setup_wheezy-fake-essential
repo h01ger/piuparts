@@ -1,0 +1,23 @@
+#!/bin/sh
+set -e
+
+# The following issues won't be fixed in wheezy:
+#   - unconditional use of deluser during postrm purge
+#   - unconditional use of ucf during postrm purge
+# so add these packages to the "fake" essential set.
+USED_DURING_PURGE="adduser ucf"
+
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	dpkg)
+		# don't install fake essential packages while creating the tarball
+		exit 0
+		;;
+	adduser|ucf)
+		# allow testing of the fake essential packages
+		exit 0
+		;;
+esac
+
+echo "*** Adding fake essential packages ***"
+apt-get install -yf $USED_DURING_PURGE

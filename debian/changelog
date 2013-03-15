@@ -10,6 +10,8 @@ piuparts (0.51) UNRELEASED; urgency=low
   * piuparts-analyze.py:
   * piuparts-report.py:
   * Makefile:
+  * scripts-wheezy/post_setup_wheezy-fake-essential: New custom script to
+    suppress some purge failures in wheezy.
 
  -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
 
