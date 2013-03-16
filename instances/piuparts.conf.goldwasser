@@ -25,6 +25,17 @@ flags-leftovers =
 # perform some additional cleanup
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
+# common flags for starting a test in wheezy
+flags-start-wheezy =
+# no flags needed
+
+# common flags for tests ending in wheezy
+flags-end-wheezy =
+# extra fake-essential packages for successfully purging in wheezy
+	--scriptsdir /etc/piuparts/scripts-wheezy
+# debsums failures won't be fixed in wheezy
+	--warn-on-debsums-errors
+
 # common flags for starting a test in squeeze
 flags-start-squeeze =
 # eatmydata was added post-squeeze
@@ -88,6 +99,8 @@ log-file = testing2sid.log
 [wheezy]
 piuparts-flags =
 	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
 distro = wheezy
 reschedule-old-count = 0
 log-file = wheezy.log
@@ -97,6 +110,7 @@ log-file = wheezy.log
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
 reschedule-old-count = 0
