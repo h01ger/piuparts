@@ -19,6 +19,7 @@ piuparts (0.51) UNRELEASED; urgency=low
   * Makefile:
   * scripts-wheezy/post_setup_wheezy-fake-essential: New custom script to
     suppress some purge failures in wheezy.
+  * New known problem: Database setup failure (issue).
 
  -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
 

@@ -348,6 +348,7 @@ linktarget_by_template = [
     ("owned_files_after_purge_issue.tpl", "but logfile contains owned files existing after purge"),
     ("unowned_files_after_purge_issue.tpl", "but logfile contains unowned files after purge"),
     ("maintainer_script_issue.tpl", "but logfile contains maintainer script failures"),
+    ("db_setup_issue.tpl", "but logfile contains failure to setup a database"),
     ("installs_over_symlink_issue.tpl", "but package installs something over existing symlinks"),
     ("broken_symlinks_issue.tpl", "but logfile contains 'broken symlinks'"),
     ("packages_have_been_kept_back_issue.tpl", "but logfile contains 'packages have been kept back'"),
