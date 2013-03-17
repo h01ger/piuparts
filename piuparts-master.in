@@ -25,10 +25,15 @@ set -e
 
 . @sharedir@/piuparts/lib/read_config.sh
 
+get_config_value MASTER global master-directory
 get_config_value PYTHONPATH global PYTHONPATH ''
+get_config_value LOGFILE global log-file master-error.log
 
 
 export PYTHONPATH
+LOGFILE="$LOGFILE.$$"
+
+cd "$MASTER"
 
 section="$1"
 if [ -z "$section" ]; then
@@ -36,4 +41,6 @@ if [ -z "$section" ]; then
 	exit 1
 fi
 
-@sharedir@/piuparts/piuparts-master-backend "$section"
+trap "test -s ${LOGFILE} || rm -f ${LOGFILE}" EXIT
+
+@sharedir@/piuparts/piuparts-master-backend "$section" 2> "$LOGFILE"

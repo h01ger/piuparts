@@ -206,10 +206,8 @@ class Slave:
         if self._master_user:
             ssh_command.extend(["-l", self._master_user])
         ssh_command.append(self._master_host)
-        ssh_cmdline = "cd %s; %s %s 2> %s.$$ && rm %s.$$" % \
-                      (self._master_directory or ".",
-                      self._master_command, self._section, log_file, log_file)
-        ssh_command.append(ssh_cmdline)
+        ssh_command.append(self._master_command)
+        ssh_command.append(self._section)
         p = subprocess.Popen(ssh_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self._to_master = p.stdin
         self._from_master = p.stdout

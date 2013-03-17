@@ -8,8 +8,12 @@ piuparts (0.51) UNRELEASED; urgency=low
   * Rename piuparts-master.py to piuparts-master-backend.py
   * piuparts-master: New.
     - Wrapper shell script to simplify calling the master from the slave.
+    - Get the 'master-directory' from piuparts.conf and chdir there.
+    - Get the (global) 'log-file' from piuparts.conf and handle the error
+      logging. No longer uses the section specific logfile name for errors.
   * piuparts-master-backend.py:
   * piuparts-slave.py:
+    - Let the piuparts-master (wrapper script) handle chdir and error logging.
   * piuparts-analyze.py:
   * piuparts-report.py:
   * Makefile:

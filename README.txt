@@ -540,6 +540,9 @@ section, too, and will serve as defaults for all other sections
 * "log-file" is the name of a file to where the master should write
  its log messages. In the default configuration file it is
  "$SECTION/master.log". To disable logging, set it to "/dev/null".
+ The global "log-file" setting (defaulting to master-error.log) is
+ used for logging stderr output from piuparts-master. This logfile
+ will be placed in the 'master-directory' and has the PID appended.
 
 * "piuparts-command" is the command the slave uses to start
  piuparts. It should include 'sudo' if necessary so that piuparts
