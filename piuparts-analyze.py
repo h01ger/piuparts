@@ -3,6 +3,7 @@
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
 # Copyright 2011 Mika Pflüger (debian@mikapflueger.de)
+# Copyright © 2012-2013 Andreas Beckmann <anbe@debian.org>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the

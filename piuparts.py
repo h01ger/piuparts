@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
+# Copyright © 2010-2013 Andreas Beckmann <anbe@debian.org>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -1937,7 +1938,7 @@ def diff_meta_data(tree1, tree2):
     removed = [x for x in tree1.iteritems()]
     new = [x for x in tree2.iteritems()]
 
-    # fix for #586793 by Andreas Beckmann <debian@abeckmann.de>
+    # fix for #586793
     # prune rc?.d symlinks renamed by insserv
     pat1 = re.compile(r"^(/etc/rc.\.d/)[SK][0-9]{2}(.*)$")
     for name1, data1 in removed[:]:
