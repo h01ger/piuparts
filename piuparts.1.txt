@@ -70,6 +70,8 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 
 *--extra-old-packages*='pkg1[,pkg2]...'::
   Install additional old packages before upgrading.  Allows testing package renames/merges where the old package is no longer available in the new distribution and the new one utilizes Conflicts/Replaces.  The argument is a comma separated list of package names and the option can be given multiple times.
+  For install/purge tests these packages will be installed before the package
+  that is to be tested.
 
 *-e* 'dirname', *--existing-chroot*='dirname'::
   Use the specified directory as source for the new chroot, instead of building

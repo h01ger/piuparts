@@ -2157,7 +2157,7 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
     return ok
 
 
-def install_purge_test(chroot, chroot_state, package_files, packages):
+def install_purge_test(chroot, chroot_state, package_files, packages, extra_packages):
     """Do an install-purge test. Return True if successful, False if not.
        Assume 'root' is a directory already populated with a working
        chroot, with packages in states given by 'selections'."""
@@ -2173,6 +2173,8 @@ def install_purge_test(chroot, chroot_state, package_files, packages):
     chroot.enable_testdebs_repo()
 
     chroot.run_scripts("pre_install")
+
+    chroot.install_packages([], extra_packages, with_scripts=False)
 
     if settings.warn_on_others or settings.install_purge_install:
         # Create a metapackage with dependencies from the given packages
@@ -2648,7 +2650,8 @@ def parse_command_line():
                       action="append", default=[],
                       help="Install these additional packages along with the old packages from the archive. " +
                       "Useful to test Conflicts/Replaces of packages that will disappear during the update. " +
-                      "Takes a comma separated list of package names and can be given multiple times.")
+                      "Takes a comma separated list of package names and can be given multiple times. " +
+                      "For install/purge tests these packages will be installed before the package that is to be tested.")
 
     parser.add_option("-p", "--pbuilder", action="callback",
                       callback=set_basetgz_to_pbuilder,
@@ -2889,8 +2892,9 @@ def process_packages(package_list):
         chroot_state["diversions"] = chroot.get_diversions()
 
         if not settings.no_install_purge_test:
+            extra_packages = chroot.get_known_packages(settings.extra_old_packages)
             if not install_purge_test(chroot, chroot_state,
-                      package_files, packages):
+                      package_files, packages, extra_packages):
                 logging.error("FAIL: Installation and purging test.")
                 panic()
             logging.info("PASS: Installation and purging test.")

@@ -2,6 +2,8 @@ piuparts (0.51) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - In install-purge tests support installing extra packages before the
+      package to be tested via --extra-old-packages.
   * piuparts.conf:
   * distros.conf:
   * piupartslib/packagesdb.py:
