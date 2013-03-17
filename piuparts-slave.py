@@ -202,15 +202,15 @@ class Slave:
 
     def connect_to_master(self, log_file):
         logging.info("Connecting to %s" % self._master_host)
+        ssh_command = ["ssh", "-x"]
         if self._master_user:
-            user = self._master_user + "@"
-        else:
-            user = ""
+            ssh_command.extend(["-l", self._master_user])
+        ssh_command.append(self._master_host)
         ssh_cmdline = "cd %s; %s %s 2> %s.$$ && rm %s.$$" % \
                       (self._master_directory or ".",
                       self._master_command, self._section, log_file, log_file)
-        p = subprocess.Popen(["ssh", "-x", user + self._master_host, ssh_cmdline],
-                       stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        ssh_command.append(ssh_cmdline)
+        p = subprocess.Popen(ssh_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self._to_master = p.stdin
         self._from_master = p.stdout
         line = self._readline()
