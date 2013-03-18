@@ -258,7 +258,7 @@ class Slave:
         self._writeline("idle")
         line = self._readline()
         words = line.split()
-        if words and words[0] == "ok":
+        if words and words[0] == "ok" and len(words) == 2:
             return int(words[1])
         else:
             raise MasterIsCrazy()
