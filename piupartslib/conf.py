@@ -27,6 +27,13 @@ import UserDict
 import subprocess
 
 
+class MissingSection(Exception):
+
+    def __init__(self, filename, section):
+        self.args = "Section %s not defined in configuration file %s" % \
+            (section, filename)
+
+
 class MissingMandatorySetting(Exception):
 
     def __init__(self, filename, key):
@@ -47,6 +54,8 @@ class Config(UserDict.UserDict):
     def read(self, filename):
         cp = ConfigParser.ConfigParser()
         cp.read(filename)
+        if not cp.has_section(self._section):
+            raise MissingSection(filename, self._section)
         for key in self.keys():
             if cp.has_option(self._section, key):
                 self[key] = cp.get(self._section, key)
