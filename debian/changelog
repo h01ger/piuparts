@@ -14,6 +14,7 @@ piuparts (0.51) UNRELEASED; urgency=low
     - Get the (global) 'log-file' from piuparts.conf and handle the error
       logging. No longer uses the section specific logfile name for errors.
   * piuparts-master-backend.py:
+    - Raise CommandSyntaxError on unknown commands.
   * piuparts-slave.py:
     - Fix parsing 'idle' return value from master.
     - Let the piuparts-master (wrapper script) handle chdir and error logging.

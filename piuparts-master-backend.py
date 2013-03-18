@@ -221,10 +221,12 @@ class Master(Protocol):
             if len(parts) > 0:
                 command = parts[0]
                 args = parts[1:]
-                self._commands[command](command, args)
-            return True
-        else:
-            return False
+                if command in self._commands:
+                    self._commands[command](command, args)
+                    return True
+                else:
+                    raise CommandSyntaxError("Unknown command %s" % command)
+        return False
 
     def _check_args(self, count, command, args):
         if len(args) != count:
