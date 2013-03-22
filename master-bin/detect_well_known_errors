@@ -151,6 +151,15 @@ class Problem():
 
         return( False )
 
+    def get_command(self):
+
+        cmd = "grep -E \"%s\"" % self.INCLUDE
+
+        if "EXCLUDE" in self.__dict__:
+            cmd += " | grep -v -E \"%s\"" % self.EXCLUDE
+
+        return(cmd)
+
 class FailureManager():
     """Class to track known failures encountered, by package,
        where (e.g. 'fail'), and known problem type"""
@@ -356,7 +365,7 @@ def update_tpl( basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb
                                 'HEADER': problem.HEADER,
                                 'SECTION': section,
                                 'HELPTEXT': problem.HELPTEXT,
-                                'COMMAND': problem.COMMAND,
+                                'COMMAND': problem.get_command(),
                                 'PACKAGE_LIST': pkg_text,
                                 'COUNT': len(failures),
                                 } )
