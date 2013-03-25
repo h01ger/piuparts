@@ -45,6 +45,7 @@ piuparts (0.51) UNRELEASED; urgency=low
       + /var/log/fontconfig.log (Closes: #703810) - Thanks to Hideki Yamane.
   * slave_run:
     - Run slave_cleanup before starting the slave.
+  * Bump Standards-Version to 3.9.4.
 
  -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
 
