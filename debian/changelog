@@ -43,6 +43,8 @@ piuparts (0.51) UNRELEASED; urgency=low
   * piuparts.py:
     - Add to ignored_files:
       + /var/log/fontconfig.log (Closes: #703810) - Thanks to Hideki Yamane.
+  * slave_run:
+    - Run slave_cleanup before starting the slave.
 
  -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
 

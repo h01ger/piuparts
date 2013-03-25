@@ -41,14 +41,14 @@ if ! screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
 	exit 1
 fi
 
-# ensure the temporary directory exists
+# prepare environment
+rm -f $SCREENLOG
+@sharedir@/piuparts/piuparts_cleanup
 mkdir -p $PIUPARTS_TMPDIR
-
 mkdir -p $SLAVEROOT
 cd $SLAVEROOT
 
-rm -f $SCREENLOG
-
+# finally, run piuparts-slave in screen
 screen -L -d -m -S $SESSIONNAME @sharedir@/piuparts/piuparts-slave
 
 echo "piuparts-slave has been started."

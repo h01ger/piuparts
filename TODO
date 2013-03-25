@@ -40,9 +40,6 @@ for 0.5x:
     existing data
 
 - sometimes a chroot doesn't get removed on piatti - find out why and fix it.
-- slave_run: cleanup stale proc mountpoints -> there is
-  ~piupartss/bin/slave_cleanup which should be executed at the beginning of
-  slave_run
 
 - handle .udebs more gracefully, see #699160 for details.
 
