@@ -45,6 +45,8 @@ for 0.5x:
 
 - sometimes a chroot doesn't get removed on piatti - find out why and fix it.
 
+- check whether #660350 is really gone with a wheezy base system.
+
 
 for 0.6x:
 
