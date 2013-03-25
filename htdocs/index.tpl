@@ -47,8 +47,8 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-03-16</b> Thanks to the great work of Andreas Beckmann incomplete suites, like backports or experimental, can and also are being tested now.
-        piuparts release 0.50 offers much greater flexibility for configuring and selecting (partial) suites and different mirrors and therefore easily enables testing of nearly arbitrary upgrade paths.
+      <b>2013-03-15</b> Among many other new features the 0.50 release offers much greater flexibility for configuring and selecting (partial) suites and different mirrors. 
+	Therefore it is possible to test nearly arbitrary upgrade pathes. On piuparts.debian.org this is now used for testing <a href="http://piuparts.debian.org/squeeze2bpo2wheezy">squeeze2bpo2wheezy</a> and <a href="http://piuparts.debian.org/sid2/experimental">sid2experimental</a>. Thanks to Andreas Beckmann for this great new feature!
      </td>
     </tr>
     <tr class="normalrow">
