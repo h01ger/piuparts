@@ -39,6 +39,11 @@ piuparts (0.51) UNRELEASED; urgency=low
     - Minor HTML syntax fix.
     - Minor template integration.
 
+  [ Holger Levsen ]
+  * piuparts.py:
+    - Add to ignored_files:
+      + /var/log/fontconfig.log (Closes: #703810) - Thanks to Hideki Yamane.
+
  -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
 
 piuparts (0.50) unstable; urgency=low

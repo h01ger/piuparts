@@ -282,6 +282,7 @@ class Settings:
             "/var/log/secure",
             "/var/log/syslog",
             "/var/log/user.log",
+            "/var/log/fontconfig.log",
             # home directories of system accounts
             "/var/lib/gozerbot/",
             "/var/lib/nagios/",         # nagios* (#668756)
