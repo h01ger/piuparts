@@ -62,7 +62,9 @@ touch $FAILURESTAMP.new  # for the next report
 echo "New failures:" >> $DAILYREPORT
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
-	mkdir -p fail bugged affected untestable
+        for dr in fail bugged affected untestable; do
+		mkdir -p $MASTER/$SECTION/$dr
+	done
 	find $MASTER/$SECTION/fail $MASTER/$SECTION/bugged $MASTER/$SECTION/affected $MASTER/$SECTION/untestable \
 		-type f -name '*.log' -newer $FAILURESTAMP -exec ls -1 {} + 2>/dev/null
 done | sed s#^$MASTER#$URLBASE# >> $DAILYREPORT
