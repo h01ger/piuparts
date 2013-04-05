@@ -110,7 +110,7 @@ for SECTION in $SECTIONS ; do
 		TOTAL_EXPIRED=$(($TOTAL_EXPIRED + $ECOUNT))
 		UCOUNT=$(wc -l $OBSOLETE | awk '{ print $1 }')
 		UNSCHEDULE=$(($UNSCHEDULE + $UCOUNT))
-		echo "$SECTION: $RCOUNT/$ECOUNT/$UCOUNT"
+		echo "$SECTION: $RCOUNT rescheduled, $ECOUNT expired, $UCOUNT obsolete"
 		if [ -s $LOGS ]; then
 			ls -dtl $(cat $LOGS)
 			ln -f $(cat $LOGS) recycle/
