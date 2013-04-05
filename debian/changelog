@@ -1,6 +1,7 @@
 piuparts (0.51) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
+  * Mark all python code as utf-8 encoded.
   * piuparts.py:
     - In install-purge tests support installing extra packages before the
       package to be tested via --extra-old-packages.
