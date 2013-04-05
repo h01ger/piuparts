@@ -41,10 +41,13 @@ if ! screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
 	exit 1
 fi
 
-# prepare environment
+# cleanup cruft from previous runs
+@sharedir@/piuparts/slave/slave_cleanup
 rm -f $SCREENLOG
-@sharedir@/piuparts/piuparts_cleanup
+
+# ensure the temporary directory exists
 mkdir -p $PIUPARTS_TMPDIR
+
 mkdir -p $SLAVEROOT
 cd $SLAVEROOT
 
