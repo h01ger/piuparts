@@ -282,6 +282,8 @@ class Settings:
             "/var/log/secure",
             "/var/log/syslog",
             "/var/log/user.log",
+            # application logfiles
+            # actually, only modification should be permitted here, but not creation/removal
             "/var/log/fontconfig.log",
             # home directories of system accounts
             "/var/lib/gozerbot/",
