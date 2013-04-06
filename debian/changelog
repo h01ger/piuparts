@@ -7,6 +7,7 @@ piuparts (0.51) UNRELEASED; urgency=low
       package to be tested via --extra-old-packages.
   * piuparts.conf:
   * distros.conf:
+    - Update backports setup after integration into the regular archive.
   * piupartslib/conf.py:
     - Raise MissingSection if the requested section is not in piuparts.conf.
   * piupartslib/packagesdb.py:
