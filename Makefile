@@ -41,8 +41,11 @@ endef
 
 all: install install-doc
 
+python_scripts	 = $(wildcard *.py piupartslib/*.py master-bin/*.py slave-bin/*.py)
+python_scripts	+= master-bin/detect_well_known_errors
 python-syntax-check:
-	@set -e -x; $(foreach py,$(wildcard *.py piupartslib/*.py),python -m py_compile $(py);)
+	@set -e -x; $(foreach py,$(python_scripts),python -m py_compile $(py);)
+	$(RM) $(python_scripts:=c)
 
 build: build-stamp
 
@@ -148,5 +151,5 @@ check:
 clean:
 	rm -f build-stamp
 	rm -f piuparts.1 piuparts.1.xml piuparts.1.html README.xml README.html docbook-xsl.css piuparts.html
-	rm -f *.pyc piupartslib/*.pyc
+	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc
 	rm -f $(SCRIPTS_GENERATED)
