@@ -461,7 +461,7 @@ def process_section( section, config, problem_list,
 
 def detect_well_known_errors( config, problem_list, recheck, recheck_failed ):
 
-    for section in config['sections'].split(" "):
+    for section in config['sections'].split():
         print time.strftime( "%a %b %2d %H:%M:%S %Z %Y", time.localtime() )
         print "%s:" % section
 
