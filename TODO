@@ -50,6 +50,9 @@ for 0.5x:
 
 - add a sample config with all possible keys set to some useful value
 
+- look for a solution to use the global debian mirror for debian-backports, too
+  to avoid hardcoding a specific mirror in distros.conf
+
 
 for 0.6x:
 
