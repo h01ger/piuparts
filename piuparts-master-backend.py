@@ -41,15 +41,21 @@ CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
 
 
+log_handler = None
+
 def setup_logging(log_level, log_file_name):
     logger = logging.getLogger()
-    logger.setLevel(log_level)
+
+    global log_handler;
+    logger.removeHandler(log_handler)
 
     if log_file_name:
-        handler = logging.FileHandler(log_file_name)
+        log_handler = logging.FileHandler(log_file_name)
     else:
-        handler = logging.StreamHandler(sys.stderr)
-    logger.addHandler(handler)
+        log_handler = logging.StreamHandler(sys.stderr)
+
+    logger.addHandler(log_handler)
+    logger.setLevel(log_level)
 
 
 class Config(piupartslib.conf.Config):
@@ -315,6 +321,7 @@ class Master(Protocol):
 
 
 def main():
+    setup_logging(logging.INFO, None)
     # piuparts-master is always called by the slave with a section as argument
     if len(sys.argv) == 2:
         global_config = Config(section="global")
