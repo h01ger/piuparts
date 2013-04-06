@@ -142,15 +142,35 @@ class Master(Protocol):
             "fail": self._fail,
             "untestable": self._untestable,
         }
+        self._init_section(section)
+        self._writeline("hello")
+
+    def _init_section(self, section):
         self._section = section
         self._recycle_mode = False
         self._idle_mode = None
         self._idle_stamp = os.path.join(section, "idle.stamp")
         self._package_databases = None
+
+        config = Config(section=section, defaults_section="global")
+        config.read(CONFIG_FILE)
+
+        if not os.path.exists(section):
+            os.makedirs(section)
+
+        self._lock = open(os.path.join(section, "master.lock"), "we")
+        try:
+            fcntl.flock(self._lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            print 'busy'
+            sys.exit(0)
+
+        logfile = config["log-file"] or os.path.join(section, "master.log")
+        setup_logging(logging.DEBUG, logfile)
+
         # start with a dummy _binary_db (without Packages file), sufficient
         # for submitting finished logs
         self._binary_db = piupartslib.packagesdb.PackagesDB(prefix=section)
-        self._writeline("hello")
 
     def _init_db(self):
         if self._package_databases is not None:
@@ -331,26 +351,11 @@ def main():
         master_directory = global_config["master-directory"]
 
         section = sys.argv[1]
-        config = Config(section=section, defaults_section="global")
-        config.read(CONFIG_FILE)
 
         if not os.path.exists(master_directory):
             os.makedirs(master_directory)
 
         os.chdir(master_directory)
-
-        if not os.path.exists(section):
-            os.makedirs(section)
-
-        logfile = config["log-file"] or os.path.join(section, "master.log")
-        setup_logging(logging.DEBUG, logfile)
-
-        lock = open(os.path.join(section, "master.lock"), "we")
-        try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except IOError:
-            print 'busy'
-            sys.exit(0)
 
         m = Master(sys.stdin, sys.stdout, section)
         while m.do_transaction():
