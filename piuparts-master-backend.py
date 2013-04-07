@@ -131,7 +131,7 @@ class Master(Protocol):
         "successfully-tested",
     )
 
-    def __init__(self, input, output, section):
+    def __init__(self, input, output):
         Protocol.__init__(self, input, output)
         self._commands = {
             "section": self._switch_section,
@@ -146,7 +146,6 @@ class Master(Protocol):
         }
         self._section = None
         self._lock = None
-        self._init_section(section)
         self._writeline("hello")
 
     def _init_section(self, section):
@@ -369,27 +368,21 @@ class Master(Protocol):
 
 def main():
     setup_logging(logging.INFO, None)
-    # piuparts-master is always called by the slave with a section as argument
-    if len(sys.argv) == 2:
+    if True:
         global_config = Config(section="global")
         global_config.read(CONFIG_FILE)
         if global_config["proxy"]:
             os.environ["http_proxy"] = global_config["proxy"]
         master_directory = global_config["master-directory"]
 
-        section = sys.argv[1]
-
         if not os.path.exists(master_directory):
             os.makedirs(master_directory)
 
         os.chdir(master_directory)
 
-        m = Master(sys.stdin, sys.stdout, section)
+        m = Master(sys.stdin, sys.stdout)
         while m.do_transaction():
             pass
-    else:
-        print 'piuparts-master needs to be called with a valid sectionname as argument, exiting...'
-        sys.exit(1)
 
 if __name__ == "__main__":
     main()
