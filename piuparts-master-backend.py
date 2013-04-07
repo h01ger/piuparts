@@ -145,15 +145,22 @@ class Master(Protocol):
             "untestable": self._untestable,
         }
         self._section = None
+        self._lock = None
         self._init_section(section)
         self._writeline("hello")
 
     def _init_section(self, section):
-        self._section = section
+        if self._lock:
+            self._lock.close()
+
+        # clear all settings from a previous section and set defaults
+        self._section = None
+        self._lock = None
         self._recycle_mode = False
         self._idle_mode = None
         self._idle_stamp = os.path.join(section, "idle.stamp")
         self._package_databases = None
+        self._binary_db = None
 
         config = Config(section=section, defaults_section="global")
         try:
@@ -171,6 +178,8 @@ class Master(Protocol):
         except IOError:
             print 'busy'
             sys.exit(0)
+
+        self._section = section
 
         logfile = config["log-file"] or os.path.join(section, "master.log")
         setup_logging(logging.DEBUG, logfile)
