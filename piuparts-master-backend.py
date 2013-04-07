@@ -327,10 +327,13 @@ def main():
         config = Config(section=section, defaults_section="global")
         config.read(CONFIG_FILE)
 
-        if not os.path.exists(os.path.join(master_directory, section)):
-            os.makedirs(os.path.join(master_directory, section))
+        if not os.path.exists(master_directory):
+            os.makedirs(master_directory)
 
         os.chdir(master_directory)
+
+        if not os.path.exists(section):
+            os.makedirs(section)
 
         logfile = config["log-file"] or os.path.join(section, "master.log")
         setup_logging(logging.DEBUG, logfile)
