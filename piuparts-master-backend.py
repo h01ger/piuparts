@@ -134,6 +134,7 @@ class Master(Protocol):
     def __init__(self, input, output, section):
         Protocol.__init__(self, input, output)
         self._commands = {
+            "section": self._switch_section,
             "recycle": self._recycle,
             "idle": self._idle,
             "status": self._status,
@@ -143,6 +144,7 @@ class Master(Protocol):
             "fail": self._fail,
             "untestable": self._untestable,
         }
+        self._section = None
         self._init_section(section)
         self._writeline("hello")
 
@@ -176,6 +178,8 @@ class Master(Protocol):
         # start with a dummy _binary_db (without Packages file), sufficient
         # for submitting finished logs
         self._binary_db = piupartslib.packagesdb.PackagesDB(prefix=section)
+
+        return True
 
     def _init_db(self):
         if self._package_databases is not None:
@@ -253,6 +257,8 @@ class Master(Protocol):
             if len(parts) > 0:
                 command = parts[0]
                 args = parts[1:]
+                if self._section is None and command != "section":
+                    raise CommandSyntaxError("Expected 'section' command, got %s" % command)
                 if command in self._commands:
                     self._commands[command](command, args)
                     return True
@@ -268,6 +274,13 @@ class Master(Protocol):
          for st in self._binary_db.get_states():
             for name in self._binary_db.get_pkg_names_in_state(st):
                 logging.debug("%s : %s\n" % (st,name))
+
+    def _switch_section(self, command, args):
+        self._check_args(1, command, args)
+        if self._init_section(args[0]):
+            self._short_response("ok")
+        else:
+            self._short_response("error")
 
     def _recycle(self, command, args):
         self._check_args(0, command, args)
