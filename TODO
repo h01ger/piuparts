@@ -52,6 +52,8 @@ for 0.5x:
 - look for a solution to use the global debian mirror for debian-backports, too
   to avoid hardcoding a specific mirror in distros.conf
 
+- sane default for known-problem-directory setting, or define it in piuparts.conf.sample
+
 
 for 0.6x:
 

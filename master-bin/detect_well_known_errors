@@ -79,10 +79,11 @@ class WKE_Config( piupartslib.conf.Config ):
 
         piupartslib.conf.Config.__init__( self, self.section,
             {
-                "sections": "sid",
-                "master-directory": "/var/lib/piuparts/master/",
-                "known-problem-directory": "/usr/share/piuparts/known_problems",
-                "output-directory": "/var/lib/piuparts/htdocs/",
+                "sections": "report",
+                "output-directory": "html",
+                "master-directory": ".",
+                "known-problem-directory": None,
+                "proxy": None,
             }, "" )
 
 class WKE_Section_Config( piupartslib.conf.Config ):
@@ -92,10 +93,11 @@ class WKE_Section_Config( piupartslib.conf.Config ):
 
         piupartslib.conf.Config.__init__( self, self.section,
             {
-                "distro": None,
                 "mirror": None,
+                "distro": None,
                 "area": None,
                 "arch": None,
+                "upgrade-test-distros": None,
             }, "",  defaults_section="global" )
 
 class Problem():
@@ -514,6 +516,8 @@ incorporated by piuparts-report into the final web reports.
 
     conf = WKE_Config()
     conf.read( CONFIG_FILE )
+    if conf["proxy"]:
+        os.environ["http_proxy"] = conf["proxy"]
 
     problem_list = create_problem_list( conf['known-problem-directory'] )
 
