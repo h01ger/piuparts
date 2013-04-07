@@ -19,12 +19,15 @@
 # with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import ConfigParser
-import piupartslib
 import os
 import time
 import re
 from collections import namedtuple
 import argparse
+
+import piupartslib
+from piupartslib.conf import MissingSection
+
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
@@ -410,6 +413,10 @@ def process_section( section, config, problem_list,
                      recheck=False, recheck_failed=False, pkgsdb=None ):
     """ Update .bug and .kpr files for logs in this section """
 
+    # raises MissingSection if the section does not exist in piuparts.conf
+    section_config = WKE_Section_Config( section )
+    section_config.read( CONFIG_FILE )
+
     sectiondir = os.path.join( config['master-directory'], section )
     workdirs = [ os.path.join(sectiondir,x) for x in KPR_DIRS ]
 
@@ -431,9 +438,6 @@ def process_section( section, config, problem_list,
     if not pkgsdb:
         oldcwd = os.getcwd()
         os.chdir(config['master-directory'])
-
-        section_config = WKE_Section_Config( section )
-        section_config.read( CONFIG_FILE )
 
         distro_config = piupartslib.conf.DistroConfig(
                         DISTRO_CONFIG_FILE, section_config["mirror"])
@@ -462,6 +466,7 @@ def process_section( section, config, problem_list,
 def detect_well_known_errors( config, problem_list, recheck, recheck_failed ):
 
     for section in config['sections'].split():
+      try:
         print time.strftime( "%a %b %2d %H:%M:%S %Z %Y", time.localtime() )
         print "%s:" % section
 
@@ -475,6 +480,8 @@ def detect_well_known_errors( config, problem_list, recheck, recheck_failed ):
             pcount = len(failures.filtered(prob.name))
             if pcount:
                 print "%7d %s" % (pcount, prob.name)
+      except MissingSection:
+        pass
 
     print time.strftime( "%a %b %2d %H:%M:%S %Z %Y", time.localtime() )
 
