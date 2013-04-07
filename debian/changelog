@@ -34,7 +34,6 @@ piuparts (0.51) UNRELEASED; urgency=low
   * New known problem: Database setup failure (issue).
 
   [ David Steele ]
-  * Update python Requires to 2.7 (for argparse)
   * detect_well_known_errors:
     - Replace the bash script with an equivalent Python script.
     - Sort known error and issue packages by reverse dependency count.

@@ -23,7 +23,6 @@ import os
 import time
 import re
 from collections import namedtuple
-import argparse
 
 import piupartslib
 from piupartslib.conf import MissingSection
@@ -500,24 +499,6 @@ def create_problem_list( pdir ):
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(
-                 description="Detect/process well known errors to html",
-                 epilog="""
-This script processes all log files against defined "known_problem" files,
-caching the problems found, by package, into ".kpr" files. The cached data
-is summarized into html ".tpl" files in <html_dir>/<section>, which are then
-incorporated by piuparts-report into the final web reports.
-""" )
-
-    parser.add_argument( '--recheck', dest='recheck', action='store_true',
-               help="recheck all log files (delete cache)" )
-
-    parser.add_argument( '--recheck-failed', dest='recheck_failed',
-               action='store_true',
-               help="recheck failed log files (delete cache)" )
-
-    args = parser.parse_args()
-
     conf = WKE_Config()
     conf.read( CONFIG_FILE )
     if conf["proxy"]:
@@ -525,7 +506,6 @@ incorporated by piuparts-report into the final web reports.
 
     problem_list = create_problem_list( conf['known-problem-directory'] )
 
-    detect_well_known_errors( conf, problem_list, args.recheck,
-                              args.recheck_failed )
+    detect_well_known_errors( conf, problem_list, False, False )
 
 # vi:set et ts=4 sw=4 :
