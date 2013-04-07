@@ -527,3 +527,5 @@ incorporated by piuparts-report into the final web reports.
 
     detect_well_known_errors( conf, problem_list, args.recheck,
                               args.recheck_failed )
+
+# vi:set et ts=4 sw=4 :

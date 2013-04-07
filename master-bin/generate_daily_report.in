@@ -62,7 +62,7 @@ touch $FAILURESTAMP.new  # for the next report
 echo "New failures:" >> $DAILYREPORT
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
-        for DIRECTORY in fail bugged affected untestable; do
+	for DIRECTORY in fail bugged affected untestable ; do
 		mkdir -p $MASTER/$SECTION/$DIRECTORY
 	done
 	find $MASTER/$SECTION/fail $MASTER/$SECTION/bugged $MASTER/$SECTION/affected $MASTER/$SECTION/untestable \
