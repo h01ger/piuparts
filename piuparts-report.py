@@ -43,6 +43,7 @@ except:
   pass
 
 import piupartslib
+from piupartslib.conf import MissingSection
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
@@ -1353,7 +1354,11 @@ def main():
     if os.path.exists(master_directory):
         packagedb_cache = {}
         for section_name in section_names:
+          try:
             section = Section(section_name, master_directory, doc_root, packagedb_cache=packagedb_cache)
+          except MissingSection as e:
+            logging.error("Configuration Error in section '%s': %s" % (section_name, e))
+          else:
             section.generate_output(output_directory=output_directory, section_names=section_names)
 
         # static pages
