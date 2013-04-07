@@ -212,6 +212,12 @@ class Slave:
             raise MasterIsBusy()
         if line != "hello\n":
             raise MasterDidNotGreet()
+        self._writeline("section", self._section)
+        line = self._readline()
+        if line == "busy\n":
+            raise MasterIsBusy()
+        elif line != "ok\n":
+            raise MasterNotOK()
         logging.debug("Connected to master")
 
     def close(self):
