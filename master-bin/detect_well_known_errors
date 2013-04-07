@@ -291,6 +291,7 @@ def clean_cache_files( logdict, cachedict, recheck=False, recheck_failed=False,
 
     count = 0
     for pkgspec in cachedict:
+      try:
         if pkgspec not in logdict \
         or (mtime(logdict[pkgspec])>mtime(cachedict[pkgspec]) and not skipnewer)\
         or get_where(logdict[pkgspec]) != get_where(cachedict[pkgspec])\
@@ -302,6 +303,9 @@ def clean_cache_files( logdict, cachedict, recheck=False, recheck_failed=False,
                 count = count + 1
             except OSError:
                 print "Error deleting %s" % cachedict[pkgspec]
+      except IOError:
+	# logfile may have disappeared
+	pass
 
     return( count )
 
