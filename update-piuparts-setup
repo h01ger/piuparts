@@ -72,6 +72,7 @@ fi
 #
 # install everything from GIT into PIUPARTS_PREFIX
 #
+make clean
 make		prefix=$PIUPARTS_PREFIX \
 		build build-doc
 sudo make	prefix=$PIUPARTS_PREFIX \
