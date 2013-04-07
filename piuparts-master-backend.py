@@ -165,8 +165,7 @@ class Master(Protocol):
         try:
             config.read(CONFIG_FILE)
         except MissingSection:
-            print 'error'
-            sys.exit(0)
+            return False
 
         if not os.path.exists(section):
             os.makedirs(section)
@@ -175,8 +174,7 @@ class Master(Protocol):
         try:
             fcntl.flock(self._lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
-            print 'busy'
-            sys.exit(0)
+            return False
 
         self._section = section
 
@@ -287,8 +285,11 @@ class Master(Protocol):
         self._check_args(1, command, args)
         if self._init_section(args[0]):
             self._short_response("ok")
-        else:
+        elif self._lock is None:
+            # unknown section
             self._short_response("error")
+        else:
+            self._short_response("busy")
 
     def _recycle(self, command, args):
         self._check_args(0, command, args)
