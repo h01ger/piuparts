@@ -13,6 +13,8 @@ flags-base =
 	--warn-on-others
 # default exceptions
 	--scriptsdir /etc/piuparts/scripts
+# we need debsums from bpo-sloppy, until we have this, only emit warnings
+	--warn-on-debsums-errors
 
 # default flags, only warning on leftover files
 flags-default =
