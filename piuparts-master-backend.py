@@ -35,6 +35,7 @@ import random
 
 import piupartslib
 from piupartslib.packagesdb import LogfileExists
+from piupartslib.conf import MissingSection
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
@@ -153,7 +154,11 @@ class Master(Protocol):
         self._package_databases = None
 
         config = Config(section=section, defaults_section="global")
-        config.read(CONFIG_FILE)
+        try:
+            config.read(CONFIG_FILE)
+        except MissingSection:
+            print 'error'
+            sys.exit(0)
 
         if not os.path.exists(section):
             os.makedirs(section)
