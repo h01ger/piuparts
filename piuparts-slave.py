@@ -38,6 +38,7 @@ import ConfigParser
 
 import piupartslib.conf
 import piupartslib.packagesdb
+from piupartslib.conf import MissingSection
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
@@ -430,8 +431,14 @@ class Section:
             action = "Flushing"
         logging.info("%s section %s (precedence=%d)" \
                      % (action, self._config.section, self.precedence()))
+
         self._config = Config(section=self._config.section, defaults_section="global")
-        self._config.read(CONFIG_FILE)
+        try:
+            self._config.read(CONFIG_FILE)
+        except MissingSection:
+            logging.info("unknown")
+            self._error_wait_until = time.time() + 3600
+            return 0
         self._distro_config = piupartslib.conf.DistroConfig(
                 DISTRO_CONFIG_FILE, self._config["mirror"])
 
@@ -836,8 +843,13 @@ def main():
     else:
         section_names = global_config["sections"].split()
 
-    sections = [Section(section_name)
-                for section_name in section_names]
+    sections = []
+    for section_name in section_names:
+        try:
+            sections.append(Section(section_name))
+        except MissingSection:
+            # ignore unknown sections
+            pass
 
     while True:
         global got_sighup

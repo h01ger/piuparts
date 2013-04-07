@@ -22,6 +22,7 @@ piuparts (0.51) UNRELEASED; urgency=low
   * piuparts-slave.py:
     - Fix parsing 'idle' return value from master.
     - Let the piuparts-master (wrapper script) handle chdir and error logging.
+    - Skip sections that don't exist in piuparts.conf and continue to run.
   * piuparts-analyze.py:
   * piuparts-report.py:
   * Makefile:
