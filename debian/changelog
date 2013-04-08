@@ -19,10 +19,17 @@ piuparts (0.51) UNRELEASED; urgency=low
       logging. No longer uses the section specific logfile name for errors.
   * piuparts-master-backend.py:
     - Raise CommandSyntaxError on unknown commands.
+    - Add "section" command:
+      + Make section selection part of the master-slave protocol.
+      + Allow switching sections without reconnecting.
+      + No longer accept section argument on the command line.
+      + Switch the logfile after switching sections.
   * piuparts-slave.py:
     - Fix parsing 'idle' return value from master.
     - Let the piuparts-master (wrapper script) handle chdir and error logging.
     - Skip sections that don't exist in piuparts.conf and continue to run.
+    - Pass the section to piuparts-master via the new "section" command
+      instead of using a command line argument.
   * piuparts-analyze.py:
   * piuparts-report.py:
     - Skip sections that don't exist in piuparts.conf.

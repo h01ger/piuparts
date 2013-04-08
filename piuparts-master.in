@@ -33,6 +33,7 @@ get_config_value LOGFILE global log-file master-error.log
 export PYTHONPATH
 LOGFILE="$LOGFILE.$$"
 
+# put logfile in a deterministic location
 cd "$MASTER"
 
 trap "test -s ${LOGFILE} || rm -f ${LOGFILE}" EXIT
