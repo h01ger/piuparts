@@ -763,16 +763,21 @@ class PackagesDB:
         """Return dict of one-level reverse dependencies by package"""
 
         if self._rdeps is None:
-            self._find_all_packages()       # populate _packages
 
             self._rdeps = {}
-            for pkg_name in self._packages.keys():
-                # use the Packages dependencies() method for a conservative count
-                for dep in self._packages[pkg_name].dependencies():
-                    if dep in self._rdeps:
-                        self._rdeps[dep].append( pkg_name )
-                    else:
-                        self._rdeps[dep] = [pkg_name]
+
+            for pkg in self.get_all_package_names():
+                pkg_obj = self.get_package(pkg)
+
+                for dep in pkg_obj.dependencies():
+                    dep_pkg = self.get_package(dep, resolve_virtual=True)
+
+                    if dep_pkg is not None:
+                        dep = dep_pkg["Package"]
+
+                    if not dep in self._rdeps:
+                        self._rdeps[dep] = set()
+                    self._rdeps[dep].add(pkg)
 
         return( self._rdeps )
 

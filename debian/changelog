@@ -45,6 +45,10 @@ piuparts (0.53) unstable; urgency=low
   * Update python Requires to 2.7 (for argparse)
   * Edit piuparts_slave_* man pages for more information and format.
   * Specify the manpage doctype for AsciiDoc man sources.
+  * pupartslib/packagesdb.py
+    - The dependency calculation for rdeps is reworked to match that used
+      elsewhere, to allow package reserve() to drive waiting-for-dep to
+      drive to 0 more quickly.
 
   [ Holger Levsen ]
   * piuparts.1.txt, README.txt and README_pejacevic.txt: proof-read and
