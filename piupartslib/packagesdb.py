@@ -396,11 +396,7 @@ class PackagesDB:
             more = more[1:]
             if dep not in deps:
                 deps.append(dep)
-                dep_pkg = self.get_package(dep, recurse=True)
-                if dep_pkg is None:
-                    providers = self.get_providers(dep)
-                    if providers:
-                        dep_pkg = self.get_package(providers[0], recurse=True)
+                dep_pkg = self.get_package(dep, recurse=True, resolve_virtual=True)
                 if dep_pkg is not None:
                     more += dep_pkg.dependencies()
         return deps
@@ -414,11 +410,7 @@ class PackagesDB:
             more = more[1:]
             if dep not in deps:
                 deps.append(dep)
-                dep_pkg = self.get_package(dep, recurse=True)
-                if dep_pkg is None:
-                    providers = self.get_providers(dep)
-                    if providers:
-                        dep_pkg = self.get_package(providers[0], recurse=True)
+                dep_pkg = self.get_package(dep, recurse=True, resolve_virtual=True)
                 if dep_pkg is not None and package_name in self._get_recursive_dependencies(dep_pkg):
                     circular.append(dep)
                     more += dep_pkg.dependencies()
@@ -599,13 +591,17 @@ class PackagesDB:
         self._find_all_packages()
         return name in self._packages
 
-    def get_package(self, name, recurse=False):
+    def get_package(self, name, recurse=False, resolve_virtual=False):
         if name in self._packages:
             return self._packages[name]
         elif recurse:
             for db in self._dependency_databases:
                 if db.has_package(name):
                     return db.get_package(name)
+        elif resolve_virtual:
+            providers = self.get_providers(name, recurse=recurse)
+            if providers:
+                return self.get_package(providers[0], recurse=recurse, resolve_virtual=False)
         return None
 
     def get_providers(self, name, recurse=True):
