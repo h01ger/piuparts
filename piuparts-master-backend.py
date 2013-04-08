@@ -124,13 +124,6 @@ class Protocol:
 
 class Master(Protocol):
 
-    _failed_states = (
-        "failed-testing",
-    )
-    _passed_states = (
-        "successfully-tested",
-    )
-
     def __init__(self, input, output):
         Protocol.__init__(self, input, output)
         self._commands = {
