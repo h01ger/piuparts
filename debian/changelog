@@ -31,6 +31,10 @@ piuparts (0.51) UNRELEASED; urgency=low
     - Skip sections that don't exist in piuparts.conf and continue to run.
     - Pass the section to piuparts-master via the new "section" command
       instead of using a command line argument.
+    - Keep the connection to the master open while switching sections. This
+      reduces the number of ssh connections attempted while checking idle
+      sections. Close the connection before processing packages, before going
+      to sleep, and after communication errors.
   * piuparts-analyze.py:
   * piuparts-report.py:
     - Skip sections that don't exist in piuparts.conf.

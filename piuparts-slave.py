@@ -182,21 +182,35 @@ class Slave:
 
     def set_master_host(self, host):
         logging.debug("Setting master host to %s" % host)
-        self._master_host = host
+        if self._master_host != host:
+            self.close()
+            self._master_host = host
 
     def set_master_user(self, user):
         logging.debug("Setting master user to %s" % user)
-        self._master_user = user
+        if self._master_user != user:
+            self.close()
+            self._master_user = user
 
     def set_master_command(self, cmd):
         logging.debug("Setting master command to %s" % cmd)
-        self._master_command = cmd
+        if self._master_command != cmd:
+            self.close()
+            self._master_command = cmd
 
     def set_section(self, section):
         logging.debug("Setting section to %s" % section)
         self._section = section
 
     def connect_to_master(self):
+        if not self._is_connected():
+            self._initial_connect()
+        self._select_section()
+
+    def _is_connected(self):
+        return self._to_master and self._from_master
+
+    def _initial_connect(self):
         logging.info("Connecting to %s" % self._master_host)
         ssh_command = ["ssh", "-x"]
         if self._master_user:
@@ -209,6 +223,8 @@ class Slave:
         line = self._readline()
         if line != "hello\n":
             raise MasterDidNotGreet()
+
+    def _select_section(self):
         self._writeline("section", self._section)
         line = self._readline()
         if line == "busy\n":
@@ -218,6 +234,8 @@ class Slave:
         logging.debug("Connected to master")
 
     def close(self):
+        if self._from_master is None and self._to_master is None:
+            return
         logging.debug("Closing connection to master")
         if self._from_master is not None:
             self._from_master.close()
@@ -315,7 +333,7 @@ class Slave:
 
 class Section:
 
-    def __init__(self, section):
+    def __init__(self, section, slave=None):
         self._config = Config(section=section, defaults_section="global")
         self._config.read(CONFIG_FILE)
         self._distro_config = piupartslib.conf.DistroConfig(
@@ -339,7 +357,7 @@ class Section:
             if not os.path.exists(rdir):
                 os.mkdir(rdir)
 
-        self._slave = Slave()
+        self._slave = slave or Slave()
 
 
     def _throttle_if_overloaded(self):
@@ -355,6 +373,7 @@ class Section:
             return
         load_resume = max(load_max - 1.0, 0.9)
         secs = random.randrange(30, 90)
+        self._slave.close()
         while True:
             load = os.getloadavg()[0]
             if load <= load_resume:
@@ -505,6 +524,7 @@ class Section:
         except (MasterDidNotGreet, MasterIsCrazy, MasterCommunicationFailed):
             logging.error("connection to master failed")
             self._error_wait_until = time.time() + 900
+            self._slave.close()
         else:
             try:
                 for logdir in ["pass", "fail", "untestable"]:
@@ -539,17 +559,19 @@ class Section:
             except MasterNotOK:
                 logging.error("master did not respond with 'ok'")
                 self._error_wait_until = time.time() + 900
+                self._slave.close()
             except (MasterIsCrazy, MasterCommunicationFailed):
                 logging.error("communication with master failed")
                 self._error_wait_until = time.time() + 900
+                self._slave.close()
             else:
                 return True
-        finally:
-            self._slave.close()
         return False
 
 
     def _process(self):
+        self._slave.close()
+
         packages_files = {}
         for distro in [self._config.get_distro()] + self._config.get_distros():
             if distro not in packages_files:
@@ -846,10 +868,11 @@ def main():
     else:
         section_names = global_config["sections"].split()
 
+    persistent_connection = Slave()
     sections = []
     for section_name in section_names:
         try:
-            sections.append(Section(section_name))
+            sections.append(Section(section_name, persistent_connection))
         except MissingSection:
             # ignore unknown sections
             pass
@@ -883,6 +906,7 @@ def main():
             sleep_until = min([now + int(global_config["idle-sleep"])] + [section.sleep_until() for section in sections])
             if (sleep_until > now):
                 to_sleep = max(60, sleep_until - now)
+                persistent_connection.close()
                 logging.info("Nothing to do, sleeping for %d seconds." % to_sleep)
                 time.sleep(to_sleep)
 
