@@ -920,7 +920,6 @@ class Section:
         binaries = self._source_db.get_control_header(source, "Binary")
         maintainer = self._source_db.get_control_header(source, "Maintainer")
         uploaders = self._source_db.get_control_header(source, "Uploaders")
-        current_version = self._source_db.get_control_header(source, "Version")
 
         success = True
         failed = False
@@ -946,6 +945,7 @@ class Section:
           else:
             state_style="labelcell"
 
+          binary_version = self._binary_db.get_control_header(binary, "Version")
           binaryrows +=   "<tr class=\"normalrow\">" \
                         + "<td class=\"labelcell\">Binary:</td>" \
                         + "<td class=\"contentcell2\">%s</td>" \
@@ -957,7 +957,7 @@ class Section:
                               self.links_to_logs(binary, state, logs_by_dir) ) \
                         + "<td class=\"labelcell\">Version:</td>" \
                         + "<td class=\"contentcell2\">%s</td>" \
-                          % html_protect(current_version) \
+                          % html_protect(binary_version) \
                         + "</tr>\n"
 
           if state not in ("successfully-tested", "essential-required"):
