@@ -926,11 +926,18 @@ class Section:
         failed = False
         binaryrows = ""
         for binary in sorted([x.strip() for x in binaries.split(",") if x.strip()]):
+          if not self._binary_db.has_package(binary):
+                # udebs or binary packages for other architectures
+                # The latter is a FIXME which needs parsing the Packages files from other archs too
+                binaryrows +=   "<tr class=\"normalrow\">" \
+                              + "<td class=\"labelcell\">Binary:</td>" \
+                              + "<td class=\"contentcell2\">%s</td>" \
+                                % binary \
+                              + "<td class=\"contentcell2\" colspan=\"4\">unknown package</td>" \
+                              + "</tr>\n"
+                continue
+
           state = self._binary_db.get_package_state(binary)
-          if state == "unknown":
-            # Don't track udebs and binary packages on other archs.
-            # The latter is a FIXME which needs parsing the Packages files from other archs too
-            continue
 
           if not "waiting" in state and "dependency" in state:
             state_style="lightalertlabelcell"

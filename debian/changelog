@@ -27,6 +27,9 @@ piuparts (0.51) UNRELEASED; urgency=low
   * piuparts-analyze.py:
   * piuparts-report.py:
     - Skip sections that don't exist in piuparts.conf.
+    - "Missing" binary packages don't influence the overall test result of a
+      source package. These are either udebs or for other architectures.
+      (Closes: #699160)
   * Makefile:
   * detect_well_known_errors:
     - Skip sections that don't exist in piuparts.conf.
