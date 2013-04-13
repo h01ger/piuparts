@@ -329,6 +329,8 @@ the master responds with):
 
 ----
 << hello
+>> section sid
+<< ok
 >> pass liwc 1.2.3-4
 >>  The piuparts
 >>  log file comes
@@ -348,6 +350,20 @@ The communication always starts with the master saying "hello".
 The slave shall not speak until the master has spoken.
 
 Commands and responses in this protocol:
+
+----
+Command: section <string>
+Success: ok
+Failure: error
+Failure: busy
+----
+Slave asks master to select the given section.
+This must be the very first command sent by the slave, but may
+be repeated later on to switch between sections.
+It will return "error" if the section is unknown and "busy" if
+it is currently processed by another master instance. If the
+section command fails, no other commands than "section" will be
+allowed until one succeeds.
 
 ----
 Command: recycle
@@ -518,8 +534,6 @@ section, too, and will serve as defaults for all other sections
 * "master-command" is the command to run on master-host to start
  the master. When the master has been installed from the Debian
  package, the command is '/usr/share/piuparts/piuparts-master'.
- The section name will be given as a command line argument to this
- command.
 
 * "idle-sleep" is the length of time the slave should wait before
  querying the master again if the master didn't have any new

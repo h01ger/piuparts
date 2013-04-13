@@ -203,15 +203,18 @@ class Slave:
             ssh_command.extend(["-l", self._master_user])
         ssh_command.append(self._master_host)
         ssh_command.append(self._master_command)
-        ssh_command.append(self._section)
         p = subprocess.Popen(ssh_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self._to_master = p.stdin
         self._from_master = p.stdout
         line = self._readline()
-        if line == "busy\n":
-            raise MasterIsBusy()
         if line != "hello\n":
             raise MasterDidNotGreet()
+        self._writeline("section", self._section)
+        line = self._readline()
+        if line == "busy\n":
+            raise MasterIsBusy()
+        elif line != "ok\n":
+            raise MasterNotOK()
         logging.debug("Connected to master")
 
     def close(self):

@@ -35,21 +35,28 @@ import random
 
 import piupartslib
 from piupartslib.packagesdb import LogfileExists
+from piupartslib.conf import MissingSection
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
 
 
+log_handler = None
+
 def setup_logging(log_level, log_file_name):
     logger = logging.getLogger()
-    logger.setLevel(log_level)
+
+    global log_handler;
+    logger.removeHandler(log_handler)
 
     if log_file_name:
-        handler = logging.FileHandler(log_file_name)
+        log_handler = logging.FileHandler(log_file_name)
     else:
-        handler = logging.StreamHandler(sys.stderr)
-    logger.addHandler(handler)
+        log_handler = logging.StreamHandler(sys.stderr)
+
+    logger.addHandler(log_handler)
+    logger.setLevel(log_level)
 
 
 class Config(piupartslib.conf.Config):
@@ -124,9 +131,10 @@ class Master(Protocol):
         "successfully-tested",
     )
 
-    def __init__(self, input, output, section):
+    def __init__(self, input, output):
         Protocol.__init__(self, input, output)
         self._commands = {
+            "section": self._switch_section,
             "recycle": self._recycle,
             "idle": self._idle,
             "status": self._status,
@@ -136,15 +144,48 @@ class Master(Protocol):
             "fail": self._fail,
             "untestable": self._untestable,
         }
-        self._section = section
+        self._section = None
+        self._lock = None
+        self._writeline("hello")
+
+    def _init_section(self, section):
+        if self._lock:
+            self._lock.close()
+
+        # clear all settings from a previous section and set defaults
+        self._section = None
+        self._lock = None
         self._recycle_mode = False
         self._idle_mode = None
         self._idle_stamp = os.path.join(section, "idle.stamp")
         self._package_databases = None
+        self._binary_db = None
+
+        config = Config(section=section, defaults_section="global")
+        try:
+            config.read(CONFIG_FILE)
+        except MissingSection:
+            return False
+
+        if not os.path.exists(section):
+            os.makedirs(section)
+
+        self._lock = open(os.path.join(section, "master.lock"), "we")
+        try:
+            fcntl.flock(self._lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            return False
+
+        self._section = section
+
+        logfile = config["log-file"] or os.path.join(section, "master.log")
+        setup_logging(logging.DEBUG, logfile)
+
         # start with a dummy _binary_db (without Packages file), sufficient
         # for submitting finished logs
         self._binary_db = piupartslib.packagesdb.PackagesDB(prefix=section)
-        self._writeline("hello")
+
+        return True
 
     def _init_db(self):
         if self._package_databases is not None:
@@ -222,6 +263,8 @@ class Master(Protocol):
             if len(parts) > 0:
                 command = parts[0]
                 args = parts[1:]
+                if self._section is None and command != "section":
+                    raise CommandSyntaxError("Expected 'section' command, got %s" % command)
                 if command in self._commands:
                     self._commands[command](command, args)
                     return True
@@ -237,6 +280,16 @@ class Master(Protocol):
          for st in self._binary_db.get_states():
             for name in self._binary_db.get_pkg_names_in_state(st):
                 logging.debug("%s : %s\n" % (st,name))
+
+    def _switch_section(self, command, args):
+        self._check_args(1, command, args)
+        if self._init_section(args[0]):
+            self._short_response("ok")
+        elif self._lock is None:
+            # unknown section
+            self._short_response("error")
+        else:
+            self._short_response("busy")
 
     def _recycle(self, command, args):
         self._check_args(0, command, args)
@@ -315,42 +368,22 @@ class Master(Protocol):
 
 
 def main():
-    # piuparts-master is always called by the slave with a section as argument
-    if len(sys.argv) == 2:
+    setup_logging(logging.INFO, None)
+    if True:
         global_config = Config(section="global")
         global_config.read(CONFIG_FILE)
         if global_config["proxy"]:
             os.environ["http_proxy"] = global_config["proxy"]
         master_directory = global_config["master-directory"]
 
-        section = sys.argv[1]
-        config = Config(section=section, defaults_section="global")
-        config.read(CONFIG_FILE)
-
         if not os.path.exists(master_directory):
             os.makedirs(master_directory)
 
         os.chdir(master_directory)
 
-        if not os.path.exists(section):
-            os.makedirs(section)
-
-        logfile = config["log-file"] or os.path.join(section, "master.log")
-        setup_logging(logging.DEBUG, logfile)
-
-        lock = open(os.path.join(section, "master.lock"), "we")
-        try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except IOError:
-            print 'busy'
-            sys.exit(0)
-
-        m = Master(sys.stdin, sys.stdout, section)
+        m = Master(sys.stdin, sys.stdout)
         while m.do_transaction():
             pass
-    else:
-        print 'piuparts-master needs to be called with a valid sectionname as argument, exiting...'
-        sys.exit(1)
 
 if __name__ == "__main__":
     main()

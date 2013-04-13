@@ -33,14 +33,9 @@ get_config_value LOGFILE global log-file master-error.log
 export PYTHONPATH
 LOGFILE="$LOGFILE.$$"
 
+# put logfile in a deterministic location
 cd "$MASTER"
-
-section="$1"
-if [ -z "$section" ]; then
-	echo "FAIL: no section supplied"
-	exit 1
-fi
 
 trap "test -s ${LOGFILE} || rm -f ${LOGFILE}" EXIT
 
-@sharedir@/piuparts/piuparts-master-backend "$section" 2> "$LOGFILE"
+@sharedir@/piuparts/piuparts-master-backend 2> "$LOGFILE"
