@@ -592,6 +592,7 @@ class PackagesDB:
         return name in self._packages
 
     def get_package(self, name, recurse=False, resolve_virtual=False):
+        self._find_all_packages()
         if name in self._packages:
             return self._packages[name]
         if recurse:
@@ -605,6 +606,7 @@ class PackagesDB:
         return None
 
     def get_providers(self, name, recurse=True):
+        self._find_all_packages()
         providers = []
         if name in self._virtual_packages:
             providers.extend(self._virtual_packages[name])
@@ -618,6 +620,7 @@ class PackagesDB:
         return self._packages
 
     def get_control_header(self, package_name, header):
+        self._find_all_packages()
         if header == "Source":
           # binary packages build from the source package with the same name
           # don't have a Source header, so let's try:
@@ -644,6 +647,7 @@ class PackagesDB:
           return self._packages[package_name][header]
 
     def get_package_state(self, package_name, resolve_virtual=True, recurse=True):
+        self._compute_package_states()
         if package_name in self._package_state:
             return self._package_state[package_name]
         if package_name in self._virtual_packages:
