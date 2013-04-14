@@ -457,6 +457,7 @@ def process_section( section, config, problem_list,
         pkgsdb.read_packages_file(pkg_fl)
         pkg_fl.close()
 
+        pkgsdb.compute_package_states()
         pkgsdb.calc_rrdep_counts()
 
         os.chdir(oldcwd)

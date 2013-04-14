@@ -571,6 +571,10 @@ class PackagesDB:
         for state in self._states:
             self._in_state[state].sort()
 
+    def compute_package_states(self):
+        # this must be called with cwd == master-directory
+        self._compute_package_states()
+
     def get_states(self):
         return self._states
 

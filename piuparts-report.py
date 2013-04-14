@@ -599,6 +599,7 @@ class Section:
         self._package_databases = {}
         self._load_package_database(section)
         self._binary_db = self._package_databases[section]
+        self._binary_db.compute_package_states()
         self._binary_db.calc_rrdep_counts()
         os.chdir(oldcwd)
 
