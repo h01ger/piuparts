@@ -621,7 +621,11 @@ class PackagesDB:
 
     def get_all_packages(self):
         self._find_all_packages()
-        return self._packages
+        return self._packages.values()
+
+    def get_all_package_names(self):
+        self._find_all_packages()
+        return self._packages.keys()
 
     def get_control_header(self, package_name, header):
         self._find_all_packages()

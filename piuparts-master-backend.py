@@ -218,7 +218,7 @@ class Master(Protocol):
             packages_file = piupartslib.open_packages_url(packages_url)
             db2 = piupartslib.packagesdb.PackagesFile(packages_file)
             packages_file.close()
-            for package in db.get_all_packages().values():
+            for package in db.get_all_packages():
                 if package["Package"] in db2:
                     package["Version"] = db2[package["Package"]]["Version"]
                 else:

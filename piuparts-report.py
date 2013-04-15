@@ -650,7 +650,7 @@ class Section:
             packages_file = piupartslib.open_packages_url(packages_url)
             db2 = piupartslib.packagesdb.PackagesFile(packages_file)
             packages_file.close()
-            for package in db.get_all_packages().values():
+            for package in db.get_all_packages():
                 if package["Package"] in db2:
                     package["Version"] = db2[package["Package"]]["Version"]
                 else:
@@ -1040,7 +1040,7 @@ class Section:
         maintainers = {}
         source_binary_rows = {}
         sources = ""
-        for source in self._source_db.get_all_packages():
+        for source in self._source_db.get_all_package_names():
             (sourcerows, binaryrows, source_state, maintainer, uploaders) = \
                                self.create_source_summary(source, logs_by_dir)
 
