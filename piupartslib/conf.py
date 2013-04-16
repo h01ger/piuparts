@@ -180,7 +180,7 @@ class DistroConfig(UserDict.UserDict):
         lines = []
         for d in self._expand_depends(distro):
             if not self[d]["uri"] is None and self[d]["uri"] == "None":
-                next  # skip virtual section
+                continue  # skip virtual section
             for c in components:
                 if self[d]["components"] is None or c in self[d]["components"].split():
                     lines.append("deb %s %s %s" % (
