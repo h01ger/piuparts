@@ -59,7 +59,8 @@ piuparts (0.51) UNRELEASED; urgency=low
   [ David Steele ]
   * detect_well_known_errors:
     - Replace the bash script with an equivalent Python script.
-    - Sort known error and issue packages by reverse dependency count.
+    - Sort known error and issue packages by reverse dependency count,
+      separating bugged from everything else.
       (Closes: #698526)
     - Add a PTS link to issue and error summary entries.
     - Replace the known_problem COMMAND with INCLUDE and EXCLUDE, and replace
