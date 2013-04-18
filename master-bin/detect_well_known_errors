@@ -111,10 +111,10 @@ class Problem():
 
         self.init_problem()
 
-        self.inc_re = re.compile( self.INCLUDE )
+        self.inc_re = re.compile( self.PATTERN )
 
-        if "EXCLUDE" in self.__dict__:
-            self.exc_re = re.compile( self.EXCLUDE )
+        if "EXCLUDE_PATTERN" in self.__dict__:
+            self.exc_re = re.compile( self.EXCLUDE_PATTERN )
         else:
             self.exc_re = None
 
@@ -157,10 +157,10 @@ class Problem():
 
     def get_command(self):
 
-        cmd = "grep -E \"%s\"" % self.INCLUDE
+        cmd = "grep -E \"%s\"" % self.PATTERN
 
-        if "EXCLUDE" in self.__dict__:
-            cmd += " | grep -v -E \"%s\"" % self.EXCLUDE
+        if "EXCLUDE_PATTERN" in self.__dict__:
+            cmd += " | grep -v -E \"%s\"" % self.EXCLUDE_PATTERN
 
         return(cmd)
 

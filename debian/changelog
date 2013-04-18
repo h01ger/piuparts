@@ -63,8 +63,9 @@ piuparts (0.51) UNRELEASED; urgency=low
       separating bugged from everything else.
       (Closes: #698526)
     - Add a PTS link to issue and error summary entries.
-    - Replace the known_problem COMMAND with INCLUDE and EXCLUDE, and replace
-      grep shell calls with python re modules calls, for a 10x speedup.
+    - Replace the known_problem COMMAND with PATTERN and EXCLUDE_PATTERN,
+      and replace grep shell calls with python re modules calls, for a
+      10x speedup.
     - Minor HTML syntax fix.
     - Minor template integration.
 
