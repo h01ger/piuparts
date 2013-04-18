@@ -66,6 +66,7 @@ piuparts (0.51) UNRELEASED; urgency=low
     - Replace the known_problem COMMAND with PATTERN and EXCLUDE_PATTERN,
       and replace grep shell calls with python re modules calls, for a
       10x speedup.
+    - Validate field names, and only use valid known problem conf files.
     - Minor HTML syntax fix.
     - Minor template integration.
 

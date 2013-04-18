@@ -109,7 +109,18 @@ class Problem():
         self.name = os.path.basename(probpath)
         self.short_name = os.path.splitext( self.name )[0]
 
+        self.tags_are_valid = True
+
+        self.required_tags = [ "PATTERN", "WHERE", "ISSUE",
+                               "HEADER", "HELPTEXT"]
+        self.optional_tags = ["EXCLUDE_PATTERN", "EXPLAIN", "PRIORITY"]
+
+
         self.init_problem()
+
+        for tag in self.required_tags:
+            if not tag in self.__dict__:
+                self.tags_are_valid = False
 
         self.inc_re = re.compile( self.PATTERN )
 
@@ -117,6 +128,9 @@ class Problem():
             self.exc_re = re.compile( self.EXCLUDE_PATTERN )
         else:
             self.exc_re = None
+
+    def valid(self):
+        return self.tags_are_valid
 
     def init_problem(self):
         """Load problem file parameters (HELPTEXT="foo" -> self.HELPTEXT)"""
@@ -138,7 +152,10 @@ class Problem():
              or re.search( '^\".+\"$', value, re.MULTILINE|re.DOTALL ):
                 value = value[1:-1]
 
-            self.__dict__[name] = value
+            if name in self.required_tags or name in self.optional_tags:
+                self.__dict__[name] = value
+            else:
+                self.tags_are_valid = False
 
         self.WHERE = self.WHERE.split(" ")
 
@@ -503,8 +520,15 @@ def detect_well_known_errors( config, problem_list, recheck, recheck_failed ):
 
 def create_problem_list( pdir ):
 
-    pfiles = [x for x in sorted(os.listdir(pdir)) if x.endswith(".conf")]
-    plist = [Problem(os.path.join(pdir,x)) for x in pfiles]
+    plist = []
+
+    for pfile in [x for x in sorted(os.listdir(pdir)) if x.endswith(".conf")]:
+        prob = Problem(os.path.join(pdir,pfile))
+
+        if prob.valid():
+            plist.append(prob)
+        else:
+            print "Keyword error in %s - skipping" % pfile
 
     return plist
 
