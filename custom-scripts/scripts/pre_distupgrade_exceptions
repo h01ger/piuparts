@@ -28,4 +28,10 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 				;;
 	esac
 
+	# WORKSAROUND #655969: lirc: prompting due to modified conffiles which where not modified by the user: /etc/lirc/hardware.conf
+	if [ -f /etc/lirc/hardware.conf ]; then
+		log_debug
+		sed -i '/^DRIVER=/s/.*/DRIVER="UNCONFIGURED"/' /etc/lirc/hardware.conf
+	fi
+
 fi

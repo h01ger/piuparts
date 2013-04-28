@@ -24,6 +24,7 @@ piuparts (0.51) UNRELEASED; urgency=low
   * piuparts-analyze.py:
   * piuparts-report.py:
   * Makefile:
+  * Update and add new exceptions for buggy packages.
   * scripts-wheezy/post_setup_wheezy-fake-essential: New custom script to
     suppress some purge failures in wheezy.
   * New known problem: Database setup failure (issue).
