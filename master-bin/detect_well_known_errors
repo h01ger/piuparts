@@ -122,7 +122,10 @@ class Problem():
             if not tag in self.__dict__:
                 self.tags_are_valid = False
 
-        self.inc_re = re.compile( self.PATTERN )
+        if "PATTERN" in self.__dict__:
+            self.inc_re = re.compile( self.PATTERN )
+        else:
+            self.inc_re = None
 
         if "EXCLUDE_PATTERN" in self.__dict__:
             self.exc_re = re.compile( self.EXCLUDE_PATTERN )
