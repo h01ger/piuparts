@@ -382,7 +382,7 @@ def update_tpl( basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb
             src_pkg = bin_pkg
             rdep_cnt = 0
 
-        if (not bugged_section) and "bugged" in logdict[pkgspec]:
+        if bugged_section is False and get_where(logdict[pkgspec]) != 'fail':
             bugged_section = True
             pkg_text += "<br>\n"
 
