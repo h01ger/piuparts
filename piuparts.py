@@ -159,6 +159,7 @@ class Settings:
         self.scriptsdirs = []
         self.bindmounts = []
         # chroot setup
+        self.arch = None
         self.basetgz = None
         self.savetgz = None
         self.lvm_volume = None
@@ -1019,6 +1020,8 @@ class Chroot:
         if settings.eatmydata:
             options.append('--include=eatmydata')
         options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
+        if settings.arch:
+            options.append('--arch=%s' % settings.arch)
         run(prefix + ["debootstrap", "--variant=minbase"] + options +
             [settings.debian_distros[0], self.name, settings.distro_config.get_mirror(settings.debian_distros[0])])
         self.bootstrapped = True
@@ -2500,6 +2503,9 @@ def parse_command_line():
                       help="Command line arguments are package names " +
                            "to be installed via apt.")
 
+    parser.add_option("--arch", metavar="ARCH", action="store",
+                      help="Create chroot and run tests for (non-default) architecture ARCH.")
+
     parser.add_option("--adt-virt",
                       metavar='CMDLINE', default=None,
                       help="Use CMDLINE via autopkgtest (adt-virt-*)"
@@ -2775,6 +2781,7 @@ def parse_command_line():
     settings.scriptsdirs = opts.scriptsdir
     settings.bindmounts += opts.bindmount
     # chroot setup
+    settings.arch = opts.arch
     settings.basetgz = opts.basetgz
     settings.savetgz = opts.save
     settings.lvm_volume = opts.lvm_volume

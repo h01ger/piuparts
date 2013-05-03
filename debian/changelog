@@ -5,6 +5,8 @@ piuparts (0.51) UNRELEASED; urgency=low
   * piuparts.py:
     - In install-purge tests support installing extra packages before the
       package to be tested via --extra-old-packages.
+    - Add --arch <arch> option to run the test for the requested instead of
+      the default architecture.
   * piuparts.conf:
   * distros.conf:
     - Update backports setup after integration into the regular archive.
