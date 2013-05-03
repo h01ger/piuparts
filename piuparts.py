@@ -1018,7 +1018,7 @@ class Chroot:
         options = [settings.keyringoption]
         if settings.eatmydata:
             options.append('--include=eatmydata')
-            options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
+        options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
         run(prefix + ["debootstrap", "--variant=minbase"] + options +
             [settings.debian_distros[0], self.name, settings.distro_config.get_mirror(settings.debian_distros[0])])
         self.bootstrapped = True
