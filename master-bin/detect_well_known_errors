@@ -413,7 +413,7 @@ def update_html( section, logdict, problem_list, failures, config, pkgsdb ):
 
     html_dir = os.path.join( config['output-directory'], section )
     if not os.path.exists( html_dir ):
-        os.mkdir( html_dir )
+        os.makedirs(html_dir)
 
     for problem in problem_list:
         update_tpl( html_dir, section, problem,
