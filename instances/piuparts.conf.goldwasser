@@ -57,20 +57,20 @@ mirror = http://ftp.de.debian.org/debian/
 master-host = localhost
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
-master-command = /org/piuparts.debian.org/share/piuparts/piuparts-master
+master-command = /srv/piuparts.debian.org/share/piuparts/piuparts-master
 piuparts-command =
 	sudo
 	env PYTHONPATH=%(PYTHONPATH)s
 	timeout -s INT -k 5m 35m
-	/org/piuparts.debian.org/sbin/piuparts
-PYTHONPATH = /org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
-master-directory = /org/piuparts.debian.org/master
-slave-directory = /org/piuparts.debian.org/slave
-basetgz-directory = /org/piuparts.debian.org/slave/basetgz
-output-directory = /org/piuparts.debian.org/htdocs
-known-problem-directory = /org/piuparts.debian.org/share/piuparts/known_problems
-backup-directory = /org/piuparts.debian.org/backup
-tmpdir = /org/piuparts.debian.org/tmp
+	/srv/piuparts.debian.org/sbin/piuparts
+PYTHONPATH = /srv/piuparts.debian.org/lib/python2.6/dist-packages:/srv/piuparts.debian.org/lib/python2.7/dist-packages
+master-directory = /srv/piuparts.debian.org/master
+slave-directory = /srv/piuparts.debian.org/slave
+basetgz-directory = /srv/piuparts.debian.org/slave/basetgz
+output-directory = /srv/piuparts.debian.org/htdocs
+known-problem-directory = /srv/piuparts.debian.org/share/piuparts/known_problems
+backup-directory = /srv/piuparts.debian.org/backup
+tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /
 # this value is too high for production (it will cause piuparts-slave to sleep
 # for a whole day) but useful for testing master-slave mode, for running on a
