@@ -64,6 +64,8 @@ sections =
 	sid
 	testing2sid
 	sid2experimental
+	jessie
+	wheezy2jessie
 	wheezy
 	squeeze2wheezy
 	squeeze2bpo2wheezy
@@ -137,6 +139,26 @@ upgrade-test-distros = sid experimental
 log-file = sid2experimental.log
 
 
+[jessie]
+precedence = 2
+piuparts-flags =
+	%(flags-default)s
+distro = jessie
+log-file = jessie.log
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
+
+
+[wheezy2jessie]
+precedence = 3
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+log-file = wheezy2jessie.log
+
+
 [wheezy]
 precedence = 2
 piuparts-flags =
@@ -145,8 +167,8 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 distro = wheezy
 log-file = wheezy.log
-# 1 week (60*60*24*7)
-max-tgz-age = 604800
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
 
 
 [squeeze2wheezy]

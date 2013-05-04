@@ -47,6 +47,8 @@ flags-start-squeeze =
 [global]
 sections =
 #	sid
+#	jessie
+#	wheezy2jessie
 	wheezy
 #	squeeze2wheezy
 #	testing2sid
@@ -94,6 +96,22 @@ distro = testing
 upgrade-test-distros = testing sid
 reschedule-old-count = 0
 log-file = testing2sid.log
+
+
+[jessie]
+piuparts-flags =
+	%(flags-default)s
+distro = jessie
+log-file = jessie.log
+
+
+[wheezy2jessie]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+log-file = wheezy2jessie.log
 
 
 [wheezy]
