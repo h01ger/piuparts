@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Copyright 2009-2011 Holger Levsen (holger@layer-acht.org)
+# Copyright © 2011-2012 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -110,7 +111,7 @@ for SECTION in $SECTIONS ; do
 		TOTAL_EXPIRED=$(($TOTAL_EXPIRED + $ECOUNT))
 		UCOUNT=$(wc -l $OBSOLETE | awk '{ print $1 }')
 		UNSCHEDULE=$(($UNSCHEDULE + $UCOUNT))
-		echo "$SECTION: $RCOUNT/$ECOUNT/$UCOUNT"
+		echo "$SECTION: $RCOUNT rescheduled, $ECOUNT expired, $UCOUNT obsolete"
 		if [ -s $LOGS ]; then
 			ls -dtl $(cat $LOGS)
 			ln -f $(cat $LOGS) recycle/

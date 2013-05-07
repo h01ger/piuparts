@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
+# Copyright © 2011-2013 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -393,11 +396,7 @@ class PackagesDB:
             more = more[1:]
             if dep not in deps:
                 deps.append(dep)
-                dep_pkg = self.get_package(dep, recurse=True)
-                if dep_pkg is None:
-                    providers = self.get_providers(dep)
-                    if providers:
-                        dep_pkg = self.get_package(providers[0], recurse=True)
+                dep_pkg = self.get_package(dep, recurse=True, resolve_virtual=True)
                 if dep_pkg is not None:
                     more += dep_pkg.dependencies()
         return deps
@@ -411,11 +410,7 @@ class PackagesDB:
             more = more[1:]
             if dep not in deps:
                 deps.append(dep)
-                dep_pkg = self.get_package(dep, recurse=True)
-                if dep_pkg is None:
-                    providers = self.get_providers(dep)
-                    if providers:
-                        dep_pkg = self.get_package(providers[0], recurse=True)
+                dep_pkg = self.get_package(dep, recurse=True, resolve_virtual=True)
                 if dep_pkg is not None and package_name in self._get_recursive_dependencies(dep_pkg):
                     circular.append(dep)
                     more += dep_pkg.dependencies()
@@ -576,6 +571,10 @@ class PackagesDB:
         for state in self._states:
             self._in_state[state].sort()
 
+    def compute_package_states(self):
+        # this must be called with cwd == master-directory
+        self._compute_package_states()
+
     def get_states(self):
         return self._states
 
@@ -596,16 +595,22 @@ class PackagesDB:
         self._find_all_packages()
         return name in self._packages
 
-    def get_package(self, name, recurse=False):
+    def get_package(self, name, recurse=False, resolve_virtual=False):
+        self._find_all_packages()
         if name in self._packages:
             return self._packages[name]
-        elif recurse:
+        if recurse:
             for db in self._dependency_databases:
                 if db.has_package(name):
                     return db.get_package(name)
+        if resolve_virtual:
+            providers = self.get_providers(name, recurse=recurse)
+            if providers:
+                return self.get_package(providers[0], recurse=recurse, resolve_virtual=False)
         return None
 
     def get_providers(self, name, recurse=True):
+        self._find_all_packages()
         providers = []
         if name in self._virtual_packages:
             providers.extend(self._virtual_packages[name])
@@ -616,9 +621,14 @@ class PackagesDB:
 
     def get_all_packages(self):
         self._find_all_packages()
-        return self._packages
+        return self._packages.values()
+
+    def get_all_package_names(self):
+        self._find_all_packages()
+        return self._packages.keys()
 
     def get_control_header(self, package_name, header):
+        self._find_all_packages()
         if header == "Source":
           # binary packages build from the source package with the same name
           # don't have a Source header, so let's try:
@@ -645,6 +655,7 @@ class PackagesDB:
           return self._packages[package_name][header]
 
     def get_package_state(self, package_name, resolve_virtual=True, recurse=True):
+        self._compute_package_states()
         if package_name in self._package_state:
             return self._package_state[package_name]
         if package_name in self._virtual_packages:

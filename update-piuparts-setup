@@ -5,7 +5,7 @@ set -e
 #  update piuparts setup on piatti.debian.org
 #
 
-# Copyright 2009-2012 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2013 Holger Levsen (holger@layer-acht.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -26,7 +26,7 @@ if [ "`id -n -u`" != "piupartss" ] ; then
         exit 1
 fi
 
-PIUPARTS_PREFIX=/org/piuparts.debian.org
+PIUPARTS_PREFIX=/srv/piuparts.debian.org
 PIUPARTS_HTDOCS=$PIUPARTS_PREFIX/htdocs
 PIUPARTS_TMPDIR=$PIUPARTS_PREFIX/tmp
 
@@ -72,6 +72,7 @@ fi
 #
 # install everything from GIT into PIUPARTS_PREFIX
 #
+make clean
 make		prefix=$PIUPARTS_PREFIX \
 		build build-doc
 sudo make	prefix=$PIUPARTS_PREFIX \

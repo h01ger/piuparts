@@ -272,19 +272,22 @@ To set this up for yourself, the following steps should suffice:
 . Pick a machine to run the master. It cannot be a chroot, but
  basically any real (or properly virtualized) Debian system is good
  enough.
-. Install piuparts on it.
-. Create an account for the master.
+. Install the package piuparts-master on it.
+. Create an account for the master (the package creates piupartsm).
 . Configure '/etc/piuparts/piuparts.conf' appropriately.
 . Pick one or more slaves to run the slave. You can use the machine
  running the master also as a slave. Etch is fine, it can even be
  in a chroot.
-. Install piuparts on it.
+. Install the package piuparts-slave on it.
 . Configure '/etc/piuparts/piuparts.conf' appropriately - if master
  and slave share the machine, they also share the config file.
 . Create an account for the slave. This must be different from the
- master account.
+ master account. (The package creates piupartss.)
 . Create an ssh keypair for the slave. No passphrase.
 . Add the slave's public key to the master's '.ssh/authorized_keys'
+ The key should be restricted to only allow running
+ 'piuparts-master' by prefixing it with
+ 'command="/usr/share/piuparts/piuparts-master",no-pty,no-port-forwarding '
 . Configure sudo on the slave machine to allow the slave account
  run '/usr/sbin/piuparts' as root without password (otherwise
  you'll be typing in a password all the time).
@@ -329,6 +332,8 @@ the master responds with):
 
 ----
 << hello
+>> section sid
+<< ok
 >> pass liwc 1.2.3-4
 >>  The piuparts
 >>  log file comes
@@ -348,6 +353,20 @@ The communication always starts with the master saying "hello".
 The slave shall not speak until the master has spoken.
 
 Commands and responses in this protocol:
+
+----
+Command: section <string>
+Success: ok
+Failure: error
+Failure: busy
+----
+Slave asks master to select the given section.
+This must be the very first command sent by the slave, but may
+be repeated later on to switch between sections.
+It will return "error" if the section is unknown and "busy" if
+it is currently processed by another master instance. If the
+section command fails, no other commands than "section" will be
+allowed until one succeeds.
 
 ----
 Command: recycle
@@ -518,8 +537,9 @@ section, too, and will serve as defaults for all other sections
 * "master-command" is the command to run on master-host to start
  the master. When the master has been installed from the Debian
  package, the command is '/usr/share/piuparts/piuparts-master'.
- The section name will be given as a command line argument to this
- command.
+ This does not need to be set here if it is already set in
+ '~piupartsm/.ssh/authorized_keys' to limit ssh access to that
+ single command.
 
 * "idle-sleep" is the length of time the slave should wait before
  querying the master again if the master didn't have any new

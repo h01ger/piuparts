@@ -1,6 +1,8 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
+# Copyright © 2010-2013 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -157,6 +159,7 @@ class Settings:
         self.scriptsdirs = []
         self.bindmounts = []
         # chroot setup
+        self.arch = None
         self.basetgz = None
         self.savetgz = None
         self.lvm_volume = None
@@ -282,6 +285,9 @@ class Settings:
             "/var/log/secure",
             "/var/log/syslog",
             "/var/log/user.log",
+            # application logfiles
+            # actually, only modification should be permitted here, but not creation/removal
+            "/var/log/fontconfig.log",
             # home directories of system accounts
             "/var/lib/gozerbot/",
             "/var/lib/nagios/",         # nagios* (#668756)
@@ -1013,7 +1019,9 @@ class Chroot:
         options = [settings.keyringoption]
         if settings.eatmydata:
             options.append('--include=eatmydata')
-            options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
+        options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
+        if settings.arch:
+            options.append('--arch=%s' % settings.arch)
         run(prefix + ["debootstrap", "--variant=minbase"] + options +
             [settings.debian_distros[0], self.name, settings.distro_config.get_mirror(settings.debian_distros[0])])
         self.bootstrapped = True
@@ -1937,7 +1945,7 @@ def diff_meta_data(tree1, tree2):
     removed = [x for x in tree1.iteritems()]
     new = [x for x in tree2.iteritems()]
 
-    # fix for #586793 by Andreas Beckmann <debian@abeckmann.de>
+    # fix for #586793
     # prune rc?.d symlinks renamed by insserv
     pat1 = re.compile(r"^(/etc/rc.\.d/)[SK][0-9]{2}(.*)$")
     for name1, data1 in removed[:]:
@@ -2495,6 +2503,9 @@ def parse_command_line():
                       help="Command line arguments are package names " +
                            "to be installed via apt.")
 
+    parser.add_option("--arch", metavar="ARCH", action="store",
+                      help="Create chroot and run tests for (non-default) architecture ARCH.")
+
     parser.add_option("--adt-virt",
                       metavar='CMDLINE', default=None,
                       help="Use CMDLINE via autopkgtest (adt-virt-*)"
@@ -2770,6 +2781,7 @@ def parse_command_line():
     settings.scriptsdirs = opts.scriptsdir
     settings.bindmounts += opts.bindmount
     # chroot setup
+    settings.arch = opts.arch
     settings.basetgz = opts.basetgz
     settings.savetgz = opts.save
     settings.lvm_volume = opts.lvm_volume

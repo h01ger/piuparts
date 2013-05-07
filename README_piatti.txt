@@ -11,7 +11,7 @@ Notes about the piuparts installation on piatti.debian.org
 
 === User setup
 
-A piupartss and a piupartsm user is need. Both are members of the group piuparts and /org/piuparts.debian.org is 774 piupartss:piuparts.
+A piupartss and a piupartsm user is need. Both are members of the group piuparts and /srv/piuparts.debian.org is 774 piupartss:piuparts.
 Both user have some files in $HOME which are kept in git, including hidden files.
 
 Create an SSH keypair for piupartss and put it into ~/.ssh/authorized_keys of the piupartsm user, so the piupartss can login with ssh to localhost as piupartsm.
@@ -31,9 +31,9 @@ piupartss       ALL = NOPASSWD: ALL
 
 * sudo apt-get install apt python debootstrap lsof lsb-release python-debian asciidoc xmlto python-rpy r-recommended r-base-dev gs
 * you need a webserver too, if you run the master
-* Copy 'http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=develop;a=blob_plain;f=update-piuparts-setup' on the host and run it under the 'piupartss' user. It assumes you want to set it up in '/org/piuparts.debian.org' and does all further updates from git as well as the initial installation. It needs the piupartss and piupartsm user set up as described below, though.
-* mkdir /org/piuparts.debian.org
-* sudo ln -s /org/piuparts.debian.org/etc/piuparts /etc/piuparts
+* Copy 'http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=develop;a=blob_plain;f=update-piuparts-setup' on the host and run it under the 'piupartss' user. It assumes you want to set it up in '/srv/piuparts.debian.org' and does all further updates from git as well as the initial installation. It needs the piupartss and piupartsm user set up as described below, though.
+* mkdir /srv/piuparts.debian.org
+* sudo ln -s /srv/piuparts.debian.org/etc/piuparts /etc/piuparts
 
 === Apache configuration
 
@@ -48,7 +48,7 @@ piupartss       ALL = NOPASSWD: ALL
         ErrorLog /var/log/apache2/piuparts.debian.org-error.log
         CustomLog /var/log/apache2/piuparts.debian.org-access.log combined
 
-        DocumentRoot /org/piuparts.debian.org/htdocs
+        DocumentRoot /srv/piuparts.debian.org/htdocs
 
         DefaultType text/plain
 
@@ -64,7 +64,7 @@ piupartss       ALL = NOPASSWD: ALL
 == Updating the piuparts installation
 
 ----
-piupartss@piatti:/org/piuparts.debian.org$ ~/bin/update-piuparts-setup
+piupartss@piatti:/srv/piuparts.debian.org$ ~/bin/update-piuparts-setup
 ----
 
 == Running piuparts

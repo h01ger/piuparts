@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright © 2011 Andreas Beckmann <debian@abeckmann.de>
+# Copyright © 2011-2013 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -62,7 +62,9 @@ touch $FAILURESTAMP.new  # for the next report
 echo "New failures:" >> $DAILYREPORT
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
-	mkdir -p fail bugged affected untestable
+	for DIRECTORY in fail bugged affected untestable ; do
+		mkdir -p $MASTER/$SECTION/$DIRECTORY
+	done
 	find $MASTER/$SECTION/fail $MASTER/$SECTION/bugged $MASTER/$SECTION/affected $MASTER/$SECTION/untestable \
 		-type f -name '*.log' -newer $FAILURESTAMP -exec ls -1 {} + 2>/dev/null
 done | sed s#^$MASTER#$URLBASE# >> $DAILYREPORT

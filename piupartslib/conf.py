@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
+# Copyright © 2012-2013 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -177,7 +180,7 @@ class DistroConfig(UserDict.UserDict):
         lines = []
         for d in self._expand_depends(distro):
             if not self[d]["uri"] is None and self[d]["uri"] == "None":
-                next  # skip virtual section
+                continue  # skip virtual section
             for c in components:
                 if self[d]["components"] is None or c in self[d]["components"].split():
                     lines.append("deb %s %s %s" % (

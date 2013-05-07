@@ -66,6 +66,8 @@ sections =
 	sid
 	testing2sid
 	sid2experimental
+	jessie
+#	wheezy2jessie
 	wheezy
 	squeeze2wheezy
 	squeeze2bpo2wheezy
@@ -76,20 +78,20 @@ mirror = http://piatti.debian.org/debian/
 master-host = localhost
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
-master-command = /org/piuparts.debian.org/share/piuparts/piuparts-master
+master-command = /srv/piuparts.debian.org/share/piuparts/piuparts-master
 piuparts-command =
 	sudo
 	env PYTHONPATH=%(PYTHONPATH)s
 	timeout -s INT -k 5m 35m
-	/org/piuparts.debian.org/sbin/piuparts
-PYTHONPATH = /org/piuparts.debian.org/lib/python2.6/dist-packages:/org/piuparts.debian.org/lib/python2.7/dist-packages
-master-directory = /org/piuparts.debian.org/master
-slave-directory = /org/piuparts.debian.org/slave
-basetgz-directory = /org/piuparts.debian.org/slave/basetgz
-output-directory = /org/piuparts.debian.org/htdocs
-known-problem-directory = /org/piuparts.debian.org/share/piuparts/known_problems
-backup-directory = /org/piuparts.debian.org/backup
-tmpdir = /org/piuparts.debian.org/tmp
+	/srv/piuparts.debian.org/sbin/piuparts
+PYTHONPATH = /srv/piuparts.debian.org/lib/python2.6/dist-packages:/srv/piuparts.debian.org/lib/python2.7/dist-packages
+master-directory = /srv/piuparts.debian.org/master
+slave-directory = /srv/piuparts.debian.org/slave
+basetgz-directory = /srv/piuparts.debian.org/slave/basetgz
+output-directory = /srv/piuparts.debian.org/htdocs
+known-problem-directory = /srv/piuparts.debian.org/share/piuparts/known_problems
+backup-directory = /srv/piuparts.debian.org/backup
+tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /
 # 30*60
 idle-sleep = 1800
@@ -139,6 +141,26 @@ upgrade-test-distros = sid experimental
 log-file = sid2experimental.log
 
 
+[jessie]
+precedence = 2
+piuparts-flags =
+	%(flags-default)s
+distro = jessie
+log-file = jessie.log
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
+
+
+[wheezy2jessie]
+precedence = 3
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+log-file = wheezy2jessie.log
+
+
 [wheezy]
 precedence = 2
 piuparts-flags =
@@ -147,8 +169,8 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 distro = wheezy
 log-file = wheezy.log
-# 1 week (60*60*24*7)
-max-tgz-age = 604800
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
 
 
 [squeeze2wheezy]

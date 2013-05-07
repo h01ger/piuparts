@@ -1,33 +1,87 @@
 piuparts (0.51) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
+  * Mark all python code as utf-8 encoded.
   * piuparts.py:
     - In install-purge tests support installing extra packages before the
       package to be tested via --extra-old-packages.
+    - Add --arch <arch> option to run the test for the requested instead of
+      the default architecture.
   * piuparts.conf:
   * distros.conf:
     - Update backports setup after integration into the regular archive.
+    - Enable stable security updates when installing stable backports.
   * piupartslib/conf.py:
     - Raise MissingSection if the requested section is not in piuparts.conf.
   * piupartslib/packagesdb.py:
+    - get_package(): Add flag resolve_virtual, disabled by default.
   * Rename piuparts-master.py to piuparts-master-backend.py
   * piuparts-master: New.
     - Wrapper shell script to simplify calling the master from the slave.
     - Get the 'master-directory' from piuparts.conf and chdir there.
     - Get the (global) 'log-file' from piuparts.conf and handle the error
       logging. No longer uses the section specific logfile name for errors.
+  * Allow the master-command to be set in ~piupartsm/.ssh/authorized_keys to
+    restrict ssh keys to only run piuparts-master.
   * piuparts-master-backend.py:
     - Raise CommandSyntaxError on unknown commands.
+    - Add "section" command:
+      + Make section selection part of the master-slave protocol.
+      + Allow switching sections without reconnecting.
+      + No longer accept section argument on the command line.
+      + Switch the logfile after switching sections.
   * piuparts-slave.py:
     - Fix parsing 'idle' return value from master.
     - Let the piuparts-master (wrapper script) handle chdir and error logging.
+    - Skip sections that don't exist in piuparts.conf and continue to run.
+    - Pass the section to piuparts-master via the new "section" command
+      instead of using a command line argument.
+    - Keep the connection to the master open while switching sections. This
+      reduces the number of ssh connections attempted while checking idle
+      sections. Close the connection before processing packages, before going
+      to sleep, and after communication errors.
+    - Support empty master-command if the command is set in master's
+      .ssh/authorized_keys file.
   * piuparts-analyze.py:
   * piuparts-report.py:
+    - Skip sections that don't exist in piuparts.conf.
+    - "Missing" binary packages don't influence the overall test result of a
+      source package. These are either udebs or for other architectures.
+      (Closes: #699160)
+    - Report the correct version for binary packages.
   * Makefile:
+  * detect_well_known_errors:
+    - Skip sections that don't exist in piuparts.conf.
+  * piuparts-slave.deb:
+    - Restrict the ssh key added to master's authorized_keys to only run
+      piuparts-master.
   * Update and add new exceptions for buggy packages.
   * scripts-wheezy/post_setup_wheezy-fake-essential: New custom script to
     suppress some purge failures in wheezy.
   * New known problem: Database setup failure (issue).
+
+  [ David Steele ]
+  * detect_well_known_errors:
+    - Replace the bash script with an equivalent Python script.
+    - Sort known error and issue packages by reverse dependency count,
+      separating bugged from everything else.
+      (Closes: #698526)
+    - Add a PTS link to issue and error summary entries.
+    - Replace the known_problem COMMAND with PATTERN and EXCLUDE_PATTERN,
+      and replace grep shell calls with python re modules calls, for a
+      10x speedup.
+    - Validate field names, and only use valid known problem conf files.
+    - Minor HTML syntax fix.
+    - Minor template integration.
+
+  [ Holger Levsen ]
+  * piuparts.py:
+    - Add to ignored_files:
+      + /var/log/fontconfig.log (Closes: #703810) - Thanks to Hideki Yamane.
+  * slave_run:
+    - Run slave_cleanup before starting the slave.
+  * Bump Standards-Version to 3.9.4.
+  * Use /srv/piuparts.debian.org/ on piatti.debian.org as per DSA policy.
 
  -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
 
@@ -130,6 +184,8 @@ piuparts (0.50) unstable; urgency=low
     - Use /var/cache/piuparts/tmp as tmpdir.
     - Use /var/cache/piuparts/basetgz as basetgz-directory.
     - Populate ~piupartss/.ssh/known_hosts with localhost's hostkey.
+    - Restrict the ssh key added to master's authorized_keys to only run
+      piuparts-master.
   * slave_{run,join}: Rename the screen session to "piuparts_slave_screen".
   * slave_cleanup: Use pgrep to find running piuparts-slave processes.
   * slave_{run,join}: Use screen -ls to find running screen sessions.

@@ -1,7 +1,9 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
 # Copyright 2009-2012 Holger Levsen (holger@layer-acht.org)
+# Copyright © 2011-2013 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -41,6 +43,7 @@ except:
   pass
 
 import piupartslib
+from piupartslib.conf import MissingSection
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
@@ -596,6 +599,7 @@ class Section:
         self._package_databases = {}
         self._load_package_database(section)
         self._binary_db = self._package_databases[section]
+        self._binary_db.compute_package_states()
         self._binary_db.calc_rrdep_counts()
         os.chdir(oldcwd)
 
@@ -646,7 +650,7 @@ class Section:
             packages_file = piupartslib.open_packages_url(packages_url)
             db2 = piupartslib.packagesdb.PackagesFile(packages_file)
             packages_file.close()
-            for package in db.get_all_packages().values():
+            for package in db.get_all_packages():
                 if package["Package"] in db2:
                     package["Version"] = db2[package["Package"]]["Version"]
                 else:
@@ -917,17 +921,23 @@ class Section:
         binaries = self._source_db.get_control_header(source, "Binary")
         maintainer = self._source_db.get_control_header(source, "Maintainer")
         uploaders = self._source_db.get_control_header(source, "Uploaders")
-        current_version = self._source_db.get_control_header(source, "Version")
 
         success = True
         failed = False
         binaryrows = ""
         for binary in sorted([x.strip() for x in binaries.split(",") if x.strip()]):
+          if not self._binary_db.has_package(binary):
+                # udebs or binary packages for other architectures
+                # The latter is a FIXME which needs parsing the Packages files from other archs too
+                binaryrows +=   "<tr class=\"normalrow\">" \
+                              + "<td class=\"labelcell\">Binary:</td>" \
+                              + "<td class=\"contentcell2\">%s</td>" \
+                                % binary \
+                              + "<td class=\"contentcell2\" colspan=\"4\">unknown package</td>" \
+                              + "</tr>\n"
+                continue
+
           state = self._binary_db.get_package_state(binary)
-          if state == "unknown":
-            # Don't track udebs and binary packages on other archs.
-            # The latter is a FIXME which needs parsing the Packages files from other archs too
-            continue
 
           if not "waiting" in state and "dependency" in state:
             state_style="lightalertlabelcell"
@@ -936,6 +946,7 @@ class Section:
           else:
             state_style="labelcell"
 
+          binary_version = self._binary_db.get_control_header(binary, "Version")
           binaryrows +=   "<tr class=\"normalrow\">" \
                         + "<td class=\"labelcell\">Binary:</td>" \
                         + "<td class=\"contentcell2\">%s</td>" \
@@ -947,7 +958,7 @@ class Section:
                               self.links_to_logs(binary, state, logs_by_dir) ) \
                         + "<td class=\"labelcell\">Version:</td>" \
                         + "<td class=\"contentcell2\">%s</td>" \
-                          % html_protect(current_version) \
+                          % html_protect(binary_version) \
                         + "</tr>\n"
 
           if state not in ("successfully-tested", "essential-required"):
@@ -1029,7 +1040,7 @@ class Section:
         maintainers = {}
         source_binary_rows = {}
         sources = ""
-        for source in self._source_db.get_all_packages():
+        for source in self._source_db.get_all_package_names():
             (sourcerows, binaryrows, source_state, maintainer, uploaders) = \
                                self.create_source_summary(source, logs_by_dir)
 
@@ -1351,7 +1362,11 @@ def main():
     if os.path.exists(master_directory):
         packagedb_cache = {}
         for section_name in section_names:
+          try:
             section = Section(section_name, master_directory, doc_root, packagedb_cache=packagedb_cache)
+          except MissingSection as e:
+            logging.error("Configuration Error in section '%s': %s" % (section_name, e))
+          else:
             section.generate_output(output_directory=output_directory, section_names=section_names)
 
         # static pages

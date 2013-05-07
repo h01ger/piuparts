@@ -2,6 +2,7 @@
 set -e
 
 # Copyright 2009-2011 Holger Levsen (holger@layer-acht.org)
+# Copyright © 2013 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -41,14 +42,17 @@ if ! screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
 	exit 1
 fi
 
+# cleanup cruft from previous runs
+@sharedir@/piuparts/slave/slave_cleanup
+rm -f $SCREENLOG
+
 # ensure the temporary directory exists
 mkdir -p $PIUPARTS_TMPDIR
 
 mkdir -p $SLAVEROOT
 cd $SLAVEROOT
 
-rm -f $SCREENLOG
-
+# finally, run piuparts-slave in screen
 screen -L -d -m -S $SESSIONNAME @sharedir@/piuparts/piuparts-slave
 
 echo "piuparts-slave has been started."
