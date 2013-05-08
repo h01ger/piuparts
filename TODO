@@ -57,6 +57,8 @@ for 0.5x:
 - look for a solution to use the global debian mirror for debian-backports, too
   to avoid hardcoding a specific mirror in distros.conf
 
+- at least compress archived logfiles, maybe just all.
+
 
 for 0.6x:
 
