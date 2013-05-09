@@ -54,7 +54,7 @@ for 0.5x:
 
 - sane default for known-problem-directory setting, or define it in piuparts.conf.sample
 
-- at least compress archived logfiles, maybe just all.
+- maybe compress all logfiles
 
 
 for 0.6x:

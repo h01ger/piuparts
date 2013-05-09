@@ -51,6 +51,7 @@ Depends:
  openssh-server,
  python-debianbts,
  tango-icon-theme,
+ xz-utils,
  ${misc:Depends},
  ${python:Depends}
 Recommends:
