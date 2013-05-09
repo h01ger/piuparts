@@ -401,7 +401,8 @@ class Section:
 
     def _get_tarball(self):
         basetgz = self._config["chroot-tgz"] or \
-                self._distro_config.get_basetgz(self._config.get_start_distro())
+                self._distro_config.get_basetgz(self._config.get_start_distro(),
+                                                self._config.get_arch())
         return os.path.join(self._config["basetgz-directory"], basetgz)
 
     def _check_tarball(self):
