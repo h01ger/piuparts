@@ -120,7 +120,7 @@ max-tgz-age = 259200
 
 
 [testing2sid]
-precedence = 4
+precedence = 2
 piuparts-flags =
 	%(flags-default)s
 distro = testing
@@ -130,7 +130,7 @@ log-file = testing2sid.log
 
 
 [sid2experimental]
-precedence = 5
+precedence = 6
 piuparts-flags =
 	%(flags-default)s
 depends-sections = sid
@@ -174,7 +174,7 @@ max-tgz-age = 2592000
 
 
 [squeeze2wheezy]
-precedence = 3
+precedence = 4
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -185,7 +185,7 @@ log-file = squeeze2wheezy.log
 
 
 [squeeze2bpo2wheezy]
-precedence = 5
+precedence = 4
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
