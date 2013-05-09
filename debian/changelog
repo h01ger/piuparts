@@ -50,8 +50,12 @@ piuparts (0.51) UNRELEASED; urgency=low
       (Closes: #699160)
     - Report the correct version for binary packages.
   * Makefile:
+  * archive_old_logs:
+    - Compress the archived logs.
   * detect_well_known_errors:
     - Skip sections that don't exist in piuparts.conf.
+  * piuparts-master.deb:
+    - Add Depends: xz-utils.
   * piuparts-slave.deb:
     - Restrict the ssh key added to master's authorized_keys to only run
       piuparts-master.

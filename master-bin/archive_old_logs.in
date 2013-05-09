@@ -52,6 +52,7 @@ for SECTION in $SECTIONS ; do
 			done
 		fi
 	done
+	find archive/ -name '*.log' | xargs -r xz -f
 	if [ -n "$OUTPUT" ] ; then
 		echo
 		echo
