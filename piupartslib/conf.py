@@ -189,14 +189,14 @@ class DistroConfig(UserDict.UserDict):
                         c))
         return lines
 
-    def get_basetgz(self, distro):
+    def get_basetgz(self, distro, arch):
         # look for the first base distribution
         for d in self._expand_depends(distro):
             if not self[d]["uri"] is None and self[d]["uri"] == "None":
                 next  # skip virtual section
             if self.get(d, "depends"):
                 next  # skip partial distro
-            return self.get_distribution(d) + ".tar.gz"
+            return "%s_%s.tar.gz" % (self.get_distribution(d), arch)
         return None
 
 

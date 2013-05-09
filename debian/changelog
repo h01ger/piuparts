@@ -42,6 +42,7 @@ piuparts (0.51) UNRELEASED; urgency=low
       to sleep, and after communication errors.
     - Support empty master-command if the command is set in master's
       .ssh/authorized_keys file.
+    - Change default basetgz name to {DISTRO}_{ARCH}.tar.gz.
   * piuparts-analyze.py:
   * piuparts-report.py:
     - Skip sections that don't exist in piuparts.conf.
