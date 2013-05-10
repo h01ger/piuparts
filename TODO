@@ -7,8 +7,6 @@ wishlist!
 
 for 0.5x:
 
-- handle .udebs more gracefully, see #699160 for details.
-
 - make piuparts-master + piuparts-slave packages work out-of-the-box:
   * piuparts-slave.postrm purge: clean up /var/cache/piuparts/tmp/
   - conf/piuparts.sudoers should be split for master+slave packages.
