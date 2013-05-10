@@ -165,7 +165,7 @@ class DistroConfig(UserDict.UserDict):
             return ["-t", tr]
         return []
 
-    def _expand_depends(self, distro, virtual=True):
+    def _expand_depends(self, distro, virtual=False):
         todo = [distro]
         done = []
         seen = []
@@ -179,13 +179,12 @@ class DistroConfig(UserDict.UserDict):
             elif not curr in done:
                 if virtual or not self._is_virtual(curr):
                     done.append(curr)
+        assert(len(done) > 0)
         return done
 
     def get_deb_lines(self, distro, components):
         lines = []
         for d in self._expand_depends(distro):
-            if not self[d]["uri"] is None and self[d]["uri"] == "None":
-                continue  # skip virtual section
             for c in components:
                 if self[d]["components"] is None or c in self[d]["components"].split():
                     lines.append("deb %s %s %s" % (
@@ -197,8 +196,6 @@ class DistroConfig(UserDict.UserDict):
     def get_basetgz(self, distro, arch):
         # look for the first base distribution
         for d in self._expand_depends(distro):
-            if not self[d]["uri"] is None and self[d]["uri"] == "None":
-                next  # skip virtual section
             if self.get(d, "depends"):
                 next  # skip partial distro
             return "%s_%s.tar.gz" % (self.get_distribution(d), arch)
