@@ -362,21 +362,20 @@ class Master(Protocol):
 
 def main():
     setup_logging(logging.INFO, None)
-    if True:
-        global_config = Config(section="global")
-        global_config.read(CONFIG_FILE)
-        if global_config["proxy"]:
-            os.environ["http_proxy"] = global_config["proxy"]
-        master_directory = global_config["master-directory"]
+    global_config = Config(section="global")
+    global_config.read(CONFIG_FILE)
+    if global_config["proxy"]:
+        os.environ["http_proxy"] = global_config["proxy"]
+    master_directory = global_config["master-directory"]
 
-        if not os.path.exists(master_directory):
-            os.makedirs(master_directory)
+    if not os.path.exists(master_directory):
+        os.makedirs(master_directory)
 
-        os.chdir(master_directory)
+    os.chdir(master_directory)
 
-        m = Master(sys.stdin, sys.stdout)
-        while m.do_transaction():
-            pass
+    m = Master(sys.stdin, sys.stdout)
+    while m.do_transaction():
+        pass
 
 if __name__ == "__main__":
     main()
