@@ -126,6 +126,11 @@ if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 				log_debug
 				apt-get -y install curl
 				;;
+		cyrus-*-2.2|sa-learn-cyrus)
+				#694254 db4.2-util exists in lenny only and is needed for upgrades to wheezy
+				log_debug
+				apt-get -y install db4.2-util
+				;;
 		debian-edu-artwork-usplash)
 				# postinst fails without update-initramfs
 				log_debug
