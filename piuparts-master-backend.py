@@ -171,8 +171,10 @@ class Master(Protocol):
 
         self._section = section
 
+        logging.debug("switching logfile")
         logfile = config["log-file"] or os.path.join(section, "master.log")
         setup_logging(logging.DEBUG, logfile)
+        logging.debug("connected")
 
         # start with a dummy _binary_db (without Packages file), sufficient
         # for submitting finished logs
@@ -376,6 +378,8 @@ def main():
     m = Master(sys.stdin, sys.stdout)
     while m.do_transaction():
         pass
+
+    logging.debug("disconnected")
 
 if __name__ == "__main__":
     main()
