@@ -99,8 +99,6 @@ for 0.6x:
 - make it possible to call aptitude (or similar) instead of apt-get and allow to
   override the commandline arguments.
 
-- piuparts-slave: timestamps to log messages
-
 - the templates used by update-reports.py and detect_well_known_errors should
   be taken from /etc/piuparts/templates/ and not be included in the python source
 
