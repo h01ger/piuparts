@@ -137,6 +137,10 @@ class DistroConfig(UserDict.UserDict):
             return self[section][key]
         return self[section]
 
+    def _is_virtual(self, distro):
+        uri = self.get(distro, "uri")
+        return uri is not None and uri == "None"
+
     def get_mirror(self, distro):
         return self.get(distro, "uri") or self._mirror
 
@@ -161,7 +165,7 @@ class DistroConfig(UserDict.UserDict):
             return ["-t", tr]
         return []
 
-    def _expand_depends(self, distro):
+    def _expand_depends(self, distro, virtual=True):
         todo = [distro]
         done = []
         seen = []
@@ -173,7 +177,8 @@ class DistroConfig(UserDict.UserDict):
                 todo = done + (self.get(curr, "depends") or "").split() + [ curr ] + todo
                 done = []
             elif not curr in done:
-                done.append(curr)
+                if virtual or not self._is_virtual(curr):
+                    done.append(curr)
         return done
 
     def get_deb_lines(self, distro, components):
