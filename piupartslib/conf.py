@@ -174,8 +174,7 @@ class DistroConfig(UserDict.UserDict):
             todo = todo[1:]
             if not curr in seen:
                 seen.append(curr)
-                todo = done + (self.get(curr, "depends") or "").split() + [ curr ] + todo
-                done = []
+                todo = (self.get(curr, "depends") or "").split() + [ curr ] + todo
             elif not curr in done:
                 if virtual or not self._is_virtual(curr):
                     done.append(curr)
