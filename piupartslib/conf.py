@@ -142,9 +142,13 @@ class DistroConfig(UserDict.UserDict):
         return uri is not None and uri == "None"
 
     def get_mirror(self, distro):
+        if self._is_virtual(distro):
+            distro = self._expand_depends(distro)[0]
         return self.get(distro, "uri") or self._mirror
 
     def get_distribution(self, distro):
+        if self._is_virtual(distro):
+            distro = self._expand_depends(distro)[0]
         return self.get(distro, "distribution") or distro
 
     def get_packages_url(self, distro, area, arch):
