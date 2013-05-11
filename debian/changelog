@@ -13,11 +13,14 @@ piuparts (0.52) UNRELEASED; urgency=low
   * piuparts-analyze.py:
     - Consider archived bugs, too.  (Closes: #669966)
   * piuparts-report.py:
+    - Switch from python-rpy to python-rpy2. Use a noninteractive grDevice.
   * Makefile:
     - Switch default target from 'install' to 'build'.
   * scripts-no-usr-share-doc/post_setup_disable_usr_share_doc: New custom
     script to instruct dpkg to skip installing most files in /usr/share/doc.
     This should catch maintainer scripts relying on /usr/share/doc content.
+  * piuparts-master.deb:
+    - Switch Depends: python-rpy to Depends: python-rpy2.
 
   [ Holger Levsen ]
   * piuparts.py:

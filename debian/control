@@ -59,7 +59,7 @@ Depends:
 Recommends:
  apache2,
  ghostscript,
- python-rpy,
+ python-rpy2,
  r-base-dev,
  r-recommended,
 Breaks:

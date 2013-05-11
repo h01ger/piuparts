@@ -36,9 +36,10 @@ import shutil
 import re
 import string
 
-# if python-rpy ain't installed, we don't draw fancy graphs
+# if python-rpy2 ain't installed, we don't draw fancy graphs
 try:
-  from rpy import *
+    from rpy2 import robjects
+    from rpy2.robjects.packages import importr
 except:
   pass
 
@@ -1082,6 +1083,9 @@ class Section:
     def make_stats_graph(self):
         countsfile = os.path.join(self._output_directory, "counts.txt")
         pngfile = os.path.join(self._output_directory, "states.png")
+        grdevices = importr('grDevices')
+        grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100, antialias="none")
+        r = robjects.r
         r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
         r('cname <- c("date",rep(colnames(t)))')
         # here we define how many days we wants stats for (163=half a year)
@@ -1092,12 +1096,11 @@ class Section:
         r('palette(c("#4e9a06", "#ef2929", "#d3d7cf", "#5c3566", "#c4a000", \
                      "#fce94f", "#a40000", "#888a85", "#2e3436", "#729fcf", \
                      "#3465a4", "#204a87", "#555753"))')
-        r('bitmap(file="'+pngfile+'",type="png16m",width=16,height=9,pointsize=10,res=100)')
         r('barplot(t(v),col = 1:13, \
           main="Binary packages per state in '+self._config.section+'", \
-          xlab="", ylab="Number of binary packages", space=0.1, border=0)')
+          xlab="", ylab="Number of binary packages", space=0, border=NA)')
         r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
-        r.dev_off()
+        grdevices.dev_off()
 
         stats_html = "<tr class=\"normalrow\"> " \
                      + "<td class=\"contentcell2\" colspan=\"3\">" \
@@ -1184,7 +1187,7 @@ class Section:
         try:
           tablerows += self.make_stats_graph();
         except:
-          logging.debug("Error generating the graph images, probably python-rpy is not installed, disabling graphs.")
+          logging.debug("Error generating the graph images, probably python-rpy2 is not installed, disabling graphs.")
 
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell2\" colspan=\"2\">%d</td></tr>\n" % total_packages
         htmlpage = string.Template(HTML_HEADER + SECTION_INDEX_BODY_TEMPLATE + HTML_FOOTER)
