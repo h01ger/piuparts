@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+test "$PIUPARTS_DISTRIBUTION" = "squeeze-backports" || exit 0
+
+# apt-get -t squeeze-backports dist-upgrade may pull in too many
+# packages that are not co-installable in squeeze-backports
+# so maintain a list of packages in the sid base system
+# that are in squeeze-backports, too, and don't cause problems
+
+PKGS=""
+PKGS="$PKGS insserv"
+
+apt-get -y -t squeeze-backports install $PKGS

@@ -65,6 +65,8 @@ piuparts (0.51) UNRELEASED; urgency=low
   * Update and add new exceptions for buggy packages.
   * scripts-wheezy/post_setup_wheezy-fake-essential: New custom script to
     suppress some purge failures in wheezy.
+  * post_{setup,distupgrade}_squeeze-backports: New custom scripts to improve
+    support for squeeze-backports.
   * New known problem: Database setup failure (issue).
 
   [ David Steele ]
