@@ -165,7 +165,7 @@ class DistroConfig(UserDict.UserDict):
             return ["-t", tr]
         return []
 
-    def _expand_depends(self, distro, virtual=False):
+    def _expand_depends(self, distro, include_virtual=False):
         todo = [distro]
         done = []
         seen = []
@@ -176,7 +176,7 @@ class DistroConfig(UserDict.UserDict):
                 seen.append(curr)
                 todo = (self.get(curr, "depends") or "").split() + [ curr ] + todo
             elif not curr in done:
-                if virtual or not self._is_virtual(curr):
+                if include_virtual or not self._is_virtual(curr):
                     done.append(curr)
         assert(len(done) > 0)
         return done
