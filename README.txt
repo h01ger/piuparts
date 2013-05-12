@@ -727,6 +727,7 @@ If you want to run piuparts-report (which is only+very useful if
 you run piuparts in master-slave mode), you need to 'apt-get
 install python-rpy r-recommended r-base-dev'. For more
 information see
-link:http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob;f=README_piatti.txt[http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=piatti;a=blob;f=README_piatti.txt].
+link:http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob;f=README_server.txt[http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob;f=README_server.txt] and
+link:http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob;f=README_pejacevic.txt[http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob;f=README_pejacevic.txt].
 
 // vim: set filetype=asciidoc:

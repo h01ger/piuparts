@@ -1,11 +1,12 @@
-Notes about the piuparts installation on piatti.debian.org
-==========================================================
+Notes about the piuparts installation on pejacevic.debian.org and it's slave
+============================================================================
 
-== ToDo
-
-- review sudoers and come up with (a bit) more restrictive one
-- there should be a 2nd group of piuparts-people. those who can sudo into
-  piupartsm to process logfiles. maybe make that the qa-group
+This document describes the setup for http://piuparts.debian.org - it's used 
+for reference for the Debian System Administrators (DSA) as well as a guide
+for other setting up a similar system, with the piuparts source code
+installed from git. For regular installations we recommend to use the
+piuparts-master and piuparts-slaves packages as described in 
+/usr/share/doc/piuparts-master/README_server.txt
 
 == Installation
 
@@ -13,23 +14,33 @@ piuparts.debian.org is a setup running on two systems: pejacevic.debian.org, run
 
 === User setup
 
-A piupartss (on piu-slave-bm-a) and a piupartsm (on pejacevic) user is needed. Both are members of the group piuparts and /srv/piuparts.debian.org is 774 piupartss:piuparts.
-Both user have some files in $HOME which are kept in git, including hidden files.
+A piupartss (on piu-slave-bm-a) and a piupartsm (on pejacevic) user is needed. Both are members of the group piuparts and '/srv/piuparts.debian.org' is 774 piupartss:piuparts.
 
-FIXME: this needs to be added to ~/.bashrc: export PATH="~/bin:$PATH"
+Create an SSH keypair for piupartss and put it into '/etc/ssh/userkeys/piupartsm' on pejacevic, so the piupartss can login with ssh and run piuparts-master.
+Restrict it like this:
 
-Create an SSH keypair for piupartss and put it into ~/.ssh/authorized_keys of the piupartsm user, so the piupartss can login with ssh to localhost as piupartsm.
+----
+$ cat /etc/ssh/userkeys/piupartsm
+command="/srv/piuparts.debian.org/share/piuparts/piuparts-master",from="2001:41c8:1000:21::21:7,5.153.231.7",no-port-forwarding,no-X11-forwarding,no-agent-forwarding ssh-rsa ...
+----
 
-=== '/etc/sudoers' for piatti
+=== '/etc/sudoers' for pejacevic
+
+----
+#piuparts admins
+%piuparts       ALL=(piupartsm) ALL
+----
+
+=== '/etc/sudoers' for piu-slave-bm-a
 
 ----
 # The piuparts slave needs to handle chroots.
 piupartss       ALL = NOPASSWD: ALL
 
 #piuparts admins
-%piuparts       ALL=(piupartss) ALL
 %piuparts       ALL=(piupartsm) ALL
----
+----
+
 
 === piuparts installation from source
 
@@ -66,16 +77,16 @@ piupartss       ALL = NOPASSWD: ALL
 
 == Updating the piuparts installation
 
-Updating the master, pejacevic:
+Updating the master, pejacevic.debian.org:
 
 ----
-holger@pejacevic$ sudo su - piupartsm update-piuparts-master-setup pejacevic origin
+holger@pejacevic$ sudo su - piupartsm update-piuparts-master-setup bikeshed origin
 ----
 
-Updating the slave, pejacevic:
+Updating the slave, piu-slave-bm-a.debian.org:
 
 ----
-holger@piu-slave-bm-a$ sudo su - piupartss update-piuparts-slave-setup pejacevic origin
+holger@piu-slave-bm-a$ sudo su - piupartss update-piuparts-slave-setup bikeshed origin
 ----
 
 == Running piuparts

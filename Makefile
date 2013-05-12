@@ -94,7 +94,6 @@ install-conf-4-running-from-git: build-stamp
 	install -m 0644 conf/crontab-master $(DESTDIR)$(etcdir)/piuparts/
 	install -m 0644 conf/crontab-slave $(DESTDIR)$(etcdir)/piuparts/
 	install -m 0644 conf/distros.conf $(DESTDIR)$(etcdir)/piuparts/
-	install -m 0644 instances/forward.* $(DESTDIR)$(etcdir)/piuparts/
 	install -m 0644 instances/piuparts.conf.* $(DESTDIR)$(etcdir)/piuparts/
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
 	install -m 0755 update-piuparts-setup $(DESTDIR)$(sharedir)/piuparts/slave/

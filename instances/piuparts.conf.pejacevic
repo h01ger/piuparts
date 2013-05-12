@@ -1,7 +1,7 @@
 #
-# This is the configuration file for piuparts running in master-slave mode on a (development) host called goldwasser
+# This is the configuration file for piuparts running in master-slave mode on pejacevic.debian.org (as master)
 #
-# For more information on this setup see /usr/share/doc/piuparts-master/README_server.txt
+# For more information on this setup see http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob;f=README_pejacevic.txt
 #
 
 [DEFAULT]
@@ -13,6 +13,8 @@ flags-base =
 	--warn-on-others
 # default exceptions
 	--scriptsdir /etc/piuparts/scripts
+# we need debsums from bpo-sloppy, until we have this, only emit warnings
+	--warn-on-debsums-errors
 
 # default flags, only warning on leftover files
 flags-default =
@@ -44,17 +46,36 @@ flags-start-squeeze =
 # and removing a shell would remove its entry from /etc/shells
 	-i /etc/shells
 
+# common flags for tests ending in squeeze
+flags-end-squeeze =
+# extra fake-essential packages for successfully purging in squeeze
+	--scriptsdir /etc/piuparts/scripts-squeeze
+# debsums failures won't be fixed in squeeze
+	--warn-on-debsums-errors
+
+# common flags for starting a test in lenny
+flags-start-lenny =
+# dpkg --force-unsafe-io was added in squeeze
+	--dpkg-noforce-unsafe-io
+# same flags needed as in squeeze
+        %(flags-start-squeeze)s
+
+
 [global]
 sections =
-#	sid
-#	jessie
+	sid
+	testing2sid
+	sid2experimental
+	jessie
 #	wheezy2jessie
 	wheezy
-#	squeeze2wheezy
-#	testing2sid
+	squeeze2wheezy
+	squeeze2bpo2wheezy
+	squeeze
+	lenny2squeeze
 #
-mirror = http://ftp.de.debian.org/debian/
-master-host = localhost
+mirror = http://mirror.bm.debian.org/debian/
+master-host = pejacevic.debian.org
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
 master-command = /srv/piuparts.debian.org/share/piuparts/piuparts-master
@@ -72,24 +93,34 @@ known-problem-directory = /srv/piuparts.debian.org/share/piuparts/known_problems
 backup-directory = /srv/piuparts.debian.org/backup
 tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /
-# this value is too high for production (it will cause piuparts-slave to sleep
-# for a whole day) but useful for testing master-slave mode, for running on a
-# test system 24/7 without causing load for 24/7
-idle-sleep = 86400
+# 30*60
+idle-sleep = 1800
+max-tgz-age = 0
 max-reserved = 50
+# rescheduling settings
+expire-old-days = 120
+reschedule-old-days = 90
+reschedule-old-count = 150
+expire-fail-days = 15
+reschedule-fail-days = 10
+reschedule-fail-count = 15
 
 
 [sid]
+precedence = 1
 description = + Fails if there are leftover files after purge.
 piuparts-flags =
 	%(flags-leftovers)s
-distro = sid
-log-file = sid.log
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
+distro = sid
+log-file = sid.log
+# 3 days (60*60*24*3)
+max-tgz-age = 259200
 
 
 [testing2sid]
+precedence = 2
 piuparts-flags =
 	%(flags-default)s
 distro = testing
@@ -98,14 +129,30 @@ reschedule-old-count = 0
 log-file = testing2sid.log
 
 
+[sid2experimental]
+precedence = 6
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid
+distro = experimental
+arch = amd64
+area = main
+upgrade-test-distros = sid experimental
+log-file = sid2experimental.log
+
+
 [jessie]
+precedence = 2
 piuparts-flags =
 	%(flags-default)s
 distro = jessie
 log-file = jessie.log
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
 
 
 [wheezy2jessie]
+precedence = 3
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -115,22 +162,67 @@ log-file = wheezy2jessie.log
 
 
 [wheezy]
+precedence = 2
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
 distro = wheezy
-reschedule-old-count = 0
 log-file = wheezy.log
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
 
 
 [squeeze2wheezy]
+precedence = 4
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
-reschedule-old-count = 0
 log-file = squeeze2wheezy.log
+
+
+[squeeze2bpo2wheezy]
+precedence = 4
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+depends-sections = squeeze
+distro = squeeze-backports
+arch = amd64
+area = main
+upgrade-test-distros = squeeze squeeze-backports wheezy
+upgrade-test-chroot-tgz = squeeze.tar.gz
+log-file = squeeze2bpo2wheezy.log
+
+
+[squeeze]
+precedence = 5
+# precedence should be 6
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+distro = squeeze
+reschedule-old-count = 50
+log-file = squeeze.log
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
+
+
+[lenny2squeeze]
+precedence = 5
+# precedence was and should be 99
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-squeeze)s
+distro = lenny
+upgrade-test-distros = lenny squeeze
+reschedule-old-count = 0
+reschedule-fail-count = 0
+log-file = lenny2squeeze.log
 
