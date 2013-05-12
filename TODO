@@ -29,7 +29,9 @@ for 0.5x:
   granting permissions to %piuparts works against this
 
 - re-read all documentation carefully and update were needed.
-  - merge/cleanup README_piatti.txt and README_server.txt?
+  - update+cleanup README_pejacevic
+
+- Drop update-piuparts-setup?
 
 - in maintainer view: sort buggy states up again
 
@@ -39,8 +41,6 @@ for 0.5x:
   - # of open bugs with tag piuparts
   - generate http://piuparts.debian.org/stable/states.png + testing.png from
     existing data
-
-- sometimes a chroot doesn't get removed on piatti - find out why and fix it.
 
 - check whether #660350 is really gone with a wheezy base system.
 
@@ -53,6 +53,8 @@ for 0.5x:
 - sane default for known-problem-directory setting, or define it in piuparts.conf.sample
 
 - maybe compress all logfiles
+
+- update references to piatti with ones to pejacevic
 
 
 for 0.6x:
