@@ -8,12 +8,12 @@ wishlist!
 for 0.5x:
 
 - make piuparts-master + piuparts-slave packages work out-of-the-box:
-  * piuparts-slave.postrm purge: clean up /var/cache/piuparts/tmp/
+  - piuparts-slave.postrm purge: clean up /var/cache/piuparts/tmp/
   - conf/piuparts.sudoers should be split for master+slave packages.
   - ship sane minimal sudoers in p-s.deb than can be enabled by default do we
     really need anything else than running piuparts and piuparts_slave_*
     as root?
-  * the shipped crontabs are not suitable from cron.d/ due to missing user
+  - the shipped crontabs are not suitable from cron.d/ due to missing user
     column
   - verify that all scripts in $user/bin/ also work from master-slave packages
     eventually enable some conjobs in the packages
@@ -37,7 +37,7 @@ for 0.5x:
 
 - more stats and graphs:
   - packages processed per day (in total and per slave)
-    * master writes submissions.txt per section since 0.45
+    - master writes submissions.txt per section since 0.45
   - # of open bugs with tag piuparts
   - generate http://piuparts.debian.org/stable/states.png + testing.png from
     existing data
@@ -69,8 +69,8 @@ for 0.6x:
 
 - rework known_problems:
   - split detect_well_known_errors
-    * parsing the logfiles should stay there
-    * generating the html should be integrated into piuparts-report
+    - parsing the logfiles should stay there
+    - generating the html should be integrated into piuparts-report
   - use a number prefix for sorting
   - add title information
   - piuparts-report: "discover" the available known_problems, dont hardcode the
@@ -93,10 +93,10 @@ for 0.6x:
 * verify that find_default_debian_mirrors does something sane
 - find_default_debian_mirrors: if parts[2] contains a / (think stable/updates
   for security.d.o), you can't ignore this, it will break later...
-  + with distros.conf this may no longer be needed
-  + check whether find_default_debian_mirrors produces something useful if
+  - with distros.conf this may no longer be needed
+  - check whether find_default_debian_mirrors produces something useful if
     sources.list does not exist (and sources.list.d/*.list is there instead)
-  + maybe parse 'apt-cache policy' to get the mirror list instead
+  - maybe parse 'apt-cache policy' to get the mirror list instead
 
 - make it possible to call aptitude (or similar) instead of apt-get and allow to
   override the commandline arguments.
@@ -105,9 +105,9 @@ for 0.6x:
   be taken from /etc/piuparts/templates/ and not be included in the python source
 
 - check the logfiles (especially pass/) for
-  * "Exception in thread"
-  * java stacktraces
-  * "Can't locate .* in @INC"
+  - "Exception in thread"
+  - java stacktraces
+  - "Can't locate .* in @INC"
 
 - test main without contrib/non-free in sources.list
 
