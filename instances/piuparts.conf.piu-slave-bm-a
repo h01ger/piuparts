@@ -1,0 +1,229 @@
+#
+# This is the configuration file for piuparts running in master-slave mode on piu-slave-bm-a.debian.org as slave. 
+# For now we just run one slave on this host, soon thereafter we'll run two :)
+#
+# For more information on this setup see http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=develop;a=blob;f=README_pejacevic.txt
+#
+
+[DEFAULT]
+# these are needed always
+flags-base =
+# see http://bugs.debian.org/604807
+	--skip-logrotatefiles-test
+# restrict to problems in the package being tested
+	--warn-on-others
+# default exceptions
+	--scriptsdir /etc/piuparts/scripts
+# we need debsums from bpo-sloppy, until we have this, only emit warnings
+	--warn-on-debsums-errors
+
+# default flags, only warning on leftover files
+flags-default =
+	%(flags-base)s
+	--warn-on-leftovers-after-purge
+
+# like default flags, but failing on leftover files
+flags-leftovers =
+	%(flags-base)s
+# perform some additional cleanup
+	--scriptsdir /etc/piuparts/scripts-leftovers
+
+# common flags for starting a test in wheezy
+flags-start-wheezy =
+# no flags needed
+
+# common flags for tests ending in wheezy
+flags-end-wheezy =
+# extra fake-essential packages for successfully purging in wheezy
+	--scriptsdir /etc/piuparts/scripts-wheezy
+# debsums failures won't be fixed in wheezy
+	--warn-on-debsums-errors
+
+# common flags for starting a test in squeeze
+flags-start-squeeze =
+# eatmydata was added post-squeeze
+	--no-eatmydata
+# up to squeeze a non-empty /etc/shells was shipped, actually installing
+# and removing a shell would remove its entry from /etc/shells
+	-i /etc/shells
+
+# common flags for tests ending in squeeze
+flags-end-squeeze =
+# extra fake-essential packages for successfully purging in squeeze
+	--scriptsdir /etc/piuparts/scripts-squeeze
+# debsums failures won't be fixed in squeeze
+	--warn-on-debsums-errors
+
+# common flags for starting a test in lenny
+flags-start-lenny =
+# dpkg --force-unsafe-io was added in squeeze
+	--dpkg-noforce-unsafe-io
+# same flags needed as in squeeze
+        %(flags-start-squeeze)s
+
+
+[global]
+sections =
+	sid
+	testing2sid
+	sid2experimental
+	jessie
+#	wheezy2jessie
+	wheezy
+	squeeze2wheezy
+	squeeze2bpo2wheezy
+	squeeze
+	lenny2squeeze
+#
+mirror = http://mirror.bm.debian.org/debian/
+master-host = localhost
+master-user = piupartsm
+bts-from = piuparts-devel@lists.alioth.debian.org
+master-command = /srv/piuparts.debian.org/share/piuparts/piuparts-master
+piuparts-command =
+	sudo
+	env PYTHONPATH=%(PYTHONPATH)s
+	timeout -s INT -k 5m 35m
+	/srv/piuparts.debian.org/sbin/piuparts
+PYTHONPATH = /srv/piuparts.debian.org/lib/python2.6/dist-packages:/srv/piuparts.debian.org/lib/python2.7/dist-packages
+master-directory = /srv/piuparts.debian.org/master
+slave-directory = /srv/piuparts.debian.org/slave
+basetgz-directory = /srv/piuparts.debian.org/slave/basetgz
+output-directory = /srv/piuparts.debian.org/htdocs
+known-problem-directory = /srv/piuparts.debian.org/share/piuparts/known_problems
+backup-directory = /srv/piuparts.debian.org/backup
+tmpdir = /srv/piuparts.debian.org/tmp
+doc-root = /
+# 30*60
+idle-sleep = 1800
+max-tgz-age = 0
+max-reserved = 50
+# rescheduling settings
+expire-old-days = 120
+reschedule-old-days = 90
+reschedule-old-count = 150
+expire-fail-days = 15
+reschedule-fail-days = 10
+reschedule-fail-count = 15
+
+
+[sid]
+precedence = 1
+description = + Fails if there are leftover files after purge.
+piuparts-flags =
+	%(flags-leftovers)s
+# Once there are no packages left which leave files on purge behind,
+# --pedantic-purge-test should be added
+distro = sid
+log-file = sid.log
+# 3 days (60*60*24*3)
+max-tgz-age = 259200
+
+
+[testing2sid]
+precedence = 2
+piuparts-flags =
+	%(flags-default)s
+distro = testing
+upgrade-test-distros = testing sid
+reschedule-old-count = 0
+log-file = testing2sid.log
+
+
+[sid2experimental]
+precedence = 6
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid
+distro = experimental
+arch = amd64
+area = main
+upgrade-test-distros = sid experimental
+log-file = sid2experimental.log
+
+
+[jessie]
+precedence = 2
+piuparts-flags =
+	%(flags-default)s
+distro = jessie
+log-file = jessie.log
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
+
+
+[wheezy2jessie]
+precedence = 3
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+log-file = wheezy2jessie.log
+
+
+[wheezy]
+precedence = 2
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+distro = wheezy
+log-file = wheezy.log
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
+
+
+[squeeze2wheezy]
+precedence = 4
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+distro = squeeze
+upgrade-test-distros = squeeze wheezy
+log-file = squeeze2wheezy.log
+
+
+[squeeze2bpo2wheezy]
+precedence = 4
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+depends-sections = squeeze
+distro = squeeze-backports
+arch = amd64
+area = main
+upgrade-test-distros = squeeze squeeze-backports wheezy
+upgrade-test-chroot-tgz = squeeze.tar.gz
+log-file = squeeze2bpo2wheezy.log
+
+
+[squeeze]
+precedence = 5
+# precedence should be 6
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+distro = squeeze
+reschedule-old-count = 50
+log-file = squeeze.log
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
+
+
+[lenny2squeeze]
+precedence = 5
+# precedence was and should be 99
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-squeeze)s
+distro = lenny
+upgrade-test-distros = lenny squeeze
+reschedule-old-count = 0
+reschedule-fail-count = 0
+log-file = lenny2squeeze.log
+

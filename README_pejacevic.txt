@@ -1,11 +1,9 @@
-Notes about the piuparts installation on piatti.debian.org
-==========================================================
+Notes about the piuparts installation on pejacevic.debian.org and it's slave
+============================================================================
 
 == ToDo
 
-- review sudoers and come up with (a bit) more restrictive one
-- there should be a 2nd group of piuparts-people. those who can sudo into
-  piupartsm to process logfiles. maybe make that the qa-group
+- re-read everything and update for pejacevic.d.o
 
 == Installation
 
