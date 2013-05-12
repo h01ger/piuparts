@@ -9,10 +9,14 @@ Notes about the piuparts installation on piatti.debian.org
 
 == Installation
 
+piuparts.debian.org is a setup running on two systems: pejacevic.debian.org, running the piuparts-master instance and an apache webserver to display the results and piu-slave-bm-a.debian.org, running a piuparts-slave node. Hopefully soon there should be several slave-nodes running on that system.
+
 === User setup
 
-A piupartss and a piupartsm user is need. Both are members of the group piuparts and /srv/piuparts.debian.org is 774 piupartss:piuparts.
+A piupartss (on piu-slave-bm-a) and a piupartsm (on pejacevic) user is needed. Both are members of the group piuparts and /srv/piuparts.debian.org is 774 piupartss:piuparts.
 Both user have some files in $HOME which are kept in git, including hidden files.
+
+FIXME: this needs to be added to ~/.bashrc: export PATH="~/bin:$PATH"
 
 Create an SSH keypair for piupartss and put it into ~/.ssh/authorized_keys of the piupartsm user, so the piupartss can login with ssh to localhost as piupartsm.
 
@@ -29,7 +33,7 @@ piupartss       ALL = NOPASSWD: ALL
 
 === piuparts installation from source
 
-* sudo apt-get install apt python debootstrap lsof lsb-release python-debian asciidoc xmlto python-rpy r-recommended r-base-dev gs
+* sudo apt-get build-dep piuparts
 * you need a webserver too, if you run the master
 * Copy 'http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=develop;a=blob_plain;f=update-piuparts-setup' on the host and run it under the 'piupartss' user. It assumes you want to set it up in '/srv/piuparts.debian.org' and does all further updates from git as well as the initial installation. It needs the piupartss and piupartsm user set up as described below, though.
 * mkdir /srv/piuparts.debian.org
@@ -41,7 +45,6 @@ piupartss       ALL = NOPASSWD: ALL
 ----
 <VirtualHost *:80>
         ServerName piuparts.debian.org
-        ServerAlias piuparts.cs.helsinki.fi
 
         ServerAdmin debian-admin@debian.org
 
@@ -63,18 +66,26 @@ piupartss       ALL = NOPASSWD: ALL
 
 == Updating the piuparts installation
 
+Updating the master, pejacevic:
+
 ----
-piupartss@piatti:/srv/piuparts.debian.org$ ~/bin/update-piuparts-setup
+holger@pejacevic$ sudo su - piupartsm update-piuparts-master-setup pejacevic origin
+----
+
+Updating the slave, pejacevic:
+
+----
+holger@piu-slave-bm-a$ sudo su - piupartss update-piuparts-slave-setup pejacevic origin
 ----
 
 == Running piuparts
 
 === Starting and stopping the slave
 
-Run the following script under *your* user account you will start piuparts-slave on piatti, piuparts-master will be started automatically by the slave.
+Run the following script under *your* user account you will start piuparts-slave on pejacevic, piuparts-master will be started automatically by the slave.
 
 ----
-holger@piatti:~$ sudo /home/piupartss/bin/slave_run
+holger@pejacevic:~$ sudo -u piupartss -i slave_run
 ----
 
 There are several cronjobs installed via '~piupartsm/crontab' and
@@ -91,7 +102,7 @@ but that may leave temporary directories and processes around.
 Run the following script under *your* user account:
 
 ----
-holger@piatti:~$ sudo /home/piupartss/bin/slave_join
+holger@pejacevic:~$ sudo -u piupartss -i slave_join
 ----
 
 === Filing bugs
@@ -105,7 +116,7 @@ Usertags: piuparts piuparts.d.o
 
 === Generating reports for the website
 
-'piuparts-report' is run daily five minutes after midnight from '~piupartsm/crontab'
+'piuparts-report' is run daily five minutes after midnight from '~piupartsm/crontab' on pejacevic.
 
 === Cronjobs to aid problem spotting
 
@@ -119,9 +130,8 @@ More checks should be added as we become aware of them.
 
 == Authors
 
-Last updated: June 2012
+Last updated: May 2013
 
 Holger Levsen <holger@debian.org>
-Luk Claes <luk@debian.org>
 
 // vim: set filetype=asciidoc:
