@@ -878,6 +878,10 @@ def main():
             # ignore unknown sections
             pass
 
+    if not sections:
+        logging.error("no sections found")
+        return
+
     while True:
         global got_sighup
         test_count = 0

@@ -36,6 +36,7 @@ for SECTION in $SECTIONS ; do
 		rgrep -l 'PIUPARTS OUTPUT INCOMPLETE' $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -E "tar( \(child\))?: .*.tar.gz: Cannot open: No such file or directory" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "tar: .*: No space left on device" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "tar: Error is not recoverable: exiting now" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "gzip: stdin: invalid compressed data--crc error" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "ERROR:.*:Temporary directory is not a directory" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "No space left on device" $MASTER/$SECTION/$subdir >> $FILE

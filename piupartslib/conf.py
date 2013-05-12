@@ -142,9 +142,13 @@ class DistroConfig(UserDict.UserDict):
         return uri is not None and uri == "None"
 
     def get_mirror(self, distro):
+        if self._is_virtual(distro):
+            distro = self._expand_depends(distro)[0]
         return self.get(distro, "uri") or self._mirror
 
     def get_distribution(self, distro):
+        if self._is_virtual(distro):
+            distro = self._expand_depends(distro)[0]
         return self.get(distro, "distribution") or distro
 
     def get_packages_url(self, distro, area, arch):
@@ -165,7 +169,7 @@ class DistroConfig(UserDict.UserDict):
             return ["-t", tr]
         return []
 
-    def _expand_depends(self, distro, virtual=False):
+    def _expand_depends(self, distro, include_virtual=False):
         todo = [distro]
         done = []
         seen = []
@@ -174,10 +178,9 @@ class DistroConfig(UserDict.UserDict):
             todo = todo[1:]
             if not curr in seen:
                 seen.append(curr)
-                todo = done + (self.get(curr, "depends") or "").split() + [ curr ] + todo
-                done = []
+                todo = (self.get(curr, "depends") or "").split() + [ curr ] + todo
             elif not curr in done:
-                if virtual or not self._is_virtual(curr):
+                if include_virtual or not self._is_virtual(curr):
                     done.append(curr)
         assert(len(done) > 0)
         return done
