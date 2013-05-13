@@ -8,10 +8,6 @@ installed from git. For regular installations we recommend to use the
 piuparts-master and piuparts-slaves packages as described in 
 /usr/share/doc/piuparts-master/README_server.txt
 
-== ToDo
-
-- re-read everything and update for pejacevic.d.o
-
 == Installation
 
 piuparts.debian.org is a setup running on two systems: pejacevic.debian.org, running the piuparts-master instance and an apache webserver to display the results and piu-slave-bm-a.debian.org, running a piuparts-slave node. Hopefully soon there should be several slave-nodes running on that system.
@@ -19,14 +15,14 @@ piuparts.debian.org is a setup running on two systems: pejacevic.debian.org, run
 === User setup
 
 A piupartss (on piu-slave-bm-a) and a piupartsm (on pejacevic) user is needed. Both are members of the group piuparts and '/srv/piuparts.debian.org' is 774 piupartss:piuparts.
-Both user have some files in $HOME which are kept in git, including hidden files.
 
-FIXME: this needs to be added to '~/.bashrc':
-----
-export PATH="~/bin:$PATH"
-----
+Create an SSH keypair for piupartss and put it into '/etc/ssh/userkeys/piupartsm' on pejacevic, so the piupartss can login with ssh and run piuparts-master.
+Restrict it like this:
 
-Create an SSH keypair for piupartss and put it into '~/.ssh/authorized_keys' of the piupartsm user, so the piupartss can login with ssh to localhost as piupartsm.
+----
+$ cat /etc/ssh/userkeys/piupartsm
+command="/srv/piuparts.debian.org/share/piuparts/piuparts-master",from="2001:41c8:1000:21::21:7,5.153.231.7",no-port-forwarding,no-X11-forwarding,no-agent-forwarding ssh-rsa ...
+----
 
 === '/etc/sudoers' for pejacevic
 
@@ -81,16 +77,16 @@ piupartss       ALL = NOPASSWD: ALL
 
 == Updating the piuparts installation
 
-Updating the master, pejacevic:
+Updating the master, pejacevic.debian.org:
 
 ----
-holger@pejacevic$ sudo su - piupartsm update-piuparts-master-setup pejacevic origin
+holger@pejacevic$ sudo su - piupartsm update-piuparts-master-setup bikeshed origin
 ----
 
-Updating the slave, pejacevic:
+Updating the slave, piu-slave-bm-a.debian.org:
 
 ----
-holger@piu-slave-bm-a$ sudo su - piupartss update-piuparts-slave-setup pejacevic origin
+holger@piu-slave-bm-a$ sudo su - piupartss update-piuparts-slave-setup bikeshed origin
 ----
 
 == Running piuparts
