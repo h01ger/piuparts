@@ -93,6 +93,11 @@ piuparts (0.51) UNRELEASED; urgency=low
   * Use /srv/piuparts.debian.org/ on piatti.debian.org as per DSA policy.
   * detect_slave_problems: remove check limiting this script to be run on
     piatti only.
+  * Provide instance configuration for pejacevic.d.o and piu-slave-bm-a.d.o.
+  * Move README_piatti.txt and README_pejacevic.txt and update accordingly.
+  * Provide two new helper scripts for running from git:
+    update-piuparts-master-setup and update-piuparts-slave-setup.
+  * Drop instances/forward.* files.
 
  -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
 

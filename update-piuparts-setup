@@ -110,7 +110,7 @@ pwd
 sudo chown piupartss:piuparts . piuparts.conf.*
 chmod 0664 piuparts.conf.*
 HOSTNAME=$(hostname)
-for f in piuparts.conf forward
+for f in piuparts.conf
 do
 	ln -sf $f.$HOSTNAME $f
 done
@@ -128,7 +128,6 @@ pwd
 test ! -L bin || rm bin
 test ! -d bin || mv bin bin.old
 ln -sf $PIUPARTS_PREFIX/share/piuparts/slave bin
-cp $PIUPARTS_PREFIX/etc/piuparts/forward .forward
 crontab $PIUPARTS_PREFIX/etc/piuparts/crontab-slave
 
 #
@@ -139,7 +138,6 @@ set -e
 test ! -L bin || rm bin
 test ! -d bin || mv bin bin.old
 ln -sf $PIUPARTS_PREFIX/share/piuparts/master bin
-cp $PIUPARTS_PREFIX/etc/piuparts/forward .forward
 crontab $PIUPARTS_PREFIX/etc/piuparts/crontab-master
 "
 

@@ -61,10 +61,9 @@ for 0.5x:
   - do not use eatmydata (we're using tmpfs in RAM anyway, so installing it
     just slows things down)
   - ~/bin is not added to PATH
-  - .forward files are not used anymore, drop them from the source
 
 - re-read all documentation carefully and update were needed.
-  - update+cleanup README_pejacevic
+  - cleanup README_pejacevic
 
 - Drop update-piuparts-setup?
 

@@ -95,7 +95,7 @@ mkdir -p master backup
 # to support multiple hosts with this setup
 cd etc/piuparts
 HOSTNAME=$(hostname)
-for f in piuparts.conf forward
+for f in piuparts.conf
 do
 	ln -sf $f.$HOSTNAME $f
 done
@@ -111,7 +111,6 @@ mkdir -p $PIUPARTS_TMPDIR
 cd
 pwd
 ln -sf $PIUPARTS_PREFIX/share/piuparts/master bin
-cp $PIUPARTS_PREFIX/etc/piuparts/forward .forward
 crontab $PIUPARTS_PREFIX/etc/piuparts/crontab-master
 
 echo "Update finished."
