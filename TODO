@@ -9,24 +9,19 @@ for 0.5x:
 
 - make piuparts-master + piuparts-slave packages work out-of-the-box:
   - piuparts-slave.postrm purge: clean up /var/cache/piuparts/tmp/
-  - conf/piuparts.sudoers should be split for master+slave packages.
+  - conf/piuparts.sudoers is only needed for slave package.
   - ship sane minimal sudoers in p-s.deb than can be enabled by default do we
     really need anything else than running piuparts and piuparts_slave_*
-    as root?
+    as root? No, we don't.
   - the shipped crontabs are not suitable from cron.d/ due to missing user
-    column
+    column - discuss this with DSA
   - verify that all scripts in $user/bin/ also work from master-slave packages
     eventually enable some conjobs in the packages
   - slave.postinst should setup ~piupartsm/.ssh/authorized_keys using triggers
     dpkg-trigger piuparts-master-please-install-the-slave-key
     + the current method only works if -slave is configured after -master
   - split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and
-    /etc/piuparts/slave.conf?! or use /etc/default/slave to define sections?
-    debconfify piuparts.conf? allow preseeding of mirror, master, ...
-
-- sudoers: the piupartsm user should be very unprivileged
-  (since it may be used for remote ssh access to run the slave)
-  granting permissions to %piuparts works against this
+    /etc/piuparts/slave.conf
 
 - in maintainer view: sort buggy states up again
 
