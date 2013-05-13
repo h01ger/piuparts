@@ -45,4 +45,7 @@ for SECTION in $SECTIONS ; do
 	if [ -f $HTDOCS/$SECTION/counts.txt ]; then
 		cp $HTDOCS/$SECTION/counts.txt $BACKUPDIR/$SECTION/
 	fi
+	if [ -f $HTDOCS/$SECTION/sources.txt ]; then
+		cp $HTDOCS/$SECTION/sources.txt $BACKUPDIR/$SECTION/
+	fi
 done

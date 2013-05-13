@@ -16,7 +16,22 @@ piuparts.debian.org is a setup running on two systems: pejacevic.debian.org, run
 
 A piupartss (on piu-slave-bm-a) and a piupartsm (on pejacevic) user is needed. Both are members of the group piuparts and '/srv/piuparts.debian.org' is 774 piupartss:piuparts.
 
-Create an SSH keypair for piupartss and put it into '/etc/ssh/userkeys/piupartsm' on pejacevic, so the piupartss can login with ssh and run piuparts-master.
+==== '~/bashrc' for piupartsm and piupartss
+
+Do this for the piupartsm user on pejacevic and piupartss on the slave:
+
+----
+piupartsm@pejacevic$ cat >> ~/.bashrc <<-EOF
+
+# added manually for piuparts
+umask 0002
+export PATH="~/bin:\$PATH"
+EOF
+----
+
+==== set up ssh pubkey authentification
+
+Then create an SSH keypair for piupartss and put it into '/etc/ssh/userkeys/piupartsm' on pejacevic, so the piupartss can login with ssh and run piuparts-master.
 Restrict it like this:
 
 ----
@@ -24,23 +39,24 @@ $ cat /etc/ssh/userkeys/piupartsm
 command="/srv/piuparts.debian.org/share/piuparts/piuparts-master",from="2001:41c8:1000:21::21:7,5.153.231.7",no-port-forwarding,no-X11-forwarding,no-agent-forwarding ssh-rsa ...
 ----
 
-=== '/etc/sudoers' for pejacevic
+=== Setup sudo
+
+==== '/etc/sudoers' for pejacevic
 
 ----
 #piuparts admins
 %piuparts       ALL=(piupartsm) ALL
 ----
 
-=== '/etc/sudoers' for piu-slave-bm-a
+==== '/etc/sudoers' for piu-slave-bm-a
 
 ----
 # The piuparts slave needs to handle chroots.
 piupartss       ALL = NOPASSWD: ALL
 
 #piuparts admins
-%piuparts       ALL=(piupartsm) ALL
+%piuparts       ALL=(piupartss) ALL
 ----
-
 
 === piuparts installation from source
 

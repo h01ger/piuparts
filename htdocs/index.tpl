@@ -25,14 +25,8 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      To make sure piuparts is run on all packages, piuparts.debian.org was set up as a service running on
-      <a href="http://db.debian.org/machines.cgi?host=piatti" target="_blank">piatti.debian.org</a>.
-      This machine was generously donated by <a href="http://hp.com/go/debian/" target="_blank">HP</a>
-      to run piuparts on the Debian archive and is hosted as
-      <a href="http://piuparts.cs.helsinki.fi">piuparts.cs.helsinki.fi</a> by the University of Helsinki, at the
-      <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a>
-      in Finland.
-      As this is still being polished, see the piuparts wiki page to get an overview about <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development and the piuparts setup on piatti</a>. Better reports, statistics, tools to report bugs as well as testing on other architectures is planned. Join #debian-qa if you want to help.
+      To make sure piuparts is run on all packages, piuparts.debian.org has set up running piuparts in master-slave mode on virtualized hardware on <a href="http://bits.debian.org/2013/04/bytemark-donation.html" target="_blank">this nice cluster</a> at <a href="http://www.bytemark.co.uk" target="_blank">Bytemark</a>. Currently there is a master, <a href="http://db.debian.org/machines.cgi?host=pejacevic" target="_blank">pejacevic.debian.org</a> and a slave,  <a href="http://db.debian.org/machines.cgi?host=piu-slave-bm-a" target="_blank">piu-slave-bm-a</a>.
+      As this is still being polished, see the piuparts wiki page to get an overview about <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development and the piuparts setup on piatti</a>. Join #debian-qa on irc.debian.org or post on the <a href="http://lists.debian.org/debian-qa" target="_blank">Debian QA mailing list</a> if you want to help.
      </td>
     </tr>
     <tr class="normalrow">
@@ -43,6 +37,11 @@
     <tr class="titlerow">
      <td class="titlecell">
       News
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2013-05-13</b> piuparts.debian.org has been moved to a new hardware and hosting location, now running virtualized on <a href="http://bits.debian.org/2013/04/bytemark-donation.html" target="_blank">this nice cluster</a> at Bytemark. Thanks to the Debian System Administrators for their assistence in setting up the host and maintaining the Debian infrastructure! Also many thanks and kittos to the <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a> at the University of Helsinki, Finland, for hosting piatti.debian.org for so many years!
      </td>
     </tr>
     <tr class="normalrow">
