@@ -67,6 +67,10 @@ for 0.5x:
 
 - Drop update-piuparts-setup?
 
+- update references to piatti with ones to pejacevic
+
+- move counts.txt and sources.txt from htdocs to master
+
 
 for 0.6x:
 
