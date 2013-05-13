@@ -16,7 +16,20 @@ piuparts.debian.org is a setup running on two systems: pejacevic.debian.org, run
 
 A piupartss (on piu-slave-bm-a) and a piupartsm (on pejacevic) user is needed. Both are members of the group piuparts and '/srv/piuparts.debian.org' is 774 piupartss:piuparts.
 
-Create an SSH keypair for piupartss and put it into '/etc/ssh/userkeys/piupartsm' on pejacevic, so the piupartss can login with ssh and run piuparts-master.
+=== '~/bashrc' for piupartsm and piupartss
+
+Do this for the piupartsm user on pejacevic and piupartss on the slave:
+
+----
+piupartsm@pejacevic$ cat >> ~/.bashrc <<-EOF
+
+# added manually for piuparts
+umask 0002
+export PATH="~/bin:\$PATH"
+EOF
+-----
+
+Then create an SSH keypair for piupartss and put it into '/etc/ssh/userkeys/piupartsm' on pejacevic, so the piupartss can login with ssh and run piuparts-master.
 Restrict it like this:
 
 ----
