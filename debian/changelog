@@ -91,6 +91,8 @@ piuparts (0.51) UNRELEASED; urgency=low
     - Run slave_cleanup before starting the slave.
   * Bump Standards-Version to 3.9.4.
   * Use /srv/piuparts.debian.org/ on piatti.debian.org as per DSA policy.
+  * detect_slave_problems: remove check limiting this script to be run on
+    piatti only.
 
  -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
 
