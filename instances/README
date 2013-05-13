@@ -1,6 +1,6 @@
 This directory contains live config files for real instances, usually
 with a .$HOSTNAME suffix.  These are not intended for being used in
 the piuparts Debian packages (or only in /usr/share/doc/.../examples/).
-The update-piuparts-setup script (run by piupartss) uses them when
-running and updating an instance directly from GIT.
+The update-piuparts-(master|slave)-setup scripts (run by piuparts(s|m)) use
+them when running and updating an instance directly from GIT.
 General config files are placed in ../conf/

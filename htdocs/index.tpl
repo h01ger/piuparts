@@ -41,7 +41,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-05-13</b> piuparts.debian.org has been moved to a new hardware and hosting location, now running virtualized on <a href="http://bits.debian.org/2013/04/bytemark-donation.html" target="_blank">this nice cluster</a> at Bytemark. Thanks to the Debian System Administrators for their assistence in setting up the host and maintaining the Debian infrastructure! Also many thanks and kittos to the <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a> at the University of Helsinki, Finland, for hosting piatti.debian.org for so many years!
+      <b>2013-05-13</b> piuparts.debian.org has been moved to a new hardware and hosting location, now running virtualized on <a href="http://bits.debian.org/2013/04/bytemark-donation.html" target="_blank">this nice cluster</a> at Bytemark. Thanks to the Debian System Administrators for their assistence in setting up the host and maintaining the Debian infrastructure! Also many thanks and kittos to the <a href="http://cs.helsinki.fi/index.en.html" target="_blank">Department of Computer Science</a> at the University of Helsinki, Finland, for hosting piatti.debian.org for more than five years!
      </td>
     </tr>
     <tr class="normalrow">

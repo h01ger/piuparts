@@ -96,7 +96,9 @@ install-conf-4-running-from-git: build-stamp
 	install -m 0644 conf/distros.conf $(DESTDIR)$(etcdir)/piuparts/
 	install -m 0644 instances/piuparts.conf.* $(DESTDIR)$(etcdir)/piuparts/
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
-	install -m 0755 update-piuparts-setup $(DESTDIR)$(sharedir)/piuparts/slave/
+	install -m 0755 update-piuparts-slave-setup $(DESTDIR)$(sharedir)/piuparts/slave/
+	install -d $(DESTDIR)$(sharedir)/piuparts/master
+	install -m 0755 update-piuparts-master-setup $(DESTDIR)$(sharedir)/piuparts/master/
 
 install: build-stamp
 	install -d $(DESTDIR)$(sbindir)

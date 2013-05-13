@@ -60,14 +60,8 @@ for 0.5x:
   - use mirror via nfs (faster)
   - do not use eatmydata (we're using tmpfs in RAM anyway, so installing it
     just slows things down)
-  - ~/bin is not added to PATH
 
 - re-read all documentation carefully and update were needed.
-  - cleanup README_pejacevic
-
-- Drop update-piuparts-setup?
-
-- update references to piatti with ones to pejacevic
 
 - move counts.txt and sources.txt from htdocs to master
 
