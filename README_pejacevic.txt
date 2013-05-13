@@ -38,7 +38,7 @@ command="/srv/piuparts.debian.org/share/piuparts/piuparts-master",from="2001:41c
 piupartss       ALL = NOPASSWD: ALL
 
 #piuparts admins
-%piuparts       ALL=(piupartsm) ALL
+%piuparts       ALL=(piupartss) ALL
 ----
 
 
