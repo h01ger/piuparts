@@ -25,8 +25,9 @@ Hopefully soon there should be several slave-nodes running on that system.
   to the hosts which should be master and slave. (It's possible and has been
   done for a long time to run them on the same host.(
   Run the scripts as the piupartsm and piupartss users and clone that git
-  repositry into '/srv/piuparts.debian.org/src' in the first place.
-  See below for further user setup instructions.
+  repositry into '/srv/piuparts.debian.org/src' in the first place. Then
+  checkout the bikeshed branch.
+*  See below for further user setup instructions.
 * Provide '/srv/piuparts.debian.org' - on the slave ideally with a 'tmp'
   directory which is on tmpfs.
 * `sudo ln -s /srv/piuparts.debian.org/etc/piuparts /etc/piuparts`
