@@ -2,7 +2,7 @@
 set -e
 
 #
-#  update piuparts setup on piatti.debian.org
+#  update piuparts slave setup from git (eg. used on piu-slave-bm-a.debian.org)
 #
 
 # Copyright 2009-2013 Holger Levsen (holger@layer-acht.org)

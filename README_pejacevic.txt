@@ -1,6 +1,13 @@
 Notes about the piuparts installation on pejacevic.debian.org and it's slave
 ============================================================================
 
+This document describes the setup for http://piuparts.debian.org - it's used 
+for reference for the Debian System Administrators (DSA) as well as a guide
+for other setting up a similar system, with the piuparts source code
+installed from git. For regular installations we recommend to use the
+piuparts-master and piuparts-slaves packages as described in 
+/usr/share/doc/piuparts-master/README_server.txt
+
 == ToDo
 
 - re-read everything and update for pejacevic.d.o
@@ -11,23 +18,33 @@ piuparts.debian.org is a setup running on two systems: pejacevic.debian.org, run
 
 === User setup
 
-A piupartss (on piu-slave-bm-a) and a piupartsm (on pejacevic) user is needed. Both are members of the group piuparts and /srv/piuparts.debian.org is 774 piupartss:piuparts.
+A piupartss (on piu-slave-bm-a) and a piupartsm (on pejacevic) user is needed. Both are members of the group piuparts and '/srv/piuparts.debian.org' is 774 piupartss:piuparts.
 Both user have some files in $HOME which are kept in git, including hidden files.
 
-FIXME: this needs to be added to ~/.bashrc: export PATH="~/bin:$PATH"
+FIXME: this needs to be added to '~/.bashrc':
+----
+export PATH="~/bin:$PATH"
+----
 
-Create an SSH keypair for piupartss and put it into ~/.ssh/authorized_keys of the piupartsm user, so the piupartss can login with ssh to localhost as piupartsm.
+Create an SSH keypair for piupartss and put it into '~/.ssh/authorized_keys' of the piupartsm user, so the piupartss can login with ssh to localhost as piupartsm.
 
-=== '/etc/sudoers' for piatti
+=== '/etc/sudoers' for pejacevic
+
+----
+#piuparts admins
+%piuparts       ALL=(piupartsm) ALL
+----
+
+=== '/etc/sudoers' for piu-slave-bm-a
 
 ----
 # The piuparts slave needs to handle chroots.
 piupartss       ALL = NOPASSWD: ALL
 
 #piuparts admins
-%piuparts       ALL=(piupartss) ALL
 %piuparts       ALL=(piupartsm) ALL
----
+----
+
 
 === piuparts installation from source
 

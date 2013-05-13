@@ -40,12 +40,6 @@ file_age()
 }
 
 
-HOSTNAME=`hostname`
-if [ "$HOSTNAME" != "piatti" ] ; then
-	exit 0
-fi
-
-
 get_config_value SLAVEROOT global slave-directory
 get_config_value IDLE_SLEEP global idle-sleep 1800
 

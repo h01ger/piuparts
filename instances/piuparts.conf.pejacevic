@@ -75,7 +75,7 @@ sections =
 	lenny2squeeze
 #
 mirror = http://mirror.bm.debian.org/debian/
-master-host = localhost
+master-host = pejacevic.debian.org
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
 master-command = /srv/piuparts.debian.org/share/piuparts/piuparts-master

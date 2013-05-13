@@ -2,7 +2,7 @@
 set -e
 
 #
-#  update piuparts master setup on pejacevic.debian.org
+#  update piuparts master setup from git (eg. used on pejacevic.debian.org)
 #
 
 # Copyright 2009-2013 Holger Levsen (holger@layer-acht.org)
