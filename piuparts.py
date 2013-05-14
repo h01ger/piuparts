@@ -961,7 +961,7 @@ class Chroot:
         lines.append('APT::Install-Recommends "%d";\n' % int(settings.install_recommends))
         lines.append('APT::Install-Suggests "0";\n')
         lines.append('APT::Get::AllowUnauthenticated "%s";\n' % settings.apt_unauthenticated)
-        lines.append('APT::Acquire::PDiffs "false";\n')
+        lines.append('Acquire::PDiffs "false";\n')
         if settings.proxy:
             proxy = settings.proxy
         elif "http_proxy" in os.environ:

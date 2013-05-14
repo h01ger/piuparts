@@ -2,6 +2,7 @@ piuparts (0.52) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Really disable PDiffs.
   * piuparts.conf:
   * distros.conf:
   * piupartslib/conf.py:
