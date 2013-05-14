@@ -21,7 +21,7 @@ endif
 # generate several scripts, conffiles, ... from templates (*.in, *.py)
 # by substituting placeholders
 SCRIPTS_TEMPLATES	 = $(wildcard *.in master-bin/*.in slave-bin/*.in conf/*.in)
-SCRIPTS_PYTHON_BINARY	 = $(wildcard *.py)
+SCRIPTS_PYTHON_BINARY	 = $(wildcard *.py master-bin/*.py slave-bin/*.py)
 SCRIPTS_GENERATED	 = $(SCRIPTS_TEMPLATES:.in=) $(SCRIPTS_PYTHON_BINARY:.py=)
 DOCS_GENERATED		 = piuparts.1 piuparts.1.html README.html
 
@@ -115,16 +115,16 @@ install: build-stamp
 	install -d $(DESTDIR)$(sharedir)/piuparts/lib
 	install -m 0644 lib/*.sh $(DESTDIR)$(sharedir)/piuparts/lib/
 
-	# do not install the templates (*.in)
+	# do not install the templates (*.in, *.py)
 	install -d $(DESTDIR)$(sharedir)/piuparts/master
-	install -m 0755 $(filter-out %.in,$(wildcard master-bin/*)) $(DESTDIR)$(sharedir)/piuparts/master/
+	install -m 0755 $(filter-out %.in %.py,$(wildcard master-bin/*)) $(DESTDIR)$(sharedir)/piuparts/master/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts/known_problems
 	install -m 0644 known_problems/*.conf $(DESTDIR)$(sharedir)/piuparts/known_problems/
 
-	# do not install the templates (*.in)
+	# do not install the templates (*.in, *.py)
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
-	install -m 0755 $(filter-out %.in,$(wildcard slave-bin/*)) $(DESTDIR)$(sharedir)/piuparts/slave/
+	install -m 0755 $(filter-out %.in %.py,$(wildcard slave-bin/*)) $(DESTDIR)$(sharedir)/piuparts/slave/
 
 	install -d $(DESTDIR)$(htdocsdir)
 	install -m 0644 htdocs/*.* $(DESTDIR)$(htdocsdir)/
