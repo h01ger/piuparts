@@ -19,7 +19,8 @@ set -e
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #
-# Run piuparts-slave in screen to allow interactive control later on.
+# Run (several) piuparts-slave instance(s) in screen to allow interactive
+# control later on.
 #
 
 
@@ -28,6 +29,7 @@ set -e
 get_config_value PYTHONPATH global PYTHONPATH ''
 get_config_value SLAVEROOT global slave-directory
 get_config_value PIUPARTS_TMPDIR global tmpdir
+get_config_value SLAVECOUNT global slave-count 1
 
 
 export PYTHONPATH
@@ -52,7 +54,23 @@ mkdir -p $PIUPARTS_TMPDIR
 mkdir -p $SLAVEROOT
 cd $SLAVEROOT
 
-# finally, run piuparts-slave in screen
-screen -L -d -m -S $SESSIONNAME @sharedir@/piuparts/piuparts-slave
+# Ensure the screen session exists, run normal shell in screen 0
+screen -S $SESSIONNAME -d -m
+echo "Started screen session '$SESSIONNAME'."
 
-echo "piuparts-slave has been started."
+for SLAVENUM in $(seq $SLAVECOUNT)
+do
+	mkdir -p $SLAVENUM
+	SLAVEDIR=$(readlink -f $SLAVENUM)
+
+	# Ensure there is a window for this slave.
+	screen -S $SESSIONNAME -X screen -t slave$SLAVENUM -L $SLAVENUM
+
+	# Launch the slave.
+	screen -S $SESSIONNAME -p $SLAVENUM -X stuff "
+cd $SLAVEDIR
+@sharedir@/piuparts/piuparts-slave
+"
+
+	echo "piuparts-slave $SLAVENUM has been started."
+done

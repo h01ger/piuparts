@@ -497,6 +497,9 @@ used for all further sections.
 * "slave-directory" is the directory where the slave keeps its
  files. Can be relative to the slave's home directory.
 
+* "slave-count" is the number of concurrent slaves to start.
+ Default: "1".
+
 * "output-directory" is the directory where piuparts-report places
  the logfiles, generated html files, charts, ... that can be
  served by a webserver.

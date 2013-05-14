@@ -8,6 +8,8 @@ piuparts (0.51) UNRELEASED; urgency=low
     - Add --arch <arch> option to run the test for the requested instead of
       the default architecture.
   * piuparts.conf:
+    - New global settings:
+      + slave-count
   * distros.conf:
     - Update backports setup after integration into the regular archive.
     - Enable stable security updates when installing stable backports.
@@ -62,6 +64,7 @@ piuparts (0.51) UNRELEASED; urgency=low
   * piuparts-slave.deb:
     - Restrict the ssh key added to master's authorized_keys to only run
       piuparts-master.
+  * slave_run: Support starting multiple concurrent slaves.
   * Update and add new exceptions for buggy packages.
   * scripts-wheezy/post_setup_wheezy-fake-essential: New custom script to
     suppress some purge failures in wheezy.
