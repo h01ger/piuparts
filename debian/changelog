@@ -7,6 +7,8 @@ piuparts (0.51) UNRELEASED; urgency=low
       package to be tested via --extra-old-packages.
     - Add --arch <arch> option to run the test for the requested instead of
       the default architecture.
+    - Disable using PDiffs in order to save CPU instead of bandwidth to a
+      local mirror/proxy.  (Closes: #708241)
   * piuparts.conf:
     - New global settings:
       + slave-count
