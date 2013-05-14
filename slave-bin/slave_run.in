@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# Copyright 2009-2013 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2011 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2013 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -33,43 +33,38 @@ if ! `echo $SLAVENUM | grep -E -e "^[0-9]{1}$" >/dev/null` ; then
    exit
 fi
 
-. @sharedir@/piuparts/lib/read_config.sh
+SLAVEROOTDIR=/var/lib/piuparts/slave
+SLAVEDIR=$SLAVEROOTDIR/$SLAVENUM
 
-get_config_value PYTHONPATH global PYTHONPATH ''
-get_config_value SLAVEROOT global slave-directory
-get_config_value PIUPARTS_TMPDIR global tmpdir
+if [ ! -d $SLAVEDIR ] ; then
+   install -d $SLAVEDIR
+   chown piupartss:piuparts $SLAVEDIR
+fi
 
-export PYTHONPATH
-SLAVEDIR=$SLAVEROOT/$SLAVENUM
-SCREENLOG=$SLAVEROOT/screenlog.$SLAVENUM
+SCREENLOG=$SLAVEROOTDIR/screenlog.$SLAVENUM
+MONITORDIR=/var/lib/piuparts/master/monitor-slave
 
-# cleanup cruft from previous runs
-@sharedir@/piuparts/slave/slave_cleanup
+# prepare environment
+rm -f $SCREENLOG
 
-# ensure the temporary directory exists
-mkdir -p $PIUPARTS_TMPDIR
-
-# ensure the slave directory exists
-mkdir -p $SLAVEDIR
-
-cd $SLAVEROOT
+cd $SLAVEROOTDIR
 (ps fax|grep -v grep| grep piuparts-slave | grep $SLAVEDIR ) && exit 0
 rm -f $SCREENLOG || :					# used by ~piupartsm/bin/detect_slave_problems
+rm -f $MONITORDIR/*					# used by several scripts to only warn once a day
 
 trap "cat $SCREENLOG | mail -s 'slave abnormaly ended' piupartsm ; rm $SCREENLOG; exit" TERM EXIT
 
 # if screen session does not exist, create it
 # remove screen logs to preserve slave_join logic
 ( ps ax | grep SCREEN | grep piuparts-slave-screen >/dev/null) ||\
-    ( cd $SLAVEROOT; screen -d -m -L -S piuparts-slave-screen; sleep 1; rm -f $SLAVEROOT/screenlog.*)
+    ( cd $SLAVEROOTDIR; screen -d -m -L -S piuparts-slave-screen; sleep 1; rm -f $SLAVEROOTDIR/screenlog.*)
 
 # make sure there is a window for this slave
 screen -S piuparts-slave-screen -X screen -L $SLAVENUM
 
 # launch the slave
-cd $SLAVEDIR
 screen -S piuparts-slave-screen -p $SLAVENUM -X stuff "
-@sharedir@/piuparts/piuparts-slave
+su - piupartss -c \"cd $SLAVEDIR; python /usr/share/piuparts/piuparts-slave\"
 "
 
 trap - TERM EXIT
