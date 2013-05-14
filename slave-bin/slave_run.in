@@ -22,51 +22,37 @@ set -e
 # Run piuparts-slave in screen to allow interactive control later on.
 #
 
-if [ -z "$1" ] ; then
-   SLAVENUM=0
-else
-   SLAVENUM=$1
+
+. @sharedir@/piuparts/lib/read_config.sh
+
+get_config_value PYTHONPATH global PYTHONPATH ''
+get_config_value SLAVEROOT global slave-directory
+get_config_value PIUPARTS_TMPDIR global tmpdir
+
+
+export PYTHONPATH
+
+SESSIONNAME=piuparts_slave_screen
+SCREENLOG=$SLAVEROOT/screenlog.0
+
+if ! screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
+	echo "piuparts-slave is already running!"
+	echo
+	screen -ls
+	exit 1
 fi
 
-if ! `echo $SLAVENUM | grep -E -e "^[0-9]{1}$" >/dev/null` ; then
-   echo "slave must be identified as a number between 0 and 9"
-   exit
-fi
-
-SLAVEROOTDIR=/var/lib/piuparts/slave
-SLAVEDIR=$SLAVEROOTDIR/$SLAVENUM
-
-if [ ! -d $SLAVEDIR ] ; then
-   install -d $SLAVEDIR
-   chown piupartss:piuparts $SLAVEDIR
-fi
-
-SCREENLOG=$SLAVEROOTDIR/screenlog.$SLAVENUM
-MONITORDIR=/var/lib/piuparts/master/monitor-slave
-
-# prepare environment
+# cleanup cruft from previous runs
+@sharedir@/piuparts/slave/slave_cleanup
 rm -f $SCREENLOG
 
-cd $SLAVEROOTDIR
-(ps fax|grep -v grep| grep piuparts-slave | grep $SLAVEDIR ) && exit 0
-rm -f $SCREENLOG || :					# used by ~piupartsm/bin/detect_slave_problems
-rm -f $MONITORDIR/*					# used by several scripts to only warn once a day
+# ensure the temporary directory exists
+mkdir -p $PIUPARTS_TMPDIR
 
-trap "cat $SCREENLOG | mail -s 'slave abnormaly ended' piupartsm ; rm $SCREENLOG; exit" TERM EXIT
+mkdir -p $SLAVEROOT
+cd $SLAVEROOT
 
-# if screen session does not exist, create it
-# remove screen logs to preserve slave_join logic
-( ps ax | grep SCREEN | grep piuparts-slave-screen >/dev/null) ||\
-    ( cd $SLAVEROOTDIR; screen -d -m -L -S piuparts-slave-screen; sleep 1; rm -f $SLAVEROOTDIR/screenlog.*)
-
-# make sure there is a window for this slave
-screen -S piuparts-slave-screen -X screen -L $SLAVENUM
-
-# launch the slave
-screen -S piuparts-slave-screen -p $SLAVENUM -X stuff "
-su - piupartss -c \"cd $SLAVEDIR; python /usr/share/piuparts/piuparts-slave\"
-"
-
-trap - TERM EXIT
+# finally, run piuparts-slave in screen
+screen -L -d -m -S $SESSIONNAME @sharedir@/piuparts/piuparts-slave
 
 echo "piuparts-slave has been started."
