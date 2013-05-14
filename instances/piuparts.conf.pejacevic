@@ -67,8 +67,8 @@ sections =
 	testing2sid
 	sid2experimental
 	jessie
-#	wheezy2jessie
-#	wheezy2bpo2jessie
+	wheezy2jessie
+	wheezy2bpo2jessie
 	wheezy
 	squeeze2wheezy
 	squeeze2bpo2wheezy
@@ -131,7 +131,7 @@ log-file = testing2sid.log
 
 
 [sid2experimental]
-precedence = 6
+precedence = 4
 piuparts-flags =
 	%(flags-default)s
 depends-sections = sid
@@ -143,7 +143,7 @@ log-file = sid2experimental.log
 
 
 [jessie]
-precedence = 2
+precedence = 3
 piuparts-flags =
 	%(flags-default)s
 distro = jessie
@@ -163,7 +163,7 @@ log-file = wheezy2jessie.log
 
 
 [wheezy2bpo2jessie]
-precedence = 4
+precedence = 5
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -176,7 +176,7 @@ log-file = wheezy2bpo2jessie.log
 
 
 [wheezy]
-precedence = 2
+precedence = 3
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -188,7 +188,7 @@ max-tgz-age = 2592000
 
 
 [squeeze2wheezy]
-precedence = 4
+precedence = 5
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -199,7 +199,7 @@ log-file = squeeze2wheezy.log
 
 
 [squeeze2bpo2wheezy]
-precedence = 4
+precedence = 6
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -213,8 +213,7 @@ log-file = squeeze2bpo2wheezy.log
 
 
 [squeeze]
-precedence = 5
-# precedence should be 6
+precedence = 7
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -227,8 +226,7 @@ max-tgz-age = 2592000
 
 
 [lenny2squeeze]
-precedence = 5
-# precedence was and should be 99
+precedence = 99
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s

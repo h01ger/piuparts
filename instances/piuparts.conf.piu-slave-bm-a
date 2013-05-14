@@ -68,7 +68,8 @@ sections =
 	testing2sid
 	sid2experimental
 	jessie
-#	wheezy2jessie
+	wheezy2jessie
+	wheezy2bpo2jessie
 	wheezy
 	squeeze2wheezy
 	squeeze2bpo2wheezy
@@ -131,7 +132,7 @@ log-file = testing2sid.log
 
 
 [sid2experimental]
-precedence = 6
+precedence = 4
 piuparts-flags =
 	%(flags-default)s
 depends-sections = sid
@@ -143,7 +144,7 @@ log-file = sid2experimental.log
 
 
 [jessie]
-precedence = 2
+precedence = 3
 piuparts-flags =
 	%(flags-default)s
 distro = jessie
@@ -162,8 +163,21 @@ upgrade-test-distros = wheezy jessie
 log-file = wheezy2jessie.log
 
 
+[wheezy2bpo2jessie]
+precedence = 5
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+depends-sections = wheezy
+arch = amd64
+area = main
+distro = wheezy-backports
+upgrade-test-distros = wheezy wheezy-backports jessie
+log-file = wheezy2bpo2jessie.log
+
+
 [wheezy]
-precedence = 2
+precedence = 3
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -175,7 +189,7 @@ max-tgz-age = 2592000
 
 
 [squeeze2wheezy]
-precedence = 4
+precedence = 5
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -186,23 +200,21 @@ log-file = squeeze2wheezy.log
 
 
 [squeeze2bpo2wheezy]
-precedence = 4
+precedence = 6
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
 depends-sections = squeeze
-distro = squeeze-backports
 arch = amd64
 area = main
+distro = squeeze-backports
 upgrade-test-distros = squeeze squeeze-backports wheezy
-upgrade-test-chroot-tgz = squeeze.tar.gz
 log-file = squeeze2bpo2wheezy.log
 
 
 [squeeze]
-precedence = 5
-# precedence should be 6
+precedence = 7
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -215,8 +227,7 @@ max-tgz-age = 2592000
 
 
 [lenny2squeeze]
-precedence = 5
-# precedence was and should be 99
+precedence = 99
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
