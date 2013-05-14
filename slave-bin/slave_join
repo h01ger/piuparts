@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# Copyright 2009-2010 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2013 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2013 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -32,8 +32,6 @@ if ! `echo $SLAVENUM | grep -E -e "^[0-9]{1}$" >/dev/null` ; then
    echo "slave must be identified as a number between 0 and 9"
    exit
 fi
-
-SCREENLOG=/var/lib/piuparts/slave/screenlog.$SLAVENUM
 
 if [ $(ps fax|grep piuparts-slave|grep slave/$SLAVENUM|grep -v grep |wc -l) != 0 ] ; then
   screen -r -S piuparts-slave-screen -p $SLAVENUM -x
