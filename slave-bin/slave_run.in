@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# Copyright 2009-2011 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2013 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2013 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -58,7 +58,15 @@ cd $SLAVEROOT
 screen -S $SESSIONNAME -d -m
 echo "Started screen session '$SESSIONNAME'."
 
-for SLAVENUM in $(seq $SLAVECOUNT)
+# run this on a single slave or a sequence of slaves
+# FIXME: this should really test whether $1 is an integer and within SLAVECOUNT
+if [ "$1" != "" ] ; then
+	SLAVES=$1
+else
+	SLAVES="$(seq $SLAVECOUNT)"
+fi
+
+for SLAVENUM in $SLAVES
 do
 	mkdir -p $SLAVENUM
 	SLAVEDIR=$(readlink -f $SLAVENUM)
