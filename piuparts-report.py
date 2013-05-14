@@ -100,7 +100,7 @@ HTML_HEADER = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://bugs.debian.org/src:piuparts" target="_blank">Bugs</a> / <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;a=blob;f=TODO" target="_blank">ToDo</a>
+      <a href="http://bugs.debian.org/src:piuparts" target="_blank">Bugs</a> / <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=develop;a=blob;f=TODO" target="_blank">ToDo</a>
      </td>
     </tr>
     <tr class="titlerow">
