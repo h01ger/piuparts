@@ -94,6 +94,7 @@ known-problem-directory = /srv/piuparts.debian.org/share/piuparts/known_problems
 backup-directory = /srv/piuparts.debian.org/backup
 tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /
+slave-count = 4
 # 30*60
 idle-sleep = 1800
 max-tgz-age = 0
