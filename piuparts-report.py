@@ -413,6 +413,7 @@ class Config(piupartslib.conf.Config):
                 "upgrade-test-distros": None,
                 "max-reserved": 1,
                 "doc-root": "/",
+                "known-problem-directory": "@sharedir@/piuparts/known_problems",
             },
             defaults_section=defaults_section)
 

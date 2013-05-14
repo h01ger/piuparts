@@ -10,6 +10,7 @@ piuparts (0.51) UNRELEASED; urgency=low
   * piuparts.conf:
     - New global settings:
       + slave-count
+    - Use installation-dependent defaults for known-problem-directory.
   * distros.conf:
     - Update backports setup after integration into the regular archive.
     - Enable stable security updates when installing stable backports.

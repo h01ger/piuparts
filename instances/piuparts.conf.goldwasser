@@ -68,7 +68,6 @@ master-directory = /srv/piuparts.debian.org/master
 slave-directory = /srv/piuparts.debian.org/slave
 basetgz-directory = /srv/piuparts.debian.org/slave/basetgz
 output-directory = /srv/piuparts.debian.org/htdocs
-known-problem-directory = /srv/piuparts.debian.org/share/piuparts/known_problems
 backup-directory = /srv/piuparts.debian.org/backup
 tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /

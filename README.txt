@@ -657,6 +657,10 @@ section, too, and will serve as defaults for all other sections
  searched for dependencies that are not available in the current
  section if that describes a partial distro.
 
+* "known-problem-directory" is the path to the directory containing
+ definitions of known problems.
+ Default: "${prefix}/share/piuparts/known_problems"
+
 * "debug" tells the slave whether to log debug level messages. The
  value should be "yes" or "no", with the default being "no".
  piuparts itself currently always produces debug output and there

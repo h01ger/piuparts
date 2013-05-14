@@ -81,7 +81,7 @@ class WKE_Config( piupartslib.conf.Config ):
                 "sections": "report",
                 "output-directory": "html",
                 "master-directory": ".",
-                "known-problem-directory": None,
+                "known-problem-directory": "@sharedir@/piuparts/known_problems",
                 "proxy": None,
             }, "" )
 
