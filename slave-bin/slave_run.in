@@ -28,7 +28,7 @@ else
    SLAVENUM=$1
 fi
 
-if ! `echo $SLAVENUM | grep -E -e "^[0-9]{1}$" >/dev/null` ; then
+if ! $(echo $SLAVENUM | grep -E -e "^[0-9]{1}$" >/dev/null) ; then
    echo "slave must be identified as a number between 0 and 9"
    exit
 fi
