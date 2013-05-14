@@ -41,7 +41,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-05-14</b> Thanks to the new "hardware", piu-slave-bm-a is running four slaves now. And there are two new suites being tested: wheezy2jessie and wheezy2bpo2jessie - whoohoo! Plus, these slaves are also considerably faster then piatti.
+      <b>2013-05-14</b> Thanks to the new "hardware", piu-slave-bm-a is running four slaves now. Plus, these slaves are also considerably faster than piatti. And there are two new suites being tested: wheezy2jessie and wheezy2bpo2jessie - whoohoo!
      </td>
     </tr>
     <tr class="normalrow">
