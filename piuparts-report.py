@@ -121,9 +121,9 @@ HTML_HEADER = """
     <tr class="normalrow">
      <td class="contentcell">
       piuparts.d.o configuration:<br>
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=instances/piuparts.conf.pejacevic" target="_blank">piuparts.conf.pejacevic</a><br>
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=instances/piuparts.conf.piu-slave-bm-a" target="_blank">piuparts.conf.piu-slave-bm-a</a><br>
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=conf/distros.conf" target="_blank">distros.conf</a><br>
+      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=instances/piuparts.conf.pejacevic" target="_blank">piuparts.conf.pejacevic</a>,
+      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=instances/piuparts.conf.piu-slave-bm-a" target="_blank">.piu-slave-bm-a</a>,
+      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=conf/distros.conf" target="_blank">distros.conf</a> and
       <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=tree;f=custom-scripts" target="_blank">scripts</a>
      </td>
     </tr>
@@ -1378,7 +1378,7 @@ def main():
           INDEX_BODY = "".join(read_file(tpl))
           htmlpage = string.Template(HTML_HEADER + INDEX_BODY + HTML_FOOTER)
           write_file(os.path.join(output_directory,page+".html"), htmlpage.safe_substitute( {
-                                 "page_title": "About piuparts.d.o and News",
+                                 "page_title": "About piuparts.debian.org and News",
                                  "section_navigation": create_section_navigation(section_names,"sid",doc_root),
                                  "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                  "doc_root": doc_root,
