@@ -39,7 +39,7 @@ endef
 	$(placeholder_substitution)
 
 
-all: install install-doc
+all: build
 
 python_scripts	 = $(wildcard *.py piupartslib/*.py master-bin/*.py slave-bin/*.py)
 python_scripts	+= master-bin/detect_well_known_errors

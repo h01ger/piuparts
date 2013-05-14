@@ -12,6 +12,7 @@ piuparts (0.52) UNRELEASED; urgency=low
   * piuparts-analyze.py:
   * piuparts-report.py:
   * Makefile:
+    - Switch default target from 'install' to 'build'.
 
   [ Holger Levsen ]
   * piuparts-report: add links to Debian QA group and jenkins.debian.net in
