@@ -30,6 +30,8 @@ Depends:
  python-debian,
  ${misc:Depends},
  ${python:Depends}
+Recommends:
+ adequate
 Suggests:
  schroot
 Description: .deb package installation, upgrading, and removal testing tool

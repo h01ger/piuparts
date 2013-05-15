@@ -23,6 +23,9 @@ piuparts (0.52) UNRELEASED; urgency=low
   * piuparts.py: do not print a "Guessed: debian" line on every run. It's the
     default anyway. (Closes: #703058)
   * piuparts-slave.postrm: on purge, remove /var/cache/piuparts/tmp too.
+  * piuparts.py: Run adequate (if installed) after installation test. New
+    options --no-adequate and --fail-if-inadequate. (Closes: #703902)
+  * debian/control: add adequate to piuparts' recommends.
 
  -- Holger Levsen <holger@debian.org>  Wed, 15 May 2013 17:25:41 +0200
 

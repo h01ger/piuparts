@@ -181,12 +181,14 @@ class Settings:
         self.extra_old_packages = []
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
+        self.adequate = True
         self.check_broken_diversions = True
         self.check_broken_symlinks = True
         self.warn_broken_symlinks = True
         self.warn_on_others = False
         self.warn_on_leftovers_after_purge = False
         self.warn_on_debsums_errors = False
+        self.warn_if_inadequate = True
         self.pedantic_purge_test = False
         self.ignored_files = [
             # piuparts state
@@ -1233,6 +1235,18 @@ class Chroot:
             if not settings.warn_on_debsums_errors:
                 panic()
 
+    def check_adequate(self, packages):
+        if settings.adequate and os.path.isfile('/usr/bin/adequate'):
+            (status, output) = run(["adequate", "--root", self.name] + packages, ignore_errors=True)
+            if output:
+                if settings.warn_if_inadequate:
+                    logging.error("WARN: inadequate results from running adequate:\n%s" %
+                          indent_string(output.replace(self.name, "")))
+                else:
+                    logging.error("FAIL: inadequate results from running adequate:\n%s" %
+                          indent_string(output.replace(self.name, "")))
+                    panic()
+
     def list_paths_with_symlinks(self):
         file_owners = self.get_files_owned_by_packages()
         bad = []
@@ -1297,6 +1311,7 @@ class Chroot:
 
         self.list_paths_with_symlinks()
         self.check_debsums()
+        self.check_adequate(packages)
 
         # Run custom scripts before removing all packages.
         self.run_scripts("pre_remove")
@@ -2627,6 +2642,11 @@ def parse_command_line():
                       "'deb <URL> <distrib> <components>...' or 'deb file://</bind/mount> ./'," +
                       "plain URLs or local paths are permitted, too.")
 
+    parser.add_option("---no-adequate",
+                      default=False,
+                      action='store_true',
+                      help="Don't run adequate after installation.")
+
     parser.add_option("--no-diversions", action="store_true",
                       default=False,
                       help="Don't check for broken diversions.")
@@ -2739,6 +2759,10 @@ def parse_command_line():
                       help="Print a warning rather than failing if "
                            "debsums reports modified files.")
 
+    parser.add_option("--fail-if-inadequate",
+                      action="store_true", default=False,
+                      help="Fail on inadequate results from running adequate.")
+
     parser.add_option("--fail-on-broken-symlinks", action="store_true",
                       default=False,
                       help="Fail if broken symlinks are detected.")
@@ -2805,12 +2829,14 @@ def parse_command_line():
     [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
     settings.skip_cronfiles_test = opts.skip_cronfiles_test
     settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test
+    settings.adequate = not opts.no_adequate
     settings.check_broken_diversions = not opts.no_diversions
     settings.check_broken_symlinks = not opts.no_symlinks
     settings.warn_broken_symlinks = not opts.fail_on_broken_symlinks
     settings.warn_on_others = opts.warn_on_others
     settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
     settings.warn_on_debsums_errors = opts.warn_on_debsums_errors
+    settings.warn_if_inadequate = not opts.fail_if_inadequate
     settings.pedantic_purge_test = opts.pedantic_purge_test
     settings.ignored_files += opts.ignore
     settings.ignored_patterns += opts.ignore_regex
