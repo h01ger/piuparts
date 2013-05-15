@@ -121,8 +121,7 @@ HTML_HEADER = """
     <tr class="normalrow">
      <td class="contentcell">
       piuparts.d.o configuration:<br>
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=instances/piuparts.conf.pejacevic" target="_blank">piuparts.conf.pejacevic</a>,<br>
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=instances/piuparts.conf.piu-slave-bm-a" target="_blank">.piu-slave-bm-a</a>,<br>
+      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=instances/piuparts.conf.pejacevic" target="_blank">piuparts.conf</a>,<br>
       <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=conf/distros.conf" target="_blank">distros.conf</a><br> and
       <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=tree;f=custom-scripts" target="_blank">scripts</a>
      </td>
