@@ -172,6 +172,11 @@ HTML_HEADER = """
       <a href="http://udd.debian.org" target="_blank">Ultimate Debian Database</a>
      </td>
     </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="http://jenkins.debian.net" target="_blank">jenkins.debian.net</a>
+     </td>
+    </tr>
     <tr class="titlerow">
      <td class="titlecell">
       Last update

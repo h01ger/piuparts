@@ -1,3 +1,9 @@
+piuparts (0.52) UNRELEASED; urgency=low
+
+  * piuparts-report: add link to jenkins.debian.net in the left menu.
+
+ -- Holger Levsen <holger@debian.org>  Wed, 15 May 2013 17:25:41 +0200
+
 piuparts (0.51) unstable; urgency=low
 
   [ Andreas Beckmann ]
