@@ -67,7 +67,7 @@ piuparts (0.51) UNRELEASED; urgency=low
   * piuparts-slave.deb:
     - Restrict the ssh key added to master's authorized_keys to only run
       piuparts-master.
-  * slave_run: Support starting multiple concurrent slaves.
+  * slave_run: Support starting multiple concurrent slaves. (Closes: #678725)
   * Update and add new exceptions for buggy packages.
   * scripts-wheezy/post_setup_wheezy-fake-essential: New custom script to
     suppress some purge failures in wheezy.
