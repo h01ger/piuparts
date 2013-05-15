@@ -94,8 +94,6 @@ piuparts (0.51) UNRELEASED; urgency=low
     - Add to ignored_files:
       + /var/log/fontconfig.log (Closes: #703810) - Thanks to Hideki Yamane.
     - switch default Ubuntu distribution to "saucy".
-  * slave_run:
-    - Run slave_cleanup before starting the slave.
   * Bump Standards-Version to 3.9.4.
   * Use /srv/piuparts.debian.org/ on piatti.debian.org as per DSA policy.
   * Provide instance configuration for pejacevic.d.o and piu-slave-bm-a.d.o.
@@ -104,6 +102,8 @@ piuparts (0.51) UNRELEASED; urgency=low
     update-piuparts-master-setup and update-piuparts-slave-setup, drop
     update-piuparts-setup.
   * Drop instances/forward.* files.
+  * slave-bin/slave_run:
+    - Run slave_cleanup before starting the slave.
   * slave-bin/detect_slave_problems: remove check limiting this script to be
     run on piatti only.
   * master-bin/prepare_backup: also backup sources.txt.
