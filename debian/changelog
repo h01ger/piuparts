@@ -13,6 +13,9 @@ piuparts (0.52) UNRELEASED; urgency=low
   * piuparts-report.py:
   * Makefile:
     - Switch default target from 'install' to 'build'.
+  * scripts-no-usr-share-doc/post_setup_disable_usr_share_doc: New custom
+    script to instruct dpkg to skip installing most files in /usr/share/doc.
+    This should catch maintainer scripts relying on /usr/share/doc content.
 
   [ Holger Levsen ]
   * piuparts-report: add links to Debian QA group and jenkins.debian.net in

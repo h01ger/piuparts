@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	dpkg)
+		# skip while creating the tarball
+		exit 0
+		;;
+esac
+
+# clear out /usr/share/doc
+# but keep the directories (and symlinks) as well as the copyright files
+cat << EOF > /etc/dpkg/dpkg.cfg.d/piuparts-path-exclude
+path-exclude=/usr/share/doc/*/*
+path-include=/usr/share/doc/*/copyright
+EOF
