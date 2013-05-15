@@ -15,6 +15,8 @@ flags-base =
 	--scriptsdir /etc/piuparts/scripts
 # we need debsums from bpo-sloppy, until we have this, only emit warnings
 	--warn-on-debsums-errors
+# pejacevic's slaves are doing everything relevant on a ramdisk anyway
+	--no-eatmydata
 
 # default flags, only warning on leftover files
 flags-default =
@@ -40,8 +42,6 @@ flags-end-wheezy =
 
 # common flags for starting a test in squeeze
 flags-start-squeeze =
-# eatmydata was added post-squeeze
-	--no-eatmydata
 # up to squeeze a non-empty /etc/shells was shipped, actually installing
 # and removing a shell would remove its entry from /etc/shells
 	-i /etc/shells

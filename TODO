@@ -48,8 +48,6 @@ for 0.5x:
     /srv/piuparts.debian.org
   - (likewise that the slave logins as master, even with a restricted key...)
   - use mirror via nfs (faster)
-  - do not use eatmydata (we're using tmpfs in RAM anyway, so installing it
-    just slows things down)
 
 - re-read all documentation carefully and update were needed.
 
