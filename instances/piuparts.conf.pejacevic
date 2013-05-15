@@ -64,6 +64,7 @@ sections =
 	experimental
 	sid2experimental
 	sid
+	sid-nodoc
 	testing2sid
 	jessie
 	wheezy2jessie
@@ -126,6 +127,16 @@ distro = sid
 log-file = sid.log
 # 3 days (60*60*24*3)
 max-tgz-age = 259200
+
+
+[sid-nodoc]
+precedence = 100
+description = + Testing without files in /usr/share/doc.
+piuparts-flags =
+	%(flags-default)s
+	--scriptsdir /etc/piuparts/scripts-no-usr-share-doc
+distro = sid
+log-file = sid-nodoc.log
 
 
 [testing2sid]
