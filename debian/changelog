@@ -1,4 +1,4 @@
-piuparts (0.51) UNRELEASED; urgency=low
+piuparts (0.51) unstable; urgency=low
 
   [ Andreas Beckmann ]
   * Mark all python code as utf-8 encoded.
@@ -50,14 +50,12 @@ piuparts (0.51) UNRELEASED; urgency=low
     - Support empty master-command if the command is set in master's
       .ssh/authorized_keys file.
     - Change default basetgz name to {DISTRO}_{ARCH}.tar.gz.
-  * piuparts-analyze.py:
   * piuparts-report.py:
     - Skip sections that don't exist in piuparts.conf.
     - "Missing" binary packages don't influence the overall test result of a
       source package. These are either udebs or for other architectures.
       (Closes: #699160)
     - Report the correct version for binary packages.
-  * Makefile:
   * archive_old_logs:
     - Compress the archived logs.
   * detect_well_known_errors:
@@ -108,7 +106,7 @@ piuparts (0.51) UNRELEASED; urgency=low
     run on piatti only.
   * master-bin/prepare_backup: also backup sources.txt.
 
- -- Andreas Beckmann <anbe@debian.org>  Sat, 16 Mar 2013 00:14:13 +0100
+ -- Holger Levsen <holger@debian.org>  Wed, 15 May 2013 11:31:31 +0200
 
 piuparts (0.50) unstable; urgency=low
 
