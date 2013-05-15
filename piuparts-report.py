@@ -155,6 +155,11 @@ HTML_HEADER = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
+      <a href="http://wiki.debian.org/qa.debian.org" target="_blank">Debian QA Group</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
       <a href="http://edos.debian.net" target="_blank">EDOS tools</a>
      </td>
     </tr>
