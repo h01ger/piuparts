@@ -42,8 +42,6 @@ for 0.5x:
 
 - maybe compress all logfiles
 
-- move counts.txt from htdocs to master
-
 - notes from pejacevic setup:
   - the need for the symlink from /srv/piuparts.debian.org/etc/piuparts to
     /etc/piuparts is awkward when everything else is in 
@@ -55,7 +53,7 @@ for 0.5x:
 
 - re-read all documentation carefully and update were needed.
 
-- move counts.txt and sources.txt from htdocs to master
+- move counts.txt from htdocs to master
 
 
 for 0.6x:
