@@ -90,24 +90,24 @@ Any other webserver will do but apache is used on pejacevic (and maintained by D
 
 ----
 <VirtualHost *:80>
-        ServerName piuparts.debian.org
+	ServerName piuparts.debian.org
 
-        ServerAdmin debian-admin@debian.org
+	ServerAdmin debian-admin@debian.org
 
-        ErrorLog /var/log/apache2/piuparts.debian.org-error.log
-        CustomLog /var/log/apache2/piuparts.debian.org-access.log combined
+	ErrorLog /var/log/apache2/piuparts.debian.org-error.log
+	CustomLog /var/log/apache2/piuparts.debian.org-access.log combined
 
-        DocumentRoot /srv/piuparts.debian.org/htdocs
+	DocumentRoot /srv/piuparts.debian.org/htdocs
+	AddType text/plain log
 
-        DefaultType text/plain
-
-        HostnameLookups Off
-        UseCanonicalName Off
-        ServerSignature On
-        <IfModule mod_userdir.c>
-                UserDir disabled
-        </IfModule>
+	HostnameLookups Off
+	UseCanonicalName Off
+	ServerSignature On
+	<IfModule mod_userdir.c>
+        	UserDir disabled
+	</IfModule>
 </VirtualHost>
+# vim:set syn=apache:
 ----
 
 == Running piuparts
