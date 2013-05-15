@@ -93,6 +93,7 @@ piuparts (0.51) UNRELEASED; urgency=low
   * piuparts.py:
     - Add to ignored_files:
       + /var/log/fontconfig.log (Closes: #703810) - Thanks to Hideki Yamane.
+    - switch default Ubuntu distribution to "saucy".
   * slave_run:
     - Run slave_cleanup before starting the slave.
   * Bump Standards-Version to 3.9.4.

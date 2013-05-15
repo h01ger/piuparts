@@ -106,7 +106,7 @@ class UbuntuDefaults(Defaults):
         return [("http://archive.ubuntu.com/ubuntu", self.get_components())]
 
     def get_distribution(self):
-        return ["natty"]
+        return ["saucy"]
 
 
 class DefaultsFactory:
