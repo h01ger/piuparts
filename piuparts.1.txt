@@ -57,7 +57,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   Which Debian distribution to use: a code name (for example squeeze, wheezy or sid) or experimental. The default is sid (=unstable).
 
 *-D* 'flavor', *--defaults* 'flavor'::
-  Use default settings suitable for a particular flavor of Debian: either debian or ubuntu.
+  Use default settings suitable for a particular flavor of Debian: either debian or ubuntu. The default is debian.
 
 *--do-not-verify-signatures*::
   Do not verify signatures from the Release files when running debootstrap.

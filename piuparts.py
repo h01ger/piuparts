@@ -122,7 +122,6 @@ class DefaultsFactory:
     def new_defaults(self):
         if not settings.defaults:
             settings.defaults = self.guess_flavor()
-            print "Guessed:", settings.defaults
         if settings.defaults.lower() == "debian":
             return DebianDefaults()
         if settings.defaults.lower() == "ubuntu":
