@@ -84,6 +84,10 @@ mkdir -p slave slave/basetgz
 # to support multiple hosts with this setup
 cd etc/piuparts
 HOSTNAME=$(hostname)
+# if the hostname starts with piu-slave-bm (bm for bytemark) let's use the pejacevic config
+if [ ${HOSTNAME:0:12} = "piu-slave-bm" ] ; then
+	HOSTNAME="pejacevic"
+fi
 for f in piuparts.conf
 do
 	ln -sf $f.$HOSTNAME $f

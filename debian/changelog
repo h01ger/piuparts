@@ -17,6 +17,8 @@ piuparts (0.52) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * piuparts-report: add links to Debian QA group and jenkins.debian.net in
     the navigation menu on the left.
+  * update-piuparts-slave-setup: add crude hack to link piu-slave-bm to
+    pejacevic.
 
  -- Holger Levsen <holger@debian.org>  Wed, 15 May 2013 17:25:41 +0200
 
