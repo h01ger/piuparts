@@ -1,5 +1,5 @@
 #
-# This is the configuration file for piuparts running in master-slave mode on pejacevic.debian.org (as master)
+# This is the configuration file for piuparts running in master-slave mode on pejacevic.debian.org (as master) and piu-slave-bm-a.debian.org (as slave).
 #
 # For more information on this setup see http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob;f=README_pejacevic.txt
 #
