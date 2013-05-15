@@ -55,6 +55,8 @@ for 0.5x:
 
 - move counts.txt from htdocs to master
 
+- use /sys/fs/selinux from wheezy onwards - see #682068 for more info
+
 
 for 0.6x:
 
