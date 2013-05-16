@@ -20,8 +20,6 @@ for 0.5x:
   - slave.postinst should setup ~piupartsm/.ssh/authorized_keys using triggers
     dpkg-trigger piuparts-master-please-install-the-slave-key
     + the current method only works if -slave is configured after -master
-  - split /etc/piuparts/piuparts.conf in /etc/piuparts/master.conf and
-    /etc/piuparts/slave.conf
 
 - in maintainer view: sort buggy states up again
 
@@ -46,7 +44,6 @@ for 0.5x:
   - the need for the symlink from /srv/piuparts.debian.org/etc/piuparts to
     /etc/piuparts is awkward when everything else is in 
     /srv/piuparts.debian.org
-  - (likewise that the slave logins as master, even with a restricted key...)
   - use mirror via nfs (faster)
 
 - re-read all documentation carefully and update were needed.
