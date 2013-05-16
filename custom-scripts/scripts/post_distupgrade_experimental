@@ -9,14 +9,10 @@ test "$PIUPARTS_DISTRIBUTION" = "experimental" || exit 0
 # that are in experimental, too, and don't cause problems
 
 PKGS=""
-PKGS="$PKGS libc6"
-PKGS="$PKGS libstdc++6"
-PKGS="$PKGS gcc-4.7-base"
-PKGS="$PKGS ncurses-bin"
 PKGS="$PKGS libcomerr2 libss2"
-PKGS="$PKGS libsepol1"
-PKGS="$PKGS libsemanage1"
 PKGS="$PKGS perl-base"
-PKGS="$PKGS apt libapt-pkg4.12"
+PKGS="$PKGS libattr1"
+PKGS="$PKGS e2fslibs e2fsprogs"
+PKGS="$PKGS tzdata"
 
 apt-get -y -t experimental install $PKGS
