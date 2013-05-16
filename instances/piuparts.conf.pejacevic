@@ -63,9 +63,10 @@ flags-start-lenny =
 
 [global]
 sections =
+	experimental
+	sid2experimental
 	sid
 	testing2sid
-	sid2experimental
 	jessie
 	wheezy2jessie
 	wheezy2bpo2jessie
@@ -105,6 +106,15 @@ reschedule-old-count = 150
 expire-fail-days = 15
 reschedule-fail-days = 10
 reschedule-fail-count = 15
+
+
+[experimental]
+precedence = 100
+piuparts-flags =
+	%(flags-default)s
+distro = experimental
+depends-sections = sid
+log-file = experimental.log
 
 
 [sid]
