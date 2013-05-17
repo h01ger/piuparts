@@ -80,10 +80,12 @@ install-conf: build-stamp
 	install -d $(DESTDIR)$(etcdir)/cron.d
 	install -m 0644 conf/crontab-master $(DESTDIR)$(etcdir)/cron.d/piuparts-master
 	install -m 0644 conf/crontab-slave $(DESTDIR)$(etcdir)/cron.d/piuparts-slave
+	# disable shipped crontabs
 	sed -i -r '/^[^#]+/s/^/#/' $(DESTDIR)$(etcdir)/cron.d/piuparts-*
 
 	install -d $(DESTDIR)$(etcdir)/sudoers.d
 	install -m 440 conf/piuparts.sudoers $(DESTDIR)$(etcdir)/sudoers.d/piuparts
+	# disable shipped sudoers
 	sed -i -r '/^[^#]+/s/^/#/' $(DESTDIR)$(etcdir)/sudoers.d/piuparts
 
 	install -d $(DESTDIR)$(etcdir)/apache2/conf.d

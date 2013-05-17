@@ -8,11 +8,9 @@ wishlist!
 for 0.5x:
 
 - make piuparts-master + piuparts-slave packages work out-of-the-box:
-  - piuparts-slave.postrm purge: clean up /var/cache/piuparts/tmp/
-  - conf/piuparts.sudoers is only needed for slave package.
-  - ship sane minimal sudoers in p-s.deb than can be enabled by default do we
-    really need anything else than running piuparts and piuparts_slave_*
-    as root? No, we don't.
+  - enable sudoers.d/piuparts-slave in p-s.deb:
+    - there should be a high prio debconf question asking the user whether
+      to enable the slave and this sudoers config - defaulting to no.
   - the shipped crontabs are not suitable from cron.d/ due to missing user
     column - discuss this with DSA
   - verify that all scripts in $user/bin/ also work from master-slave packages
