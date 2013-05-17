@@ -22,6 +22,7 @@ piuparts (0.52) UNRELEASED; urgency=low
     the navigation menu on the left.
   * piuparts.py: do not print a "Guessed: debian" line on every run. It's the
     default anyway. (Closes: #703058)
+  * piuparts-slave.postrm: on purge, remove /var/cache/piuparts/tmp too.
 
  -- Holger Levsen <holger@debian.org>  Wed, 15 May 2013 17:25:41 +0200
 
