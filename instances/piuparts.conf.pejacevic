@@ -13,8 +13,6 @@ flags-base =
 	--warn-on-others
 # default exceptions
 	--scriptsdir /etc/piuparts/scripts
-# we need debsums from bpo-sloppy, until we have this, only emit warnings
-	--warn-on-debsums-errors
 # pejacevic's slaves are doing everything relevant on a ramdisk anyway
 	--no-eatmydata
 
