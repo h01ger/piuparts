@@ -365,6 +365,7 @@ linktarget_by_template = [
     ("db_setup_issue.tpl", "but logfile contains failure to setup a database"),
     ("installs_over_symlink_issue.tpl", "but package installs something over existing symlinks"),
     ("broken_symlinks_issue.tpl", "but logfile contains 'broken symlinks'"),
+    ("inadequate_issue.tpl", "but logfile contains inadequate issues"),
     ("packages_have_been_kept_back_issue.tpl", "but logfile contains 'packages have been kept back'"),
     ("needs_rebuild_issue.tpl", "but logfile recommends to rebuild some packages"),
     ("obsolete_conffiles_issue.tpl", "but logfile reports obsolete conffiles"),
@@ -398,6 +399,7 @@ linktarget_by_template = [
     ("logrotate_error_after_removal_error.tpl", "due to errors from logrotate after removal"),
     ("installs_over_symlink_error.tpl", "...and package installs something over existing symlinks"),
     ("broken_symlinks_error.tpl", "...and logfile also contains 'broken symlinks'"),
+    ("inadequate_error.tpl", "due to logfile containing inadequate errors"),
     ("obsolete_conffiles_error.tpl", "...and logfile reports obsolete conffiles"),
     ("unknown_failures.tpl", "due to unclassified failures"),
 ]

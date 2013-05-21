@@ -26,6 +26,8 @@ piuparts (0.52) UNRELEASED; urgency=low
   * piuparts.py: Run adequate (if installed) after installation test. New
     options --no-adequate and --fail-if-inadequate. (Closes: #703902)
   * debian/control: add adequate to piuparts' recommends.
+  * piuparts-report: add templates for known_problems/inadequate_issue and
+    inadequate_error.
 
  -- Holger Levsen <holger@debian.org>  Wed, 15 May 2013 17:25:41 +0200
 
