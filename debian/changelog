@@ -18,16 +18,17 @@ piuparts (0.52) UNRELEASED; urgency=low
     This should catch maintainer scripts relying on /usr/share/doc content.
 
   [ Holger Levsen ]
-  * piuparts-report: add links to Debian QA group and jenkins.debian.net in
-    the navigation menu on the left.
-  * piuparts.py: do not print a "Guessed: debian" line on every run. It's the
-    default anyway. (Closes: #703058)
-  * piuparts-slave.postrm: on purge, remove /var/cache/piuparts/tmp too.
-  * piuparts.py: Run adequate (if installed) after installation test. New
-    options --no-adequate and --fail-if-inadequate. (Closes: #703902)
-  * debian/control: add adequate to piuparts' recommends.
-  * piuparts-report: add templates for known_problems/inadequate_issue and
-    inadequate_error.
+  * piuparts.py:
+    - Run adequate (if installed) after installation test. New options
+      --no-adequate and --fail-if-inadequate. (Closes: #703902)
+    - Do not print a "Guessed: debian" line on every run. It's the default
+      anyway. (Closes: #703058)
+  * piuparts-report: 
+    - Add templates for known_problems/inadequate_issue and inadequate_error.
+    - Add links to Debian QA group and jenkins.debian.net in the navigation
+      menu on the left.
+  * debian/control: Add adequate to piuparts' recommends.
+  * piuparts-slave.postrm: Also remove /var/cache/piuparts/tmp on purge.
 
  -- Holger Levsen <holger@debian.org>  Wed, 15 May 2013 17:25:41 +0200
 
