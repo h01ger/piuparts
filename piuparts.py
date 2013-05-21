@@ -2642,7 +2642,7 @@ def parse_command_line():
                       "'deb <URL> <distrib> <components>...' or 'deb file://</bind/mount> ./'," +
                       "plain URLs or local paths are permitted, too.")
 
-    parser.add_option("---no-adequate",
+    parser.add_option("--no-adequate",
                       default=False,
                       action='store_true',
                       help="Don't run adequate after installation.")
