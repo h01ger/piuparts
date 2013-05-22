@@ -10,6 +10,7 @@ piuparts (0.52) UNRELEASED; urgency=low
   * piuparts-master-backend.py:
   * piuparts-slave.py:
   * piuparts-analyze.py:
+    - Consider archived bugs, too.  (Closes: #669966)
   * piuparts-report.py:
   * Makefile:
     - Switch default target from 'install' to 'build'.
