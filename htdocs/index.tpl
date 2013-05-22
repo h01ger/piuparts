@@ -31,7 +31,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      These pages are updated daily.
+      These pages are updated twice a day.
      </td>
     </tr>
     <tr class="titlerow">
