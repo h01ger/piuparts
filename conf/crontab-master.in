@@ -6,10 +6,10 @@
 @reboot @sharedir@/piuparts/master/master_cleanup
 
 #
-# create reports once a day
+# generate reports twice a day
 #  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
 #
-0  0 * * * @sharedir@/piuparts/master/generate_daily_report
+0  0,12 * * * @sharedir@/piuparts/master/generate_daily_report
 
 #
 # reschedule old logs twice a day
