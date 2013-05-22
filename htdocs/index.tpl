@@ -41,6 +41,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2013-05-22</b> There have been changes in the last week: debsums failures have been reenabled, adequate is now run by piuparts (see <a href="http://bugs.debian.org/703902" target="_blank">#703902</a>) and two new suites were added: <i>experimental</i> and <i>sid-nodoc</i>, which tests sid without files in /usr/share/doc/&lt;package&gt;.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2013-05-14</b> Thanks to the new "hardware", piu-slave-bm-a is running four slaves now. Plus, these slaves are also considerably faster than piatti. And there are two new suites being tested: wheezy2jessie and wheezy2bpo2jessie - whoohoo!
      </td>
     </tr>
