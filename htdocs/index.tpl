@@ -16,10 +16,6 @@
       It does this by  creating a minimal Debian installation in a chroot, and installing,
       upgrading, and removing packages in that environment, and comparing the state of the directory tree before and after.
       piuparts reports any files that have been added, removed, or modified during this process.
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell2">
       piuparts is meant as a quality assurance tool for people who create .deb packages to test them before they upload them to the Debian package archive. See the <a href="/doc/README.html" target="_blank">piuparts README</a> for a quick intro and then read the <a href="/doc/piuparts.1.html" target="_blank">piuparts manpage</a> to learn about all the fancy options!
      </td>
     </tr>
