@@ -26,8 +26,10 @@ piuparts (0.52) UNRELEASED; urgency=low
       anyway. (Closes: #703058)
   * piuparts-report: 
     - Add templates for known_problems/inadequate_issue and inadequate_error.
-    - Add links to Debian QA group and jenkins.debian.net in the navigation
-      menu on the left.
+    - Add link to the piuparts source at the top of the navigation menu on the
+      left.
+    - Add links to Debian QA group and jenkins.debian.net at the bottom of
+      that navigation menu.
   * debian/control: Add adequate to piuparts' recommends.
   * piuparts-slave.postrm: Also remove /var/cache/piuparts/tmp on purge.
 
