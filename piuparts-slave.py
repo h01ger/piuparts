@@ -35,10 +35,13 @@ import subprocess
 import fcntl
 import random
 import ConfigParser
+import apt_pkg
 
 import piupartslib.conf
 import piupartslib.packagesdb
 from piupartslib.conf import MissingSection
+
+apt_pkg.init_system()
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
@@ -683,6 +686,16 @@ class Section:
                     if pname in packages_files[distro]:
                         packages_files[distro][pname].dump(output)
                 output.write("\n")
+
+                if ret == 0:
+                    prev = "~"
+                    for distro in distros:
+                        if pname in packages_files[distro]:
+                            v = packages_files[distro][pname]["Version"]
+                            if not apt_pkg.version_compare(prev, v) <= 0:
+                                output.write("Upgrade to %s requires downgrade: %s > %s\n" % (distro, prev, v))
+                                ret = -10006
+                            prev = v
             else:
                 ret = -10010
         if ret != 0:
