@@ -466,7 +466,7 @@ def process_section( section, config, problem_list,
     workdirs = [ os.path.join(sectiondir,x) for x in KPR_DIRS ]
 
     if not os.access( sectiondir, os.F_OK ):
-        return
+        raise MissingSection( "", section )
 
     [os.mkdir(x) for x in workdirs if not os.path.exists(x)]
 
