@@ -1238,6 +1238,8 @@ class Chroot:
     def check_adequate(self, packages):
         if settings.adequate and os.path.isfile('/usr/bin/adequate'):
             (status, output) = run(["adequate", "--root", self.name] + packages, ignore_errors=True)
+            # ignore broken-symlinks - workaround #709372 in adequate
+            output = re.compile('^[^:]+: broken-symlink .*\n', re.MULTILINE).sub('', output)
             if output:
                 if settings.warn_if_inadequate:
                     logging.error("WARN: inadequate results from running adequate:\n%s" %

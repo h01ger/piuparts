@@ -23,6 +23,7 @@ piuparts (0.52) UNRELEASED; urgency=low
   * piuparts.py:
     - Run adequate (if installed) after installation test. New options
       --no-adequate and --fail-if-inadequate. (Closes: #703902)
+    - Workaround #709372 and ignore broken symlinks found by adequate.
     - Do not print a "Guessed: debian" line on every run. It's the default
       anyway. (Closes: #703058)
   * piuparts-report: 
