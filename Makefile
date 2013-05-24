@@ -6,7 +6,6 @@ man1dir = $(mandir)/man1
 man8dir = $(mandir)/man8
 libdir = $(prefix)/lib
 docdir = $(prefix)/share/doc/piuparts/
-site26 = $(libdir)/python2.6/dist-packages
 site27 = $(libdir)/python2.7/dist-packages
 htdocsdir	 = $(sharedir)/piuparts/htdocs
 etcdir = $(prefix)/etc
@@ -120,9 +119,7 @@ install: build-stamp
 	install -d $(DESTDIR)$(sharedir)/piuparts
 	install -m 0755 piuparts-slave piuparts-master piuparts-master-backend piuparts-report piuparts-analyze $(DESTDIR)$(sharedir)/piuparts/
 
-	install -d $(DESTDIR)$(site26)/piupartslib
 	install -d $(DESTDIR)$(site27)/piupartslib
-	install -m 0644 piupartslib/*.py $(DESTDIR)$(site26)/piupartslib/
 	install -m 0644 piupartslib/*.py $(DESTDIR)$(site27)/piupartslib/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts/lib

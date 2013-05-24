@@ -85,7 +85,7 @@ piuparts-command =
 	env PYTHONPATH=%(PYTHONPATH)s
 	timeout -s INT -k 5m 35m
 	/srv/piuparts.debian.org/sbin/piuparts
-PYTHONPATH = /srv/piuparts.debian.org/lib/python2.6/dist-packages:/srv/piuparts.debian.org/lib/python2.7/dist-packages
+PYTHONPATH = /srv/piuparts.debian.org/lib/python2.7/dist-packages
 master-directory = /srv/piuparts.debian.org/master
 slave-directory = /srv/piuparts.debian.org/slave
 basetgz-directory = /srv/piuparts.debian.org/slave/basetgz

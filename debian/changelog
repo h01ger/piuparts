@@ -11,6 +11,7 @@ piuparts (0.53) UNRELEASED; urgency=low
   * piuparts-analyze.py:
   * piuparts-report.py:
   * Makefile:
+    - Stop installing python modules in $libdir/python2.6/dist-packages.
 
   [ David Steele ]
   * Update python Requires to 2.7 (for argparse)
