@@ -142,13 +142,11 @@ class Problem():
         probbody = pb.read()
         pb.close()
 
-        re_obj = re.compile( "^([A-Z]+=)", re.MULTILINE )
-        tagged = re.sub( re_obj, "<hdr>\g<0>", probbody, 0 )
+        tagged = re.sub( "^([A-Z]+=)", "<hdr>\g<0>", probbody, 0, re.MULTILINE)
 
         for chub in re.split( '<hdr>', tagged )[1:]:
 
-            re_obj = re.compile( "=", re.MULTILINE )
-            (name,value) = re.split( re_obj, chub, 1 )
+            (name,value) = re.split( "=", chub, 1, re.MULTILINE )
 
             while value[-1] == '\n':
                 value = value[:-1]
