@@ -12,6 +12,9 @@ piuparts (0.53) UNRELEASED; urgency=low
   * piuparts-report.py:
   * Makefile:
 
+  [ David Steele ]
+  * Update python Requires to 2.7 (for argparse)
+
  -- Andreas Beckmann <anbe@debian.org>  Mon, 27 May 2013 18:24:27 +0200
 
 piuparts (0.52) unstable; urgency=low
