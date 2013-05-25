@@ -38,4 +38,4 @@ cd "$MASTER"
 
 trap "test -s ${LOGFILE} || rm -f ${LOGFILE}" EXIT
 
-@sharedir@/piuparts/piuparts-master-backend 2> "$LOGFILE"
+timeout 15m @sharedir@/piuparts/piuparts-master-backend 2> "$LOGFILE"

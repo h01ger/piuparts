@@ -7,6 +7,8 @@ piuparts (0.52) UNRELEASED; urgency=low
   * distros.conf:
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:
+  * piuparts-master.in:
+    - Use timeout to prevent master from getting stuck.  (Closes: #701618)
   * piuparts-master-backend.py:
   * piuparts-slave.py:
     - Report upgrade tests involving downgrades as untestable.
