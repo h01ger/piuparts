@@ -2274,12 +2274,12 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
         if not check_results(chroot, chroot_state_with_deps, file_owners, deps_info=deps_info):
             return False
         logging.info("Reinstalling after purge")
-        chroot.install_packages(package_files, packages)
+        chroot.install_packages(package_files, packages, with_scripts=True)
 
     if settings.install_remove_install:
         chroot.remove_packages(packages)
         logging.info("Reinstalling after remove")
-        chroot.install_packages(package_files, packages)
+        chroot.install_packages(package_files, packages, with_scripts=True)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
