@@ -1,0 +1,28 @@
+To: submit@bugs.debian.org
+Subject: postinst uses /usr/share/doc content (Policy 12.3)
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+a test with piuparts revealed that your package uses files from
+/usr/share/doc in its maintainer scripts which is a violation of
+Policy 12.3: "Packages must not require the existence of any files in
+/usr/share/doc/ in order to function."
+http://www.debian.org/doc/debian-policy/ch-docs.html#s12.3
+
+These files must be moved to /usr/share/$PACKAGE and may be symlinked
+from /usr/share/doc/$PACKAGE.
+
+This piuparts test prevents the installation of (most) files into
+/usr/share/doc with 'dpkg --path-exclude=...'.
+
+From the attached log (scroll to the bottom...):
+
+
+
+Cheers,

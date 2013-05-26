@@ -21,6 +21,7 @@ piuparts (0.52) UNRELEASED; urgency=low
   * scripts-no-usr-share-doc/post_setup_disable_usr_share_doc: New custom
     script to instruct dpkg to skip installing most files in /usr/share/doc.
     This should catch maintainer scripts relying on /usr/share/doc content.
+  * New bug template: postinst_uses_usr_share_doc.
   * piuparts-master.deb:
     - Switch Depends: python-rpy to Depends: python-rpy2. (Closes: #705975)
 
