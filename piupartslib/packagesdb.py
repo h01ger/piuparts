@@ -35,6 +35,7 @@ import time
 import UserDict
 import apt_pkg
 
+import piupartslib
 from piupartslib.dependencyparser import DependencyParser
 
 apt_pkg.init_system()
@@ -156,9 +157,17 @@ class Package(UserDict.UserDict):
 
 class PackagesFile(UserDict.UserDict):
 
-    def __init__(self, input):
+    def __init__(self, input=None):
         UserDict.UserDict.__init__(self)
-        self._read_file(input)
+        if input is not None:
+            self._read_file(input)
+
+    def load_packages_urls(self, urls):
+        for url in urls:
+            logging.debug("Fetching %s" % url)
+            stream = piupartslib.open_packages_url(url)
+            self._read_file(stream)
+            stream.close()
 
     def _read_file(self, input):
         """Parse a Packages file and add its packages to us-the-dict"""
@@ -365,6 +374,12 @@ class PackagesDB:
 
     def get_mtime(self):
         return max([os.path.getmtime(sdir) for sdir in self._all])
+
+    def load_packages_urls(self, urls):
+        pf = PackagesFile()
+        pf.load_packages_urls(urls)
+        self._packages_files.append(pf)
+        self._packages = None
 
     def read_packages_file(self, input):
         self._packages_files.append(PackagesFile(input))

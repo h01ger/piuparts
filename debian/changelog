@@ -9,6 +9,7 @@ piuparts (0.53) UNRELEASED; urgency=low
     - Define wheezy-proposed and squeeze-proposed.
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:
+    - Add load_packages_urls() methods.
   * piuparts-master-backend.py:
   * piuparts-slave.py:
   * piuparts-analyze.py:
