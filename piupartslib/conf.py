@@ -157,11 +157,17 @@ class DistroConfig(UserDict.UserDict):
                 self.get_distribution(distro),
                 area, arch)
 
+    def get_packages_urls(self, distro, area, arch):
+        return [self.get_packages_url(distro, area, arch)]
+
     def get_sources_url(self, distro, area):
         return "%s/dists/%s/%s/source/Sources.bz2" % (
                 self.get_mirror(distro),
                 self.get_distribution(distro),
                 area)
+
+    def get_sources_urls(self, distro, area):
+        return [self.get_sources_url(distro, area)]
 
     def get_target_flags(self, distro):
         tr = self.get(distro, "target-release")
