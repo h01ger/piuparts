@@ -620,13 +620,11 @@ class Section:
         self._binary_db.compute_package_states()
         self._binary_db.calc_rrdep_counts()
 
-        sources_url = self._distro_config.get_sources_url(
-                self._config.get_distro(), self._config.get_area())
-        logging.info("Fetching %s" % sources_url)
-        sources_file = piupartslib.open_packages_url(sources_url)
         self._source_db = piupartslib.packagesdb.PackagesDB()
-        self._source_db.read_packages_file(sources_file)
-        sources_file.close()
+        self._source_db.load_packages_urls(
+                self._distro_config.get_sources_urls(
+                    self._config.get_distro(),
+                    self._config.get_area()))
 
         self._log_name_cache = {}
 
@@ -654,20 +652,19 @@ class Section:
         else:
             # only cache the big base databases that don't have additional dependencies
             self._packagedb_cache[section] = db
-        packages_url = self._distro_config.get_packages_url(
-                config.get_distro(), config.get_area(), config.get_arch())
-        logging.info("Fetching %s" % packages_url)
-        packages_file = piupartslib.open_packages_url(packages_url)
-        db.read_packages_file(packages_file)
-        packages_file.close()
+        db.load_packages_urls(
+                self._distro_config.get_packages_urls(
+                    config.get_distro(),
+                    config.get_area(),
+                    config.get_arch()))
         if config.get_distro() != config.get_final_distro():
             # take version numbers (or None) from final distro
-            packages_url = self._distro_config.get_packages_url(
-                    config.get_final_distro(), config.get_area(), config.get_arch())
-            logging.info("Fetching %s" % packages_url)
-            packages_file = piupartslib.open_packages_url(packages_url)
-            db2 = piupartslib.packagesdb.PackagesFile(packages_file)
-            packages_file.close()
+            db2 = piupartslib.packagesdb.PackagesFile()
+            db2.load_packages_urls(
+                self._distro_config.get_packages_urls(
+                    config.get_final_distro(),
+                    config.get_area(),
+                    config.get_arch()))
             for package in db.get_all_packages():
                 if package["Package"] in db2:
                     package["Version"] = db2[package["Package"]]["Version"]
@@ -1189,8 +1186,9 @@ class Section:
 
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell2\" colspan=\"2\">%d</td></tr>\n" % total_packages
         htmlpage = string.Template(HTML_HEADER + SECTION_INDEX_BODY_TEMPLATE + HTML_FOOTER)
-        packages_url = self._distro_config.get_packages_url(
-                self._config.get_distro(), self._config.get_area(), self._config.get_arch())
+        # FIXME: list all urls instead of just one
+        packages_url = self._distro_config.get_packages_urls(
+                self._config.get_distro(), self._config.get_area(), self._config.get_arch())[0]
         vendor = "Debian"
         if len(self._config.get_distros()) > 1:
             description = "%s %s: package installation in %s" % (

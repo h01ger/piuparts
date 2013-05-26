@@ -206,20 +206,19 @@ class Master(Protocol):
             for dep in deps:
                 self._load_package_database(dep)
             db.set_dependency_databases([self._package_databases[dep] for dep in deps])
-        packages_url = distro_config.get_packages_url(
-                config.get_distro(), config.get_area(), config.get_arch())
-        logging.info("Fetching %s" % packages_url)
-        packages_file = piupartslib.open_packages_url(packages_url)
-        db.read_packages_file(packages_file)
-        packages_file.close()
+        db.load_packages_urls(
+                distro_config.get_packages_urls(
+                    config.get_distro(),
+                    config.get_area(),
+                    config.get_arch()))
         if config.get_distro() != config.get_final_distro():
             # take version numbers (or None) from final distro
-            packages_url = distro_config.get_packages_url(
-                    config.get_final_distro(), config.get_area(), config.get_arch())
-            logging.info("Fetching %s" % packages_url)
-            packages_file = piupartslib.open_packages_url(packages_url)
-            db2 = piupartslib.packagesdb.PackagesFile(packages_file)
-            packages_file.close()
+            db2 = piupartslib.packagesdb.PackagesFile()
+            db2.load_packages_urls(
+                distro_config.get_packages_urls(
+                    config.get_final_distro(),
+                    config.get_area(),
+                    config.get_arch()))
             for package in db.get_all_packages():
                 if package["Package"] in db2:
                     package["Version"] = db2[package["Package"]]["Version"]

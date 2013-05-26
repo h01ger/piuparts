@@ -485,14 +485,11 @@ def process_section(section, config, problem_list,
 
         sectiondir = os.path.join(config['master-directory'], section)
         pkgsdb = piupartslib.packagesdb.PackagesDB(prefix=sectiondir)
-
-        pkgs_url = distro_config.get_packages_url(
-                   section_config.get_distro(),
-                   section_config.get_area(),
-                   section_config.get_arch())
-        pkg_fl = piupartslib.open_packages_url(pkgs_url)
-        pkgsdb.read_packages_file(pkg_fl)
-        pkg_fl.close()
+        pkgsdb.load_packages_urls(
+                distro_config.get_packages_urls(
+                    section_config.get_distro(),
+                    section_config.get_area(),
+                    section_config.get_arch()))
 
         pkgsdb.compute_package_states()
         pkgsdb.calc_rrdep_counts()

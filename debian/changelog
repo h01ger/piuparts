@@ -10,6 +10,9 @@ piuparts (0.53) UNRELEASED; urgency=low
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:
     - Add load_packages_urls() methods.
+  * piuparts-{master-backend,slave,report}.py:
+    - Switch to load_*_urls(get_*_urls()) for loading Packages/Sources files,
+      adding support for arbitrarily composed virtual distros.
   * piuparts-master-backend.py:
   * piuparts-slave.py:
   * piuparts-analyze.py:

@@ -580,12 +580,13 @@ class Section:
         for distro in [self._config.get_distro()] + self._config.get_distros():
             if distro not in packages_files:
                 try:
-                    packages_url = self._distro_config.get_packages_url(
-                            distro, self._config.get_area(), self._config.get_arch())
-                    logging.debug("Fetching %s" % packages_url)
-                    f = piupartslib.open_packages_url(packages_url)
-                    packages_files[distro] = piupartslib.packagesdb.PackagesFile(f)
-                    f.close()
+                    pf = piupartslib.packagesdb.PackagesFile()
+                    pf.load_packages_urls(
+                            self._distro_config.get_packages_urls(
+                                distro,
+                                self._config.get_area(),
+                                self._config.get_arch()))
+                    packages_files[distro] = pf
                 except IOError:
                     logging.error("failed to fetch packages file for %s" % distro)
                     self._error_wait_until = time.time() + 900
