@@ -19,7 +19,7 @@ if [ "$1" = "purge" ] ; then
     rm -rf /var/cache/piuparts/basetgz/*.tar.gz
 
     # rm -rf is safe if it's not mounted anymore
-    mount | grep -q /var/cache/piuparts/tmp || rm -rf /var/cache/piuparts/tmp
+    mount | grep -q /var/cache/piuparts/tmp || rm -rf --one-file-system /var/cache/piuparts/tmp
     rmdir /var/cache/piuparts 2>/dev/null || true
 fi
 
