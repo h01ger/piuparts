@@ -20,7 +20,7 @@ piuparts (0.52) UNRELEASED; urgency=low
     script to instruct dpkg to skip installing most files in /usr/share/doc.
     This should catch maintainer scripts relying on /usr/share/doc content.
   * piuparts-master.deb:
-    - Switch Depends: python-rpy to Depends: python-rpy2.
+    - Switch Depends: python-rpy to Depends: python-rpy2. (Closes: #705975)
 
   [ Holger Levsen ]
   * piuparts.py:
