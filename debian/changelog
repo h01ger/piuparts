@@ -8,6 +8,7 @@ piuparts (0.53) UNRELEASED; urgency=low
       distro.
     - Define wheezy-proposed and squeeze-proposed.
   * piupartslib/conf.py:
+    - Add get_{packages,sources}_urls() that resolve "candidates".
   * piupartslib/packagesdb.py:
     - Add load_packages_urls() methods.
   * piuparts-{master-backend,slave,report}.py:

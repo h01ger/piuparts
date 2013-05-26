@@ -121,6 +121,7 @@ class DistroConfig(UserDict.UserDict):
                 "components": None,
                 "target-release": None,
                 "depends": None,
+                "candidates": None,
             }
         cp = ConfigParser.SafeConfigParser()
         cp.read(filename)
@@ -151,23 +152,28 @@ class DistroConfig(UserDict.UserDict):
             distro = self._expand_depends(distro)[0]
         return self.get(distro, "distribution") or distro
 
-    def get_packages_url(self, distro, area, arch):
+    def get_candidates(self, distro):
+        return (self.get(distro, "candidates") or "").split() or [distro]
+
+    def _get_packages_url(self, distro, area, arch):
         return "%s/dists/%s/%s/binary-%s/Packages.bz2" % (
                 self.get_mirror(distro),
                 self.get_distribution(distro),
                 area, arch)
 
     def get_packages_urls(self, distro, area, arch):
-        return [self.get_packages_url(distro, area, arch)]
+        return [self._get_packages_url(d, area, arch)
+                for d in self.get_candidates(distro)]
 
-    def get_sources_url(self, distro, area):
+    def _get_sources_url(self, distro, area):
         return "%s/dists/%s/%s/source/Sources.bz2" % (
                 self.get_mirror(distro),
                 self.get_distribution(distro),
                 area)
 
     def get_sources_urls(self, distro, area):
-        return [self.get_sources_url(distro, area)]
+        return [self._get_sources_url(d, area)
+                for d in self.get_candidates(distro)]
 
     def get_target_flags(self, distro):
         tr = self.get(distro, "target-release")
