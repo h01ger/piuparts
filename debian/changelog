@@ -4,6 +4,9 @@ piuparts (0.53) UNRELEASED; urgency=low
   * piuparts.py:
   * piuparts.conf:
   * distros.conf:
+    - Add "candidates" key to merge multiple Packages files into one virtual
+      distro.
+    - Define wheezy-proposed and squeeze-proposed.
   * piupartslib/conf.py:
   * piupartslib/packagesdb.py:
   * piuparts-master-backend.py:
