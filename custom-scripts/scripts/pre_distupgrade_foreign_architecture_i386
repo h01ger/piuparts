@@ -24,6 +24,7 @@ esac
 case ${PIUPARTS_OBJECTS%%=*} in
 	ia32-libs|ia32-libs-gtk)  go=yes ;;
 	*wine*)  go=yes ;;
+	education-thin-client-server|education-workstation)  go=yes ;;
 esac
 
 test -n "$go" || exit 0
