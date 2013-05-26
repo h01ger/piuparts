@@ -157,10 +157,8 @@ class Package(UserDict.UserDict):
 
 class PackagesFile(UserDict.UserDict):
 
-    def __init__(self, input=None):
+    def __init__(self):
         UserDict.UserDict.__init__(self)
-        if input is not None:
-            self._read_file(input)
 
     def load_packages_urls(self, urls):
         for url in urls:
@@ -379,10 +377,6 @@ class PackagesDB:
         pf = PackagesFile()
         pf.load_packages_urls(urls)
         self._packages_files.append(pf)
-        self._packages = None
-
-    def read_packages_file(self, input):
-        self._packages_files.append(PackagesFile(input))
         self._packages = None
 
     def set_dependency_databases(self, dependency_databases=[]):
