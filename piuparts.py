@@ -1236,7 +1236,7 @@ class Chroot:
                 panic()
 
     def check_adequate(self, packages):
-        if settings.adequate and os.path.isfile('/usr/bin/adequate'):
+        if packages and settings.adequate and os.path.isfile('/usr/bin/adequate'):
             (status, output) = run(["adequate", "--root", self.name] + packages, ignore_errors=True)
             # ignore broken-symlinks - workaround #709372 in adequate
             output = re.compile('^[^:]+: broken-symlink .*\n', re.MULTILINE).sub('', output)
@@ -1289,6 +1289,8 @@ class Chroot:
         """Restore package selections in a chroot to the state in
         'selections'."""
 
+        should_be_installed = [p.split("=", 1)[0].strip()
+                for p in packages if not p.endswith("=None")]
         packages = [p.split("=", 1)[0].strip() for p in packages]
 
         changes = diff_selections(self, selections)
@@ -1313,7 +1315,7 @@ class Chroot:
 
         self.list_paths_with_symlinks()
         self.check_debsums()
-        self.check_adequate(packages)
+        self.check_adequate(should_be_installed)
 
         # Run custom scripts before removing all packages.
         self.run_scripts("pre_remove")
