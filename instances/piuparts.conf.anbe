@@ -21,6 +21,12 @@ flags-end-wheezy =
 	--warn-on-debsums-errors
 	--scriptsdir /etc/piuparts/scripts-wheezy
 
+flags-start-squeeze =
+	-i /etc/shells
+flags-end-squeeze =
+	--warn-on-debsums-errors
+	--scriptsdir /etc/piuparts/scripts-squeeze
+
 
 [global]
 # sections may be wrapped with continuation lines being indented
@@ -29,14 +35,17 @@ sections =
 	sid/main
 	jessie/main
 	wheezy/main
+	squeeze/main
 #
 	sid/contrib
 	jessie/contrib
 	wheezy/contrib
+	squeeze/contrib
 #
 	sid/non-free
 	jessie/non-free
 	wheezy/non-free
+	squeeze/non-free
 #
 proxy = http://localhost:3128
 #
@@ -172,6 +181,41 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = wheezy/main wheezy/contrib
 distro = wheezy
+arch = amd64
+area = non-free
+
+
+[squeeze/main]
+precedence = 10
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+distro = squeeze
+arch = amd64
+area = main
+# 60*60*24*30
+max-tgz-age = 2592000
+
+[squeeze/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze/main squeeze/non-free
+distro = squeeze
+arch = amd64
+area = contrib
+
+[squeeze/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze/main squeeze/contrib
+distro = squeeze
 arch = amd64
 area = non-free
 
