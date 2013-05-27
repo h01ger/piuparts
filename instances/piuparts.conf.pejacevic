@@ -97,18 +97,18 @@ slave-count = 4
 # 30*60
 idle-sleep = 1800
 max-tgz-age = 0
-max-reserved = 50
+max-reserved = 100
 # rescheduling settings
 expire-old-days = 120
 reschedule-old-days = 90
-reschedule-old-count = 150
+reschedule-old-count = 250
 expire-fail-days = 15
 reschedule-fail-days = 10
-reschedule-fail-count = 15
+reschedule-fail-count = 25
 
 
 [experimental]
-precedence = 100
+precedence = 5
 piuparts-flags =
 	%(flags-default)s
 distro = experimental
