@@ -16,6 +16,11 @@ flags-leftovers =
 	%(flags-base)s
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
+flags-start-wheezy =
+flags-end-wheezy =
+	--warn-on-debsums-errors
+	--scriptsdir /etc/piuparts/scripts-wheezy
+
 
 [global]
 # sections may be wrapped with continuation lines being indented
@@ -23,12 +28,15 @@ flags-leftovers =
 sections =
 	sid/main
 	jessie/main
+	wheezy/main
 #
 	sid/contrib
 	jessie/contrib
+	wheezy/contrib
 #
 	sid/non-free
 	jessie/non-free
+	wheezy/non-free
 #
 proxy = http://localhost:3128
 #
@@ -128,6 +136,41 @@ precedence = 45
 piuparts-flags =
 	%(flags-default)s
 depends-sections = jessie/main jessie/contrib
+distro = wheezy
+arch = amd64
+area = non-free
+
+
+[wheezy/main]
+precedence = 10
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+distro = wheezy
+arch = amd64
+area = main
+# 60*60*24*30
+max-tgz-age = 2592000
+
+[wheezy/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy/main wheezy/non-free
+distro = wheezy
+arch = amd64
+area = contrib
+
+[wheezy/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy/main wheezy/contrib
 distro = wheezy
 arch = amd64
 area = non-free
