@@ -7,11 +7,13 @@ piuparts_slave_run - start up piuparts-slave instance(s) in screen
 
 SYNOPSIS
 --------
-*piuparts_slave_run*
+*piuparts_slave_run* ['SLAVE-NUMBERS']
 
 DESCRIPTION
 -----------
-*piuparts_slave_run* runs piuparts-slave instance(s) in screen which run *piuparts* tests which test whether Debian packages handle installation, upgrading, and removal correctly.
+*piuparts_slave_run* runs piuparts-slave instance(s) in *screen* which run *piuparts* tests which test whether Debian packages handle installation, upgrading, and removal correctly.
+
+By default, *piuparts_slave_run* will start the number of slaves specified by the 'slave-count' parameter in the piuparts.conf file. If 'slave-count' is not defined, a single slave will be started. If a single argument is supplied to *piuparts_slave_run*, consisting of a space-separated list of numbers between 1 and 'slave-count', only those slaves will be started.
 
 OPTIONS
 -------
@@ -35,7 +37,7 @@ Make sure to also read */usr/share/doc/piuparts-master/README_server.txt*.
 
 SEE ALSO
 --------
-*piuparts*(1), *piuparts_slave_join*(8)
+*piuparts*(1), *piuparts_slave_join*(8), *screen*(1)
 
 AUTHOR
 ------
