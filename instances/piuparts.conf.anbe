@@ -1,0 +1,70 @@
+#
+# This is the configuration file for piuparts in master-slave mode as run by AnBe.
+#
+
+[DEFAULT]
+flags-base =
+	--skip-logrotatefiles-test
+	--warn-on-others
+	--no-eatmydata
+	--scriptsdir /etc/piuparts/scripts
+
+flags-default =
+	%(flags-base)s
+	--warn-on-leftovers-after-purge
+flags-leftovers =
+	%(flags-base)s
+	--scriptsdir /etc/piuparts/scripts-leftovers
+
+
+[global]
+# sections may be wrapped with continuation lines being indented
+# and may contain non-indented comments between continuation lines
+sections =
+#
+#
+#
+proxy = http://localhost:3128
+#
+mirror = http://ftp.de.debian.org/debian
+#
+master-host = localhost
+#
+master-user = piupartsm
+master-command = /srv/piuparts/share/piuparts/piuparts-master
+piuparts-command =
+	sudo
+	nice
+	env PYTHONPATH=%(PYTHONPATH)s
+	timeout -s INT -k 5m 30m
+	/srv/piuparts/sbin/piuparts
+PYTHONPATH = /srv/piuparts/lib/python2.7/dist-packages
+master-directory = /srv/piuparts/master
+slave-directory = /srv/piuparts/slave
+basetgz-directory = /srv/piuparts/slave/basetgz
+output-directory = /srv/piuparts/htdocs
+backup-directory = /srv/piuparts/backup
+tmpdir = /tmp/piupartss
+slave-load-max = 9.5
+idle-sleep = 1800
+max-tgz-age = 0
+max-reserved = 50
+reschedule-untestable-days = 3
+expire-old-days = 120
+reschedule-old-days = 90
+reschedule-old-count = 1000
+expire-fail-days = 8
+reschedule-fail-days = 5
+reschedule-fail-count = 100
+
+
+############################################################################
+###  Install, remove, and purge tests.                                   ###
+############################################################################
+
+
+
+############################################################################
+###  Install, distupgrade, remove, and purge tests.                      ###
+############################################################################
+
