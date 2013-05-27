@@ -32,16 +32,19 @@ flags-end-squeeze =
 # sections may be wrapped with continuation lines being indented
 # and may contain non-indented comments between continuation lines
 sections =
+	experimental/main
 	sid/main
 	jessie/main
 	wheezy/main
 	squeeze/main
 #
+	experimental/contrib
 	sid/contrib
 	jessie/contrib
 	wheezy/contrib
 	squeeze/contrib
 #
+	experimental/non-free
 	sid/non-free
 	jessie/non-free
 	wheezy/non-free
@@ -84,6 +87,40 @@ reschedule-fail-count = 100
 ############################################################################
 ###  Install, remove, and purge tests.                                   ###
 ############################################################################
+
+
+[experimental/main]
+precedence = 40
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid/main
+distro = experimental
+arch = amd64
+area = main
+reschedule-old-days = 30
+expire-old-days = 45
+
+[experimental/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+depends-sections = experimental/main sid/main sid/contrib sid/non-free
+distro = experimental
+arch = amd64
+area = contrib
+reschedule-old-days = 30
+expire-old-days = 45
+
+[experimental/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+depends-sections = experimental/main sid/main sid/contrib sid/non-free
+distro = experimental
+arch = amd64
+area = non-free
+reschedule-old-days = 30
+expire-old-days = 45
 
 
 [sid/main]
