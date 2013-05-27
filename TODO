@@ -9,7 +9,7 @@ for 0.5x:
 
 - make piuparts-master + piuparts-slave packages work with documented steps:
   - do not enable sudoers.d/piuparts-slave in p-s.deb, neither the cronjobs.
-    - this is manual work one has done once after installation. we should 
+    - this is manual work one has done once after installation. we should
       whats needs to be done how.
   - the shipped crontabs are not suitable from cron.d/ due to missing user
     column -> provide instructions how to install them as piuparts(s|m) user
@@ -22,6 +22,7 @@ for 0.5x:
     - maybe do this manually again as well?
 
 - in maintainer view: sort buggy states up again
+  - sort packages on maintainer pages alphabetically (states first though)
 
 - more stats and graphs:
   - packages processed per day (in total and per slave)
@@ -42,7 +43,7 @@ for 0.5x:
 
 - notes from pejacevic setup:
   - the need for the symlink from /srv/piuparts.debian.org/etc/piuparts to
-    /etc/piuparts is awkward when everything else is in 
+    /etc/piuparts is awkward when everything else is in
     /srv/piuparts.debian.org
   - use mirror via nfs (faster)
 
@@ -127,7 +128,6 @@ for 0.7x and later:
     now (piuparts-analyze.py is an existing "fragment".)
   - RSS feeds of logs
   - do more fancy R graphs, eg. also per state
-  - sort packages on maintainer pages alphabetically (states first though)
   - link (and target) to piuparts.d.o configuration is static to pejacevic. should
     refer to the actual hosts configuration if running somewhere else
 

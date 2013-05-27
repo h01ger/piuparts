@@ -104,7 +104,7 @@ Any other webserver will do but apache is used on pejacevic (and maintained by D
 	UseCanonicalName Off
 	ServerSignature On
 	<IfModule mod_userdir.c>
-        	UserDir disabled
+		UserDir disabled
 	</IfModule>
 </VirtualHost>
 # vim:set syn=apache:

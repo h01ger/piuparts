@@ -2,7 +2,7 @@ piuparts (0.52) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
-    - Really disable PDiffs. (Closes: #708241)
+    - Really disable PDiffs.  (Closes: #708241)
   * piuparts.conf:
   * distros.conf:
   * piupartslib/conf.py:
@@ -16,7 +16,8 @@ piuparts (0.52) UNRELEASED; urgency=low
   * piuparts-analyze.py:
     - Consider archived bugs, too.  (Closes: #669966)
   * piuparts-report.py:
-    - Switch from python-rpy to python-rpy2. Use a noninteractive grDevice.
+    - Switch from python-rpy to python-rpy2.  (Closes: #705975)
+    - rpy2: Use a noninteractive grDevice.
   * Makefile:
     - Switch default target from 'install' to 'build'.
   * scripts-no-usr-share-doc/post_setup_disable_usr_share_doc: New custom
@@ -24,7 +25,7 @@ piuparts (0.52) UNRELEASED; urgency=low
     This should catch maintainer scripts relying on /usr/share/doc content.
   * New bug template: postinst_uses_usr_share_doc.
   * piuparts-master.deb:
-    - Switch Depends: python-rpy to Depends: python-rpy2. (Closes: #705975)
+    - Switch Depends: python-rpy to Depends: python-rpy2.
 
   [ Holger Levsen ]
   * piuparts.py:
@@ -33,7 +34,7 @@ piuparts (0.52) UNRELEASED; urgency=low
     - Workaround #709372 and ignore broken symlinks found by adequate.
     - Do not print a "Guessed: debian" line on every run. It's the default
       anyway. (Closes: #703058)
-  * piuparts-report: 
+  * piuparts-report:
     - Add templates for known_problems/inadequate_issue and inadequate_error.
     - Add link to the piuparts source at the top of the navigation menu on the
       left.
@@ -112,7 +113,7 @@ piuparts (0.51) unstable; urgency=low
   * piuparts-slave.deb:
     - Restrict the ssh key added to master's authorized_keys to only run
       piuparts-master.
-  * slave_run: Support starting multiple concurrent slaves. (Closes: #678725)
+  * slave_run: Support starting multiple concurrent slaves.  (Closes: #678725)
   * Update and add new exceptions for buggy packages.
   * scripts-wheezy/post_setup_wheezy-fake-essential: New custom script to
     suppress some purge failures in wheezy.
@@ -317,7 +318,7 @@ piuparts (0.49) unstable; urgency=low
     - Add --testdebs-repo=<sources.list line> option. Provide the package(s)
       to be tested (and additional dependencies that are not yet in the
       archive) in a repository to enable dependency resolution with apt-get.
-      Use for complex install and upgrade scenarios.
+      Use for complex install and upgrade scenarios.  (Closes: #676694)
     - Add --distupgrade-to-testdebs option. During distupgrade tests override
       packages from the target distro with the packages from the testdebs
       repository. This allows doing distupgrade tests before uploading.
