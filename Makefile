@@ -42,7 +42,6 @@ endef
 all: build
 
 python_scripts	 = $(wildcard *.py piupartslib/*.py master-bin/*.py slave-bin/*.py)
-python_scripts	+= master-bin/detect_well_known_errors
 python-syntax-check:
 	@set -e -x; $(foreach py,$(python_scripts),python -m py_compile $(py);)
 	$(RM) $(python_scripts:=c)
@@ -161,7 +160,8 @@ check:
 
 clean:
 	rm -f build-stamp
-	rm -f piuparts.1 piuparts.1.xml piuparts.1.html piuparts_slave_run.8 piuparts_slave_join.8 README.xml README.html docbook-xsl.css piuparts.html
+	rm -f $(DOCS_GENERATED)
+	rm -f piuparts.1.xml README.xml docbook-xsl.css piuparts.html
 	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc
 	rm -f $(SCRIPTS_GENERATED)
 
