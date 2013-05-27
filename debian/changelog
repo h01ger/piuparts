@@ -16,6 +16,7 @@ piuparts (0.53) UNRELEASED; urgency=low
   [ David Steele ]
   * Update python Requires to 2.7 (for argparse)
   * Edit piuparts_slave_* man pages for more information and format.
+  * Specify the manpage doctype for AsciiDoc man sources.
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 27 May 2013 18:24:27 +0200
 

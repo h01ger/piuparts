@@ -1,5 +1,6 @@
 piuparts_slave_run(8)
 =====================
+:doctype: manpage
 
 NAME
 ----

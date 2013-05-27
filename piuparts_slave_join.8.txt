@@ -1,5 +1,6 @@
 piuparts_slave_join(8)
 ======================
+:doctype: manpage
 
 NAME
 ----
