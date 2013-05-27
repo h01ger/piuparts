@@ -21,8 +21,11 @@ flags-leftovers =
 # sections may be wrapped with continuation lines being indented
 # and may contain non-indented comments between continuation lines
 sections =
+	sid/main
 #
+	sid/contrib
 #
+	sid/non-free
 #
 proxy = http://localhost:3128
 #
@@ -62,6 +65,40 @@ reschedule-fail-count = 100
 ###  Install, remove, and purge tests.                                   ###
 ############################################################################
 
+
+[sid/main]
+precedence = 10
+piuparts-flags =
+	%(flags-default)s
+distro = sid
+area = main
+arch = amd64
+# 60*60*24*2
+max-tgz-age = 172800
+reschedule-old-days = 30
+expire-old-days = 45
+
+[sid/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid/main sid/non-free
+distro = sid
+area = contrib
+arch = amd64
+reschedule-old-days = 30
+expire-old-days = 45
+
+[sid/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid/main sid/contrib
+distro = sid
+area = non-free
+arch = amd64
+reschedule-old-days = 30
+expire-old-days = 45
 
 
 ############################################################################
