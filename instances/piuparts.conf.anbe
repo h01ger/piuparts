@@ -22,10 +22,13 @@ flags-leftovers =
 # and may contain non-indented comments between continuation lines
 sections =
 	sid/main
+	jessie/main
 #
 	sid/contrib
+	jessie/contrib
 #
 	sid/non-free
+	jessie/non-free
 #
 proxy = http://localhost:3128
 #
@@ -99,6 +102,35 @@ area = non-free
 arch = amd64
 reschedule-old-days = 30
 expire-old-days = 45
+
+
+[jessie/main]
+precedence = 10
+piuparts-flags =
+	%(flags-default)s
+distro = jessie
+arch = amd64
+area = main
+# 60*60*24*7
+max-tgz-age = 604800
+
+[jessie/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+depends-sections = jessie/main jessie/non-free
+distro = wheezy
+arch = amd64
+area = contrib
+
+[jessie/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+depends-sections = jessie/main jessie/contrib
+distro = wheezy
+arch = amd64
+area = non-free
 
 
 ############################################################################
