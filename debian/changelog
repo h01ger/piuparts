@@ -1,4 +1,4 @@
-piuparts (0.52) UNRELEASED; urgency=low
+piuparts (0.52) unstable; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -41,7 +41,7 @@ piuparts (0.52) UNRELEASED; urgency=low
   * piuparts-slave.deb: Add piuparts_slave_run.8 and piuparts_slave_join.8
     manpages.
 
- -- Holger Levsen <holger@debian.org>  Wed, 15 May 2013 17:25:41 +0200
+ -- Holger Levsen <holger@debian.org>  Mon, 27 May 2013 18:10:43 +0200
 
 piuparts (0.51) unstable; urgency=low
 
