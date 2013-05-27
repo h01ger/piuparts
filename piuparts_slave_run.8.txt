@@ -1,0 +1,48 @@
+piuparts_slave_run(8)
+=====================
+
+NAME
+----
+piuparts_slave_run - start up piuparts-slave instance(s) in screen
+
+SYNOPSIS
+--------
+*piuparts_slave_run*
+
+DESCRIPTION
+-----------
+*piuparts_slave_run* runs piuparts-slave instance(s) in screen which run *piuparts* tests which test whether Debian packages handle installation, upgrading, and removal correctly.
+
+OPTIONS
+-------
+There are no options to this command currently. Note however that *this interface is under development* and may change.
+
+ENVIRONMENT
+-----------
+Running piuparts in master-slave mode requires configuration in _/etc/piuparts_.
+
+BUGS
+----
+*piuparts_slave_run* should be able to run slaves in different ways:
+1. all, in a new screen (only this is implemented at the moment)
+2. a specific one, in a specified screen slot in a (running) screen
+3. append one to a (running) screen using a "random" slot
+4. start slave in the current directory in the current shell in foreground.
+
+NOTES
+-----
+Make sure to also read */usr/share/doc/piuparts-master/README_server.txt*.
+
+SEE ALSO
+--------
+*piuparts*(1), *piuparts_slave_join*(8)
+
+AUTHOR
+------
+Holger Levsen (holger@layer-acht.org)
+
+DATE
+----
+2013-05-27
+
+// vim: set filetype=asciidoc:

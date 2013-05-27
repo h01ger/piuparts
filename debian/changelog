@@ -38,6 +38,8 @@ piuparts (0.52) UNRELEASED; urgency=low
   * debian/control: Add adequate to piuparts' recommends.
   * piuparts-slave.postrm: Also remove /var/cache/piuparts/tmp on purge.
   * conf/crontab-master: Run generate_daily_report twice a day.
+  * piuparts-slave.deb: Add piuparts_slave_run.8 and piuparts_slave_join.8
+    manpages.
 
  -- Holger Levsen <holger@debian.org>  Wed, 15 May 2013 17:25:41 +0200
 

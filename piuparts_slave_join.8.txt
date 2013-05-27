@@ -1,0 +1,40 @@
+piuparts_slave_join(8)
+======================
+
+NAME
+----
+piuparts_slave_join - join a running piuparts-slave screen session
+
+SYNOPSIS
+--------
+*piuparts_slave_join*
+
+DESCRIPTION
+-----------
+*piuparts_slave_join* joins a running piuparts-slave session in screen.
+
+OPTIONS
+-------
+There are no options to this command.
+
+ENVIRONMENT
+-----------
+Running piuparts in master-slave mode requires configuration in _/etc/piuparts_.
+
+NOTES
+-----
+Make sure to also read */usr/share/doc/piuparts-master/README_server.txt*.
+
+SEE ALSO
+--------
+*piuparts*(1), *piuparts_slave_run*(8)
+
+AUTHOR
+------
+Holger Levsen (holger@layer-acht.org)
+
+DATE
+----
+2013-05-27
+
+// vim: set filetype=asciidoc:
