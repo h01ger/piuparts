@@ -628,6 +628,7 @@ class Section:
             command.extend(["--mirror", self._config["mirror"]])
         if self._config["tmpdir"]:
             command.extend(["--tmpdir", self._config["tmpdir"]])
+        command.extend(["--arch", self._config.get_arch()])
         command.extend(["-b", self._get_tarball()])
         if not distupgrade:
             command.extend(["-d", self._config.get_distro()])
@@ -812,6 +813,7 @@ def create_chroot(config, tarball, distro):
         command.extend(["--mirror", config["mirror"]])
     if config["tmpdir"]:
         command.extend(["--tmpdir", config["tmpdir"]])
+    command.extend(["--arch", config.get_arch()])
     command.extend(["-d", distro])
     command.extend(["-s", tarball + ".new"])
     command.extend(["--apt", "dpkg"])

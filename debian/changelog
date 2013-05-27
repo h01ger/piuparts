@@ -12,6 +12,7 @@ piuparts (0.52) UNRELEASED; urgency=low
   * piuparts-master-backend.py:
   * piuparts-slave.py:
     - Report upgrade tests involving downgrades as untestable.
+    - Always pass --arch <arch> to piuparts.
   * piuparts-analyze.py:
     - Consider archived bugs, too.  (Closes: #669966)
   * piuparts-report.py:
