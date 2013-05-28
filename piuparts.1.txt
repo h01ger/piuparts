@@ -40,13 +40,13 @@ OPTIONS
 -------
 Options must come before the other command line arguments.
 
-*-a, --apt*::
+*-a*, *--apt*::
   The package arguments on the command line are to be treated as package names and installed via *apt-get* instead  of  being  names  of  package  files, to be installed via *dpkg -i*.
 
 *--arch*='arch'::
   Create chroot and run tests for (non-default) architecture 'arch'. The default is the output from 'dpkg --print-architecture'.
 
-*-b* tarball, *--basetgz*='tarball'::
+*-b* 'tarball', *--basetgz*='tarball'::
   Use tarball as the contents of the initial chroot, instead of building a new one with debootstrap.
 +
 The tarball can be created with the '-s' option, or you can use one that *pbuilder* has created (see '-p'). If you create one manually, make sure the root of the chroot is the root of the tarball.
@@ -57,7 +57,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *-d* 'name', *--distribution*='name'::
   Which Debian distribution to use: a code name (for example squeeze, wheezy or sid) or experimental. The default is sid (=unstable).
 
-*-D* 'flavor', *--defaults* 'flavor'::
+*-D* 'flavor', *--defaults*='flavor'::
   Use default settings suitable for a particular flavor of Debian: either debian or ubuntu. The default is debian.
 
 *--do-not-verify-signatures*::
@@ -109,10 +109,10 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *--install-remove-install*::
   Remove package after installation and reinstall. For testing installation in config-files-remaining state.
 
-*-k, --keep-tmpdir*::
+*-k*, *--keep-tmpdir*::
   Don't remove the temporary directory for the chroot when the program ends.
 
-*-K, --keyring*='filename'::
+*-K*, *--keyring*='filename'::
  Use FILE as the keyring to use with debootstrap when creating chroots.
 
 *--keep-sources-list*::
@@ -149,10 +149,10 @@ Note that file: addresses works if the directories are made accessible from with
 *--no-diversions*::
   Don't check for broken diversions.
 
-*-n, --no-ignores*::
+*-n*, *--no-ignores*::
   Forget all built-in and other ignores that have been set so far. Any '-i' or '-I' arguments that come after this one will be obeyed, but none of the ones that come before.
 
-*-N, --no-symlinks*::
+*-N*, *--no-symlinks*::
   Don't check for broken symlinks.
 
 *--fail-if-inadequate*::
@@ -167,13 +167,13 @@ Note that file: addresses works if the directories are made accessible from with
 *--no-install-purge-test*::
   Skip the install and purge test.
 
-*-p, --pbuilder*::
+*-p, *--pbuilder*::
   Use _/var/cache/pbuilder/base.tgz_ as the base tarball. This is a shorthand so that you don't need to use '-b' for it.
 
 *--pedantic-purge-test*::
   Be pedantic when checking if a purged package leaves files behind. If this option is not set, files left in _/tmp_ are ignored.")
 
-*--proxy='URL'*::
+*--proxy*='URL'::
   Use the proxy at URL to access the Debian mirror(s). Takes precedence over
   the 'http_proxy' environment variable. Using a local proxy is recommended
   because piuparts may use large amounts of bandwidth to repeatedly download
@@ -209,7 +209,7 @@ Note that file: addresses works if the directories are made accessible from with
 *--skip-logrotatefiles-test*::
   Skip testing the output from the logrotate files left in the system after remove a package.
 
-*--testdebs-repo='deb-line'::
+*--testdebs-repo*='deb-line'::
   Provide an additional line to be appended to sources.list, e.g.
     'deb <URL> <distrib> <components>' or
     'deb file:// </bind/mount> ./'
@@ -224,15 +224,15 @@ Note that file: addresses works if the directories are made accessible from with
   apt-get. The packages to be tested can be passed as .debs or as package
   names (with '--apt').
 
-*-t directory, --tmpdir*='directory'::
+*-t directory*, *--tmpdir*='directory'::
   Use directory as the place where temporary files and directories are created. The default is the environment variable *TMPDIR*, or _/tmp_ if not set.
 +
 Note: the temporary directory must *not* be mounted with the _nodev_ or _nosuid_ mount option.
 
-*-v, --verbose*::
+*-v*, *--verbose*::
   This option no longer has any meaning, but it is still accepted for backwards compatibility.
 
-*-V, --version*::
+*-V*, *--version*::
   Write out the version number of the program.
 
 *--warn-on-debsums-errors*::

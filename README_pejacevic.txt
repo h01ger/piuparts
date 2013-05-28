@@ -12,8 +12,7 @@ piuparts-master and piuparts-slaves packages as described in
 
 piuparts.debian.org is a setup running on two systems: pejacevic.debian.org,
 running the piuparts-master instance and an apache webserver to display the
-results and piu-slave-bm-a.debian.org, running a piuparts-slave node.
-Hopefully soon there should be several slave-nodes running on that system.
+results and piu-slave-bm-a.debian.org, running four piuparts-slave nodes.
 
 === piuparts installation from source
 
@@ -34,7 +33,7 @@ Hopefully soon there should be several slave-nodes running on that system.
 
 === User setup
 
-On pejacevic the piuparts-master user piuaprtsm needs to be installed, on
+On pejacevic the piuparts-master user piupartsm needs to be installed, on
 piu-slave-bm-a a piupartss user is needed for the slave.
 Both are members of the group piuparts and '/srv/piuparts.debian.org' needs to
 be chmod 2775 and chown piuparts(sm):piuparts.
@@ -128,24 +127,26 @@ holger@piu-slave-bm-a$ sudo su - piupartss update-piuparts-slave-setup bikeshed 
 
 === Running piuparts
 
-==== Starting and stopping the slave
+==== Starting and stopping the slaves
 
-Run the following script under *your* user account you will start
+Run the following script under *your* user account to start four instances of
 piuparts-slave on pejacevic, piuparts-master will be started automatically by
-the slave.
+the slaves.
 
 ----
 holger@pejacevic:~$ sudo -u piupartss -i slave_run
 ----
 
 There are several cronjobs installed via '~piupartsm/crontab' and
-'~piupartss/crontab') which monitor the slave and the host it's running on.
+'~piupartss/crontab') which monitor the slaves and the hosts it's running on.
 
-It's possible to kill the slave any time by pressing Ctrl-C.
+It's possible to kill a slave any time by pressing Ctrl-C.
 Pressing Ctrl-C once will wait for the current test to finish,
 pressing twice will abort the currently running test (which will be redone).
 Clean termination may take some time and can be aborted by a third Ctrl-C,
 but that may leave temporary directories and processes around.
+
+See the 'piuparts_slave_run (8)' manpage for more information on 'slave_run'.
 
 ==== Joining an existing slave session
 
@@ -154,6 +155,8 @@ Run the following script under *your* user account:
 ----
 holger@pejacevic:~$ sudo -u piupartss -i slave_join
 ----
+
+See the 'piuparts_slave_join (8)' manpage for more information on 'slave_join'.
 
 === Filing bugs
 
@@ -166,7 +169,7 @@ Usertags: piuparts piuparts.d.o
 
 === Generating reports for the website
 
-'piuparts-report' is run daily five minutes after midnight from
+'piuparts-report' is run daily at midnight and at noon from
 '~piupartsm/crontab' on pejacevic.
 
 === Cronjobs to aid problem spotting
@@ -186,6 +189,6 @@ More checks should be added as we become aware of them.
 
 Last updated: May 2013
 
-Holger Levsen <holger@debian.org>
+Holger Levsen <holger@layer-acht.org>
 
 // vim: set filetype=asciidoc:

@@ -1,4 +1,4 @@
-things to do for piuparts
+Things to do for piuparts
 =========================
 
 Please also check the BTS, especially the bugs with a severity higher than
@@ -23,6 +23,11 @@ for 0.5x:
     + the current method only works if -slave is configured after -master
     - maybe do this manually again as well?
 
+- Documentation related:
+  - Move master-slave related documentation from README.txt to README_server.txt
+    and leave a pointer in the former. Link README_server.html on piuparts.d.o.
+  - examples are duplicated in piuparts.1.txt and README.txt - only keep one copy.
+
 - in maintainer view:
   - sort buggy states up again
   - sort packages on maintainer pages alphabetically (states first though)
@@ -45,8 +50,6 @@ for 0.5x:
 - install from git/Makefile: remove the need for /etc/piuparts
 
 - maybe compress all logfiles
-
-- re-read all documentation carefully and update were needed.
 
 - move counts.txt from htdocs to master
 

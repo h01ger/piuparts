@@ -214,7 +214,7 @@ HTML_FOOTER = """
    <a href="http://packages.qa.debian.org/piuparts" target="_blank">piuparts</a>
    is GPL2 <a href="http://packages.debian.org/changelogs/pool/main/p/piuparts/current/copyright" target="_blank">licenced</a>
    and was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by
-   <a href="mailto:holger@debian.org">Holger Levsen</a> and
+   <a href="mailto:holger@layer-acht.org">Holger Levsen</a> and
    <a href="mailto:piuparts-devel@lists.alioth.debian.org">others</a> using
    <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">piuparts.git</a>.
    Weather icons are from the <a href="http://tango.freedesktop.org/Tango_Icon_Library" target="_blank">Tango Icon Library</a>.

@@ -49,7 +49,7 @@ squeeze, you can do so with:
 ----
 
 By default, this will read the first mirror from your
-'/etc/apt/sources.list ' file. If you want to specify a different
+'/etc/apt/sources.list' file. If you want to specify a different
 mirror you can do it with the option '-m':
 
 ----
