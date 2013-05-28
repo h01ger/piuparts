@@ -31,6 +31,10 @@ piuparts (0.53) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * piuparts.1.txt, README.txt and README_pejacevic.txt: proof-read and
     cleaned up.
+  * Move master-slave related documentation from README.txt to
+    README_server.txt and leave a pointer in the former.
+  * piuparts-master.deb: Ship README_server.html.
+  * piuparts-report.py: Add a link to README_server.html.
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 27 May 2013 18:24:27 +0200
 

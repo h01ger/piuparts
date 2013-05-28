@@ -23,7 +23,7 @@ endif
 SCRIPTS_TEMPLATES	 = $(wildcard *.in master-bin/*.in slave-bin/*.in conf/*.in)
 SCRIPTS_PYTHON_BINARY	 = $(wildcard *.py master-bin/*.py slave-bin/*.py)
 SCRIPTS_GENERATED	 = $(SCRIPTS_TEMPLATES:.in=) $(SCRIPTS_PYTHON_BINARY:.py=)
-DOCS_GENERATED		 = piuparts.1 piuparts.1.html piuparts_slave_run.8 piuparts_slave_join.8 README.html
+DOCS_GENERATED		 = piuparts.1 piuparts.1.html piuparts_slave_run.8 piuparts_slave_join.8 README.html README_server.html
 
 define placeholder_substitution
 	sed -r \
@@ -57,6 +57,9 @@ build-doc: $(DOCS_GENERATED)
 README.html: README.txt
 	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README.txt
 
+README_server.html: README_server.txt
+	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README_server.txt
+
 piuparts.1: piuparts.1.txt
 	a2x -f manpage piuparts.1.txt
 
@@ -71,7 +74,7 @@ piuparts.1.html: piuparts.1.txt
 
 install-doc: build-stamp
 	install -d $(DESTDIR)$(docdir)/
-	install -m 0644 README.txt README.html docbook-xsl.css $(DESTDIR)$(docdir)/
+	install -m 0644 README.txt README.html README_server.html docbook-xsl.css $(DESTDIR)$(docdir)/
 	install -d $(DESTDIR)$(man1dir)
 	install -m 0644 piuparts.1 $(DESTDIR)$(man1dir)/
 	install -d $(DESTDIR)$(man8dir)
@@ -161,7 +164,7 @@ check:
 clean:
 	rm -f build-stamp
 	rm -f $(DOCS_GENERATED)
-	rm -f piuparts.1.xml README.xml docbook-xsl.css piuparts.html
+	rm -f piuparts.1.xml README.xml README_server.xml docbook-xsl.css piuparts.html
 	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc
 	rm -f $(SCRIPTS_GENERATED)
 

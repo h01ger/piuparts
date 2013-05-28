@@ -24,9 +24,8 @@ for 0.5x:
     - maybe do this manually again as well?
 
 - Documentation related:
-  - Move master-slave related documentation from README.txt to README_server.txt
-    and leave a pointer in the former. Link README_server.html on piuparts.d.o.
   - examples are duplicated in piuparts.1.txt and README.txt - only keep one copy.
+  - README_server has some duplication information on configuration as well.
 
 - in maintainer view:
   - sort buggy states up again
