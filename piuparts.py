@@ -452,7 +452,7 @@ def run(command, ignore_errors=False, timeout=0):
     env = os.environ.copy()
     env["LC_ALL"] = "C"
     env["LANGUAGES"] = ""
-    env["PIUPARTS_OBJECTS"] = ' '.join(str(vobject) for vobject in settings.testobjects )
+    env["PIUPARTS_OBJECTS"] = ' '.join(str(vobject) for vobject in settings.testobjects)
     devnull = open('/dev/null', 'r')
     p = subprocess.Popen(command, env=env, stdin=devnull,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -1510,10 +1510,10 @@ class Chroot:
         for p in packages:
             basename = p + ".list"
 
-            if not os.path.exists(os.path.join(vdir,basename)):
+            if not os.path.exists(os.path.join(vdir, basename)):
                 continue
 
-            f = file(os.path.join(vdir,basename), "r")
+            f = file(os.path.join(vdir, basename), "r")
             for line in f:
                 pathname = line.strip()
                 if pathname.startswith("/etc/cron."):
@@ -1557,10 +1557,10 @@ class Chroot:
         for p in packages:
             basename = p + ".list"
 
-            if not os.path.exists(os.path.join(vdir,basename)):
+            if not os.path.exists(os.path.join(vdir, basename)):
                 continue
 
-            f = file(os.path.join(vdir,basename), "r")
+            f = file(os.path.join(vdir, basename), "r")
             for line in f:
                 pathname = line.strip()
                 if pathname.startswith("/etc/logrotate.d/"):
@@ -1629,7 +1629,7 @@ class VirtServ(Chroot):
     def _awaitok(self, cmd):
         r = self._vs.stdout.readline().rstrip('\n')
         l = r.split(' ')
-        if l[0] != 'ok': self._fail('virtserver response to %s: %s' % (cmd,r))
+        if l[0] != 'ok': self._fail('virtserver response to %s: %s' % (cmd, r))
         logging.debug('adt-virt << %s', r)
         return l[1:]
 
@@ -1639,7 +1639,7 @@ class VirtServ(Chroot):
                 if type(a) != type(()): return a
                 (a,) = a
                 return urllib.quote(a)
-            cmd = ' '.join(map(maybe_quote,cmd))
+            cmd = ' '.join(map(maybe_quote, cmd))
         logging.debug('adt-virt >> %s', cmd)
         print >>self._vs.stdin, cmd
         return cmd.split(' ')[0]
@@ -1653,8 +1653,8 @@ class VirtServ(Chroot):
 
     def _getfilecontents(self, filename):
         try:
-            (_,tf) = create_temp_file()
-            self._command(['copyup',(filename,),(tf,)])
+            (_, tf) = create_temp_file()
+            self._command(['copyup', (filename,), (tf,)])
             f = file(tf)
             d = f.read()
             f.close()
@@ -1682,7 +1682,7 @@ class VirtServ(Chroot):
         self._command('close')
         dont_do_on_panic(self.panic_handler_id)
 
-    def _fail(self,m):
+    def _fail(self, m):
         logging.error("adt-virt-* error: "+m)
         panic()
 
@@ -1707,19 +1707,19 @@ class VirtServ(Chroot):
 
     def _execute(self, cmdl, tolerate_errors=False):
         assert type(cmdl) == type([])
-        prefix = ['sh','-ec','''
+        prefix = ['sh', '-ec', '''
             LC_ALL=C
             unset LANGUAGES
             export LC_ALL
             exec 2>&1
             exec "$@"
-                ''','<command>']
+                ''', '<command>']
         ca = ','.join(map(urllib.quote, prefix + cmdl))
         stdout = '%s/cmd-stdout' % self._scratch
         stderr = '%s/cmd-stderr-base' % self._scratch
-        cmd = ['execute',ca,
-               '/dev/null',(stdout,),(stderr,),
-               '/root','timeout=600']
+        cmd = ['execute', ca,
+               '/dev/null', (stdout,), (stderr,),
+               '/root', 'timeout=600']
         es = int(self._command(cmd)[0])
         if es and not tolerate_errors:
             stderr_data = self._getfilecontents(stderr)
@@ -1729,25 +1729,25 @@ class VirtServ(Chroot):
         return (es, stdout, stderr)
 
     def _execute_getoutput(self, cmdl):
-        (es,stdout,stderr) = self._execute(cmdl)
+        (es, stdout, stderr) = self._execute(cmdl)
         stderr_data = self._getfilecontents(stderr)
         if es or stderr_data:
             logging.error('Internal command failed (status=%d): %s\n%s' %
                 (es, `cmdl`, indent_string(stderr_data)))
             panic()
-        (_,tf) = create_temp_file()
+        (_, tf) = create_temp_file()
         try:
-            self._command(['copyup',(stdout,),(tf,)])
+            self._command(['copyup', (stdout,), (tf,)])
         except:
             os.remove(tf)
             raise
         return tf
 
     def run(self, command, ignore_errors=False):
-        cmdl = ['sh','-ec','cd /\n' + ' '.join(command)]
-        (es,stdout,stderr) = self._execute(cmdl, tolerate_errors=True)
+        cmdl = ['sh', '-ec', 'cd /\n' + ' '.join(command)]
+        (es, stdout, stderr) = self._execute(cmdl, tolerate_errors=True)
         stdout_data = self._getfilecontents(stdout)
-        print >>sys.stderr, "VirtServ run", `command`,`cmdl`, '==>', `es`,`stdout`,`stderr`, '|', stdout_data
+        print >>sys.stderr, "VirtServ run", `command`, `cmdl`, '==>', `es`, `stdout`, `stderr`, '|', stdout_data
         if es == 0 or ignore_errors: return (es, stdout_data)
         stderr_data = self._getfilecontents(stderr)
         logging.error('Command failed (status=%d): %s\n%s' %
@@ -1768,18 +1768,18 @@ class VirtServ(Chroot):
     def chmod(self, path, mode):
         self._execute(['chmod', ('0%o' % mode), self._tbpath(path)])
     def remove_files(self, paths):
-        self._execute(['rm','--'] + map(self._tbpath, paths))
+        self._execute(['rm', '--'] + map(self._tbpath, paths))
     def copy_file(self, our_src, tb_dest):
-        self._command(['copydown',(our_src,),
+        self._command(['copydown', (our_src,),
                 (self._tbpath(tb_dest)+'/'+os.path.basename(our_src),)])
     def create_file(self, path, data):
         path = self._tbpath(path)
         try:
-            (_,tf) = create_temp_file()
-            f = file(tf,'w')
+            (_, tf) = create_temp_file()
+            f = file(tf, 'w')
             f.write(tf)
             f.close()
-            self._command(['copydown',(tf,),(path,)])
+            self._command(['copydown', (tf,), (path,)])
         finally:
             os.remove(tf)
 
@@ -1798,8 +1798,8 @@ class VirtServ(Chroot):
 
         vdict = {}
 
-        tf = self._execute_getoutput(['find','/','-xdev','-printf',
-                "%y %m %U %G %s %p %l \\n".replace(' ','\\0')])
+        tf = self._execute_getoutput(['find', '/', '-xdev', '-printf',
+                "%y %m %U %G %s %p %l \\n".replace(' ', '\\0')])
         try:
             f = file(tf)
 
@@ -1820,7 +1820,7 @@ class VirtServ(Chroot):
                 if not line: break
 
                 st = VirtServ.DummyStat()
-                st.st_mode = mode_map[splut[0]] | int(splut[1],8)
+                st.st_mode = mode_map[splut[0]] | int(splut[1], 8)
                 (st.st_uid, st.st_gid, st.st_size) = map(int, splut[2:5])
 
                 vdict[splut[5]] = (st, splut[6])
@@ -1832,7 +1832,7 @@ class VirtServ(Chroot):
         return vdict
 
     def get_files_owned_by_packages(self):
-        tf = self._execute_getoutput(['bash','-ec','''
+        tf = self._execute_getoutput(['bash', '-ec', '''
                 cd /var/lib/dpkg/info
                 find . -name "*.list" -type f -print0 | \\
                     xargs -r0 egrep . /dev/null
@@ -1842,7 +1842,7 @@ class VirtServ(Chroot):
         try:
             f = file(tf)
             for l in f:
-                (lf,pathname) = l.rstrip('\n').split(':',1)
+                (lf, pathname) = l.rstrip('\n').split(':', 1)
                 assert lf.endswith('.list')
                 pkg = lf[:-5]
                 if pathname in vdict:
@@ -1858,7 +1858,7 @@ class VirtServ(Chroot):
     def check_for_broken_symlinks(self):
         if not settings.check_broken_symlinks:
             return
-        tf = self._execute_getoutput(['bash','-ec','''
+        tf = self._execute_getoutput(['bash', '-ec', '''
                 find / -xdev -type l -print0 | \\
                     xargs -r0 -i'{}' \\
                     find '{}' -maxdepth 0 -follow -type l -ls
@@ -2771,7 +2771,7 @@ def parse_command_line():
                       default=False,
                       help="Fail if broken symlinks are detected.")
 
-    parser.add_option("--log-level", action="store",metavar='LEVEL',
+    parser.add_option("--log-level", action="store", metavar='LEVEL',
                       default="dump",
                       help="Displays messages from LEVEL level, possible values are: error, info, dump, debug. The default is dump.")
 

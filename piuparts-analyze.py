@@ -69,11 +69,11 @@ def package_version(log):
 
 def package_source_version(log):
     version = package_version(log)
-    possible_binnmu_part = version.rsplit('+',1)[-1]
+    possible_binnmu_part = version.rsplit('+', 1)[-1]
     if possible_binnmu_part.startswith('b') and possible_binnmu_part[1:].isdigit():
         # the package version contains a binnmu-part which is not part of the source version
         # and therefore not accepted/tracked by the bts. Remove it.
-        version = version.rsplit('+',1)[0]
+        version = version.rsplit('+', 1)[0]
     return version
 
 

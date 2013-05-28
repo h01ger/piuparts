@@ -31,7 +31,7 @@ from piupartslib.conf import MissingSection
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
-KPR_DIRS = ( 'pass', 'bugged', 'affected', 'fail' )
+KPR_DIRS = ('pass', 'bugged', 'affected', 'fail')
 
 KPR_EXT = '.kpr'
 BUG_EXT = '.bug'
@@ -71,34 +71,34 @@ PKG_ERROR_TPL = \
 $BUG</li>
 """
 
-class WKE_Config( piupartslib.conf.Config ):
+class WKE_Config(piupartslib.conf.Config):
     """Configuration parameters for Well Known Errors"""
 
-    def __init__( self ):
+    def __init__(self):
         self.section = 'global'
 
-        piupartslib.conf.Config.__init__( self, self.section,
+        piupartslib.conf.Config.__init__(self, self.section,
             {
                 "sections": "report",
                 "output-directory": "html",
                 "master-directory": ".",
                 "known-problem-directory": "@sharedir@/piuparts/known_problems",
                 "proxy": None,
-            }, "" )
+            }, "")
 
-class WKE_Section_Config( piupartslib.conf.Config ):
+class WKE_Section_Config(piupartslib.conf.Config):
 
-    def __init__( self, section ):
+    def __init__(self, section):
         self.section = section
 
-        piupartslib.conf.Config.__init__( self, self.section,
+        piupartslib.conf.Config.__init__(self, self.section,
             {
                 "mirror": None,
                 "distro": None,
                 "area": None,
                 "arch": None,
                 "upgrade-test-distros": None,
-            }, "",  defaults_section="global" )
+            }, "",  defaults_section="global")
 
 class Problem():
     """ Encapsulate a particular known problem """
@@ -108,12 +108,12 @@ class Problem():
 
         self.probpath = probpath
         self.name = os.path.basename(probpath)
-        self.short_name = os.path.splitext( self.name )[0]
+        self.short_name = os.path.splitext(self.name)[0]
 
         self.tags_are_valid = True
 
-        self.required_tags = [ "PATTERN", "WHERE", "ISSUE",
-                               "HEADER", "HELPTEXT"]
+        self.required_tags = ["PATTERN", "WHERE", "ISSUE",
+                              "HEADER", "HELPTEXT"]
         self.optional_tags = ["EXCLUDE_PATTERN", "EXPLAIN", "PRIORITY"]
 
 
@@ -124,12 +124,12 @@ class Problem():
                 self.tags_are_valid = False
 
         if "PATTERN" in self.__dict__:
-            self.inc_re = re.compile( self.PATTERN )
+            self.inc_re = re.compile(self.PATTERN)
         else:
             self.inc_re = None
 
         if "EXCLUDE_PATTERN" in self.__dict__:
-            self.exc_re = re.compile( self.EXCLUDE_PATTERN )
+            self.exc_re = re.compile(self.EXCLUDE_PATTERN)
         else:
             self.exc_re = None
 
@@ -139,21 +139,21 @@ class Problem():
     def init_problem(self):
         """Load problem file parameters (HELPTEXT="foo" -> self.HELPTEXT)"""
 
-        pb = open( self.probpath, 'r' )
+        pb = open(self.probpath, 'r')
         probbody = pb.read()
         pb.close()
 
-        tagged = re.sub( "^([A-Z]+=)", "<hdr>\g<0>", probbody, 0, re.MULTILINE)
+        tagged = re.sub("^([A-Z]+=)", "<hdr>\g<0>", probbody, 0, re.MULTILINE)
 
-        for chub in re.split( '<hdr>', tagged )[1:]:
+        for chub in re.split('<hdr>', tagged)[1:]:
 
-            (name,value) = re.split( "=", chub, 1, re.MULTILINE )
+            (name, value) = re.split("=", chub, 1, re.MULTILINE)
 
             while value[-1] == '\n':
                 value = value[:-1]
 
-            if  re.search( "^\'.+\'$", value, re.MULTILINE|re.DOTALL ) \
-             or re.search( '^\".+\"$', value, re.MULTILINE|re.DOTALL ):
+            if  re.search("^\'.+\'$", value, re.MULTILINE|re.DOTALL) \
+             or re.search('^\".+\"$', value, re.MULTILINE|re.DOTALL):
                 value = value[1:-1]
 
             if name in self.required_tags or name in self.optional_tags:
@@ -167,14 +167,14 @@ class Problem():
         """Does the log text 'logbody' contain this known problem?"""
 
         if where in self.WHERE:
-            if self.inc_re.search( logbody, re.MULTILINE ):
+            if self.inc_re.search(logbody, re.MULTILINE):
                 for line in logbody.splitlines():
-                    if self.inc_re.search( line ):
+                    if self.inc_re.search(line):
                         if self.exc_re == None \
                                or not self.exc_re.search(line):
-                            return( True )
+                            return True
 
-        return( False )
+        return False
 
     def get_command(self):
 
@@ -183,7 +183,7 @@ class Problem():
         if "EXCLUDE_PATTERN" in self.__dict__:
             cmd += " | grep -v -E \"%s\"" % self.EXCLUDE_PATTERN
 
-        return(cmd)
+        return cmd
 
 class FailureManager():
     """Class to track known failures encountered, by package,
@@ -203,30 +203,30 @@ class FailureManager():
         for pkgspec in self.logdict:
             logpath = self.logdict[pkgspec]
             try:
-                kp = open( get_kpr_path(logpath), 'r' )
+                kp = open(get_kpr_path(logpath), 'r')
 
                 for line in kp.readlines():
-                    (where, problem) = self.parse_kpr_line( line )
+                    (where, problem) = self.parse_kpr_line(line)
 
-                    self.failures.append( make_failure(where, problem, pkgspec) )
+                    self.failures.append(make_failure(where, problem, pkgspec))
 
                 kp.close()
             except IOError:
                 print "Error processing %s" % get_kpr_path(logpath)
 
-    def parse_kpr_line( self, line ):
+    def parse_kpr_line(self, line):
         """Parse a line in a kpr file into where (e.g. 'pass') and problem name"""
 
-        m = re.search( "^([a-z]+)/.+ (.+)$", line )
-        return( m.group(1), m.group(2) )
+        m = re.search("^([a-z]+)/.+ (.+)$", line)
+        return (m.group(1), m.group(2))
 
-    def sort_by_path( self ):
+    def sort_by_path(self):
         self.failures.sort(key=lambda x: self.logdict[x.pkgspec])
 
-    def sort_by_bugged_and_rdeps( self, pkgsdb ):
+    def sort_by_bugged_and_rdeps(self, pkgsdb):
         self.pkgsdb = pkgsdb
 
-        def keyfunc( x, pkgsdb=self.pkgsdb, logdict=self.logdict):
+        def keyfunc(x, pkgsdb=self.pkgsdb, logdict=self.logdict):
 
             pkg_obj = pkgsdb.get_package(get_pkg(x.pkgspec))
 
@@ -237,43 +237,43 @@ class FailureManager():
 
             is_failed = get_where(logdict[x.pkgspec]) == "fail"
 
-            return( (not is_failed, -rdeps, logdict[x.pkgspec]) )
+            return (not is_failed, -rdeps, logdict[x.pkgspec])
 
-        self.failures.sort( key=keyfunc )
+        self.failures.sort(key=keyfunc)
 
-    def filtered( self, problem ):
-        return([x for x in self.failures if problem==x.problem])
+    def filtered(self, problem):
+        return [x for x in self.failures if problem==x.problem]
 
-def make_failure( where, problem, pkgspec ):
-    return(namedtuple('Failure', 'where problem pkgspec')(where, problem, pkgspec))
+def make_failure(where, problem, pkgspec):
+    return (namedtuple('Failure', 'where problem pkgspec')(where, problem, pkgspec))
 
-def get_where( logpath ):
+def get_where(logpath):
     """Convert a path to a log file to the 'where' component (e.g. 'pass')"""
-    return( logpath.split('/')[-2] )
+    return logpath.split('/')[-2]
 
-def replace_ext( fpath, newext ):
-    basename = os.path.splitext( os.path.split(fpath)[1] )[0]
-    return('/'.join( fpath.split('/')[:-1] + [basename + newext] ))
+def replace_ext(fpath, newext):
+    basename = os.path.splitext(os.path.split(fpath)[1])[0]
+    return '/'.join(fpath.split('/')[:-1] + [basename + newext])
 
-def get_pkg( pkgspec ):
-    return( pkgspec.split('_')[0] )
+def get_pkg(pkgspec):
+    return pkgspec.split('_')[0]
 
-def get_kpr_path( logpath ):
+def get_kpr_path(logpath):
     """Return the kpr file path for a particular log path"""
-    return( replace_ext( logpath, KPR_EXT ) )
+    return replace_ext(logpath, KPR_EXT)
 
-def pts_subdir( source ):
+def pts_subdir(source):
     if source[:3] == "lib":
         return source[:4]
     else:
         return source[:1]
 
-def source_pkg( pkgspec, db ):
+def source_pkg(pkgspec, db):
     source_name = db.get_control_header(get_pkg(pkgspec), "Source")
 
-    return( source_name )
+    return source_name
 
-def get_file_dict( workdirs, ext ):
+def get_file_dict(workdirs, ext):
     """For files in [workdirs] with extension 'ext', create a dict of
        <pkgname>_<version>: <path>"""
 
@@ -283,34 +283,34 @@ def get_file_dict( workdirs, ext ):
         for fl in os.listdir(dir):
             if os.path.splitext(fl)[1] == ext:
                 filedict[os.path.splitext(os.path.basename(fl))[0]] \
-                    = os.path.join(dir,fl)
+                    = os.path.join(dir, fl)
 
     return filedict
 
-def get_pkgspec( logpath ):
+def get_pkgspec(logpath):
     """For a log full file spec, return the pkgspec (<pkg>_<version)"""
-    return( logpath.split('/')[-1] )
+    return logpath.split('/')[-1]
 
 def get_bug_text(logpath):
     bugpath = replace_ext(logpath, BUG_EXT)
 
     txt = ""
     if os.path.exists(bugpath):
-        bf = open( bugpath, 'r' )
+        bf = open(bugpath, 'r')
         txt = bf.read()
         bf.close()
 
     return txt
 
-def section_path( logpath ):
+def section_path(logpath):
     """Convert a full log path name to one relative to the section directory"""
-    return( '/'.join( [get_where(logpath), get_pkgspec(logpath)] ) )
+    return '/'.join([get_where(logpath), get_pkgspec(logpath)])
 
-def mtime( path ):
+def mtime(path):
     return os.path.getmtime(path)
 
-def clean_cache_files( logdict, cachedict, recheck=False, recheck_failed=False,
-   skipnewer=False ):
+def clean_cache_files(logdict, cachedict, recheck=False, recheck_failed=False,
+                      skipnewer=False):
     """Delete files in cachedict if the corresponding logdict file is missing
        or newer"""
 
@@ -332,9 +332,9 @@ def clean_cache_files( logdict, cachedict, recheck=False, recheck_failed=False,
             # logfile may have disappeared
             pass
 
-    return( count )
+    return count
 
-def make_kprs( logdict, kprdict, problem_list ):
+def make_kprs(logdict, kprdict, problem_list):
     """Create kpr files, as necessary, so every log file has one
        kpr entries are e.g.
            fail/xorg-docs_1:1.6-1.log broken_symlinks_error.conf"""
@@ -345,32 +345,32 @@ def make_kprs( logdict, kprdict, problem_list ):
         logpath = logdict[pkg_spec]
 
         try:
-            lb = open( logpath, 'r' )
+            lb = open(logpath, 'r')
             logbody = lb.read()
             lb.close()
 
-            where = get_where( logpath )
+            where = get_where(logpath)
 
-            kf = open( get_kpr_path(logpath), 'a')
+            kf = open(get_kpr_path(logpath), 'a')
 
             for problem in problem_list:
-                if( problem.has_problem( logbody, where ) ):
-                    kf.write( "%s/%s.log %s\n" % (where, pkg_spec, problem.name) )
+                if problem.has_problem(logbody, where):
+                    kf.write("%s/%s.log %s\n" % (where, pkg_spec, problem.name))
 
             kf.close()
         except IOError:
             print "File error processing %s" % logpath
 
-    return( len(needs_kpr) )
+    return len(needs_kpr)
 
-def populate_tpl( tmpl, vals ):
+def populate_tpl(tmpl, vals):
 
     for key in vals:
-        tmpl = re.sub( "\$%s" % key, str(vals[key]), tmpl )
+        tmpl = re.sub("\$%s" % key, str(vals[key]), tmpl)
 
     return tmpl
 
-def update_tpl( basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb ):
+def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb):
 
     pkg_text = ""
     bugged_section = False
@@ -399,42 +399,42 @@ def update_tpl( basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb
                                 'RDEPS': rdep_cnt,
                                 'SDIR':pts_subdir(src_pkg),
                                 'SPKG':src_pkg,
-                                   } )
+                                   })
 
     if len(pkg_text):
-        pf = open(os.path.join(basedir, failures[0].problem[:-5] + TPL_EXT),'w')
-        tpl_text = populate_tpl( ptpl, {
+        pf = open(os.path.join(basedir, failures[0].problem[:-5] + TPL_EXT), 'w')
+        tpl_text = populate_tpl(ptpl, {
                                 'HEADER': problem.HEADER,
                                 'SECTION': section,
                                 'HELPTEXT': problem.HELPTEXT,
                                 'COMMAND': problem.get_command(),
                                 'PACKAGE_LIST': pkg_text,
                                 'COUNT': len(failures),
-                                } )
+                                })
 
-        pf.write( tpl_text )
+        pf.write(tpl_text)
         pf.close()
 
-def update_html( section, logdict, problem_list, failures, config, pkgsdb ):
+def update_html(section, logdict, problem_list, failures, config, pkgsdb):
 
-    html_dir = os.path.join( config['output-directory'], section )
-    if not os.path.exists( html_dir ):
+    html_dir = os.path.join(config['output-directory'], section)
+    if not os.path.exists(html_dir):
         os.makedirs(html_dir)
 
     for problem in problem_list:
-        update_tpl( html_dir, section, problem,
-                    failures.filtered(problem.name),
-                    logdict,
-                    PKG_ERROR_TPL, PROB_TPL, pkgsdb )
+        update_tpl(html_dir, section, problem,
+                   failures.filtered(problem.name),
+                   logdict,
+                   PKG_ERROR_TPL, PROB_TPL, pkgsdb)
 
     # Make a failure list of all failed packages that don't show up as known
     failedpkgs = set([x for x in logdict.keys()
                      if get_where(logdict[x]) != 'pass'])
     knownfailpkgs = set([failure.pkgspec for failure in failures.failures])
-    unknownsasfailures = [make_failure("","unknown_failures.conf",x)
+    unknownsasfailures = [make_failure("", "unknown_failures.conf", x)
                          for x in failedpkgs.difference(knownfailpkgs)]
 
-    def keyfunc( x, pkgsdb=pkgsdb, logdict=logdict):
+    def keyfunc(x, pkgsdb=pkgsdb, logdict=logdict):
 
         pkg_obj =  pkgsdb.get_package(get_pkg(x.pkgspec))
 
@@ -445,39 +445,39 @@ def update_html( section, logdict, problem_list, failures, config, pkgsdb ):
 
         is_failed = get_where(logdict[x.pkgspec]) == "fail"
 
-        return( (not is_failed, -rdeps, logdict[x.pkgspec]) )
+        return (not is_failed, -rdeps, logdict[x.pkgspec])
 
-    unknownsasfailures.sort( key=keyfunc )
+    unknownsasfailures.sort(key=keyfunc)
 
-    update_tpl( html_dir, section, problem_list[0], unknownsasfailures,
-                logdict,
-                PKG_ERROR_TPL, UNKNOWN_TPL, pkgsdb )
+    update_tpl(html_dir, section, problem_list[0], unknownsasfailures,
+               logdict,
+               PKG_ERROR_TPL, UNKNOWN_TPL, pkgsdb)
 
-def process_section( section, config, problem_list,
-                     recheck=False, recheck_failed=False, pkgsdb=None ):
+def process_section(section, config, problem_list,
+                    recheck=False, recheck_failed=False, pkgsdb=None):
     """ Update .bug and .kpr files for logs in this section """
 
     # raises MissingSection if the section does not exist in piuparts.conf
-    section_config = WKE_Section_Config( section )
-    section_config.read( CONFIG_FILE )
+    section_config = WKE_Section_Config(section)
+    section_config.read(CONFIG_FILE)
 
-    sectiondir = os.path.join( config['master-directory'], section )
-    workdirs = [ os.path.join(sectiondir,x) for x in KPR_DIRS ]
+    sectiondir = os.path.join(config['master-directory'], section)
+    workdirs = [os.path.join(sectiondir, x) for x in KPR_DIRS]
 
-    if not os.access( sectiondir, os.F_OK ):
-        raise MissingSection( "", section )
+    if not os.access(sectiondir, os.F_OK):
+        raise MissingSection("", section)
 
     [os.mkdir(x) for x in workdirs if not os.path.exists(x)]
 
-    (logdict, kprdict, bugdict) = [ get_file_dict(workdirs, x ) \
-            for x in [LOG_EXT, KPR_EXT, BUG_EXT] ]
+    (logdict, kprdict, bugdict) = [get_file_dict(workdirs, x)
+            for x in [LOG_EXT, KPR_EXT, BUG_EXT]]
 
-    del_cnt = clean_cache_files( logdict, kprdict, recheck, recheck_failed )
-    clean_cache_files( logdict, bugdict, skipnewer=True )
+    del_cnt = clean_cache_files(logdict, kprdict, recheck, recheck_failed)
+    clean_cache_files(logdict, bugdict, skipnewer=True)
 
-    (kprdict, bugdict) = [get_file_dict(workdirs,x) for x in [KPR_EXT, BUG_EXT]]
+    (kprdict, bugdict) = [get_file_dict(workdirs, x) for x in [KPR_EXT, BUG_EXT]]
 
-    add_cnt = make_kprs( logdict, kprdict, problem_list )
+    add_cnt = make_kprs(logdict, kprdict, problem_list)
 
     if not pkgsdb:
         distro_config = piupartslib.conf.DistroConfig(
@@ -489,7 +489,7 @@ def process_section( section, config, problem_list,
         pkgs_url = distro_config.get_packages_url(
                    section_config.get_distro(),
                    section_config.get_area(),
-                   section_config.get_arch() )
+                   section_config.get_arch())
         pkg_fl = piupartslib.open_packages_url(pkgs_url)
         pkgsdb.read_packages_file(pkg_fl)
         pkg_fl.close()
@@ -497,23 +497,23 @@ def process_section( section, config, problem_list,
         pkgsdb.compute_package_states()
         pkgsdb.calc_rrdep_counts()
 
-    failures = FailureManager( logdict )
+    failures = FailureManager(logdict)
     failures.sort_by_bugged_and_rdeps(pkgsdb)
 
-    update_html( section, logdict, problem_list, failures, config, pkgsdb )
+    update_html(section, logdict, problem_list, failures, config, pkgsdb)
 
-    return( del_cnt, add_cnt, failures )
+    return (del_cnt, add_cnt, failures)
 
-def detect_well_known_errors( config, problem_list, recheck, recheck_failed ):
+def detect_well_known_errors(config, problem_list, recheck, recheck_failed):
 
     for section in config['sections'].split():
         try:
-            print time.strftime( "%a %b %2d %H:%M:%S %Z %Y", time.localtime() )
+            print time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime())
             print "%s:" % section
 
-            ( del_cnt, add_cnt, failures ) = \
-                      process_section( section, config, problem_list,
-                                       recheck, recheck_failed )
+            (del_cnt, add_cnt, failures) = \
+                      process_section(section, config, problem_list,
+                                      recheck, recheck_failed)
 
             print "parsed logfiles: %d removed, %d added" % (del_cnt, add_cnt)
 
@@ -524,14 +524,14 @@ def detect_well_known_errors( config, problem_list, recheck, recheck_failed ):
         except MissingSection:
             pass
 
-    print time.strftime( "%a %b %2d %H:%M:%S %Z %Y", time.localtime() )
+    print time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime())
 
-def create_problem_list( pdir ):
+def create_problem_list(pdir):
 
     plist = []
 
     for pfile in [x for x in sorted(os.listdir(pdir)) if x.endswith(".conf")]:
-        prob = Problem(os.path.join(pdir,pfile))
+        prob = Problem(os.path.join(pdir, pfile))
 
         if prob.valid():
             plist.append(prob)
@@ -549,25 +549,25 @@ This script processes all log files against defined "known_problem" files,
 caching the problems found, by package, into ".kpr" files. The cached data
 is summarized into html ".tpl" files in <html_dir>/<section>, which are then
 incorporated by piuparts-report into the final web reports.
-""" )
+""")
 
-    parser.add_argument( '--recheck', dest='recheck', action='store_true',
-               help="recheck all log files (delete cache)" )
+    parser.add_argument('--recheck', dest='recheck', action='store_true',
+               help="recheck all log files (delete cache)")
 
-    parser.add_argument( '--recheck-failed', dest='recheck_failed',
+    parser.add_argument('--recheck-failed', dest='recheck_failed',
                action='store_true',
-               help="recheck failed log files (delete cache)" )
+               help="recheck failed log files (delete cache)")
 
     args = parser.parse_args()
 
     conf = WKE_Config()
-    conf.read( CONFIG_FILE )
+    conf.read(CONFIG_FILE)
     if conf["proxy"]:
         os.environ["http_proxy"] = conf["proxy"]
 
-    problem_list = create_problem_list( conf['known-problem-directory'] )
+    problem_list = create_problem_list(conf['known-problem-directory'])
 
-    detect_well_known_errors( conf, problem_list, args.recheck,
-                              args.recheck_failed )
+    detect_well_known_errors(conf, problem_list, args.recheck,
+                             args.recheck_failed)
 
 # vi:set et ts=4 sw=4 :

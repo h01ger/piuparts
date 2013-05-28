@@ -572,7 +572,7 @@ def read_file(filename):
     f.close()
     return l
 
-def create_section_navigation(section_names,current_section, doc_root):
+def create_section_navigation(section_names, current_section, doc_root):
     tablerows = ""
     for section in section_names:
         tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell\"><a href='%s/%s'>%s</a></td></tr>\n") % \
@@ -702,7 +702,7 @@ class Section:
 
         htmlpage = string.Template(HTML_HEADER + LOG_LIST_BODY_TEMPLATE + HTML_FOOTER)
         f = file(filename, "w")
-        f.write(htmlpage.safe_substitute( {
+        f.write(htmlpage.safe_substitute({
                     "page_title": html_protect(title+" in "+self._config.section),
                     "section_navigation":
                        create_section_navigation(self._section_names,
@@ -776,8 +776,8 @@ class Section:
     def link_to_maintainer_summary(self, maintainer):
         email = get_email_address(maintainer)
         return "<a href=\"%s/%s/maintainer/%s/%s.html\">%s</a>" \
-               % (self._doc_root,self._config.section,maintainer_subdir(email),
-                  email,html_protect(maintainer))
+               % (self._doc_root, self._config.section, maintainer_subdir(email),
+                  email, html_protect(maintainer))
 
     def link_to_uploaders(self, uploaders):
         link = ""
@@ -918,8 +918,8 @@ class Section:
             htmlpage = string.Template(HTML_HEADER + MAINTAINER_BODY_TEMPLATE + HTML_FOOTER)
             filename = os.path.join(maintainer_subdir_path, maintainer + ".html")
             f = file(filename, "w")
-            f.write(htmlpage.safe_substitute( {
-               "page_title": html_protect(  "Status of " \
+            f.write(htmlpage.safe_substitute({
+               "page_title": html_protect("Status of " \
                                           + maintainer \
                                           + " packages in " \
                                           + self._config.section),
@@ -972,8 +972,8 @@ class Section:
                           + "<td class=\"%s\">piuparts-result:</td>" \
                             % state_style \
                           + "<td class=\"contentcell2\">%s %s</td>" \
-                            % ( self.link_to_state_page(self._config.section,binary,state),
-                                self.links_to_logs(binary, state, logs_by_dir) ) \
+                            % (self.link_to_state_page(self._config.section, binary, state),
+                               self.links_to_logs(binary, state, logs_by_dir)) \
                           + "<td class=\"labelcell\">Version:</td>" \
                           + "<td class=\"contentcell2\">%s</td>" \
                             % html_protect(binary_version) \
@@ -999,7 +999,7 @@ class Section:
                           + "<td class=\"labelcell\">Source:</td>" \
                           + "<td class=\"contentcell2\">" \
                             + "<a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a>" \
-                              % ( source, html_protect(source) ) \
+                              % (source, html_protect(source)) \
                             + "</td>" \
                           + "<td class=\"labelcell\">piuparts summary:</td>" \
                           + "<td class=\"contentcell2\">%s</td>" \
@@ -1022,7 +1022,7 @@ class Section:
                                 % self.link_to_uploaders(uploaders) \
                               + "</tr>\n"
 
-            source_summary_page_path = os.path.join( self._output_directory,
+            source_summary_page_path = os.path.join(self._output_directory,
                                                     "source",
                                                      source_subdir(source))
 
@@ -1033,9 +1033,9 @@ class Section:
             htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
 
             f = file(filename, "w")
-            f.write(htmlpage.safe_substitute( {
+            f.write(htmlpage.safe_substitute({
                "page_title": html_protect("Status of source package "+source+" in "+self._config.section),
-               "section_navigation": create_section_navigation(self._section_names,self._config.section,self._doc_root),
+               "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": sourcerows+binaryrows,
                "doc_root": self._doc_root,
@@ -1111,7 +1111,7 @@ class Section:
         return stats_html
 
 
-    def create_and_link_to_analysises(self,state):
+    def create_and_link_to_analysises(self, state):
         link="<ul>"
         for template, linktarget in linktarget_by_template:
             # sucessful logs only have issues and failed logs only have errors
@@ -1129,9 +1129,9 @@ class Section:
                     htmlpage = string.Template(HTML_HEADER + ANALYSIS_BODY_TEMPLATE + HTML_FOOTER)
                     filename = os.path.join(self._output_directory, template[:-len(".tpl")]+".html")
                     f = file(filename, "w")
-                    f.write(htmlpage.safe_substitute( {
+                    f.write(htmlpage.safe_substitute({
                        "page_title": html_protect("Packages in state "+state+" "+linktarget),
-                       "section_navigation": create_section_navigation(self._section_names,self._config.section,self._doc_root),
+                       "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
                        "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                        "rows": rows,
                        "doc_root": self._doc_root,
@@ -1168,7 +1168,7 @@ class Section:
             link = ""
         return link
 
-    def write_section_index_page(self,dirs,total_packages):
+    def write_section_index_page(self, dirs, total_packages):
         tablerows = ""
         for state in self._binary_db.get_active_states():
             dir_link = ""
@@ -1211,9 +1211,9 @@ class Section:
             description = self._config["description"][:-1] + " " + description
         elif self._config["description"]:
             description = self._config["description"]
-        write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute( {
+        write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute({
             "page_title": html_protect(self._config.section+" statistics"),
-            "section_navigation": create_section_navigation(self._section_names,self._config.section,self._doc_root),
+            "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
             "time": time.strftime("%Y-%m-%d %H:%M %Z"),
             "section": html_protect(self._config.section),
             "description": html_protect(description),
@@ -1246,15 +1246,15 @@ class Section:
 
             def cmp_func(a, b):
                 """Sort by block count first"""
-                rrdep_cmp = cmp( a.block_count(), b.block_count())
+                rrdep_cmp = cmp(a.block_count(), b.block_count())
                 if rrdep_cmp != 0:
                     return -rrdep_cmp
                 else:
-                    return cmp( a["Package"], b["Package"] )
+                    return cmp(a["Package"], b["Package"])
 
             names = self._binary_db.get_pkg_names_in_state(state)
             packages = [self._binary_db.get_package(name) for name in names]
-            packages.sort( cmp_func )
+            packages.sort(cmp_func)
 
             for package in packages:
                 vlist += "<li id=\"%s\">%s" % (
@@ -1269,23 +1269,23 @@ class Section:
                     for alternatives in all_deps:
                         dep = alternatives[0]
                         vlist += "<li>dependency %s is %s</li>\n" % \
-                                  (self.link_to_state_page(self._config.section,dep,dep),
+                                  (self.link_to_state_page(self._config.section, dep, dep),
                                   emphasize_reason(html_protect(self._binary_db.get_package_state(dep, resolve_virtual=False))))
                         vlist += self._show_providers(dep)
                         if len(alternatives) > 1:
                             vlist += "\n<ul>\n"
                             for dep in alternatives[1:]:
                                 vlist += "<li>alternative dependency %s is %s</li>\n" % \
-                                          (self.link_to_state_page(self._config.section,dep,dep),
+                                          (self.link_to_state_page(self._config.section, dep, dep),
                                           emphasize_reason(html_protect(self._binary_db.get_package_state(dep, resolve_virtual=False))))
                                 vlist += self._show_providers(dep)
                             vlist += "</ul>\n"
                     vlist += "</ul>\n"
                 vlist += "</li>\n"
             htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
-            write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute( {
+            write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute({
                                         "page_title": html_protect("Packages in state "+state+" in "+self._config.section),
-                                        "section_navigation": create_section_navigation(self._section_names,self._config.section,self._doc_root),
+                                        "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
                                         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                         "state": html_protect(state),
                                         "section": html_protect(self._config.section),
@@ -1392,12 +1392,12 @@ def main():
         # static pages
         logging.debug("Writing static pages")
         for page in ("index", "bug_howto"):
-            tpl = os.path.join(output_directory,page+".tpl")
+            tpl = os.path.join(output_directory, page+".tpl")
             INDEX_BODY = "".join(read_file(tpl))
             htmlpage = string.Template(HTML_HEADER + INDEX_BODY + HTML_FOOTER)
-            write_file(os.path.join(output_directory,page+".html"), htmlpage.safe_substitute( {
+            write_file(os.path.join(output_directory, page+".html"), htmlpage.safe_substitute({
                                    "page_title": "About piuparts.debian.org and News",
-                                   "section_navigation": create_section_navigation(section_names,"sid",doc_root),
+                                   "section_navigation": create_section_navigation(section_names, "sid", doc_root),
                                    "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                    "doc_root": doc_root,
                                 }))

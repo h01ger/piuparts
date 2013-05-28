@@ -704,7 +704,7 @@ class Section:
 
         if ret == 0:
             output.write("Executing: %s\n" % " ".join(command))
-            ret,f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
+            ret, f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
             if not f or f[-1] != '\n':
                 f += '\n'
             output.write(f)
@@ -783,7 +783,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
         alarm(0)
     except Alarm:
         terminate_subprocess(p, kill_all)
-        return -1,stdout
+        return -1, stdout
     except KeyboardInterrupt:
         print '\nSlave interrupted by the user, cleaning up...'
         try:
@@ -797,7 +797,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
     if ret in [124, 137]:
         # process was terminated by the timeout command
         ret = -ret
-    return ret,stdout
+    return ret, stdout
 
 
 def create_chroot(config, tarball, distro):

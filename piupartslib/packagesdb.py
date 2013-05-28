@@ -105,7 +105,7 @@ class Package(UserDict.UserDict):
                 vlist += self._parse_alternative_dependencies(header)
         return vlist
 
-    def prefer_alt_depends(self, header_name,dep_idx,dep):
+    def prefer_alt_depends(self, header_name, dep_idx, dep):
         if header_name in self:
             if header_name not in self._parsed_deps:
                 self._parse_dependencies(header_name)
@@ -127,7 +127,7 @@ class Package(UserDict.UserDict):
         """Get the recursive dependency count, if it has been calculated"""
         if self._rrdep_count == None:
             raise Exception('Reverse dependency count has not been calculated')
-        return(self._rrdep_count)
+        return self._rrdep_count
 
     def set_rrdep_count(self, val):
         self._rrdep_count = val
@@ -136,7 +136,7 @@ class Package(UserDict.UserDict):
         """Get the number of packages blocked by this package"""
         if self._block_count == None:
             raise Exception('Block count has not been calculated')
-        return(self._block_count)
+        return self._block_count
 
     def set_block_count(self, val):
         self._block_count = val
@@ -145,7 +145,7 @@ class Package(UserDict.UserDict):
         """Get the number of packages waiting for this package"""
         if self._waiting_count == None:
             raise Exception('Waiting count has not been calculated')
-        return(self._waiting_count)
+        return self._waiting_count
 
     def set_waiting_count(self, val):
         self._waiting_count = val
@@ -765,11 +765,11 @@ class PackagesDB:
             # use the Packages dependencies() method for a conservative count
             for dep in self._packages[pkg_name].dependencies():
                 if dep in rdeps:
-                    rdeps[dep].append( pkg_name )
+                    rdeps[dep].append(pkg_name)
                 else:
                     rdeps[dep] = [pkg_name]
 
-        def recurse_rdeps( pkg_name, rdeps, rrdep_dict ):
+        def recurse_rdeps(pkg_name, rdeps, rrdep_dict):
             """ Recurse through the reverse dep arrays to determine the recursive
                 dependency count for a package. rrdep_dict.keys() contains the
                 accumulation of rdeps encountered"""
@@ -780,21 +780,21 @@ class PackagesDB:
                     # break circular dependency loops
                     if not rdep in rrdep_dict:
                         rrdep_dict[rdep] = 1
-                        rrdep_dict = recurse_rdeps( rdep, rdeps, rrdep_dict )
+                        rrdep_dict = recurse_rdeps(rdep, rdeps, rrdep_dict)
 
             return rrdep_dict
 
         # calculate all of the rrdeps and block counts
         for pkg_name in self._packages.keys():
-            rrdep_list = recurse_rdeps( pkg_name, rdeps, {} ).keys()
-            self._packages[pkg_name].set_rrdep_count( len(rrdep_list) )
+            rrdep_list = recurse_rdeps(pkg_name, rdeps, {}).keys()
+            self._packages[pkg_name].set_rrdep_count(len(rrdep_list))
 
             if self._package_state[pkg_name] in error_states:
                 block_list = [x for x in rrdep_list
                               if self._package_state[x] in error_states]
             else:
                 block_list = []
-            self._packages[pkg_name].set_block_count( len(block_list) )
+            self._packages[pkg_name].set_block_count(len(block_list))
 
             if self._package_state[pkg_name] in waiting_states:
                 waiting_list = [x for x in rrdep_list
