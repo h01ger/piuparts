@@ -36,18 +36,21 @@ sections =
 	sid/main
 	jessie/main
 	wheezy/main
+	wheezy-proposed/main
 	squeeze/main
 #
 	experimental/contrib
 	sid/contrib
 	jessie/contrib
 	wheezy/contrib
+	wheezy-proposed/contrib
 	squeeze/contrib
 #
 	experimental/non-free
 	sid/non-free
 	jessie/non-free
 	wheezy/non-free
+	wheezy-proposed/non-free
 	squeeze/non-free
 #
 proxy = http://localhost:3128
@@ -218,6 +221,39 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = wheezy/main wheezy/contrib
 distro = wheezy
+arch = amd64
+area = non-free
+
+
+[wheezy-proposed/main]
+precedence = 20
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+distro = wheezy-proposed
+arch = amd64
+area = main
+
+[wheezy-proposed/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy-proposed/main wheezy-proposed/non-free
+distro = wheezy-proposed
+arch = amd64
+area = contrib
+
+[wheezy-proposed/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy-proposed/main wheezy-proposed/contrib
+distro = wheezy-proposed
 arch = amd64
 area = non-free
 
