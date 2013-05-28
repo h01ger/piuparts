@@ -932,11 +932,11 @@ def main():
 
 
 if __name__ == "__main__":
-  try:
-     main()
-  except KeyboardInterrupt:
-     print ''
-     print 'Slave interrupted by the user, exiting...'
-     sys.exit(1)
+    try:
+        main()
+    except KeyboardInterrupt:
+        print ''
+        print 'Slave interrupted by the user, exiting...'
+        sys.exit(1)
 
 # vi:set et ts=4 sw=4 :

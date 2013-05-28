@@ -272,7 +272,7 @@ class Master(Protocol):
             raise CommandSyntaxError("Need exactly %d args: %s %s" %
                                      (count, command, " ".join(args)))
     def dump_pkgs(self):
-         for st in self._binary_db.get_states():
+        for st in self._binary_db.get_states():
             for name in self._binary_db.get_pkg_names_in_state(st):
                 logging.debug("%s : %s\n" % (st,name))
 

@@ -264,9 +264,9 @@ def get_kpr_path( logpath ):
 
 def pts_subdir( source ):
     if source[:3] == "lib":
-      return source[:4]
+        return source[:4]
     else:
-      return source[:1]
+        return source[:1]
 
 def source_pkg( pkgspec, db ):
     source_name = db.get_control_header(get_pkg(pkgspec), "Source")
@@ -316,21 +316,21 @@ def clean_cache_files( logdict, cachedict, recheck=False, recheck_failed=False,
 
     count = 0
     for pkgspec in cachedict:
-      try:
-        if pkgspec not in logdict \
-        or (mtime(logdict[pkgspec])>mtime(cachedict[pkgspec]) and not skipnewer)\
-        or get_where(logdict[pkgspec]) != get_where(cachedict[pkgspec])\
-        or recheck\
-        or (recheck_failed and not get_where(cachedict[pkgspec]) in ['pass']):
+        try:
+            if pkgspec not in logdict \
+            or (mtime(logdict[pkgspec])>mtime(cachedict[pkgspec]) and not skipnewer)\
+            or get_where(logdict[pkgspec]) != get_where(cachedict[pkgspec])\
+            or recheck\
+            or (recheck_failed and not get_where(cachedict[pkgspec]) in ['pass']):
 
-            try:
-                os.remove(cachedict[pkgspec])
-                count = count + 1
-            except OSError:
-                print "Error deleting %s" % cachedict[pkgspec]
-      except IOError:
-	# logfile may have disappeared
-	pass
+                try:
+                    os.remove(cachedict[pkgspec])
+                    count = count + 1
+                except OSError:
+                    print "Error deleting %s" % cachedict[pkgspec]
+        except IOError:
+            # logfile may have disappeared
+            pass
 
     return( count )
 
@@ -507,22 +507,22 @@ def process_section( section, config, problem_list,
 def detect_well_known_errors( config, problem_list, recheck, recheck_failed ):
 
     for section in config['sections'].split():
-      try:
-        print time.strftime( "%a %b %2d %H:%M:%S %Z %Y", time.localtime() )
-        print "%s:" % section
+        try:
+            print time.strftime( "%a %b %2d %H:%M:%S %Z %Y", time.localtime() )
+            print "%s:" % section
 
-        ( del_cnt, add_cnt, failures ) = \
-                  process_section( section, config, problem_list,
-                                   recheck, recheck_failed )
+            ( del_cnt, add_cnt, failures ) = \
+                      process_section( section, config, problem_list,
+                                       recheck, recheck_failed )
 
-        print "parsed logfiles: %d removed, %d added" % (del_cnt, add_cnt)
+            print "parsed logfiles: %d removed, %d added" % (del_cnt, add_cnt)
 
-        for prob in problem_list:
-            pcount = len(failures.filtered(prob.name))
-            if pcount:
-                print "%7d %s" % (pcount, prob.name)
-      except MissingSection:
-        pass
+            for prob in problem_list:
+                pcount = len(failures.filtered(prob.name))
+                if pcount:
+                    print "%7d %s" % (pcount, prob.name)
+        except MissingSection:
+            pass
 
     print time.strftime( "%a %b %2d %H:%M:%S %Z %Y", time.localtime() )
 

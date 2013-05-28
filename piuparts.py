@@ -997,10 +997,10 @@ class Chroot:
             lines.append('force-confdef\n')
             logging.info("Warning: dpkg has been configured to use the force-confdef option. This will hide problems, see #466118.")
         if lines:
-          if not os.path.exists(self.relative("etc/dpkg/dpkg.cfg.d")):
-              os.mkdir(self.relative("etc/dpkg/dpkg.cfg.d"))
-          create_file(self.relative("etc/dpkg/dpkg.cfg.d/piuparts"),
-            "".join(lines))
+            if not os.path.exists(self.relative("etc/dpkg/dpkg.cfg.d")):
+                os.mkdir(self.relative("etc/dpkg/dpkg.cfg.d"))
+            create_file(self.relative("etc/dpkg/dpkg.cfg.d/piuparts"),
+              "".join(lines))
 
     def create_policy_rc_d(self):
         """Create a policy-rc.d that prevents daemons from running."""
@@ -1017,7 +1017,7 @@ class Chroot:
         if settings.eatmydata and os.path.isfile('/usr/bin/eatmydata'):
             prefix.append('eatmydata')
         if settings.do_not_verify_signatures:
-          logging.info("Warning: not using --keyring option when running debootstrap!")
+            logging.info("Warning: not using --keyring option when running debootstrap!")
         options = [settings.keyringoption]
         if settings.eatmydata:
             options.append('--include=eatmydata')
@@ -1031,7 +1031,7 @@ class Chroot:
     def minimize(self):
         """Minimize a chroot by removing (almost all) unnecessary packages"""
         if settings.skip_minimize or not settings.minimize:
-             return
+            return
         self.run(["apt-get", "install", "debfoster"])
         debfoster_command = ["debfoster"] + settings.debfoster_options
         if settings.eatmydata:
@@ -1635,11 +1635,11 @@ class VirtServ(Chroot):
 
     def _vs_send(self, cmd):
         if type(cmd) == type([]):
-                def maybe_quote(a):
-                    if type(a) != type(()): return a
-                    (a,) = a
-                    return urllib.quote(a)
-                cmd = ' '.join(map(maybe_quote,cmd))
+            def maybe_quote(a):
+                if type(a) != type(()): return a
+                (a,) = a
+                return urllib.quote(a)
+            cmd = ' '.join(map(maybe_quote,cmd))
         logging.debug('adt-virt >> %s', cmd)
         print >>self._vs.stdin, cmd
         return cmd.split(' ')[0]
@@ -2146,12 +2146,12 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
 
     if new:
         if settings.warn_on_leftovers_after_purge:
-          logging.info("Warning: Package purging left files on system:\n" +
-                       file_list(new, file_owners))
+            logging.info("Warning: Package purging left files on system:\n" +
+                         file_list(new, file_owners))
         else:
-          logging.error("FAIL: Package purging left files on system:\n" +
-                       file_list(new, file_owners))
-          ok = False
+            logging.error("FAIL: Package purging left files on system:\n" +
+                         file_list(new, file_owners))
+            ok = False
     if removed:
         logging.error("FAIL: After purging files have disappeared:\n" +
                       file_list(removed, file_owners))
@@ -2797,11 +2797,11 @@ def parse_command_line():
     settings.keyring = opts.keyring
     settings.do_not_verify_signatures = opts.do_not_verify_signatures
     if settings.do_not_verify_signatures:
-      settings.keyringoption=""
-      settings.apt_unauthenticated="Yes"
+        settings.keyringoption=""
+        settings.apt_unauthenticated="Yes"
     else:
-      settings.keyringoption="--keyring=%s" % settings.keyring
-      settings.apt_unauthenticated="No"
+        settings.keyringoption="--keyring=%s" % settings.keyring
+        settings.apt_unauthenticated="No"
     settings.install_recommends = opts.install_recommends
     settings.eatmydata = not opts.no_eatmydata
     settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
@@ -2821,7 +2821,7 @@ def parse_command_line():
     settings.skip_minimize = opts.skip_minimize
     settings.minimize = opts.minimize
     if settings.minimize:
-      settings.skip_minimize = False
+        settings.skip_minimize = False
     settings.debfoster_options = opts.debfoster_options.split()
     # tests and checks
     settings.no_install_purge_test = opts.no_install_purge_test
@@ -2845,7 +2845,7 @@ def parse_command_line():
     settings.ignored_files += opts.ignore
     settings.ignored_patterns += opts.ignore_regex
     if not settings.pedantic_purge_test:
-      settings.ignored_patterns += settings.non_pedantic_ignore_patterns
+        settings.ignored_patterns += settings.non_pedantic_ignore_patterns
 
     if opts.adt_virt is None:
         settings.adt_virt = None

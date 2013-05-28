@@ -108,7 +108,7 @@ class Package(UserDict.UserDict):
     def prefer_alt_depends(self, header_name,dep_idx,dep):
         if header_name in self:
             if header_name not in self._parsed_deps:
-                  self._parse_dependencies(header_name)
+                self._parse_dependencies(header_name)
             if self._parsed_deps[header_name][dep_idx]:
                 self._parsed_deps[header_name][dep_idx] = dep
 
@@ -630,29 +630,29 @@ class PackagesDB:
     def get_control_header(self, package_name, header):
         self._find_all_packages()
         if header == "Source":
-          # binary packages build from the source package with the same name
-          # don't have a Source header, so let's try:
-          try:
-            _source = self._packages[package_name][header]
-            # for binNMU the Source header in Packages files holds the version
-            # too, so we need to chop it of:
-            if " " in _source:
-              source, version = _source.split(" ")
-            else:
-              source = _source
-          except:
-            source = self._packages[package_name]["Package"]
-          return source
+            # binary packages build from the source package with the same name
+            # don't have a Source header, so let's try:
+            try:
+                _source = self._packages[package_name][header]
+                # for binNMU the Source header in Packages files holds the version
+                # too, so we need to chop it of:
+                if " " in _source:
+                    source, version = _source.split(" ")
+                else:
+                    source = _source
+            except:
+                source = self._packages[package_name]["Package"]
+            return source
         elif header == "Uploaders":
-          # not all (source) packages have an Uploaders header
-          uploaders = ""
-          try:
-            uploaders = self._packages[package_name][header]
-          except:
-            pass
-          return uploaders
+            # not all (source) packages have an Uploaders header
+            uploaders = ""
+            try:
+                uploaders = self._packages[package_name][header]
+            except:
+                pass
+            return uploaders
         else:
-          return self._packages[package_name][header]
+            return self._packages[package_name][header]
 
     def get_package_state(self, package_name, resolve_virtual=True, recurse=True):
         self._compute_package_states()
