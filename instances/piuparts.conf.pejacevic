@@ -197,6 +197,15 @@ distro = wheezy
 max-tgz-age = 2592000
 
 
+[wheezy-proposed]
+precedence = 3
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+distro = wheezy-proposed
+
+
 [squeeze2wheezy]
 precedence = 4
 piuparts-flags =
