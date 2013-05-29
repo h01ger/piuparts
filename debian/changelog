@@ -45,6 +45,10 @@ piuparts (0.53) UNRELEASED; urgency=low
   * conf/crontab-master: run gather_bts_stats daily.
   * master-bin/prepare_backup: backup bts_stats.txt and do not backup
     sources.txt.
+  * piuparts.py: categorize adequate results using inadequate_tags,
+    boring_tags, ignored_tags and unknown. Show adequate exit code if
+    non-zero.
+  * Add known_problems/*inadequate*.conf for all adequate tags we care about.
 
   [ Andrew Starr-Bochicchio ]
   * piuparts.py:

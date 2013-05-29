@@ -1242,18 +1242,47 @@ class Chroot:
                 panic()
 
     def check_adequate(self, packages):
+        """Run adequate and categorize output according to our needs. """
         if packages and settings.adequate and os.path.isfile('/usr/bin/adequate'):
+            adequate_tags = [ 'bin-or-sbin-binary-requires-usr-lib-library',
+                                'library-not-found',
+                                'py-file-not-bytecompiled',
+                                'pyshared-file-not-bytecompiled',
+                                'undefined-symbol' ]
+            boring_tags = [ 'obsolete-conffile',
+                            'missing-copyright-file',
+                            'broken-symlink' ]
+            ignored_tags = [ ]
             (status, output) = run(["adequate", "--root", self.name] + packages, ignore_errors=True)
-            # ignore broken-symlinks - workaround #709372 in adequate
-            output = re.compile('^[^:]+: broken-symlink .*\n', re.MULTILINE).sub('', output)
+            for tag in ignored_tags:
+                # ignore some tags
+                _regex = '^[^:]+: '+tag+' .*\n'
+                output = re.compile(_regex, re.MULTILINE).sub('', output)
             if output:
+                inadequate_results = ''
+                boring_results = ''
+                for tag in adequate_tags:
+                    if ' '+tag+' ' in output:
+                        inadequate_results += ' '+tag+' '
+                for tag in boring_tags:
+                    if ' '+tag+' ' in output:
+                        boring_results += ' '+tag+' '
                 if settings.warn_if_inadequate:
-                    logging.error("WARN: inadequate results from running adequate:\n%s" %
-                          indent_string(output.replace(self.name, "")))
+                    error_code = 'WARN'
                 else:
-                    logging.error("FAIL: inadequate results from running adequate:\n%s" %
-                          indent_string(output.replace(self.name, "")))
-                    panic()
+                    error_code = 'FAIL'
+                logging.error("%s: Inadequate results from running adequate!\n%s" %
+                                (error_code, indent_string(output.replace(self.name, ""))))
+                if inadequate_results:
+                    logging.error("%s: Running adequate resulted in inadequate tags found: %s" % (error_code, inadequate_results))
+                if boring_results:
+                    logging.error("%s: Running adequate resulted in less interesting tags found: %s" % (error_code, boring_results))
+                if not boring_results and not inadequate_results:
+                    logging.error("%s: Found unknown tags running adequate." % error_code)
+                if status != 0:
+                    logging.error("%s: Exit code from adequate was %s!" % (error_code,status))
+                if not settings.warn_if_inadequate:
+                     panic()
 
     def list_paths_with_symlinks(self):
         file_owners = self.get_files_owned_by_packages()
