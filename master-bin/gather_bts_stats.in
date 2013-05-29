@@ -1,0 +1,49 @@
+#!/bin/bash
+set -e
+
+# Copyright 2013 Holger Levsen (holger@layer-acht.org)
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+
+. @sharedir@/piuparts/lib/read_config.sh
+get_config_value MASTER global master-directory
+BTS_STATS="$MASTER/bts_stats.txt"
+
+# exit if master-directory doesn't exist or if devscripts package is not installed
+test -n "$MASTER" || $(which bts) || exit 0
+
+# only run once a day
+TODAY=$(date +%Y%m%d)
+if $(grep -q ^$TODAY $BTS_STATS 2>/dev/null) ; then
+	exit 0
+fi
+
+# query bts
+ALL=$(bts select usertag:piuparts users:debian-qa@lists.debian.org archive:both 2>/dev/null|wc -l)
+OPEN=$(bts select usertag:piuparts users:debian-qa@lists.debian.org status:open 2>/dev/null|wc -l)
+
+# test if both values are integers
+if ! ( [[ $ALL =~ ^-?[0-9]+$ ]] && [[ $OPEN =~ ^-?[0-9]+$ ]] ) ; then
+	echo "Non-integer value detected, exiting. ALL: $ALL OPEN: $OPEN"
+fi
+
+# init file if needed
+if [ ! -f $BTS_STATS ] ; then
+	echo "date, all, open" > $BTS_STATS
+fi
+
+# finally, write stats
+echo "$TODAY, $ALL, $OPEN" >> $BTS_STATS

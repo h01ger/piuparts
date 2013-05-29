@@ -62,6 +62,7 @@ Recommends:
  python-rpy2,
  r-base-dev,
  r-recommended,
+ devscripts,
 Breaks:
  piuparts (<= 0.44)
 Replaces:

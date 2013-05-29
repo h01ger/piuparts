@@ -37,6 +37,10 @@ piuparts (0.53) UNRELEASED; urgency=low
   * Rename README.txt to README_1st.txt.
   * piuparts-master.deb: Ship README_server.html.
   * piuparts-report.py: Add a link to README_server.html.
+  * master-bin/gather_bts_stats: write bts_stats.txt to master-directory.
+  * conf/crontab-master: run gather_bts_stats daily.
+  * master-bin/prepare_backup: backup bts_stats.txt and do not backup
+    sources.txt.
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 27 May 2013 18:24:27 +0200
 

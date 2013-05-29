@@ -39,6 +39,7 @@ for 0.5x:
     existing data
   - generate simple diagrams: number of source + binary package in all single distros:
     squeeze, wheezy, jessie, sid.
+  - move counts.txt from htdocs to master.
 
 - add a sample config with all possible keys set to some useful value
   (like /usr/share/doc/apt/examples/configure-index.gz)
@@ -52,7 +53,6 @@ for 0.5x:
 
 - maybe compress all logfiles
 
-- maybe move counts.txt from htdocs to master. Or move submissions.txt to htdocs.
 
 
 for 0.6x:
