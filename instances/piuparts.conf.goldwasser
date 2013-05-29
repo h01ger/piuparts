@@ -83,7 +83,6 @@ description = + Fails if there are leftover files after purge.
 piuparts-flags =
 	%(flags-leftovers)s
 distro = sid
-log-file = sid.log
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
 
@@ -94,14 +93,12 @@ piuparts-flags =
 distro = testing
 upgrade-test-distros = testing sid
 reschedule-old-count = 0
-log-file = testing2sid.log
 
 
 [jessie]
 piuparts-flags =
 	%(flags-default)s
 distro = jessie
-log-file = jessie.log
 
 
 [wheezy2jessie]
@@ -110,7 +107,6 @@ piuparts-flags =
 	%(flags-start-wheezy)s
 distro = wheezy
 upgrade-test-distros = wheezy jessie
-log-file = wheezy2jessie.log
 
 
 [wheezy]
@@ -120,7 +116,6 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 distro = wheezy
 reschedule-old-count = 0
-log-file = wheezy.log
 
 
 [squeeze2wheezy]
@@ -131,5 +126,4 @@ piuparts-flags =
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
 reschedule-old-count = 0
-log-file = squeeze2wheezy.log
 
