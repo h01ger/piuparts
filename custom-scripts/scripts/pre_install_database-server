@@ -1,0 +1,156 @@
+#!/bin/sh
+set -e
+
+# Install a database server for packages that require one during postinst
+# but only recommend or suggest (or maybe not even this) the server
+# package to allow for remote db servers.
+
+MYSQL=
+POSTGRESQL=
+SQLITE3=
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	acidbase)				MYSQL=yes ;;
+	auth2db)				MYSQL=yes ;;
+	auth2db-common)				MYSQL=yes ;;
+	auth2db-frontend)			MYSQL=yes ;;
+	b2evolution)				MYSQL=yes ;;
+	bacula-director-mysql)			MYSQL=yes ;;
+	bacula-director-mysql-dbg)		MYSQL=yes ;;
+	bacula-director-pgsql)			POSTGRESQL=yes ;;
+	bacula-director-pgsql-dbg)		POSTGRESQL=yes ;;
+	bandwidthd-pgsql)			POSTGRESQL=yes ;;
+	bley)					POSTGRESQL=yes ;;
+	blootbot)				MYSQL=yes ;;
+	buddycloud-server)			POSTGRESQL=yes ;;
+	bugzilla3)				MYSQL=yes ;;
+	cacti)					MYSQL=yes ;;
+	cacti-cactid)				MYSQL=yes ;;
+	cacti-spine)				MYSQL=yes ;;
+	chado-utils)				POSTGRESQL=yes ;;
+	convirt)				MYSQL=yes ;;
+	docbookwiki)				MYSQL=yes ;;
+	dotclear)				MYSQL=yes ;;
+	dotlrn)					POSTGRESQL=yes ;;
+	drupal6)				MYSQL=yes ;;
+	drupal6-mod-*)				MYSQL=yes ;;
+	drupal6-thm-*)				MYSQL=yes ;;
+	drupal6-trans-ru)			MYSQL=yes ;;
+	drupal7)				MYSQL=yes ;;
+	frontaccounting)			MYSQL=yes ;;
+	fossology-agents)			POSTGRESQL=yes ;;
+	fusionforge-plugin-blocks)		POSTGRESQL=yes ;;
+	fusionforge-plugin-extsubproj)		POSTGRESQL=yes ;;
+	fusionforge-plugin-gravatar)		POSTGRESQL=yes ;;
+	fusionforge-plugin-hudson)		POSTGRESQL=yes ;;
+	fusionforge-plugin-mediawiki)		POSTGRESQL=yes ;;
+	fusionforge-plugin-moinmoin)		POSTGRESQL=yes ;;
+	fusionforge-plugin-projectlabels)	POSTGRESQL=yes ;;
+	fusionforge-plugin-scmarch)		POSTGRESQL=yes ;;
+	fusionforge-plugin-scmcvs)		POSTGRESQL=yes ;;
+	fusionforge-plugin-scmdarcs)		POSTGRESQL=yes ;;
+	fusionforge-standard)			POSTGRESQL=yes ;;
+	fusioninventory-for-glpi)		MYSQL=yes ;;
+	gforge-lists-mailman)			POSTGRESQL=yes ;;
+	gforge-plugin-extratabs)		POSTGRESQL=yes ;;
+	gforge-plugin-mediawiki)		POSTGRESQL=yes ;;
+	gforge-plugin-scmarch)			POSTGRESQL=yes ;;
+	gforge-plugin-scmcvs)			POSTGRESQL=yes ;;
+	gforge-plugin-scmdarcs)			POSTGRESQL=yes ;;
+	gforge-plugin-scmgit)			POSTGRESQL=yes ;;
+	gforge-plugin-scmhg)			POSTGRESQL=yes ;;
+	gforge-web-apache2)			POSTGRESQL=yes ;;
+	gforge-web-apache2-vhosts)		POSTGRESQL=yes ;;
+	glance-common)				SQLITE3=yes ;;
+	glpi)					MYSQL=yes ;;
+	heat-engine)				SQLITE3=yes ;;
+	icinga-idoutils)			POSTGRESQL=yes ;;
+	icinga-phpapi)				MYSQL=yes ;;
+	icinga-web)				POSTGRESQL=yes ;;
+	icinga-web-pnp)				POSTGRESQL=yes ;;
+	jffnms)					MYSQL=yes ;;
+	letodms)				MYSQL=yes ;;
+	libchado-perl)				POSTGRESQL=yes ;;
+	libdspam7-drv-mysql)			MYSQL=yes ;;
+	libdspam7-drv-pgsql)			POSTGRESQL=yes ;;
+	mantis)					MYSQL=yes ;;
+	moodle)					POSTGRESQL=yes ; MYSQL=yes ;;
+	moodle-book)				POSTGRESQL=yes ;;
+	moodle-debian-edu-*)			POSTGRESQL=yes ;;
+	movabletype-opensource)			SQLITE3=yes ;;
+	mtop)					MYSQL=yes ;;
+	mythtv-database)			MYSQL=yes ;;
+	nagvis)					MYSQL=yes ;;
+	ndoutils-common)			MYSQL=yes ;;
+	ndoutils-nagios3-mysql)			MYSQL=yes ;;
+	nginx-naxsi-ui)				MYSQL=yes ;;
+	ocsinventory-reports)			MYSQL=yes ;;
+	ocsinventory-server)			MYSQL=yes ;;
+	openacs)				POSTGRESQL=yes ;;
+	otrs)					POSTGRESQL=yes ;;
+	otrs2)					POSTGRESQL=yes ; MYSQL=yes ;;
+	pdns-backend-mysql)			MYSQL=yes ;;
+	pdns-backend-pgsql)			POSTGRESQL=yes ;;
+	phpbb3)					MYSQL=yes ;;
+	phpbb3-l10n)				MYSQL=yes ;;
+	phpgacl)				MYSQL=yes ;;
+	phpmyadmin)				MYSQL=yes ;;
+	phpwiki)				MYSQL=yes ;;
+	piwigo)					MYSQL=yes ;;
+	pnopaste)				MYSQL=yes ;;
+	poker-web)				MYSQL=yes ;;
+	postfix-policyd)			MYSQL=yes ;;
+	postfixadmin)				MYSQL=yes ;;
+	prelude-manager)			MYSQL=yes ;;
+	prewikka)				MYSQL=yes ;;
+	pybit-web)				POSTGRESQL=yes ;;
+	roundcube)				MYSQL=yes ;;
+	roundcube-core)				MYSQL=yes ;;
+	roundcube-plugins)			MYSQL=yes ;;
+	roundcube-plugins-extra)		MYSQL=yes ;;
+	rsyslog-mysql)				MYSQL=yes ;;
+	rsyslog-pgsql)				POSTGRESQL=yes ;;
+	scuttle)				MYSQL=yes ;;
+	semanticscuttle)			MYSQL=yes ;;
+	serendipity)				MYSQL=yes ;;
+	simba)					MYSQL=yes ;;
+	spotweb)				MYSQL=yes ;;
+	sshproxy-backend-mysql)			MYSQL=yes ;;
+	steam)					MYSQL=yes ;;
+	sympa)					MYSQL=yes ;;
+	tango-accesscontrol)			MYSQL=yes ;;
+	tango-accesscontrol-dbg)		MYSQL=yes ;;
+	tango-db)				MYSQL=yes ;;
+	tango-db-dbg)				MYSQL=yes ;;
+	textpattern)				MYSQL=yes ;;
+	torrentflux)				MYSQL=yes ;;
+	tt-rss)					POSTGRESQL=yes ;;
+	typo3-dummy)				MYSQL=yes ;;
+	ukolovnik)				MYSQL=yes ;;
+	webcalendar)				MYSQL=yes ;;
+	webissues-server)			MYSQL=yes ;;
+	websimba)				MYSQL=yes ;;
+	wims-moodle)				POSTGRESQL=yes ;;
+	zabbix-frontend-php)			MYSQL=yes ;;
+	zabbix-proxy-mysql)			MYSQL=yes ;;
+	zabbix-proxy-pgsql)			POSTGRESQL=yes ;;
+	zabbix-server-mysql)			MYSQL=yes ;;
+	zabbix-server-pgsql)			POSTGRESQL=yes ;;
+esac
+
+if [ "$MYSQL" = "yes" ]; then
+	echo "Installing mysql-server..."
+	apt-get -y install mysql-server
+fi
+
+if [ "$POSTGRESQL" = "yes" ]; then
+	echo "Installing postgresql..."
+	apt-get -y install postgresql
+fi
+
+if [ "$SQLITE3" = "yes" ]; then
+	echo "Installing sqlite3..."
+	apt-get -y install sqlite3
+fi
+
+exit 0

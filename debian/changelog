@@ -30,6 +30,10 @@ piuparts (0.53) UNRELEASED; urgency=low
   * New known problem: Packages with missing or incomplete .md5sums files.
   * piuparts-master.deb: Ship some piuparts.conf examples.
   * detect_piuparts_issues: Detect problems starting MySQL or PostgreSQL.
+  * pre_install_database-server: New script to install a database server for
+    packages that require one during postinst but only recommend or suggest
+    (or maybe not even this) the server package to allow for remote db
+    servers.
 
   [ David Steele ]
   * Update python Requires to 2.7 (for argparse)
