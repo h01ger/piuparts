@@ -23,7 +23,7 @@ endif
 SCRIPTS_TEMPLATES	 = $(wildcard *.in master-bin/*.in slave-bin/*.in conf/*.in)
 SCRIPTS_PYTHON_BINARY	 = $(wildcard *.py master-bin/*.py slave-bin/*.py)
 SCRIPTS_GENERATED	 = $(SCRIPTS_TEMPLATES:.in=) $(SCRIPTS_PYTHON_BINARY:.py=)
-DOCS_GENERATED		 = piuparts.1 piuparts.1.html piuparts_slave_run.8 piuparts_slave_join.8 README.html README_server.html
+DOCS_GENERATED		 = piuparts.1 piuparts.1.html piuparts_slave_run.8 piuparts_slave_join.8 README_1st.html README_server.html
 
 define placeholder_substitution
 	sed -r \
@@ -54,8 +54,8 @@ build-stamp: $(SCRIPTS_GENERATED) $(DOCS_GENERATED) Makefile
 
 build-doc: $(DOCS_GENERATED)
 
-README.html: README.txt
-	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README.txt
+README_1st.html: README_1st.txt
+	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README_1st.txt
 
 README_server.html: README_server.txt
 	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README_server.txt
@@ -74,7 +74,7 @@ piuparts.1.html: piuparts.1.txt
 
 install-doc: build-stamp
 	install -d $(DESTDIR)$(docdir)/
-	install -m 0644 README.txt README.html README_server.html docbook-xsl.css $(DESTDIR)$(docdir)/
+	install -m 0644 README_1st.txt README_1st.html README_server.txt README_server.html docbook-xsl.css $(DESTDIR)$(docdir)/
 	install -d $(DESTDIR)$(man1dir)
 	install -m 0644 piuparts.1 $(DESTDIR)$(man1dir)/
 	install -d $(DESTDIR)$(man8dir)

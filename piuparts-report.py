@@ -121,8 +121,11 @@ HTML_HEADER = """
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="$doc_root/doc/README.html" target="_blank">piuparts README</a>,
-      <br>
+      <a href="$doc_root/doc/README_1st.html" target="_blank">README_1st</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
       <a href="$doc_root/doc/README_server.html" target="_blank">README_server</a>
      </td>
     </tr>

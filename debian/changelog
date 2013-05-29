@@ -33,6 +33,7 @@ piuparts (0.53) UNRELEASED; urgency=low
     cleaned up.
   * Move master-slave related documentation from README.txt to
     README_server.txt and leave a pointer in the former.
+  * Rename README.txt to README_1st.txt.
   * piuparts-master.deb: Ship README_server.html.
   * piuparts-report.py: Add a link to README_server.html.
 

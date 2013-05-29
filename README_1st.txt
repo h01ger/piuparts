@@ -1,10 +1,10 @@
-piuparts README
----------------
+piuparts README_1st
+-------------------
 
 Author: Lars Wirzenius
 Email: <liw@iki.fi>
 
-After reading this README you probably also want to have a look
+After reading this README_1st you probably also want to have a look
 at the piuparts manpage, to learn about the available options.
 But read this document first!
 
