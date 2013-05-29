@@ -37,6 +37,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2013-05-28</b> Another new suite added: <i>squeeze2bpo-sloppy</i>, testing the upgrade from squeeze to squeeze-backports-sloppy, ending in purge as usual.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2013-05-22</b> The webpages served by <a href="http://piuparts.debian.org">http://piuparts.debian.org</a> are updated twice a day now. Further changes which were applied last week: debsums failures have been reenabled, adequate is now run by piuparts (see <a href="http://bugs.debian.org/703902" target="_blank">#703902</a>) and two new suites were added: <i>experimental</i> and <i>sid-nodoc</i>, which tests sid without files in /usr/share/doc/&lt;package&gt;.
      </td>
     </tr>

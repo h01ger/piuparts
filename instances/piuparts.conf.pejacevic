@@ -71,6 +71,7 @@ sections =
 	wheezy2bpo2jessie
 	wheezy
 	squeeze2wheezy
+	squeeze2bpo-sloppy
 	squeeze2bpo2wheezy
 	squeeze
 	lenny2squeeze
