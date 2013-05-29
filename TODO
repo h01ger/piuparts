@@ -32,11 +32,13 @@ for 0.5x:
   - sort packages on maintainer pages alphabetically (states first though)
 
 - more stats and graphs:
-  - packages processed per day (in total and per slave)
+  - packages processed per day and section
     - master writes submissions.txt per section since 0.45
   - # of open bugs with tag piuparts
   - generate http://piuparts.debian.org/stable/states.png + testing.png from
     existing data
+  - generate simple diagrams: number of source + binary package in all single distros:
+    squeeze, wheezy, jessie, sid.
 
 - add a sample config with all possible keys set to some useful value
   (like /usr/share/doc/apt/examples/configure-index.gz)
@@ -50,7 +52,7 @@ for 0.5x:
 
 - maybe compress all logfiles
 
-- move counts.txt from htdocs to master
+- maybe move counts.txt from htdocs to master. Or move submissions.txt to htdocs.
 
 
 for 0.6x:
