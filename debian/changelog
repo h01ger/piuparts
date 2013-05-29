@@ -34,6 +34,10 @@ piuparts (0.53) UNRELEASED; urgency=low
     packages that require one during postinst but only recommend or suggest
     (or maybe not even this) the server package to allow for remote db
     servers.
+  * pre_distupgrade_zz_database-server: New script to upgrade (running)
+    database servers before all other packages. This ensures the database
+    server is running again before the dependent packages (that may declare
+    'insufficient' dependencies on a 'local' database server) are upgraded.
 
   [ David Steele ]
   * Update python Requires to 2.7 (for argparse)

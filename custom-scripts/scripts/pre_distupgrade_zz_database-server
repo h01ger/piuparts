@@ -1,0 +1,27 @@
+#!/bin/sh
+set -e
+
+CANDIDATES=""
+CANDIDATES="$CANDIDATES mysql-server"
+CANDIDATES="$CANDIDATES postgresql"
+CANDIDATES="$CANDIDATES postgresql-8.4"
+CANDIDATES="$CANDIDATES postgresql-9.1"
+PACKAGES=""
+
+for pkg in $CANDIDATES
+do
+	# skip if the package is not installed
+	dpkg-query -s "$pkg" >/dev/null 2>&1 || continue
+	status="$(dpkg-query -W -f '${Status}' $pkg)"
+	test "$status" != "unknown ok not-installed" || continue
+	test "$status" != "deinstall ok config-files" || continue
+
+	PACKAGES="$PACKAGES $pkg"
+done
+
+if [ -n "$PACKAGES" ]
+then
+	echo "Upgrading ${PACKAGES# } early"
+	apt-get update
+	apt-get -y install $PACKAGES
+fi
