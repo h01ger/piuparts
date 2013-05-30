@@ -40,6 +40,7 @@ sections =
 	squeeze/main
 	sid2experimental/main
 	testing2sid/main
+	squeeze2wheezy/main
 #
 	experimental/contrib
 	sid/contrib
@@ -49,6 +50,7 @@ sections =
 	squeeze/contrib
 	sid2experimental/contrib
 	testing2sid/contrib
+	squeeze2wheezy/contrib
 #
 	experimental/non-free
 	sid/non-free
@@ -58,6 +60,7 @@ sections =
 	squeeze/non-free
 	sid2experimental/non-free
 	testing2sid/non-free
+	squeeze2wheezy/non-free
 #
 proxy = http://localhost:3128
 #
@@ -302,6 +305,43 @@ area = non-free
 ############################################################################
 ###  Install, distupgrade, remove, and purge tests.                      ###
 ############################################################################
+
+
+[squeeze2wheezy/main]
+precedence = 60
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = amd64
+area = main
+distro = squeeze
+upgrade-test-distros = squeeze wheezy
+
+[squeeze2wheezy/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+depends-sections = squeeze2wheezy/main squeeze2wheezy/non-free
+arch = amd64
+area = contrib
+distro = squeeze
+upgrade-test-distros = squeeze wheezy
+
+[squeeze2wheezy/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+depends-sections = squeeze2wheezy/main squeeze2wheezy/contrib
+arch = amd64
+area = non-free
+distro = squeeze
+upgrade-test-distros = squeeze wheezy
 
 
 [testing2sid/main]
