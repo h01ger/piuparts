@@ -24,6 +24,7 @@ piuparts (0.53) UNRELEASED; urgency=low
     - Bump Build-Depends: python (>= 2.7).
     - piuparts-slave: Add Depends: sudo.  (Closes: #710350)
   * New known problem: Packages with missing or incomplete .md5sums files.
+  * piuparts-master.deb: Ship some piuparts.conf examples.
 
   [ David Steele ]
   * Update python Requires to 2.7 (for argparse)
