@@ -24,6 +24,8 @@ BTS_STATS="$MASTER/bts_stats.txt"
 
 # exit if master-directory doesn't exist or if devscripts package is not installed
 test -n "$MASTER" || $(which bts) || exit 0
+# "bts select" needs libsoap-lite-perl too
+dpkg -l libsoap-lite-perl >/dev/null 2>&1 || exit 0
 
 # only run once a day
 TODAY=$(date +%Y%m%d)

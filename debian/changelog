@@ -35,7 +35,9 @@ piuparts (0.53) UNRELEASED; urgency=low
   * Move master-slave related documentation from README.txt to
     README_server.txt and leave a pointer in the former.
   * Rename README.txt to README_1st.txt.
-  * piuparts-master.deb: Ship README_server.html.
+  * piuparts-master.deb:
+    - Ship README_server.txt.
+    - Recommend devscripts and libsoap-lite-perl (for gather_bts_stats).
   * piuparts-report.py: Add a link to README_server.html.
   * master-bin/gather_bts_stats: write bts_stats.txt to master-directory.
   * conf/crontab-master: run gather_bts_stats daily.

@@ -62,7 +62,7 @@ Recommends:
  python-rpy2,
  r-base-dev,
  r-recommended,
- devscripts,
+ devscripts, libsoap-lite-perl,
 Breaks:
  piuparts (<= 0.44)
 Replaces:
