@@ -22,6 +22,7 @@ piuparts (0.53) UNRELEASED; urgency=low
     - Stop installing python modules in $libdir/python2.6/dist-packages.
   * debian/control:
     - Bump Build-Depends: python (>= 2.7).
+    - piuparts-slave: Add Depends: sudo.  (Closes: #710350)
 
   [ David Steele ]
   * Update python Requires to 2.7 (for argparse)

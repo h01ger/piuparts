@@ -84,6 +84,7 @@ Depends:
  adduser,
  openssh-client,
  screen,
+ sudo,
  ${misc:Depends},
  ${python:Depends}
 Suggests:
