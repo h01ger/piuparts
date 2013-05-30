@@ -31,4 +31,4 @@
 # misc
 #
 0  2 * * * @sharedir@/piuparts/master/prepare_backup
-0 23 * * * @sharedir@/piuparts/master/gather_bts_stats
+55 23 * * * @sharedir@/piuparts/master/gather_bts_stats
