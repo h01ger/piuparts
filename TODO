@@ -57,9 +57,10 @@ for 0.5x:
 
 - maybe compress all logfiles
 
-
 - once adequate 0.6 (which is fixing #709372) is available, don't run adequate
   tests for ignored_tags anymore.
+
+- add cronjob to find reserved packages older than 24h
 
 
 for 0.6x:
