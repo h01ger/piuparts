@@ -42,6 +42,10 @@ piuparts (0.53) UNRELEASED; urgency=low
   * master-bin/prepare_backup: backup bts_stats.txt and do not backup
     sources.txt.
 
+  [ Andrew Starr-Bochicchio ]
+  * piuparts.py:
+    - Move default keyring to distro defaults.  (Closes: #710346)
+
  -- Andreas Beckmann <anbe@debian.org>  Mon, 27 May 2013 18:24:27 +0200
 
 piuparts (0.52) unstable; urgency=low

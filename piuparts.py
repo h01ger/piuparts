@@ -84,6 +84,8 @@ class Defaults:
     def get_distribution(self):
         """Return default distribution."""
 
+    def get_keyring(self):
+        """Return default keyring."""
 
 class DebianDefaults(Defaults):
 
@@ -96,6 +98,8 @@ class DebianDefaults(Defaults):
     def get_distribution(self):
         return ["sid"]
 
+    def get_keyring(self):
+        return "/usr/share/keyrings/debian-archive-keyring.gpg"
 
 class UbuntuDefaults(Defaults):
 
@@ -108,6 +112,8 @@ class UbuntuDefaults(Defaults):
     def get_distribution(self):
         return ["saucy"]
 
+    def get_keyring(self):
+        return "/usr/share/keyrings/ubuntu-archive-keyring.gpg"
 
 class DefaultsFactory:
 
@@ -2600,8 +2606,7 @@ def parse_command_line():
                       help="Don't remove the temporary directory for the " +
                            "chroot when the program ends.")
 
-    parser.add_option("-K", "--keyring", metavar="FILE",
-                      default = "/usr/share/keyrings/debian-archive-keyring.gpg",
+    parser.add_option("-K", "--keyring", action="store", metavar="FILE",
                       help="Use FILE as the keyring to use with debootstrap when creating chroots.")
 
     parser.add_option("--keep-sources-list",
@@ -2794,7 +2799,10 @@ def parse_command_line():
     settings.testdebs_repo = opts.testdebs_repo
     settings.debian_distros = opts.distribution
     settings.keep_sources_list = opts.keep_sources_list
-    settings.keyring = opts.keyring
+    if opts.keyring:
+        settings.keyring = opts.keyring
+    else:
+        settings.keyring = defaults.get_keyring()
     settings.do_not_verify_signatures = opts.do_not_verify_signatures
     if settings.do_not_verify_signatures:
         settings.keyringoption=""
