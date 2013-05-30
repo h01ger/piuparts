@@ -37,7 +37,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-05-28</b> Another new suite added: <i>squeeze2bpo-sloppy</i>, testing the upgrade from squeeze to squeeze-backports-sloppy, ending in purge as usual.
+      <b>2013-05-30</b> Another new suite added: <i>wheezy2proposed</i>, testing installation in wheezy, then upgrade to wheezy-proposed-upgrades, ending in purge as usual.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2013-05-29</b> Another new suite added: <i>squeeze2bpo-sloppy</i>, testing the upgrade from squeeze to squeeze-backports-sloppy, ending in purge as usual.
      </td>
     </tr>
     <tr class="normalrow">

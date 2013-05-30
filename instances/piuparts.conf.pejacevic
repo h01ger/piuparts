@@ -69,6 +69,7 @@ sections =
 	jessie
 	wheezy2jessie
 	wheezy2bpo2jessie
+	wheezy2proposed
 	wheezy
 	squeeze2wheezy
 	squeeze2bpo-sloppy
