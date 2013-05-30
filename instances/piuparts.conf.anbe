@@ -38,6 +38,7 @@ sections =
 	wheezy/main
 	wheezy-proposed/main
 	squeeze/main
+	sid2experimental/main
 #
 	experimental/contrib
 	sid/contrib
@@ -45,6 +46,7 @@ sections =
 	wheezy/contrib
 	wheezy-proposed/contrib
 	squeeze/contrib
+	sid2experimental/contrib
 #
 	experimental/non-free
 	sid/non-free
@@ -52,6 +54,7 @@ sections =
 	wheezy/non-free
 	wheezy-proposed/non-free
 	squeeze/non-free
+	sid2experimental/non-free
 #
 proxy = http://localhost:3128
 #
@@ -296,4 +299,32 @@ area = non-free
 ############################################################################
 ###  Install, distupgrade, remove, and purge tests.                      ###
 ############################################################################
+
+
+[sid2experimental/main]
+precedence = 70
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid/main
+arch = amd64
+area = main
+upgrade-test-distros = sid experimental
+
+[sid2experimental/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid2experimental/main sid/main sid/contrib sid/non-free
+arch = amd64
+area = contrib
+upgrade-test-distros = sid experimental
+
+[sid2experimental/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid2experimental/main sid/main sid/contrib sid/non-free
+arch = amd64
+area = non-free
+upgrade-test-distros = sid experimental
 
