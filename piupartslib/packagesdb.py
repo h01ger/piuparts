@@ -807,24 +807,32 @@ class PackagesDB:
         pkg.rdep_chain_len = chain_len
 
     def block_count(self, pkg):
+        if pkg is None:
+            return -1
         if pkg.block_cnt is None:
             self._calc_rrdep_pkg_counts(pkg)
 
         return pkg.block_cnt
 
     def rrdep_count(self, pkg):
+        if pkg is None:
+            return -1
         if pkg.rrdep_cnt is None:
             self._calc_rrdep_pkg_counts(pkg)
 
         return pkg.rrdep_cnt
 
     def waiting_count(self, pkg):
+        if pkg is None:
+            return -1
         if pkg.waiting_cnt is None:
             self._calc_rrdep_pkg_counts(pkg)
 
         return pkg.waiting_cnt
 
     def rdep_chain_len(self, pkg):
+        if pkg is None:
+            return -1
         if pkg.rdep_chain_len is None:
             self._calc_rrdep_pkg_counts(pkg)
 
