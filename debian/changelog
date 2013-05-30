@@ -3,6 +3,8 @@ piuparts (0.53) UNRELEASED; urgency=low
   [ Andreas Beckmann ]
   * piuparts.py:
     - Do not run adequate checks on possibly disappearing packages.
+    - Add --allow-database option that enables starting MySQL and PostgreSQL
+      database servers in the chroot.
   * piuparts.conf:
   * distros.conf:
     - Add "candidates" key to merge multiple Packages files into one virtual

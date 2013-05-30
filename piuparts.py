@@ -163,6 +163,7 @@ class Settings:
         self.dpkg_force_confdef = False
         self.scriptsdirs = []
         self.bindmounts = []
+        self.allow_database = False
         # chroot setup
         self.arch = None
         self.basetgz = None
@@ -1011,7 +1012,13 @@ class Chroot:
     def create_policy_rc_d(self):
         """Create a policy-rc.d that prevents daemons from running."""
         full_name = self.relative("usr/sbin/policy-rc.d")
-        create_file(full_name, "#!/bin/sh\nexit 101\n")
+        policy = "#!/bin/sh\n"
+        if settings.allow_database:
+            policy += 'test "$1" = "mysql" && exit 0\n'
+            policy += 'test "$1" = "postgresql" && exit 0\n'
+            policy += 'test "$1" = "postgresql-8.3" && exit 0\n'
+        policy += "exit 101\n"
+        create_file(full_name, policy)
         os.chmod(full_name, 0755)
         logging.debug("Created policy-rc.d and chmodded it.")
 
@@ -2609,6 +2616,10 @@ def parse_command_line():
                       action='store_true',
                       help="Do not verify signatures from the Release files when running debootstrap.")
 
+    parser.add_option("--allow-database", default=False,
+                      action='store_true',
+                      help="Allow database servers (MySQL, PostgreSQL) to be started in the chroot.")
+
     parser.add_option("--distupgrade-to-testdebs", default=False,
                       action='store_true',
                       help="Use the testdebs repository as distupgrade target.")
@@ -2848,6 +2859,7 @@ def parse_command_line():
     settings.dpkg_force_confdef = opts.dpkg_force_confdef
     settings.scriptsdirs = opts.scriptsdir
     settings.bindmounts += opts.bindmount
+    settings.allow_database = opts.allow_database
     # chroot setup
     settings.arch = opts.arch
     settings.basetgz = opts.basetgz

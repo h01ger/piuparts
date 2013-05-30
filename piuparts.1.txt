@@ -43,6 +43,15 @@ Options must come before the other command line arguments.
 *-a*, *--apt*::
   The package arguments on the command line are to be treated as package names and installed via *apt-get* instead  of  being  names  of  package  files, to be installed via *dpkg -i*.
 
+*--allow-database*::
+  Allow starting MySQL and PostgreSQL database servers in the chroot for
+  packages requiring database access in their maintainer scripts.
+  Do not use this option if there is already a database server running on the
+  system running piuparts (or piuparts-slave)!
+  In master-slave setups with multiple slaves running on one host collisions
+  may occur, these will be detected by 'detect_piuparts_issues' and the
+  affected packages will be tested again.
+
 *--arch*='arch'::
   Create chroot and run tests for (non-default) architecture 'arch'. The default is the output from 'dpkg --print-architecture'.
 
