@@ -7,6 +7,10 @@ wishlist!
 
 for 0.5x:
 
+- Create links in htdocs from $codename to stable/testing/unstable used
+  for all the sections. (Closes: #696093)
+  Create simple master cronjob to this daily.
+
 - use /sys/fs/selinux from wheezy onwards - see #682068 for more info
 
 - make piuparts-master + piuparts-slave packages work with documented steps:
