@@ -68,6 +68,8 @@ piuparts (0.53) UNRELEASED; urgency=low
   [ Andrew Starr-Bochicchio ]
   * piuparts.py:
     - Move default keyring to distro defaults.  (Closes: #710346)
+    - When distro defaults are explicitly specified, use the distro default
+      mirrors (Closes: #710347).
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 27 May 2013 18:24:27 +0200
 

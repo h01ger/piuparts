@@ -2939,7 +2939,10 @@ def parse_command_line():
         settings.debian_distros = defaults.get_distribution()
 
     if not settings.debian_mirrors:
-        settings.debian_mirrors = find_default_debian_mirrors()
+        if opts.defaults:
+            settings.debian_mirrors = defaults.get_mirror()
+        else:
+            settings.debian_mirrors = find_default_debian_mirrors()
         if not settings.debian_mirrors:
             settings.debian_mirrors = defaults.get_mirror()
 
