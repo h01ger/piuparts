@@ -1435,15 +1435,16 @@ class Chroot:
         return vdict
 
 
-    def check_for_no_processes(self):
+    def check_for_no_processes(self, fail=True):
         """Check there are no processes running inside the chroot."""
         (status, output) = run(["lsof", "-w", "+D", self.name], ignore_errors=True)
         count = len(output.split("\n")) - 1
         if count > 0:
-            logging.error("FAIL: Processes are running inside chroot:\n%s" %
-                          indent_string(output))
-            self.terminate_running_processes()
-            panic()
+            logging.error("%s: Processes are running inside chroot:\n%s" %
+                          ("FAIL" if fail else "WARN", indent_string(output)))
+            if fail:
+                self.terminate_running_processes()
+                panic()
 
 
     def terminate_running_processes(self):
@@ -2233,6 +2234,9 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
 
     chroot.enable_testdebs_repo()
 
+    chroot.check_for_no_processes(fail=True)
+    chroot.check_for_broken_symlinks()
+
     chroot.run_scripts("pre_install")
 
     chroot.install_packages([], extra_packages, with_scripts=False)
@@ -2325,7 +2329,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state["selections"], packages)
 
-    chroot.check_for_no_processes()
+    chroot.check_for_no_processes(fail=True)
     chroot.check_for_broken_symlinks()
 
     return check_results(chroot, chroot_state, file_owners, deps_info=deps_info)
@@ -2366,7 +2370,7 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state["selections"], packages)
 
-    chroot.check_for_no_processes()
+    chroot.check_for_no_processes(fail=True)
     chroot.check_for_broken_symlinks()
 
     return check_results(chroot, chroot_state, file_owners)
@@ -2434,7 +2438,7 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
         chroot.upgrade_to_distros(settings.debian_distros[1:], [])
 
-        chroot.check_for_no_processes()
+        chroot.check_for_no_processes(fail=True)
 
         # set root_info and selections
         chroot_state = {}
@@ -2459,7 +2463,7 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
             chroot.remove_temp_tgz_file(temp_tgz)
             dont_do_on_panic(panic_handler_id)
 
-    chroot.check_for_no_processes()
+    chroot.check_for_no_processes(fail=True)
 
     chroot.run_scripts("pre_test")
 
@@ -2502,7 +2506,7 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     # Remove all packages from the chroot that weren't in the reference chroot.
     chroot.restore_selections(chroot_state["selections"], packages_qualified)
 
-    chroot.check_for_no_processes()
+    chroot.check_for_no_processes(fail=True)
 
     result = check_results(chroot, chroot_state, file_owners)
 
