@@ -247,7 +247,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
-depends-sections = squeeze
+depends-sections = squeeze squeeze2bpo2wheezy
 arch = amd64
 area = main
 upgrade-test-distros = squeeze squeeze-backports-sloppy
