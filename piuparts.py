@@ -1442,11 +1442,13 @@ class Chroot:
         return vdict
 
 
-    def check_for_no_processes(self, fail=True):
+    def check_for_no_processes(self, fail=None):
         """Check there are no processes running inside the chroot."""
         (status, output) = run(["lsof", "-w", "+D", self.name], ignore_errors=True)
         count = len(output.split("\n")) - 1
         if count > 0:
+            if fail is None:
+                fail = not settings.allow_database
             logging.error("%s: Processes are running inside chroot:\n%s" %
                           ("FAIL" if fail else "WARN", indent_string(output)))
             if fail:
