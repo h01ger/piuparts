@@ -1243,6 +1243,7 @@ class Chroot:
 
     def check_adequate(self, packages):
         """Run adequate and categorize output according to our needs. """
+        packages = [p.split("=", 1)[0].strip() for p in packages if not p.endswith("=None")]
         if packages and settings.adequate and os.path.isfile('/usr/bin/adequate'):
             adequate_tags = [ 'bin-or-sbin-binary-requires-usr-lib-library',
                                 'library-not-found',
@@ -1320,13 +1321,11 @@ class Chroot:
             packages = [p.split("=", 1)[0].strip() for p in packages]
             self.run(["dpkg", "--purge"] + packages, ignore_errors=True)
 
-    def restore_selections(self, selections, packages):
+    def restore_selections(self, selections, packages_qualified):
         """Restore package selections in a chroot to the state in
         'selections'."""
 
-        should_be_installed = [p.split("=", 1)[0].strip()
-                for p in packages if not p.endswith("=None")]
-        packages = [p.split("=", 1)[0].strip() for p in packages]
+        packages = [p.split("=", 1)[0].strip() for p in packages_qualified]
 
         changes = diff_selections(self, selections)
         deps = {}
@@ -1350,7 +1349,7 @@ class Chroot:
 
         self.list_paths_with_symlinks()
         self.check_debsums()
-        self.check_adequate(should_be_installed)
+        self.check_adequate(packages_qualified)
 
         # Run custom scripts before removing all packages.
         self.run_scripts("pre_remove")
@@ -2501,7 +2500,7 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't in the reference chroot.
-    chroot.restore_selections(chroot_state["selections"], packages)
+    chroot.restore_selections(chroot_state["selections"], packages_qualified)
 
     chroot.check_for_no_processes()
 

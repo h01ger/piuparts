@@ -2,6 +2,7 @@ piuparts (0.53) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Do not run adequate checks on possibly disappearing packages.
   * piuparts.conf:
   * distros.conf:
     - Add "candidates" key to merge multiple Packages files into one virtual
