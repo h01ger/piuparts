@@ -8,6 +8,7 @@ flags-base =
 	--warn-on-others
 	--no-eatmydata
 	--scriptsdir /etc/piuparts/scripts
+	--allow-database
 
 flags-default =
 	%(flags-base)s
