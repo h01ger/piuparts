@@ -21,8 +21,8 @@
 # - these may result in packages being retested
 # - if that's not the case, run them from within generate_daily_report
 #
-30 21 * * * @sharedir@/piuparts/master/detect_network_issues
-45 21 * * * @sharedir@/piuparts/master/detect_piuparts_issues
+30 3-21/6 * * * @sharedir@/piuparts/master/detect_network_issues
+45 3-21/6 * * * @sharedir@/piuparts/master/detect_piuparts_issues
 0  22 * * * @sharedir@/piuparts/master/detect_archive_issues
 30 22 * * * @sharedir@/piuparts/master/report_untestable_packages
 0  23 * * * @sharedir@/piuparts/master/report_stale_reserved_packages

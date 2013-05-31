@@ -25,10 +25,10 @@ get_config_value SECTIONS global sections
 
 
 #
-# find packages which have been reserved for more than 2 days and unschedule them
+# find packages which have been reserved for more than one day and unschedule them
 #
 
-DAYS=2
+DAYS=1
 LOGS=`mktemp`
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION/reserved || continue

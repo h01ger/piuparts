@@ -107,6 +107,7 @@ reschedule-old-count = 250
 expire-fail-days = 15
 reschedule-fail-days = 10
 reschedule-fail-count = 25
+reschedule-untestable-days = 4
 
 
 [experimental]
