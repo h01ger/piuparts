@@ -62,6 +62,8 @@ piuparts (0.53) UNRELEASED; urgency=low
     boring_tags, ignored_tags and unknown. Show adequate exit code if
     non-zero.
   * Add known_problems/*inadequate*.conf for all adequate tags we care about.
+  * htdocs/index.tpl: Improve description about piuparts.debian.org.
+    (Closes: #700848)
 
   [ Andrew Starr-Bochicchio ]
   * piuparts.py:

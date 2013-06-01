@@ -21,8 +21,17 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      To make sure piuparts is run on all packages, piuparts.debian.org has set up running piuparts in master-slave mode on virtualized hardware on <a href="http://bits.debian.org/2013/04/bytemark-donation.html" target="_blank">this nice cluster</a> at <a href="http://www.bytemark.co.uk" target="_blank">Bytemark</a>. Currently there is a master, <a href="http://db.debian.org/machines.cgi?host=pejacevic" target="_blank">pejacevic.debian.org</a> and a slave,  <a href="http://db.debian.org/machines.cgi?host=piu-slave-bm-a" target="_blank">piu-slave-bm-a</a>.
-      As this is still being polished, see the piuparts wiki page to get an overview about <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development and the piuparts setup on piatti</a>. Join #debian-qa on irc.debian.org or post on the <a href="http://lists.debian.org/debian-qa" target="_blank">Debian QA mailing list</a> if you want to help.
+      To make sure piuparts is run on all packages in Debian, piuparts.debian.org has set up running piuparts in <a href="/doc/README_server.html" target="_blank">master/slave mode</a>. This setup currently consists of two hosts: <a href="http://db.debian.org/machines.cgi?host=pejacevic" target="_blank">pejacevic.debian.org</a>, running piuparts-master, generating and hosting the reports and <a href="http://db.debian.org/machines.cgi?host=piu-slave-bm-a" target="_blank">piu-slave-bm-a</a>, which runs four piuparts-slave instances, which then run piuparts itself. These hosts run
+ as virtualized hardware on <a href="http://bits.debian.org/2013/04/bytemark-donation.html" target="_blank">this nice cluster</a> hosted at <a href="http://www.bytemark.co.uk" target="_blank">Bytemark</a>.
+     <br>
+      To learn more about this setup, follow the <i>Documentation</i> links in the navigation menu on the left. The piuparts configuration for all the different suite(-combination)s currently being tested is also linked there.
+     <br>
+      Besides all the information provided here (which has it's sources in <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">GIT</a>) there are also three wiki pages on wiki.debian.org currently: the main one which is mostly about
+      <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development</a>, some
+      <a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">frequently asked questions</a> and some
+      <a href="http://wiki.debian.org/piuparts/UseCases" target="_blank">use cases</a>.
+     <br>
+      Join #debian-qa on irc.debian.org or post on the <a href="http://lists.alioth.debian.org/mailman/listinfo/piuparts-devel" target="_blank">piuparts development mailinglist</a> if you want to help. The best way to help is to provide patches via GIT pull requests.
      </td>
     </tr>
     <tr class="normalrow">
