@@ -36,7 +36,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      To learn more about this setup, follow the <em>"Documentation"</em> links in the navigation menu on the left. The piuparts configuration for all the different suite(-combination)s that are currently being tested is also linked there.
+      To learn more about this setup, follow the <em>"Documentation"</em> links in the navigation menu on the left. Read those READMEs. The piuparts configuration for all the different suite(-combination)s that are currently being tested is also linked there.
      </td>
     </tr>
     <tr class="normalrow">
