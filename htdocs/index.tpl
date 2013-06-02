@@ -6,9 +6,10 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <em>piuparts</em> is a tool for testing that .deb packages can be installed, upgraded, and removed without problems. The
-      name, a variant of something suggested by Tollef Fog Heen, is short for "<em>p</em>ackage <em>i</em>nstallation,
-      <em>up</em>grading <em>a</em>nd <em>r</em>emoval <em>t</em>esting <em>s</em>uite".
+      <em>piuparts</em> is a tool for testing that .deb packages can be installed, upgraded, and removed without problems.
+      <em>piuparts</em> is short for "<em>p</em>ackage <em>i</em>nstallation,
+      <em>up</em>grading <em>a</em>nd <em>r</em>emoval <em>t</em>esting <em>s</em>uite" and is a
+      a variant of something suggested by Tollef Fog Heen.
      </td>
     </tr>
     <tr class="normalrow">
@@ -21,7 +22,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      See the <a href="/doc/README.html" target="_blank">piuparts README</a> for a quick intro and then read the <a href="/doc/piuparts.1.html" target="_blank">piuparts manpage</a> to learn about all the fancy options!
+      Head over to the <a href="/doc/README.html" target="_blank">piuparts README</a> for a quick intro and then read the <a href="/doc/piuparts.1.html" target="_blank">piuparts manpage</a> to learn about all the fancy options!
      </td>
     </tr>
     <tr class="normalrow">
