@@ -4,7 +4,7 @@ piuparts (0.53) UNRELEASED; urgency=low
   * piuparts.py:
     - Do not run adequate checks on possibly disappearing packages.
     - Add --allow-database option that enables starting MySQL and PostgreSQL
-      database servers in the chroot.
+      database servers in the chroot. (Closes: #662633)
     - Relax the check for running processes if --allow-database is given.
   * piuparts.conf:
   * distros.conf:
