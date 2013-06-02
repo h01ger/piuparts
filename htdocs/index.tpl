@@ -36,7 +36,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      To learn more about this setup, follow the <i>"Documentation"</i> links in the navigation menu on the left. The piuparts configuration for all the different suite(-combination)s that are currently being tested is also linked there.
+      To learn more about this setup, follow the <em>"Documentation"</em> links in the navigation menu on the left. The piuparts configuration for all the different suite(-combination)s that are currently being tested is also linked there.
      </td>
     </tr>
     <tr class="normalrow">
@@ -64,17 +64,17 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-05-30</b> Another new suite added: <i>wheezy2proposed</i>, testing installation in wheezy, then upgrade to wheezy-proposed-upgrades, ending in purge as usual.
+      <b>2013-05-30</b> Another new suite added: <em>wheezy2proposed</em>, testing installation in wheezy, then upgrade to wheezy-proposed-upgrades, ending in purge as usual.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-05-29</b> Another new suite added: <i>squeeze2bpo-sloppy</i>, testing the upgrade from squeeze to squeeze-backports-sloppy, ending in purge as usual.
+      <b>2013-05-29</b> Another new suite added: <em>squeeze2bpo-sloppy</em>, testing the upgrade from squeeze to squeeze-backports-sloppy, ending in purge as usual.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-05-22</b> The webpages served by <a href="http://piuparts.debian.org">http://piuparts.debian.org</a> are updated twice a day now. Further changes which were applied last week: debsums failures have been reenabled, adequate is now run by piuparts (see <a href="http://bugs.debian.org/703902" target="_blank">#703902</a>) and two new suites were added: <i>experimental</i> and <i>sid-nodoc</i>, which tests sid without files in /usr/share/doc/&lt;package&gt;.
+      <b>2013-05-22</b> The webpages served by <a href="http://piuparts.debian.org">http://piuparts.debian.org</a> are updated twice a day now. Further changes which were applied last week: debsums failures have been reenabled, adequate is now run by piuparts (see <a href="http://bugs.debian.org/703902" target="_blank">#703902</a>) and two new suites were added: <em>experimental</em> and <em>sid-nodoc</em>, which tests sid without files in /usr/share/doc/&lt;package&gt;.
      </td>
     </tr>
     <tr class="normalrow">
