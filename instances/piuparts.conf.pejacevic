@@ -71,7 +71,9 @@ sections =
 	jessie
 	wheezy2jessie
 	wheezy2bpo2jessie
+#	wheezy-proposed
 	wheezy2proposed
+#	squeeze2wheezy-proposed
 	wheezy
 	squeeze2wheezy
 	squeeze2bpo-sloppy
@@ -219,6 +221,16 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 distro = wheezy
 upgrade-test-distros = wheezy wheezy-proposed
+
+
+[squeeze2wheezy-proposed]
+precedence = 4
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+distro = squeeze
+upgrade-test-distros = squeeze wheezy-proposed
 
 
 [squeeze2wheezy]
