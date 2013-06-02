@@ -1,7 +1,7 @@
    <table class="righttable">
     <tr class="titlerow">
      <td class="titlecell">
-      About piuparts.d.o
+      About piuparts.debian.org
      </td>
     </tr>
     <tr class="normalrow">
@@ -41,7 +41,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      Besides all the information provided here (which has it's sources in <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">GIT</a>) there are also three wiki pages on wiki.debian.org currently: the main one which is mostly about
+      Besides all the information provided here (which is sourced in <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">GIT</a>) there are also three wiki pages on wiki.debian.org currently: the main one which is mostly about
       <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development</a>, some
       <a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">frequently asked questions</a> and some
       <a href="http://wiki.debian.org/piuparts/UseCases" target="_blank">use cases</a>.
