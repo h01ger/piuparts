@@ -25,6 +25,10 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			FAILS_TO_REMOVE="$FAILS_TO_REMOVE install-info"
 		fi
 		;;
+	prelude-manager)
+		#WORKSAROUND #660455
+		USED_DURING_PURGE="$USED_DURING_PURGE dbconfig-common"
+		;;
 	drupal6|moodle|moodle-book|moodle-debian-edu-theme|scuttle)
 		if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 			USED_DURING_PURGE="$USED_DURING_PURGE wwwconfig-common"
