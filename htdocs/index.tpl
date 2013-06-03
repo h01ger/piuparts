@@ -8,7 +8,7 @@
      <td class="contentcell2">
       <em>piuparts</em> is a tool for testing that .deb packages can be installed, upgraded, and removed without problems.
       <em>piuparts</em> is short for "<em>p</em>ackage <em>i</em>nstallation,
-      <em>up</em>grading <em>a</em>nd <em>r</em>emoval <em>t</em>esting <em>s</em>uite" and is a
+      <em>up</em>grading <em>a</em>nd <em>r</em>emoval <em>t</em>esting <em>s</em>uite" and is
       a variant of something suggested by Tollef Fog Heen.
      </td>
     </tr>
