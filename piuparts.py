@@ -315,6 +315,7 @@ class Settings:
             "/etc/php5/mods-available/",
             "/etc/sgml/",
             "/etc/ssl/",
+            "/etc/ssl/certs/",
             "/etc/ssl/private/",
             "/etc/xml/",
             # HACKS
