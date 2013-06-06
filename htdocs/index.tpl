@@ -65,6 +65,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2013-06-05</b> In preparation of the first wheezy point release, another new suite was added: <em>squeeze2wheezy-proposed</em>, testing installation in squeeze, then upgrade to wheezy-proposed-upgrades, ending in purge as usual.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2013-05-30</b> Another new suite added: <em>wheezy2proposed</em>, testing installation in wheezy, then upgrade to wheezy-proposed-upgrades, ending in purge as usual.
      </td>
     </tr>

@@ -73,7 +73,7 @@ sections =
 	wheezy2bpo2jessie
 #	wheezy-proposed
 	wheezy2proposed
-#	squeeze2wheezy-proposed
+	squeeze2wheezy-proposed
 	wheezy
 	squeeze2wheezy
 	squeeze2bpo-sloppy
