@@ -1,4 +1,4 @@
-piuparts (0.53) UNRELEASED; urgency=low
+piuparts (0.53) unstable; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -6,7 +6,6 @@ piuparts (0.53) UNRELEASED; urgency=low
     - Add --allow-database option that enables starting MySQL and PostgreSQL
       database servers in the chroot. (Closes: #662633)
     - Relax the check for running processes if --allow-database is given.
-  * piuparts.conf:
   * distros.conf:
     - Add "candidates" key to merge multiple Packages files into one virtual
       distro.
@@ -18,10 +17,6 @@ piuparts (0.53) UNRELEASED; urgency=low
   * piuparts-{master-backend,slave,report}.py:
     - Switch to load_*_urls(get_*_urls()) for loading Packages/Sources files,
       adding support for arbitrarily composed virtual distros.
-  * piuparts-master-backend.py:
-  * piuparts-slave.py:
-  * piuparts-analyze.py:
-  * piuparts-report.py:
   * Makefile:
     - Stop installing python modules in $libdir/python2.6/dist-packages.
   * debian/control:
@@ -71,7 +66,7 @@ piuparts (0.53) UNRELEASED; urgency=low
     - When distro defaults are explicitly specified, use the distro default
       mirrors (Closes: #710347).
 
- -- Andreas Beckmann <anbe@debian.org>  Mon, 27 May 2013 18:24:27 +0200
+ -- Holger Levsen <holger@debian.org>  Sun, 09 Jun 2013 12:57:52 +0200
 
 piuparts (0.52) unstable; urgency=low
 
