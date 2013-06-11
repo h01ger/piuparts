@@ -1,3 +1,9 @@
+piuparts (0.54) UNRELEASED; urgency=low
+
+  * known_problems: fix some adequate patterns. 
+
+ -- Holger Levsen <holger@debian.org>  Tue, 11 Jun 2013 15:05:03 +0200
+
 piuparts (0.53) unstable; urgency=low
 
   [ Andreas Beckmann ]
