@@ -13,6 +13,7 @@ piuparts (0.54) UNRELEASED; urgency=low
       calculate on-demand. Access methods are moved from Package to
       PackagesDB.
     - Add a metric for the worst-case reverse-dependency chain length.
+    - Weight the reserved packages returned by this additional factor.
 
  -- Holger Levsen <holger@debian.org>  Tue, 11 Jun 2013 15:05:03 +0200
 
