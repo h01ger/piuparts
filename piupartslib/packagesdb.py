@@ -66,6 +66,7 @@ class Package(UserDict.UserDict):
         self.rrdep_cnt = None
         self.block_cnt = None
         self.waiting_cnt = None
+        self.rdep_chain_len = None
 
     def _parse_dependencies(self, header_name):
         if header_name in self._parsed_deps:
@@ -762,8 +763,10 @@ class PackagesDB:
         rrdep_set = set()
         rdeps = self._get_rdep_dict()
         next_level = set([pkg_name])
+        chain_len = 0
 
         while next_level:
+            chain_len += 1
             rrdep_set |= next_level
             new_pkgs = next_level
             next_level = set([y for x in new_pkgs if x in rdeps for y in rdeps[x]])
@@ -790,6 +793,8 @@ class PackagesDB:
         else:
             pkg.waiting_cnt = 0
 
+        pkg.rdep_chain_len = chain_len
+
     def block_count(self, pkg):
         if pkg.block_cnt is None:
             self._calc_rrdep_pkg_counts(pkg)
@@ -807,6 +812,12 @@ class PackagesDB:
             self._calc_rrdep_pkg_counts(pkg)
 
         return pkg.waiting_cnt
+
+    def rdep_chain_len(self, pkg):
+        if pkg.rdep_chain_len is None:
+            self.calc_rrdep_pkg_counts(pkg)
+
+        return pkg.rdep_chain_len
 
 
 # vi:set et ts=4 sw=4 :
