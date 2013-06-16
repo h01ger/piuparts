@@ -57,7 +57,7 @@ Depends:
  ${misc:Depends},
  ${python:Depends}
 Recommends:
- apache2,
+ apache2 | httpd,
  ghostscript,
  python-rpy2,
  r-base-dev,
