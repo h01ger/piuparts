@@ -1,7 +1,17 @@
 piuparts (0.54) UNRELEASED; urgency=low
 
+  [ Holger Levsen ]
   * known_problems: fix some adequate patterns. 
   * piuparts-master: recommend apache2 | httpd.
+
+  [ David Steele ]
+  * pupartslib/packagesdb.py
+    - The dependency calculation for rdeps is reworked to match that used
+      elsewhere, to allow package reserve() to drive waiting-for-dep to
+      drive to 0 more quickly.
+    - Reworked rdep metrics (block_count, rrdep_count, waiting_count) to
+      calculate on-demand. Access methods are moved from Package to
+      PackagesDB.
 
  -- Holger Levsen <holger@debian.org>  Tue, 11 Jun 2013 15:05:03 +0200
 
@@ -45,13 +55,6 @@ piuparts (0.53) unstable; urgency=low
   * Update python Requires to 2.7 (for argparse)
   * Edit piuparts_slave_* man pages for more information and format.
   * Specify the manpage doctype for AsciiDoc man sources.
-  * pupartslib/packagesdb.py
-    - The dependency calculation for rdeps is reworked to match that used
-      elsewhere, to allow package reserve() to drive waiting-for-dep to
-      drive to 0 more quickly.
-    - Reworked rdep metrics (block_count, rrdep_count, waiting_count) to
-      calculate on-demand. Access methods are moved from Package to
-      PackagesDB.
 
   [ Holger Levsen ]
   * piuparts.1.txt, README.txt and README_pejacevic.txt: proof-read and
