@@ -6,6 +6,8 @@ piuparts (0.54) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Add to ignored_files:
+      + /etc/hosts
   * piuparts.conf:
   * distros.conf:
   * piupartslib/conf.py:

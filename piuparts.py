@@ -211,6 +211,7 @@ class Settings:
             "/etc/group-",
             "/etc/gshadow",
             "/etc/gshadow-",
+            "/etc/hosts",
             "/etc/inetd.conf",
             "/etc/inittab",
             "/etc/ld.so.cache",
