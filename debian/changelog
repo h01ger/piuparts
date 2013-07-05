@@ -1,3 +1,9 @@
+piuparts (0.53~bpo70+1) wheezy-backports; urgency=low
+
+  * Rebuild for wheezy-backports.
+
+ -- Holger Levsen <holger@debian.org>  Fri, 05 Jul 2013 13:55:14 +0200
+
 piuparts (0.53) unstable; urgency=low
 
   [ Andreas Beckmann ]
