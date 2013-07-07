@@ -15,6 +15,20 @@ piuparts (0.54) UNRELEASED; urgency=low
     - Add a metric for the worst-case reverse-dependency chain length.
     - Weight the reserved packages returned by this additional factor.
 
+  [ Andreas Beckmann ]
+  * piuparts.py:
+    - Add to ignored_files:
+      + /etc/hosts
+  * piuparts.conf:
+  * distros.conf:
+  * piupartslib/conf.py:
+  * piupartslib/packagesdb.py:
+  * piuparts-master-backend.py:
+  * piuparts-slave.py:
+  * piuparts-analyze.py:
+  * piuparts-report.py:
+  * Makefile:
+
  -- Holger Levsen <holger@debian.org>  Tue, 11 Jun 2013 15:05:03 +0200
 
 piuparts (0.53) unstable; urgency=low
