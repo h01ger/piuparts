@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# skip the md5sum check if /usr/share/doc is pruned
+test ! -f /etc/dpkg/dpkg.cfg.d/piuparts-path-exclude || exit 0
+
 for pkg in ${PIUPARTS_OBJECTS%%=*}
 do
 	# skip check if the package is not installed
