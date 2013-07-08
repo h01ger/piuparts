@@ -4,7 +4,7 @@ set -e
 test "$PIUPARTS_PHASE" = "install" || exit 0
 
 case "$PIUPARTS_DISTRIBUTION" in
-	wheezy|testing|sid|experimental) ;;
+	wheezy|jessie|testing|sid|experimental) ;;
 	*) exit 0 ;;
 esac
 
