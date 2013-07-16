@@ -37,9 +37,9 @@ To set this up for yourself, the following steps should suffice:
  The key should be restricted to only allow running
  'piuparts-master' by prefixing it with
  'command="/usr/share/piuparts/piuparts-master",no-pty,no-port-forwarding'
-. Configure sudo on the slave machine to allow the slave account
- run '/usr/sbin/piuparts' as root without password (otherwise
- you'll be typing in a password all the time).
+. Configure sudo (via '/etc/sudoers.d/piuparts') on the slave machine(s)
+ to allow the slave account to run '/usr/sbin/piuparts' as root without
+ password (otherwise  you'll be typing in a password all the time).
 . Run '/usr/share/piuparts/piuparts-slave' on the slave accounts.
  Packages that are installed want to use '/dev/tty', so you can't
  do this from cron. Also, you'll want to keep an eye on what is
@@ -60,7 +60,7 @@ repository. Consider setting up a local mirror, or a caching proxy for http
 and apt-get, to reduce the load. Running multiple slaves on a fast host can
 easily saturate a 100 MBit link.
 
-Edit /etc/sudoers.d/piuparts to grant permissions to the piupartss user.
+Edit '/etc/sudoers.d/piuparts' to grant permissions to the piupartss user.
 Start the server using /usr/sbin/piuparts_slave_run, which will launch a
 'screen' session. The slave will launch a master process via ssh, as needed,
 to retrieve work and return results. Use /usr/sbin/piuparts_slave_join to

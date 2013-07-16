@@ -3,6 +3,8 @@ piuparts (0.54) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * known_problems: fix some adequate patterns. 
   * piuparts-master: recommend apache2 | httpd.
+  * README_server.txt: be more verbose about configuring sudo.
+    (Closes: #711155)
 
   [ David Steele ]
   * pupartslib/packagesdb.py

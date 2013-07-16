@@ -15,8 +15,8 @@ for 0.5x:
 
 - make piuparts-master + piuparts-slave packages work with documented steps:
   - do not enable sudoers.d/piuparts-slave in p-s.deb, neither the cronjobs.
-    - this is manual work one has done once after installation. we should
-      whats needs to be done how.
+    - this is manual work one has done once after installation. we only
+      document whats needs to be done how.
   - the shipped crontabs are not suitable from cron.d/ due to missing user
     column -> provide instructions how to install them as piuparts(s|m) user
     from /u/s/doc/p-(s|m)/examples
