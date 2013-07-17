@@ -65,6 +65,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2013-07-16</b> To better track bugs in piuparts.debian.org and piuparts itself, a new pseudo-package was created in the BTS: <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?src=piuparts.debian.org" target="_blank">piuparts.debian.org</a>, which will be used for tracking all issues with the piuparts.debian.org service.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2013-06-05</b> In preparation of the first wheezy point release, another new suite was added: <em>squeeze2wheezy-proposed</em>, testing installation in squeeze, then upgrade to wheezy-proposed-upgrades, ending in purge as usual.
      </td>
     </tr>
