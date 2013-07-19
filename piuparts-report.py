@@ -387,6 +387,7 @@ linktarget_by_template = [
     ("boring_broken_symlink_file_inadequate_issue.tpl", "...and logfile contains tag from adequate 'broken-symlink-file'"),
     ("bin_or_sbin_binary_requires_usr_lib_library_inadequate_issue.tpl", "but adequate tagged it 'bin-or-sbin-binary-requires-usr-lib-library'"),
     ("library_not_found_inadequate_issue.tpl", "but adequate tagged it 'library-not-found'"),
+    ("incompatible_licenses_inadequate_issue.tpl", "but adequate tagged it 'incompatible-licenses'"),
     ("py_file_not_bytecompiled_inadequate_issue.tpl", "but adequate tagged it 'py-file-not-bytecompiled'"),
     ("pyshared_file_not_bytecompiled_inadequate_issue.tpl", "but adequate tagged it 'pyshared-file-not-bytecompiled'"),
     ("undefined_symbol_inadequate_issue.tpl", "but adequate tagged it 'undefined-symbol'"),
