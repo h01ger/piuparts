@@ -1259,7 +1259,7 @@ class Chroot:
                                 'py-file-not-bytecompiled',
                                 'pyshared-file-not-bytecompiled',
                                 'undefined-symbol',
-                                'incompatible-licenses' ]
+                                'incompatible-licenses', 'ldd' ]
             boring_tags = [ 'obsolete-conffile',
                             'missing-copyright-file',
                             'broken-symlink' ]
