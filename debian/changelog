@@ -6,6 +6,9 @@ piuparts (0.55) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * Add file CONTRIBUTING, thanks to Vincent McIntyre for it! (Closes: #721348) 
 
+  [ Andreas Beckmann ]
+  * Add bug templates for wheezy.
+
  -- Ivo De Decker <ivo.dedecker@ugent.be>  Sat, 24 Aug 2013 15:35:59 +0200
 
 piuparts (0.54) unstable; urgency=low

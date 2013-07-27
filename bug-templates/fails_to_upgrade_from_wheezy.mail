@@ -1,0 +1,19 @@
+To: submit@bugs.debian.org
+Subject: fails to upgrade from 'wheezy'
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package fails to upgrade from
+'wheezy'.
+It installed fine in 'wheezy', then the upgrade to 'jessie' fails.
+
+From the attached log (scroll to the bottom...):
+
+
+cheers,
