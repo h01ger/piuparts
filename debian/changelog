@@ -1,4 +1,4 @@
-piuparts (0.54) UNRELEASED; urgency=low
+piuparts (0.54) unstable; urgency=low
 
   [ Holger Levsen ]
   * known_problems: fix some adequate patterns. 
@@ -20,20 +20,9 @@ piuparts (0.54) UNRELEASED; urgency=low
     - Weight the reserved packages returned by this additional factor.
 
   [ Andreas Beckmann ]
-  * piuparts.py:
-    - Add to ignored_files:
-      + /etc/hosts
-  * piuparts.conf:
-  * distros.conf:
-  * piupartslib/conf.py:
-  * piupartslib/packagesdb.py:
-  * piuparts-master-backend.py:
-  * piuparts-slave.py:
-  * piuparts-analyze.py:
-  * piuparts-report.py:
-  * Makefile:
+  * piuparts.py: add to ignored_files: /etc/hosts
 
- -- Holger Levsen <holger@debian.org>  Tue, 11 Jun 2013 15:05:03 +0200
+ -- Holger Levsen <holger@debian.org>  Tue, 30 Jul 2013 11:05:32 +0200
 
 piuparts (0.53) unstable; urgency=low
 
