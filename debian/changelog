@@ -1,4 +1,4 @@
-piuparts (0.54) UNRELEASED; urgency=low
+piuparts (0.54_1) UNRELEASED; urgency=low
 
   [ Holger Levsen ]
   * known_problems: fix some adequate patterns. 
