@@ -72,6 +72,7 @@ for 0.6x:
   the sudoers.d should recommend sudo (lsof|kill|umount) for admins.
 
 - if there were real schroot support, piuparts could be used without sudo.
+  (#708663)
 
 - generate piuparts.1.txt automatically from piuparts.py - see this blog post
   for a nice howto:
