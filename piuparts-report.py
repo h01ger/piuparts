@@ -227,6 +227,7 @@ HTML_FOOTER = """
    <a href="mailto:holger@layer-acht.org">Holger Levsen</a> and
    <a href="mailto:piuparts-devel@lists.alioth.debian.org">others</a> using
    <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">piuparts.git</a>.
+   Dito for this website.
    Weather icons are from the <a href="http://tango.freedesktop.org/Tango_Icon_Library" target="_blank">Tango Icon Library</a>.
    <a href="http://validator.w3.org/check?uri=referer">
     <img border="0" src="$doc_root/images/valid-html401.png" alt="Valid HTML 4.01!" height="15" width="80" align="middle">
