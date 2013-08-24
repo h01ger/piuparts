@@ -35,6 +35,7 @@ import urllib
 import shutil
 import re
 import string
+import yaml
 
 # if python-rpy2 ain't installed, we don't draw fancy graphs
 try:
@@ -1078,11 +1079,19 @@ class Section:
         maintainers = {}
         source_binary_rows = {}
         sources = ""
+        sources_data = []
         for source in self._source_db.get_all_package_names():
             (sourcerows, binaryrows, source_state, maintainer, uploaders) = \
                                self.create_source_summary(source, logs_by_dir)
 
             if source_state != "udeb":
+                source_version = self._source_db.get_control_header(source, "Version")
+                source_data = {};
+                source_data["source"] = source
+                source_data["state"] = source_state
+                source_data["version"] = source_version
+                sources_data.append(source_data)
+
                 sources += "%s: %s\n" % (source, source_state)
                 source_binary_rows[source] = (source_state, sourcerows, binaryrows)
                 for maint in [maintainer] + uploaders.split(","):
@@ -1094,6 +1103,8 @@ class Section:
                             maintainers[email].append(source)
 
         write_file(os.path.join(self._output_directory, "sources.txt"), sources)
+        write_file(os.path.join(self._output_directory, "sources.yaml"),
+            yaml.dump(sources_data, default_flow_style=False))
 
         self.create_maintainer_summaries(maintainers, source_binary_rows)
 
@@ -1398,6 +1409,8 @@ def main():
 
     if os.path.exists(master_directory):
         packagedb_cache = {}
+        write_file(os.path.join(output_directory, "sections.yaml"),
+            yaml.dump(section_names, default_flow_style=False))
         for section_name in section_names:
             try:
                 section = Section(section_name, master_directory, doc_root, packagedb_cache=packagedb_cache)

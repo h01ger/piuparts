@@ -54,6 +54,7 @@ Depends:
  python-debianbts,
  tango-icon-theme,
  xz-utils,
+ python-yaml,
  ${misc:Depends},
  ${python:Depends}
 Recommends:
