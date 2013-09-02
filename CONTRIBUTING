@@ -1,0 +1,26 @@
+Contributing to this project
+----------------------------
+
+It's helpful to track fixes or new features via wishlist bugs against the
+'piuparts' package, eg with the 'reportbug' tool ('devscripts' package).
+The BTS will ensure the developers' mailing list
+   piuparts-devel@lists.alioth.debian.org
+is notified.
+
+Patches can be submitted by mail (git format-patch, see below)
+or as requests to pull from a publicly-visible git repository.
+In either case, please make a topic branch based on the 'develop' branch.
+
+You can send patches or requests to the development list,
+or to the tracking bug: <bugnumber>@bugs.debian.org.
+
+One possible workflow:
+  git clone git://anonscm.debian.org/piuparts/piuparts.git
+  git checkout origin/develop -b <topicname>
+  <edits>
+  git commit -a
+  git format-patch -M origin/develop
+
+  reportbug piuparts
+  <describe the issue, attach the patch>
+
