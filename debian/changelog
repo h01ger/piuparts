@@ -1,6 +1,10 @@
 piuparts (0.55) UNRELEASED; urgency=low
 
+  [ Ivo De Decker ]
   * piuparts-reports: Add sources.yaml and section.yaml exports.
+
+  [ Holger Levsen ]
+  * Add file CONTRIBUTING, thanks to Vincent McIntyre for it! (Closes: #721348) 
 
  -- Ivo De Decker <ivo.dedecker@ugent.be>  Sat, 24 Aug 2013 15:35:59 +0200
 
