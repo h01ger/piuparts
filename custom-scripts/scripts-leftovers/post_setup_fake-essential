@@ -6,6 +6,16 @@ set -e
 # /etc/dbconfig-common
 DBCONFIG="dbconfig-common"
 
+# for purging configuration from /var/lib/systemd/
+INITSYSTEMHELPERS="init-system-helpers"
+
+case ${PIUPARTS_DISTRIBUTION} in
+	lenny*|squeeze*|wheezy*)
+		# package does not exist
+		INITSYSTEMHELPERS=""
+		;;
+esac
+
 
 case ${PIUPARTS_OBJECTS%%=*} in
 	dpkg)
@@ -16,4 +26,4 @@ esac
 
 
 echo "*** Adding fake essential packages ***"
-apt-get install -yf $DBCONFIG
+apt-get install -yf $DBCONFIG $INITSYSTEMHELPERS
