@@ -4,7 +4,7 @@ piuparts (0.55) UNRELEASED; urgency=low
   * piuparts-reports: Add sources.yaml and section.yaml exports.
 
   [ Holger Levsen ]
-  * Add file CONTRIBUTING, thanks to Vincent McIntyre for it! (Closes: #721348) 
+  * Add file CONTRIBUTING, thanks to Vincent McIntyre for it! (Closes: #721348)
 
   [ Andreas Beckmann ]
   * Add bug templates for wheezy.
