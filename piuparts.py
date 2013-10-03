@@ -3040,6 +3040,7 @@ def main():
     logging.info("-" * 78)
     logging.info("To quickly glance what went wrong, scroll down to the bottom of this logfile.")
     logging.info("FAQ available at http://wiki.debian.org/piuparts/FAQ")
+    logging.info("The FAQ also explains how to contact us in case you think piuparts is wrong.")
     logging.info("-" * 78)
     logging.info("piuparts version %s starting up." % VERSION)
     logging.info("Command line arguments: '%s'" % "' '".join(sys.argv))

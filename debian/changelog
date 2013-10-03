@@ -1,10 +1,13 @@
 piuparts (0.55) UNRELEASED; urgency=low
 
   [ Ivo De Decker ]
-  * piuparts-reports: Add sources.yaml and section.yaml exports.
+  * piuparts-report.py: Add sources.yaml and section.yaml exports.
 
   [ Holger Levsen ]
   * Add file CONTRIBUTING, thanks to Vincent McIntyre for it! (Closes: #721348)
+  * piuparts-report: Add "contact us" link.
+  * piuparts.py: Explain at the very beginning of the generated log that
+    contact information is part of the FAQ.
 
   [ Andreas Beckmann ]
   * Add bug templates for wheezy.
