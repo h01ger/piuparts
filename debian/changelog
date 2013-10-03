@@ -1,4 +1,4 @@
-piuparts (0.55) UNRELEASED; urgency=low
+piuparts (0.55) unstable; urgency=low
 
   [ Ivo De Decker ]
   * piuparts-report.py: Add sources.yaml and section.yaml exports.
@@ -14,7 +14,7 @@ piuparts (0.55) UNRELEASED; urgency=low
   * scripts-leftovers: Improve cleanup in /var/lib/systemd with fake-essential
     init-system-helpers.  (Closes: #719869)
 
- -- Ivo De Decker <ivo.dedecker@ugent.be>  Sat, 24 Aug 2013 15:35:59 +0200
+ -- Holger Levsen <holger@debian.org>  Thu, 03 Oct 2013 15:31:38 +0200
 
 piuparts (0.54) unstable; urgency=low
 
