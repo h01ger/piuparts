@@ -1,6 +1,9 @@
 piuparts (0.56) UNRELEASED; urgency=low
 
   [ Andreas Beckmann ]
+  * piuparts.py:
+    - Add to ignored_files:
+      + /etc/apt/apt.conf.d/01autoremove-kernels
 
  -- Andreas Beckmann <anbe@debian.org>  Tue, 22 Oct 2013 22:16:21 +0200
 

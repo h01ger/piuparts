@@ -234,6 +234,7 @@ class Settings:
             "/var/crash/",
             "/var/games/",
             # package management
+            "/etc/apt/apt.conf.d/01autoremove-kernels",
             "/etc/apt/secring.gpg",
             "/etc/apt/trustdb.gpg",
             "/etc/apt/trusted.gpg",
