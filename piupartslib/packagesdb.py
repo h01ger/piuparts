@@ -736,18 +736,16 @@ class PackagesDB:
 
             self._rdeps = {}
 
-            for pkg in self.get_all_package_names():
-                pkg_obj = self.get_package(pkg)
-
-                for dep in pkg_obj.dependencies():
-                    dep_pkg = self.get_package(dep, resolve_virtual=True)
+            for pkg_name in self.get_all_package_names():
+                for dep in self.get_package(pkg_name).dependencies():
+                    dep_pkg = self.get_package(dep, recurse=True, resolve_virtual=True)
 
                     if dep_pkg is not None:
                         dep = dep_pkg["Package"]
 
                     if not dep in self._rdeps:
                         self._rdeps[dep] = set()
-                    self._rdeps[dep].add(pkg)
+                    self._rdeps[dep].add(pkg_name)
 
         return( self._rdeps )
 
