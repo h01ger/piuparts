@@ -647,7 +647,6 @@ class Section:
         self._package_databases = {}
         self._load_package_database(section, master_directory)
         self._binary_db = self._package_databases[section]
-        self._binary_db.compute_package_states()
 
         self._source_db = piupartslib.packagesdb.PackagesDB()
         self._source_db.load_packages_urls(

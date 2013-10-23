@@ -491,8 +491,6 @@ def process_section(section, config, problem_list,
                     section_config.get_area(),
                     section_config.get_arch()))
 
-        pkgsdb.compute_package_states()
-
     failures = FailureManager(logdict)
     failures.sort_by_bugged_and_rdeps(pkgsdb)
 
