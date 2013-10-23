@@ -54,10 +54,11 @@ piuparts (0.54) unstable; urgency=low
 piuparts (0.53) unstable; urgency=low
 
   [ Andreas Beckmann ]
+  * *.py: Reindent and reformat, slowly moving towards PEP 8 style.
   * piuparts.py:
     - Do not run adequate checks on possibly disappearing packages.
     - Add --allow-database option that enables starting MySQL and PostgreSQL
-      database servers in the chroot. (Closes: #662633)
+      database servers in the chroot.  (Closes: #662633)
     - Relax the check for running processes if --allow-database is given.
   * distros.conf:
     - Add "candidates" key to merge multiple Packages files into one virtual
