@@ -5,6 +5,9 @@ piuparts (0.56) UNRELEASED; urgency=low
     - Add to ignored_files:
       + /etc/apt/apt.conf.d/01autoremove-kernels
 
+  [ Holger Levsen ]
+  * packagesdb.py: log with facility info in load_packages_urls().
+
  -- Andreas Beckmann <anbe@debian.org>  Tue, 22 Oct 2013 22:16:21 +0200
 
 piuparts (0.55) unstable; urgency=low
