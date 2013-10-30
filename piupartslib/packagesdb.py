@@ -136,7 +136,7 @@ class PackagesFile(UserDict.UserDict):
 
     def load_packages_urls(self, urls):
         for url in urls:
-            logging.info("Fetching %s" % url)
+            logging.debug("Fetching %s" % url)
             stream = piupartslib.open_packages_url(url)
             self._read_file(stream)
             stream.close()
