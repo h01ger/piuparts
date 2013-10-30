@@ -18,7 +18,7 @@
 
 
 import bz2
-import urllib
+import urllib2
 import cStringIO
 
 
@@ -30,16 +30,29 @@ import packagesdb
 def open_packages_url(url):
     """Open a Packages.bz2 file pointed to by a URL"""
     assert url.endswith(".bz2")
-    socket = urllib.urlopen(url)
-    decompressor = bz2.BZ2Decompressor()
-    bzfile = cStringIO.StringIO()
-    while True:
-        data = socket.read(1024)
-        if not data:
+    url = url[:-len(".bz2")]
+    socket = None
+    for ext in ['.bz2']:
+        try:
+            socket = urllib2.urlopen(url + ext)
+        except urllib2.HTTPError as httperror:
+            pass
+        else:
             break
-        bzfile.write(decompressor.decompress(data))
-    socket.close()
-    bzfile.seek(0)
-    return bzfile
+    if socket is None:
+        raise httperror
+    if ext == '.bz2':
+        decompressed = cStringIO.StringIO()
+        decompressor = bz2.BZ2Decompressor()
+        while True:
+            data = socket.read(1024)
+            if not data:
+                socket.close()
+                break
+            decompressed.write(decompressor.decompress(data))
+        decompressed.seek(0)
+    else:
+        raise ext
+    return decompressed
 
 # vi:set et ts=4 sw=4 :
