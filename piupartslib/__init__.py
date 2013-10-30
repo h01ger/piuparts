@@ -18,6 +18,7 @@
 
 
 import bz2
+import gzip
 import urllib2
 import cStringIO
 
@@ -32,7 +33,7 @@ def open_packages_url(url):
     assert url.endswith(".bz2")
     url = url[:-len(".bz2")]
     socket = None
-    for ext in ['.bz2']:
+    for ext in ['.bz2', '.gz']:
         try:
             socket = urllib2.urlopen(url + ext)
         except urllib2.HTTPError as httperror:
@@ -51,6 +52,16 @@ def open_packages_url(url):
                 break
             decompressed.write(decompressor.decompress(data))
         decompressed.seek(0)
+    elif ext == '.gz':
+        compressed = cStringIO.StringIO()
+        while True:
+            data = socket.read(1024)
+            if not data:
+                socket.close()
+                break
+            compressed.write(data)
+        compressed.seek(0)
+        decompressed = gzip.GzipFile(fileobj=compressed)
     else:
         raise ext
     return decompressed
