@@ -388,10 +388,17 @@ section, too, and will serve as defaults for all other sections
  stable to backports to testing).
 
 * "area" is the archive area to use, set to one of main, contrib,
- non-free. Default: "main".
+ non-free. This is used for loading Packages files to get the list
+ of packages to be tested. Default: "main".
 
-* "arch" is the architecture to use. Default: dpkg
- --print-architecture.
+* "components" restricts the archive areas that will be used in
+ the generated sources.list. Further restrictions may be set in
+ distros.conf. Defaults to "", which means all components will be
+ available. Useful setting: "main" with area = main to avoid using
+ packages outside main.
+
+* "arch" is the architecture to use.
+ Default: dpkg --print-architecture.
 
 * "chroot-tgz" is the name of the file the slave should use for
  the tarball containing the base chroot. The default name is

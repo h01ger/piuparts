@@ -5,11 +5,16 @@ piuparts (0.56) UNRELEASED; urgency=low
     - Add to ignored_files:
       + /etc/apt/apt.conf.d/01autoremove-kernels
     - Use temporary files while creating basetgz and rename afterwards.
+  * piuparts.conf:
+    - New per-section settings:
+      + components
   * piupartslib/__init__.py:
     - open_packages_url(): Try Packages.gz if Packages.bz2 is not available.
       (Closes: #711157)
   * piuparts-slave.py:
     - Use locking to prevent concurrent basetgz creation.  (Closes: #708287)
+    - Use the "components" setting to restrict the archive areas being used
+      in the generated sources.list.
   * piuparts-report.py:
     - Report URLs of all Packages files used for a section.
     - Avoid reporting duplicate dependencies after stripping versioning.

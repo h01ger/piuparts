@@ -88,6 +88,7 @@ class Config(piupartslib.conf.Config):
                 "tmpdir": None,
                 "distro": None,
                 "area": None,
+                "components": None,
                 "chroot-tgz": None,
                 "upgrade-test-distros": None,
                 "basetgz-directory": ".",
@@ -626,7 +627,10 @@ class Section:
         if "http_proxy" in os.environ:
             command.extend(["--proxy", os.environ["http_proxy"]])
         if self._config["mirror"]:
-            command.extend(["--mirror", self._config["mirror"]])
+            mirror = self._config["mirror"]
+            if self._config["components"]:
+                mirror += " " + self._config["components"]
+            command.extend(["--mirror", mirror])
         if self._config["tmpdir"]:
             command.extend(["--tmpdir", self._config["tmpdir"]])
         command.extend(["--arch", self._config.get_arch()])
@@ -808,7 +812,10 @@ def create_chroot(config, tarball, distro):
     if "http_proxy" in os.environ:
         command.extend(["--proxy", os.environ["http_proxy"]])
     if config["mirror"]:
-        command.extend(["--mirror", config["mirror"]])
+        mirror = self._config["mirror"]
+        if self._config["components"]:
+            mirror += " " + self._config["components"]
+        command.extend(["--mirror", mirror])
     if config["tmpdir"]:
         command.extend(["--tmpdir", config["tmpdir"]])
     command.extend(["--arch", config.get_arch()])
