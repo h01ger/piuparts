@@ -133,6 +133,7 @@ class PackagesFile(UserDict.UserDict):
 
     def __init__(self):
         UserDict.UserDict.__init__(self)
+        self._urllist = []
 
     def load_packages_urls(self, urls):
         for url in urls:
@@ -141,6 +142,7 @@ class PackagesFile(UserDict.UserDict):
             logging.debug("Fetching %s" % url)
             self._read_file(stream)
             stream.close()
+            self._urllist.append(url)
 
     def _read_file(self, input):
         """Parse a Packages file and add its packages to us-the-dict"""
@@ -155,6 +157,9 @@ class PackagesFile(UserDict.UserDict):
                     # there is already a newer version
                     continue
             self[p["Package"]] = p
+
+    def get_urls(self):
+        return self._urllist
 
 
 class LogDB:
@@ -354,6 +359,12 @@ class PackagesDB:
         pf.load_packages_urls(urls)
         self._packages_files.append(pf)
         self._packages = None
+
+    def get_urls(self):
+        urls = []
+        for pf in self._packages_files:
+            urls.extend(pf.get_urls())
+        return urls
 
     def set_dependency_databases(self, dependency_databases=[]):
         self._dependency_databases = list(dependency_databases)
