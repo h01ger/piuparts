@@ -30,8 +30,6 @@ import packagesdb
 
 def open_packages_url(url):
     """Open a Packages.bz2 file pointed to by a URL"""
-    assert url.endswith(".bz2")
-    url = url[:-len(".bz2")]
     socket = None
     for ext in ['.bz2', '.gz']:
         try:

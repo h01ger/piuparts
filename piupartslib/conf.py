@@ -156,7 +156,7 @@ class DistroConfig(UserDict.UserDict):
         return (self.get(distro, "candidates") or "").split() or [distro]
 
     def _get_packages_url(self, distro, area, arch):
-        return "%s/dists/%s/%s/binary-%s/Packages.bz2" % (
+        return "%s/dists/%s/%s/binary-%s/Packages" % (
                 self.get_mirror(distro),
                 self.get_distribution(distro),
                 area, arch)
@@ -166,7 +166,7 @@ class DistroConfig(UserDict.UserDict):
                 for d in self.get_candidates(distro)]
 
     def _get_sources_url(self, distro, area):
-        return "%s/dists/%s/%s/source/Sources.bz2" % (
+        return "%s/dists/%s/%s/source/Sources" % (
                 self.get_mirror(distro),
                 self.get_distribution(distro),
                 area)
