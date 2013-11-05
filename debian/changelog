@@ -7,6 +7,8 @@ piuparts (0.56) UNRELEASED; urgency=low
   * piupartslib/__init__.py:
     - open_packages_url(): Try Packages.gz if Packages.bz2 is not available.
       (Closes: #711157)
+  * piuparts-report.py:
+    - Report URLs of all Packages files used for a section.
 
  -- Andreas Beckmann <anbe@debian.org>  Tue, 22 Oct 2013 22:16:21 +0200
 

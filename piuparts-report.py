@@ -1224,9 +1224,6 @@ class Section:
 
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell2\" colspan=\"2\">%d</td></tr>\n" % total_packages
         htmlpage = string.Template(HTML_HEADER + SECTION_INDEX_BODY_TEMPLATE + HTML_FOOTER)
-        # FIXME: list all urls instead of just one
-        packages_url = self._distro_config.get_packages_urls(
-                self._config.get_distro(), self._config.get_area(), self._config.get_arch())[0]
         vendor = "Debian"
         if len(self._config.get_distros()) > 1:
             description = "%s %s: package installation in %s" % (
@@ -1254,7 +1251,7 @@ class Section:
             "section": html_protect(self._config.section),
             "description": html_protect(description),
             "tablerows": tablerows,
-            "packagesurl": html_protect(packages_url),
+            "packagesurl": "<br>".join([html_protect(url) for url in self._binary_db.get_urls()]),
             "doc_root": self._doc_root,
            }))
 
