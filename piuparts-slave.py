@@ -802,9 +802,6 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
 
 
 def create_chroot(config, tarball, distro):
-    output_name = tarball + ".log"
-    logging.debug("Opening log file %s" % output_name)
-    logging.info("Creating new tarball %s" % tarball)
     command = config["piuparts-command"].split()
     if config["piuparts-flags"]:
         command.extend(config["piuparts-flags"].split())
@@ -818,21 +815,31 @@ def create_chroot(config, tarball, distro):
     command.extend(["-d", distro])
     command.extend(["-s", tarball + ".new"])
     command.extend(["--apt", "dpkg"])
-    output = file(output_name, "w")
-    output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n\n",
-                               time.gmtime()))
-    output.write("Executing: " + " ".join(command) + "\n\n")
-    logging.debug("Executing: " + " ".join(command))
-    p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for line in p.stdout:
-        output.write(line)
-        logging.debug(">> " + line.rstrip())
-    p.wait()
-    output.write(time.strftime("\nEnd: %Y-%m-%d %H:%M:%S %Z\n",
-                               time.gmtime()))
-    output.close()
-    if os.path.exists(tarball + ".new"):
-        os.rename(tarball + ".new", tarball)
+
+    output_name = tarball + ".log"
+    with open(output_name, "we") as output:
+        try:
+            fcntl.flock(output, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            logging.info("Creation of tarball %s already in progress." % tarball)
+        else:
+            logging.info("Creating new tarball %s" % tarball)
+            output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n\n",
+                                       time.gmtime()))
+            output.write("Executing: " + " ".join(command) + "\n\n")
+            logging.debug("Executing: " + " ".join(command))
+            p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            for line in p.stdout:
+                output.write(line)
+                logging.debug(">> " + line.rstrip())
+            p.wait()
+            output.write(time.strftime("\nEnd: %Y-%m-%d %H:%M:%S %Z\n",
+                                       time.gmtime()))
+            if os.path.exists(tarball + ".new"):
+                os.rename(tarball + ".new", tarball)
+            else:
+                logging.error("Tarball creation failed, see %s" % output_name)
+
 
 def create_or_replace_chroot_tgz(config, tgz, distro):
     max_tgz_age = int(config["max-tgz-age"])
