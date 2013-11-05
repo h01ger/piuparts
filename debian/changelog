@@ -45,7 +45,7 @@ piuparts (0.55) unstable; urgency=low
 piuparts (0.54) unstable; urgency=low
 
   [ Holger Levsen ]
-  * known_problems: fix some adequate patterns. 
+  * known_problems: fix some adequate patterns.
   * piuparts-master: recommend apache2 | httpd.
   * README_server.txt: be more verbose about configuring sudo.
     (Closes: #711155)
@@ -428,7 +428,7 @@ piuparts (0.50) unstable; urgency=low
   * Mention http://piuparts.debian.org in README.txt prominently.
   * Mention github clone in htdocs/index.tpl.
 
-  [David Steele]
+  [ David Steele ]
   * Replace the Tango icon symlinks with copies.
   * Make the Tango weather icons required for master.
 

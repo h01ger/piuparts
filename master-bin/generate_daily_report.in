@@ -30,7 +30,7 @@ export PYTHONPATH
 
 LOCKFILE=$HTDOCS/daily.lock
 if [ -e $LOCKFILE ]; then
-	echo "dialy.lock exists:"
+	echo "daily.lock exists:"
 	ls -l $LOCKFILE
 	exit 1
 fi
