@@ -1265,15 +1265,20 @@ class Chroot:
         """Run adequate and categorize output according to our needs. """
         packages = [p.split("=", 1)[0].strip() for p in packages if not p.endswith("=None")]
         if packages and settings.adequate and os.path.isfile('/usr/bin/adequate'):
-            adequate_tags = [ 'bin-or-sbin-binary-requires-usr-lib-library',
-                                'library-not-found',
-                                'py-file-not-bytecompiled',
-                                'pyshared-file-not-bytecompiled',
-                                'undefined-symbol',
-                                'incompatible-licenses', 'ldd' ]
-            boring_tags = [ 'obsolete-conffile',
-                            'missing-copyright-file',
-                            'broken-symlink' ]
+            adequate_tags = [
+                    'bin-or-sbin-binary-requires-usr-lib-library',
+                    'library-not-found',
+                    'py-file-not-bytecompiled',
+                    'pyshared-file-not-bytecompiled',
+                    'undefined-symbol',
+                    'incompatible-licenses',
+                    'ldd',
+                    ]
+            boring_tags = [
+                    'obsolete-conffile',
+                    'missing-copyright-file',
+                    'broken-symlink',
+                    ]
             ignored_tags = [ ]
             (status, output) = run(["adequate", "--root", self.name] + packages, ignore_errors=True)
             for tag in ignored_tags:
