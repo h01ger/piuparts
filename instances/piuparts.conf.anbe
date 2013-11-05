@@ -141,8 +141,8 @@ precedence = 10
 piuparts-flags =
 	%(flags-default)s
 distro = sid
-area = main
 arch = amd64
+area = main
 # 60*60*24*2
 max-tgz-age = 172800
 reschedule-old-days = 30
@@ -154,8 +154,8 @@ piuparts-flags =
 	%(flags-default)s
 depends-sections = sid/main sid/non-free
 distro = sid
-area = contrib
 arch = amd64
+area = contrib
 reschedule-old-days = 30
 expire-old-days = 45
 
@@ -165,8 +165,8 @@ piuparts-flags =
 	%(flags-default)s
 depends-sections = sid/main sid/contrib
 distro = sid
-area = non-free
 arch = amd64
+area = non-free
 reschedule-old-days = 30
 expire-old-days = 45
 
@@ -186,7 +186,7 @@ precedence = 45
 piuparts-flags =
 	%(flags-default)s
 depends-sections = jessie/main jessie/non-free
-distro = wheezy
+distro = jessie
 arch = amd64
 area = contrib
 
@@ -195,7 +195,7 @@ precedence = 45
 piuparts-flags =
 	%(flags-default)s
 depends-sections = jessie/main jessie/contrib
-distro = wheezy
+distro = jessie
 arch = amd64
 area = non-free
 
