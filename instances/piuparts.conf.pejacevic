@@ -99,6 +99,7 @@ output-directory = /srv/piuparts.debian.org/htdocs
 backup-directory = /srv/piuparts.debian.org/backup
 tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /
+components = main
 slave-count = 4
 # 30*60
 idle-sleep = 1800

@@ -125,8 +125,6 @@ for 0.6x:
   - java stacktraces
   - "Can't locate .* in @INC"
 
-- test main without contrib/non-free in sources.list
-
 
 for 0.7x and later:
 
