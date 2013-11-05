@@ -9,6 +9,7 @@ piuparts (0.56) UNRELEASED; urgency=low
       (Closes: #711157)
   * piuparts-report.py:
     - Report URLs of all Packages files used for a section.
+    - Avoid reporting duplicate dependencies after stripping versioning.
 
  -- Andreas Beckmann <anbe@debian.org>  Tue, 22 Oct 2013 22:16:21 +0200
 

@@ -623,6 +623,18 @@ def get_email_address(maintainer):
     return email
 
 
+# return order preserving list of the first occurrence of an element
+def unique(stuff):
+    # can't use set() because 'stuff' is a list of lists and list() is not hashable
+    vlist = []
+    previtem = stuff
+    for item in stuff:
+        if item != previtem:
+            vlist.append(item)
+            previtem = item
+    return vlist
+
+
 class Section:
 
     def __init__(self, section, master_directory, doc_root, packagedb_cache={}):
@@ -1292,7 +1304,7 @@ class Section:
                     vlist += " (%d, %d)" % (self._binary_db.rrdep_count(package), \
                                             self._binary_db.block_count(package))
                 vlist += " (%s)" % html_protect(package["Maintainer"])
-                all_deps = package.all_dependencies()
+                all_deps = unique(package.all_dependencies())
                 if all_deps:
                     vlist += "\n<ul>\n"
                     for alternatives in all_deps:
