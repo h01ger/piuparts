@@ -872,6 +872,7 @@ class Chroot:
         # Yes, create_temp_file() would work just as well, but putting it in
         # the interface for Chroot allows the VirtServ hack to work.
         (fd, temp_tgz) = create_temp_file()
+        os.close(fd)
         return temp_tgz
 
     def remove_temp_tgz_file(self, temp_tgz):
@@ -885,7 +886,16 @@ class Chroot:
         self.run(["apt-get", "clean"])
         logging.debug("Saving %s to %s." % (self.name, result))
 
-        run(['tar', '-czf', result, '--one-file-system', '--exclude', 'tmp/scripts', '-C', self.name, './'])
+        (fd, tmpfile) = tempfile.mkstemp(dir=os.path.dirname(result))
+        os.close(fd)
+        cleanup_tmpfile = lambda: os.remove(tmpfile)
+        panic_handler_id = do_on_panic(cleanup_tmpfile)
+
+        run(['tar', '-czf', tmpfile, '--one-file-system', '--exclude', 'tmp/scripts', '-C', self.name, './'])
+
+        os.chmod(tmpfile, 0644)
+        os.rename(tmpfile, result)
+        dont_do_on_panic(panic_handler_id)
 
     def unpack_from_tgz(self, tarball):
         """Unpack a tarball to a chroot."""
