@@ -1268,6 +1268,7 @@ class Chroot:
             adequate_tags = [
                     'bin-or-sbin-binary-requires-usr-lib-library',
                     'library-not-found',
+                    'missing-copyright-file',
                     'py-file-not-bytecompiled',
                     'pyshared-file-not-bytecompiled',
                     'undefined-symbol',
@@ -1276,7 +1277,6 @@ class Chroot:
                     ]
             boring_tags = [
                     'obsolete-conffile',
-                    'missing-copyright-file',
                     'broken-symlink',
                     ]
             ignored_tags = [ ]
