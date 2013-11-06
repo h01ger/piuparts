@@ -80,13 +80,13 @@ class Config(piupartslib.conf.Config):
 class CommandSyntaxError(Exception):
 
     def __init__(self, msg):
-        self.args = msg
+        self.args = msg,
 
 
 class ProtocolError(Exception):
 
     def __init__(self):
-        self.args = "EOF, missing space in long part, or other protocol error"
+        self.args = "EOF, missing space in long part, or other protocol error",
 
 
 class Protocol:

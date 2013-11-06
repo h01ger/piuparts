@@ -124,37 +124,37 @@ def sighup_handler(signum, frame):
 class MasterIsBusy(Exception):
 
     def __init__(self):
-        self.args = "Master is busy, retry later"
+        self.args = "Master is busy, retry later",
 
 
 class MasterNotOK(Exception):
 
     def __init__(self):
-        self.args = "Master did not respond with 'ok'"
+        self.args = "Master did not respond with 'ok'",
 
 
 class MasterDidNotGreet(Exception):
 
     def __init__(self):
-        self.args = "Master did not start with 'hello'"
+        self.args = "Master did not start with 'hello'",
 
 
 class MasterCommunicationFailed(Exception):
 
     def __init__(self):
-        self.args = "Communication with master failed"
+        self.args = "Communication with master failed",
 
 
 class MasterIsCrazy(Exception):
 
     def __init__(self):
-        self.args = "Master said something unexpected"
+        self.args = "Master said something unexpected",
 
 
 class MasterCantRecycle(Exception):
 
     def __init__(self):
-        self.args = "Master has nothing to recycle"
+        self.args = "Master has nothing to recycle",
 
 
 class Slave:

@@ -18,6 +18,7 @@ piuparts (0.56) UNRELEASED; urgency=low
   * piuparts-report.py:
     - Report URLs of all Packages files used for a section.
     - Avoid reporting duplicate dependencies after stripping versioning.
+  * Improve exception handling.
   * known_problems: Upgrade adequate issue 'missing-copyright-file' from
     boring to normal and make pre_remove_50_find_missing_copyright no longer
     generate fatal errors.

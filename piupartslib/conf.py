@@ -33,14 +33,14 @@ class MissingSection(Exception):
 
     def __init__(self, filename, section):
         self.args = "Section %s not defined in configuration file %s" % \
-            (section, filename)
+            (section, filename),
 
 
 class MissingMandatorySetting(Exception):
 
     def __init__(self, filename, key):
         self.args = "Value for %s not set in configuration file %s" % \
-            (key, filename)
+            (key, filename),
 
 
 class Config(UserDict.UserDict):
