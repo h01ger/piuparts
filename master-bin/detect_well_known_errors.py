@@ -322,13 +322,9 @@ def clean_cache_files(logdict, cachedict, recheck=False, recheck_failed=False,
             or get_where(logdict[pkgspec]) != get_where(cachedict[pkgspec])\
             or recheck\
             or (recheck_failed and not get_where(cachedict[pkgspec]) in ['pass']):
-
-                try:
-                    os.remove(cachedict[pkgspec])
-                    count = count + 1
-                except OSError:
-                    print "Error deleting %s" % cachedict[pkgspec]
-        except IOError:
+                os.remove(cachedict[pkgspec])
+                count = count + 1
+        except (IOError, OSError):
             # logfile may have disappeared
             pass
 
