@@ -816,9 +816,9 @@ def create_chroot(config, tarball, distro):
     if "http_proxy" in os.environ:
         command.extend(["--proxy", os.environ["http_proxy"]])
     if config["mirror"]:
-        mirror = self._config["mirror"]
-        if self._config["components"]:
-            mirror += " " + self._config["components"]
+        mirror = config["mirror"]
+        if config["components"]:
+            mirror += " " + config["components"]
         command.extend(["--mirror", mirror])
     if config["tmpdir"]:
         command.extend(["--tmpdir", config["tmpdir"]])

@@ -387,15 +387,19 @@ section, too, and will serve as defaults for all other sections
  packages) or the restricted set in a partial distribution (e.g.
  stable to backports to testing).
 
-* "area" is the archive area to use, set to one of main, contrib,
- non-free. This is used for loading Packages files to get the list
- of packages to be tested. Default: "main".
+* "area" is the archive area used to get the list of packages to
+ be tested. The Packages file for this area will be loaded. The
+ default is "main" and the possible values depend on the vendor,
+ for Debian these are main, contrib, non-free.
 
-* "components" restricts the archive areas that will be used in
- the generated sources.list. Further restrictions may be set in
- distros.conf. Defaults to "", which means all components will be
- available. Useful setting: "main" with area = main to avoid using
- packages outside main.
+* "components" sets the archive areas that will be available when
+ testing the packages selected via the "area" setting. These will
+ be enabled in the generated sources.list.  Defaults to "", which
+ means all components will be available. A useful setting is
+ "main" together with area = main to avoid using packages outside
+ main. Testing packages from a 'partial' area like contrib or
+ non-free usually requires additional or all components to be
+ available.
 
 * "arch" is the architecture to use.
  Default: dpkg --print-architecture.
