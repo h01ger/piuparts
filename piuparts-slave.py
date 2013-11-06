@@ -415,8 +415,10 @@ class Section:
 
         create_or_replace_chroot_tgz(self._config, self._get_tarball(),
                                      self._config.get_start_distro())
+        exists = os.path.exists(self._get_tarball())
 
         os.chdir(oldcwd)
+        return exists
 
     def _count_submittable_logs(self):
         files = 0
@@ -593,8 +595,12 @@ class Section:
                     self._error_wait_until = time.time() + 900
                     return 0
 
+        if not self._check_tarball():
+            logging.error("could not find the chroot-tgz tarball")
+            self._error_wait_until = time.time() + 900
+            return 0
+
         test_count = 0
-        self._check_tarball()
         for package_name, version in self._slave.get_reserved():
             self._throttle_if_overloaded()
             if interrupted or got_sighup:
