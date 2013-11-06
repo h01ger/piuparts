@@ -3,6 +3,7 @@ set -e
 
 CANDIDATES=""
 CANDIDATES="$CANDIDATES mysql-server"
+CANDIDATES="$CANDIDATES mysql-server-5.5"
 CANDIDATES="$CANDIDATES postgresql"
 CANDIDATES="$CANDIDATES postgresql-8.4"
 CANDIDATES="$CANDIDATES postgresql-9.1"
