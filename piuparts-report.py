@@ -602,6 +602,14 @@ def read_file(filename):
     f.close()
     return l
 
+
+def write_template_html(filename, body, mapping={}):
+    header = HTML_HEADER
+    footer = HTML_FOOTER
+    htmlpage = string.Template(header + body + footer)
+    write_file(filename, htmlpage.safe_substitute(mapping))
+
+
 def create_section_navigation(section_names, current_section, doc_root):
     tablerows = ""
     for section in section_names:
@@ -711,6 +719,10 @@ class Section:
                 else:
                     package["Version"] = "None"
 
+    def _write_template_html(self, filename, body, mapping={}):
+        write_template_html(filename, body, mapping)
+
+
     def write_log_list_page(self, filename, title, preface, logs):
         packages = {}
         for pathname, package, version in logs:
@@ -737,9 +749,10 @@ class Section:
         else:
             title_style="titlecell"
 
-        htmlpage = string.Template(HTML_HEADER + LOG_LIST_BODY_TEMPLATE + HTML_FOOTER)
-        f = file(filename, "w")
-        f.write(htmlpage.safe_substitute({
+        self._write_template_html(
+                filename,
+                LOG_LIST_BODY_TEMPLATE,
+                {
                     "page_title": html_protect(title+" in "+self._config.section),
                     "section_navigation":
                        create_section_navigation(self._section_names,
@@ -754,8 +767,7 @@ class Section:
                     "versioncount": version_count,
                     "logrows": "".join(lines),
                     "doc_root": self._doc_root,
-                }))
-        f.close()
+                })
 
 
     def print_by_dir(self, output_directory, logs_by_dir):
@@ -952,10 +964,10 @@ class Section:
                                    + "</a> "
             distrolinks += "</td></tr>"
 
-            htmlpage = string.Template(HTML_HEADER + MAINTAINER_BODY_TEMPLATE + HTML_FOOTER)
-            filename = os.path.join(maintainer_subdir_path, maintainer + ".html")
-            f = file(filename, "w")
-            f.write(htmlpage.safe_substitute({
+            self._write_template_html(
+                    os.path.join(maintainer_subdir_path, maintainer + ".html"),
+                    MAINTAINER_BODY_TEMPLATE,
+                    {
                "page_title": html_protect("Status of " \
                                           + maintainer \
                                           + " packages in " \
@@ -968,8 +980,7 @@ class Section:
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": rows + package_rows,
                "doc_root": self._doc_root,
-             }))
-            f.close()
+                    })
 
     def create_source_summary (self, source, logs_by_dir):
         source_version = self._source_db.get_control_header(source, "Version")
@@ -1066,18 +1077,16 @@ class Section:
             if not os.path.exists(source_summary_page_path):
                 os.makedirs(source_summary_page_path)
 
-            filename = os.path.join(source_summary_page_path, (source + ".html"))
-            htmlpage = string.Template(HTML_HEADER + SOURCE_PACKAGE_BODY_TEMPLATE + HTML_FOOTER)
-
-            f = file(filename, "w")
-            f.write(htmlpage.safe_substitute({
+            self._write_template_html(
+                    os.path.join(source_summary_page_path, (source + ".html")),
+                    SOURCE_PACKAGE_BODY_TEMPLATE,
+                    {
                "page_title": html_protect("Status of source package "+source+" in "+self._config.section),
                "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
                "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": sourcerows+binaryrows,
                "doc_root": self._doc_root,
-            }))
-            f.close()
+                    })
 
             # return parsable values
             if success: source_state = "pass"
@@ -1173,17 +1182,16 @@ class Section:
                     f.close()
                     os.unlink(tpl)
 
-                    htmlpage = string.Template(HTML_HEADER + ANALYSIS_BODY_TEMPLATE + HTML_FOOTER)
-                    filename = os.path.join(self._output_directory, template[:-len(".tpl")]+".html")
-                    f = file(filename, "w")
-                    f.write(htmlpage.safe_substitute({
+                    self._write_template_html(
+                            os.path.join(self._output_directory, template[:-len(".tpl")]+".html"),
+                            ANALYSIS_BODY_TEMPLATE,
+                            {
                        "page_title": html_protect("Packages in state "+state+" "+linktarget),
                        "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
                        "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                        "rows": rows,
                        "doc_root": self._doc_root,
-                     }))
-                    f.close()
+                            })
                     if state == "failed-testing":
                         count_bugged = string.count(rows, '"bugged/')
                         count_affected = string.count(rows, '"affected/')
@@ -1235,7 +1243,6 @@ class Section:
             logging.debug("Error generating the graph images, probably python-rpy2 is not installed, disabling graphs.")
 
         tablerows += "<tr class=\"normalrow\"> <td class=\"labelcell2\">Total</td> <td class=\"labelcell2\" colspan=\"2\">%d</td></tr>\n" % total_packages
-        htmlpage = string.Template(HTML_HEADER + SECTION_INDEX_BODY_TEMPLATE + HTML_FOOTER)
         vendor = "Debian"
         if len(self._config.get_distros()) > 1:
             description = "%s %s: package installation in %s" % (
@@ -1256,7 +1263,11 @@ class Section:
             description = self._config["description"][:-1] + " " + description
         elif self._config["description"]:
             description = self._config["description"]
-        write_file(os.path.join(self._output_directory, "index.html"), htmlpage.safe_substitute({
+
+        self._write_template_html(
+                os.path.join(self._output_directory, "index.html"),
+                SECTION_INDEX_BODY_TEMPLATE,
+                {
             "page_title": html_protect(self._config.section+" statistics"),
             "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
             "time": time.strftime("%Y-%m-%d %H:%M %Z"),
@@ -1265,7 +1276,7 @@ class Section:
             "tablerows": tablerows,
             "packagesurl": "<br>".join([html_protect(url) for url in self._binary_db.get_urls()]),
             "doc_root": self._doc_root,
-           }))
+                })
 
     def _show_providers(self, dep):
         providers = self._binary_db.get_providers(dep)
@@ -1323,8 +1334,11 @@ class Section:
                             vlist += "</ul>\n"
                     vlist += "</ul>\n"
                 vlist += "</li>\n"
-            htmlpage = string.Template(HTML_HEADER + STATE_BODY_TEMPLATE + HTML_FOOTER)
-            write_file(os.path.join(self._output_directory, "state-%s.html" % state), htmlpage.safe_substitute({
+
+            self._write_template_html(
+                    os.path.join(self._output_directory, "state-%s.html" % state),
+                    STATE_BODY_TEMPLATE,
+                    {
                                         "page_title": html_protect("Packages in state "+state+" in "+self._config.section),
                                         "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
                                         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
@@ -1333,7 +1347,7 @@ class Section:
                                         "list": vlist,
                                         "aside": aside,
                                         "doc_root": self._doc_root,
-                                       }))
+                    })
 
 
     def archive_logfile(self, vdir, log):
@@ -1437,13 +1451,15 @@ def main():
         for page in ("index", "bug_howto"):
             tpl = os.path.join(output_directory, page+".tpl")
             INDEX_BODY = "".join(read_file(tpl))
-            htmlpage = string.Template(HTML_HEADER + INDEX_BODY + HTML_FOOTER)
-            write_file(os.path.join(output_directory, page+".html"), htmlpage.safe_substitute({
+            write_template_html(
+                    os.path.join(output_directory, page+".html"),
+                    INDEX_BODY,
+                    {
                                    "page_title": "About piuparts.debian.org and News",
                                    "section_navigation": create_section_navigation(section_names, "sid", doc_root),
                                    "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                    "doc_root": doc_root,
-                                }))
+                    })
 
     else:
         logging.debug("Warning: %s does not exist!?! Creating it for you now." % master_directory)
