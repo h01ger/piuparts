@@ -413,8 +413,24 @@ class Section:
         oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
 
-        create_or_replace_chroot_tgz(self._config, self._get_tarball(),
-                                     self._config.get_start_distro())
+        tgz = self._get_tarball()
+        max_tgz_age = int(self._config["max-tgz-age"])
+        min_tgz_retry_delay = int(self._config["min-tgz-retry-delay"])
+        needs_update = not os.path.exists(tgz)
+        if not needs_update and max_tgz_age > 0:
+            # tgz exists and age is limited, so check age
+            now = time.time()
+            age = now - os.path.getmtime(tgz)
+            logging.info("Check-replace %s: age=%d vs. max=%d" % (tgz, age, max_tgz_age))
+            if age > max_tgz_age:
+                if os.path.exists(tgz + ".log"):
+                    age = now - os.path.getmtime(tgz + ".log")
+                logging.info("Limit-replace %s: last-retry=%d vs. min=%d" % (tgz, age, min_tgz_retry_delay))
+                if age > min_tgz_retry_delay:
+                    needs_update = True
+                    logging.info("%s too old.  Forcing re-creation" % tgz)
+        if needs_update:
+            create_chroot(self._config, tgz, self._config.get_start_distro())
 
         os.chdir(oldcwd)
 
@@ -853,26 +869,6 @@ def create_chroot(config, tarball, distro):
                 os.rename(tarball + ".new", tarball)
             else:
                 logging.error("Tarball creation failed, see %s" % output_name)
-
-
-def create_or_replace_chroot_tgz(config, tgz, distro):
-    max_tgz_age = int(config["max-tgz-age"])
-    min_tgz_retry_delay = int(config["min-tgz-retry-delay"])
-    needs_update = not os.path.exists(tgz)
-    if not needs_update and max_tgz_age > 0:
-        # tgz exists and age is limited, so check age
-        now = time.time()
-        age = now - os.path.getmtime(tgz)
-        logging.info("Check-replace %s: age=%d vs. max=%d" % (tgz, age, max_tgz_age))
-        if age > max_tgz_age:
-            if os.path.exists(tgz + ".log"):
-                age = now - os.path.getmtime(tgz + ".log")
-            logging.info("Limit-replace %s: last-retry=%d vs. min=%d" % (tgz, age, min_tgz_retry_delay))
-            if age > min_tgz_retry_delay:
-                needs_update = True
-                logging.info("%s too old.  Forcing re-creation" % tgz)
-    if needs_update:
-        create_chroot(config, tgz, distro)
 
 
 def create_file(filename, contents):
