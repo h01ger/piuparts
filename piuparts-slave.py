@@ -599,6 +599,9 @@ class Section:
             self._throttle_if_overloaded()
             if interrupted or got_sighup:
                 break
+            if not os.path.exists(self._get_tarball()):
+                logging.error("Missing chroot-tgz %s" % self._get_tarball())
+                break
             test_count += 1
             self._test_package(package_name, version, packages_files)
             self._slave.forget_reserved(package_name, version)
