@@ -31,10 +31,6 @@ for 0.5x:
   - examples are duplicated in piuparts.1.txt and README.txt - only keep one copy.
   - README_server has some duplication information on configuration as well.
 
-- in maintainer view:
-  - sort buggy states up again
-  - sort packages on maintainer pages alphabetically (states first though)
-
 - more stats and graphs:
   - packages processed per day and section
     - master writes submissions.txt per section since 0.45

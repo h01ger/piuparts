@@ -938,14 +938,15 @@ class Section:
             if not os.path.exists(maintainer_subdir_path):
                 os.mkdir(maintainer_subdir_path)
             rows = ""
-            package_rows = ""
+            package_rows = {}
             packages = {}
             for state in states:
                 packages[state] = []
+                package_rows[state] = ""
             for source in sorted(sources):
                 (state, sourcerows, binaryrows) = source_data[source]
                 packages[state].append(source)
-                package_rows += sourcerows + binaryrows
+                package_rows[state] += sourcerows + binaryrows
 
             for state in states:
                 if len(packages[state]) > 0:
@@ -989,7 +990,7 @@ class Section:
                                           + self._config.section),
                "maintainer": html_protect(maintainer+" in "+self._config.section),
                "distrolinks": distrolinks,
-               "rows": rows + package_rows,
+               "rows": rows + "".join([package_rows[state] for state in states]),
                     })
 
     def create_source_summary (self, source, logs_by_dir):
