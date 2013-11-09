@@ -858,28 +858,21 @@ def create_chroot(config, tarball, distro):
 def create_or_replace_chroot_tgz(config, tgz, distro):
     max_tgz_age = int(config["max-tgz-age"])
     min_tgz_retry_delay = int(config["min-tgz-retry-delay"])
-    forced = 0
-    if os.path.exists(tgz) and max_tgz_age > 0:
+    needs_update = not os.path.exists(tgz)
+    if not needs_update and max_tgz_age > 0:
+        # tgz exists and age is limited, so check age
         now = time.time()
-        statobj = os.stat(tgz)
-        # stat.ST_MTIME is actually time file was initially created
-        age = now - statobj[stat.ST_MTIME]
+        age = now - os.path.getmtime(tgz)
         logging.info("Check-replace %s: age=%d vs. max=%d" % (tgz, age, max_tgz_age))
         if age > max_tgz_age:
-            logging.info("Limit-replace %s: last-retry=%d vs. min=%d" % (tgz, now - statobj[stat.ST_CTIME], min_tgz_retry_delay))
-            # stat.ST_CTIME is time created OR last renamed
-            if min_tgz_retry_delay is None or now - statobj[stat.ST_CTIME] > min_tgz_retry_delay:
-                os.rename(tgz, tgz + ".old")
-                forced = 1
-                logging.info("%s too old.  Renaming to force re-creation" % tgz)
-    if not os.path.exists(tgz):
+            if os.path.exists(tgz + ".log"):
+                age = now - os.path.getmtime(tgz + ".log")
+            logging.info("Limit-replace %s: last-retry=%d vs. min=%d" % (tgz, age, min_tgz_retry_delay))
+            if age > min_tgz_retry_delay:
+                needs_update = True
+                logging.info("%s too old.  Forcing re-creation" % tgz)
+    if needs_update:
         create_chroot(config, tgz, distro)
-        if forced:
-            if not os.path.exists(tgz):
-                os.rename(tgz + ".old", tgz)
-                logging.info("Failed to create ... reverting to old %s" % tgz)
-            else:
-                os.unlink(tgz + ".old")
 
 
 def create_file(filename, contents):
