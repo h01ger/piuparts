@@ -39,7 +39,7 @@ LOG_EXT = '.log'
 TPL_EXT = '.tpl'
 
 PROB_TPL = \
-"""<table class="righttable"><tr class="titlerow"><td class="titlecell">
+"""<tr class="titlerow"><td class="titlecell">
 $HEADER in $SECTION, sorted by reverse dependency count.
 </td></tr><tr class="normalrow"><td class="contentcell2">
 $HELPTEXT
@@ -49,11 +49,11 @@ COMMAND='$COMMAND'
 </td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr><tr class="normalrow"><td class="contentcell2" colspan="3">
 <ul>
 $PACKAGE_LIST</ul>
-<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>
+<p>Affected packages in $SECTION: $COUNT</p></td></tr>
 """
 
 UNKNOWN_TPL = \
-"""<table class="righttable"><tr class="titlerow"><td class="titlecell">
+"""<tr class="titlerow"><td class="titlecell">
 Packages with unknown failures detected in $SECTION, sorted by reverse dependency count.
 </td></tr><tr class="normalrow"><td class="contentcell2">
 <p>Please investigate and improve detection of known error types!</p>
@@ -61,7 +61,7 @@ Packages with unknown failures detected in $SECTION, sorted by reverse dependenc
 <ul>
 $PACKAGE_LIST
 </ul>
-<p>Affected packages in $SECTION: $COUNT</p></td></tr></table>
+<p>Affected packages in $SECTION: $COUNT</p></td></tr>
 """
 
 PKG_ERROR_TPL = \
@@ -386,7 +386,7 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
 
         if bugged_section is False and get_where(logdict[pkgspec]) != 'fail':
             bugged_section = True
-            pkg_text += "<br>\n"
+            pkg_text += "</ul><ul>\n"
 
         pkg_text += populate_tpl(ftpl, {
                                 'LOG': section_path(logdict[pkgspec]),

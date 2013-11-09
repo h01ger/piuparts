@@ -27,7 +27,6 @@
 	</pre>
 	This will make sure, piuparts.debian.org picks up your bug report (actually, it's piuparts-analyse.py) and marks it as <i>bugged</i> in the database.
      </td>
-     </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
