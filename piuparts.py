@@ -434,6 +434,10 @@ def indent_string(str):
     return "\n".join(["  " + line for line in str.split("\n")])
 
 
+def quote_spaces(vlist):
+    return ["'%s'" % x if ' ' in x else x for x in vlist]
+
+
 class Alarm(Exception):
     pass
 
@@ -457,7 +461,6 @@ def run(command, ignore_errors=False, timeout=0):
         p.wait()
 
     assert type(command) == type([])
-    command = [x for x in command if x] # Delete any empty argument
     logging.debug("Starting command: %s" % command)
     env = os.environ.copy()
     env["LC_ALL"] = "C"
@@ -3059,7 +3062,7 @@ def main():
     logging.info("The FAQ also explains how to contact us in case you think piuparts is wrong.")
     logging.info("-" * 78)
     logging.info("piuparts version %s starting up." % VERSION)
-    logging.info("Command line arguments: '%s'" % "' '".join(sys.argv))
+    logging.info("Command line arguments: %s" % " ".join(quote_spaces(sys.argv)))
     logging.info("Running on: %s %s %s %s %s" % os.uname())
 
     # Make sure debconf does not ask questions and stop everything.
