@@ -607,6 +607,10 @@ def write_template_html(filename, body, mapping={}):
     header = HTML_HEADER
     footer = HTML_FOOTER
     htmlpage = string.Template(header + body + footer)
+    mapping = mapping.copy()
+    mapping.update({
+        "time": time.strftime("%Y-%m-%d %H:%M %Z"),
+        })
     write_file(filename, htmlpage.safe_substitute(mapping))
 
 
@@ -720,6 +724,12 @@ class Section:
                     package["Version"] = "None"
 
     def _write_template_html(self, filename, body, mapping={}):
+        mapping = mapping.copy()
+        mapping.update({
+            "section_navigation": self._section_navigation,
+            "doc_root": self._doc_root,
+            "section": html_protect(self._config.section),
+            })
         write_template_html(filename, body, mapping)
 
 
@@ -754,19 +764,12 @@ class Section:
                 LOG_LIST_BODY_TEMPLATE,
                 {
                     "page_title": html_protect(title+" in "+self._config.section),
-                    "section_navigation":
-                       create_section_navigation(self._section_names,
-                                                 self._config.section,
-                                                 self._doc_root),
-                    "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                     "title": html_protect(title),
-                    "section": html_protect(self._config.section),
                     "title_style": title_style,
                     "preface": preface,
                     "count": len(packages),
                     "versioncount": version_count,
                     "logrows": "".join(lines),
-                    "doc_root": self._doc_root,
                 })
 
 
@@ -974,12 +977,7 @@ class Section:
                                           + self._config.section),
                "maintainer": html_protect(maintainer+" in "+self._config.section),
                "distrolinks": distrolinks,
-               "section_navigation": create_section_navigation(self._section_names,
-                                                               self._config.section,
-                                                               self._doc_root),
-               "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": rows + package_rows,
-               "doc_root": self._doc_root,
                     })
 
     def create_source_summary (self, source, logs_by_dir):
@@ -1082,10 +1080,7 @@ class Section:
                     SOURCE_PACKAGE_BODY_TEMPLATE,
                     {
                "page_title": html_protect("Status of source package "+source+" in "+self._config.section),
-               "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
-               "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                "rows": sourcerows+binaryrows,
-               "doc_root": self._doc_root,
                     })
 
             # return parsable values
@@ -1187,10 +1182,7 @@ class Section:
                             ANALYSIS_BODY_TEMPLATE,
                             {
                        "page_title": html_protect("Packages in state "+state+" "+linktarget),
-                       "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
-                       "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                        "rows": rows,
-                       "doc_root": self._doc_root,
                             })
                     if state == "failed-testing":
                         count_bugged = string.count(rows, '"bugged/')
@@ -1269,13 +1261,9 @@ class Section:
                 SECTION_INDEX_BODY_TEMPLATE,
                 {
             "page_title": html_protect(self._config.section+" statistics"),
-            "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
-            "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-            "section": html_protect(self._config.section),
             "description": html_protect(description),
             "tablerows": tablerows,
             "packagesurl": "<br>".join([html_protect(url) for url in self._binary_db.get_urls()]),
-            "doc_root": self._doc_root,
                 })
 
     def _show_providers(self, dep):
@@ -1340,13 +1328,9 @@ class Section:
                     STATE_BODY_TEMPLATE,
                     {
                                         "page_title": html_protect("Packages in state "+state+" in "+self._config.section),
-                                        "section_navigation": create_section_navigation(self._section_names, self._config.section, self._doc_root),
-                                        "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                         "state": html_protect(state),
-                                        "section": html_protect(self._config.section),
                                         "list": vlist,
                                         "aside": aside,
-                                        "doc_root": self._doc_root,
                     })
 
 
@@ -1404,6 +1388,8 @@ class Section:
             return
 
         self._section_names = section_names
+        self._section_navigation = create_section_navigation(
+                self._section_names, self._config.section, self._doc_root)
         self._output_directory = os.path.abspath(os.path.join(output_directory, self._config.section))
         if not os.path.exists(self._output_directory):
             os.makedirs(self._output_directory)
@@ -1457,7 +1443,6 @@ def main():
                     {
                                    "page_title": "About piuparts.debian.org and News",
                                    "section_navigation": create_section_navigation(section_names, "sid", doc_root),
-                                   "time": time.strftime("%Y-%m-%d %H:%M %Z"),
                                    "doc_root": doc_root,
                     })
 
