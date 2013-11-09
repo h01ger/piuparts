@@ -1286,7 +1286,7 @@ class Section:
             if state in self._binary_db.get_error_states():
                 with_counts = True
                 aside = " (reverse deps, blocked pkgs)"
-                sort_key = lambda x: (-self._binary_db.block_count(x),x["Package"])
+                sort_key = lambda x: (-self._binary_db.block_count(x), x["Package"])
             else:
                 with_counts = False
                 aside = ""
@@ -1294,7 +1294,7 @@ class Section:
 
             names = self._binary_db.get_pkg_names_in_state(state)
             packages = [self._binary_db.get_package(name) for name in names]
-            packages.sort( key = sort_key )
+            packages.sort(key=sort_key)
 
             for package in packages:
                 vlist += "<li id=\"%s\">%s" % (

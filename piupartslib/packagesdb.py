@@ -759,7 +759,7 @@ class PackagesDB:
                         self._rdeps[dep] = set()
                     self._rdeps[dep].add(pkg_name)
 
-        return( self._rdeps )
+        return self._rdeps
 
     def _calc_rrdep_pkg_counts(self, pkg):
 
