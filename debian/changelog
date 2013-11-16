@@ -23,6 +23,8 @@ piuparts (0.56) UNRELEASED; urgency=low
   * known_problems: Upgrade adequate issue 'missing-copyright-file' from
     boring to normal and make pre_remove_50_find_missing_copyright no longer
     generate fatal errors.
+  * Add support for new adequate tags missing-symbol-version-information and
+    symbol-size-mismatch.
 
  -- Andreas Beckmann <anbe@debian.org>  Tue, 22 Oct 2013 22:16:21 +0200
 

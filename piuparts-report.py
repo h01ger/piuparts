@@ -401,6 +401,8 @@ linktarget_by_template = [
     ("py_file_not_bytecompiled_inadequate_issue.tpl", "but adequate tagged it 'py-file-not-bytecompiled'"),
     ("pyshared_file_not_bytecompiled_inadequate_issue.tpl", "but adequate tagged it 'pyshared-file-not-bytecompiled'"),
     ("undefined_symbol_inadequate_issue.tpl", "but adequate tagged it 'undefined-symbol'"),
+    ("symbol-size-mismatch_inadequate_issue.tpl", "but adequate tagged it 'symbol-size-mismatch'"),
+    ("missing-symbol-version-information_inadequate_issue.tpl", "but adequate tagged it 'missing-symbol-version-information'"),
     ("unknown_inadequate_issue.conf", "but an unknown adequate was found"),
     ("packages_have_been_kept_back_issue.tpl", "but logfile contains 'packages have been kept back'"),
     ("needs_rebuild_issue.tpl", "but logfile recommends to rebuild some packages"),

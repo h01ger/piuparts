@@ -1275,6 +1275,8 @@ class Chroot:
                     'py-file-not-bytecompiled',
                     'pyshared-file-not-bytecompiled',
                     'undefined-symbol',
+                    'missing-symbol-version-information',
+                    'symbol-size-mismatch',
                     'incompatible-licenses',
                     'ldd',
                     ]
