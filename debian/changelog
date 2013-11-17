@@ -31,6 +31,7 @@ piuparts (0.56) UNRELEASED; urgency=low
     generate fatal errors.
   * Add support for new adequate tags missing-symbol-version-information and
     symbol-size-mismatch.
+  * reschedule_oldest_logs: Report number of logfiles in recycle/.
 
  -- Andreas Beckmann <anbe@debian.org>  Tue, 22 Oct 2013 22:16:21 +0200
 

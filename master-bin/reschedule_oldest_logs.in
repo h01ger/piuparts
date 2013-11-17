@@ -54,10 +54,12 @@ list_logs()
 TOTAL=0
 TOTAL_EXPIRED=0
 UNSCHEDULE=0
+TOTAL_QUEUED=0
 LOGS=$(mktemp)
 OBSOLETE=$(mktemp)
 EXPIRED=$(mktemp)
 UNSORTED=$(mktemp)
+QUEUED=$(mktemp)
 OLDPWD=$(pwd)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
@@ -103,8 +105,9 @@ for SECTION in $SECTIONS ; do
 			test -f "recycle/${log#*/}" || echo "$log"
 		done > $LOGS
 	fi
+	find recycle/ -name '*.log' > $QUEUED
 
-	if [ -s $LOGS ] || [ -s $OBSOLETE ] || [ -s $EXPIRED ]; then
+	if [ -s $LOGS ] || [ -s $OBSOLETE ] || [ -s $EXPIRED ] || [ -s $QUEUED ] ; then
 		RCOUNT=$(wc -l $LOGS | awk '{ print $1 }')
 		TOTAL=$(($TOTAL + $RCOUNT))
 		ECOUNT=$(wc -l $EXPIRED | awk '{ print $1 }')
@@ -123,6 +126,10 @@ for SECTION in $SECTIONS ; do
 		if [ -s $OBSOLETE ]; then
 			rm -fv $(cat $OBSOLETE)
 		fi
+		find recycle/ -name '*.log' > $QUEUED
+		NUM_QUEUED=$(wc -l < $QUEUED)
+		TOTAL_QUEUED=$(($TOTAL_QUEUED + $NUM_QUEUED))
+		echo "queued: $NUM_QUEUED"
 		echo
 		echo "#########################################################"
 		echo
@@ -133,6 +140,7 @@ rm $LOGS
 rm $OBSOLETE
 rm $EXPIRED
 rm $UNSORTED
+rm $QUEUED
 
 if [ "$TOTAL" -gt "0" ]; then
 	echo "Rescheduled $TOTAL logs."
@@ -142,4 +150,7 @@ if [ "$TOTAL_EXPIRED" -gt "0" ]; then
 fi
 if [ "$UNSCHEDULE" -gt "0" ]; then
 	echo "Cancelled $UNSCHEDULE outdated rescheduling requests."
+fi
+if [ "$TOTAL_QUEUED" -gt "0" ]; then
+	echo "Queued logs: $TOTAL_QUEUED"
 fi
