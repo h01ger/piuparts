@@ -647,6 +647,11 @@ def get_email_address(maintainer):
     return email
 
 
+def package2id(package_name):
+    # "+" is not a valid identifier char for id=... attributes
+    return package_name.replace("+", "_")
+
+
 # return order preserving list of the first occurrence of an element
 def unique(stuff):
     # can't use set() because 'stuff' is a list of lists and list() is not hashable
@@ -1051,7 +1056,7 @@ class Section:
 
             sourcerows =    "<tr class=\"titlerow\">" \
                           + "<td class=\"titlecell\" colspan=\"6\" id=\"%s\">%s in %s</td>" \
-                            % (source, source, self._config.section) \
+                            % (package2id(source), source, self._config.section) \
                           + "</tr>\n"
 
             sourcerows +=   "<tr class=\"normalrow\">" \
@@ -1310,7 +1315,7 @@ class Section:
 
             for package in packages:
                 vlist += "<li id=\"%s\">%s" % (
-                                         package["Package"],
+                                         package2id(package["Package"]),
                                          self.link_to_source_summary(package["Package"]))
                 if with_counts:
                     vlist += " (%d, %d)" % (self._binary_db.rrdep_count(package), \
