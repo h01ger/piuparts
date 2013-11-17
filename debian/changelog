@@ -5,6 +5,8 @@ piuparts (0.56) UNRELEASED; urgency=low
     - Add to ignored_files:
       + /etc/apt/apt.conf.d/01autoremove-kernels
     - Use temporary files while creating basetgz and rename afterwards.
+    - Remove the package to be tested separately before removing its Depends
+      and Recommends.
   * piuparts.conf:
     - New per-section settings:
       + components

@@ -1386,6 +1386,7 @@ class Chroot:
         self.run_scripts("pre_remove")
 
         # First remove all packages (and reinstall missing ones).
+        self.remove_packages(deps_to_remove)
         self.remove_packages(deps_to_remove + deps_to_purge +
                              nondeps_to_remove + nondeps_to_purge +
                              ["%s+" % x for x in deps_to_install])
