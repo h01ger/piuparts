@@ -13,6 +13,8 @@ piuparts (0.56) UNRELEASED; urgency=low
   * piupartslib/__init__.py:
     - open_packages_url(): Try Packages.gz if Packages.bz2 is not available.
       (Closes: #711157)
+  * piupartslib/packagesdb.py:
+    - PackagesFile: Allow restricting to a set of package names.
   * piuparts-slave.py:
     - Use locking to prevent concurrent basetgz creation.  (Closes: #708287)
     - Use the "components" setting to restrict the archive areas being used

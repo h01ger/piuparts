@@ -135,16 +135,16 @@ class PackagesFile(UserDict.UserDict):
         UserDict.UserDict.__init__(self)
         self._urllist = []
 
-    def load_packages_urls(self, urls):
+    def load_packages_urls(self, urls, restrict_packages=None):
         for url in urls:
             logging.debug("Opening %s.*" % url)
             (url, stream) = piupartslib.open_packages_url(url)
             logging.debug("Fetching %s" % url)
-            self._read_file(stream)
+            self._read_file(stream, restrict_packages=restrict_packages)
             stream.close()
             self._urllist.append(url)
 
-    def _read_file(self, input):
+    def _read_file(self, input, restrict_packages=None):
         """Parse a Packages file and add its packages to us-the-dict"""
         while True:
             headers = rfc822_like_header_parse(input)
@@ -155,6 +155,10 @@ class PackagesFile(UserDict.UserDict):
                 q = self[p["Package"]]
                 if apt_pkg.version_compare(p["Version"], q["Version"]) <= 0:
                     # there is already a newer version
+                    continue
+            if restrict_packages is not None:
+                if p["Package"] not in restrict_packages:
+                    # unwanted package
                     continue
             self[p["Package"]] = p
 
