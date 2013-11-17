@@ -2289,7 +2289,11 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
             # We have package names.  Use apt to get all their control
             # information.
             apt_cache_args = ["apt-cache", "show"]
-            apt_cache_args.extend([p.split("=", 1)[0].strip() for p in packages])
+            if os.environ["PIUPARTS_DISTRIBUTION"] in ["lenny"]:
+                # apt-cache in lenny does not accept version-qualified packages
+                apt_cache_args.extend([p.split("=", 1)[0].strip() for p in packages])
+            else:
+                apt_cache_args.extend(packages)
             returncode, output = chroot.run(apt_cache_args)
             control_infos = deb822.Deb822.iter_paragraphs(output.splitlines())
 
