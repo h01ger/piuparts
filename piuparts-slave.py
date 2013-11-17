@@ -593,6 +593,7 @@ class Section:
     def _process(self):
         self._slave.close()
 
+        packagenames = set([x[0] for x in self._slave.get_reserved()])
         packages_files = {}
         for distro in [self._config.get_distro()] + self._config.get_distros():
             if distro not in packages_files:
@@ -602,12 +603,14 @@ class Section:
                             self._distro_config.get_packages_urls(
                                 distro,
                                 self._config.get_area(),
-                                self._config.get_arch()))
+                                self._config.get_arch()),
+                            packagenames)
                     packages_files[distro] = pf
                 except IOError:
                     logging.error("failed to fetch packages file for %s" % distro)
                     self._error_wait_until = time.time() + 900
                     return 0
+        del packagenames
 
         test_count = 0
         self._check_tarball()

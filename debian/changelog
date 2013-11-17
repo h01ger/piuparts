@@ -19,6 +19,7 @@ piuparts (0.56) UNRELEASED; urgency=low
     - Use locking to prevent concurrent basetgz creation.  (Closes: #708287)
     - Use the "components" setting to restrict the archive areas being used
       in the generated sources.list.
+    - Reduce memory footprint by discarding unneeded Packages file parts.
   * piuparts-report.py:
     - Report URLs of all Packages files used for a section.
     - Avoid reporting duplicate dependencies after stripping versioning.
