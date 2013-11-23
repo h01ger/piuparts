@@ -1,0 +1,29 @@
+#!/bin/sh
+set -e
+
+log_debug()
+{
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+remove_ssl_cert()
+{
+	for c in /etc/ssl/certs/*.0 ; do
+		if [ -L "$c" ] && [ "$(readlink "$c")" = "$1" ]; then
+			rm -fv "$c"
+		fi
+	done
+	rm -fv /etc/ssl/certs/$1
+	rmdir --ignore-fail-on-non-empty /etc/ssl/certs
+}
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	uw-imapd)
+		log_debug
+		remove_ssl_cert imapd.pem
+		;;
+	ipopd)
+		log_debug
+		remove_ssl_cert ipop3d.pem
+		;;
+esac
