@@ -7,6 +7,7 @@ piuparts (0.56) UNRELEASED; urgency=low
     - Use temporary files while creating basetgz and rename afterwards.
     - Remove the package to be tested separately before removing its Depends
       and Recommends.
+    - --allow-database now also enables firebird2.5-super.
   * piuparts.conf:
     - New per-section settings:
       + components

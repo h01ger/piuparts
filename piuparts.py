@@ -1033,6 +1033,7 @@ class Chroot:
             policy += 'test "$1" = "mysql" && exit 0\n'
             policy += 'test "$1" = "postgresql" && exit 0\n'
             policy += 'test "$1" = "postgresql-8.3" && exit 0\n'
+            policy += 'test "$1" = "firebird2.5-super" && exit 0\n'
         policy += "exit 101\n"
         create_file(full_name, policy)
         os.chmod(full_name, 0755)
