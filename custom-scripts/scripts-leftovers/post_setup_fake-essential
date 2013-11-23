@@ -16,14 +16,21 @@ case ${PIUPARTS_DISTRIBUTION} in
 		;;
 esac
 
+# openssl may be used during purge to compute the hash for a
+# certificate, otherwise files in /etc/ssl/certs can't be removed.
+OPENSSL=""
+
 
 case ${PIUPARTS_OBJECTS%%=*} in
 	dpkg)
 		# skip while creating the tarball
 		exit 0
 		;;
+	stone)
+		OPENSSL="openssl"
+		;;
 esac
 
 
 echo "*** Adding fake essential packages ***"
-apt-get install -yf $DBCONFIG $INITSYSTEMHELPERS
+apt-get install -yf $DBCONFIG $INITSYSTEMHELPERS $OPENSSL
