@@ -428,6 +428,7 @@ linktarget_by_template = [
     ("db_setup_error.tpl", "due to failing to setup a database"),
     ("insserv_error.tpl", "due to a problem with insserv"),
     ("problems_and_no_force_error.tpl", "due to not enough force being used"),
+    ("immediate_configuration_error.tpl", "due to apt could not perform immediate configuration"),
     ("pre_depends_error.tpl", "due to a problem with pre-depends"),
     ("pre_installation_script_error.tpl", "due to pre-installation maintainer script failed"),
     ("post_installation_script_error.tpl", "due to post-installation maintainer script failed"),
