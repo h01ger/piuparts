@@ -65,6 +65,18 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			;;
 esac
 
+if [ "$PIUPARTS_DISTRIBUTION" = "wheezy-backports" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libreoffice-style-*)
+			log_debug
+			apt-get -y -t $PIUPARTS_DISTRIBUTION install ${PIUPARTS_OBJECTS%%=*} libreoffice-common-
+			;;
+	esac
+
+fi
+
+
 if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
