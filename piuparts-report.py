@@ -408,6 +408,7 @@ linktarget_by_template = [
     ("needs_rebuild_issue.tpl", "but logfile recommends to rebuild some packages"),
     ("obsolete_conffiles_issue.tpl", "but logfile reports obsolete conffiles"),
     ("missing_md5sums_issue.tpl", "but logfile reports missing md5sums"),
+    ("used_exception_issue.tpl", "but package used a piuparts exception"),
 
     ("dependency_error.tpl", "due to unsatisfied dependencies"),
     ("packages_have_been_kept_back_error.tpl", "...and logfile also contains 'packages have been kept back'"),
