@@ -9,3 +9,9 @@ then
 		echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/piuparts-force-unsafe-io
 	fi
 fi
+
+if [ ! -h /bin/sync ]
+then
+	dpkg-divert --rename /bin/sync
+	ln -sv true /bin/sync
+fi

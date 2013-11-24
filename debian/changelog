@@ -52,6 +52,8 @@ piuparts (0.57) UNRELEASED; urgency=low
     - Mark essential-required as obsolete and hide it.
   * scripts/post_{setup,distupgrade}_force-unsafe-io: New custom script to
     automatically enable dpkg --force-unsafe-io once that is supported.
+    Also divert /bin/sync and replace it with a link to /bin/true. Syncing a
+    throwaway chroot is useless, but affects on the host's performance.
   * Add more piuparts exceptions.
   * Handle lib32nss-mdns like ia32-libs[-gtk].
 
