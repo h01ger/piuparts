@@ -38,6 +38,22 @@ esac
 
 fi
 
+case ${PIUPARTS_OBJECTS%%=*} in
+	gpe-tetris|gpe)
+		#WORKSAROUND #684178: gpe-tetris: creates world writable directory /var/games/gpe
+		# package removed after wheezy
+		for file in /var/games/gpe/gpe-tetris.dat
+		do
+			test ! -f "$file" || chmod -c o-w "$file"
+		done
+		for dir in /var/games/gpe
+		do
+			test ! -d "$dir" || chmod -c o-w "$dir"
+		done
+		;;
+esac
+
+
 # find world writables without sticky bit
 BADPERMS=$(find / -mount ! -type l ! -type c ! -type p ! -type s -perm -o+w ! -perm -1000)
 
