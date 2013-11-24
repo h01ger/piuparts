@@ -36,6 +36,10 @@ piuparts (0.56) UNRELEASED; urgency=low
   * Add more piuparts exceptions to work around various failures in multiple
     packages. Add a known_problem report for packages using exceptions.
 
+  [ Holger Levsen ]
+  * piuparts-report.py: use descriptive link targets for (in)adequate issues
+    instead of mere tag names, thanks to Jakub Wilk for the wordings.
+
  -- Andreas Beckmann <anbe@debian.org>  Tue, 22 Oct 2013 22:16:21 +0200
 
 piuparts (0.55) unstable; urgency=low
