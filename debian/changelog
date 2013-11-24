@@ -32,6 +32,8 @@ piuparts (0.56) UNRELEASED; urgency=low
   * Add support for new adequate tags missing-symbol-version-information and
     symbol-size-mismatch.
   * reschedule_oldest_logs: Report number of logfiles in recycle/.
+  * Add more piuparts exceptions to work around various failures in multiple
+    packages. Add a known_problem report for packages using exceptions.
 
  -- Andreas Beckmann <anbe@debian.org>  Tue, 22 Oct 2013 22:16:21 +0200
 
@@ -64,7 +66,7 @@ piuparts (0.54) unstable; urgency=low
     since adequate 0.7) and "ldd" to inadequate_tags and known_problems.
 
   [ David Steele ]
-  * pupartslib/packagesdb.py
+  * piupartslib/packagesdb.py
     - The dependency calculation for rdeps is reworked to match that used
       elsewhere, to allow package reserve() to drive waiting-for-dep to
       drive to 0 more quickly. (Closes: #705977)

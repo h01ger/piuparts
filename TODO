@@ -53,9 +53,6 @@ for 0.5x:
 
 - maybe compress all logfiles
 
-- once adequate 0.6 (which is fixing #709372) is available, don't run adequate
-  tests for ignored_tags anymore.
-
 - link wiki:piuparts/UseCases||UsageTips in README_1st (after we agreed on a name)
 
 

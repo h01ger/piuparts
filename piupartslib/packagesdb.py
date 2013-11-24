@@ -682,7 +682,7 @@ class PackagesDB:
                            random.random(), p)
                         for p in self._candidates_for_testing]
                 self._candidates_for_testing = [x[2]
-                        for x in sorted(tuples, reverse = True)]
+                        for x in sorted(tuples, reverse=True)]
         return self._candidates_for_testing[:]
 
     def _remove_unavailable_candidate(self, p):
@@ -826,7 +826,7 @@ class PackagesDB:
 
     def rdep_chain_len(self, pkg):
         if pkg.rdep_chain_len is None:
-            self.calc_rrdep_pkg_counts(pkg)
+            self._calc_rrdep_pkg_counts(pkg)
 
         return pkg.rdep_chain_len
 
