@@ -16,6 +16,13 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			test ! -f "$file" || chmod -c o-w "$file"
 		done
 		;;
+	linpopup)
+		# package removed in squeeze
+		for file in /var/lib/linpopup/messages.dat
+		do
+			test ! -f "$file" || chmod -c o-w "$file"
+		done
+		;;
 esac
 
 fi
@@ -49,13 +56,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		for dir in /var/games/gpe
 		do
 			test ! -d "$dir" || chmod -c o-w "$dir"
-		done
-		;;
-	linpopup)
-		# package removed in squeeze
-		for file in /var/lib/linpopup/messages.dat
-		do
-			test ! -f "$file" || chmod -c o-w "$file"
 		done
 		;;
 esac
