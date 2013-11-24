@@ -57,6 +57,8 @@ piuparts (0.57) UNRELEASED; urgency=low
   * scripts/pre_install_extras: New custom script to install a linux-headers
     package before testing a *-dkms package, s.t. dkms tries to build a
     kernel module.
+  * known_problems/module_build_error_issue.conf: New known problem for dkms
+    module build failures.
   * Add more piuparts exceptions.
   * Handle lib32nss-mdns like ia32-libs[-gtk].
 

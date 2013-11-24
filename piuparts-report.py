@@ -407,6 +407,7 @@ linktarget_by_template = [
     ("inadequate_exit_issue.tpl", "but adequate exited inadequately"),
     ("packages_have_been_kept_back_issue.tpl", "but logfile contains 'packages have been kept back'"),
     ("needs_rebuild_issue.tpl", "but logfile recommends to rebuild some packages"),
+    ("module_build_error_issue.tpl", "but logfile contains dkms module build failures"),
     ("obsolete_conffiles_issue.tpl", "but logfile reports obsolete conffiles"),
     ("missing_md5sums_issue.tpl", "but logfile reports missing md5sums"),
     ("used_exception_issue.tpl", "but package used a piuparts exception"),
