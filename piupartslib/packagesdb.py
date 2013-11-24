@@ -691,6 +691,12 @@ class PackagesDB:
                 return state
         return package_state
 
+    def _get_package_weight(self, p):
+        waiting_count = self.waiting_count(p["Package"])
+        rdep_chain_len = self.rdep_chain_len(p["Package"])
+
+        return waiting_count * rdep_chain_len
+
     def _find_packages_ready_for_testing(self):
         if self._candidates_for_testing is None:
             self._candidates_for_testing = [self.get_package(pn)
@@ -699,10 +705,9 @@ class PackagesDB:
                     if not self._logdb.log_exists(p, [self._reserved]) or \
                             self._logdb.log_exists(p, [self._recycle])]
             if len(self._candidates_for_testing) > 1:
-                tuples = [(self.waiting_count(p["Package"]) * self.rdep_chain_len(p["Package"]),
-                           random.random(), p)
+                tuples = [(self._get_package_weight(p), random.random(), p)
                         for p in self._candidates_for_testing]
-                self._candidates_for_testing = [x[2]
+                self._candidates_for_testing = [x[-1]
                         for x in sorted(tuples, reverse=True)]
         return self._candidates_for_testing[:]
 
