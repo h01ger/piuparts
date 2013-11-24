@@ -2,14 +2,12 @@
 set -e
 
 case "$PIUPARTS_DISTRIBUTION" in
-	squeeze) ;;
-	squeeze-proposed-updates) ;;
+	squeeze*) ;;
 	*) exit 0 ;;
 esac
 
 case "$PIUPARTS_DISTRIBUTION_NEXT" in
-	wheezy|testing|sid|experimental) ;;
-	*) exit 0 ;;
+	lenny*|squeeze*) exit 0 ;;
 esac
 
 test "$(dpkg --print-architecture)" = "amd64" || exit 0

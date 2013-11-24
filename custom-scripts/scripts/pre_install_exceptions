@@ -50,7 +50,12 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				yes 'Yes, do as I say!' | apt-get -y --force-yes install systemd-sysv
 				;;
 	lvm2)
-				if [ "$PIUPARTS_PHASE" = "install" ] && ( [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || [ "$PIUPARTS_DISTRIBUTION" = "lenny" ] ); then
+				if [ "$PIUPARTS_PHASE" = "install" ] && ( \
+					[ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
+					[ "$PIUPARTS_DISTRIBUTION" = "squeeze-proposed" ] || \
+					[ "$PIUPARTS_DISTRIBUTION" = "squeeze-backports" ] || \
+					[ "$PIUPARTS_DISTRIBUTION" = "lenny" ] )
+				then
 					# work around lvm2 bug http://bugs.debian.org/603036 which is squeeze-ignore
 					log_debug
 					apt-get -y install udev
@@ -90,6 +95,7 @@ if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
 		mini-buildd-bld|mini-buildd-rep)
 				#632955, #656746 - time limit exceeded during install
 				log_debug
+				echo "*** ABORT - Installation would deadlock ***"
 				exit 1
 				;;
 	esac

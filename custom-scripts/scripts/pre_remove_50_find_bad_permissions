@@ -1,7 +1,12 @@
 #!/bin/sh
 set -e
 
-if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
+if	[ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "squeeze/updates" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "squeeze-updates" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "squeeze-proposed-updates" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "squeeze-proposed" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 
 case ${PIUPARTS_OBJECTS%%=*} in
 	bcron-run|capisuite|debbugs|raccess4vbox3|sxid)
@@ -11,6 +16,16 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		done
 		;;
 esac
+
+fi
+
+if	[ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "wheezy/updates" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-updates" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-proposed-updates" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-proposed" ]; then
+
+	:
 
 fi
 

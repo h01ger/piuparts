@@ -4,8 +4,7 @@ set -e
 test "$PIUPARTS_PHASE" = "install" || exit 0
 
 case "$PIUPARTS_DISTRIBUTION" in
-	wheezy|jessie|testing|sid|experimental) ;;
-	*) exit 0 ;;
+	lenny*|squeeze*) exit 0 ;;
 esac
 
 test "$(dpkg --print-architecture)" = "amd64" || exit 0

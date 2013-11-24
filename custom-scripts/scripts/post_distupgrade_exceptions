@@ -5,7 +5,8 @@ log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
 }
 
-if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
+if	[ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-proposed" ] ; then
 
 	# libdb4.8/squeeze is part of the minimal squeeze chroot and
 	# remains installed after distupgrade even if it no longer
