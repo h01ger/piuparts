@@ -35,7 +35,7 @@ for SECTION in $SECTIONS ; do
 		get_config_value DISTROS $SECTION upgrade-test-distros ''
 		distro=${DISTROS##* }
 		distro=${distro%-proposed}
-		@sharedir@/piuparts/piuparts-analyze $distro 2>&1 > $OUTPUT
+		timeout 60m @sharedir@/piuparts/piuparts-analyze $distro 2>&1 > $OUTPUT
 		if [ -s $OUTPUT ]; then
 			echo $SECTION
 			cat $OUTPUT
