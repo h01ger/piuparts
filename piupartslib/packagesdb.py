@@ -30,6 +30,7 @@ Lars Wirzenius <liw@iki.fi>
 import logging
 import os
 import random
+import stat
 import tempfile
 import time
 import UserDict
@@ -235,6 +236,10 @@ class LogDB:
         if self.exists(full_name):
             self.remove_file(full_name)
         self._evict(full_name)
+
+    def stat(self, subdir, package, version):
+        full_name = os.path.join(subdir, self._log_name(package, version))
+        return os.stat(full_name)
 
 
 class LogfileExists(Exception):
