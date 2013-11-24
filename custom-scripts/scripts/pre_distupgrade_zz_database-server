@@ -9,6 +9,13 @@ CANDIDATES="$CANDIDATES postgresql-8.4"
 CANDIDATES="$CANDIDATES postgresql-9.1"
 PACKAGES=""
 
+# early upgrade runs into even more trouble for some packages ...
+case ${PIUPARTS_OBJECTS%%=*} in
+	med-practice|audiolink)
+		CANDIDATES=""
+		;;
+esac
+
 for pkg in $CANDIDATES
 do
 	# skip if the package is not installed
