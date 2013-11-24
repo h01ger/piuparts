@@ -9,7 +9,8 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
 	[ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 
 case ${PIUPARTS_OBJECTS%%=*} in
-	bcron-run|capisuite|debbugs|raccess4vbox3|sxid)
+	citadel-server|citadel-dbg|citadel-mta|citadel-suite|bcron-run|capisuite|debbugs|raccess4vbox3|smartlist|sxid)
+		#WORKSAROUND #684964: citadel-server: world writable config file: /etc/citadel/netconfigs/7
 		for file in /etc/citadel/netconfigs/7 /etc/citadel/refcount_adjustments.dat /etc/citadel/citadel.control
 		do
 			test ! -f "$file" || chmod -c o-w "$file"
@@ -25,7 +26,15 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] || \
 	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-proposed-updates" ] || \
 	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-proposed" ]; then
 
-	:
+case ${PIUPARTS_OBJECTS%%=*} in
+	citadel-server|citadel-dbg|citadel-mta|citadel-suite|bcron|bcron-run|capisuite|debbugs|exmh|nmh|raccess4vbox3|smartlist|xlbiff)
+		#WORKSAROUND #684964: citadel-server: world writable config file: /etc/citadel/netconfigs/7
+		for file in /etc/citadel/netconfigs/7 /etc/citadel/refcount_adjustments.dat /var/lib/citadel/data/refcount_adjustments.dat
+		do
+			test ! -f "$file" || chmod -c o-w "$file"
+		done
+		;;
+esac
 
 fi
 
