@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+if [ ! -f /etc/dpkg/dpkg.cfg.d/piuparts-force-unsafe-io ]
+then
+	if dpkg --force-help | grep -q unsafe-io
+	then
+		echo "Enabling dpkg --force-unsafe-io."
+		echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/piuparts-force-unsafe-io
+	fi
+fi

@@ -50,6 +50,8 @@ piuparts (0.57) UNRELEASED; urgency=low
     - Improve master.log verbosity.
   * piuparts-report.py:
     - Mark essential-required as obsolete and hide it.
+  * scripts/post_{setup,distupgrade}_force-unsafe-io: New custom script to
+    automatically enable dpkg --force-unsafe-io once that is supported.
   * Add more piuparts exceptions.
   * Handle lib32nss-mdns like ia32-libs[-gtk].
 
