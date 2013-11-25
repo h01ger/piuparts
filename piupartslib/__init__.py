@@ -29,6 +29,54 @@ import dependencyparser
 import packagesdb
 
 
+class DecompressedStream():
+    def __init__(self, fileobj, decompressor=None):
+        self._input = fileobj
+        self._decompressor = decompressor
+        self._buffer = ""
+        self._line_buffer = []
+        self._i = 0
+        self._end = 0
+
+    def _refill(self):
+        if self._input is None:
+            return False
+        while True:
+            # repeat until decompressor yields some output or input is exhausted
+            chunk = self._input.read(4096)
+            if not chunk:
+                self.close()
+                return False
+            if self._decompressor:
+                chunk = self._decompressor.decompress(chunk)
+            self._buffer = self._buffer + chunk
+            if chunk:
+                return True
+
+    def readline(self):
+        while not self._i < self._end:
+            self._i = self._end = 0
+            self._line_buffer = None
+            empty = not self._refill()
+            if not self._buffer:
+                break
+            self._line_buffer = self._buffer.splitlines(True)
+            self._end = len(self._line_buffer)
+            self._buffer = ""
+            if not self._line_buffer[-1].endswith("\n") and not empty:
+                self._buffer = self._line_buffer[-1]
+                self._end = self._end - 1
+        if self._i < self._end:
+            self._i = self._i + 1
+            return self._line_buffer[self._i - 1]
+        return ""
+
+    def close(self):
+        if self._input:
+            self._input.close()
+        self._input = self._decompressor = None
+
+
 def open_packages_url(url):
     """Open a Packages.bz2 file pointed to by a URL"""
     socket = None
