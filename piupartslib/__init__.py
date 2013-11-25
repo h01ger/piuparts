@@ -19,9 +19,8 @@
 
 
 import bz2
-import gzip
+import zlib
 import urllib2
-import cStringIO
 
 
 import conf
@@ -91,25 +90,11 @@ def open_packages_url(url):
         raise httperror
     url = socket.geturl()
     if ext == '.bz2':
-        decompressed = cStringIO.StringIO()
         decompressor = bz2.BZ2Decompressor()
-        while True:
-            data = socket.read(1024)
-            if not data:
-                socket.close()
-                break
-            decompressed.write(decompressor.decompress(data))
-        decompressed.seek(0)
+        decompressed = DecompressedStream(socket, decompressor)
     elif ext == '.gz':
-        compressed = cStringIO.StringIO()
-        while True:
-            data = socket.read(1024)
-            if not data:
-                socket.close()
-                break
-            compressed.write(data)
-        compressed.seek(0)
-        decompressed = gzip.GzipFile(fileobj=compressed)
+        decompressor = zlib.decompressobj(16 + zlib.MAX_WBITS)
+        decompressed = DecompressedStream(socket, decompressor)
     else:
         raise ext
     return (url, decompressed)
