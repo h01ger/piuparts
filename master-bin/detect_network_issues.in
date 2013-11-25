@@ -46,6 +46,8 @@ for SECTION in $SECTIONS ; do
 		rgrep -l 'E: Method file has died unexpectedly!' $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l "E: Sub-process rred received a segmentation fault." $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -E "ERROR: Command failed \(status=-7\):.*'apt-get', 'update'" $MASTER/$SECTION/$subdir >> $FILE
+		# modified changelogs are usually caused by mirror pushes during the piuparts test
+		rgrep -l -E '  /usr/share/doc/(.*)/changelog.*owned by: \1' $MASTER/$SECTION/$subdir >> $FILE
 	done
 done
 if [ -s $FILE ] ; then
