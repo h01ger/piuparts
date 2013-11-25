@@ -18,7 +18,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	live-config-upstart)	log_debug
 				PIUPARTS_OBJECTS=upstart
 				;;
-	clvm|dtc-xen|ganeti|ganeti2|mylvmbackup|redhat-cluster-suite)
+	clvm|dtc-xen|ganeti|ganeti2|mylvmbackup|redhat-cluster-suite|libvirt0|libcollectdclient0|liblinux-lvm-perl|autopkgtest-xenlvm|collectd-dbg|collectd|cman|libsys-virt-perl|libvirt-dev|libvirt-ocaml|libvirt-ruby1.8|libvirt0-dbg|python-libvirt|virt-top|virt-viewer|xenwatch|gfs-tools|gfs2-tools|rgmanager|virtinst|collectd-utils|libcollectdclient-dev|libvirt-ocaml-dev|libvirt-ruby|mozilla-virt-viewer|munin-libvirt-plugins)
 				# skip mini-buildd-bld here due to resource violation, see below
 				log_debug
 				PIUPARTS_OBJECTS=lvm2
