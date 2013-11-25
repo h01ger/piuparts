@@ -1,0 +1,113 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+# Work around bug where apt/squeeze prefers to 'keep back' some
+# upgradable packages instead of removing some obsolete ones.
+
+FORCEREMOVE=
+
+if	[ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ] || \
+	[ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy-proposed" ]
+then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		gnustep|\
+		gnustep-games|\
+		gnustep-back0.18-cairo|\
+		gnustep-back0.18-art|\
+		gnustep-back-dbg|\
+		libgnustep-base1.20-dbg|\
+		addressmanager.app|\
+		biococoa.app|\
+		easydiff.app|\
+		gnumail.app|\
+		gnumail.app-dbg|\
+		mines.app|\
+		projectmanager.app|\
+		INVALID)
+			FORCEREMOVE="libobjc2"
+			;;
+		libahven17.0|\
+		libalog0.3-full|\
+		libalog1-full-dev|\
+		libalog-full-dbg|\
+		libapq3.0|\
+		libapq-postgresql3.0|\
+		libaws2.7|\
+		libaws2.7-dev|\
+		libaws-dbg|\
+		libflorist2009|\
+		libflorist-dbg|\
+		libgmpada1|\
+		libgmpada1-dbg|\
+		libgnomeada2.14.2|\
+		libgnomeada2.14.2-dbg|\
+		libgnomeada2.14.2-dev|\
+		libgtkada2.14.2|\
+		libgtkada2.14.2-dbg|\
+		libgtkada2.14.2-dev|\
+		libgtkada-gl2.14.2|\
+		libgtkada-glade2.14.2|\
+		libgtkada2-bin|\
+		liblog4ada0|\
+		liblog4ada-dbg|\
+		libnarval1.10.1|\
+		libnarval1-dev|\
+		libnarval-dbg|\
+		libpcscada0.6|\
+		libplplot-ada|\
+		libplplot-dev|\
+		libpolyorb2|\
+		libtemplates-parser11.5|\
+		libtexttools4|\
+		libtexttools4-dbg|\
+		libtexttools-doc|\
+		libxmlada3.2|\
+		libxmlezout0|\
+		libxmlezout-dbg|\
+		cl-plplot|\
+		gprbuild|\
+		narval-doc|\
+		narval-generic-actors|\
+		narval-servers|\
+		narval-tests-actors|\
+		narval-utils|\
+		polyorb-servers|\
+		INVALID)
+			FORCEREMOVE="gnat-4.4-base"
+			;;
+		dolfin-bin|\
+		dolfin-dev|\
+		dolfin-doc|\
+		petsc-dev|\
+		python-dolfin|\
+		INVALID)
+			# only affects i386
+			FORCEREMOVE="libjpeg62-dev"
+			;;
+		science-physics)
+			# #706111
+			FORCEREMOVE="tessa"
+			;;
+		firestarter|\
+		gnome-netstatus-applet|\
+		gnome-utils|\
+		INVALID)
+			FORCEREMOVE="gconf2"
+			;;
+	esac
+
+fi
+
+if [ -n "$FORCEREMOVE" ];
+then
+	if dpkg-query -s $FORCEREMOVE >/dev/null 2>&1 ; then
+		log_debug
+		echo "Forcibly removing $FORCEREMOVE for smoother upgrade"
+		dpkg -r --force-depends $FORCEREMOVE
+	fi
+fi
