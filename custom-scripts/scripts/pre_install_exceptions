@@ -9,8 +9,13 @@ log_debug() {
 # deal with packages depending on exceptions:
 #
 case ${PIUPARTS_OBJECTS%%=*} in
-	ltsp-client)		log_debug
+	ltsp-client|education-thin-client)
+				log_debug
 				PIUPARTS_OBJECTS=ltsp-client-core
+				;;
+	upstart-dconf-bridge|upstart-monitor)
+				log_debug
+				PIUPARTS_OBJECTS=upstart
 				;;
 	netscript-2.4-upstart)	log_debug
 				PIUPARTS_OBJECTS=upstart
