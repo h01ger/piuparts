@@ -692,10 +692,15 @@ class PackagesDB:
         return package_state
 
     def _get_package_weight(self, p):
+        # compute the priority of a package that needs testing
+        # result will be used as a reverse sorting key, so higher is earlier
         waiting_count = self.waiting_count(p["Package"])
         rdep_chain_len = self.rdep_chain_len(p["Package"])
 
-        return waiting_count * rdep_chain_len
+        return (
+                min(rdep_chain_len, waiting_count),
+                waiting_count,
+                )
 
     def _find_packages_ready_for_testing(self):
         if self._candidates_for_testing is None:
