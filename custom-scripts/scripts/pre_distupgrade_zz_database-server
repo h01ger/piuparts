@@ -14,6 +14,9 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	med-practice|audiolink)
 		CANDIDATES=""
 		;;
+	redmine)
+		CANDIDATES=""
+		;;
 esac
 
 for pkg in $CANDIDATES
