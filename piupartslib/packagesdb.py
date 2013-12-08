@@ -697,9 +697,16 @@ class PackagesDB:
         waiting_count = self.waiting_count(p["Package"])
         rdep_chain_len = self.rdep_chain_len(p["Package"])
 
+        if not self._recycle_mode:
+            return (
+                    min(rdep_chain_len, waiting_count),
+                    waiting_count,
+                    )
+
         return (
                 min(rdep_chain_len, waiting_count),
                 waiting_count,
+                not self._logdb.log_exists(p, [self._ok]),  # prefer problematic logs
                 )
 
     def _find_packages_ready_for_testing(self):
