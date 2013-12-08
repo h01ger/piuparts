@@ -16,6 +16,14 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
 		EARLY="$EARLY libblas3gf liblapack3gf"
 	fi
 
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libapt-rpm-pkg-dev)
+			# libapt-rpm-pkg-dev no longer exists in squeeze
+			# causing some packages to be "kept back"
+			EARLY="$EARLY libreadline5-dev"
+			;;
+	esac
+
 fi
 
 if [ -n "$EARLY" ]; then
