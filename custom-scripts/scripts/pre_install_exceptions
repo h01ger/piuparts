@@ -86,6 +86,16 @@ if [ "$PIUPARTS_DISTRIBUTION" = "wheezy-backports" ]; then
 
 fi
 
+if [ "$PIUPARTS_DISTRIBUTION" = "squeeze-backports" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		ekeyd)
+			log_debug
+			apt-get -y install udev
+			;;
+	esac
+
+fi
 
 if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
 
