@@ -9,6 +9,13 @@ log_debug() {
 # deal with exceptions:
 #
 case ${PIUPARTS_OBJECTS%%=*} in
+	isdnlog|isdnutils)
+		#WORKSAROUND #431855: fails with "There are still files in /etc/isdn/ that you may want to remove manually."
+		if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
+			log_debug
+			rm -fv /etc/isdn/*
+		fi
+		;;
 esac
 
 # Allow removal of the kernel running on the host from the chroot.
