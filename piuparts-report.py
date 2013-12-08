@@ -404,7 +404,7 @@ linktarget_by_template = [
     ("symbol-size-mismatch_inadequate_issue.tpl", "but adequate found that a symbol has changed size since the package was built"),
     ("missing-symbol-version-information_inadequate_issue.tpl", "but adequate found that a library is missing symbol version information"),
     ("unknown_inadequate_issue.conf", "but an unknown adequate issue was found"),
-    ("inadequate_exit_issue.tpl", "due to adequate exiting inadequately"),
+    ("inadequate_exit_issue.tpl", "but adequate exited inadequately"),
     ("packages_have_been_kept_back_issue.tpl", "but logfile contains 'packages have been kept back'"),
     ("needs_rebuild_issue.tpl", "but logfile recommends to rebuild some packages"),
     ("obsolete_conffiles_issue.tpl", "but logfile reports obsolete conffiles"),
