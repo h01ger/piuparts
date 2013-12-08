@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+case "$PIUPARTS_DISTRIBUTION" in
+	lenny) : ;;
+	*) exit 0 ;;
+esac
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	postgis)
+		#WORKSAROUND #560409: postgis can't be purged if postgresql
+		# is not installed due to missing directory
+		log_debug
+		mkdir -p /usr/lib/postgresql/8.3/lib
+		;;
+esac
