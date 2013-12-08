@@ -166,6 +166,16 @@ if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 				;;
 	esac
 
+	# work around postinst failures
+	case ${PIUPARTS_OBJECTS%%=*} in
+		ion3)
+			# annoying debconf prompt
+			log_debug
+			echo "ion3 ion3/acknowledge-maybe-outdated boolean true" | debconf-set-selections
+			echo "ion3 ion3/acknowledge-outdated boolean true" | debconf-set-selections
+			;;
+	esac
+
 	# allow lenny kernel image installation in chroot
 	for flavor in amd64 openvz-amd64 vserver-amd64 xen-amd64 486 686 686-bigmem openvz-686 vserver-686 vserver-686-bigmem xen-686
 	do
