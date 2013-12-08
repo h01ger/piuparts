@@ -939,7 +939,7 @@ class Section:
         if not os.path.exists(maintainer_dir):
             os.mkdir(maintainer_dir)
         states = ["fail", "unknown", "pass"]
-        for maintainer in maintainers.keys():
+        for maintainer in sorted(maintainers.keys()):
             sources = maintainers[maintainer]
             maintainer_subdir_path = os.path.join(maintainer_dir, maintainer_subdir(maintainer))
             if not os.path.exists(maintainer_subdir_path):
@@ -1120,7 +1120,7 @@ class Section:
         source_binary_rows = {}
         sources = ""
         sources_data = []
-        for source in self._source_db.get_all_package_names():
+        for source in sorted(self._source_db.get_all_package_names()):
             (sourcerows, binaryrows, source_state, maintainer, uploaders) = \
                                self.create_source_summary(source, logs_by_dir)
 
