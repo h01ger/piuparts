@@ -168,12 +168,16 @@ if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 
 	# work around postinst failures
 	case ${PIUPARTS_OBJECTS%%=*} in
+		ipppd|ibod|isdnutils)
+			#542156
+			log_debug
+			test -e /dev/MAKEDEV || ln -sfv /sbin/MAKEDEV /dev/MAKEDEV
+			;;
 		ion3)
 			# annoying debconf prompt
 			log_debug
 			echo "ion3 ion3/acknowledge-maybe-outdated boolean true" | debconf-set-selections
 			echo "ion3 ion3/acknowledge-outdated boolean true" | debconf-set-selections
-			;;
 	esac
 
 	# allow lenny kernel image installation in chroot
