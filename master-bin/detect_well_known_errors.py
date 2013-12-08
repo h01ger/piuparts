@@ -229,11 +229,7 @@ class FailureManager():
         def keyfunc(x, pkgsdb=self.pkgsdb, logdict=self.logdict):
 
             pkg_obj = pkgsdb.get_package(get_pkg(x.pkgspec))
-
-            if not pkg_obj is None:
-                rdeps = pkgsdb.rrdep_count(pkg_obj)
-            else:
-                rdeps = 0
+            rdeps = pkgsdb.rrdep_count(pkg_obj)
 
             is_failed = get_where(logdict[x.pkgspec]) == "fail"
 
@@ -376,13 +372,12 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
         bin_pkg = get_pkg(pkgspec)
 
         pkg_obj = pkgsdb.get_package(bin_pkg)
+        rdep_cnt = pkgsdb.rrdep_count(pkg_obj)
 
         if not pkg_obj is None:
             src_pkg = source_pkg(pkgspec, pkgsdb)
-            rdep_cnt = pkgsdb.rrdep_count(pkgsdb.get_package(bin_pkg))
         else:
             src_pkg = bin_pkg
-            rdep_cnt = 0
 
         if bugged_section is False and get_where(logdict[pkgspec]) != 'fail':
             bugged_section = True
@@ -433,11 +428,7 @@ def update_html(section, logdict, problem_list, failures, config, pkgsdb):
     def keyfunc(x, pkgsdb=pkgsdb, logdict=logdict):
 
         pkg_obj =  pkgsdb.get_package(get_pkg(x.pkgspec))
-
-        if not pkg_obj is None:
-            rdeps = pkgsdb.rrdep_count(pkg_obj)
-        else:
-            rdeps = 0
+        rdeps = pkgsdb.rrdep_count(pkg_obj)
 
         is_failed = get_where(logdict[x.pkgspec]) == "fail"
 

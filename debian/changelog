@@ -14,6 +14,11 @@ piuparts (0.56) UNRELEASED; urgency=low
   * piupartslib/__init__.py:
     - open_packages_url(): Try Packages.gz if Packages.bz2 is not available.
       (Closes: #711157)
+    - Add new class DecompressedStream.
+    - open_packages_url(): Use DecompressedStream to transparently decompress
+      a Packages.{bz2,gz} file while downloading and reading the content
+      without requiring to store the complete file (compressed and/or
+      decompressed) in memory.
   * piupartslib/packagesdb.py:
     - PackagesFile: Allow restricting to a set of package names.
   * piuparts-slave.py:
