@@ -146,6 +146,11 @@ if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 				log_debug
 				apt-get -y install libapache2-mod-perl2
 				;;
+		sdic-gene95)
+				#478592
+				log_debug
+				apt-get -y install bzip2 wget
+				;;
 		tftpd-hpa)
 				#522780
 				log_debug
