@@ -26,6 +26,12 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			FAILS_TO_REMOVE="$FAILS_TO_REMOVE install-info"
 		fi
 		;;
+	docbookwiki)
+		USED_DURING_PURGE="$USED_DURING_PURGE mysql-client"
+		;;
+	phpbb3)
+		USED_DURING_PURGE="$USED_DURING_PURGE dbconfig-common"
+		;;
 	prelude-manager)
 		#WORKSAROUND #660455
 		USED_DURING_PURGE="$USED_DURING_PURGE dbconfig-common"
