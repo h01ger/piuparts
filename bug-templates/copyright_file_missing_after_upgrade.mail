@@ -30,25 +30,10 @@ and vice versa, you need the maintainer scripts to do this.
 See in particular the end of point 4 in
 http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-unpackphase
 
-For switching from a directory to a symlink the *postinst* script
-should do something like this:
-
-	DOCDIR=/usr/share/doc/@@PACKAGE@@
-	DOCLINK=@@OTHERPACKAGE@@
-
-	if [ -d $DOCDIR ] && [ ! -L $DOCDIR ]; then
-		rmdir $DOCDIR
-		ln -s $DOCLINK $DOCDIR
-	fi
-
-For switching from a symlink to a directory, the *preinst* script
-should do something like this:
-
-	DOCDIR=/usr/share/doc/@@PACKAGE@@
-
-	if [ -L $DOCDIR ]; then
-		rm $DOCDIR
-	fi
+It is recommended to use the dpkg-maintscript-helper commands
+'dir_to_symlink' and 'symlink_to_dir' (available since dpkg 1.17.2)
+to perform the conversion, ideally using d/$PACKAGE.mainstscript.
+See dpkg-maintscript-helper(1) and dh_installdeb(1) for details.
 
 
 cheers,

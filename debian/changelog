@@ -40,6 +40,9 @@ piuparts (0.56) UNRELEASED; urgency=low
   * reschedule_oldest_logs: Report number of logfiles in recycle/.
   * Add more piuparts exceptions to work around various failures in multiple
     packages. Add a known_problem report for packages using exceptions.
+  * bug-templates: Recommend to use the new dpkg-maintscript-helper commands
+    dir_to_symlink/symlink_to_dir that were added in dpkg 1.17.2.
+    (Closes: #720185)
 
   [ Holger Levsen ]
   * piuparts-report.py: use descriptive link targets for (in)adequate issues
