@@ -47,6 +47,8 @@ piuparts (0.56) UNRELEASED; urgency=low
   [ Holger Levsen ]
   * piuparts-report.py: use descriptive link targets for (in)adequate issues
     instead of mere tag names, thanks to Jakub Wilk for the wordings.
+  * Bump standards versionm to 3.9.5, no changes needed.
+  * Bump compat level to 9, thus build-depend on debhelper > 9.20120909~.
 
  -- Andreas Beckmann <anbe@debian.org>  Tue, 22 Oct 2013 22:16:21 +0200
 

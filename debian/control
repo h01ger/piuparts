@@ -4,9 +4,9 @@ Uploaders:
  Holger Levsen <holger@debian.org>
 Section: devel
 Priority: extra
-Standards-Version: 3.9.4
+Standards-Version: 3.9.5
 Build-Depends:
- debhelper (>= 8.1.0~),
+ debhelper (>= 9.20120909~),
  python (>= 2.7),
 Build-Depends-Indep:
  asciidoc,
