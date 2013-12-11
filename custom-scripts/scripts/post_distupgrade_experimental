@@ -9,5 +9,9 @@ test "$PIUPARTS_DISTRIBUTION" = "experimental" || exit 0
 # that are in experimental, too, and don't cause problems
 
 PKGS=""
+PKGS="$PKGS libapt-pkg4.12"
+PKGS="$PKGS apt"
+PKGS="$PKGS libc6"
+PKGS="$PKGS libc-bin"
 
 apt-get -y -t experimental install $PKGS
