@@ -1,4 +1,4 @@
-piuparts (0.56) UNRELEASED; urgency=low
+piuparts (0.56) unstable; urgency=low
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -50,7 +50,7 @@ piuparts (0.56) UNRELEASED; urgency=low
   * Bump standards version to 3.9.5, no changes needed.
   * Bump compat level to 9, thus build-depend on debhelper > 9.20120909~.
 
- -- Andreas Beckmann <anbe@debian.org>  Tue, 22 Oct 2013 22:16:21 +0200
+ -- Holger Levsen <holger@debian.org>  Mon, 16 Dec 2013 12:59:14 +0100
 
 piuparts (0.55) unstable; urgency=low
 
