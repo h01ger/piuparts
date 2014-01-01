@@ -694,7 +694,7 @@ class Section:
         self._source_db = piupartslib.packagesdb.PackagesDB()
         self._source_db.load_packages_urls(
                 self._distro_config.get_sources_urls(
-                    self._config.get_distro(),
+                    self._config.get_final_distro(),
                     self._config.get_area()))
 
         self._log_name_cache = {}
