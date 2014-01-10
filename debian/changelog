@@ -1,3 +1,11 @@
+piuparts (0.57) UNRELEASED; urgency=low
+
+  [ Ivo De Decker ]
+  * piuparts-report.py: use source info from final_distro for logging.
+    (Closes: #733900)
+
+ -- Holger Levsen <holger@debian.org>  Fri, 10 Jan 2014 01:00:43 +0100
+
 piuparts (0.56) unstable; urgency=low
 
   [ Andreas Beckmann ]
