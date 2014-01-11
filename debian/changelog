@@ -4,6 +4,13 @@ piuparts (0.57) UNRELEASED; urgency=low
   * piuparts-report.py: use source info from final_distro for logging.
     (Closes: #733900)
 
+  [ Matthias Schmitz ]
+  * Rearrange old unittests.py, use nosetests instead:
+    - Move unittests.py to tests/ subdirectory,
+    - Split out dependencyparser test to an extra file,
+    - Add configuration for nosetests,
+    - Use nosetests in Makefile target "check".
+
  -- Holger Levsen <holger@debian.org>  Fri, 10 Jan 2014 01:00:43 +0100
 
 piuparts (0.56) unstable; urgency=low
