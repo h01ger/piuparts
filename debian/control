@@ -8,6 +8,11 @@ Standards-Version: 3.9.5
 Build-Depends:
  debhelper (>= 9.20120909~),
  python (>= 2.7),
+ python-debian,
+ python-apt,
+ python-nose,
+ python-debianbts,
+ python-yaml
 Build-Depends-Indep:
  asciidoc,
  git,
