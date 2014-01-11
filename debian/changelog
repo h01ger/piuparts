@@ -12,7 +12,8 @@ piuparts (0.57) UNRELEASED; urgency=low
     - Use nosetests in Makefile target "check".
   * Re-enable unittests during package build
     - Don't create coverage report during pkg build.
-    - Added needed Build-Depends
+    - Add to Build-Depends: python-debian, python-apt, python-nose,
+      python-debianbts and python-yaml.
 
  -- Holger Levsen <holger@debian.org>  Fri, 10 Jan 2014 01:00:43 +0100
 

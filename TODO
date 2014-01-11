@@ -58,8 +58,6 @@ for 0.5x:
 
 for 0.6x:
 
-- enable unit tests again.
-
 - if it weren't for 'slave-bin/slave_cleanup', the slave would only need
   rights to run "sudo piuparts" but nothing else. If we can clean this up,
   the sudoers.d should recommend sudo (lsof|kill|umount) for admins.
