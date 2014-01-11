@@ -159,7 +159,7 @@ install: build-stamp
 
 check:
 	python piuparts.py unittest
-	nosetests -c nosetests.cfg
+	nosetests --verbose
 
 clean:
 	rm -f build-stamp
