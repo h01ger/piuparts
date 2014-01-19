@@ -16,6 +16,11 @@ piuparts (0.57) UNRELEASED; urgency=low
       python-debianbts and python-yaml.
 
   [ Andreas Beckmann ]
+  * piuparts.py:
+    - Add to ignored_files:
+      + /etc/group.org
+      + /etc/passwd.org
+      + /etc/shadow.org
   * piupartslib/packagesdb.py:
     - get_best_package_state(): New method that considers successfully tested
       providers of a virtual package if the real package of the same name
