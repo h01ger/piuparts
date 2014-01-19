@@ -15,6 +15,9 @@ piuparts (0.57) UNRELEASED; urgency=low
     - Add to Build-Depends: python-debian, python-apt, python-nose,
       python-debianbts and python-yaml.
 
+  [ Andreas Beckmann ]
+  * Add more piuparts exceptions.
+
  -- Holger Levsen <holger@debian.org>  Fri, 10 Jan 2014 01:00:43 +0100
 
 piuparts (0.56) unstable; urgency=low
