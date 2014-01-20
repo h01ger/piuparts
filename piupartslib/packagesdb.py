@@ -478,16 +478,15 @@ class PackagesDB:
                     if prefer_alt_score >= 0:
                         package.prefer_alt_depends(header, d, prefer_alt)
 
-        deps = package.dependencies()
+        dep_states = [(dep, self.get_package_state(dep))
+                        for dep in package.dependencies()]
 
-        for dep in deps:
-            dep_state = self.get_package_state(dep)
+        for dep, dep_state in dep_states:
             if dep_state in self._propagate_error_state:
                 return self._propagate_error_state[dep_state]
 
         testable = True
-        for dep in deps:
-            dep_state = self.get_package_state(dep)
+        for dep, dep_state in dep_states:
             if dep_state not in self._good_states:
                 testable = False
                 break
@@ -498,8 +497,7 @@ class PackagesDB:
         circular_deps = self._get_dependency_cycle(package["Package"])
         if package["Package"] in circular_deps:
             testable = True
-            for dep in deps:
-                dep_state = self.get_package_state(dep)
+            for dep, dep_state in dep_states:
                 if dep in circular_deps:
                     # allow any non-error dep_state on the cycle for testing
                     # (error states are handled by the error propagation above)
@@ -511,8 +509,7 @@ class PackagesDB:
             if testable:
                 return "waiting-to-be-tested"
 
-        for dep in deps:
-            dep_state = self.get_package_state(dep)
+        for dep, dep_state in dep_states:
             if dep_state in self._propagate_waiting_state:
                 return self._propagate_waiting_state[dep_state]
 
