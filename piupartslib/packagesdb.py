@@ -251,7 +251,7 @@ class PackagesDB:
         "successfully-tested",
         "failed-testing",
         "cannot-be-tested",
-        "essential-required",
+        "essential-required",  # obsolete
         "waiting-to-be-tested",
         "waiting-for-dependency-to-be-tested",
         "dependency-failed-testing",
@@ -270,6 +270,7 @@ class PackagesDB:
     ]
 
     _obsolete_states = [
+        "essential-required",
         "circular-dependency",
         "unknown-preferred-alternative",
         "no-dependency-from-alternatives-exists",

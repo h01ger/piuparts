@@ -22,6 +22,8 @@ piuparts (0.57) UNRELEASED; urgency=low
       failed. Used for dependency resolution.
     - No longer special-case packages as essential-required and test them like
       normal packages (no-op test plus adequate run).  (Closes: #735907)
+  * piuparts-report.py:
+    - Mark essential-required as obsolete and hide it.
   * Add more piuparts exceptions.
 
  -- Holger Levsen <holger@debian.org>  Fri, 10 Jan 2014 01:00:43 +0100
