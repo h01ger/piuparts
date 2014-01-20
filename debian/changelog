@@ -20,6 +20,8 @@ piuparts (0.57) UNRELEASED; urgency=low
     - get_best_package_state(): New method that considers successfully tested
       providers of a virtual package if the real package of the same name
       failed. Used for dependency resolution.
+    - No longer special-case packages as essential-required and test them like
+      normal packages (no-op test plus adequate run).  (Closes: #735907)
   * Add more piuparts exceptions.
 
  -- Holger Levsen <holger@debian.org>  Fri, 10 Jan 2014 01:00:43 +0100

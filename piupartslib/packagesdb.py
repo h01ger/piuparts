@@ -121,10 +121,6 @@ class Package(UserDict.UserDict):
                 vlist += self._parse_dependencies(header)
         return vlist
 
-    def is_testable(self):
-        """Are we testable at all? Required aren't."""
-        return self.get("Priority", "") != "required"
-
     def dump(self, output_file):
         output_file.write("".join(self.headers))
 
@@ -425,9 +421,6 @@ class PackagesDB:
             return "failed-testing"
         if self._logdb.log_exists(package, [self._evil]):
             return "cannot-be-tested"
-        if not package.is_testable():
-            return "essential-required"
-
         return "unknown"
 
     def _compute_package_state(self, package):
