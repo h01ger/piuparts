@@ -16,6 +16,10 @@ piuparts (0.57) UNRELEASED; urgency=low
       python-debianbts and python-yaml.
 
   [ Andreas Beckmann ]
+  * piupartslib/packagesdb.py:
+    - get_best_package_state(): New method that considers successfully tested
+      providers of a virtual package if the real package of the same name
+      failed. Used for dependency resolution.
   * Add more piuparts exceptions.
 
  -- Holger Levsen <holger@debian.org>  Fri, 10 Jan 2014 01:00:43 +0100

@@ -478,7 +478,7 @@ class PackagesDB:
                     if prefer_alt_score >= 0:
                         package.prefer_alt_depends(header, d, prefer_alt)
 
-        dep_states = [(dep, self.get_package_state(dep))
+        dep_states = [(dep, self.get_best_package_state(dep))
                         for dep in package.dependencies()]
 
         for dep, dep_state in dep_states:
@@ -666,6 +666,21 @@ class PackagesDB:
             # HACK! these are arch=i386 packages needed on amd64
             return "essential-required"
         return "does-not-exist"
+
+    def get_best_package_state(self, package_name, resolve_virtual=True, recurse=True):
+        package_state = self.get_package_state(package_name, resolve_virtual=resolve_virtual, recurse=recurse)
+        if package_state in self._good_states:
+            return package_state
+        providers = []
+        if resolve_virtual:
+            providers = self.get_providers(package_name, recurse=recurse)
+        if not providers:
+            return package_state
+        states = [self.get_package_state(name, resolve_virtual=False, recurse=recurse) for name in [package_name] + providers]
+        for state in self._good_states + self._propagate_waiting_state.keys() + self._propagate_error_state.keys():
+            if state in states:
+                return state
+        return package_state
 
     def _find_packages_ready_for_testing(self):
         if self._candidates_for_testing is None:
