@@ -13,5 +13,10 @@ PKGS="$PKGS libapt-pkg4.12"
 PKGS="$PKGS apt"
 PKGS="$PKGS libc6"
 PKGS="$PKGS libc-bin"
+PKGS="$PKGS libgcc1"
+PKGS="$PKGS libstdc++6"
+PKGS="$PKGS bash"
+PKGS="$PKGS multiarch-support"
+PKGS="$PKGS findutils"
 
 apt-get -y -t experimental install $PKGS
