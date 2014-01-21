@@ -694,6 +694,12 @@ class Section:
         self._source_db = piupartslib.packagesdb.PackagesDB()
         self._source_db.load_packages_urls(
                 self._distro_config.get_sources_urls(
+                    self._config.get_distro(),
+                    self._config.get_area()))
+        if self._config.get_distro() != self._config.get_final_distro():
+            # take version numbers (or None) from final distro
+            self._source_db.load_alternate_versions_from_packages_urls(
+                self._distro_config.get_sources_urls(
                     self._config.get_final_distro(),
                     self._config.get_area()))
 
@@ -730,17 +736,11 @@ class Section:
                     config.get_arch()))
         if config.get_distro() != config.get_final_distro():
             # take version numbers (or None) from final distro
-            db2 = piupartslib.packagesdb.PackagesFile()
-            db2.load_packages_urls(
+            db.load_alternate_versions_from_packages_urls(
                 self._distro_config.get_packages_urls(
                     config.get_final_distro(),
                     config.get_area(),
                     config.get_arch()))
-            for package in db.get_all_packages():
-                if package["Package"] in db2:
-                    package["Version"] = db2[package["Package"]]["Version"]
-                else:
-                    package["Version"] = "None"
 
     def _write_template_html(self, filename, body, mapping={}):
         mapping = mapping.copy()
