@@ -361,6 +361,16 @@ class PackagesDB:
         self._packages_files.append(pf)
         self._packages = None
 
+    def load_alternate_versions_from_packages_urls(self, urls):
+        # take version numbers (or None) from alternate URLs
+        pf2 = PackagesFile()
+        pf2.load_packages_urls(urls)
+        for package in self.get_all_packages():
+            if package["Package"] in pf2:
+                package["Version"] = pf2[package["Package"]]["Version"]
+            else:
+                package["Version"] = "None"
+
     def get_urls(self):
         urls = []
         for pf in self._packages_files:
