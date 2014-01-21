@@ -26,6 +26,10 @@ piuparts (0.57) UNRELEASED; urgency=low
     - Mark essential-required as obsolete and hide it.
   * Add more piuparts exceptions.
 
+  [ Holger Levsen ]
+  * piuparts.py: Check the installation status of the packages after
+    installing them. Thanks to Julien Cristau for the patch! (Closes: #718544)
+
  -- Holger Levsen <holger@debian.org>  Fri, 10 Jan 2014 01:00:43 +0100
 
 piuparts (0.56) unstable; urgency=low
