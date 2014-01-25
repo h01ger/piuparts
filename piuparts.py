@@ -1279,6 +1279,8 @@ class Chroot:
         """Run adequate and categorize output according to our needs. """
         packages = [p.split("=", 1)[0].strip() for p in packages if not p.endswith("=None")]
         if packages and settings.adequate and os.path.isfile('/usr/bin/adequate'):
+            (status, output) = run(["dpkg-query", "-f", "${Version}\n", "-W", "adequate"], ignore_errors=True)
+            logging.info("Running adequate version %s now." % output)
             adequate_tags = [
                     'bin-or-sbin-binary-requires-usr-lib-library',
                     'library-not-found',
