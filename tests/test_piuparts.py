@@ -1,7 +1,64 @@
 import unittest
+from mox3 import mox
 import os
 import shutil
+import piuparts
 from piuparts import is_broken_symlink
+
+
+class DefaultsFactoryTests(unittest.TestCase):
+
+    def setUp(self):
+        self.mox = mox.Mox()
+        self.df = piuparts.DefaultsFactory()
+        piuparts.settings = piuparts.Settings()
+
+    def tearDown(self):
+        self.mox.UnsetStubs()
+
+    def test_new_defaults_return_debian_defaults(self):
+        # mock the guess_flavor function as it runs lsb_release in a subprocess
+        self.mox.StubOutWithMock(self.df, 'guess_flavor')
+        self.df.guess_flavor().AndReturn('debian')
+        self.mox.ReplayAll()
+
+        defaults = self.df.new_defaults()
+        self.mox.VerifyAll()
+
+        self.assertEqual(defaults.get_keyring(), '/usr/share/keyrings/debian-archive-keyring.gpg')
+        self.assertEqual(defaults.get_components(), ["main", "contrib", "non-free"])
+        self.assertEqual(defaults.get_mirror(), [("http://cdn.debian.net/debian", ["main", "contrib", "non-free"])])
+        self.assertEqual(defaults.get_distribution(), ['sid'])
+
+    def test_new_defaults_return_ubuntu_defaults(self):
+        # mock the guess_flavor function as it runs lsb_release in a subprocess
+        self.mox.StubOutWithMock(self.df, 'guess_flavor')
+        self.df.guess_flavor().AndReturn('ubuntu')
+        self.mox.ReplayAll()
+
+        defaults = self.df.new_defaults()
+        self.mox.VerifyAll()
+
+        self.assertEqual(defaults.get_keyring(), '/usr/share/keyrings/ubuntu-archive-keyring.gpg')
+        self.assertEqual(defaults.get_components(), ["main", "universe", "restricted", "multiverse"])
+        self.assertEqual(defaults.get_mirror(), [("http://archive.ubuntu.com/ubuntu", ["main", "universe", "restricted", "multiverse"])])
+        self.assertEqual(defaults.get_distribution(), ['saucy'])
+
+    def test_new_defaults_panics_with_unknown_flavor(self):
+        # mock the guess_flavor function as it runs lsb_release in a subprocess
+        # and the panic function as it would use sys.exit()
+        self.mox.StubOutWithMock(self.df, 'guess_flavor')
+        self.df.guess_flavor().AndReturn('centos')
+        self.mox.StubOutWithMock(piuparts, 'panic')
+        piuparts.panic().AndReturn('Oh dear! Its CentOS!')
+        self.mox.ReplayAll()
+
+        defaults = self.df.new_defaults()
+        self.mox.VerifyAll()
+
+        # panic() would cause sys.exit() so no Defaults object would
+        # ever be returned
+        self.assertEqual(defaults, None)
 
 
 class IsBrokenSymlinkTests(unittest.TestCase):
@@ -128,4 +185,3 @@ class IsBrokenSymlinkTests(unittest.TestCase):
         self.symlink("/final-dir", "second-link")
         self.failIf(is_broken_symlink(self.testdir, self.testdir,
                                       "first-link"))
-
