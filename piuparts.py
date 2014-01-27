@@ -1078,13 +1078,6 @@ class Chroot:
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
                 self.run(apt_get_install)
 
-            retcode, output = self.run(["dpkg-query", "-f", "${Package} ${Status}\n", "-W"] + [os.path.basename(f).split('_')[0] for f in package_files])
-            for line in output.splitlines():
-                pkg, desired, whatever, status = line.split()
-                if status != 'installed':
-                    logging.error("Installation of %s failed", pkg)
-                    panic()
-
             logging.info ("Installation of %s ok", tmp_files)
 
             if with_scripts:
