@@ -14,6 +14,17 @@ piuparts (0.57) UNRELEASED; urgency=low
     - Don't create coverage report during pkg build.
     - Add to Build-Depends: python-debian, python-apt, python-nose,
       python-debianbts and python-yaml.
+  * piuparts.py: Add unittest for DefaultsFactory / Defaults
+    - Use pymox to mock the piuparts.guess_flavor() function as it would run
+      lsb_release in a subprocess.
+    - Add python-mox3 to Build-Depends as it is now needed for runnig unittests
+      in the package build.
+  * piuparts.py: Move unittests to the tests/ directory
+    - Move the code for the is_broken_symlink unittest out of piuparts.py into
+      a own file in the tests/ directory. Now nosetests can run this test and
+      detect the coverage.
+  * unittests: Add tests/README
+    - Add a little documentation on naming the test classes and functions.
 
   [ Andreas Beckmann ]
   * piuparts.py:

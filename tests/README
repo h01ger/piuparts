@@ -1,0 +1,28 @@
+To get discovered by nosetests the python files in this directory must be named
+test_<sourcefile>.py.
+
+The test case classes should be named 'NameOfTheClassUnderTestTests' and the
+test functions should be named 'test_functionundertest_expected_bahavior' e.g.:
+
+# foobar.py
+-----
+class FooBar(object):
+    def baz(self):
+        return 'baz
+-----
+
+# tests/test_foobar.py
+-----
+class FooBarTests(unittest.Testcase):
+
+    def setUp(self):
+        self.fb = FooBar()
+
+    def test_baz_should_return_baz(self):
+        ret_val = self.fb.baz()
+        self.assertEqual(ret_val, 'baz')
+-----
+
+
+Use pymox as mocking framework if needed.
+apt-get install python-mox3

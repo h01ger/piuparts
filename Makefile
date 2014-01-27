@@ -158,7 +158,6 @@ install: build-stamp
 
 
 check:
-	python piuparts.py unittest
 	nosetests --verbose
 
 clean:
