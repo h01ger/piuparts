@@ -575,9 +575,10 @@ def make_metapackage(name, depends, conflicts):
     create_file(os.path.join(tmpdir, name, 'DEBIAN', 'control'),
                 control.dump())
 
-    run(['dpkg-deb', '-b', '--nocheck', os.path.join(tmpdir, name)])
+    logging.debug("metapackage:\n" + indent_string(control.dump()))
+    run(['dpkg-deb', '-b', '-Zgzip', '--nocheck', os.path.join(tmpdir, name)])
     dont_do_on_panic(panic_handler_id)
-    return os.path.join(tmpdir, name) + '.deb'
+    return os.path.join(tmpdir, name + '.deb')
 
 
 def split_path(pathname):
