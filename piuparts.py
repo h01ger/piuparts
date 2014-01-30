@@ -440,6 +440,12 @@ def quote_spaces(vlist):
     return ["'%s'" % x if ' ' in x else x for x in vlist]
 
 
+def unqualify(packages):
+    if packages:
+        return [p.split("=", 1)[0].strip() for p in packages]
+    return packages
+
+
 class Alarm(Exception):
     pass
 
@@ -1092,7 +1098,7 @@ class Chroot:
                 self.run_scripts("pre_install")
 
             self.run(["apt-cache", "policy"])
-            self.run(["apt-cache", "policy"] + [p.split("=", 1)[0].strip() for p in packages])
+            self.run(["apt-cache", "policy"] + unqualify(packages))
 
             apt_get_install = ["apt-get", "-y"]
             apt_get_install.extend(settings.distro_config.get_target_flags(
@@ -1144,7 +1150,7 @@ class Chroot:
 
     def check_adequate(self, packages):
         """Run adequate and categorize output according to our needs. """
-        packages = [p.split("=", 1)[0].strip() for p in packages if not p.endswith("=None")]
+        packages = unqualify([p for p in packages if not p.endswith("=None")])
         if packages and settings.adequate and os.path.isfile('/usr/bin/adequate'):
             (status, output) = run(["dpkg-query", "-f", "${Version}\n", "-W", "adequate"], ignore_errors=True)
             logging.info("Running adequate version %s now." % output.strip())
@@ -1223,20 +1229,18 @@ class Chroot:
     def remove_packages(self, packages):
         """Remove packages in a chroot."""
         if packages:
-            packages = [p.split("=", 1)[0].strip() for p in packages]
-            self.run(["apt-get", "remove"] + packages, ignore_errors=True)
+            self.run(["apt-get", "remove"] + unqualify(packages), ignore_errors=True)
 
     def purge_packages(self, packages):
         """Purge packages in a chroot."""
         if packages:
-            packages = [p.split("=", 1)[0].strip() for p in packages]
-            self.run(["dpkg", "--purge"] + packages, ignore_errors=True)
+            self.run(["dpkg", "--purge"] + unqualify(packages), ignore_errors=True)
 
     def restore_selections(self, selections, packages_qualified):
         """Restore package selections in a chroot to the state in
         'selections'."""
 
-        packages = [p.split("=", 1)[0].strip() for p in packages_qualified]
+        packages = unqualify(packages_qualified)
 
         changes = diff_selections(self, selections)
         deps = {}
@@ -2171,7 +2175,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
             apt_cache_args = ["apt-cache", "show"]
             if os.environ["PIUPARTS_DISTRIBUTION"] in ["lenny"]:
                 # apt-cache in lenny does not accept version-qualified packages
-                apt_cache_args.extend([p.split("=", 1)[0].strip() for p in packages])
+                apt_cache_args.extend(unqualify(packages))
             else:
                 apt_cache_args.extend(packages)
             returncode, output = chroot.run(apt_cache_args)
@@ -2345,7 +2349,7 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     os.environ["PIUPARTS_TEST"] = "distupgrade"
 
-    packages = [p.split("=", 1)[0].strip() for p in packages_qualified]
+    packages = unqualify(packages_qualified)
 
     chroot = get_chroot()
     chroot.create()
@@ -2917,7 +2921,7 @@ def process_packages(package_list):
             if not settings.args_are_package_files and not settings.testdebs_repo:
                 logging.info("Can't test upgrades: -a or --apt option used.")
             else:
-                packages_to_query = [p.split("=", 1)[0].strip() for p in packages]
+                packages_to_query = unqualify(packages)
                 packages_to_query.extend(settings.extra_old_packages)
                 known_packages = chroot.get_known_packages(packages_to_query)
                 if not known_packages:
