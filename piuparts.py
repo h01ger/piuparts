@@ -2181,11 +2181,11 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
         conflicts = []
         for control in control_infos:
             if control.get("pre-depends"):
-                depends.append(control["pre-depends"])
+                depends.extend([x.strip() for x in control["pre-depends"].split(',')])
             if control.get("depends"):
-                depends.append(control["depends"])
+                depends.extend([x.strip() for x in control["depends"].split(',')])
             if control.get("conflicts"):
-                conflicts.append(control["conflicts"])
+                conflicts.extend([x.strip() for x in control["conflicts"].split(',')])
         all_depends = ", ".join(depends)
         all_conflicts = ", ".join(conflicts)
         metapackage = make_metapackage("piuparts-depends-dummy",
