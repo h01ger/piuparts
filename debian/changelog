@@ -1,7 +1,7 @@
 piuparts (0.57) UNRELEASED; urgency=low
 
   [ Ivo De Decker ]
-  * piuparts-report.py: use source info from final_distro for logging.
+  * piuparts-report.py: Use source version from final_distro.
     (Closes: #733900)
 
   [ Matthias Schmitz ]
@@ -36,6 +36,9 @@ piuparts (0.57) UNRELEASED; urgency=low
     - Exclude virtual packages provided by the real package (but not the dummy
       package) from the Conflicts of piuparts-depends-dummy.deb.
   * piupartslib/packagesdb.py:
+    - load_alternate_versions_from_packages_urls(): New method to load
+      alternate version numbers from a different set of URLs (e.g.
+      final_distro).
     - get_best_package_state(): New method that considers successfully tested
       providers of a virtual package if the real package of the same name
       failed. Used for dependency resolution.

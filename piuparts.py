@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright © 2010-2013 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2010-2014 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -1147,7 +1147,7 @@ class Chroot:
         packages = [p.split("=", 1)[0].strip() for p in packages if not p.endswith("=None")]
         if packages and settings.adequate and os.path.isfile('/usr/bin/adequate'):
             (status, output) = run(["dpkg-query", "-f", "${Version}\n", "-W", "adequate"], ignore_errors=True)
-            logging.info("Running adequate version %s now." % output)
+            logging.info("Running adequate version %s now." % output.strip())
             adequate_tags = [
                     'bin-or-sbin-binary-requires-usr-lib-library',
                     'library-not-found',
