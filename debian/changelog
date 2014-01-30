@@ -33,6 +33,8 @@ piuparts (0.57) UNRELEASED; urgency=low
       + /etc/shadow.org
     - Create piuparts-depends-dummy.deb with gzip compression for
       installability with older dpkg versions.
+    - Exclude virtual packages provided by the real package (but not the dummy
+      package) from the Conflicts of piuparts-depends-dummy.deb.
   * piupartslib/packagesdb.py:
     - get_best_package_state(): New method that considers successfully tested
       providers of a virtual package if the real package of the same name
