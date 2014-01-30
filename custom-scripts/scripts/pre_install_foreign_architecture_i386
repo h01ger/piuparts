@@ -13,6 +13,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	ia32-libs|ia32-libs-gtk) ;;
 	libwine-unstable|libwine-*-unstable|wine|wine-unstable) ;;
 	boinc-nvidia-cuda|teamspeak-client) ;;
+	lib32nss-mdns) ;;
 	*) exit 0 ;;
 esac
 

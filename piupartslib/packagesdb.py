@@ -666,7 +666,7 @@ class PackagesDB:
                 state = db.get_package_state(package_name, resolve_virtual=resolve_virtual, recurse=False)
                 if state != "does-not-exist":
                     return state
-        if package_name in ["ia32-libs-i386", "ia32-libs-gtk-i386"]:
+        if package_name in ["ia32-libs-i386", "ia32-libs-gtk-i386", "libnss-mdns-i386"]:
             # HACK! these are arch=i386 packages needed on amd64
             return "essential-required"
         return "does-not-exist"

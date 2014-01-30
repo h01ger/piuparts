@@ -47,6 +47,7 @@ piuparts (0.57) UNRELEASED; urgency=low
   * piuparts-report.py:
     - Mark essential-required as obsolete and hide it.
   * Add more piuparts exceptions.
+  * Handle lib32nss-mdns like ia32-libs[-gtk].
 
   [ Holger Levsen ]
   * piuparts.py:
