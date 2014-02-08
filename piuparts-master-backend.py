@@ -58,6 +58,9 @@ def setup_logging(log_level, log_file_name):
     logger.addHandler(log_handler)
     logger.setLevel(log_level)
 
+def timestamp():
+    return time.strftime("[%Y-%m-%d %H:%M:%S]")
+
 
 class Config(piupartslib.conf.Config):
 
@@ -171,10 +174,10 @@ class Master(Protocol):
 
         self._section = section
 
-        logging.debug("switching logfile")
+        logging.debug(timestamp() + " switching logfile")
         logfile = config["log-file"] or os.path.join(section, "master.log")
         setup_logging(logging.DEBUG, logfile)
-        logging.debug("connected")
+        logging.debug(timestamp() + " connected")
 
         # start with a dummy _binary_db (without Packages file), sufficient
         # for submitting finished logs
@@ -372,7 +375,7 @@ def main():
     while m.do_transaction():
         pass
 
-    logging.debug("disconnected")
+    logging.debug(timestamp() + " disconnected")
 
 if __name__ == "__main__":
     main()
