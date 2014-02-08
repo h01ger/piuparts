@@ -1098,6 +1098,10 @@ class Chroot:
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
                 self.run(apt_get_install)
 
+            if not self.is_installed(unqualify(packages)):
+                logging.error("Could not install %s.", " ".join(unqualify(packages)))
+                panic()
+
             logging.info ("Installation of %s ok", tmp_files)
 
             if with_scripts:
@@ -2218,6 +2222,11 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
 
         # Install the metapackage
         chroot.install_package_files([metapackage], with_scripts=False)
+        if not chroot.is_installed(["piuparts-depends-dummy"]):
+            logging.error("Installation of piuparts-depends-dummy FAILED")
+            # FIXME: too many failures
+            # panic()
+
         # Now remove it
         metapackagename = os.path.basename(metapackage)[:-4]
         chroot.purge_packages([metapackagename])

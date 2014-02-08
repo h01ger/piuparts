@@ -35,6 +35,8 @@ piuparts (0.57) UNRELEASED; urgency=low
       installability with older dpkg versions.
     - Exclude virtual packages provided by the real package (but not the dummy
       package) from the Conflicts of piuparts-depends-dummy.deb.
+    - Check the status of the packages after installing the supplied .debs.
+      Based on an initial patch by Julien Cristau.  (Closes: #718544, #736743)
   * piupartslib/packagesdb.py:
     - load_alternate_versions_from_packages_urls(): New method to load
       alternate version numbers from a different set of URLs (e.g.
