@@ -150,7 +150,6 @@ piuparts-flags =
 	%(flags-default)s
 distro = testing
 upgrade-test-distros = testing sid
-reschedule-old-count = 0
 
 
 [sid2experimental]
