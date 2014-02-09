@@ -468,13 +468,14 @@ def process_section(section, config, problem_list,
 
     [os.mkdir(x) for x in workdirs if not os.path.exists(x)]
 
-    (logdict, kprdict, bugdict) = [get_file_dict(workdirs, x)
-            for x in [LOG_EXT, KPR_EXT, BUG_EXT]]
+    logdict = get_file_dict(workdirs, LOG_EXT)
+    kprdict = get_file_dict(workdirs, KPR_EXT)
+    bugdict = get_file_dict(workdirs, BUG_EXT)
 
     del_cnt = clean_cache_files(logdict, kprdict, recheck, recheck_failed)
     clean_cache_files(logdict, bugdict, skipnewer=True)
 
-    (kprdict, bugdict) = [get_file_dict(workdirs, x) for x in [KPR_EXT, BUG_EXT]]
+    kprdict = get_file_dict(workdirs, KPR_EXT)
 
     add_cnt = make_kprs(logdict, kprdict, problem_list)
 
