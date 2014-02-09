@@ -139,6 +139,13 @@ class Master(Protocol):
             "pass": self._pass,
             "fail": self._fail,
             "untestable": self._untestable,
+
+            # debug commands, unstable and undocumented interface
+            "_state": self._state,
+            "_depends": self._depends,
+            "_recursive-depends": self._recursive_depends,
+            "_depcycle": self._depcycle,
+            "_list": self._list,
         }
         self._section = None
         self._lock = None
@@ -356,6 +363,46 @@ class Master(Protocol):
             logging.info("Ignoring duplicate submission: %s %s %s"
                          % ("untestable", args[0], args[1]))
         self._short_response("ok")
+
+    # debug command
+    def _state(self, command, args):
+        self._check_args(1, command, args)
+        self._short_response("ok", self._binary_db.get_package_state(args[0]),
+                             self._binary_db.get_package(args[0])["Version"])
+
+    # debug command
+    def _depends(self, command, args):
+        self._check_args(1, command, args)
+        if self._binary_db.has_package(args[0]):
+            package = self._binary_db.get_package(args[0])
+            self._short_response("ok", *package.dependencies())
+        else:
+            self._short_response("error")
+
+    # debug command
+    def _recursive_depends(self, command, args):
+        self._check_args(1, command, args)
+        if self._binary_db.has_package(args[0]):
+            package = self._binary_db.get_package(args[0])
+            self._short_response("ok", *self._binary_db._get_recursive_dependencies(package))
+        else:
+            self._short_response("error")
+
+    # debug command
+    def _depcycle(self, command, args):
+        self._check_args(1, command, args)
+        if self._binary_db.has_package(args[0]):
+            self._short_response("ok", *self._binary_db._get_dependency_cycle(args[0]))
+        else:
+            self._short_response("error")
+
+    # debug command
+    def _list(self, command, args):
+        self._check_args(1, command, args)
+        if args[0] in self._binary_db.get_states():
+            self._short_response("ok", *self._binary_db.get_pkg_names_in_state(args[0]))
+        else:
+            self._short_response("error")
 
 
 def main():
