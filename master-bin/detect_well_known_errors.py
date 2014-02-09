@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Copyright 2013 David Steele (dsteele@gmail.com)
+# Copyright © 2014 Andreas Beckmann (anbe@debian.org)
 #
 # This file is part of Piuparts
 #
@@ -18,9 +19,12 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
 import ConfigParser
 import os
+import sys
 import time
+import logging
 import re
 from collections import namedtuple
 import argparse
@@ -99,6 +103,14 @@ class WKE_Section_Config(piupartslib.conf.Config):
                 "arch": None,
                 "upgrade-test-distros": None,
             }, "",  defaults_section="global")
+
+
+def setup_logging(log_level):
+    logger = logging.getLogger()
+    logger.setLevel(log_level)
+    handler = logging.StreamHandler(sys.stdout)
+    logger.addHandler(handler)
+
 
 class Problem():
     """ Encapsulate a particular known problem """
@@ -522,6 +534,7 @@ def create_problem_list(pdir):
     return plist
 
 if __name__ == '__main__':
+    setup_logging(logging.DEBUG)
 
     parser = argparse.ArgumentParser(
                  description="Detect/process well known errors to html",
