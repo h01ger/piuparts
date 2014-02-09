@@ -3,7 +3,7 @@
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
 # Copyright 2009-2013 Holger Levsen (holger@layer-acht.org)
-# Copyright © 2011-2013 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2011-2014 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -1424,16 +1424,14 @@ class Section:
 
 def main():
     setup_logging(logging.DEBUG, None)
-
-    if len(sys.argv) > 1:
-        print 'piuparts-report takes no command line parameters.'
-        sys.exit(1)
-
     global_config = Config(section="global")
     global_config.read(CONFIG_FILE)
     if global_config["proxy"]:
         os.environ["http_proxy"] = global_config["proxy"]
     section_names = global_config["sections"].split()
+    process_section_names = section_names
+    if len(sys.argv) > 1:
+        process_section_names = sys.argv[1:]
     master_directory = global_config["master-directory"]
     output_directory = global_config["output-directory"]
     doc_root = global_config["doc-root"].strip()
@@ -1446,7 +1444,7 @@ def main():
         packagedb_cache = {}
         write_file(os.path.join(output_directory, "sections.yaml"),
             yaml.dump(section_names, default_flow_style=False))
-        for section_name in section_names:
+        for section_name in process_section_names:
             try:
                 section = Section(section_name, master_directory, doc_root, packagedb_cache=packagedb_cache)
             except MissingSection as e:
