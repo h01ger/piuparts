@@ -111,7 +111,7 @@ reschedule-old-days = 90
 reschedule-old-count = 250
 expire-fail-days = 15
 reschedule-fail-days = 10
-reschedule-fail-count = 25
+reschedule-fail-count = 50
 reschedule-untestable-days = 2
 
 
@@ -150,6 +150,7 @@ piuparts-flags =
 	%(flags-default)s
 distro = testing
 upgrade-test-distros = testing sid
+reschedule-old-count = 0
 
 
 [sid2experimental]
