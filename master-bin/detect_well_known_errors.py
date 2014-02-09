@@ -485,9 +485,9 @@ def process_section(section, config, problem_list,
 
     return (del_cnt, add_cnt, failures)
 
-def detect_well_known_errors(config, problem_list, recheck, recheck_failed):
+def detect_well_known_errors(sections, config, problem_list, recheck, recheck_failed):
 
-    for section in config['sections'].split():
+    for section in sections:
         try:
             print time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime())
             print "%s:" % section
@@ -532,6 +532,9 @@ is summarized into html ".tpl" files in <html_dir>/<section>, which are then
 incorporated by piuparts-report into the final web reports.
 """)
 
+    parser.add_argument('sections', nargs='*', metavar='SECTION',
+            help="limit processing to the listed SECTION(s)")
+
     parser.add_argument('--recheck', dest='recheck', action='store_true',
                help="recheck all log files (delete cache)")
 
@@ -546,9 +549,13 @@ incorporated by piuparts-report into the final web reports.
     if conf["proxy"]:
         os.environ["http_proxy"] = conf["proxy"]
 
+    sections = args.sections
+    if not sections:
+        sections = conf['sections'].split()
+
     problem_list = create_problem_list(conf['known-problem-directory'])
 
-    detect_well_known_errors(conf, problem_list, args.recheck,
+    detect_well_known_errors(sections, conf, problem_list, args.recheck,
                              args.recheck_failed)
 
 # vi:set et ts=4 sw=4 :
