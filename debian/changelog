@@ -45,6 +45,9 @@ piuparts (0.57) UNRELEASED; urgency=low
     - No longer special-case packages as essential-required and test them like
       normal packages (no-op test plus adequate run).  (Closes: #735907)
     - Improve ordering of packages to be tested/recycled.
+  * piupartslib/dwke.py:
+    - Factored out classes Problem and FailureManager and some helpers from
+      detect_well_known_errors.py
   * piuparts-master-backend.py:
     - Improve master.log verbosity.
   * piuparts-report.py:
