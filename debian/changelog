@@ -53,6 +53,9 @@ piuparts (0.57) UNRELEASED; urgency=low
   * piuparts-report.py:
     - Mark essential-required as obsolete and hide it.
     - Integrate the reporting part from detect_well_known_errors.py.
+  * master-bin/detect_well_known_errors.py:
+    - Only update .kpr files, the reporting part was integrated into
+      piuparts-report.
   * scripts/post_{setup,distupgrade}_force-unsafe-io: New custom script to
     automatically enable dpkg --force-unsafe-io once that is supported.
     Also divert /bin/sync and replace it with a link to /bin/true. Syncing a
