@@ -47,6 +47,7 @@ except:
 
 import piupartslib
 from piupartslib.conf import MissingSection
+from piupartslib.dwke import *
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
@@ -1441,7 +1442,7 @@ class Section:
         self.write_state_pages()
 
 
-    def generate_output(self, output_directory, section_names):
+    def generate_output(self, output_directory, section_names, problem_list):
         # skip output generation for disabled sections
         if int(self._config["max-reserved"]) == 0:
             return
@@ -1452,6 +1453,8 @@ class Section:
         self._output_directory = os.path.abspath(os.path.join(output_directory, self._config.section))
         if not os.path.exists(self._output_directory):
             os.makedirs(self._output_directory)
+
+        dwke_process_section(self._config.section, self._section_directory, self._output_directory, problem_list, self._binary_db)
 
         oldcwd = os.getcwd()
         os.chdir(self._section_directory)
@@ -1541,12 +1544,7 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
         pf.write(tpl_text)
         pf.close()
 
-def update_html(section, logdict, problem_list, failures, config, pkgsdb):
-
-    html_dir = os.path.join(config['output-directory'], section)
-    if not os.path.exists(html_dir):
-        os.makedirs(html_dir)
-
+def update_html(section, html_dir, logdict, problem_list, failures, pkgsdb):
     for problem in problem_list:
         update_tpl(html_dir, section, problem,
                    failures.filtered(problem.name),
@@ -1573,20 +1571,15 @@ def update_html(section, logdict, problem_list, failures, config, pkgsdb):
                logdict,
                PKG_ERROR_TPL, UNKNOWN_TPL, pkgsdb)
 
-def process_section(section, config, problem_list,
-                    recheck=False, recheck_failed=False, pkgsdb=None):
-
-    sectiondir = os.path.join(config['master-directory'], section)
+def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
     workdirs = [os.path.join(sectiondir, x) for x in KPR_DIRS]
-
-    [os.mkdir(x) for x in workdirs if not os.path.exists(x)]
 
     logdict = get_file_dict(workdirs, LOG_EXT)
 
     failures = FailureManager(logdict)
     failures.sort_by_bugged_and_rdeps(pkgsdb)
 
-    update_html(section, logdict, problem_list, failures, config, pkgsdb)
+    update_html(section, htmldir, logdict, problem_list, failures, pkgsdb)
 
 # END detect_well_known_errors
 
@@ -1608,6 +1601,7 @@ def main():
         doc_root = "/" + doc_root
     if doc_root.endswith("/"):
         doc_root = doc_root[:-1]
+    problem_list = create_problem_list(global_config['known-problem-directory'])
 
     if os.path.exists(master_directory):
         packagedb_cache = {}
@@ -1619,7 +1613,10 @@ def main():
             except MissingSection as e:
                 logging.error("Configuration Error in section '%s': %s" % (section_name, e))
             else:
-                section.generate_output(output_directory=output_directory, section_names=section_names)
+                section.generate_output(
+                        output_directory=output_directory,
+                        section_names=section_names,
+                        problem_list=problem_list)
 
         # static pages
         logging.debug("Writing static pages")
