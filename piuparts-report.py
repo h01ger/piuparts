@@ -1305,7 +1305,7 @@ class Section:
             if state in self._binary_db.get_error_states():
                 with_counts = True
                 aside = " (reverse deps, blocked pkgs)"
-                sort_key = lambda x: (-self._binary_db.block_count(x), x["Package"])
+                sort_key = lambda x: (-self._binary_db.block_count(x["Package"]), x["Package"])
             else:
                 with_counts = False
                 aside = ""
@@ -1320,8 +1320,8 @@ class Section:
                                          package2id(package["Package"]),
                                          self.link_to_source_summary(package["Package"]))
                 if with_counts:
-                    vlist += " (%d, %d)" % (self._binary_db.rrdep_count(package), \
-                                            self._binary_db.block_count(package))
+                    vlist += " (%d, %d)" % (self._binary_db.rrdep_count(package["Package"]), \
+                                            self._binary_db.block_count(package["Package"]))
                 vlist += " (%s)" % html_protect(package["Maintainer"])
                 all_deps = unique(package.all_dependencies())
                 if all_deps:

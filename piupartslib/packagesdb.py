@@ -694,7 +694,7 @@ class PackagesDB:
                     if not self._logdb.log_exists(p, [self._reserved]) or \
                             self._logdb.log_exists(p, [self._recycle])]
             if len(self._candidates_for_testing) > 1:
-                tuples = [(self.waiting_count(p) * self.rdep_chain_len(p),
+                tuples = [(self.waiting_count(p["Package"]) * self.rdep_chain_len(p["Package"]),
                            random.random(), p)
                         for p in self._candidates_for_testing]
                 self._candidates_for_testing = [x[2]
