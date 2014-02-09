@@ -224,7 +224,7 @@ class FailureManager():
 
                 kp.close()
             except IOError:
-                print "Error processing %s" % get_kpr_path(logpath)
+                logging.error("Error processing %s" % get_kpr_path(logpath))
 
     def parse_kpr_line(self, line):
         """Parse a line in a kpr file into where (e.g. 'pass') and problem name"""
@@ -363,7 +363,7 @@ def make_kprs(logdict, kprdict, problem_list):
 
             kf.close()
         except IOError:
-            print "File error processing %s" % logpath
+            logging.error("File error processing %s" % logpath)
 
     return len(needs_kpr)
 
@@ -501,23 +501,23 @@ def detect_well_known_errors(sections, config, problem_list, recheck, recheck_fa
 
     for section in sections:
         try:
-            print time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime())
-            print "%s:" % section
+            logging.info(time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime()))
+            logging.info("%s:" % section)
 
             (del_cnt, add_cnt, failures) = \
                       process_section(section, config, problem_list,
                                       recheck, recheck_failed)
 
-            print "parsed logfiles: %d removed, %d added" % (del_cnt, add_cnt)
+            logging.info("parsed logfiles: %d removed, %d added" % (del_cnt, add_cnt))
 
             for prob in problem_list:
                 pcount = len(failures.filtered(prob.name))
                 if pcount:
-                    print "%7d %s" % (pcount, prob.name)
+                    logging.info("%7d %s" % (pcount, prob.name))
         except MissingSection:
             pass
 
-    print time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime())
+    logging.info(time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime()))
 
 def create_problem_list(pdir):
 
@@ -529,7 +529,7 @@ def create_problem_list(pdir):
         if prob.valid():
             plist.append(prob)
         else:
-            print "Keyword error in %s - skipping" % pfile
+            logging.error("Keyword error in %s - skipping" % pfile)
 
     return plist
 
