@@ -44,6 +44,7 @@ piuparts (0.57) UNRELEASED; urgency=low
       failed. Used for dependency resolution.
     - No longer special-case packages as essential-required and test them like
       normal packages (no-op test plus adequate run).  (Closes: #735907)
+    - Improve ordering of packages to be tested/recycled.
   * piuparts-master-backend.py:
     - Improve master.log verbosity.
   * piuparts-report.py:
