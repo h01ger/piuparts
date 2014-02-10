@@ -1,0 +1,36 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts extra for package $PIUPARTS_OBJECTS"
+}
+
+#
+# deal with extras:
+#
+if [ "$PIUPARTS_PHASE" = "install" ]; then
+case ${PIUPARTS_OBJECTS%%=*} in
+	*dkms)
+		log_debug
+		# Install kernel headers, so that dkms tries to build a module
+		HEADERS=linux-headers
+		FLAVOR=unknown
+		FLAVOR_i386=686-pae
+		case $PIUPARTS_DISTRIBUTION in
+			lenny*|squeeze*)
+				HEADERS=linux-headers-2.6
+				FLAVOR_i386=686
+				;;
+		esac
+		case $(dpkg --print-architecture) in
+			amd64)
+				FLAVOR=amd64
+				;;
+			i386)
+				FLAVOR=$FLAVOR_i386
+				;;
+		esac
+		apt-get -y install $HEADERS-$FLAVOR
+		;;
+esac
+fi

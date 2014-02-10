@@ -54,6 +54,9 @@ piuparts (0.57) UNRELEASED; urgency=low
     automatically enable dpkg --force-unsafe-io once that is supported.
     Also divert /bin/sync and replace it with a link to /bin/true. Syncing a
     throwaway chroot is useless, but affects on the host's performance.
+  * scripts/pre_install_extras: New custom script to install a linux-headers
+    package before testing a *-dkms package, s.t. dkms tries to build a
+    kernel module.
   * Add more piuparts exceptions.
   * Handle lib32nss-mdns like ia32-libs[-gtk].
 
