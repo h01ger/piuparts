@@ -10,11 +10,6 @@ piuparts (0.57) UNRELEASED; urgency=low
     - Split out dependencyparser test to an extra file,
     - Add configuration for nosetests,
     - Use nosetests in Makefile target "check".
-  * Re-enable unittests during package build
-    - Don't create coverage report during pkg build.
-    - Add to Build-Depends: python-debian, python-apt, python-nose,
-      python-debianbts and python-yaml.
-  * Add tests/README documenting the naming of the test classes and functions.
   * piuparts.py:
     - Add unittest for DefaultsFactory / Defaults.
     - Use pymox to mock the piuparts.guess_flavor() function as it would run
@@ -22,8 +17,11 @@ piuparts (0.57) UNRELEASED; urgency=low
     - Move broken_symlink unittest out of piuparts.py into
       tests/test_piuparts.py so nosetests can run this test and detect
       coverage.
-  * Add python-mox3 to Build-Depends as it is now needed for runnig unittests
-    during package build.
+  * Add tests/README documenting the naming of the test classes and functions.
+  * Re-enable unittests during package build
+    - Don't create coverage report during pkg build.
+    - Add to Build-Depends: python-debian, python-apt, python-nose,
+      python-debianbts, python-yaml, and python-mox3.
 
   [ Andreas Beckmann ]
   * piuparts.py:
