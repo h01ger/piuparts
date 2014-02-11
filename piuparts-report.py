@@ -1402,7 +1402,9 @@ class Section:
 
 
     def cleanup_removed_packages(self, logs_by_dir):
-        for vdir in logs_by_dir.keys():
+        vdirs = logs_by_dir.keys()
+        vdirs.remove("reserved")
+        for vdir in vdirs:
             for log in sorted(logs_by_dir[vdir]):
                 if log.endswith(".log"):
                     package, version = log[:-len(".log")].split("_")
@@ -1410,6 +1412,13 @@ class Section:
                         logging.debug("Package %s was removed, archiving %s/%s" % (package, vdir, log))
                         self.archive_logfile(vdir, log)
                         logs_by_dir[vdir].remove(log)
+                    else:
+                        current = self._binary_db.get_version(package)
+                        if version != current:
+                            logging.debug("Archiving %s/%s, package is outdated (%s)" %
+                                          (vdir, log, current))
+                            self.archive_logfile(vdir, log)
+                            logs_by_dir[vdir].remove(log)
 
 
     def generate_html(self):

@@ -53,6 +53,7 @@ piuparts (0.57) UNRELEASED; urgency=low
   * piuparts-report.py:
     - Mark essential-required as obsolete and hide it.
     - Integrate the reporting part from detect_well_known_errors.py.
+    - Archive outdated logs even if the current version is untested.
   * master-bin/detect_well_known_errors.py:
     - Only update .kpr files, the reporting part was integrated into
       piuparts-report.
