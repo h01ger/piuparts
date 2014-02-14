@@ -66,6 +66,8 @@ piuparts (0.57) UNRELEASED; urgency=low
     kernel module.
   * known_problems/module_build_error_issue.conf: New known problem for dkms
     module build failures.
+  * known_problems/piuparts-depends-dummy_{error,issue}.conf: New known
+    problem for failing to install and fixup piuparts-depends-dummy.deb.
   * Add more piuparts exceptions.
   * Handle lib32nss-mdns like ia32-libs[-gtk].
 
