@@ -611,6 +611,11 @@ class PackagesDB:
                 return self.get_package(providers[0], recurse=recurse, resolve_virtual=False)
         return None
 
+    def get_version(self, name):
+        if name in self._packages:
+            return self._packages[name]["Version"]
+        return None
+
     def get_providers(self, name, recurse=True):
         self._find_all_packages()
         providers = []
