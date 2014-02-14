@@ -1553,6 +1553,7 @@ def main():
         process_section_names = sys.argv[1:]
     master_directory = global_config["master-directory"]
     output_directory = global_config["output-directory"]
+
     doc_root = global_config["doc-root"].strip()
     if not doc_root.startswith("/"):
         doc_root = "/" + doc_root
@@ -1567,13 +1568,9 @@ def main():
         for section_name in process_section_names:
             try:
                 section = Section(section_name, master_directory, doc_root, packagedb_cache=packagedb_cache)
+                section.generate_output(output_directory, section_names, problem_list)
             except MissingSection as e:
                 logging.error("Configuration Error in section '%s': %s" % (section_name, e))
-            else:
-                section.generate_output(
-                        output_directory=output_directory,
-                        section_names=section_names,
-                        problem_list=problem_list)
 
         # static pages
         logging.debug("Writing static pages")
