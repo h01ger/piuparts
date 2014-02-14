@@ -1444,6 +1444,9 @@ class Section:
 
         self.create_package_summaries(logs_by_dir)
 
+        logging.debug("generate known problem *.tpl")
+        dwke_process_section(self._config.section, '.', self._output_directory, self._problem_list, self._binary_db)
+
         logging.debug("Writing section index page")
         self.write_section_index_page(dirs, total_packages)
 
@@ -1462,8 +1465,7 @@ class Section:
         self._output_directory = os.path.abspath(os.path.join(output_directory, self._config.section))
         if not os.path.exists(self._output_directory):
             os.makedirs(self._output_directory)
-
-        dwke_process_section(self._config.section, self._section_directory, self._output_directory, problem_list, self._binary_db)
+        self._problem_list = problem_list
 
         oldcwd = os.getcwd()
         os.chdir(self._section_directory)
