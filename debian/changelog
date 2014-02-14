@@ -1,4 +1,4 @@
-piuparts (0.57) UNRELEASED; urgency=low
+piuparts (0.57) unstable; urgency=low
 
   [ Ivo De Decker ]
   * piuparts-report.py: Use source version from final_distro.
@@ -75,7 +75,7 @@ piuparts (0.57) UNRELEASED; urgency=low
   * piuparts.py:
     - Report adequate version used.
 
- -- Holger Levsen <holger@debian.org>  Fri, 10 Jan 2014 01:00:43 +0100
+ -- Holger Levsen <holger@debian.org>  Fri, 14 Feb 2014 13:37:23 +0100
 
 piuparts (0.56) unstable; urgency=low
 
