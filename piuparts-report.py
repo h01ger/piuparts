@@ -48,6 +48,7 @@ except:
 import piupartslib
 from piupartslib.conf import MissingSection
 from piupartslib.dwke import *
+import piupartslib.pkgsummary as pkgsummary
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
@@ -495,6 +496,8 @@ class Config(piupartslib.conf.Config):
                 "max-reserved": 1,
                 "doc-root": "/",
                 "known-problem-directory": "@sharedir@/piuparts/known_problems",
+                "reporting-sections": "",
+                "master-host": "piuparts.debian.org",
             },
             defaults_section=defaults_section)
 
@@ -523,8 +526,7 @@ def html_protect(vstr):
     vstr = "&#39;".join(vstr.split("'"))
     return vstr
 
-
-def emphasize_reason(reason):
+def is_bad_state(state):
     bad_states = [
         #"successfully-tested",
         "failed-testing",
@@ -541,10 +543,13 @@ def emphasize_reason(reason):
         "no-dependency-from-alternatives-exists",  # obsolete
         "does-not-exist",
     ]
-    if reason in bad_states:
+
+    return(state in bad_states)
+
+def emphasize_reason(reason):
+    if is_bad_state(reason):
         reason = "<em>"+reason+"</em>"
     return reason
-
 
 def source_subdir(source):
     if source[:3] == "lib":
@@ -552,6 +557,16 @@ def source_subdir(source):
     else:
         return source[:1]
 
+def source_summ_url(master_host, doc_root, section, src_pkg):
+    return( "http://%s%s/%s/source/%s/%s.html" %
+              (
+                  master_host,
+                  doc_root,
+                  section,
+                  source_subdir(src_pkg),
+                  src_pkg,
+              )
+          )
 
 def maintainer_subdir(maintainer):
     return maintainer.lower()[:1]
@@ -1443,8 +1458,48 @@ class Section:
         logging.debug("Writing stats pages for %s" % self._config.section)
         self.write_state_pages()
 
+    def get_flag(self, state):
 
-    def generate_output(self, output_directory, section_names, problem_list):
+        if state in ['essential-required', 'successfully-tested']:
+            flag = 'P'
+        elif state == 'failed-testing':
+            flag = 'F'
+        elif state == 'does-not-exist':
+            flag = '-'
+        elif is_bad_state(state):
+            flag = 'X'
+        else:
+            flag = 'W'
+
+        return flag
+
+    def generate_summary(self, master_host):
+        summ_path = os.path.join(self._output_directory, "summary.json")
+
+        if os.path.isfile(summ_path):
+            os.unlink(summ_path)
+
+        reporting_sections = self._config['reporting-sections'].split()
+        if reporting_sections:
+            logging.debug("Generating summary")
+
+            summ = pkgsummary.new_summ()
+
+            for reporting_section in reporting_sections:
+                for binpkg in self._binary_db.get_all_packages():
+                    pkgname = binpkg["Package"]
+                    state = self._binary_db.get_package_state(pkgname)
+                    flag = self.get_flag(state)
+                    srcpkg = self._binary_db.get_source(pkgname)
+                    url = source_summ_url(master_host, self._doc_root,
+                                          self._config.section, srcpkg)
+
+                    pkgsummary.add_summ(summ, reporting_section, srcpkg,
+                                        flag, url)
+
+            pkgsummary.summ_write(summ, summ_path)
+
+    def generate_output(self, output_directory, section_names, problem_list, master_host):
         # skip output generation for disabled sections
         if int(self._config["max-reserved"]) == 0:
             return
@@ -1461,6 +1516,8 @@ class Section:
         os.chdir(self._section_directory)
         self.generate_html()
         os.chdir(oldcwd)
+
+        self.generate_summary(master_host)
 
 
 # START detect_well_known_errors
@@ -1553,6 +1610,7 @@ def main():
         process_section_names = sys.argv[1:]
     master_directory = global_config["master-directory"]
     output_directory = global_config["output-directory"]
+    master_host = global_config["master-host"]
 
     doc_root = global_config["doc-root"].strip()
     if not doc_root.startswith("/"):
@@ -1568,7 +1626,7 @@ def main():
         for section_name in process_section_names:
             try:
                 section = Section(section_name, master_directory, doc_root, packagedb_cache=packagedb_cache)
-                section.generate_output(output_directory, section_names, problem_list)
+                section.generate_output(output_directory, section_names, problem_list, master_host)
             except MissingSection as e:
                 logging.error("Configuration Error in section '%s': %s" % (section_name, e))
 
