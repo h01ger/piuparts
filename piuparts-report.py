@@ -497,6 +497,7 @@ class Config(piupartslib.conf.Config):
                 "doc-root": "/",
                 "known-problem-directory": "@sharedir@/piuparts/known_problems",
                 "reporting-sections": "",
+                "precedence": 1,
                 "master-host": "piuparts.debian.org",
             },
             defaults_section=defaults_section)
@@ -1519,6 +1520,36 @@ class Section:
 
         self.generate_summary(master_host)
 
+def generate_global_summary(dir, sections):
+
+        json_name = "summary.json"
+
+        logging.debug("Generating global summary")
+
+        summ = pkgsummary.new_summ()
+
+        def by_precedence(secname):
+            return(by_precedence.section_precedence[secname])
+
+        by_precedence.section_precedence = {}
+        count = 0
+        for section in sections:
+            config = Config(section=section, defaults_section="global")
+            config.read(CONFIG_FILE)
+            by_precedence.section_precedence[section] = \
+                                            (config["precedence"], count)
+            count += 1
+
+        for section in sorted(sections, key=by_precedence):
+           sec_path = os.path.join(dir, section, json_name)
+           if os.path.isfile(sec_path):
+               sec_summ = pkgsummary.summ_read(sec_path)
+               summ = pkgsummary.merge_summ(summ, sec_summ)
+
+        summ_path = os.path.join(dir, json_name)
+        if os.path.isfile(summ_path):
+            os.unlink(summ_path)
+        pkgsummary.summ_write(summ, summ_path)
 
 # START detect_well_known_errors
 
@@ -1644,6 +1675,9 @@ def main():
                                    "doc_root": doc_root,
                     })
 
+        generate_global_summary(output_directory, section_names)
+
+        logging.debug("Done")
     else:
         logging.debug("Warning: %s does not exist!?! Creating it for you now." % master_directory)
         os.makedirs(master_directory)
