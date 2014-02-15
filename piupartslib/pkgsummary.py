@@ -43,6 +43,14 @@
 #  "_version": "1.0",
 #  "packages": {
 #   "0ad": {
+#    "overall": [
+#     "X",
+#     "http://localhost/piuparts/sid-fail-broken-symlinks/source/0/0ad.html"
+#    ],
+#    "stable": [
+#     "P",
+#     "http://localhost/piuparts/wheezy/source/0/0ad.html"
+#    ],
 #    "unstable": [
 #     "X",
 #     "http://localhost/piuparts/sid-fail-broken-symlinks/source/0/0ad.html"
@@ -52,6 +60,7 @@
 #  ...
 #  }
 #
+#
 # The packages are listed by source package. E.g. "unstable" here is a
 # reporting-section (see README_server.txt). The single character flags are
 # defined in worst_flag() below. The URL is a human friendly page for
@@ -59,19 +68,31 @@
 #
 # Binary package results are combined into source package results. The 'worst'
 # flag in the group is reported ("F" is worst overall).
-
+#
+# For the global summary, the packages 'worst' result across reporting-sections
+# is used. In the case of a tie, the more-important-precedence
+# section/reporting-section result is used.
+#
+# The global file also includes an 'overall' reporting-section, which contains
+# the 'worst' result across the other reporting-sections.
 
 
 import json
 import datetime
+
+class SummaryException(Exception):
+    pass
+
+SUMMID = "Piuparts Package Test Results Summary"
+SUMMVER = "1.0"
 
 def new_summ():
     cdate_array = datetime.datetime.utcnow().ctime().split()
     utcdate = " ".join(cdate_array[:-1] + ["UTC"] + [cdate_array[-1]])
 
     return({
-               "_id"      : "Piuparts Package Test Results Summary"
-               "_version" : "1.0",
+               "_id"      : SUMMID,
+               "_version" : SUMMVER,
                "_date"    : utcdate,
                "_comment" : "Debian Piuparts Package Results - " \
                             "http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" \
@@ -109,7 +130,28 @@ def add_summ(summ, rep_sec, pkg, flag, url):
 
     return summ
 
+def merge_summ(summ, sec_summ):
+    """Merge a sector summary into the global summary"""
+
+    spdict = sec_summ["packages"]
+
+    for pkg in spdict:
+        for rep_sec in spdict[pkg]:
+            flag, url = spdict[pkg][rep_sec]
+            add_summ(summ, rep_sec, pkg, flag, url)
+            add_summ(summ, "overall", pkg, flag, url)
+
+    return summ
+
 def summ_write(summ, fname):
     with open(fname, 'w') as fl:
         json.dump(summ, fl, sort_keys=True, indent=1)
 
+def summ_read(fname):
+    with open(fname, 'r') as fl:
+        result = json.load(fl)
+
+    if result["_id"] != SUMMID or result["_version"] != SUMMVER:
+        raise SummaryException('Summary JSON header mismatch')
+
+    return result
