@@ -1,6 +1,12 @@
-piuparts (0.58) UNRELEASED; urgency=low
+piuparts (0.57.1) UNRELEASED; urgency=low
 
+  [ Holger Levsen ]
   * debian/copyright: update years.
+
+  [ Andreas Beckmann ]
+  * piupartslib/packagesdb.py:
+    - Add missing PackagesDB.get_version(package_name) method, needed by
+      piuparts-report.
 
  -- Holger Levsen <holger@debian.org>  Fri, 14 Feb 2014 14:00:04 +0100
 
