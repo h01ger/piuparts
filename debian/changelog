@@ -2,6 +2,11 @@ piuparts (0.57.1) UNRELEASED; urgency=low
 
   [ Holger Levsen ]
   * debian/copyright: update years.
+  * piuparts.py: ignore multiarch definition in_default_debian_mirrors()
+    (Closes: #711370)
+  * custom-scripts: add debugging output for resolvconf. (See #660350)
+  * Adapt and rename conf/piuparts.apache to piuparts-master.conf as per
+    apache2.4 transition. (Closes: #712384)
 
   [ Andreas Beckmann ]
   * piupartslib/packagesdb.py:
