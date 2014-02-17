@@ -1,4 +1,4 @@
-etc/apache2/conf.d/piuparts.apache
+etc/apache2/conf-available/piuparts-master.conf
 etc/cron.d/piuparts-master
 #etc/piuparts/known_problems/
 usr/share/piuparts/htdocs/*

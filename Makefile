@@ -100,8 +100,8 @@ install-conf: build-stamp
 	# disable shipped sudoers
 	sed -i -r '/^[^#]+/s/^/#/' $(DESTDIR)$(etcdir)/sudoers.d/piuparts
 
-	install -d $(DESTDIR)$(etcdir)/apache2/conf.d
-	install -m 0644 conf/piuparts.apache $(DESTDIR)$(etcdir)/apache2/conf.d/
+	install -d $(DESTDIR)$(etcdir)/apache2/conf-available
+	install -m 0644 conf/piuparts-master.conf $(DESTDIR)$(etcdir)/apache2/conf-available/
 
 install-conf-4-running-from-git: build-stamp
 	install -d $(DESTDIR)$(etcdir)/piuparts
