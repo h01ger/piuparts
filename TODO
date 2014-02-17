@@ -137,12 +137,6 @@ for 0.7x and later:
 - a redirect of http://piuparts.d.o/foo to http://p.d.o/source/f/foo.html would
   be nice
 
-- piuparts can't currently test upgrades of required packages.  (Because they
-  cannot be removed, it assumes these are untestable, which is only true for
-  removal tests...
-  - all distupgrade tests implicitly tests these upgrades, although not
-    individually per package
-
 - not sure if it's a sensible thing to to, but provide a way to turn off
   debugging output for piuparts.py - see
   http://docs.python.org/library/logging.html
