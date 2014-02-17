@@ -45,14 +45,17 @@
 #   "0ad": {
 #    "overall": [
 #     "X",
+#     0,
 #     "http://localhost/piuparts/sid-fail-broken-symlinks/source/0/0ad.html"
 #    ],
 #    "stable": [
 #     "P",
+#     0,
 #     "http://localhost/piuparts/wheezy/source/0/0ad.html"
 #    ],
 #    "unstable": [
 #     "X",
+#     0,
 #     "http://localhost/piuparts/sid-fail-broken-symlinks/source/0/0ad.html"
 #    ]
 #   },
@@ -63,8 +66,9 @@
 #
 # The packages are listed by source package. E.g. "unstable" here is a
 # reporting-section (see README_server.txt). The single character flags are
-# defined in worst_flag() below. The URL is a human friendly page for
-# inspecting the results for that package/distribution.
+# defined in worst_flag() below. The number is the number of packages which
+# are blocked from testing due to a failed package. The URL is a human
+# friendly page for inspecting the results for that package/distribution.
 #
 # Binary package results are combined into source package results. The 'worst'
 # flag in the group is reported ("F" is worst overall).
@@ -85,6 +89,8 @@ class SummaryException(Exception):
 
 SUMMID = "Piuparts Package Test Results Summary"
 SUMMVER = "1.0"
+
+DEFSEC = 'overall'
 
 def new_summ():
     cdate_array = datetime.datetime.utcnow().ctime().split()
@@ -112,8 +118,8 @@ def worst_flag(*args):
 
     return(min([(sev[x],x) for x in args])[1])
 
-def add_summ(summ, rep_sec, pkg, flag, url):
-    """Add a flag/url result to summ for a package in a reporting-section"""
+def add_summ(summ, rep_sec, pkg, flag, block_cnt, url):
+    """Add a flag/count/url result to summ for a package in a reporting-section"""
 
     pdict = summ["packages"]
 
@@ -121,12 +127,16 @@ def add_summ(summ, rep_sec, pkg, flag, url):
         pdict[pkg] = {}
 
     if rep_sec in pdict[pkg]:
-        old_flag = pdict[pkg][rep_sec][0]
+        old_flag, old_cnt, old_url = pdict[pkg][rep_sec]
+
+        block_cnt = max(block_cnt, old_cnt)
 
         if old_flag != worst_flag(old_flag, flag):
-            pdict[pkg][rep_sec] = [flag, url]
+            pdict[pkg][rep_sec] = [flag, block_cnt, url]
+        else:
+            pdict[pkg][rep_sec] = [old_flag, block_cnt, old_url]
     else:
-        pdict[pkg][rep_sec] = [flag, url]
+        pdict[pkg][rep_sec] = [flag, block_cnt, url]
 
     return summ
 
@@ -137,9 +147,9 @@ def merge_summ(summ, sec_summ):
 
     for pkg in spdict:
         for rep_sec in spdict[pkg]:
-            flag, url = spdict[pkg][rep_sec]
-            add_summ(summ, rep_sec, pkg, flag, url)
-            add_summ(summ, "overall", pkg, flag, url)
+            flag, block_cnt, url = spdict[pkg][rep_sec]
+            add_summ(summ, rep_sec, pkg, flag, block_cnt, url)
+            add_summ(summ, DEFSEC, pkg, flag, block_cnt, url)
 
     return summ
 

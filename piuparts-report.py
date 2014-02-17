@@ -1491,12 +1491,15 @@ class Section:
                     pkgname = binpkg["Package"]
                     state = self._binary_db.get_package_state(pkgname)
                     flag = self.get_flag(state)
+                    block_cnt = 0
+                    if flag == 'F':
+                        block_cnt = self._binary_db.block_count(pkgname)
                     srcpkg = self._binary_db.get_source(pkgname)
                     url = source_summ_url(master_host, self._doc_root,
                                           self._config.section, srcpkg)
 
                     pkgsummary.add_summ(summ, reporting_section, srcpkg,
-                                        flag, url)
+                                        flag, block_cnt, url)
 
             pkgsummary.summ_write(summ, summ_path)
 
