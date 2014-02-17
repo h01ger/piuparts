@@ -2478,6 +2478,7 @@ def find_default_debian_mirrors():
     try:
         f = file("/etc/apt/sources.list", "r")
         for line in f:
+            line = re.sub('\[arch=.*\]', '', line)
             parts = line.split()
             if len(parts) > 2 and parts[0] == "deb":
                 mirrors.append((parts[1], parts[3:]))
