@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright 2014 David Steele (dsteele@gmail.com)
@@ -153,6 +154,42 @@ def merge_summ(summ, sec_summ):
 
     return summ
 
+def tooltip(summ, pkg):
+    """Returns e.g. "Failed in testing and stable, blocking 5 packages"."""
+
+    tip = ''
+    result_string = {
+                       'P': 'Passed',
+                       'X': 'Blocked',
+                       'W': 'Waiting',
+                       'F': 'Failed',
+                       '-': 'Unknown',
+                    }
+
+    pkgdict = summ['packages']
+
+    if pkg in pkgdict:
+        flag, block_cnt, url = pkgdict[pkg][DEFSEC]
+
+        sections = [x for x in pkgdict[pkg] if x != DEFSEC]
+        applicable = [x for x in sections if pkgdict[pkg][x][0] == flag]
+
+        tip = result_string[flag]
+
+        if len(applicable) > 2:
+            tip += ' in ' + ', '.join(applicable[:-1]) + ' and ' + applicable[-1]
+        elif len(applicable) == 2:
+            tip += ' in ' + ' and '.join(applicable)
+        elif len(applicable) == 1:
+            tip += ' in ' + applicable[0]
+
+        if block_cnt:
+            tip += ", blocking %d packages" % block_cnt
+
+        tip += '.'
+
+    return tip
+
 def summ_write(summ, fname):
     with open(fname, 'w') as fl:
         json.dump(summ, fl, sort_keys=True, indent=1)
@@ -165,3 +202,15 @@ def summ_read(fname):
         raise SummaryException('Summary JSON header mismatch')
 
     return result
+
+if __name__ == '__main__':
+    import sys
+
+    # read a global summary file and return DDPO info by package
+    summ = summ_read(sys.argv[1])
+
+
+    for pkg in summ['packages']:
+        flag, blocked, url = summ['packages'][pkg][DEFSEC]
+
+        print pkg, flag, url, tooltip(summ, pkg)
