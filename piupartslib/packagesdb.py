@@ -612,8 +612,15 @@ class PackagesDB:
         return None
 
     def get_version(self, name):
+        self._find_all_packages()
         if name in self._packages:
             return self._packages[name]["Version"]
+        return None
+
+    def get_source(self, name):
+        self._find_all_packages()
+        if name in self._packages:
+            return self.get_control_header(name, "Source")
         return None
 
     def get_providers(self, name, recurse=True):
