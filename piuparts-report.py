@@ -1477,12 +1477,6 @@ class Section:
 
 # START detect_well_known_errors
 
-def pts_subdir(source):
-    if source[:3] == "lib":
-        return source[:4]
-    else:
-        return source[:1]
-
 def source_pkg(pkgspec, db):
     source_name = db.get_control_header(get_pkg(pkgspec), "Source")
 
@@ -1539,7 +1533,7 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
                                 'PACKAGE': bin_pkg,
                                 'BUG': get_bug_text(logdict[pkgspec]),
                                 'RDEPS': rdep_cnt,
-                                'SDIR':pts_subdir(src_pkg),
+                                'SDIR':source_subdir(src_pkg),
                                 'SPKG':src_pkg,
                                    })
 
