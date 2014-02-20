@@ -897,7 +897,7 @@ class Section:
         return link[:-2]
 
     def link_to_source_summary(self, package_name):
-        source_name = self._binary_db.get_control_header(package_name, "Source")
+        source_name = self._binary_db.get_source(package_name)
         link = "<a href=\"%s/%s/source/%s\">%s</a>" % (
                 self._doc_root,
                 self._config.section,
@@ -1477,11 +1477,6 @@ class Section:
 
 # START detect_well_known_errors
 
-def source_pkg(pkgspec, db):
-    source_name = db.get_control_header(get_pkg(pkgspec), "Source")
-
-    return source_name
-
 def get_pkgspec(logpath):
     """For a log full file spec, return the pkgspec (<pkg>_<version)"""
     return logpath.split('/')[-1]
@@ -1516,13 +1511,8 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
 
         pkgspec = failure.pkgspec
         bin_pkg = get_pkg(pkgspec)
+        src_pkg = pkgsdb.get_source(bin_pkg)
         rdep_cnt = pkgsdb.rrdep_count(bin_pkg)
-        pkg_obj = pkgsdb.get_package(bin_pkg)
-
-        if not pkg_obj is None:
-            src_pkg = source_pkg(pkgspec, pkgsdb)
-        else:
-            src_pkg = bin_pkg
 
         if bugged_section is False and get_where(logdict[pkgspec]) != 'fail':
             bugged_section = True
