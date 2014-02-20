@@ -1477,10 +1477,6 @@ class Section:
 
 # START detect_well_known_errors
 
-def get_pkgspec(logpath):
-    """For a log full file spec, return the pkgspec (<pkg>_<version)"""
-    return logpath.split('/')[-1]
-
 def get_bug_text(logpath):
     bugpath = replace_ext(logpath, BUG_EXT)
 
@@ -1491,10 +1487,6 @@ def get_bug_text(logpath):
         bf.close()
 
     return txt
-
-def section_path(logpath):
-    """Convert a full log path name to one relative to the section directory"""
-    return '/'.join([get_where(logpath), get_pkgspec(logpath)])
 
 def populate_tpl(tmpl, vals):
 
@@ -1508,20 +1500,20 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
     pkg_text = ""
     bugged_section = False
     for failure in failures:
-
-        pkgspec = failure.pkgspec
-        bin_pkg = get_pkg(pkgspec)
+        bin_pkg = get_pkg(failure.pkgspec)
         src_pkg = pkgsdb.get_source(bin_pkg)
         rdep_cnt = pkgsdb.rrdep_count(bin_pkg)
 
-        if bugged_section is False and get_where(logdict[pkgspec]) != 'fail':
+        if bugged_section is False and failure.where != 'fail':
             bugged_section = True
             pkg_text += "</ul><ul>\n"
 
+        log = os.path.join(failure.where, failure.pkgspec + LOG_EXT)
+
         pkg_text += populate_tpl(ftpl, {
-                                'LOG': section_path(logdict[pkgspec]),
+                                'LOG': log,
                                 'PACKAGE': bin_pkg,
-                                'BUG': get_bug_text(logdict[pkgspec]),
+                                'BUG': get_bug_text(log),
                                 'RDEPS': rdep_cnt,
                                 'SDIR':source_subdir(src_pkg),
                                 'SPKG':src_pkg,
