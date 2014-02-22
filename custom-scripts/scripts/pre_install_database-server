@@ -67,6 +67,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	glance-common)				SQLITE3=yes ;;
 	glance-registry)			SQLITE3=yes ;;
 	glpi)					MYSQL=yes ;;
+	gnuhealth-server)			POSTGRESQL=yes ;;
 	grr)					MYSQL=yes ;;
 	heat-api)				SQLITE3=yes ;;
 	heat-api-cfn)				SQLITE3=yes ;;

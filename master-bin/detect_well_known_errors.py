@@ -57,6 +57,10 @@ def setup_logging(log_level):
     logger.addHandler(handler)
 
 
+def write_file(filename, contents):
+    with file(filename, "w") as f:
+        f.write(contents)
+
 def mtime(path):
     return os.path.getmtime(path)
 
@@ -98,13 +102,12 @@ def make_kprs(logdict, kprdict, problem_list):
 
             where = get_where(logpath)
 
-            kf = open(get_kpr_path(logpath), 'a')
-
+            kprs = ""
             for problem in problem_list:
                 if problem.has_problem(logbody, where):
-                    kf.write("%s/%s.log %s\n" % (where, pkg_spec, problem.name))
+                    kprs += "%s/%s.log %s\n" % (where, pkg_spec, problem.name)
 
-            kf.close()
+            write_file(get_kpr_path(logpath), kprs)
         except IOError:
             logging.error("File error processing %s" % logpath)
 
