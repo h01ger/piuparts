@@ -107,6 +107,9 @@ def make_kprs(logdict, kprdict, problem_list):
                 if problem.has_problem(logbody, where):
                     kprs += "%s/%s.log %s\n" % (where, pkg_spec, problem.name)
 
+            if not where in ['pass'] and not len(kprs):
+                kprs += "%s/%s.log %s\n" % (where, pkg_spec, "unclassified_failures.conf")
+
             write_file(get_kpr_path(logpath), kprs)
         except IOError:
             logging.error("File error processing %s" % logpath)

@@ -14,6 +14,8 @@ piuparts (0.57.1) UNRELEASED; urgency=low
       piuparts-report.
     - Add PackagesDB.get_source(package_name) method, for easy lookup of
       source package names.
+  * master-bin/detect_well_known_errors.py:
+    - Classify unclassified failures as unclassified_failures.conf.
 
  -- Holger Levsen <holger@debian.org>  Fri, 14 Feb 2014 14:00:04 +0100
 
