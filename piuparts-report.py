@@ -360,18 +360,6 @@ $PACKAGE_LIST</ul>
 <p>Affected packages in $SECTION: $COUNT</p></td></tr>
 """
 
-UNKNOWN_TPL = \
-"""<tr class="titlerow"><td class="titlecell">
-Packages with unknown failures detected in $SECTION, sorted by reverse dependency count.
-</td></tr><tr class="normalrow"><td class="contentcell2">
-<p>Please investigate and improve detection of known error types!</p>
-</td></tr><tr class="titlerow"><td class="alerttitlecell">Please file bugs!</td></tr><tr class="normalrow"><td class="contentcell2" colspan="3">
-<ul>
-$PACKAGE_LIST
-</ul>
-<p>Affected packages in $SECTION: $COUNT</p></td></tr>
-"""
-
 PKG_ERROR_TPL = \
 """<li>$RDEPS - <a href=\"$LOG\">$LOG</a>
     (<a href=\"http://packages.qa.debian.org/$SDIR/$SPKG.html\" target=\"_blank\">PTS</a>)
@@ -1539,26 +1527,6 @@ def update_html(section, html_dir, logdict, problem_list, failures, pkgsdb):
                    failures.filtered(problem.name),
                    logdict,
                    PKG_ERROR_TPL, PROB_TPL, pkgsdb)
-
-    # Make a failure list of all failed packages that don't show up as known
-    failedpkgs = set([x for x in logdict.keys()
-                     if get_where(logdict[x]) != 'pass'])
-    knownfailpkgs = set([failure.pkgspec for failure in failures.failures])
-    unknownsasfailures = [make_failure("", "unknown_failures.conf", x)
-                         for x in failedpkgs.difference(knownfailpkgs)]
-
-    def keyfunc(x, pkgsdb=pkgsdb, logdict=logdict):
-        rdeps = pkgsdb.rrdep_count(get_pkg(x.pkgspec))
-
-        is_failed = get_where(logdict[x.pkgspec]) == "fail"
-
-        return (not is_failed, -rdeps, logdict[x.pkgspec])
-
-    unknownsasfailures.sort(key=keyfunc)
-
-    update_tpl(html_dir, section, problem_list[0], unknownsasfailures,
-               logdict,
-               PKG_ERROR_TPL, UNKNOWN_TPL, pkgsdb)
 
 def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
     workdirs = [os.path.join(sectiondir, x) for x in KPR_DIRS]
