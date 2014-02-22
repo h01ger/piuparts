@@ -483,7 +483,7 @@ linktarget_by_template = [
     ("obsolete_conffiles_error.tpl", "...and logfile reports obsolete conffiles"),
     ("missing_md5sums_error.tpl", "...and logfile reports missing md5sums"),
     ("piuparts-depends-dummy_error.tpl", "...and logfile reports piuparts-depends-dummy.deb could not be installed"),
-    ("unknown_failures.tpl", "due to unclassified failures"),
+    ("unclassified_failures.tpl", "due to unclassified failures"),
 ]
 
 
