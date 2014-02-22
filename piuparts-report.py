@@ -1508,8 +1508,7 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
                                    })
 
     if len(pkg_text):
-        pf = open(os.path.join(basedir, failures[0].problem[:-5] + TPL_EXT), 'w')
-        tpl_text = populate_tpl(ptpl, {
+        return populate_tpl(ptpl, {
                                 'HEADER': problem.HEADER,
                                 'SECTION': section,
                                 'HELPTEXT': problem.HELPTEXT,
@@ -1517,16 +1516,17 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
                                 'PACKAGE_LIST': pkg_text,
                                 'COUNT': len(failures),
                                 })
-
-        pf.write(tpl_text)
-        pf.close()
+    return ""
 
 def update_html(section, html_dir, logdict, problem_list, failures, pkgsdb):
     for problem in problem_list:
-        update_tpl(html_dir, section, problem,
+        tpl_text = update_tpl(html_dir, section, problem,
                    failures.filtered(problem.name),
                    logdict,
                    PKG_ERROR_TPL, PROB_TPL, pkgsdb)
+        if len(tpl_text):
+            with open(os.path.join(html_dir, problem.name[:-5] + TPL_EXT), 'w') as pf:
+                pf.write(tpl_text)
 
 def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
     workdirs = [os.path.join(sectiondir, x) for x in KPR_DIRS]
