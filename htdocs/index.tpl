@@ -65,6 +65,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2014-02-26</b> A new <a href="http://piuparts.debian.org/summary.json">JSON summary file</a> is being published, showing package testing state, status URL, and the number of packages being blocked by failures, for each distribution.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2013-07-16</b> To better track bugs in piuparts.debian.org and piuparts itself, a new pseudo-package was created in the BTS: <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?src=piuparts.debian.org" target="_blank">piuparts.debian.org</a>, which will be used for tracking all issues with the piuparts.debian.org service.
      </td>
     </tr>
