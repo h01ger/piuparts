@@ -1459,21 +1459,6 @@ class Section:
         logging.debug("Writing stats pages for %s" % self._config.section)
         self.write_state_pages()
 
-    def get_flag(self, state):
-
-        if state in ['essential-required', 'successfully-tested']:
-            flag = 'P'
-        elif state == 'failed-testing':
-            flag = 'F'
-        elif state == 'does-not-exist':
-            flag = '-'
-        elif is_bad_state(state):
-            flag = 'X'
-        else:
-            flag = 'W'
-
-        return flag
-
     def generate_summary(self, master_host):
         summary_path = os.path.join(self._output_directory, "summary.json")
 
@@ -1490,7 +1475,7 @@ class Section:
                 for binpkg in self._binary_db.get_all_packages():
                     pkgname = binpkg["Package"]
                     state = self._binary_db.get_package_state(pkgname)
-                    flag = self.get_flag(state)
+                    flag = pkgsummary.get_flag(state)
                     block_cnt = 0
                     if flag == 'F':
                         block_cnt = self._binary_db.block_count(pkgname)

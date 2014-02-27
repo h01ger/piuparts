@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 # Copyright 2014 David Steele (dsteele@gmail.com)
 #
@@ -67,7 +66,7 @@
 #
 # The packages are listed by source package. E.g. "unstable" here is a
 # reporting-section (see README_server.txt). The single character flags are
-# defined in worst_flag() below. The number is the number of packages which
+# defined below. The number is the number of packages which
 # are blocked from testing due to a failed package. The URL is a human
 # friendly page for inspecting the results for that package/distribution.
 #
@@ -84,6 +83,7 @@
 
 import json
 import datetime
+from collections import namedtuple, defaultdict
 
 class SummaryException(Exception):
     pass
@@ -93,58 +93,85 @@ SUMMVER = "1.0"
 
 DEFSEC = 'overall'
 
+FlagInfo = namedtuple('FlagInfo', ['word', 'priority', 'states'])
+
+flaginfo = {
+            'F': FlagInfo('Failed',  0, ["failed-testing"]),
+            'X': FlagInfo('Blocked', 1, [
+                                         "cannot-be-tested",
+                                         "dependency-failed-testing",
+                                         "dependency-cannot-be-tested",
+                                         "dependency-does-not-exist",
+                                        ]),
+            'W': FlagInfo('Waiting', 2, [
+                                         "waiting-to-be-tested",
+                                         "waiting-for-dependency-to-be-tested",
+                                        ]),
+            'P': FlagInfo('Passed',  3, [
+                                         "essential-required",
+                                         "successfully-tested",
+                                        ]),
+            '-': FlagInfo('Unknown', 4, [
+                                         "does-not-exist",
+                                         "unknown",
+                                        ]),
+           }
+
+state2flg = dict([(y,x[0]) for x in flaginfo.iteritems() for y in x[1].states])
+
+def worst_flag(*flags):
+    try:
+        flag = min(*flags, key=lambda x: flaginfo[x].priority)
+    except KeyError:
+        raise SummaryException("Unknown flag in " + flags.__repr__())
+
+    return(flag)
+
+def get_flag(state):
+    try:
+        flag = state2flg[state]
+    except KeyError:
+        raise SummaryException("Unknown state - " + state)
+
+    return(flag)
+
 def new_summary():
     cdate_array = datetime.datetime.utcnow().ctime().split()
     utcdate = " ".join(cdate_array[:-1] + ["UTC"] + [cdate_array[-1]])
+
+    # define the packages struct. The default should never be the one added
+    dfltentry = ['-', 0, 'invalid url']
+    pkgstruct = defaultdict(lambda: defaultdict(lambda: dfltentry))
 
     return({
                "_id"      : SUMMID,
                "_version" : SUMMVER,
                "_date"    : utcdate,
                "_comment" : "Debian Piuparts Package Results - " \
-                            "http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" \
-                            ";a=blob;f=piupartslib/pkgsummary.py;hb=refs/heads/develop",
+                            "http://anonscm.debian.org/gitweb/?" \
+                            "p=piuparts/piuparts.git;a=blob;" \
+                            "f=piupartslib/pkgsummary.py;hb=refs/heads/develop",
                "_type"    : "source",
-               "packages" : {},
+               "packages" : pkgstruct,
           })
 
-def worst_flag(*args):
-    sev = {
-            'F': 0, # fail
-            'X': 1, # blocked by failure
-            'W': 2, # waiting
-            'P': 3, # passed, or essential
-            '-': 4, # does not exist
-          }
-
-    return(min([(sev[x],x) for x in args])[1])
-
 def add_summary(summary, rep_sec, pkg, flag, block_cnt, url):
-    """Add a flag/count/url result to summary for a package in a
-    reporting-section"""
+    if not flag in flaginfo or not isinstance(block_cnt, int) \
+           or not url.startswith('http'):
+        raise SummaryException("Invalid summary argument")
 
     pdict = summary["packages"]
 
-    if pkg not in pdict:
-        pdict[pkg] = {}
-
-    if rep_sec in pdict[pkg]:
-        old_flag, old_cnt, old_url = pdict[pkg][rep_sec]
-
-        block_cnt = max(block_cnt, old_cnt)
-
-        if old_flag != worst_flag(old_flag, flag):
-            pdict[pkg][rep_sec] = [flag, block_cnt, url]
-        else:
-            pdict[pkg][rep_sec] = [old_flag, block_cnt, old_url]
-    else:
+    [old_flag, old_cnt, old_url] = pdict[pkg][rep_sec]
+    block_cnt = max(block_cnt, old_cnt)
+    if old_flag != worst_flag(old_flag, flag):
         pdict[pkg][rep_sec] = [flag, block_cnt, url]
+    else:
+        pdict[pkg][rep_sec] = [old_flag, block_cnt, old_url]
 
     return summary
 
 def merge_summary(gbl_summ, sec_summ):
-    """Merge a sector summary into the global summary"""
-
     spdict = sec_summ["packages"]
 
     for pkg in spdict:
@@ -159,13 +186,6 @@ def tooltip(summary, pkg):
     """Returns e.g. "Failed in testing and stable, blocking 5 packages"."""
 
     tip = ''
-    result_string = {
-                       'P': 'Passed',
-                       'X': 'Blocked',
-                       'W': 'Waiting',
-                       'F': 'Failed',
-                       '-': 'Unknown',
-                    }
 
     pkgdict = summary['packages']
 
@@ -175,7 +195,7 @@ def tooltip(summary, pkg):
         sections = [x for x in pkgdict[pkg] if x != DEFSEC]
         applicable = [x for x in sections if pkgdict[pkg][x][0] == flag]
 
-        tip = result_string[flag]
+        tip = flaginfo[flag].word
 
         if len(applicable) > 2:
             tip += ' in ' + ', '.join(applicable[:-1]) + ' and ' + applicable[-1]
