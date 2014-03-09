@@ -93,7 +93,7 @@ SUMMVER = "1.0"
 
 DEFSEC = 'overall'
 
-def new_summ():
+def new_summary():
     cdate_array = datetime.datetime.utcnow().ctime().split()
     utcdate = " ".join(cdate_array[:-1] + ["UTC"] + [cdate_array[-1]])
 
@@ -119,10 +119,11 @@ def worst_flag(*args):
 
     return(min([(sev[x],x) for x in args])[1])
 
-def add_summ(summ, rep_sec, pkg, flag, block_cnt, url):
-    """Add a flag/count/url result to summ for a package in a reporting-section"""
+def add_summary(summary, rep_sec, pkg, flag, block_cnt, url):
+    """Add a flag/count/url result to summary for a package in a
+    reporting-section"""
 
-    pdict = summ["packages"]
+    pdict = summary["packages"]
 
     if pkg not in pdict:
         pdict[pkg] = {}
@@ -139,9 +140,9 @@ def add_summ(summ, rep_sec, pkg, flag, block_cnt, url):
     else:
         pdict[pkg][rep_sec] = [flag, block_cnt, url]
 
-    return summ
+    return summary
 
-def merge_summ(summ, sec_summ):
+def merge_summary(gbl_summ, sec_summ):
     """Merge a sector summary into the global summary"""
 
     spdict = sec_summ["packages"]
@@ -149,12 +150,12 @@ def merge_summ(summ, sec_summ):
     for pkg in spdict:
         for rep_sec in spdict[pkg]:
             flag, block_cnt, url = spdict[pkg][rep_sec]
-            add_summ(summ, rep_sec, pkg, flag, block_cnt, url)
-            add_summ(summ, DEFSEC, pkg, flag, block_cnt, url)
+            add_summary(gbl_summ, rep_sec, pkg, flag, block_cnt, url)
+            add_summary(gbl_summ, DEFSEC, pkg, flag, block_cnt, url)
 
-    return summ
+    return gbl_summ
 
-def tooltip(summ, pkg):
+def tooltip(summary, pkg):
     """Returns e.g. "Failed in testing and stable, blocking 5 packages"."""
 
     tip = ''
@@ -166,7 +167,7 @@ def tooltip(summ, pkg):
                        '-': 'Unknown',
                     }
 
-    pkgdict = summ['packages']
+    pkgdict = summary['packages']
 
     if pkg in pkgdict:
         flag, block_cnt, url = pkgdict[pkg][DEFSEC]
@@ -190,11 +191,11 @@ def tooltip(summ, pkg):
 
     return tip
 
-def summ_write(summ, fname):
+def write_summary(summary, fname):
     with open(fname, 'w') as fl:
-        json.dump(summ, fl, sort_keys=True, indent=1)
+        json.dump(summary, fl, sort_keys=True, indent=1)
 
-def summ_read(fname):
+def read_summary(fname):
     with open(fname, 'r') as fl:
         result = json.load(fl)
 
@@ -207,10 +208,10 @@ if __name__ == '__main__':
     import sys
 
     # read a global summary file and return DDPO info by package
-    summ = summ_read(sys.argv[1])
+    summary = read_summary(sys.argv[1])
 
 
-    for pkg in summ['packages']:
-        flag, blocked, url = summ['packages'][pkg][DEFSEC]
+    for pkg in summary['packages']:
+        flag, blocked, url = summary['packages'][pkg][DEFSEC]
 
-        print pkg, flag, url, tooltip(summ, pkg)
+        print pkg, flag, url, tooltip(summary, pkg)

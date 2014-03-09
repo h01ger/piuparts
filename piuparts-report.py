@@ -558,7 +558,7 @@ def source_subdir(source):
     else:
         return source[:1]
 
-def source_summ_url(master_host, doc_root, section, src_pkg):
+def source_summary_url(master_host, doc_root, section, src_pkg):
     return( "http://%s%s/%s/source/%s/%s.html" %
               (
                   master_host,
@@ -1475,16 +1475,16 @@ class Section:
         return flag
 
     def generate_summary(self, master_host):
-        summ_path = os.path.join(self._output_directory, "summary.json")
+        summary_path = os.path.join(self._output_directory, "summary.json")
 
-        if os.path.isfile(summ_path):
-            os.unlink(summ_path)
+        if os.path.isfile(summary_path):
+            os.unlink(summary_path)
 
         reporting_sections = self._config['reporting-sections'].split()
         if reporting_sections:
             logging.debug("Generating summary")
 
-            summ = pkgsummary.new_summ()
+            summary = pkgsummary.new_summary()
 
             for reporting_section in reporting_sections:
                 for binpkg in self._binary_db.get_all_packages():
@@ -1495,13 +1495,15 @@ class Section:
                     if flag == 'F':
                         block_cnt = self._binary_db.block_count(pkgname)
                     srcpkg = self._binary_db.get_source(pkgname)
-                    url = source_summ_url(master_host, self._doc_root,
-                                          self._config.section, srcpkg)
+                    url = source_summary_url(
+                              master_host, self._doc_root,
+                              self._config.section, srcpkg)
 
-                    pkgsummary.add_summ(summ, reporting_section, srcpkg,
-                                        flag, block_cnt, url)
+                    pkgsummary.add_summary(
+                                   summary, reporting_section, srcpkg,
+                                   flag, block_cnt, url)
 
-            pkgsummary.summ_write(summ, summ_path)
+            pkgsummary.write_summary(summary, summary_path)
 
     def generate_output(self, output_directory, section_names, problem_list, master_host):
         # skip output generation for disabled sections
@@ -1529,7 +1531,7 @@ def generate_global_summary(dir, sections):
 
         logging.debug("Generating global summary")
 
-        summ = pkgsummary.new_summ()
+        summary = pkgsummary.new_summary()
 
         def by_precedence(secname):
             return(by_precedence.section_precedence[secname])
@@ -1546,13 +1548,13 @@ def generate_global_summary(dir, sections):
         for section in sorted(sections, key=by_precedence):
            sec_path = os.path.join(dir, section, json_name)
            if os.path.isfile(sec_path):
-               sec_summ = pkgsummary.summ_read(sec_path)
-               summ = pkgsummary.merge_summ(summ, sec_summ)
+               sec_summ = pkgsummary.read_summary(sec_path)
+               summary = pkgsummary.merge_summary(summary, sec_summ)
 
-        summ_path = os.path.join(dir, json_name)
-        if os.path.isfile(summ_path):
-            os.unlink(summ_path)
-        pkgsummary.summ_write(summ, summ_path)
+        summary_path = os.path.join(dir, json_name)
+        if os.path.isfile(summary_path):
+            os.unlink(summary_path)
+        pkgsummary.write_summary(summary, summary_path)
 
 # START detect_well_known_errors
 
