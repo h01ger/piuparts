@@ -507,13 +507,15 @@ section, too, and will serve as defaults for all other sections
  rescheduling one of passed or failed logs, set the corresponding
  -count variable to zero.
 
-* "reporting-sections" is a space separated list of the
+* "reporting-sections" is a space-separated list of the
  section/distribution names which receive test results for this
  section. The results, by package, are stored with this name/these
- names in the section and global test summary files. The names
- "unstable", "testing", "stable", "oldstable", and "experimental"
- have special meaning. The reporting-section name "overall' is
- reserved.
+ names in the section and global test summary.json files. If
+ "reporting-sections" is undefined, or defined as "default", piuparts
+ will assign the section to one of "unstable", "testing", "stable",
+ "oldstable", "experimental", or "unknown". If "reporting-sections"
+ is "none", the summary will not be created. The "reporting-sections"
+ name "overall" is reserved.
 
 Some of the configuration items are not required, but it is best
 to set them all to be sure what the configuration actually is.

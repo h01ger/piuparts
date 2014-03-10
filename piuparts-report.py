@@ -496,7 +496,7 @@ class Config(piupartslib.conf.Config):
                 "max-reserved": 1,
                 "doc-root": "/",
                 "known-problem-directory": "@sharedir@/piuparts/known_problems",
-                "reporting-sections": "",
+                "reporting-sections": "default",
                 "precedence": 1,
                 "master-host": "piuparts.debian.org",
             },
@@ -1466,7 +1466,12 @@ class Section:
             os.unlink(summary_path)
 
         reporting_sections = self._config['reporting-sections'].split()
-        if reporting_sections:
+        if not reporting_sections or reporting_sections[0] == 'default':
+            reporting_sections = [self._config.get_std_distro()]
+
+        if reporting_sections[0] == 'none':
+            logging.debug("Skipping summary")
+        else:
             logging.debug("Generating summary")
 
             summary = pkgsummary.new_summary()
