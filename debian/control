@@ -115,6 +115,7 @@ Package: piuparts-common
 Architecture: all
 Depends:
  python-apt,
+ python-distro-info,
  ${misc:Depends},
  ${python:Depends}
 Breaks:

@@ -28,6 +28,8 @@ piuparts (0.58) UNRELEASED; urgency=low
   [ David Steele ]
   * piuparts-report.py: Store test summary.json output at the section
     and global level, using a new piupartslib/pksummary.py module.
+    The new Config.get_std_distro() provides a standard default distro
+    name for summaries.
     (Closes: #740386)
 
  -- Holger Levsen <holger@debian.org>  Fri, 14 Feb 2014 14:00:04 +0100

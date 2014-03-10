@@ -27,6 +27,9 @@
 import ConfigParser
 import UserDict
 import subprocess
+import collections
+import re
+import distro_info
 
 
 class MissingSection(Exception):
@@ -95,6 +98,41 @@ class Config(UserDict.UserDict):
         if distros:
             return distros[-1]
         return self["distro"]
+
+    def _get_distmap(self):
+        debdist = distro_info.DebianDistroInfo()
+
+        # start with e.g. "sid" -> "unstable"
+        distmap = collections.defaultdict( lambda : "unknown", [
+                              (debdist.old(), "oldstable"),
+                              (debdist.devel(), "unstable"),
+                              (debdist.stable(), "stable"),
+                              (debdist.testing(), "testing"),
+                              ("experimental", "experimental"),
+                              ("rc", "experimental"),
+                              ])
+
+        # add mappings for e.g. "oldstable" -> "oldstable"
+        distmap.update(dict([(val, val) for key, val in distmap.iteritems()]))
+
+        # map e.g. "Debian6" -> "oldstable" where debdist.old(result="fullname")
+        # currently returns 'Debian 6.0 "Squeeze"'
+        dkey = lambda x: "Debian" + re.split('[ \.]', x(result="fullname"))[1]
+        dfuncs = [debdist.old, debdist.stable, debdist.testing]
+        distmap.update(dict([(dkey(x),distmap[x()]) for x in dfuncs]))
+
+        return distmap
+
+    def _map_distro(self, distro):
+        distro_root = re.split("[\-\.]", distro)[0]
+        distmap = self._get_distmap()
+        return distmap[distro_root]
+
+    def get_std_distro(self, distrolist=[]):
+        if not distrolist:
+            distrolist = [self.get_distro()] + self.get_distros()
+        mappedlist = [self._map_distro(x) for x in distrolist]
+        return reduce(lambda x,y: y if y != "unknown" else x, mappedlist)
 
     def get_area(self):
         if self["area"] is not None:
