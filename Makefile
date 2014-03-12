@@ -158,7 +158,7 @@ install: build-stamp
 
 
 check:
-	nosetests --verbose
+	# nosetests --verbose
 
 clean:
 	rm -f build-stamp
