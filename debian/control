@@ -12,8 +12,7 @@ Build-Depends:
  python-apt,
  python-nose,
  python-debianbts,
- python-yaml,
- python-mox3
+ python-yaml
 Build-Depends-Indep:
  asciidoc,
  git,
