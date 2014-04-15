@@ -1,4 +1,4 @@
-piuparts (0.57.1) UNRELEASED; urgency=low
+piuparts (0.58) UNRELEASED; urgency=low
 
   [ Holger Levsen ]
   * debian/copyright: update years.
@@ -7,6 +7,8 @@ piuparts (0.57.1) UNRELEASED; urgency=low
   * custom-scripts: add debugging output for resolvconf. (See #660350)
   * Adapt and rename conf/piuparts.apache to piuparts-master.conf as per
     apache2.4 transition. (Closes: #712384)
+  * piuparts.1.txt: explain that --do-not-verify-signatures also causes
+    APT::Get::AllowUnauthenticated to be set accordingly in the chroots.
 
   [ Andreas Beckmann ]
   * piupartslib/packagesdb.py:

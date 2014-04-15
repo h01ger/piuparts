@@ -70,7 +70,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   Use default settings suitable for a particular flavor of Debian: either debian or ubuntu. The default is debian.
 
 *--do-not-verify-signatures*::
-  Do not verify signatures from the Release files when running debootstrap.
+  Do not verify signatures from the Release files when running debootstrap. Also set APT::Get::AllowUnauthenticated accordingly in /etc/apt/apt.conf in the chroots.
 
 *--dpkg-force-confdef*::
   Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This option will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages. 'This option shall normally not be used.' (See #466118.)
