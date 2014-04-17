@@ -2,8 +2,11 @@ piuparts (0.58) UNRELEASED; urgency=low
 
   [ Holger Levsen ]
   * debian/copyright: update years.
-  * piuparts.py: ignore multiarch definition in_default_debian_mirrors()
-    (Closes: #711370)
+  * piuparts.py:
+    - ignore multiarch definition in_default_debian_mirrors()
+      (Closes: #711370)
+    - Add to ignored_files:
+      + /etc/init/startpar-bridge.conf to workaround #744398 in debsums.
   * custom-scripts: add debugging output for resolvconf. (See #660350)
   * Adapt and rename conf/piuparts.apache to piuparts-master.conf as per
     apache2.4 transition. (Closes: #712384)
