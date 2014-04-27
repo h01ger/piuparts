@@ -41,6 +41,7 @@ piuparts (0.59) UNRELEASED; urgency=low
     accepted and stripped by the parser.
   * piuparts-report.py:
     - Fix indentation of generate_global_summary()
+    - Refactor sections_by_precedence() out of generate_global_summary().
 
  -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200
 

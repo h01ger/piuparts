@@ -1520,35 +1520,31 @@ class Section:
 
         self.generate_summary(web_host)
 
-def generate_global_summary(dir, sections):
+def sections_by_precedence(sections):
+    precedence = {}
+    count = 0
+    for section in sections:
+        config = Config(section=section, defaults_section="global")
+        config.read(CONFIG_FILE)
+        precedence[section] = (config["precedence"], count)
+        count += 1
 
+    return sorted(sections, key=lambda x: precedence[x])
+
+def generate_global_summary(dir, sections):
     json_name = "summary.json"
 
     logging.debug("Generating global summary")
 
     summary = pkgsummary.new_summary()
 
-    def by_precedence(secname):
-        return(by_precedence.section_precedence[secname])
-
-    by_precedence.section_precedence = {}
-    count = 0
-    for section in sections:
-        config = Config(section=section, defaults_section="global")
-        config.read(CONFIG_FILE)
-        by_precedence.section_precedence[section] = \
-                                        (config["precedence"], count)
-        count += 1
-
-    for section in sorted(sections, key=by_precedence):
+    for section in sections_by_precedence(sections):
        sec_path = os.path.join(dir, section, json_name)
        if os.path.isfile(sec_path):
            sec_summ = pkgsummary.read_summary(sec_path)
            summary = pkgsummary.merge_summary(summary, sec_summ)
 
     summary_path = os.path.join(dir, json_name)
-    if os.path.isfile(summary_path):
-        os.unlink(summary_path)
     pkgsummary.write_summary(summary, summary_path)
 
 # START detect_well_known_errors
