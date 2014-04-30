@@ -10,6 +10,7 @@ Build-Depends:
  python (>= 2.7),
  python-debian,
  python-apt,
+ python-distro-info,
  python-nose,
  python-debianbts,
  python-yaml,

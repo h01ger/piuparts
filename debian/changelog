@@ -34,6 +34,8 @@ piuparts (0.58) UNRELEASED; urgency=low
     and global level, using a new piupartslib/pksummary.py module.
     The new Config.get_std_distro() provides a standard default distro
     name for summaries. (Closes: #740386)
+  * Add python-distro-info to piuparts-common's depends and to build-depends
+    as it's used in the tests too.
 
  -- Holger Levsen <holger@debian.org>  Fri, 14 Feb 2014 14:00:04 +0100
 
