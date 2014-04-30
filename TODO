@@ -7,8 +7,6 @@ wishlist!
 
 for 0.5x:
 
-- use /sys/fs/selinux from wheezy onwards - see #682068 for more info
-
 - make piuparts-master + piuparts-slave packages work with documented steps:
   - do not enable sudoers.d/piuparts-slave in p-s.deb, neither the cronjobs.
     - this is manual work one has done once after installation. we only
