@@ -207,7 +207,12 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://jenkins.debian.net" target="_blank">jenkins.debian.net</a>
+      <a href="https://jenkins.debian.net" target="_blank">jenkins.debian.net</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="http://ci.debian.net" target="_blank">ci.debian.net</a>
      </td>
     </tr>
     <tr class="titlerow">

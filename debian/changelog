@@ -14,6 +14,7 @@ piuparts (0.58) UNRELEASED; urgency=low
     APT::Get::AllowUnauthenticated to be set accordingly in the chroots.
   * Switch ubuntu default to 'trusty'. (Closes: #744848). Then switch it to
     'utopic'...
+  * piuparts-report: Add link to ci.debian.net to navigation menu.
 
   [ Andreas Beckmann ]
   * piupartslib/packagesdb.py:
