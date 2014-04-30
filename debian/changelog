@@ -39,6 +39,8 @@ piuparts (0.59) UNRELEASED; urgency=low
   [ David Steele ]
   * dependencyparser.py - Be more lenient about the multi-arch modifiers
     accepted and stripped by the parser.
+  * piuparts-report.py:
+    - Fix indentation of generate_global_summary()
 
  -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200
 
