@@ -215,6 +215,7 @@ class Settings:
             "/etc/inetd.conf",
             "/etc/inittab",
             "/etc/ld.so.cache",
+            "/etc/machine-id",
             "/etc/mailname",
             "/etc/mtab",
             "/etc/network/interfaces",
