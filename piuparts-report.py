@@ -503,7 +503,7 @@ class Config(piupartslib.conf.Config):
                 "known-problem-directory": "@sharedir@/piuparts/known_problems",
                 "reporting-sections": "default",
                 "precedence": 1,
-                "master-host": "piuparts.debian.org",
+                "web-host": "piuparts.debian.org",
             },
             defaults_section=defaults_section)
 
@@ -563,10 +563,10 @@ def source_subdir(source):
     else:
         return source[:1]
 
-def source_summary_url(master_host, doc_root, section, src_pkg):
+def source_summary_url(web_host, doc_root, section, src_pkg):
     return( "http://%s%s/%s/source/%s/%s.html" %
               (
-                  master_host,
+                  web_host,
                   doc_root,
                   section,
                   source_subdir(src_pkg),
@@ -1464,7 +1464,7 @@ class Section:
         logging.debug("Writing stats pages for %s" % self._config.section)
         self.write_state_pages()
 
-    def generate_summary(self, master_host):
+    def generate_summary(self, web_host):
         summary_path = os.path.join(self._output_directory, "summary.json")
 
         if os.path.isfile(summary_path):
@@ -1491,7 +1491,7 @@ class Section:
                         block_cnt = self._binary_db.block_count(pkgname)
                     srcpkg = self._binary_db.get_source(pkgname)
                     url = source_summary_url(
-                              master_host, self._doc_root,
+                              web_host, self._doc_root,
                               self._config.section, srcpkg)
 
                     pkgsummary.add_summary(
@@ -1500,7 +1500,7 @@ class Section:
 
             pkgsummary.write_summary(summary, summary_path)
 
-    def generate_output(self, output_directory, section_names, problem_list, master_host):
+    def generate_output(self, output_directory, section_names, problem_list, web_host):
         # skip output generation for disabled sections
         if int(self._config["max-reserved"]) == 0:
             return
@@ -1518,7 +1518,7 @@ class Section:
         self.generate_html()
         os.chdir(oldcwd)
 
-        self.generate_summary(master_host)
+        self.generate_summary(web_host)
 
 def generate_global_summary(dir, sections):
 
@@ -1641,7 +1641,7 @@ def main():
         process_section_names = sys.argv[1:]
     master_directory = global_config["master-directory"]
     output_directory = global_config["output-directory"]
-    master_host = global_config["master-host"]
+    web_host = global_config["web-host"]
 
     doc_root = global_config["doc-root"].strip()
     if not doc_root.startswith("/"):
@@ -1657,7 +1657,7 @@ def main():
         for section_name in process_section_names:
             try:
                 section = Section(section_name, master_directory, doc_root, packagedb_cache=packagedb_cache)
-                section.generate_output(output_directory, section_names, problem_list, master_host)
+                section.generate_output(output_directory, section_names, problem_list, web_host)
             except MissingSection as e:
                 logging.error("Configuration Error in section '%s': %s" % (section_name, e))
 

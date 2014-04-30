@@ -295,6 +295,9 @@ used for all further sections.
  effort and can be excluded from backups. By default this is
  undefined meaning that no backups of the history data will be made.
 
+* "web-host" is the domain name for the reporting web server.
+ Default: "piuparts.debian.org".
+
 * "doc-root" is the location where the webserver will serve the
  piuparts report from. Default: "/".
 
