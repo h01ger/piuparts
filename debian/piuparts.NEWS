@@ -1,7 +1,7 @@
 piuparts (0.45) unstable; urgency=low
 
   For those interested in running their own local instance of
-  http://piuparts.debian.org there are now piuparts-master and
+  https://piuparts.debian.org there are now piuparts-master and
   piuparts-slave packages for ease of installation.
 
   This is useful for both developing piuparts as well as doing QA on the

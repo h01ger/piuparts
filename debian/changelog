@@ -15,6 +15,8 @@ piuparts (0.58) UNRELEASED; urgency=low
   * Switch ubuntu default to 'trusty'. (Closes: #744848). Then switch it to
     'utopic'...
   * piuparts-report: Add link to ci.debian.net to navigation menu.
+  * Replace http://piuparts.debian.org with https everywhere. Thanks to DSA
+    for all their support running piuparts.debian.org and for everything else!
 
   [ Andreas Beckmann ]
   * piupartslib/packagesdb.py:

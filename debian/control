@@ -18,7 +18,7 @@ Build-Depends-Indep:
  asciidoc,
  git,
  xmlto
-Homepage: http://piuparts.debian.org
+Homepage: https://piuparts.debian.org
 Vcs-Git: git://anonscm.debian.org/piuparts/piuparts.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
 X-Python-Version: >= 2.7
@@ -79,7 +79,7 @@ Description: piuparts master components
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.
  A master/slave piuparts installation is used for testing complete archives
- as it is done on http://piuparts.debian.org/.
+ as it is done on https://piuparts.debian.org/.
  .
  This package provides the piuparts-master, which needs one or more slaves to
  operate. It also contains piuparts-reports to generate web pages with the
@@ -106,7 +106,7 @@ Description: piuparts slave components
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.
  A master/slave piuparts installation is used for testing complete archives
- as it is done on http://piuparts.debian.org/.
+ as it is done on https://piuparts.debian.org/.
  .
  This package provides the piuparts slave components, which need a piuparts
  master to operate. See the documentation in the piuparts-master package.
@@ -126,5 +126,5 @@ Description: common piuparts components
  piupartslib, common library used by piuparts-master, -reports, -analyze and
  -slave.
  .
- See http://piuparts.debian.org or the piuparts package to learn more about
+ See https://piuparts.debian.org or the piuparts package to learn more about
  piuparts.

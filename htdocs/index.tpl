@@ -29,7 +29,7 @@
      <td class="contentcell2">
       To make sure piuparts is run on all packages in Debian, piuparts.debian.org has been set up to run piuparts in <a href="/doc/README_server.html" target="_blank">master/slave mode</a>. This setup currently consists of two hosts: <a href="http://db.debian.org/machines.cgi?host=pejacevic" target="_blank">pejacevic.debian.org</a> and <a href="http://db.debian.org/machines.cgi?host=piu-slave-bm-a" target="_blank">piu-slave-bm-a.debian.org</a>:
      <ul>
-      <li> pejacevic acts as the piuparts-master, which is responsible for scheduling test jobs to the slaves. The other main task is to generate the reports which are served via http://piuparts.debian.org.</li>
+      <li> pejacevic acts as the piuparts-master, which is responsible for scheduling test jobs to the slaves. The other main task is to generate the reports which are served via https://piuparts.debian.org.</li>
       <li> piu-slave-bm-a runs four piuparts-slave instances, which then run piuparts itself.</li>
      </ul>
       These hosts run as virtualized hardware on <a href="http://bits.debian.org/2013/04/bytemark-donation.html" target="_blank">this nice cluster</a> hosted at <a href="http://www.bytemark.co.uk" target="_blank">Bytemark</a>.
@@ -65,7 +65,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2014-02-26</b> A new <a href="http://piuparts.debian.org/summary.json">JSON summary file</a> is being published, showing package testing state, status URL, and the number of packages being blocked by failures, for each distribution.
+      <b>2014-02-26</b> A new <a href="https://piuparts.debian.org/summary.json">JSON summary file</a> is being published, showing package testing state, status URL, and the number of packages being blocked by failures, for each distribution.
      </td>
     </tr>
     <tr class="normalrow">
@@ -90,7 +90,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-05-22</b> The webpages served by <a href="http://piuparts.debian.org">http://piuparts.debian.org</a> are updated twice a day now. Further changes which were applied last week: debsums failures have been reenabled, adequate is now run by piuparts (see <a href="http://bugs.debian.org/703902" target="_blank">#703902</a>) and two new suites were added: <em>experimental</em> and <em>sid-nodoc</em>, which tests sid without files in /usr/share/doc/&lt;package&gt;.
+      <b>2013-05-22</b> The webpages served by <a href="https://piuparts.debian.org">https://piuparts.debian.org</a> are updated twice a day now. Further changes which were applied last week: debsums failures have been reenabled, adequate is now run by piuparts (see <a href="http://bugs.debian.org/703902" target="_blank">#703902</a>) and two new suites were added: <em>experimental</em> and <em>sid-nodoc</em>, which tests sid without files in /usr/share/doc/&lt;package&gt;.
      </td>
     </tr>
     <tr class="normalrow">
@@ -106,7 +106,7 @@
     <tr class="normalrow">
      <td class="contentcell2">
       <b>2013-03-15</b> Among many other new features the 0.50 release offers much greater flexibility for configuring and selecting (partial) suites and different mirrors.
-	Therefore it is possible to test nearly arbitrary upgrade pathes. On piuparts.debian.org this is now used for testing <a href="http://piuparts.debian.org/squeeze2bpo2wheezy">squeeze2bpo2wheezy</a> and <a href="http://piuparts.debian.org/sid2/experimental">sid2experimental</a>. Thanks to Andreas Beckmann for this great new feature!
+	Therefore it is possible to test nearly arbitrary upgrade pathes. On piuparts.debian.org this is now used for testing <a href="https://piuparts.debian.org/squeeze2bpo2wheezy">squeeze2bpo2wheezy</a> and <a href="https://piuparts.debian.org/sid2/experimental">sid2experimental</a>. Thanks to Andreas Beckmann for this great new feature!
      </td>
     </tr>
     <tr class="normalrow">

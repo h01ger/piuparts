@@ -19,7 +19,7 @@ removal testing suite".
 piuparts is licensed under the GNU General Public License,
 version 2, or (at your option) any later version.
 
-http://piuparts.debian.org has been testing the Debian archive
+https://piuparts.debian.org has been testing the Debian archive
 since the Lenny release in 2009, though responsible maintainers
 run piuparts locally before uploading packages to the archive.
 

@@ -23,7 +23,7 @@
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
 get_config_value HTDOCS global output-directory
-get_config_value URLBASE global urlbase http://piuparts.debian.org
+get_config_value URLBASE global urlbase https://piuparts.debian.org
 get_config_value DAYS global reschedule-untestable-days 7
 
 

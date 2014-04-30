@@ -1,7 +1,7 @@
 Notes about the piuparts installation on pejacevic.debian.org and it's slave
 ============================================================================
 
-This document describes the setup for http://piuparts.debian.org - it's used
+This document describes the setup for https://piuparts.debian.org - it's used
 for reference for the Debian System Administrators (DSA) as well as a guide
 for other setting up a similar system, with the piuparts source code
 installed from git. For regular installations we recommend to use the

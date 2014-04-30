@@ -32,7 +32,7 @@ for 0.5x:
   - packages processed per day and section
     - master writes submissions.txt per section since 0.45
   - # of open bugs with tag piuparts
-  - generate http://piuparts.debian.org/stable/states.png + testing.png from
+  - generate https://piuparts.debian.org/stable/states.png + testing.png from
     existing data
   - generate simple diagrams: number of source + binary package in all single distros:
     squeeze, wheezy, jessie, sid.

@@ -49,7 +49,7 @@ To set this up for yourself, the following steps should suffice:
 === Setup from piuparts-master and piuparts-slaves packages
 
 The piuparts-server package installs a piuparts server along the lines of
-http://piuparts.debian.org/.
+https://piuparts.debian.org/.
 
 Before running the server, edit /etc/piuparts.conf appropriately (install
 piuparts-slave (which ships that file), too, or use the template
@@ -76,7 +76,7 @@ file to enable the jobs.
 
 === Setup from GIT
 
-http://piuparts.debian.org has been set up directly from GIT, this is
+https://piuparts.debian.org has been set up directly from GIT, this is
 described in '/usr/share/doc/piuparts-master/README_pejacevic.txt'.
 
 == Distributed testing
