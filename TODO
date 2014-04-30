@@ -40,13 +40,13 @@ for 0.5x:
 
 - piuparts.conf.pejacevic: use mirror via nfs (faster)
 
-- look for a solution to use the global debian mirror for debian-backports,
-  too, to avoid hardcoding a specific mirror in distros.conf
+
+for 0.6x:
 
 - maybe compress all logfiles
 
-
-for 0.6x:
+- look for a solution to use the global debian mirror for debian-backports,
+  too, to avoid hardcoding a specific mirror in distros.conf
 
 - really support multiple architectures:
   - piuparts-report should have a list of available arch and list packages only
@@ -73,6 +73,22 @@ for 0.6x:
     - requires merging all the additional infomation in piuparts.1.txt into piuarts.py
     - parsing piuparts --help output may be easier than parsing piuparts.py
 
+- check the logfiles (especially pass/) for
+  - "Exception in thread"
+  - java stacktraces
+  - "Can't locate .* in @INC"
+
+
+for 0.7x and later:
+
+- install from git/Makefile: remove the need for /etc/piuparts
+
+- accept a PIUPARTS_CONF environment variable everywhere to point to a different
+  piuparts.conf
+
+- write reportbug-like wrapper for mass bug filing (start simple, make it more
+  sophisticated later).
+
 - rework known_problems:
   - split detect_well_known_errors
     - parsing the logfiles should stay there
@@ -85,13 +101,14 @@ for 0.6x:
     generate _issues.tpl (pass/) and/or _error.tpl (fail/ bugged/ affected/)
   - rework known problems to a python-friendlier format
 
-- install from git/Makefile: remove the need for /etc/piuparts
+- the templates used by update-reports.py and detect_well_known_errors should
+  be taken from /etc/piuparts/templates/ and not be included in the python source
 
-- accept a PIUPARTS_CONF environment variable everywhere to point to a different
-  piuparts.conf
+- a redirect of http://piuparts.d.o/foo to http://p.d.o/source/f/foo.html would
+  be nice
 
-- write reportbug-like wrapper for mass bug filing (start simple, make it more
-  sophisticated later).
+
+for 0.8x and later:
 
 - find_default_debian_mirrors: 
   - check whether find_default_debian_mirrors produces something useful if
@@ -100,17 +117,6 @@ for 0.6x:
 
 - make it possible to call aptitude (or similar) instead of apt-get and allow to
   override the commandline arguments.
-
-- the templates used by update-reports.py and detect_well_known_errors should
-  be taken from /etc/piuparts/templates/ and not be included in the python source
-
-- check the logfiles (especially pass/) for
-  - "Exception in thread"
-  - java stacktraces
-  - "Can't locate .* in @INC"
-
-
-for 0.7x and later:
 
 - mounting /proc and perhaps others (usbfs, sysfs, /dev/pts, etc.) in the chroot
   might be a good idea because some packages might need this.
@@ -127,9 +133,6 @@ for 0.7x and later:
   - do more fancy R graphs, eg. also per state
   - link (and target) to piuparts.d.o configuration is static to pejacevic. should
     refer to the actual hosts configuration if running somewhere else
-
-- a redirect of http://piuparts.d.o/foo to http://p.d.o/source/f/foo.html would
-  be nice
 
 - not sure if it's a sensible thing to to, but provide a way to turn off
   debugging output for piuparts.py - see
