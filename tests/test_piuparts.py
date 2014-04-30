@@ -42,7 +42,7 @@ class DefaultsFactoryTests(unittest.TestCase):
         self.assertEqual(defaults.get_keyring(), '/usr/share/keyrings/ubuntu-archive-keyring.gpg')
         self.assertEqual(defaults.get_components(), ["main", "universe", "restricted", "multiverse"])
         self.assertEqual(defaults.get_mirror(), [("http://archive.ubuntu.com/ubuntu", ["main", "universe", "restricted", "multiverse"])])
-        self.assertEqual(defaults.get_distribution(), ['trusty'])
+        self.assertEqual(defaults.get_distribution(), ['utopic'])
 
     def test_new_defaults_panics_with_unknown_flavor(self):
         # mock the guess_flavor function as it runs lsb_release in a subprocess

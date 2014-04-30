@@ -12,7 +12,8 @@ piuparts (0.58) UNRELEASED; urgency=low
     apache2.4 transition. (Closes: #712384)
   * piuparts.1.txt: explain that --do-not-verify-signatures also causes
     APT::Get::AllowUnauthenticated to be set accordingly in the chroots.
-  * Switch ubuntu default to 'trusty'. (Closes: #744848)
+  * Switch ubuntu default to 'trusty'. (Closes: #744848). Then switch it to
+    'utopic'...
 
   [ Andreas Beckmann ]
   * piupartslib/packagesdb.py:
