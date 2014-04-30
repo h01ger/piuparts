@@ -6,7 +6,6 @@ piuparts (0.58) UNRELEASED; urgency=low
     - ignore multiarch definition in_default_debian_mirrors()
       (Closes: #711370)
     - Add to ignored_files:
-      + /etc/init/startpar-bridge.conf to workaround #744398 in debsums.
       + /etc/machine-id (Closes: #619244)
   * custom-scripts: add debugging output for resolvconf. (See #660350)
   * Adapt and rename conf/piuparts.apache to piuparts-master.conf as per
