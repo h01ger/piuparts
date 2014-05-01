@@ -1412,14 +1412,24 @@ class Chroot:
 
     def mount_selinux(self):
         if selinux_enabled():
-            run(["mkdir", "-p", self.relative("/selinux")])
-            run(["mount", "-t", "selinuxfs", "/selinux", self.relative("/selinux")])
+            run(["mkdir", "-p", self.selinuxfs_relative_path()])
+            run(["mount", "--bind", "/sys/fs/selinux", self.selinuxfs_relative_path()])
+            run(["mount", "-o", "remount,ro,bind", self.selinuxfs_relative_path()])
             logging.info("SElinux mounted into chroot")
 
     def unmount_selinux(self):
         if selinux_enabled():
-            run(["umount", self.relative("/selinux")])
+            run(["umount", self.selinuxfs_relative_path()])
             logging.info("SElinux unmounted from chroot")
+
+    # If /selinux is present, assume that this is the only supported
+    # location by libselinux. Otherwise use the new location.
+    # /selinux was shipped by the libselinux package until wheezy.
+    def selinuxfs_relative_path(self):
+        if os.path.isdir(self.relative('/selinux')):
+            return self.relative('/selinux')
+        else:
+            return self.relative('/sys/fs/selinux')
 
     def mount_proc(self):
         """Mount /proc inside chroot."""
