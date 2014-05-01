@@ -1,6 +1,8 @@
 piuparts (0.59) UNRELEASED; urgency=low
 
-  * 
+  * piuparts.py:
+    - mount selinuxfs read-only and on new location when possible. Thanks to
+      Laurent Bigonville for the patch! (Closes: #682068)
 
  -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200
 
