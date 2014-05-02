@@ -6,6 +6,7 @@ piuparts (0.59) UNRELEASED; urgency=low
   * piuparts-report.py:
     - create https URLs in source_summary_url(). This should probably be made
       configurable.
+    - fix spelling of "ditto". (Closes: #746724)
 
  -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200
 
