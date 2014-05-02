@@ -564,7 +564,7 @@ def source_subdir(source):
         return source[:1]
 
 def source_summary_url(web_host, doc_root, section, src_pkg):
-    return( "http://%s%s/%s/source/%s/%s.html" %
+    return( "https://%s%s/%s/source/%s/%s.html" %
               (
                   web_host,
                   doc_root,
