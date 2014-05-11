@@ -13,9 +13,9 @@ for 0.5x:
       document whats needs to be done how.
   - the shipped crontabs are not suitable from cron.d/ due to missing user
     column -> provide instructions how to install them as piuparts(s|m) user
-    from /u/s/doc/p-(s|m)/examples
+    from /u/s/doc/p-(s|m)/examples (this is #746721)
   - verify that all scripts in $user/bin/ also work from master-slave packages
-    eventually enable some conjobs in the packages
+    (this is #746718)
   - slave.postinst should setup '~piupartsm/.ssh/authorized_keys' using triggers
     dpkg-trigger piuparts-master-please-install-the-slave-key
     + the current method only works if -slave is configured after -master
