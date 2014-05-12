@@ -3,6 +3,8 @@ piuparts (0.59) UNRELEASED; urgency=low
   * piuparts.py:
     - mount selinuxfs read-only and on new location when possible. Thanks to
       Laurent Bigonville for the patch! (Closes: #682068)
+    - Add to ignored_files:
+      + /etc/sub{g,u}id[-] introduced by shadow 1:4.2-1.
   * piuparts-report.py:
     - create https URLs in source_summary_url(). This should probably be made
       configurable.
