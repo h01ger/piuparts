@@ -1,4 +1,3 @@
-etc/cron.d/piuparts-slave
 etc/piuparts/piuparts.conf
 etc/sudoers.d/piuparts
 usr/share/piuparts/piuparts-slave
