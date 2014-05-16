@@ -9,9 +9,11 @@ piuparts (0.59) UNRELEASED; urgency=low
     - create https URLs in source_summary_url(). This should probably be made
       configurable.
     - fix spelling of "ditto". (Closes: #746724)
-  * Install cron files for piupartsm and piupartss users in
-    /usr/share/doc/piuparts-(master|slave)/examples/. (Closes: #746721)
-  * Install piuparts.conf.sample in /usr/share/doc/piuparts-master/examples/.
+  * Packaging:
+    - install cron files for piupartsm and piupartss users in
+      /usr/share/doc/piuparts-(master|slave)/examples/ (Closes: #746721)
+    - install piuparts.conf.sample in /usr/share/doc/piuparts-master/examples/
+    - install slave_run and slave_join in /usr/bin/ (Closes: #746718)
 
  -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200
 
