@@ -740,7 +740,7 @@ class Section:
         self._load_package_database(section, master_directory)
         self._binary_db = self._package_databases[section]
 
-        self._source_db = piupartslib.packagesdb.PackagesDB()
+        self._source_db = piupartslib.packagesdb.PackagesDB(prefix=self._section_directory)
         self._source_db.load_packages_urls(
                 self._distro_config.get_sources_urls(
                     self._config.get_distro(),

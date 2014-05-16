@@ -8,6 +8,7 @@ piuparts (0.59) UNRELEASED; urgency=low
   * piuparts-report.py:
     - create https URLs in source_summary_url(). This should probably be made
       configurable.
+    - fix log directory creation. (Closes: #746722)
     - fix spelling of "ditto". (Closes: #746724)
   * Packaging:
     - install cron files for piupartsm and piupartss users in
