@@ -1,5 +1,6 @@
 #
 # This is the configuration file for piuparts running in master-slave mode.
+# Usually it's placed in /etc/piuparts/piuparts.conf
 #
 # You MUST make sure that master-host, master-user, master-directory, and
 # mirror are set correctly.
