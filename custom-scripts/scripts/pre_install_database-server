@@ -98,12 +98,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	ocsinventory-server)			MYSQL=yes ;;
 	openacs)				POSTGRESQL=yes ;;
 	otrs)					POSTGRESQL=yes ;;
-	otrs2)					POSTGRESQL=yes ; MYSQL=yes
-						if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
-							# workaround #707075
-							echo default-storage-engine=MYISAM >> /etc/mysql/my.cnf 
-						fi
-						;;
+	otrs2)					POSTGRESQL=yes ; MYSQL=yes ;;
 	pdns-backend-mysql)			MYSQL=yes ;;
 	pdns-backend-pgsql)			POSTGRESQL=yes ;;
 	phpbb3)					MYSQL=yes ;;
@@ -162,6 +157,14 @@ esac
 if [ "$MYSQL" = "yes" ]; then
 	echo "Installing mysql-server..."
 	apt-get -y install mysql-server
+	# workaround #707075
+	case ${PIUPARTS_OBJECTS%%=*} in
+		otrs2)
+			if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
+				echo default-storage-engine=MYISAM >> /etc/mysql/my.cnf 
+			fi
+		;;
+	esac
 fi
 
 if [ "$POSTGRESQL" = "yes" ]; then
