@@ -160,7 +160,7 @@ if [ "$MYSQL" = "yes" ]; then
 	# workaround #707075
 	case ${PIUPARTS_OBJECTS%%=*} in
 		otrs2)
-			if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
+			if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] && [ -d /etc/mysql ]; then
 				echo default-storage-engine=MYISAM >> /etc/mysql/my.cnf 
 			fi
 		;;
