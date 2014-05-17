@@ -98,7 +98,12 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	ocsinventory-server)			MYSQL=yes ;;
 	openacs)				POSTGRESQL=yes ;;
 	otrs)					POSTGRESQL=yes ;;
-	otrs2)					POSTGRESQL=yes ; MYSQL=yes ;;
+	otrs2)					POSTGRESQL=yes ; MYSQL=yes
+						if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
+							# workaround #707075
+							echo default-storage-engine=MYISAM >> /etc/mysql/my.cnf 
+						fi
+						;;
 	pdns-backend-mysql)			MYSQL=yes ;;
 	pdns-backend-pgsql)			POSTGRESQL=yes ;;
 	phpbb3)					MYSQL=yes ;;
