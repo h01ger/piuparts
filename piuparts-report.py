@@ -1648,9 +1648,6 @@ def make_bts_stats_graph(out_dir):
     grdevices.dev_off()
 
 
-if __name__ == "__main__":
-    main()
-
 def main():
     setup_logging(logging.DEBUG, None)
     global_config = Config(section="global")
