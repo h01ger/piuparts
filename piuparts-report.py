@@ -1629,8 +1629,8 @@ def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
 # END detect_well_known_errors
 
 
-def make_bts_stats_graph(out_dir):
-    countsfile = os.path.join(out_dir, "bts_stats.txt")
+def make_bts_stats_graph(master_dir, out_dir):
+    countsfile = os.path.join(master_dir, "bts_stats.txt")
     pngfile = os.path.join(out_dir, "bts_stat.png")
     grdevices = importr('grDevices')
     grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100)
@@ -1695,7 +1695,7 @@ def main():
                     })
         # create graph about bugs filed
         try:
-            make_bts_stats_graph(output_directory);
+            make_bts_stats_graph(master_directory, output_directory);
         except:
             logging.debug("Error generating the graph images, probably python-rpy2 is not installed, disabling graphs.")
 
