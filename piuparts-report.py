@@ -1198,7 +1198,7 @@ class Section:
         self.create_maintainer_summaries(maintainers, source_binary_rows)
 
 
-    def make_stats_graph(self):
+    def make_section_stats_graph(self):
         countsfile = os.path.join(self._output_directory, "counts.txt")
         pngfile = os.path.join(self._output_directory, "states.png")
         grdevices = importr('grDevices')
@@ -1299,7 +1299,7 @@ class Section:
                           (html_protect(state), html_protect(state), analysis, len(self._binary_db.get_pkg_names_in_state(state)),
                           dir_link)
         try:
-            tablerows += self.make_stats_graph();
+            tablerows += self.make_section_stats_graph();
         except:
             logging.debug("Error generating the graph images, probably python-rpy2 is not installed, disabling graphs.")
 
@@ -1629,6 +1629,28 @@ def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
 # END detect_well_known_errors
 
 
+def make_bts_stats_graph(out_dir):
+    countsfile = os.path.join(out_dir, "bts_stats.txt")
+    pngfile = os.path.join(out_dir, "bts_stat.png")
+	grdevices = importr('grDevices')
+	grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100)
+	r = robjects.r
+    r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
+    r('cname <- c("date",rep(colnames(t)))')
+    # make graph since day 1
+    r('v <- t[0:nrow(t),0:2]')
+    # tango colors again:
+    r('palette(c("#4e9a06", "#ef2929"))')
+    r('barplot(t(v),col = 1:3, \
+          main="Bugs filed with tag=piuparts users=debian-qa@lists.debian.org archive=both", \
+          xlab="", ylab="Number of bugs submitted and closed", space=0, border=NA)')
+    r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:3,xjust=0.5,yjust=0,bty="n")')
+	grdevices.dev_off()
+
+
+if __name__ == "__main__":
+    main()
+
 def main():
     setup_logging(logging.DEBUG, None)
     global_config = Config(section="global")
@@ -1674,6 +1696,11 @@ def main():
                                    "section_navigation": create_section_navigation(section_names, "sid", doc_root),
                                    "doc_root": doc_root,
                     })
+        # create graph about bugs filed
+        try:
+            make_bts_stats_graph(output_directory);
+        except:
+            logging.debug("Error generating the graph images, probably python-rpy2 is not installed, disabling graphs.")
 
         generate_global_summary(output_directory, section_names)
 

@@ -58,6 +58,11 @@
       These pages are updated twice a day.
      </td>
     </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <img src="./bts_stats.png" height="450" width="800" alt="Bugs submitted which were found using piuparts" \>
+     </td>
+    </tr>
     <tr class="titlerow">
      <td class="titlecell">
       News
