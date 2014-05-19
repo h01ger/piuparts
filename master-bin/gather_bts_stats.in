@@ -34,18 +34,25 @@ if $(grep -q ^$TODAY $BTS_STATS 2>/dev/null) ; then
 fi
 
 # query bts
-ALL=$(bts select usertag:piuparts users:debian-qa@lists.debian.org archive:both 2>/dev/null|wc -l)
-OPEN=$(bts select usertag:piuparts users:debian-qa@lists.debian.org status:open 2>/dev/null|wc -l)
+RC="severity:serious severity:grave severity:critical"
+OTHER="severity:wishlist severity:minor severity:normal severity:important"
+DONE_RC=$(bts select usertag:piuparts users:debian-qa@lists.debian.org status:done archive:both $RC 2>/dev/null|wc -l)
+OPEN_RC=$(bts select usertag:piuparts users:debian-qa@lists.debian.org status:open status:forwarded $RC 2>/dev/null|wc -l)
+DONE_OTHER=$(bts select usertag:piuparts users:debian-qa@lists.debian.org status:done archive:both $OTHER 2>/dev/null|wc -l)
+OPEN_OTHER=$(bts select usertag:piuparts users:debian-qa@lists.debian.org status:open status:forwarded $OTHER 2>/dev/null|wc -l)
 
 # test if both values are integers
-if ! ( [[ $ALL =~ ^-?[0-9]+$ ]] && [[ $OPEN =~ ^-?[0-9]+$ ]] ) ; then
-	echo "Non-integer value detected, exiting. ALL: $ALL OPEN: $OPEN"
+if ! ( [[ $DONE_RC =~ ^-?[0-9]+$ ]] && [[ $OPEN_RC =~ ^-?[0-9]+$ ]] && [[ $DONE_OTHER =~ ^-?[0-9]+$ ]] && [[ $OPEN_OTHER =~ ^-?[0-9]+$ ]] ) ; then
+	echo "Non-integer value detected, exiting."
+	echo "DONE_RC: $DONE_RC OPEN_RC: $OPEN_RC"
+	echo "DONE_OTHER: $DONE_OTHER OPEN_OTHER: $OPEN_OTHER"
+	exit 1
 fi
 
 # init file if needed
 if [ ! -f $BTS_STATS ] ; then
-	echo "date, all, open" > $BTS_STATS
+	echo "date, done_rc, open_rc, done_other, open_other" > $BTS_STATS
 fi
 
 # finally, write stats
-echo "$TODAY, $ALL, $OPEN" >> $BTS_STATS
+echo "$TODAY, $DONE_RC, $OPEN_RC, $DONE_OTHER, $OPEN_OTHER" >> $BTS_STATS
