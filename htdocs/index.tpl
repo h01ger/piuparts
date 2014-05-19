@@ -60,12 +60,22 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <img src="./bts_stats.png" height="450" width="800" alt="Bugs submitted which were found using piuparts" \>
+      <img src="./bts_stats.png" width="100%" alt="Bugs submitted which were found using piuparts" \>
      </td>
     </tr>
     <tr class="titlerow">
      <td class="titlecell">
       News
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2014-05-19</b> Add a graph to the startpage showing the number of bugs filed due to running piuparts.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2014-05-11</b> Temporarily ignore debsums results for wheezy2jessie and wheezy2bpo2jessie due to <a href="http://bugs.debian.org/744398" target="_blank">#744398</a>.
      </td>
     </tr>
     <tr class="normalrow">

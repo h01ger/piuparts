@@ -1631,7 +1631,7 @@ def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
 
 def make_bts_stats_graph(master_dir, out_dir):
     countsfile = os.path.join(master_dir, "bts_stats.txt")
-    pngfile = os.path.join(out_dir, "bts_stat.png")
+    pngfile = os.path.join(out_dir, "bts_stats.png")
     grdevices = importr('grDevices')
     grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100)
     r = robjects.r
