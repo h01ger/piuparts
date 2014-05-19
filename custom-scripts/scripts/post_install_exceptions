@@ -1,10 +1,10 @@
 #!/bin/sh
+set -e
 
 log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
 }
 
-echo "Debug: running script $0"
 case $PIUPARTS_OBJECTS in 
 	apt-listbugs)		log_debug
 				# apt-listbugs is run on installations / upgrades 
@@ -13,6 +13,3 @@ case $PIUPARTS_OBJECTS in
 				printf "%b\n" "#/bin/sh\nexit 0" > /usr/sbin/apt-listbugs
 				;;
 esac
-
-exit 0
-
