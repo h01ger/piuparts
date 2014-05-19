@@ -1,7 +1,10 @@
+#
+# copy this file to /etc/sudoers.d/piuparts-slave
+#
+
 # The piuparts slave needs to handle chroots.
 piupartss	ALL = NOPASSWD: ALL
 
 #piuparts admins
 %piuparts       ALL=(piupartss) ALL
-%piuparts       ALL=(piupartsm) ALL
 

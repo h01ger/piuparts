@@ -2,3 +2,4 @@ instances/piuparts.conf.anbe
 instances/piuparts.conf.pejacevic
 conf/piuparts.conf.sample
 conf/crontab-master
+conf/piuparts-master.sudoers

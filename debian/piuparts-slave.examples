@@ -1,1 +1,2 @@
 conf/crontab-slave
+conf/piuparts-slave.sudoers

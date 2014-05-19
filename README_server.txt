@@ -37,13 +37,11 @@ To set this up for yourself, the following steps should suffice:
  The key should be restricted to only allow running
  'piuparts-master' by prefixing it with
  'command="/usr/share/piuparts/piuparts-master",no-pty,no-port-forwarding'
-. Configure sudo (via '/etc/sudoers.d/piuparts') on the slave machine(s)
- to allow the slave account to run '/usr/sbin/piuparts' as root without
- password (otherwise  you'll be typing in a password all the time).
-. Run '/usr/share/piuparts/piuparts-slave' on the slave accounts.
- Packages that are installed want to use '/dev/tty', so you can't
- do this from cron. Also, you'll want to keep an eye on what is
- happening, to catch runaway processes and stuff.
+. Configure sudo to allow the slave account to run '/usr/sbin/piuparts'
+ as root without  password. There are examples provided in
+ /usr/share/doc/piuparts-(master|slave)/examples/.
+. Run '/usr/bin/piuparts-slave-run' and 'piuparts-slave-join' to actually
+ let the slave(s) run and to join their sessions.
 . The logs go into the master account, into subdirectories.
 
 === Setup from piuparts-master and piuparts-slaves packages
@@ -69,10 +67,10 @@ join the screen session.
 Logs are stored under /var/lib/piuparts. They are stored there because they
 are basically the result of piuparts running.
 
-There are maintenance cron jobs defined in /etc/cron.d/piuparts-*.cron. In
-particular, piuparts-report will create a web summary, defaulting to
-http://localhost/piuparts, served by Apache. Uncomment the lines in the cron
-file to enable the jobs.
+There are maintenance cron jobs defined in
+/usr/share/doc/piuparts-(master|slave)/examples/. In particular,
+piuparts-report will create a web summary, defaulting to
+http://localhost/piuparts, served by Apache.
 
 === Setup from GIT
 
