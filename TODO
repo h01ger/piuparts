@@ -7,25 +7,30 @@ wishlist!
 
 for 0.5x:
 
-- make piuparts-master + piuparts-slave packages work with documented steps:
-  - document how to setup '~piupartsm/.ssh/authorized_keys'
-    + remove the current method...
-
 - Documentation related:
-  - examples are duplicated in piuparts.1.txt and README.txt - only keep one copy.
-  - link wiki:piuparts/UseCases||UsageTips in README_1st (after we agreed on a name)
+  - make piuparts-master + piuparts-slave packages work with documented steps,
+    that is document how+where to deploy '~piupartsm/.ssh/authorized_keys'
+  - examples are duplicated in piuparts.1.txt and README.txt - only keep one
+    copy.
+  - link wiki:piuparts/UseCases||UsageTips in README_1st (after we agreed on
+    a name)
+  - fix the FIXME in CONTRIBUTING
+  - cleanup README_pejacevic.txt from info not related to pejacevic (eg. how
+    to file bugs, how to run the slaves, etc)
 
 - more stats and graphs:
-  - packages processed per day and section
-    - master writes submissions.txt per section since 0.45
-  - generate simple diagrams: number of source + binary package in all single distros:
-    squeeze, wheezy, jessie, sid.
+  - packages processed per day and section, master writes submissions.txt
+    since 0.45 for all sections.
+  - generate simple diagrams: number of source + binary packages in all single
+    distros: lenny, squeeze, wheezy, jessie, sid.
   - move counts.txt from htdocs to master.
-  - generate https://piuparts.debian.org/stable/states.png + testing.png from
-    existing data
 
 
 for 0.6x:
+
+- more stats and graphs:
+  - generate https://piuparts.debian.org/stable/states.png + testing.png from
+    existing data
 
 - piuparts.conf.pejacevic: maybe use mirror via nfs (faster)
 
@@ -37,8 +42,8 @@ for 0.6x:
   too, to avoid hardcoding a specific mirror in distros.conf
 
 - really support multiple architectures:
-  - piuparts-report should have a list of available arch and list packages only
-    available on untested archs in a new state
+  - piuparts-report should have a list of available arch and list packages
+    only available on untested archs in a new state
     "(depends-)not-available-on-tested-archs"
   - master should (per default) only schedule packages which are not available
     on the master arch to slaves of different archs ->
@@ -61,7 +66,8 @@ for 0.6x:
   http://andialbrecht.wordpress.com/2009/03/17/creating-a-man-page-with-distutils-and-optparse/
   - though this seems pretty complicated... maybe rather grep for
     parser.add_option and help= in piuparts.py ?!
-    - requires merging all the additional infomation in piuparts.1.txt into piuarts.py
+    - requires merging all the additional infomation in piuparts.1.txt into
+      piuarts.py
     - parsing piuparts --help output may be easier than parsing piuparts.py
 
 - check the logfiles (especially pass/) for

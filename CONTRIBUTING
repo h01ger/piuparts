@@ -1,5 +1,5 @@
-Contributing to this project
-----------------------------
+Contributing code to this project
+---------------------------------
 
 It's helpful to track fixes or new features via wishlist bugs against the
 'piuparts' package, eg with the 'reportbug' tool ('devscripts' package).
@@ -24,3 +24,7 @@ One possible workflow:
   reportbug piuparts
   <describe the issue, attach the patch>
 
+Contributing bugs to other projects
+-----------------------------------
+Another very useful type of contributions are filing bug reports based
+on piuparts runs. This is described in FIXME and will soon be linked here.
