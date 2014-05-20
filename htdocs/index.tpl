@@ -42,10 +42,13 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      Besides all the information provided here (which is sourced in <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">GIT</a>) there are also three wiki pages on wiki.debian.org currently: the main one which is mostly about
-      <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts development</a>, some
-      <a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">frequently asked questions</a> and some
-      <a href="http://wiki.debian.org/piuparts/UseCases" target="_blank">use cases</a>.
+      Besides all the information provided here, there is some more information available on wiki.debian.org:
+      <ul>
+       an overview about <li><a href="http://wiki.debian.org/piuparts" target="_blank">piuparts</a> and about <a href="http://wiki.debian.org/piuparts/piuparts.debian.org" target="_blank">piuparts.debian.org</a>,</li>
+       about <li><a href="http://wiki.debian.org/piuparts/Development" target="_blank">piuparts development</a>,</li>
+       some <li><a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">frequently asked questions</a></li>
+       and some <li><a href="http://wiki.debian.org/piuparts/HowTos" target="_blank">HowTos</a> suited for package maintainer workflows.</li>
+      </ul>
      </td>
     </tr>
     <tr class="normalrow">

@@ -8,20 +8,22 @@ wishlist!
 for 0.5x:
 
 - Documentation related:
-  - make piuparts-master + piuparts-slave packages work with documented steps,
-    that is document how+where to deploy '~piupartsm/.ssh/authorized_keys'
+  - check that making piuparts-master + piuparts-slave packages work is
+    documented properly.
+  - confirm how+where to deploy '~piupartsm/.ssh/authorized_keys' is
+    documented properly.
   - examples are duplicated in piuparts.1.txt and README.txt - only keep one
     copy.
-  - link wiki:piuparts/UseCases||UsageTips in README_1st (after we agreed on
-    a name)
   - cleanup README_pejacevic.txt from info not related to pejacevic (eg. how
-    to file bugs, how to run the slaves, etc)
+    to run the slaves, etc)
+  - cleanup but_howto.tpl
 
 - more stats and graphs:
-  - packages processed per day and section, master writes submissions.txt
+  - new section stats page:
+    - packages processed per day and section, master writes submissions.txt
     since 0.45 for all sections.
-  - generate simple diagrams: number of source + binary packages in all single
-    distros: lenny, squeeze, wheezy, jessie, sid.
+    - generate simple diagrams: number of source + binary packages in all
+      single distros: lenny, squeeze, wheezy, jessie, sid.
   - move counts.txt from htdocs to master.
 
 

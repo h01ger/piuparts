@@ -20,6 +20,7 @@ piuparts (0.59) UNRELEASED; urgency=low
       too.
     - install piuparts.conf.sample in /usr/share/doc/piuparts-master/examples/
     - install slave_run and slave_join in /usr/bin/ (Closes: #746718)
+  * Updates various pieces of documentation.
 
  -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200
 

@@ -158,15 +158,6 @@ holger@pejacevic:~$ sudo -u piupartss -i slave_join
 
 See the 'piuparts_slave_join (8)' manpage for more information on 'slave_join'.
 
-=== Filing bugs
-
-Use the following usertags:
-
-----
-User: debian-qa@lists.debian.org
-Usertags: piuparts piuparts.d.o
-----
-
 === Generating reports for the website
 
 'piuparts-report' is run daily at midnight and at noon from
