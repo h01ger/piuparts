@@ -44,16 +44,16 @@
      <td class="contentcell2">
       Besides all the information provided here, there is some more information available on wiki.debian.org:
       <ul>
-       an overview about <li><a href="http://wiki.debian.org/piuparts" target="_blank">piuparts</a> and about <a href="http://wiki.debian.org/piuparts/piuparts.debian.org" target="_blank">piuparts.debian.org</a>,</li>
-       about <li><a href="http://wiki.debian.org/piuparts/Development" target="_blank">piuparts development</a>,</li>
-       some <li><a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">frequently asked questions</a></li>
-       and some <li><a href="http://wiki.debian.org/piuparts/HowTos" target="_blank">HowTos</a> suited for package maintainer workflows.</li>
+       <li>an overview about <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts</a> and about <a href="http://wiki.debian.org/piuparts/piuparts.debian.org" target="_blank">piuparts.debian.org</a>,</li>
+       <li>about <a href="http://wiki.debian.org/piuparts/Development" target="_blank">piuparts development</a>,</li>
+       <li>some <a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">frequently asked questions</a></li>
+       <li>and some <a href="http://wiki.debian.org/piuparts/HowTos" target="_blank">HowTos</a> suited for package maintainer workflows.</li>
       </ul>
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      Join #debian-qa on irc.debian.org or post on the <a href="http://lists.alioth.debian.org/mailman/listinfo/piuparts-devel" target="_blank">piuparts development mailinglist</a> if you want to help. The best way to help is to provide patches via GIT pull requests.
+      You can talk to us on #debian-qa on irc.debian.org (OFTC) or send an email on the <a href="http://lists.alioth.debian.org/mailman/listinfo/piuparts-devel" target="_blank">piuparts development mailinglist</a>. The best ways to contribute are to provide patches via GIT pull requests and/or to file bugs based on piuparts runs.
      </td>
     </tr>
     <tr class="normalrow">
