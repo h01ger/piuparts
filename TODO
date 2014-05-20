@@ -16,15 +16,14 @@ for 0.5x:
     copy.
   - cleanup README_pejacevic.txt from info not related to pejacevic (eg. how
     to run the slaves, etc)
-  - cleanup but_howto.tpl
+  - cleanup bug_howto.tpl
 
 - more stats and graphs:
   - new section stats page:
     - packages processed per day and section, master writes submissions.txt
-    since 0.45 for all sections.
+      since 0.45 for all sections.
     - generate simple diagrams: number of source + binary packages in all
       single distros: lenny, squeeze, wheezy, jessie, sid.
-  - move counts.txt from htdocs to master.
 
 
 for 0.6x:
