@@ -35,20 +35,19 @@ get_config_value HTDOCS global output-directory
 get_config_value BACKUPDIR global backup-directory ''
 
 
+copy_to_backupdir() {
+	if [ -f $MASTER/$1 ]; then
+		cp $MASTER/$1 $BACKUPDIR/$1
+	fi
+}
+
 test -n "$BACKUPDIR" || exit 0
 
-if [ -f $MASTER/bts_stats.txt ]; then
-	cp $MASTER/bts_stats.txt $BACKUPDIR/
-fi
+copy_to_backupdir bts_stats.txt
 for SECTION in $SECTIONS ; do
 	mkdir -p $BACKUPDIR/$SECTION
-	if [ -f $MASTER/$SECTION/submissions.txt ]; then
-		cp $MASTER/$SECTION/submissions.txt $BACKUPDIR/$SECTION/
-	fi
+	copy_to_backupdir $SECTION/submissions.txt
 	if [ -f $HTDOCS/$SECTION/counts.txt ]; then
 		cp $HTDOCS/$SECTION/counts.txt $BACKUPDIR/$SECTION/
-	fi
-	if [ -f $MASTER/bts_stats.txt ]; then
-		cp $MASTER/bts_stats.txt $BACKUPDIR/
 	fi
 done
