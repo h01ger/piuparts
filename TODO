@@ -14,7 +14,6 @@ for 0.5x:
     copy.
   - link wiki:piuparts/UseCases||UsageTips in README_1st (after we agreed on
     a name)
-  - fix the FIXME in CONTRIBUTING
   - cleanup README_pejacevic.txt from info not related to pejacevic (eg. how
     to file bugs, how to run the slaves, etc)
 
