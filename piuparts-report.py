@@ -725,7 +725,6 @@ class Section:
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
 
-        self._master_directory = master_directory
         self._section_directory = os.path.abspath(os.path.join(master_directory, \
                                                                self._config.section))
         if not os.path.exists(self._section_directory):
@@ -970,7 +969,7 @@ class Section:
         header += "\n"
         counts += "\n"
 
-        countsfile = os.path.join(self._master_directory, "counts.txt")
+        countsfile = os.path.join(self._section_directory, "counts.txt")
         if not os.path.isfile(countsfile):
             logging.debug("writing new file: %s" % countsfile)
             write_file(countsfile, header)
@@ -1200,7 +1199,7 @@ class Section:
 
 
     def make_section_stats_graph(self):
-        countsfile = os.path.join(self._master_directory, "counts.txt")
+        countsfile = os.path.join(self._section_directory, "counts.txt")
         pngfile = os.path.join(self._output_directory, "states.png")
         grdevices = importr('grDevices')
         grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100, antialias="none")
