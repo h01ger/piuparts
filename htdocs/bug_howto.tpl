@@ -15,22 +15,31 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	Then, check the BTS for that package, to see if this issue was already filed as a bug. Often it's also useful to check the source packages bug page.
+	Then, check the BTS for that package, to see if this issue was already filed as a bug. Often it's also useful to check the source packages bug page. Sometimes a bug already exists, describing the problem piuparts has found. More often, new bugs have to be filed.
+     </td>
+    </tr>
+    <tr class="titlerow">
+     <td class="titlecell">
+      Usertagging existing bugs to make them known to piuparts.debian.org
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	Then, if there is none, file a bug. If there already is a bug describing the same problem you're seeing in the piuparts logfile, usertag it like this:
+	If there already is a bug describing the same problem you're seeing in the piuparts logfile, you can usertag it, so that the next piuparts-analyse run will be able to link the bug report with the logfile on piuparts.debian.org. (piuparts-analyse runs twice a day.)
 	<pre>
  User: debian-qa@lists.debian.org
- Usertags: piuparts
+ Usertags 987654 + piuparts
 	</pre>
-	This will make sure, piuparts.debian.org picks up your bug report (actually, it's piuparts-analyse.py) and marks it as <i>bugged</i> in the database.
+     </td>
+    </tr>
+    <tr class="titlerow">
+     <td class="titlecell">
+      Filing new bugs
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	Also, if you file a new bug report, don't forget to usertag it! The following is an example bug report. There are many more <a href="templates/mail/">templates</a> available for you to make use from!
+	More often, there is no existing bug and you need to file one. To make this easy as well to have consistent quality bug reports, we collect templates for filing these bugs. Please <a href="templates/mail/">use these templates</a>! The following is an example bug report for illustration:
 	<pre>
  To: submit@bugs.debian.org
  Subject: $package: fails to upgrade from 'testing' - trying to overwrite ...
@@ -68,9 +77,14 @@
 	Also, you should be aware that what you are doing can probably be seen as mass bug filing (even if you just file a few now, they are part of a series of bugs of one kind) and as such needs to be discussed on debian-devel@lists.d.o first! For many types of bugs this has already been done. This is or should be indicated in the summary web pages as well as the mail templates.
      </td>
     </tr>
+    <tr class="titlerow">
+     <td class="titlecell">
+      Marking bugs as affecting other packages
+     </td>
+    </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	Finally, besides simply usertagging a bug, piuparts-analyse understands more, and you can also do the following:
+	Sometimes there is a bug in another package which affects a package being tested. The following explains how to tell this to the BTS in a way piuparts-analyse will pick up:
 	<pre>
  # assume 987654 is our bug report in buggy-package,
  # but the problem only shows up when testing (upgrades of)

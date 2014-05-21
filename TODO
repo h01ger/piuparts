@@ -16,7 +16,6 @@ for 0.5x:
     copy.
   - cleanup README_pejacevic.txt from info not related to pejacevic (eg. how
     to run the slaves, etc)
-  - cleanup bug_howto.tpl
 
 - more stats and graphs:
   - new section stats page:
