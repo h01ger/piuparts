@@ -1642,8 +1642,8 @@ def make_bts_stats_graph(master_dir, out_dir):
     # tango colors again:
     r('palette(c("#4e9a06", "#a40000", "#8ae234", "#ef2929"))')
     r('barplot(t(v),col = 1:5, \
-        main="Bugs filed with tag=piuparts users=debian-qa@lists.debian.org archive=both", \
-        xlab="", ylab="Number of bugs submitted and closed", space=0, border=NA)')
+        main="Bugs filed with tag=piuparts users=debian-qa@lists.debian.org", \
+        xlab="", ylab="Number of rc and non-rc bugs submitted and closed", space=0, border=NA)')
     r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:5,xjust=0.5,yjust=0,bty="n")')
     grdevices.dev_off()
 
