@@ -40,6 +40,10 @@
     <tr class="normalrow">
      <td class="contentcell2">
 	More often, there is no existing bug and you need to file one. To make this easy as well to have consistent quality bug reports, we collect templates for filing these bugs. Please <a href="templates/mail/">use these templates</a>! The following is an example bug report for illustration:
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
 	<pre>
  To: submit@bugs.debian.org
  Subject: $package: fails to upgrade from 'testing' - trying to overwrite ...
@@ -69,6 +73,10 @@
 
  attachment: $failed_logfile
 	</pre>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
 	Please take care when filing bugs to file meaningful bugs and to not annoy maintainers. Don't nitpick or insist on severities, the important thing is to get the bug fixed, not the right severity. Optionally you can also send copies to the piuparts-devel mailinglist by adding <i>X-debbugs-cc: piuparts-devel@lists.alioth.debian.org</i> pseudo-headers.
      </td>
     </tr>
@@ -85,6 +93,10 @@
     <tr class="normalrow">
      <td class="contentcell2">
 	Sometimes there is a bug in another package which affects a package being tested. The following explains how to tell this to the BTS in a way piuparts-analyse will pick up:
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
 	<pre>
  # assume 987654 is our bug report in buggy-package,
  # but the problem only shows up when testing (upgrades of)
