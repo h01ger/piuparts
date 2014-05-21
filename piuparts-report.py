@@ -1631,20 +1631,20 @@ def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
 
 def make_bts_stats_graph(master_dir, out_dir):
     countsfile = os.path.join(master_dir, "bts_stats.txt")
-    pngfile = os.path.join(out_dir, "bts_stats.png")
+    pngfile = os.path.join(out_dir, "images", "bts_stats.png")
     grdevices = importr('grDevices')
     grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100)
     r = robjects.r
     r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
     r('cname <- c("date",rep(colnames(t)))')
     # make graph since day 1
-    r('v <- t[0:nrow(t),0:2]')
+    r('v <- t[0:nrow(t),0:4]')
     # tango colors again:
-    r('palette(c("#4e9a06", "#ef2929"))')
-    r('barplot(t(v),col = 1:3, \
+    r('palette(c("#4e9a06", "#a40000", "#8ae234", "#ef2929"))')
+    r('barplot(t(v),col = 1:5, \
         main="Bugs filed with tag=piuparts users=debian-qa@lists.debian.org archive=both", \
         xlab="", ylab="Number of bugs submitted and closed", space=0, border=NA)')
-    r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:3,xjust=0.5,yjust=0,bty="n")')
+    r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:5,xjust=0.5,yjust=0,bty="n")')
     grdevices.dev_off()
 
 

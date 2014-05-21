@@ -10,7 +10,8 @@ piuparts (0.59) UNRELEASED; urgency=low
       configurable.
     - fix log directory creation. (Closes: #746722)
     - fix spelling of "ditto". (Closes: #746724)
-    - create graph of bugs filed and display it piuparts.d.o welcome page.
+    - create graph of rc and non-rc bugs filed (and fixed) since the beginning
+      of piuparts testing and display it on piuparts.d.o welcome page.
     - move counts.txt from htdocs to master directory.
   * master-bin/gather_bts_stats: differate between rc and non-rc bugs.
   * Makefile: don't install crontabs and sudoers file anymore, except when

@@ -63,7 +63,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <img src="./bts_stats.png" width="100%" alt="Bugs submitted which were found using piuparts" \>
+      <img src="images/bts_stats.png" width="100%" alt="Bugs submitted which were found using piuparts" \>
      </td>
     </tr>
     <tr class="titlerow">
