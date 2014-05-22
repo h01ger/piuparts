@@ -73,7 +73,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2014-05-19</b> Add a graph to the startpage showing the number of bugs filed due to running piuparts.
+      <b>2014-05-22</b> Add squeeze-lts to the distros being testing (by testing squeeze2squeeze-lts upgrades).
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2014-05-19</b> Add a graph to the startpage showing the number of RC and non-RC bugs filed due to running piuparts.
      </td>
     </tr>
     <tr class="normalrow">

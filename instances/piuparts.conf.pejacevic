@@ -262,9 +262,9 @@ upgrade-test-distros = squeeze squeeze-backports wheezy
 [squeeze2bpo-sloppy]
 precedence = 6
 piuparts-flags =
-	%(flags-default)s
-	%(flags-start-squeeze)s
-	%(flags-end-squeeze)s
+%(flags-default)s
+%(flags-start-squeeze)s
+%(flags-end-squeeze)s
 depends-sections = squeeze squeeze2bpo2wheezy
 arch = amd64
 area = main
@@ -281,6 +281,19 @@ distro = squeeze
 reschedule-old-count = 50
 # 1 month (60*60*24*30)
 max-tgz-age = 2592000
+
+
+[squeeze2squeeze-lts]
+precedence = 8
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze
+arch = amd64
+area = main
+distro = squeeze-lts
+upgrade-test-distros = squeeze squeeze-lts
 
 
 [lenny2squeeze]
