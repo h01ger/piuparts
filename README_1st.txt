@@ -42,10 +42,10 @@ This will create a sid chroot with debootstrap, where it'll test
 your package.
 
 If you want to test your package in another release, for example,
-squeeze, you can do so with:
+testing, you can do so with:
 
 ----
-# piuparts ./sm_0.6-1_i386.deb -d squeeze
+# piuparts ./sm_0.6-1_i386.deb -d testing
 ----
 
 By default, this will read the first mirror from your

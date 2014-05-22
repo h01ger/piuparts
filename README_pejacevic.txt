@@ -26,14 +26,14 @@ results and piu-slave-bm-a.debian.org, running four piuparts-slave nodes.
   Run the scripts as the piupartsm and piupartss users and clone that git
   repository into '/srv/piuparts.debian.org/src' in the first place. Then
   checkout the bikeshed branch.
-*  See below for further user setup instructions.
-* Provide '/srv/piuparts.debian.org' - on the slave ideally with a 'tmp'
-  directory which is on tmpfs.
+* Ideally provide '/srv/piuparts.debian.org/tmp' on (a sufficiently large)
+  tmpfs.
 * `sudo ln -s /srv/piuparts.debian.org/etc/piuparts /etc/piuparts`
+* See below for further user setup instructions.
 
 === User setup
 
-On pejacevic the piuparts-master user piupartsm needs to be installed, on
+On pejacevic the piuparts-master user piupartsm needs to be created, on
 piu-slave-bm-a a piupartss user is needed for the slave.
 Both are members of the group piuparts and '/srv/piuparts.debian.org' needs to
 be chmod 2775 and chown piuparts(sm):piuparts.
@@ -127,6 +127,9 @@ holger@piu-slave-bm-a$ sudo su - piupartss update-piuparts-slave-setup bikeshed 
 
 === Running piuparts
 
+When running piuparts in master/slave mode, the master is never run by itself,
+instead it is always started by the slave(s).
+
 ==== Starting and stopping the slaves
 
 Run the following script under *your* user account to start four instances of
@@ -138,7 +141,8 @@ holger@pejacevic:~$ sudo -u piupartss -i slave_run
 ----
 
 There are several cronjobs installed via '~piupartsm/crontab' and
-'~piupartss/crontab') which monitor the slaves and the hosts it's running on.
+'~piupartss/crontab') to monitor both master and slave as well as the hosts
+they are running on.
 
 It's possible to kill a slave any time by pressing Ctrl-C.
 Pressing Ctrl-C once will wait for the current test to finish,
@@ -178,7 +182,7 @@ More checks should be added as we become aware of them.
 
 == Authors
 
-Last updated: May 2013
+Last updated: May 2014
 
 Holger Levsen <holger@layer-acht.org>
 

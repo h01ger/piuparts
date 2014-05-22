@@ -12,34 +12,36 @@ processing power, and so the work can be distributed over several
 hosts.
 
 There is one central machine, the master, and any number of slave
-machines. Each slave machine connects to the master, via ssh, and
-runs the piuparts-master program to report results of packages it
-has tested already, and to get more work.
+machines. Each piuparts-slave instance connects to the master,
+via ssh, and runs the piuparts-master program to report results
+of packages it has tested already, and to get more work.
 
 To set this up for yourself, the following steps should suffice:
 
-. Pick a machine to run the master. It cannot be a chroot, but
- basically any real (or properly virtualized) Debian system is good
- enough.
+. Pick a machine for running the piuparts master. It cannot be a chroot, but
+ basically any real (or properly virtualized) Debian system is good enough.
 . Install the package piuparts-master on it.
-. Create an account for the master (the package creates piupartsm).
+. Create an account for the master, if you install the piuparts-master package
+ it will automatically create a piupartsm user for you.
 . Configure '/etc/piuparts/piuparts.conf' appropriately.
 
-. Pick one or more slaves to run the slave. You can use the machine
- running the master also as a slave. Etch is fine, it can even be
- in a chroot.
+. Pick one or more machines for running one or several piuparts slaves. You
+ can use the machine which is running the master also for running a slave.
+ It's also perfectly ok to run several slaves on a multi-core machine which
+ has lots of IO available.
 . Install the package piuparts-slave on it.
 . Configure '/etc/piuparts/piuparts.conf' appropriately - if master
  and slave share the machine, they also share the config file.
-. Create an account for the slave. This must be different from the
- master account. (The package creates piupartss.)
+. Create an account for the slave. This must be different from the master
+ account. The piuparts-slave package will create a piupartss user on
+ installation.
 . Create an ssh keypair for the slave. No passphrase.
 . Add the slave's public key to the master's '.ssh/authorized_keys'
  The key should be restricted to only allow running
  'piuparts-master' by prefixing it with
  'command="/usr/share/piuparts/piuparts-master",no-pty,no-port-forwarding'
 . Configure sudo to allow the slave account to run '/usr/sbin/piuparts'
- as root without  password. There are examples provided in
+ as root without password. There are examples provided in
  /usr/share/doc/piuparts-(master|slave)/examples/.
 . Run '/usr/bin/piuparts-slave-run' and 'piuparts-slave-join' to actually
  let the slave(s) run and to join their sessions.
@@ -60,18 +62,18 @@ and apt-get, to reduce the load. Running multiple slaves on a fast host can
 easily saturate a 100 MBit link.
 
 Edit '/etc/sudoers.d/piuparts' to grant permissions to the piupartss user.
-Start the server using /usr/sbin/piuparts_slave_run, which will launch a
+Start the server using /usr/bin/piuparts_slave_run, which will launch a
 'screen' session. The slave will launch a master process via ssh, as needed,
-to retrieve work and return results. Use /usr/sbin/piuparts_slave_join to
+to retrieve work and return results. Use /usr/bin/piuparts_slave_join to
 join the screen session.
 
-Logs are stored under /var/lib/piuparts. They are stored there because they
-are basically the result of piuparts running.
+Logs are stored under '/var/lib/piuparts' by default. They are stored there
+because they are basically the result of piuparts running.
 
 There are maintenance cron jobs defined in
 /usr/share/doc/piuparts-(master|slave)/examples/. In particular,
-piuparts-report will create a web summary, defaulting to
-http://localhost/piuparts, served by Apache.
+piuparts-report will create static html pages, defaulting to
+http://localhost/piuparts to be served by any webserver.
 
 === Setup from GIT
 
@@ -419,7 +421,7 @@ section, too, and will serve as defaults for all other sections
  distributions the slave should use for testing upgrades
  between distributions (i.e., Debian versions). Using "partial"
  distributions as defined in distros.conf is possible. Currently,
- "squeeze wheezy sid" is a good choice.
+ "wheezy jessie sid" is a good choice.
  Setting this switches from doing install/purge tests to
  dist-upgrade tests. Not set by default.
 
@@ -531,10 +533,10 @@ values are set in the scripts.
 
 * "urlbase" (global) is the base url of the webserver serving this
  piuparts instance. Used to provide links to logfiles in email
- reports.
+ reports. It defaults to "https://piuparts.debian.org".
 
 
-=== Running piuparts in master-slave mode, piuparts-report and the setup on piuparts.debian.org
+=== Running piuparts-report as it is done for piuparts.debian.org
 
 If you want to run piuparts-report (which is only+very useful if
 you run piuparts in master-slave mode), you need to 'apt-get

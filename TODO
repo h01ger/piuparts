@@ -10,10 +10,9 @@ for 0.5x:
 - Documentation related:
   - check that making piuparts-master + piuparts-slave packages work is
     documented properly.
-  - examples are duplicated in piuparts.1.txt and README.txt - only keep one
-    copy.
-  - cleanup README_pejacevic.txt from info not related to pejacevic (eg. how
-    to run the slaves, etc)
+  - examples are duplicated in piuparts.1.txt and README_1st.txt - only keep
+    one copy or life with it? README_1st is also more of a README than a
+    README_1st...
 
 - more stats and graphs:
   - new section stats page:
@@ -21,6 +20,7 @@ for 0.5x:
       since 0.45 for all sections.
     - generate simple diagrams: number of source + binary packages in all
       single distros: lenny, squeeze, wheezy, jessie, sid.
+    - graph about piuparts stati for all sections combined?
 
 
 for 0.6x:
@@ -31,7 +31,7 @@ for 0.6x:
 
 - piuparts.conf.pejacevic: maybe use mirror via nfs (faster)
 
-- also test packages from security.d.o and squeeze-lts
+- also test packages from security.d.o
 
 - maybe compress all logfiles
 
