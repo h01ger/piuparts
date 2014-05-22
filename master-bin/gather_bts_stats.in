@@ -51,8 +51,9 @@ fi
 
 # init file if needed
 if [ ! -f $BTS_STATS ] ; then
-	echo "date, done_rc, open_rc, done_other, open_other" > $BTS_STATS
+	echo "date, non-RC done, non-RC open, RC done, RC open" > $BTS_STATS
+
 fi
 
 # finally, write stats
-echo "$TODAY, $DONE_RC, $OPEN_RC, $DONE_OTHER, $OPEN_OTHER" >> $BTS_STATS
+echo "$TODAY, $DONE_OTHER, $OPEN_OTHER, $DONE_RC, $OPEN_RC" >> $BTS_STATS

@@ -1640,7 +1640,7 @@ def make_bts_stats_graph(master_dir, out_dir):
     # make graph since day 1
     r('v <- t[0:nrow(t),0:4]')
     # tango colors again:
-    r('palette(c("#4e9a06", "#a40000", "#8ae234", "#ef2929"))')
+    r('palette(c("#8ae234", "#ef2929", "#4e9a06", "#a40000"))')
     r('barplot(t(v),col = 1:5, \
         main="Bugs with usertag=piuparts and user=debian-qa@lists.debian.org", \
         xlab="", ylab="Total number of RC and non-RC bugs submitted and closed", space=0, border=NA)')
