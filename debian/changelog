@@ -23,6 +23,11 @@ piuparts (0.59) UNRELEASED; urgency=low
       too.
     - install piuparts.conf.sample in /usr/share/doc/piuparts-master/examples/
     - install slave_run and slave_join in /usr/bin/ (Closes: #746718)
+    - piuparts-slave.postinst: do not attempt to add the slave user's ssh
+      public key to the master user's authorized key. The slave package should
+      maybe recommend the master package, but definitly not pre-depend on it,
+      which would be a requirement to make this work. So document this
+      instead.
   * Updates various pieces of documentation.
 
  -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200

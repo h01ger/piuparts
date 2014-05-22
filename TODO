@@ -10,8 +10,6 @@ for 0.5x:
 - Documentation related:
   - check that making piuparts-master + piuparts-slave packages work is
     documented properly.
-  - confirm how+where to deploy '~piupartsm/.ssh/authorized_keys' is
-    documented properly.
   - examples are duplicated in piuparts.1.txt and README.txt - only keep one
     copy.
   - cleanup README_pejacevic.txt from info not related to pejacevic (eg. how

@@ -2,11 +2,11 @@ piuparts README_server
 ----------------------
 
 Author: Lars Wirzenius, Holger Levsen and Andreas Beckmann
-Email: <liw@iki.fi>
+Email: <debian-qa@lists.debian.org>
 
 == piuparts in master/slave mode
 
-As part of the quality assurance effort of Debian, piuparts is
+As part of the quality assurance efforts of Debian, piuparts is
 run on the Debian package archive. This requires a lot of
 processing power, and so the work can be distributed over several
 hosts.
@@ -24,6 +24,7 @@ To set this up for yourself, the following steps should suffice:
 . Install the package piuparts-master on it.
 . Create an account for the master (the package creates piupartsm).
 . Configure '/etc/piuparts/piuparts.conf' appropriately.
+
 . Pick one or more slaves to run the slave. You can use the machine
  running the master also as a slave. Etch is fine, it can even be
  in a chroot.
@@ -322,11 +323,11 @@ section, too, and will serve as defaults for all other sections
 (overriding the builtin defaults).
 
 * "master-command" is the command to run on master-host to start
- the master. When the master has been installed from the Debian
- package, the command is '/usr/share/piuparts/piuparts-master'.
- This does not need to be set here if it is already set in
+ the master. Better then setting it here is actually setting it in
  '~piupartsm/.ssh/authorized_keys' to limit ssh access to that
- single command.
+ single command.  The key should be restricted to only allow running
+ 'piuparts-master' by prefixing it with
+ 'command="/usr/share/piuparts/piuparts-master",no-pty,no-port-forwarding'.
 
 * "idle-sleep" is the length of time the slave should wait before
  querying the master again if the master didn't have any new
@@ -539,7 +540,6 @@ If you want to run piuparts-report (which is only+very useful if
 you run piuparts in master-slave mode), you need to 'apt-get
 install python-rpy r-recommended r-base-dev'. For more
 information see
-link:http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob;f=README_server.txt[http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob;f=README_server.txt] and
 link:http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob;f=README_pejacevic.txt[http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob;f=README_pejacevic.txt].
 
 // vim: set filetype=asciidoc:
