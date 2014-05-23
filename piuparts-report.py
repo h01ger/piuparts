@@ -188,7 +188,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://edos.debian.net" target="_blank">EDOS tools</a>
+      <a href="http://qa.debian.org/dose/" target="_blank">Dose tools (former: EDOS)</a>
      </td>
     </tr>
     <tr class="normalrow">

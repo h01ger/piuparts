@@ -61,7 +61,7 @@ if [ -s $URLS ]; then
 	echo "tested again in $DAYS days."
 	echo
         echo "Broken packages are usually a temporary problem in the archive and are"
-        echo "caught by other tools like britney or http://edos.debian.net/edos-debcheck/"
+        echo "caught by other tools like britney or http://qa.debian.org/dose/debcheck.html"
         echo
 	echo "If it is always the same package failing, it's likely to be an issue in the"
 	echo "package."
