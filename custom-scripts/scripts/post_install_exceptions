@@ -7,9 +7,10 @@ log_debug() {
 
 case ${PIUPARTS_OBJECTS%%=*} in
 	apt-listbugs)		log_debug
-				# apt-listbugs is run on installations / upgrades 
-				# and will them fail if packages have RC bugs
-				# (which is good and sensible) 
-				printf "%b\n" "#/bin/sh\nexit 0" > /usr/sbin/apt-listbugs
+				# when installed apt-listbugs is run on installations / upgrades
+				# and will cause them to fail due to prompting
+				# if packages being installed currently have RC bugs.
+ 				# so disable it here.
+				export APT_LISTBUGS_FRONTEND="none"
 				;;
 esac
