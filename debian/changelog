@@ -28,7 +28,7 @@ piuparts (0.59) UNRELEASED; urgency=low
       maybe recommend the master package, but definitly not pre-depend on it,
       which would be a requirement to make this work. So document this
       instead.
-  * Updates various pieces of documentation.
+  * Updates various pieces of documentation, rename README_1st to README.
 
  -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200
 

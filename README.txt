@@ -1,10 +1,10 @@
-piuparts README_1st
+piuparts README
 -------------------
 
 Author: Lars Wirzenius
 Email: <liw@iki.fi>
 
-After reading this README_1st you probably also want to have a look
+After reading this README you probably also want to have a look
 at the piuparts manpage, to learn about the available options.
 But read this document first!
 
@@ -67,6 +67,8 @@ unstable and then upgrade to the local package use this:
 
 === Some tips
 
+piuparts also has a manpage, where all available options are explained.
+
 If you use piuparts on a regular basis, waiting for it to create
 a chroot every time takes too much time, even if you are using a
 local mirror or a caching tool such as approx.
@@ -105,8 +107,6 @@ pbuilder. You can save a tarball for later use with the '-s'
 ('--save') piuparts option. Some people like this, others prefer
 to only have to maintain one tarball. Read the piuparts manpage
 about the '-p', '-b' and '-s' options
-
-piuparts has a manpage too.
 
 === Piuparts tests
 

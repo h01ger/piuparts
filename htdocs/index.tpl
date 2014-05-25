@@ -22,7 +22,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-       A quick introduction is available in the <a href="/doc/README_1st.html" target="_blank">piuparts README_1st</a>, and all the options are listed on the <a href="/doc/piuparts.1.html" target="_blank">piuparts manpage</a>.
+       A quick introduction is available in the <a href="/doc/README.html" target="_blank">piuparts README</a>, and all the options are listed on the <a href="/doc/piuparts.1.html" target="_blank">piuparts manpage</a>.
      </td>
     </tr>
     <tr class="normalrow">

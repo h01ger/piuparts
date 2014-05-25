@@ -139,7 +139,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="$doc_root/doc/README_1st.html" target="_blank">README_1st</a>
+      <a href="$doc_root/doc/README.html" target="_blank">README</a>
      </td>
     </tr>
     <tr class="normalrow">

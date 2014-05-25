@@ -8,11 +8,8 @@ wishlist!
 for 0.5x:
 
 - Documentation related:
-  - check that making piuparts-master + piuparts-slave packages work is
-    documented properly.
-  - examples are duplicated in piuparts.1.txt and README_1st.txt - only keep
-    one copy or life with it? README_1st is also more of a README than a
-    README_1st...
+  - examples are duplicated in piuparts.1.txt and README.txt - only keep
+    one copy or life with it?
 
 - more stats and graphs:
   - new section stats page:
