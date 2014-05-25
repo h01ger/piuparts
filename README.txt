@@ -1,5 +1,5 @@
 piuparts README
--------------------
+---------------
 
 Author: Lars Wirzenius
 Email: <liw@iki.fi>
