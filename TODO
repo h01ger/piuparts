@@ -7,24 +7,17 @@ wishlist!
 
 for 0.5x:
 
-- Documentation related:
-  - examples are duplicated in piuparts.1.txt and README.txt - only keep
-    one copy or life with it?
-
 - more stats and graphs:
   - new section stats page:
     - packages processed per day and section, master writes submissions.txt
       since 0.45 for all sections.
     - generate simple diagrams: number of source + binary packages in all
       single distros: lenny, squeeze, wheezy, jessie, sid.
-    - graph about piuparts stati for all sections combined?
+    - graph about piuparts stati for all sections combined? (possible ignore
+      successful)
 
 
 for 0.6x:
-
-- more stats and graphs:
-  - generate https://piuparts.debian.org/stable/states.png + testing.png from
-    existing data
 
 - piuparts.conf.pejacevic: maybe use mirror via nfs (faster)
 
@@ -35,7 +28,7 @@ for 0.6x:
 - look for a solution to use the global debian mirror for debian-backports,
   too, to avoid hardcoding a specific mirror in distros.conf
 
-- really support multiple architectures:
+- support multiple architectures:
   - piuparts-report should have a list of available arch and list packages
     only available on untested archs in a new state
     "(depends-)not-available-on-tested-archs"
@@ -52,6 +45,12 @@ for 0.6x:
 - if there were real schroot support, piuparts could be used without sudo.
   (#708663)
 
+- use network namespaces to disable network during the tests:
+  - < weasel> says: unshare --uts --ipc --net -- sh -c 'ip addr add 127.0.0.1/8 dev lo && ip link set dev lo up && stuff'
+    and points to https://anonscm.debian.org/gitweb/?p=mirror/dsa-puppet.git;a=blob;f=modules/porterbox/files/dd-schroot-cmd#l104
+  - problem might be access to the mirror, either (bind mounted) nfs access will still work in the chroots or do as its done on the porterboxes:
+    apt-get install -d <foo>, unshare apt-get install foo
+
 - add a sample config with all possible keys set to some useful value
   (like /usr/share/doc/apt/examples/configure-index.gz)
 
@@ -63,6 +62,7 @@ for 0.6x:
     - requires merging all the additional infomation in piuparts.1.txt into
       piuarts.py
     - parsing piuparts --help output may be easier than parsing piuparts.py
+  - elso: examples are duplicated in piuparts.1.txt and README.txt
 
 - check the logfiles (especially pass/) for
   - "Exception in thread"
