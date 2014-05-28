@@ -29,6 +29,8 @@ piuparts (0.59) UNRELEASED; urgency=low
       which would be a requirement to make this work. So document this
       instead.
   * Updates various pieces of documentation, rename README_1st to README.
+    Explicitly state what will break when using cdebootstrap with pbuilder.
+    (Closes: #709348)
   * Update various custom-scripts (usually to workaround problems in other
     packages). 
 

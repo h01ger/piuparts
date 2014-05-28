@@ -108,6 +108,11 @@ pbuilder. You can save a tarball for later use with the '-s'
 to only have to maintain one tarball. Read the piuparts manpage
 about the '-p', '-b' and '-s' options
 
+While pbuilder itself supports using cdebootstrap, this is not
+fully supported by piuparts: You will need to use debootstrap
+or use the '--warn-on-debsums-errors' option for piuparts and then
+you will still see spurious warnings in the log.
+
 === Piuparts tests
 
 By default, piuparts does two tests:
