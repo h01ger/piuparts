@@ -34,6 +34,11 @@ esac
 # deal with exceptions:
 #
 case ${PIUPARTS_OBJECTS%%=*} in
+	samhain)		log_debug
+				# work around #749602
+				mkdir -p /var/state/samhain/
+				touch /var/state/samhain/samhain_file
+				;;
 	fai-nfsroot)		log_debug
 				# fai-nfsroot refuses installation unless this file exist
 				touch /.THIS_IS_THE_FAI_NFSROOT
