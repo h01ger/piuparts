@@ -10,7 +10,9 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				# when installed apt-listbugs is run on installations / upgrades
 				# and will cause them to fail due to prompting
 				# if packages being installed currently have RC bugs.
- 				# so disable it here.
-				export APT_LISTBUGS_FRONTEND="none"
+				# so disable it here.
+				dpkg-divert --rename /usr/sbin/apt-listbugs
+
+				ln -svf /bin/true /usr/sbin/apt-listbugs
 				;;
 esac
