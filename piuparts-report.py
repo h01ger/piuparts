@@ -1229,7 +1229,9 @@ class Section:
                        % "states.png" \
                      + "<img src=\"%s\" height=\"450\" width=\"800\" alt=\"Binary package states in %s\">" \
                        % ("states.png", self._config.section) \
-                     + "</a></td></tr>\n"
+                     + "</a>" \
+                     + "<br>(<a href=\"counts.txt\">Source</a>)\n" \
+                     + "</td></tr>\n"
 
         return stats_html
 

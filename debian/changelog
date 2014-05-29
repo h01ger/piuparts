@@ -44,6 +44,7 @@ piuparts (0.59) UNRELEASED; urgency=low
     - Refactor sections_by_precedence() out of generate_global_summary().
     - Restore (a copy of) the counts.txt file to the web view, in
       <section>/counts.txt.
+    - Also add a link to counts.txt to the section page.
 
  -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200
 
