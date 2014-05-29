@@ -979,6 +979,9 @@ class Section:
         if not current_day in last_line:
             append_file(countsfile, counts)
             logging.debug("appending line: %s" % counts.strip())
+
+        shutil.copy(countsfile, self._output_directory)
+
         return total
 
 

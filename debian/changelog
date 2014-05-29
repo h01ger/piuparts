@@ -42,6 +42,8 @@ piuparts (0.59) UNRELEASED; urgency=low
   * piuparts-report.py:
     - Fix indentation of generate_global_summary()
     - Refactor sections_by_precedence() out of generate_global_summary().
+    - Restore (a copy of) the counts.txt file to the web view, in
+      <section>/counts.txt.
 
  -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200
 
