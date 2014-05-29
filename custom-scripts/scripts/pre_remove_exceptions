@@ -16,10 +16,11 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			rm -fv /etc/isdn/*
 		fi
 		;;
-	apt-listbugs)           log_debug
-				# cleanup from post_install_exceptions
-				dpkg-divert --remove /usr/sbin/apt-listbugs
-				rm /usr/sbin/apt-listbugs.distrib
+	apt-listbugs)
+		log_debug
+		# cleanup from post_install_exceptions
+		rm -f /usr/sbin/apt-listbugs
+		dpkg-divert --remove --rename /usr/sbin/apt-listbugs
 		;;
 esac
 
