@@ -227,6 +227,7 @@ upgrade-test-distros = wheezy wheezy-proposed
 
 [squeeze2wheezy-proposed]
 precedence = 4
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -237,6 +238,7 @@ upgrade-test-distros = squeeze wheezy-proposed
 
 [squeeze2wheezy]
 precedence = 4
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -247,6 +249,7 @@ upgrade-test-distros = squeeze wheezy
 
 [squeeze2bpo2wheezy]
 precedence = 6
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -260,6 +263,7 @@ upgrade-test-distros = squeeze squeeze-backports wheezy
 
 [squeeze2bpo-sloppy]
 precedence = 6
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -272,6 +276,7 @@ upgrade-test-distros = squeeze squeeze-backports-sloppy
 
 [squeeze]
 precedence = 7
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -284,6 +289,7 @@ max-tgz-age = 2592000
 
 [squeeze2squeeze-lts]
 precedence = 8
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -297,6 +303,7 @@ upgrade-test-distros = squeeze squeeze-lts
 
 [lenny2squeeze]
 precedence = 99
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
