@@ -45,4 +45,9 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				;;
 		esac
 		;;
+	gdm3|gnome-session|gnome-shell*|razorqt|sucrose-0.96|mate-desktop-environment-core|task-kde-desktop)
+		# see pre_remove_exceptions for why this is needed
+		log_debug
+		dpkg --purge systemd-shim
+		;;
 esac
