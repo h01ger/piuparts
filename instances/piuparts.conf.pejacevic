@@ -176,6 +176,7 @@ max-tgz-age = 604800
 
 [wheezy2jessie]
 precedence = 3
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -185,6 +186,7 @@ upgrade-test-distros = wheezy jessie
 
 [wheezy2bpo2jessie]
 precedence = 5
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -197,6 +199,7 @@ upgrade-test-distros = wheezy wheezy-backports jessie
 
 [wheezy]
 precedence = 3
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -208,6 +211,7 @@ max-tgz-age = 2592000
 
 [wheezy-proposed]
 precedence = 3
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -217,6 +221,7 @@ distro = wheezy-proposed
 
 [wheezy2proposed]
 precedence = 3
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
