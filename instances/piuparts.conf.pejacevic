@@ -179,7 +179,6 @@ precedence = 3
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
-	--warn-on-debsums-errors
 distro = wheezy
 upgrade-test-distros = wheezy jessie
 
@@ -189,7 +188,6 @@ precedence = 5
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
-	--warn-on-debsums-errors
 depends-sections = wheezy
 arch = amd64
 area = main

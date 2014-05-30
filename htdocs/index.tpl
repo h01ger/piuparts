@@ -73,6 +73,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2014-05-30</b> Results from debsums on wheezy2jessie and wheezy2bpo2jessie are not being ignored anymore as <a href="http://bugs.debian.org/744398" target="_blank">#744398</a> has been fixed.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2014-05-22</b> Add squeeze-lts to the distros being testing (by testing squeeze2squeeze-lts upgrades).
      </td>
     </tr>
