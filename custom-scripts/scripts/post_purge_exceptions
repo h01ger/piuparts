@@ -48,10 +48,13 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	gdm3|gnome-session|gnome-shell*|gnome-core|gnome|gnome-desktop-environment|task-gnome-desktop|razorqt|sucrose-0.96|xfswitch-plugin|mate-core|mate-desktop-environment*|task-kde-desktop)
 		# see pre_remove_exceptions for why this is needed
 		log_debug
-		if [ "${PIUPARTS_DISTRIBUTION:0:5}" != "lenny" ] && [ "${PIUPARTS_DISTRIBUTION:0:7}" != "squeeze" ] && [ "${PIUPARTS_DISTRIBUTION:0:6}" != "wheezy" ] ; then
-			dpkg --purge systemd-shim
-		else
-			echo "PIUPARTS_DISTRIBUTION=$PIUPARTS_DISTRIBUTION, not applying systemd-sysv removal workaround"
-		fi
+		case ${PIUPARTS_DISTRIBUTION} in
+			lenny*|squeeze*|wheezy)
+				echo "PIUPARTS_DISTRIBUTION=$PIUPARTS_DISTRIBUTION, not applying systemd-sysv removal workaround"
+				;;
+			*)
+				dpkg --purge systemd-shim
+				;;
+		esac
 		;;
 esac
