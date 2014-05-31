@@ -2373,8 +2373,7 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     # 8. compare results
     #
     # sounds silly, or?
-    # well, it is is a reasonable default (see below for why), but
-    #
+    # well, it is a reasonable default (see below for why), but
     # step 2+3 can be done differently by using --save-end-meta once and
     # then --end-meta for all following runs - until the target distro
     # changes again...
