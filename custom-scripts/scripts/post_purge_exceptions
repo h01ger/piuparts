@@ -45,7 +45,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				;;
 		esac
 		;;
-	gdm3|gnome-session|gnome-shell*|gnome-core|gnome|gnome-desktop-environment|task-gnome-desktop|razorqt|sucrose-0.96|xfswitch-plugin|mate-core|mate-desktop-environment*|task-kde-desktop)
+	gdm3|gnome-session|gnome-shell*|gnome-core|gnome|gnome-desktop-environment|task-gnome-desktop|razorqt|sucrose-0.96|xfswitch-plugin|mate-core|mate-desktop-environment*|task-kde-desktop|kde-standard|kde-plasma-desktop|kde-plasma-netbook|ltsp-server-standalone)
 		# see pre_remove_exceptions for why this is needed
 		log_debug
 		case ${PIUPARTS_DISTRIBUTION} in
