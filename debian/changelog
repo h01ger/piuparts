@@ -1,5 +1,6 @@
 piuparts (0.59) UNRELEASED; urgency=low
 
+  [ Holger Levsen ]
   * piuparts.py:
     - set scriptsdir to /etc/piuparts/scripts and run this scripts by default.
     - mount selinuxfs read-only and on new location when possible. Thanks to
@@ -33,7 +34,11 @@ piuparts (0.59) UNRELEASED; urgency=low
     Explicitly state what will break when using cdebootstrap with pbuilder.
     (Closes: #709348)
   * Update various custom-scripts (usually to workaround problems in other
-    packages). 
+    packages).
+
+  [David Steele]
+  * dependencyparser.py - Be more lenient about the multi-arch modifiers
+    accepted and stripped by the parser.
 
  -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200
 

@@ -240,7 +240,9 @@ class DependencyParser:
         return SimpleDependency(name, op, version, arch)
 
     _name_pat = re.compile(r"[a-zA-Z0-9][a-zA-Z0-9+._-]+")
-    _any_suffix_pat = re.compile(r":any")
+    # The MultiArch spec supports an ":any" modifier. Loosen the
+    # accepted arch's, to avoid crashing.
+    _any_suffix_pat = re.compile(r":[a-zA-Z0-9-]+")
 
     def _parse_package_name(self):
         self._cursor.skip_whitespace()
