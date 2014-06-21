@@ -501,7 +501,7 @@ class Config(piupartslib.conf.Config):
                 "max-reserved": 1,
                 "doc-root": "/",
                 "known-problem-directory": "@sharedir@/piuparts/known_problems",
-                "reporting-sections": "default",
+                "json-sections": "default",
                 "precedence": 1,
                 "web-host": "piuparts.debian.org",
             },
@@ -1475,7 +1475,7 @@ class Section:
         if os.path.isfile(summary_path):
             os.unlink(summary_path)
 
-        reporting_sections = self._config['reporting-sections'].split()
+        reporting_sections = self._config['json-sections'].split()
         if not reporting_sections or reporting_sections[0] == 'default':
             reporting_sections = [self._config.get_std_distro()]
 

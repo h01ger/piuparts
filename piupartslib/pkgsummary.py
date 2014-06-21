@@ -65,7 +65,7 @@
 #
 #
 # The packages are listed by source package. E.g. "unstable" here is a
-# reporting-section (see README_server.txt). The single character flags are
+# json-section (see README_server.txt). The single character flags are
 # defined below. The number is the number of packages which
 # are blocked from testing due to a failed package. The URL is a human
 # friendly page for inspecting the results for that package/distribution.
@@ -73,12 +73,12 @@
 # Binary package results are combined into source package results. The 'worst'
 # flag in the group is reported ("F" is worst overall).
 #
-# For the global summary, the packages 'worst' result across reporting-sections
+# For the global summary, the packages 'worst' result across json-sections
 # is used. In the case of a tie, the more-important-precedence
-# section/reporting-section result is used.
+# section/json-section result is used.
 #
-# The global file also includes an 'overall' reporting-section, which contains
-# the 'worst' result across the other reporting-sections.
+# The global file also includes an 'overall' json-section, which contains
+# the 'worst' result across the other json-sections.
 
 
 import json
