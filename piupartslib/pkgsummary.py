@@ -36,7 +36,7 @@
 #
 # summary.json
 # {
-#  "_comment": "Debian Piuparts Package Results - http://anonscm.debian.org/...
+#  "_comment": "Debian Piuparts Package Results - https://anonscm.debian.org/...
 #  "_date": "Wed Feb 26 01:48:43 UTC 2014",
 #  "_id": "Piuparts Package Test Results Summary",
 #  "_type": "source",
@@ -148,7 +148,7 @@ def new_summary():
                "_version" : SUMMVER,
                "_date"    : utcdate,
                "_comment" : "Debian Piuparts Package Results - " \
-                            "http://anonscm.debian.org/gitweb/?" \
+                            "https://anonscm.debian.org/gitweb/?" \
                             "p=piuparts/piuparts.git;a=blob;" \
                             "f=piupartslib/pkgsummary.py;hb=refs/heads/develop",
                "_type"    : "source",

@@ -35,7 +35,8 @@ piuparts (0.59) UNRELEASED; urgency=low
     (Closes: #709348)
   * Update various custom-scripts (usually to workaround problems in other
     packages).
-  * Switch all links to bugs.debian.org and wiki.debian.org to https.
+  * Switch all links to bugs.debian.org, wiki.debian.org and
+    anonscm.debian.org to https.
 
   [ David Steele ]
   * dependencyparser.py - Be more lenient about the multi-arch modifiers
@@ -1333,7 +1334,7 @@ piuparts (0.41) unstable; urgency=low
     package
   * Makefile: build for python 2.6 and 2.7 instead of 2.5 and 2.6.
   * Source code is now stored in git.
-    http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
+    https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git
     git clone git+ssh://git.debian.org/git/piuparts/piuparts.git
     Thanks to Thomas Koch for setting those up and keeping history!
   * The configuration and scripts used on piatti.debian.org have also been

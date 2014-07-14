@@ -19,8 +19,8 @@ results and piu-slave-bm-a.debian.org, running four piuparts-slave nodes.
 * basically, apt-get build-dep piuparts - in reality both systems get their
   package configuration from git.debian.org/git/mirror/debian.org.git
 * pejacevic runs a webserver as well (see below for apache configuration)
-* Copy 'http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob_plain;f=update-piuparts-master-setup'
-  and 'http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob_plain;f=update-piuparts-slave-setup'
+* Copy 'https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob_plain;f=update-piuparts-master-setup'
+  and 'https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob_plain;f=update-piuparts-slave-setup'
   to the hosts which should be master and slave. (It's possible and has been
   done for a long time to run them on the same host.(
   Run the scripts as the piupartsm and piupartss users and clone that git

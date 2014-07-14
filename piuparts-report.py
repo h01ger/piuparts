@@ -109,7 +109,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">Source</a>
+      <a href="https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">Source</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -119,7 +119,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      piuparts <a href="https://bugs.debian.org/src:piuparts" target="_blank">bugs</a> / <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=develop;a=blob;f=TODO" target="_blank">ToDo</a>
+      piuparts <a href="https://bugs.debian.org/src:piuparts" target="_blank">bugs</a> / <a href="https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=develop;a=blob;f=TODO" target="_blank">ToDo</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -150,9 +150,9 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     <tr class="normalrow">
      <td class="contentcell">
       piuparts.d.o configuration:<br>
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=instances/piuparts.conf.pejacevic" target="_blank">piuparts.conf</a>,<br>
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=conf/distros.conf" target="_blank">distros.conf</a><br> and
-      <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=tree;f=custom-scripts" target="_blank">scripts</a>
+      <a href="https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=instances/piuparts.conf.pejacevic" target="_blank">piuparts.conf</a>,<br>
+      <a href="https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=blob_plain;f=conf/distros.conf" target="_blank">distros.conf</a><br> and
+      <a href="https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=bikeshed;a=tree;f=custom-scripts" target="_blank">scripts</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -244,7 +244,7 @@ HTML_FOOTER = """
    and was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by
    <a href="mailto:holger@layer-acht.org">Holger Levsen</a> and
    <a href="mailto:piuparts-devel@lists.alioth.debian.org">others</a> using
-   <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">piuparts.git</a>.
+   <a href="https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git" target="_blank">piuparts.git</a>.
    Ditto for this website.
    Weather icons are from the <a href="http://tango.freedesktop.org/Tango_Icon_Library" target="_blank">Tango Icon Library</a>.
    <a href="http://validator.w3.org/check?uri=referer">
