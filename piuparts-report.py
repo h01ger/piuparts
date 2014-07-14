@@ -202,7 +202,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
      </td>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://udd.debian.org" target="_blank">Ultimate Debian Database</a>
+      <a href="https://udd.debian.org" target="_blank">Ultimate Debian Database</a>
      </td>
     </tr>
     <tr class="normalrow">
