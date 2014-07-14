@@ -53,7 +53,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      You can talk to us on #debian-qa on irc.debian.org (OFTC) or send an email on the <a href="http://lists.alioth.debian.org/mailman/listinfo/piuparts-devel" target="_blank">piuparts development mailinglist</a>. The best ways to contribute are to provide patches via GIT pull requests and/or to file bugs based on piuparts runs.
+      You can talk to us on #debian-qa on irc.debian.org (OFTC) or send an email on the <a href="https://lists.alioth.debian.org/mailman/listinfo/piuparts-devel" target="_blank">piuparts development mailinglist</a>. The best ways to contribute are to provide patches via GIT pull requests and/or to file bugs based on piuparts runs.
      </td>
     </tr>
     <tr class="normalrow">
@@ -421,7 +421,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2007-02-24</b>: Holger <a href="http://lists.alioth.debian.org/pipermail/piuparts-devel/2007-February/000020.html" target="_blank">puts piuparts source in svn</a>.
+      <b>2007-02-24</b>: Holger <a href="https://lists.alioth.debian.org/pipermail/piuparts-devel/2007-February/000020.html" target="_blank">puts piuparts source in svn</a>.
      </td>
     </tr>
     <tr class="normalrow">
