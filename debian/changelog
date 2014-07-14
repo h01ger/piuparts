@@ -2,7 +2,6 @@ piuparts (0.59) UNRELEASED; urgency=low
 
   [ Holger Levsen ]
   * piuparts.py:
-    - set scriptsdir to /etc/piuparts/scripts and run this scripts by default.
     - mount selinuxfs read-only and on new location when possible. Thanks to
       Laurent Bigonville for the patch! (Closes: #682068)
     - Add to ignored_files:

@@ -160,7 +160,7 @@ class Settings:
         self.eatmydata = True
         self.dpkg_force_unsafe_io = True
         self.dpkg_force_confdef = False
-        self.scriptsdirs = [ "/etc/piuparts/scripts" ]
+        self.scriptsdirs = []
         self.bindmounts = []
         self.allow_database = False
         # chroot setup
