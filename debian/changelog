@@ -16,8 +16,10 @@ piuparts (0.59) UNRELEASED; urgency=low
       of piuparts testing and display it on piuparts.d.o welcome page.
     - move counts.txt from htdocs to master directory.
   * master-bin/gather_bts_stats: differate between rc and non-rc bugs.
-  * Makefile: don't install crontabs and sudoers file anymore, except when
-    installing from git.
+  * Makefile:
+    - Don't install crontabs and sudoers file anymore, except when
+      installing from git.
+    - Also cleanup python bytecode from tests.
   * Packaging:
     - install cron files for piupartsm and piupartss users in
       /usr/share/doc/piuparts-(master|slave)/examples/ (Closes: #746721)

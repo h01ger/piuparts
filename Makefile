@@ -152,7 +152,7 @@ clean:
 	rm -f build-stamp
 	rm -f $(DOCS_GENERATED)
 	rm -f piuparts.1.xml README.xml README_server.xml docbook-xsl.css piuparts.html
-	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc
+	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc tests/*.pyc
 	rm -f $(SCRIPTS_GENERATED)
 
 
