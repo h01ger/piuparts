@@ -240,7 +240,7 @@ HTML_FOOTER = """
  <div id="footer">
   <div>
    <a href="http://packages.qa.debian.org/piuparts" target="_blank">piuparts</a>
-   is GPL2 <a href="http://packages.debian.org/changelogs/pool/main/p/piuparts/current/copyright" target="_blank">licenced</a>
+   is GPL2 <a href="https://packages.debian.org/changelogs/pool/main/p/piuparts/current/copyright" target="_blank">licenced</a>
    and was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by
    <a href="mailto:holger@layer-acht.org">Holger Levsen</a> and
    <a href="mailto:piuparts-devel@lists.alioth.debian.org">others</a> using
