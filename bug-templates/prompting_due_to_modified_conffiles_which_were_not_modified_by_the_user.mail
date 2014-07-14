@@ -22,7 +22,7 @@ which says "[These scripts handling conffiles] must not ask unnecessary
 questions (particularly during upgrades), and must otherwise be good
 citizens."
 
-http://wiki.debian.org/DpkgConffileHandling should help with figuring
+https://wiki.debian.org/DpkgConffileHandling should help with figuring
 out how to do this properly.
 
 In http://lists.debian.org/debian-devel/2009/08/msg00675.html and

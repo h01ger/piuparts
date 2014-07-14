@@ -99,12 +99,12 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://wiki.debian.org/piuparts" target="_blank">Overview</a>
+      <a href="https://wiki.debian.org/piuparts" target="_blank">Overview</a>
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">FAQ</a>
+      <a href="https://wiki.debian.org/piuparts/FAQ" target="_blank">FAQ</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -183,7 +183,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://wiki.debian.org/qa.debian.org" target="_blank">Debian QA Group</a>
+      <a href="https://wiki.debian.org/qa.debian.org" target="_blank">Debian QA Group</a>
      </td>
     </tr>
     <tr class="normalrow">

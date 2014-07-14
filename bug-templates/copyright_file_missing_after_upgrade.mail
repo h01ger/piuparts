@@ -23,7 +23,7 @@ From the attached log (scroll to the bottom...):
 
 
 Additional info may be available here:
-http://wiki.debian.org/MissingCopyrightFile
+https://wiki.debian.org/MissingCopyrightFile
 
 Note that dpkg intentionally does not replace directories with symlinks
 and vice versa, you need the maintainer scripts to do this.

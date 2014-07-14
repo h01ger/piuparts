@@ -33,7 +33,7 @@ by the postinst script to fill in the custom values and create (or
 update) the configuration file (preserving any user modifications!).
 This file must be removed during postrm purge.
 ucf(1) may help with these tasks.
-See also http://wiki.debian.org/DpkgConffileHandling
+See also https://wiki.debian.org/DpkgConffileHandling
 
 In https://lists.debian.org/debian-devel/2012/09/msg00412.html and
 followups it has been agreed that these bugs are to be filed with

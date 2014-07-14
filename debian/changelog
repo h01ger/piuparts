@@ -35,7 +35,7 @@ piuparts (0.59) UNRELEASED; urgency=low
     (Closes: #709348)
   * Update various custom-scripts (usually to workaround problems in other
     packages).
-  * Switch all links to bugs.debian.org to https.
+  * Switch all links to bugs.debian.org and wiki.debian.org to https.
 
   [ David Steele ]
   * dependencyparser.py - Be more lenient about the multi-arch modifiers
@@ -1470,7 +1470,7 @@ piuparts (0.39) unstable; urgency=low
   * Makefile: support python 2.5 and 2.6 instead of 2.4 and 2.5, adjust
     debian/control accordingly.
   * debian/preinst: update code snipplet rm_conffile() from
-    http://wiki.debian.org/DpkgConffileHandling
+    https://wiki.debian.org/DpkgConffileHandling
 
   [ Evgeni Golov ]
   * piuparts.py:
@@ -1787,7 +1787,7 @@ piuparts (0.29) unstable; urgency=low
   [ Holger Levsen ]
   * Added myself to uploaders.
   * Added Homepage: header to debian/control and changed the homepage to be
-    http://wiki.debian.org/piuparts.
+    https://wiki.debian.org/piuparts.
   * Use Vcs-* headers in debian/control instead of XS-Vcs-*.
   * Bumped policy version to 3.7.3.
   * Updated download location in debian/copyright.

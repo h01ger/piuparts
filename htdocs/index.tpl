@@ -44,10 +44,10 @@
      <td class="contentcell2">
       Besides all the information provided here, there is some more information available on wiki.debian.org:
       <ul>
-       <li>an overview about <a href="http://wiki.debian.org/piuparts" target="_blank">piuparts</a> and about <a href="http://wiki.debian.org/piuparts/piuparts.debian.org" target="_blank">piuparts.debian.org</a>,</li>
-       <li>about <a href="http://wiki.debian.org/piuparts/Development" target="_blank">piuparts development</a>,</li>
-       <li>some <a href="http://wiki.debian.org/piuparts/FAQ" target="_blank">frequently asked questions</a></li>
-       <li>and some <a href="http://wiki.debian.org/piuparts/HowTos" target="_blank">HowTos</a> suited for package maintainer workflows.</li>
+       <li>an overview about <a href="https://wiki.debian.org/piuparts" target="_blank">piuparts</a> and about <a href="https://wiki.debian.org/piuparts/piuparts.debian.org" target="_blank">piuparts.debian.org</a>,</li>
+       <li>about <a href="https://wiki.debian.org/piuparts/Development" target="_blank">piuparts development</a>,</li>
+       <li>some <a href="https://wiki.debian.org/piuparts/FAQ" target="_blank">frequently asked questions</a></li>
+       <li>and some <a href="https://wiki.debian.org/piuparts/HowTos" target="_blank">HowTos</a> suited for package maintainer workflows.</li>
       </ul>
      </td>
     </tr>
