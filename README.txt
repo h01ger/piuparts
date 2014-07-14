@@ -172,6 +172,10 @@ This option can be given multiple times. The scripts from all
 directories will be merged together (and later ones may overwrite
 earlier scripts with the same filename).
 
+By default this is *not* set to anything. Have a look at
+'/etc/piuparts/scripts*' to learn which scripts and script
+directories are shipped by the package.
+
 The script prefix determines in which step it is executed. You
 can run several scripts in every step, they are run in
 alphabetical order.
