@@ -6,7 +6,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	This page shall grow into a well written explaination how to file useful bugs fast. It assumes you are familar with <a href="http://www.debian.org/Bugs/Reporting" target="_blank">reporting bugs in Debian</a>.
+	This page shall grow into a well written explaination how to file useful bugs fast. It assumes you are familar with <a href="https://www.debian.org/Bugs/Reporting" target="_blank">reporting bugs in Debian</a>.
      </td>
     </tr>
     <tr class="normalrow">
@@ -62,7 +62,7 @@
  declaring a replaces relation.
 
  See policy 7.6 at
- http://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces
+ https://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces
 
  From the attached log (scroll to the bottom...):
 

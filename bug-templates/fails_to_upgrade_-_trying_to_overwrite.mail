@@ -16,7 +16,7 @@ because it tries to overwrite files that are owned by other packages
 without declaring a Breaks+Replaces relation.
 
 See policy 7.6 at
-http://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces
+https://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces
 
 This problem is exposed during the upgrade of the 'EXPOSER'
 package, not by upgrading only the buggy package itself.

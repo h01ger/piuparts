@@ -12,7 +12,7 @@ Hi,
 during a test with piuparts I noticed your package left unowned files on
 the system after purge, which is a violation of policy 6.8:
 
-http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetails
+https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetails
 
 The leftover files are actually alternatives that were installed by the
 package but have not been properly removed.

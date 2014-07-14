@@ -73,9 +73,9 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
  <body>
  <div id="header">
    <h1 class="header">
-    <a href="http://www.debian.org/">
+    <a href="https://www.debian.org/">
      <img src="$doc_root/images/openlogo-nd-50.png" border="0" hspace="0" vspace="0" alt=""></a>
-    <a href="http://www.debian.org/">
+    <a href="https://www.debian.org/">
      <img src="$doc_root/images/debian.png" border="0" hspace="0" vspace="0" alt="Debian Project"></a>
     Quality Assurance
    </h1>
@@ -162,7 +162,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://www.debian.org/doc/debian-policy/" target="_blank">Debian policy</a>
+      <a href="https://www.debian.org/doc/debian-policy/" target="_blank">Debian policy</a>
      </td>
     </tr>
     <tr class="titlerow">

@@ -41,7 +41,7 @@ The following relationships are currently defined:
 
 The following relationships should be added for a clean takeover of
 these files
-(http://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces):
+(https://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces):
 
   Package:
   Breaks:

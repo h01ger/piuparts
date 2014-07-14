@@ -16,7 +16,7 @@ Configuration Management Specification, version 2 or higher.
 
 Refer to Debian Policy Manual section 3.9.1 (Prompting in maintainer
 scripts) for details. Quoting from
-http://www.debian.org/doc/debian-policy/ch-binary.html#s-maintscriptprompt
+https://www.debian.org/doc/debian-policy/ch-binary.html#s-maintscriptprompt
 
 ------------------------------------------------------------------------------
 [ 3.9.1 Prompting in maintainer scripts ]

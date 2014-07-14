@@ -12,8 +12,8 @@ Hi,
 during a test with piuparts I noticed your package left owned files on
 the system after purge, which is a violation of policy 6.8 and 10.7.3:
 
-http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetails
-http://www.debian.org/doc/debian-policy/ch-files.html#s10.7.3
+https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-removedetails
+https://www.debian.org/doc/debian-policy/ch-files.html#s10.7.3
 
 From the attached log (scroll to the bottom...):
 

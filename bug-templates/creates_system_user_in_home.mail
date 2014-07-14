@@ -17,7 +17,7 @@ The FHS (which is part of the policy) states:
 "/home is a fairly standard concept, but it is clearly a site-specific
 filesystem. The setup will differ from host to host. Therefore, no
 program should rely on this location."
-http://www.debian.org/doc/packaging-manuals/fhs/fhs-2.3.html#HOMEUSERHOMEDIRECTORIES
+https://www.debian.org/doc/packaging-manuals/fhs/fhs-2.3.html#HOMEUSERHOMEDIRECTORIES
 
 System users are usually placed in /var/lib.
 

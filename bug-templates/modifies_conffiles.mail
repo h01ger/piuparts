@@ -11,7 +11,7 @@ Hi,
 
 during a test with piuparts I noticed your package modifies conffiles.
 This is forbidden by the policy, see
-http://www.debian.org/doc/debian-policy/ch-files.html#s-config-files
+https://www.debian.org/doc/debian-policy/ch-files.html#s-config-files
 
 10.7.3: "[...] The easy way to achieve this behavior is to make the
 configuration file a conffile. [...] This implies that the default
