@@ -36,7 +36,7 @@ piuparts (0.59) UNRELEASED; urgency=low
   * Update various custom-scripts (usually to workaround problems in other
     packages).
   * Switch all links to bugs.debian.org, www.debian.org, wiki.debian.org,
-    packages.debian.org and anonscm.debian.org to https.
+    packages.debian.org, anonscm.debian.org and lists.debian.org to https.
 
   [ David Steele ]
   * dependencyparser.py - Be more lenient about the multi-arch modifiers

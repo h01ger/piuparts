@@ -431,7 +431,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2006-09-29</b>: Lars <a href="http://lists.debian.org/debian-devel/2006/09/msg01068.html" target="_blank">seeks help maintaining piuparts</a>.
+      <b>2006-09-29</b>: Lars <a href="https://lists.debian.org/debian-devel/2006/09/msg01068.html" target="_blank">seeks help maintaining piuparts</a>.
      </td>
     </tr>
     <tr class="normalrow">

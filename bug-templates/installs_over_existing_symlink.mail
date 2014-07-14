@@ -19,7 +19,7 @@ but package CONFLICTOR ships:
 
 
 Installing something over existing symlinks is considered bad practice.
-See e.g. http://lists.debian.org/87ehlevcrf.fsf@windlord.stanford.edu
+See e.g. https://lists.debian.org/87ehlevcrf.fsf@windlord.stanford.edu
 
 It may break in subtle ways and dpkg cannot detect this as a problem.
 * Your package might silently overwrite files installed at the symlink

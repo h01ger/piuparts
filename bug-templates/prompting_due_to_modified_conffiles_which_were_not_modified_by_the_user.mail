@@ -25,7 +25,7 @@ citizens."
 https://wiki.debian.org/DpkgConffileHandling should help with figuring
 out how to do this properly.
 
-In http://lists.debian.org/debian-devel/2009/08/msg00675.html and
+In https://lists.debian.org/debian-devel/2009/08/msg00675.html and
 followups it has been agreed that these bugs are to be filed with
 severity serious.
 

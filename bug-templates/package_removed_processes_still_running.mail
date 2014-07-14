@@ -12,7 +12,7 @@ Hi,
 during a test with piuparts I noticed your package left processes
 running after the package has been removed and/or purged.
 
-In http://lists.debian.org/debian-devel/2009/08/msg00182.html and
+In https://lists.debian.org/debian-devel/2009/08/msg00182.html and
 followups it has been agreed that these bugs are to be filed with
 severity serious.
 
