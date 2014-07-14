@@ -1,4 +1,4 @@
-piuparts (0.59) UNRELEASED; urgency=low
+piuparts (0.59) unstable; urgency=low
 
   [ Holger Levsen ]
   * piuparts.py:
@@ -53,7 +53,7 @@ piuparts (0.59) UNRELEASED; urgency=low
   * Remove oldstable distribution results from the JSON summary.
     - Also remote stable distribution results.
 
- -- Holger Levsen <holger@debian.org>  Thu, 01 May 2014 00:42:23 +0200
+ -- Holger Levsen <holger@debian.org>  Mon, 14 Jul 2014 13:14:19 +0000
 
 piuparts (0.58) unstable; urgency=low
 
