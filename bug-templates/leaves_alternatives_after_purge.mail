@@ -18,7 +18,7 @@ The leftover files are actually alternatives that were installed by the
 package but have not been properly removed.
 
 While there is ongoing discussion how to remove alternatives correctly
-(see http://bugs.debian.org/71621 for details) the following strategy
+(see https://bugs.debian.org/71621 for details) the following strategy
 should work for regular cases:
 * 'postinst configure' always installs the alternative
 * 'prerm remove' removes the alternative

@@ -7,7 +7,7 @@
 [DEFAULT]
 # these are needed always
 flags-base =
-# see http://bugs.debian.org/604807
+# see https://bugs.debian.org/604807
 	--skip-logrotatefiles-test
 # restrict to problems in the package being tested
 	--warn-on-others

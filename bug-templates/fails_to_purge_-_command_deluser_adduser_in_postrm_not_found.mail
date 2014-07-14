@@ -20,7 +20,7 @@ userdel from the passwd package (priority required) should fix this
 problem.
 
 There is ongoing discussion how to handle system users on package
-removal, see http://bugs.debian.org/621833
+removal, see https://bugs.debian.org/621833
 Consensus seems to be not to remove system users (to avoid reusing UIDs
 which could grant access to the wrong files) but to "lock" them (where
 "locking"/"unlocking" is not yet precisely defined). Until that has

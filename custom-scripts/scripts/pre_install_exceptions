@@ -66,7 +66,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 					[ "$PIUPARTS_DISTRIBUTION" = "squeeze-backports" ] || \
 					[ "$PIUPARTS_DISTRIBUTION" = "lenny" ] )
 				then
-					# work around lvm2 bug http://bugs.debian.org/603036 which is squeeze-ignore
+					# work around lvm2 bug https://bugs.debian.org/603036 which is squeeze-ignore
 					log_debug
 					apt-get -y install udev
 				fi

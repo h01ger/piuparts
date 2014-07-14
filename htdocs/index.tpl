@@ -73,7 +73,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2014-05-30</b> Results from debsums on wheezy2jessie and wheezy2bpo2jessie are not being ignored anymore as <a href="http://bugs.debian.org/744398" target="_blank">#744398</a> has been fixed.
+      <b>2014-05-30</b> Results from debsums on wheezy2jessie and wheezy2bpo2jessie are not being ignored anymore as <a href="https://bugs.debian.org/744398" target="_blank">#744398</a> has been fixed.
      </td>
     </tr>
     <tr class="normalrow">
@@ -88,7 +88,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2014-05-11</b> Temporarily ignore debsums results for wheezy2jessie and wheezy2bpo2jessie due to <a href="http://bugs.debian.org/744398" target="_blank">#744398</a>.
+      <b>2014-05-11</b> Temporarily ignore debsums results for wheezy2jessie and wheezy2bpo2jessie due to <a href="https://bugs.debian.org/744398" target="_blank">#744398</a>.
      </td>
     </tr>
     <tr class="normalrow">
@@ -98,7 +98,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-07-16</b> To better track bugs in piuparts.debian.org and piuparts itself, a new pseudo-package was created in the BTS: <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?src=piuparts.debian.org" target="_blank">piuparts.debian.org</a>, which will be used for tracking all issues with the piuparts.debian.org service.
+      <b>2013-07-16</b> To better track bugs in piuparts.debian.org and piuparts itself, a new pseudo-package was created in the BTS: <a href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?src=piuparts.debian.org" target="_blank">piuparts.debian.org</a>, which will be used for tracking all issues with the piuparts.debian.org service.
      </td>
     </tr>
     <tr class="normalrow">
@@ -118,7 +118,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-05-22</b> The webpages served by <a href="https://piuparts.debian.org">https://piuparts.debian.org</a> are updated twice a day now. Further changes which were applied last week: debsums failures have been reenabled, adequate is now run by piuparts (see <a href="http://bugs.debian.org/703902" target="_blank">#703902</a>) and two new suites were added: <em>experimental</em> and <em>sid-nodoc</em>, which tests sid without files in /usr/share/doc/&lt;package&gt;.
+      <b>2013-05-22</b> The webpages served by <a href="https://piuparts.debian.org">https://piuparts.debian.org</a> are updated twice a day now. Further changes which were applied last week: debsums failures have been reenabled, adequate is now run by piuparts (see <a href="https://bugs.debian.org/703902" target="_blank">#703902</a>) and two new suites were added: <em>experimental</em> and <em>sid-nodoc</em>, which tests sid without files in /usr/share/doc/&lt;package&gt;.
      </td>
     </tr>
     <tr class="normalrow">
@@ -246,7 +246,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-11-28</b>: debconf-english is the seventh package getting special treatment by piuparts: before removal, debconf-i18n is installed (see <a href="http://bugs.debian.org/539146" target="_blank">#539146</a> has the details and the news entry for 2010-11-25 lists the other six packages.)
+      <b>2010-11-28</b>: debconf-english is the seventh package getting special treatment by piuparts: before removal, debconf-i18n is installed (see <a href="https://bugs.debian.org/539146" target="_blank">#539146</a> has the details and the news entry for 2010-11-25 lists the other six packages.)
      </td>
     </tr>
     <tr class="normalrow">
@@ -261,7 +261,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-11-24</b>: Disable the logrotate test until <a href="http://bugs.debian.org/582630" target="_blank">#582630</a> is fixed and reschedule all 51 packages in sid failed due to it.
+      <b>2010-11-24</b>: Disable the logrotate test until <a href="https://bugs.debian.org/582630" target="_blank">#582630</a> is fixed and reschedule all 51 packages in sid failed due to it.
      </td>
     </tr>
     <tr class="normalrow">
@@ -286,7 +286,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-07-24</b>: <a href="http://bugs.debian.org/531349" target="_blank">#531349</a> has been fixed, piuparts results are now displayed in the <a href="http://packages.qa.debian.org/">PTS</a>.
+      <b>2009-07-24</b>: <a href="https://bugs.debian.org/531349" target="_blank">#531349</a> has been fixed, piuparts results are now displayed in the <a href="http://packages.qa.debian.org/">PTS</a>.
      </td>
     </tr>
     <tr class="normalrow">
@@ -301,7 +301,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2010-02-28</b>: Due to <a href="http://bugs.debian.org/571925" target="_blank">#571925</a> testing of sid had to be disabled temporarily. On an unrelated note, testing of lenny2squeeze still has some issues atm...
+      <b>2010-02-28</b>: Due to <a href="https://bugs.debian.org/571925" target="_blank">#571925</a> testing of sid had to be disabled temporarily. On an unrelated note, testing of lenny2squeeze still has some issues atm...
      </td>
     </tr>
     <tr class="normalrow">
@@ -326,7 +326,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-12-24</b>: Enable work-in-progress code to enable testing of packages with circular depends. This will allow testing of 5-6000 more packages in sid and squeeze, see <a href="http://bugs.debian.org/526046" target="_blank">#526046</a> and the 0.39 changelog for details. The list of packages with circular depends is currently hard-coded and will probably become a configuration option but not auto detected. But that's code yet to be written :-)
+      <b>2009-12-24</b>: Enable work-in-progress code to enable testing of packages with circular depends. This will allow testing of 5-6000 more packages in sid and squeeze, see <a href="https://bugs.debian.org/526046" target="_blank">#526046</a> and the 0.39 changelog for details. The list of packages with circular depends is currently hard-coded and will probably become a configuration option but not auto detected. But that's code yet to be written :-)
      </td>
     </tr>
     <tr class="normalrow">
@@ -361,7 +361,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-09-16</b>: Reschedule testing for 233 failing packages in sid which were affected by <a href="http://bugs.debian.org/545949" target="_blank">#545949</a>. No packages in squeeze were affected.
+      <b>2009-09-16</b>: Reschedule testing for 233 failing packages in sid which were affected by <a href="https://bugs.debian.org/545949" target="_blank">#545949</a>. No packages in squeeze were affected.
      </td>
     </tr>
     <tr class="normalrow">
@@ -371,7 +371,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-06-06</b>: Reschedule testing for 163 successful and 27 failing packages in sid which were affected by <a href="http://bugs.debian.org/530501" target="_blank">#530501</a>. Once openssh 1:5.1p1-6 has reached squeeze, this will be done again with 194 packages there.
+      <b>2009-06-06</b>: Reschedule testing for 163 successful and 27 failing packages in sid which were affected by <a href="https://bugs.debian.org/530501" target="_blank">#530501</a>. Once openssh 1:5.1p1-6 has reached squeeze, this will be done again with 194 packages there.
      </td>
     </tr>
     <tr class="normalrow">
@@ -381,7 +381,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-05-11</b>: Filed <a href="http://bugs.debian.org/528266" target="_blank">#528266</a> and made piuparts ignore files in /tmp after purge. This got rid of 20 failures in sid and 14 in squeeze.
+      <b>2009-05-11</b>: Filed <a href="https://bugs.debian.org/528266" target="_blank">#528266</a> and made piuparts ignore files in /tmp after purge. This got rid of 20 failures in sid and 14 in squeeze.
      </td>
     </tr>
     <tr class="normalrow">
@@ -401,7 +401,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2009-04-18</b>: Deleted all 14 failed logfiles which complained about <code>/var/games</code> being present after purge, as this ain't an issue, see <a href="http://bugs.debian.org/524461" target="_blank">#524461</a>.
+      <b>2009-04-18</b>: Deleted all 14 failed logfiles which complained about <code>/var/games</code> being present after purge, as this ain't an issue, see <a href="https://bugs.debian.org/524461" target="_blank">#524461</a>.
      </td>
     </tr>
     <tr class="normalrow">
@@ -426,7 +426,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2006-10-02</b>: <a href="http://bugs.debian.org/390754" target="_blank">#390754 O: piuparts -- package installation, upgrading and removal testing tool"</a>
+      <b>2006-10-02</b>: <a href="https://bugs.debian.org/390754" target="_blank">#390754 O: piuparts -- package installation, upgrading and removal testing tool"</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -436,7 +436,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2005-07-05</b>: <a href="http://bugs.debian.org/317033" target="_blank">#317033 ITP: piuparts -- .deb package installation, upgrading, and removal testing tool</a>
+      <b>2005-07-05</b>: <a href="https://bugs.debian.org/317033" target="_blank">#317033 ITP: piuparts -- .deb package installation, upgrading, and removal testing tool</a>
      </td>
     </tr>
     <tr class="normalrow">

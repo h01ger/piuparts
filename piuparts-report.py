@@ -114,12 +114,12 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      piuparts.d.o <a href="http://bugs.debian.org/src:piuparts.debian.org" target="_blank">bugs</a>
+      piuparts.d.o <a href="https://bugs.debian.org/src:piuparts.debian.org" target="_blank">bugs</a>
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      piuparts <a href="http://bugs.debian.org/src:piuparts" target="_blank">bugs</a> / <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=develop;a=blob;f=TODO" target="_blank">ToDo</a>
+      piuparts <a href="https://bugs.debian.org/src:piuparts" target="_blank">bugs</a> / <a href="http://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=develop;a=blob;f=TODO" target="_blank">ToDo</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -172,7 +172,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr>
      <td class="contentcell">
-      <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?tag=piuparts;users=debian-qa@lists.debian.org&amp;archive=both" target="_blank">Bugs filed</a>
+      <a href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?tag=piuparts;users=debian-qa@lists.debian.org&amp;archive=both" target="_blank">Bugs filed</a>
      </td>
     </tr>
     $section_navigation
@@ -369,7 +369,7 @@ $PACKAGE_LIST</ul>
 PKG_ERROR_TPL = \
 """<li>$RDEPS - <a href=\"$LOG\">$LOG</a>
     (<a href=\"http://packages.qa.debian.org/$SDIR/$SPKG.html\" target=\"_blank\">PTS</a>)
-    (<a href=\"http://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)
+    (<a href=\"https://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)
 $BUG</li>
 """
 
@@ -946,7 +946,7 @@ class Section:
             link = ", ".join(links)
 
         if "/bugged/" in link or "/affected/" in link:
-            link += " - <a href=\"http://bugs.debian.org/cgi-bin/pkgreport.cgi?package=" \
+            link += " - <a href=\"https://bugs.debian.org/cgi-bin/pkgreport.cgi?package=" \
                     + package_name \
                     + "\" target=\"_blank\" class=\"bugged\">&nbsp;bug filed&nbsp;</a>\n"
 
