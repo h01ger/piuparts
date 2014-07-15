@@ -817,11 +817,18 @@ class Chroot:
 
     def setup_from_dir(self, dirname):
         """Create chroot from an existing one."""
-        logging.debug("Copying %s into %s" % (dirname, self.name))
+        # if on same device, make hard link
+        cmd = ["cp"]
+        if os.stat(dirname).st_dev == os.stat(self.name).st_dev:
+            cmd += ["-al"]
+            logging.debug("Hard linking %s to %s" % (dirname, self.name))
+        else:
+            cmd += ["-ax"]
+            logging.debug("Copying %s into %s" % (dirname, self.name))
         for name in os.listdir(dirname):
             src = os.path.join(dirname, name)
             dst = os.path.join(self.name, name)
-            run(["cp", "-ax", src, dst])
+            run(cmd + [src, dst])
 
     def run(self, command, ignore_errors=False):
         prefix = []
