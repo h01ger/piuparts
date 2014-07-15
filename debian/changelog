@@ -1,6 +1,9 @@
 piuparts (0.60) UNRELEASED; urgency=medium
 
-  * 
+  [ Leo Iannacone ]
+  * piuparts.py: when using the --existing-chroot option, instead of copying
+    files, use hard links if the original chroot and destination directory
+    are on the same device.
 
  -- Holger Levsen <holger@debian.org>  Tue, 15 Jul 2014 16:42:39 +0200
 
