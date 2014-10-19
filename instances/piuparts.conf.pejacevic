@@ -81,7 +81,6 @@ sections =
 	squeeze
 	squeeze2squeeze-lts
 	lenny2squeeze
-#
 mirror = http://mirror.bm.debian.org/debian/
 master-host = pejacevic.debian.org
 master-user = piupartsm
