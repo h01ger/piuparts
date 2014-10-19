@@ -1,5 +1,5 @@
 #
-# This is the configuration file for piuparts running in master-slave mode on a (development) host called goldwasser
+# This is the configuration file for piuparts running in master-slave mode on a (development) host called lamarr
 #
 # For more information on this setup see /usr/share/doc/piuparts-master/README_server.txt
 #
@@ -68,7 +68,7 @@ sections =
 	squeeze-lts
 
 mirror = http://ftp.de.debian.org/debian/
-master-host = localhost
+master-host = goldwasser
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
 master-command = /srv/piuparts.debian.org/share/piuparts/piuparts-master
@@ -86,7 +86,6 @@ backup-directory = /srv/piuparts.debian.org/backup
 tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /
 components = main
-slave-count = 2
 # this value is too high for production (it will cause piuparts-slave to sleep
 # for a whole day) but useful for testing master-slave mode, for running on a
 # test system 24/7 without causing load for 24/7
