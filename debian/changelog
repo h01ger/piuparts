@@ -1,3 +1,10 @@
+piuparts (0.59~bpo70+1) wheezy-backports; urgency=medium
+
+  * Rebuild for wheezy-backports.
+  * Remove python-mox3 from build-depends and disable the tests during build. 
+
+ -- Holger Levsen <holger@debian.org>  Sat, 26 Jul 2014 13:42:07 +0200
+
 piuparts (0.59) unstable; urgency=low
 
   [ Holger Levsen ]
