@@ -13,6 +13,8 @@ piuparts (0.60) UNRELEASED; urgency=medium
   * Drop conf/piuparts-master.sudoers from debian/piuparts-master.examples
     and modify conf/piuparts-slave.sudoers to only allow the piupartss user
     to run /usr/sbin/piuparts as root - that's "all that's needed" anyway.
+  * Add "AddType text/plain .log" to the apache2 configuration snipplet
+    example, so that logfiles are displayed in the browser.
 
  -- Holger Levsen <holger@debian.org>  Tue, 15 Jul 2014 16:42:39 +0200
 
