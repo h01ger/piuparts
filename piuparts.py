@@ -109,7 +109,7 @@ class UbuntuDefaults(Defaults):
         return [("http://archive.ubuntu.com/ubuntu", self.get_components())]
 
     def get_distribution(self):
-        return ["utopic"]
+        return ["vivid"]
 
     def get_keyring(self):
         return "/usr/share/keyrings/ubuntu-archive-keyring.gpg"

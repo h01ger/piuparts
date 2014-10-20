@@ -5,6 +5,9 @@ piuparts (0.60) UNRELEASED; urgency=medium
     files, use hard links if the original chroot and destination directory
     are on the same device.
 
+  [ Holger Levsen ]
+  * Switch ubuntu default release to 'vidid'.
+
  -- Holger Levsen <holger@debian.org>  Tue, 15 Jul 2014 16:42:39 +0200
 
 piuparts (0.59) unstable; urgency=low
