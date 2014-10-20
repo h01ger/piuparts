@@ -35,6 +35,7 @@ Lars Wirzenius <liw@iki.fi>
 VERSION = "__PIUPARTS_VERSION__"
 
 
+import distro_info
 import time
 import logging
 import optparse
@@ -95,7 +96,7 @@ class DebianDefaults(Defaults):
         return [("http://cdn.debian.net/debian", self.get_components())]
 
     def get_distribution(self):
-        return ["sid"]
+        return [distro_info.DebianDistroInfo().devel()]
 
     def get_keyring(self):
         return "/usr/share/keyrings/debian-archive-keyring.gpg"
@@ -109,7 +110,7 @@ class UbuntuDefaults(Defaults):
         return [("http://archive.ubuntu.com/ubuntu", self.get_components())]
 
     def get_distribution(self):
-        return ["vivid"]
+        return [distro_info.UbuntuDistroInfo().devel()]
 
     def get_keyring(self):
         return "/usr/share/keyrings/ubuntu-archive-keyring.gpg"
