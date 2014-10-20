@@ -1,4 +1,4 @@
-piuparts (0.60) unstable; urgency=medium
+piuparts (0.60) UNRELEASED; urgency=medium
 
   [ Leo Iannacone ]
   * piuparts.py: when using the --existing-chroot option, instead of copying
@@ -9,7 +9,12 @@ piuparts (0.60) unstable; urgency=medium
   * Use python-distro-info to get the Debian and Ubuntu devel releases
   * tests: Remove the Ubuntu devel release test.
 
- -- Holger Levsen <holger@debian.org>  Mon, 20 Oct 2014 20:31:53 +0200
+  [ Holger Levsen ]
+  * Drop conf/piuparts-master.sudoers from debian/piuparts-master.examples
+    and modify conf/piuparts-slave.sudoers to only allow the piupartss user
+    to run /usr/sbin/piuparts as root - that's "all that's needed" anyway.
+
+ -- Holger Levsen <holger@debian.org>  Tue, 15 Jul 2014 16:42:39 +0200
 
 piuparts (0.59) unstable; urgency=low
 

@@ -1,7 +1,0 @@
-#
-# copy this file to /etc/sudoers.d/piuparts-master
-#
-
-#piuparts admins
-%piuparts       ALL=(piupartsm) ALL
-

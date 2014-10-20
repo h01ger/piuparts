@@ -3,8 +3,5 @@
 #
 
 # The piuparts slave needs to handle chroots.
-piupartss	ALL = NOPASSWD: ALL
-
-#piuparts admins
-%piuparts       ALL=(piupartss) ALL
+piupartss	ALL = NOPASSWD: /usr/sbin/piuparts
 
