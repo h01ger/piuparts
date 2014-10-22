@@ -63,9 +63,9 @@ flags-start-lenny =
 sections =
 #	sid
 #	jessie
-#	wheezy2jessie
-#	wheezy
-	squeeze-lts
+	wheezy2jessie
+#	squeeze
+	squeeze2squeeze-lts
 
 mirror = http://ftp.de.debian.org/debian/
 master-host = goldwasser
@@ -73,31 +73,29 @@ master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
 master-command = /srv/piuparts.debian.org/share/piuparts/piuparts-master
 piuparts-command =
-	sudo
-	env PYTHONPATH=%(PYTHONPATH)s
 	timeout -s INT -k 5m 35m
-	/srv/piuparts.debian.org/sbin/piuparts
-PYTHONPATH = /srv/piuparts.debian.org/lib/python2.7/dist-packages
+	sudo /usr/sbin/piuparts
 master-directory = /srv/piuparts.debian.org/master
 slave-directory = /srv/piuparts.debian.org/slave
 basetgz-directory = /srv/piuparts.debian.org/slave/basetgz
 output-directory = /srv/piuparts.debian.org/htdocs
 backup-directory = /srv/piuparts.debian.org/backup
 tmpdir = /srv/piuparts.debian.org/tmp
-doc-root = /
+doc-root = /piuparts
 components = main
 # this value is too high for production (it will cause piuparts-slave to sleep
 # for a whole day) but useful for testing master-slave mode, for running on a
 # test system 24/7 without causing load for 24/7
 idle-sleep = 86400
-max-reserved = 50
+max-reserved = 10
 
 
 [sid]
 description = + Fails if there are leftover files after purge.
 piuparts-flags =
 	%(flags-leftovers)s
-
+distro = sid
+arch = i386
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
 
@@ -105,20 +103,14 @@ piuparts-flags =
 piuparts-flags =
 	%(flags-default)s
 distro = jessie
+arch = i386
 
 [wheezy2jessie]
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
-distro = wheezy
+arch = i386
 upgrade-test-distros = wheezy jessie
-
-[wheezy]
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-wheezy)s
-	%(flags-end-wheezy)s
-distro = wheezy
 
 [squeeze]
 json-sections = none
@@ -127,6 +119,7 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
 distro = squeeze
+arch = i386
 reschedule-old-count = 50
 # 1 month (60*60*24*30)
 max-tgz-age = 2592000
@@ -138,7 +131,6 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
 depends-sections = squeeze
-arch = amd64
 area = main
-distro = squeeze-lts
+arch = i386
 upgrade-test-distros = squeeze squeeze-lts
