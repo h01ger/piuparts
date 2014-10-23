@@ -15,6 +15,7 @@ piuparts (0.60) UNRELEASED; urgency=medium
     to run /usr/sbin/piuparts as root - that's "all that's needed" anyway.
   * Add "AddType text/plain .log" to the apache2 configuration snipplet
     example, so that logfiles are displayed in the browser.
+  * Bump standards version to 3.9.6, no changes needed.
 
  -- Holger Levsen <holger@debian.org>  Tue, 15 Jul 2014 16:42:39 +0200
 
