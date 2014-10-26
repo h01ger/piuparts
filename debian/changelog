@@ -10,9 +10,14 @@ piuparts (0.60) UNRELEASED; urgency=medium
   * tests: Remove the Ubuntu devel release test.
 
   [ Holger Levsen ]
+  * Update README_server.txt and README_pejacevic.txt after setting up a
+    piuparts master/slave system from packages myself.
   * Drop conf/piuparts-master.sudoers from debian/piuparts-master.examples
-    and modify conf/piuparts-slave.sudoers to only allow the piupartss user
-    to run /usr/sbin/piuparts as root - that's "all that's needed" anyway.
+    and include all commands piupartss needs to run as root in
+    conf/piuparts-slave.sudoers.
+  * Update instances/piuparts.conf* to match what is in use for
+    piuparts.debian.org today. Add two new systems, goldwasser and lamarr, as
+    examples taken from piuparts development.
   * Add "AddType text/plain .log" to the apache2 configuration snipplet
     example, so that logfiles are displayed in the browser.
   * Bump standards version to 3.9.6, no changes needed.

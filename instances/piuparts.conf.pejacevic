@@ -100,6 +100,7 @@ backup-directory = /srv/piuparts.debian.org/backup
 tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /
 components = main
+# the slave-count setting is for the slave(s)
 slave-count = 4
 # 30*60
 idle-sleep = 1800

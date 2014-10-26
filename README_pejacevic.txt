@@ -1,5 +1,5 @@
-Notes about the piuparts installation on pejacevic.debian.org and it's slave
-============================================================================
+Notes about the piuparts installation on pejacevic.debian.org and it's slave(s)
+===============================================================================
 
 This document describes the setup for https://piuparts.debian.org - it's used
 for reference for the Debian System Administrators (DSA) as well as a guide
@@ -10,9 +10,11 @@ piuparts-master and piuparts-slaves packages as described in
 
 == Installation
 
-piuparts.debian.org is a setup running on two systems: pejacevic.debian.org,
-running the piuparts-master instance and an apache webserver to display the
-results and piu-slave-bm-a.debian.org, running four piuparts-slave nodes.
+piuparts.debian.org is a setup running on several systems:
+pejacevic.debian.org, running the piuparts-master instance and an apache
+webserver to display the results and piu-slave-bm-a.debian.org, running
+four piuparts-slave nodes. Not yet in operation there is another,
+piu-slave-1und1-01.debian.org, which soon shall go into operation...
 
 === piuparts installation from source
 
@@ -25,7 +27,7 @@ results and piu-slave-bm-a.debian.org, running four piuparts-slave nodes.
   done for a long time to run them on the same host.(
   Run the scripts as the piupartsm and piupartss users and clone that git
   repository into '/srv/piuparts.debian.org/src' in the first place. Then
-  checkout the bikeshed branch.
+  checkout the develop branch.
 * Ideally provide '/srv/piuparts.debian.org/tmp' on (a sufficiently large)
   tmpfs.
 * `sudo ln -s /srv/piuparts.debian.org/etc/piuparts /etc/piuparts`
@@ -40,7 +42,7 @@ be chmod 2775 and chown piuparts(sm):piuparts.
 
 ==== '~/bashrc' for piupartsm and piupartss
 
-Do this for the piupartsm user on pejacevic and piupartss on the slave:
+Do this for the piupartsm user on pejacevic and piupartss on the slave(s):
 
 ----
 piupartsm@pejacevic$ cat >> ~/.bashrc <<-EOF
@@ -62,25 +64,18 @@ $ cat /etc/ssh/userkeys/piupartsm
 command="/srv/piuparts.debian.org/share/piuparts/piuparts-master",from="2001:41c8:1000:21::21:7,5.153.231.7",no-port-forwarding,no-X11-forwarding,no-agent-forwarding ssh-rsa ...
 ----
 
-=== Setup sudo
+=== Setup sudo for the slave(s)
 
 This is actually done by DSA:
 
-==== '/etc/sudoers' for pejacevic
-
-----
-#piuparts admins
-%piuparts       ALL=(piupartsm) ALL
-----
-
-==== '/etc/sudoers' for piu-slave-bm-a
+==== '/etc/sudoers' for piu-slave-bm-a and piu-slave-1und1-01
 
 ----
 # The piuparts slave needs to handle chroots.
-piupartss       ALL = NOPASSWD: ALL
-
-#piuparts admins
-%piuparts       ALL=(piupartss) ALL
+piupartss       ALL = NOPASSWD: /usr/sbin/piuparts *, \
+                                /bin/umount /srv/piuparts.debian.org/tmp/tmp*, \
+                                /usr/bin/test -f /srv/piuparts.debian.org/tmp/tmp*, \
+                                /usr/bin/rm -rf --one-file-system /srv/piuparts.debian.org/tmp/tmp*
 ----
 
 === Apache configuration
@@ -116,13 +111,13 @@ Any other webserver will do but apache is used on pejacevic (and maintained by D
 Updating the master, pejacevic.debian.org:
 
 ----
-holger@pejacevic$ sudo su - piupartsm update-piuparts-master-setup bikeshed origin
+holger@pejacevic~$ sudo su - piupartsm update-piuparts-master-setup develop origin
 ----
 
-Updating the slave, piu-slave-bm-a.debian.org:
+Updating the slave(s), for example on piu-slave-bm-a.debian.org:
 
 ----
-holger@piu-slave-bm-a$ sudo su - piupartss update-piuparts-slave-setup bikeshed origin
+holger@piu-slave-bm-a~$ sudo su - piupartss update-piuparts-slave-setup develop origin
 ----
 
 === Running piuparts
@@ -137,7 +132,7 @@ piuparts-slave on pejacevic, piuparts-master will be started automatically by
 the slaves.
 
 ----
-holger@pejacevic:~$ sudo -u piupartss -i slave_run
+holger@piu-slave-bm-a:~$ sudo -u piupartss -i slave_run
 ----
 
 There are several cronjobs installed via '~piupartsm/crontab' and
@@ -182,7 +177,7 @@ More checks should be added as we become aware of them.
 
 == Authors
 
-Last updated: May 2014
+Last updated: October 2014
 
 Holger Levsen <holger@layer-acht.org>
 

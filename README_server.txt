@@ -4,6 +4,16 @@ piuparts README_server
 Author: Lars Wirzenius, Holger Levsen and Andreas Beckmann
 Email: <debian-qa@lists.debian.org>
 
+=== piuparts runs itself and other stuff as root
+
+WARNING: Please note that running piuparts on unknown packages is somewhat
+risky, to say the least. There are security implications that you want to
+consider. It's best to do it on machines that you don't mind wiping clean
+at a moment's notice, and preferably so that they don't have direct network
+access.
+
+You have been warned.
+
 == piuparts in master/slave mode
 
 As part of the quality assurance efforts of Debian, piuparts is
@@ -18,54 +28,66 @@ of packages it has tested already, and to get more work.
 
 To set this up for yourself, the following steps should suffice:
 
+=== Setting up the master
+
 . Pick a machine for running the piuparts master. It cannot be a chroot, but
  basically any real (or properly virtualized) Debian system is good enough.
-. Install the package piuparts-master on it.
+. Install the package 'piuparts-master' on it.
 . Create an account for the master, if you install the piuparts-master package
- it will automatically create a piupartsm user for you.
+ it will automatically create a 'piupartsm' user for you.
 . Configure '/etc/piuparts/piuparts.conf' appropriately.
+. Create the master and backup directories as defined in that 'piuparts.conf'
+ and make sure master owns them.
+. To generate the web reports, configure your webserver as needed. If you
+ want to use the supplied 'conf-available/piuparts-master.conf' for apache2,
+ you will need to do two things: a.) enable it and b.) link the htdocs
+ directory defined in 'piuparts.conf' to '/var/lib/piuparts/htdocs'
+ (thats the DocumentRoot as defined in 'conf-available/piuparts-master.conf').
+
+=== Setting up the slave(s)
 
 . Pick one or more machines for running one or several piuparts slaves. You
  can use the machine which is running the master also for running a slave.
  It's also perfectly ok to run several slaves on a multi-core machine which
  has lots of IO available.
-. Install the package piuparts-slave on it.
+. Install the package 'piuparts-slave' on it.
 . Configure '/etc/piuparts/piuparts.conf' appropriately - if master
  and slave share the machine, they also share the config file.
+ If you want to run more than one slave on a machine, set the slave-count
+ parameter as desired. By default one slave will be run.
+. Create the slave and tmp directories as defined in that 'piuparts.conf' and
+ make sure the slave can read and write there.
 . Create an account for the slave. This must be different from the master
- account. The piuparts-slave package will create a piupartss user on
- installation.
-. Create an ssh keypair for the slave. No passphrase.
-. Add the slave's public key to the master's '.ssh/authorized_keys'
- The key should be restricted to only allow running
- 'piuparts-master' by prefixing it with
- 'command="/usr/share/piuparts/piuparts-master",no-pty,no-port-forwarding'
-. Configure sudo to allow the slave account to run '/usr/sbin/piuparts'
- as root without password. There are examples provided in
- /usr/share/doc/piuparts-(master|slave)/examples/.
-. Run '/usr/bin/piuparts-slave-run' and 'piuparts-slave-join' to actually
+ account. The piuparts-slave package will create a 'piupartss' user on
+ installation. Whether you run one or many slaves, they run with the same
+ user.
+. Create an ssh keypair for the slave. No passphrase. If you installed the
+ piuparts-slave package this was done automatically and the public key can
+ be found in '/var/lib/piuparts/piupartss/.ssh/id_rsa.pub'
+. Copy the slave's public key to the master's '.ssh/authorized_keys', for
+ an installation from packages this will be
+ '/var/lib/piuparts/piupartsm/.ssh/authorized_keys'.
+ The key should be restricted to only allow running 'piuparts-master'
+ by prefixing it with
+ 'command="/usr/share/piuparts/piuparts-master",no-port-forwarding,no-X11-forwarding,no-agent-forwarding '
+. Configure sudo to allow the slave account to run several commands as root
+ as root without password. See the example provided in
+ '/usr/share/doc/piuparts-slave/examples/' to learn which.
+. Run '/usr/bin/piuparts_slave_run' and 'piuparts_slave_join' to actually
  let the slave(s) run and to join their sessions.
 . The logs go into the master account, into subdirectories.
 
-=== Setup from piuparts-master and piuparts-slaves packages
+=== Tuning the setup
 
 The piuparts-server package installs a piuparts server along the lines of
 https://piuparts.debian.org/.
 
-Before running the server, edit /etc/piuparts.conf appropriately (install
-piuparts-slave (which ships that file), too, or use the template
-/usr/share/doc/piuparts-master/piuparts.conf.sample), to define
-'sections' to be tested (e.g. 'sid') and define references to the Debian
-mirror. Note that the server can place a significant load on the
-repository. Consider setting up a local mirror, or a caching proxy for http
-and apt-get, to reduce the load. Running multiple slaves on a fast host can
-easily saturate a 100 MBit link.
-
-Edit '/etc/sudoers.d/piuparts' to grant permissions to the piupartss user.
-Start the server using /usr/bin/piuparts_slave_run, which will launch a
-'screen' session. The slave will launch a master process via ssh, as needed,
-to retrieve work and return results. Use /usr/bin/piuparts_slave_join to
-join the screen session.
+Custome '/etc/piuparts/piuparts.conf' according to your needs, most probably
+you will want to re-define the 'sections' to be tested (e.g. 'sid') and also
+maybe use a different Debian mirror. Note that the server can place a
+significant load on the repository. Consider setting up a local mirror,
+or a caching proxy for http and apt-get, to reduce the load. Running multiple
+slaves on a fast host can easily saturate a 100 MBit link.
 
 Logs are stored under '/var/lib/piuparts' by default. They are stored there
 because they are basically the result of piuparts running.
@@ -80,15 +102,8 @@ http://localhost/piuparts to be served by any webserver.
 https://piuparts.debian.org has been set up directly from GIT, this is
 described in '/usr/share/doc/piuparts-master/README_pejacevic.txt'.
 
-== Distributed testing
 
-WARNING: Please note that running piuparts this way is somewhat risky, to
-say the least. There are security implications that you want to
-consider. It's best to do it on machines that you don't mind
-wiping clean at a moment's notice, and preferably so that they
-don't have direct network access.
-
-=== Distributed piuparts testing protocol
+== Distributed piuparts testing protocol
 
 The slave machine and the piuparts-master program communicate
 using a simplistic line based protocol. SSH takes care of
@@ -245,7 +260,7 @@ The master may likewise abort, without an error message, if the
 slave sends garbage, or sends too much data.
 
 
-=== piuparts.conf configuration file
+== piuparts.conf configuration file
 
 piuparts-master, piuparts-slave and piuparts-report share the
 configuration file '/etc/piuparts/piuparts.conf'. The syntax is
@@ -257,7 +272,7 @@ this:
     foo = bar
 ----
 
-==== global configuration
+=== global configuration
 
 These settings have to be placed in the [global] section and are
 used for all further sections.
@@ -317,7 +332,7 @@ used for all further sections.
  "http://localhost:3128") due to the high bandwidth consumption of
  piuparts and repeated downloading of the same files.
 
-==== section specific configuration
+=== section specific configuration
 
 The section specific settings will be reloaded each time a section
 is being run. All these keys can be specified in the [global]
@@ -524,7 +539,7 @@ section, too, and will serve as defaults for all other sections
 Some of the configuration items are not required, but it is best
 to set them all to be sure what the configuration actually is.
 
-==== piuparts.debian.org specific configuration
+=== piuparts.debian.org specific configuration
 
 In addition to some of the above settings the following
 configuration settings are used by the scripts in '~piuparts?/bin/'
@@ -535,13 +550,18 @@ values are set in the scripts.
  piuparts instance. Used to provide links to logfiles in email
  reports. It defaults to "https://piuparts.debian.org".
 
-
-=== Running piuparts-report as it is done for piuparts.debian.org
+== Running piuparts-report as it is done for piuparts.debian.org
 
 If you want to run piuparts-report (which is only+very useful if
 you run piuparts in master-slave mode), you need to 'apt-get
 install python-rpy r-recommended r-base-dev'. For more
 information see
 link:https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob;f=README_pejacevic.txt[https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git;hb=master;a=blob;f=README_pejacevic.txt].
+
+To generate the report on the master host run:
+
+----
+piupartsm@goldwasser:~$ /usr/share/piuparts/master/generate_daily_report
+----
 
 // vim: set filetype=asciidoc:

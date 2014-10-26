@@ -3,5 +3,8 @@
 #
 
 # The piuparts slave needs to handle chroots.
-piupartss	ALL = NOPASSWD: /usr/sbin/piuparts
+piupartss	ALL = NOPASSWD: /usr/sbin/piuparts *, \
+				/bin/umount /srv/piuparts.debian.org/tmp/tmp*, \
+				/usr/bin/test -f /srv/piuparts.debian.org/tmp/tmp*, \
+				/usr/bin/rm -rf --one-file-system /srv/piuparts.debian.org/tmp/tmp*
 
