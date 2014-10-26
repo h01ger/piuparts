@@ -148,9 +148,8 @@ def new_summary():
                "_version" : SUMMVER,
                "_date"    : utcdate,
                "_comment" : "Debian Piuparts Package Results - " \
-                            "https://anonscm.debian.org/gitweb/?" \
-                            "p=piuparts/piuparts.git;a=blob;" \
-                            "f=piupartslib/pkgsummary.py;hb=refs/heads/develop",
+                            "https://anonscm.debian.org/cgit/piuparts/" \
+                            "piuparts.git/tree/piupartslib/pkgsummary.py",
                "_type"    : "source",
                "packages" : pkgstruct,
           })

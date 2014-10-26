@@ -20,9 +20,8 @@ piuparts (0.60) UNRELEASED; urgency=medium
     examples taken from piuparts development.
   * Add "AddType text/plain .log" to the apache2 configuration snipplet
     example, so that logfiles are displayed in the browser.
-  * debian/control:
-    - Bump standards version to 3.9.6, no changes needed.
-    - Update Vcs-Browser: URL to cgit.
+  * Bump standards version to 3.9.6, no changes needed.
+  * Replace all occurrences of old gitweb Alioth URLs with cgit ones.
 
  -- Holger Levsen <holger@debian.org>  Tue, 15 Jul 2014 16:42:39 +0200
 

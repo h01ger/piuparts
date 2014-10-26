@@ -139,7 +139,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-03-02</b> While the <a href="https://anonscm.debian.org/gitweb/?p=piuparts/piuparts.git">piuparts.git repo on Alioth</a> will continue to be the main repo, there is also a <a href="https://github.com/h01ger/piuparts">piuparts clone on github</a>, for those who prefer to send pull requests that way.
+      <b>2013-03-02</b> While the <a href="https://anonscm.debian.org/cgit/piuparts/piuparts.git">piuparts.git repo on Alioth</a> will continue to be the main repo, there is also a <a href="https://github.com/h01ger/piuparts">piuparts clone on github</a>, for those who prefer to send pull requests that way.
      </td>
     </tr>
     <tr class="normalrow">
