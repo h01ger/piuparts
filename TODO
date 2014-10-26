@@ -5,7 +5,28 @@ Please also check the BTS, especially the bugs with a severity higher than
 wishlist!
 
 
-for 0.5x:
+for 0.6x:
+
+- README_server.txt: rewrite style a bit more. its super easy to setup now!
+
+- ==== piuparts.debian.org specific configuration
+ ^^^^^^^ scripts should be the headline, not piu.d.o
+
+- move more bits from README_pejacevic.txt to README_server.txt
+
+- split out README_protocol and README_piuparts.conf? -> in piuparts.conf manpage maybe?
+
+- support multiple architectures: #762308
+  - piuparts-report should have a list of available arch and list packages
+    only available on untested archs in a new state
+    "(depends-)not-available-on-tested-archs"
+  - master should (per default) only schedule packages which are not available
+    on the master arch to slaves of different archs ->
+    "schedule-evenly-to-slaves = no"
+
+- once that works, update README_pejacevic: search for "soon shall go into operation..." :)
+
+- piuparts-master: keep track of to whom a reservation was given
 
 - more stats and graphs:
   - new section stats page:
@@ -16,8 +37,7 @@ for 0.5x:
     - graph about piuparts stati for all sections combined? (possible ignore
       successful)
 
-
-for 0.6x:
+- master should create the master and backup directories, if they dont exit. If master does that remove that sentence from README_server.txt again. same with slave and tmp.
 
 - piuparts.conf.pejacevic: maybe use mirror via nfs (faster)
 
@@ -27,16 +47,6 @@ for 0.6x:
 
 - look for a solution to use the global debian mirror for debian-backports,
   too, to avoid hardcoding a specific mirror in distros.conf
-
-- support multiple architectures:
-  - piuparts-report should have a list of available arch and list packages
-    only available on untested archs in a new state
-    "(depends-)not-available-on-tested-archs"
-  - master should (per default) only schedule packages which are not available
-    on the master arch to slaves of different archs ->
-    "schedule-evenly-to-slaves = no"
-
-- piuparts-master: keep track of to whom a reservation was given
 
 - if it weren't for 'slave-bin/slave_cleanup', the slave would only need
   rights to run "sudo piuparts" but nothing else. If we can clean this up,
