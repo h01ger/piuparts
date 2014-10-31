@@ -5,6 +5,10 @@ piuparts (0.61) UNRELEASED; urgency=medium
     apt-keys for custom apt repositories. (Closes: #767485)
   * Add custom-scripts/scripts-unused-examples/post_chroot_unpack_key_setup.sh
 
+  [ Holger Levsen ]
+  * piuparts.py: Add "/var/cache/apt/archives/partial/" to ignored files.
+    (Closes: #767489)
+
  -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100
 
 piuparts (0.60) unstable; urgency=medium
