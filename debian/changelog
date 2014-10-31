@@ -1,6 +1,9 @@
 piuparts (0.61) UNRELEASED; urgency=medium
 
-  * 
+  [ Michael Prokop ]
+  * Support new scripts directive 'post_chroot_unpack', useful for adding
+    apt-keys for custom apt repositories. (Closes: #767485)
+  * Add custom-scripts/scripts-unused-examples/post_chroot_unpack_key_setup.sh
 
  -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100
 
