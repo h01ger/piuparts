@@ -706,9 +706,6 @@ class Chroot:
             self.mount_proc()
             self.mount_selinux()
         self.configure_chroot()
-        if settings.basetgz or settings.schroot:
-            self.run(["apt-get", "-yf", "dist-upgrade"])
-        self.minimize()
 
         # Copy scripts dirs into the chroot, merging all dirs together,
         # later files overwriting earlier ones.
@@ -723,6 +720,14 @@ class Chroot:
                             and not ".dpkg-" in sfile \
                             and os.path.isfile(os.path.join(sdir, sfile)):
                         shutil.copy(os.path.join(sdir, sfile), dest)
+
+        # Run custom scripts after chroot has been unpacked/debootstrapped
+        # Useful for adjusting apt configuration e.g. for internal mirror usage
+        self.run_scripts("post_chroot_unpack")
+
+        if settings.basetgz or settings.schroot:
+            self.run(["apt-get", "-yf", "dist-upgrade"])
+        self.minimize()
 
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")

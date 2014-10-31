@@ -213,6 +213,9 @@ PIUPARTS_DISTRIBUTION.
 
 The following prefixes for scripts are recognized:
 
+'post_chroot_unpack' - after the chroot has been unpacked/debootrapped.
+Before the chroot gets updated/dist-upgraded initially.
+
 'post_setup_' - after the *setup* of the chroot is finished.
 Before metadata of the chroot is recorded for later comparison.
 
