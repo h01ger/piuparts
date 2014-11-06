@@ -1192,15 +1192,19 @@ class Chroot:
             logging.info("Running adequate version %s now." % output.strip())
             adequate_tags = [
                     'bin-or-sbin-binary-requires-usr-lib-library',
-                    'library-not-found',
-                    'missing-copyright-file',
-                    'py-file-not-bytecompiled',
-                    'pyshared-file-not-bytecompiled',
-                    'undefined-symbol',
-                    'missing-symbol-version-information',
-                    'symbol-size-mismatch',
+                    'broken-binfmt-detector',
+                    'broken-binfmt-interpreter',
                     'incompatible-licenses',
                     'ldd',
+                    'library-not-found',
+                    'missing-alternative',
+                    'missing-copyright-file',
+                    'missing-symbol-version-information',
+                    'program-name-collision',
+                    'py-file-not-bytecompiled',
+                    'pyshared-file-not-bytecompiled',
+                    'symbol-size-mismatch',
+                    'undefined-symbol',
                     ]
             boring_tags = [
                     'obsolete-conffile',

@@ -8,6 +8,12 @@ piuparts (0.61) UNRELEASED; urgency=medium
   [ Holger Levsen ]
   * piuparts.py: Add "/var/cache/apt/archives/partial/" to ignored files.
     (Closes: #767489)
+  * piuparts.yp and piuparts-report: Detect four more (in)adequate issues:
+    - broken-binfmt-detector
+    - broken-binfmt-interpreter
+    - missing-alternative
+    - program-name-collision
+    (Closes: #767499)
 
  -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100
 
