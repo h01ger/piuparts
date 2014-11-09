@@ -14,6 +14,8 @@ piuparts (0.61) UNRELEASED; urgency=medium
     - missing-alternative
     - program-name-collision
     (Closes: #767499)
+  * distros.conf: remove unneeded URI for squeeze-lts, it just uses the
+    default repository. 
 
  -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100
 
