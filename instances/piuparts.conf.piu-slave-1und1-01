@@ -78,8 +78,8 @@ sections =
 	squeeze2wheezy
 	squeeze2bpo-sloppy
 	squeeze2bpo2wheezy
-	squeeze
 	squeeze2squeeze-lts
+	squeeze
 	lenny2squeeze
 #
 mirror = http://mirror.1und1.de/debian/
