@@ -17,6 +17,8 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * distros.conf: Remove unneeded URI for squeeze-lts, it just uses the
     default repository. 
   * instances/pejacevic+slaves: Do not reschedule passed squeeze logs anymore.
+  * custom-scripts/scripts/post_purge_exceptions and pre_remove_exceptions:
+    apply systemd exceptions for wheezy* and not only wheezy.
 
  -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100
 

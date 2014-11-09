@@ -27,7 +27,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		# also see post_purge_exceptions for further cleanup
 		log_debug
 		case ${PIUPARTS_DISTRIBUTION} in
-			lenny*|squeeze*|wheezy)
+			lenny*|squeeze*|wheezy*)
 				echo "PIUPARTS_DISTRIBUTION=$PIUPARTS_DISTRIBUTION, not applying systemd-sysv removal workaround"
 				;;
 			*)
