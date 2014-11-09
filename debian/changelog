@@ -16,6 +16,7 @@ piuparts (0.61) UNRELEASED; urgency=medium
     (Closes: #767499)
   * distros.conf: remove unneeded URI for squeeze-lts, it just uses the
     default repository. 
+  * instances/pejacevic+slaves: do not reschedule passed squeeze logs anymore.
 
  -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100
 

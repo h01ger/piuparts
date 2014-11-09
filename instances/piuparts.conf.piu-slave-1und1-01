@@ -287,7 +287,7 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
 distro = squeeze
-reschedule-old-count = 50
+reschedule-old-count = 0
 # 1 month (60*60*24*30)
 max-tgz-age = 2592000
 
