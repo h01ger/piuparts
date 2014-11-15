@@ -316,6 +316,7 @@ class Settings:
             # work around broken symlinks
             "/usr/lib/python2.6/dist-packages/python-support.pth",  #635493 and #385775
             "/usr/lib/python2.7/dist-packages/python-support.pth",
+            "/etc/modules-load.d/modules.conf",
             # work around #316521 dpkg: incomplete cleanup of empty directories
             "/etc/apache2/",
             "/etc/apache2/conf.d/",

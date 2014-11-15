@@ -20,6 +20,11 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * custom-scripts/scripts/post_purge_exceptions and pre_remove_exceptions:
     apply systemd exceptions for wheezy* and not only wheezy.
 
+  [ Andreas Beckmann ]
+  * piuparts.py:
+    - Add to ignored_files:
+      + /etc/modules-load.d/modules.conf  (dangling symlink to ../modules)
+
  -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100
 
 piuparts (0.60) unstable; urgency=medium
