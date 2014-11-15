@@ -1,0 +1,40 @@
+#!/bin/sh
+set -e
+
+test "$PIUPARTS_PHASE" = "install" || exit 0
+
+case "$PIUPARTS_DISTRIBUTION" in
+	lenny*|squeeze*|wheezy*) exit 0 ;;
+esac
+
+FOREIGN=
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	*-aarch64-linux-gnu)
+		FOREIGN="arm64"
+		;;
+	*-arm-linux-gnueabi)
+		FOREIGN="armel"
+		;;
+	*-arm-linux-gnueabihf)
+		FOREIGN="armhf"
+		;;
+	*-mips-linux-gnu)
+		FOREIGN="mips"
+		;;
+	*-mipsel-linux-gnu)
+		FOREIGN="mipsel"
+		;;
+	*-powerpc-linux-gnu)
+		FOREIGN="ppc"
+		;;
+	*-powerpc64le-linux-gnu)
+		FOREIGN="ppc64el"
+		;;
+esac
+
+if [ -n "$FOREIGN" ] && [ "$FOREIGN" != "$(dpkg --print-architecture)" ]; then
+	echo "Enabling foreign architecture $FOREIGN for $PIUPARTS_OBJECTS"
+	dpkg --add-architecture $FOREIGN
+	apt-get update
+fi

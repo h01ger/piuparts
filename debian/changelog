@@ -24,6 +24,8 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * piuparts.py:
     - Add to ignored_files:
       + /etc/modules-load.d/modules.conf  (dangling symlink to ../modules)
+  * pre_install_foreign_architecture: New script to enable foreign
+    architectures for testing cross toolchain packages.
 
  -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100
 
