@@ -5,22 +5,11 @@ log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
 }
 
-#
-# deal with packages depending on exceptions:
-#
-case ${PIUPARTS_OBJECTS%%=*} in
-	ltsp-client)		log_debug
-				PIUPARTS_OBJECTS=ltsp-client-core
-				;;
-esac
-
-#
-# deal with exceptions:
-#
 case ${PIUPARTS_OBJECTS%%=*} in
 	fai-nfsroot)		log_debug
 				rm -f /.THIS_IS_THE_FAI_NFSROOT
 				;;
+	ltsp-client|\
 	ltsp-client-core)	log_debug
 				rm -f /etc/ltsp_chroot
 				;;
