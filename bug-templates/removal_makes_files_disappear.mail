@@ -10,7 +10,7 @@ Usertags: piuparts replaces-without-breaks
 
 Hi,
 
-during a test with piuparts and EDOS tools I noticed your package causes
+during a test with piuparts and DOSE tools I noticed your package causes
 removal of files that also belong to another package.
 This is caused by using Replaces without corresponding Breaks.
 

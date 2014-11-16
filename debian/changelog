@@ -15,10 +15,10 @@ piuparts (0.61) UNRELEASED; urgency=medium
     - program-name-collision
     (Closes: #767499)
   * distros.conf: Remove unneeded URI for squeeze-lts, it just uses the
-    default repository. 
+    default repository.
   * instances/pejacevic+slaves: Do not reschedule passed squeeze logs anymore.
   * custom-scripts/scripts/post_purge_exceptions and pre_remove_exceptions:
-    apply systemd exceptions for wheezy* and not only wheezy.
+    Skip systemd exceptions for wheezy* and not only wheezy.
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -39,7 +39,7 @@ piuparts (0.60) unstable; urgency=medium
     are on the same device. (Closes: #754878)
 
   [ Iain Lane ]
-  * Use python-distro-info to get the Debian and Ubuntu devel releases
+  * Use python-distro-info to get the Debian and Ubuntu devel releases.
   * tests: Remove the Ubuntu devel release test.
 
   [ Holger Levsen ]

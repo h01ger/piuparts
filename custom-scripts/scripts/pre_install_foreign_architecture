@@ -26,7 +26,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		FOREIGN="mipsel"
 		;;
 	*-powerpc-linux-gnu)
-		FOREIGN="ppc"
+		FOREIGN="powerpc"
 		;;
 	*-powerpc64le-linux-gnu)
 		FOREIGN="ppc64el"

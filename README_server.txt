@@ -1,7 +1,7 @@
 piuparts README_server
 ----------------------
 
-Author: Lars Wirzenius, Holger Levsen and Andreas Beckmann
+Authors: Lars Wirzenius, Holger Levsen and Andreas Beckmann
 Email: <debian-qa@lists.debian.org>
 
 === piuparts runs itself and other stuff as root

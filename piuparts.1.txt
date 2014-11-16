@@ -283,7 +283,7 @@ piuparts ../foo_1.0-2_i386.changes
 piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.changes
 ----
 
-If you want to test that a package installs properly in the stable (currently wheezy) Debian release, then can be upgraded to the testing (currently wheezy) and unstable (sid) versions, and then uninstalled without problems, you would give the following command:
+If you want to test that a package installs properly in the stable (currently wheezy) Debian release, then can be upgraded to the testing (currently jessie) and unstable (sid) versions, and then uninstalled without problems, you would give the following command:
 
 ----
 piuparts -a -d wheezy -d jessie -d sid foo
