@@ -92,7 +92,8 @@ Any other webserver will do but apache is used on pejacevic (and maintained by D
 	CustomLog /var/log/apache2/piuparts.debian.org-access.log combined
 
 	DocumentRoot /srv/piuparts.debian.org/htdocs
-	AddType text/plain log
+	AddType text/plain .log
+	AddDefaultCharset utf-8
 
 	HostnameLookups Off
 	UseCanonicalName Off
