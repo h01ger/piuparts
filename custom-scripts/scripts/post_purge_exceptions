@@ -13,11 +13,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	ltsp-client-core)	log_debug
 				rm -f /etc/ltsp_chroot
 				;;
-	file-rc)		log_debug
-				# removal wont work if sysv-rc isn't reinstalled
-				yes 'Yes, do as I say!' | apt-get -y --force-yes install sysv-rc
-				dpkg --purge file-rc
-				;;
 	amd64-libs|amd64-libs-dev)
 		# leaves a superfluous empty line after purge
 		log_debug
