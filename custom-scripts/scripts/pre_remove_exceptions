@@ -19,19 +19,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		rm -f /usr/sbin/apt-listbugs
 		dpkg-divert --remove --rename /usr/sbin/apt-listbugs
 		;;
-	gdm3|gnome-session|gnome-shell*|gnome-core|gnome|gnome-desktop-environment|task-gnome-desktop|razorqt|sucrose-0.96|xfswitch-plugin|mate-core|mate-desktop-environment*|task-kde-desktop|kde-standard|kde-plasma-desktop|kde-plasma-netbook|ltsp-server-standalone)
-		# these packages cause installation of systemd-sysv which (currently) needs this help for removing it again
-		# also see post_purge_exceptions for further cleanup
-		log_debug
-		case ${PIUPARTS_DISTRIBUTION} in
-			lenny*|squeeze*|wheezy*)
-				echo "PIUPARTS_DISTRIBUTION=$PIUPARTS_DISTRIBUTION, not applying systemd-sysv removal workaround"
-				;;
-			*)
-				apt-get -y install sysvinit-core
-				;;
-		esac
-		;;
 esac
 
 # Allow removal of the kernel running on the host from the chroot.
