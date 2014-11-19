@@ -28,6 +28,7 @@ piuparts (0.61) UNRELEASED; urgency=medium
     example, so that logfiles are displayed as UTF-8.
   * pre_install_foreign_architecture: New script to enable foreign
     architectures for testing cross toolchain packages.
+  * Rework the file-rc/sysvinit/upstart/systemd specific exceptions.
 
  -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100
 
