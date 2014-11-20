@@ -942,6 +942,17 @@ class Chroot:
         os.chmod(full_name, 0755)
         logging.debug("Created policy-rc.d and chmodded it.")
 
+    def create_resolv_conf(self):
+        """Create a resolv.conf containing the nameservers from the host system."""
+        full_name = self.relative("etc/resolv.conf")
+        nameservers = ""
+        with open("/etc/resolv.conf", "r") as f:
+            for line in f:
+                if line.startswith("nameserver"):
+                    nameservers += line
+        create_file(full_name, nameservers)
+        logging.debug("Created resolv.conf.")
+
     def setup_minimal_chroot(self):
         """Set up a minimal Debian system in a chroot."""
         logging.debug("Setting up minimal chroot for %s at %s." %
@@ -981,6 +992,7 @@ class Chroot:
         self.create_apt_conf()
         self.create_dpkg_conf()
         self.create_policy_rc_d()
+        self.create_resolv_conf()
         for bindmount in settings.bindmounts:
             run(["mkdir", "-p", self.relative(bindmount)])
             run(["mount", "-obind", bindmount, self.relative(bindmount)])

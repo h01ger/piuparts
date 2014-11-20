@@ -22,6 +22,8 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * piuparts.py:
     - Add to ignored_files:
       + /etc/modules-load.d/modules.conf  (dangling symlink to ../modules)
+    - Create /etc/resolv.conf in the chroot using only the nameserver entries
+      found on the host.
   * Add "AddDefaultCharset utf-8" to the apache2 configuration snipplet
     example, so that logfiles are displayed as UTF-8.
   * pre_install_foreign_architecture: New script to enable foreign
