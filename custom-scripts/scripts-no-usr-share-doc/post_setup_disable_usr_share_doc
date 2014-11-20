@@ -14,3 +14,17 @@ cat << EOF > /etc/dpkg/dpkg.cfg.d/piuparts-path-exclude
 path-exclude=/usr/share/doc/*/*
 path-include=/usr/share/doc/*/copyright
 EOF
+
+# switching init systems forth and back will clean out /usr/share/doc
+# reinstalling the affected packages beforehand makes the files disappear
+# before the snapshot of the reference system is created
+CANDIDATES="systemd systemd-sysv sysv-rc"
+CANDIDATES=$(dpkg-query -W $CANDIDATES | awk '{ if ($2) { print $1 } }')
+if [ -n "$CANDIDATES" ]; then
+	echo "Reinstalling $(echo $CANDIDATES)..."
+	# workaround apt bug #770291 - do it one by one, not all at once
+	for package in $CANDIDATES
+	do
+		apt-get -u --reinstall install $package
+	done
+fi
