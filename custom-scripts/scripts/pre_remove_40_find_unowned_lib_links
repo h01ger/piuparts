@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+for libdir in /lib /usr/lib /lib/*-gnu* /usr/lib/*-gnu*
+do
+	test -d "$libdir" || continue
+	for f in "$libdir"/*
+	do
+		test ! -d "$f" || continue
+		test -L "$f" || continue
+		rl=$(readlink "$f")
+		test -n "${rl##/etc/alternatives/*}" || continue
+		dpkg-query -S "$f" >/dev/null 2>&1 || echo "UNOWNED SYMLINK $f -> $rl"
+	done
+done
