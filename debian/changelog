@@ -29,6 +29,8 @@ piuparts (0.61) UNRELEASED; urgency=medium
     example, so that logfiles are displayed as UTF-8.
   * pre_install_foreign_architecture: New script to enable foreign
     architectures for testing cross toolchain packages.
+  * pre_remove_40_find_unowned_lib_links, unowned_lib_symlink_*.conf: New
+    script and reports for unowned symlinks in [/usr]/lib[/<triplet>].
   * Rework the file-rc/sysvinit/upstart/systemd specific exceptions.
 
  -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100

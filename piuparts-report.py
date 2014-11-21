@@ -445,6 +445,7 @@ linktarget_by_template = [
     ("module_build_error_issue.tpl", "but logfile contains dkms module build failures"),
     ("obsolete_conffiles_issue.tpl", "but logfile reports obsolete conffiles"),
     ("missing_md5sums_issue.tpl", "but logfile reports missing md5sums"),
+    ("unowned_lib_symlink_issue.tpl", "but logfile reports unowned lib symlinks"),
     ("piuparts-depends-dummy_issue.tpl", "but logfile reports piuparts-depends-dummy.deb could not be installed"),
     ("used_exception_issue.tpl", "but package used a piuparts exception"),
 
@@ -480,6 +481,7 @@ linktarget_by_template = [
     ("broken_symlinks_error.tpl", "...and logfile also contains 'broken symlinks'"),
     ("obsolete_conffiles_error.tpl", "...and logfile reports obsolete conffiles"),
     ("missing_md5sums_error.tpl", "...and logfile reports missing md5sums"),
+    ("unowned_lib_symlink_error.tpl", "...and logfile reports unowned lib symlinks"),
     ("piuparts-depends-dummy_error.tpl", "...and logfile reports piuparts-depends-dummy.deb could not be installed"),
     ("unclassified_failures.tpl", "due to unclassified failures"),
 ]
