@@ -10,12 +10,15 @@ esac
 FOREIGN=
 
 case ${PIUPARTS_OBJECTS%%=*} in
+	crossbuild-essential-arm64|\
 	*-aarch64-linux-gnu)
 		FOREIGN="arm64"
 		;;
+	crossbuild-essential-armel|\
 	*-arm-linux-gnueabi)
 		FOREIGN="armel"
 		;;
+	crossbuild-essential-armhf|\
 	*-arm-linux-gnueabihf)
 		FOREIGN="armhf"
 		;;
@@ -25,9 +28,11 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	*-mipsel-linux-gnu)
 		FOREIGN="mipsel"
 		;;
+	crossbuild-essential-powerpc|\
 	*-powerpc-linux-gnu)
 		FOREIGN="powerpc"
 		;;
+	crossbuild-essential-ppc64el|\
 	*-powerpc64le-linux-gnu)
 		FOREIGN="ppc64el"
 		;;
