@@ -74,7 +74,7 @@ class Problem():
         probbody = pb.read()
         pb.close()
 
-        tagged = re.sub("^([A-Z]+=)", "<hdr>\g<0>", probbody, 0, re.MULTILINE)
+        tagged = re.sub("^([A-Z_]+=)", "<hdr>\g<0>", probbody, 0, re.MULTILINE)
 
         for chub in re.split('<hdr>', tagged)[1:]:
 
