@@ -115,7 +115,10 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	ocsinventory-server)			MYSQL=yes ;;
 	openacs)				POSTGRESQL=yes ;;
 	otrs)					POSTGRESQL=yes ;;
-	otrs2)					POSTGRESQL=yes ;; # workaround #707075: don't use MYSQL=yes
+	otrs2)					POSTGRESQL=yes
+						case "$PIUPARTS_DISTRIBUTION" in
+							lenny*|squeeze*) MYSQL=yes ;;  #707075
+						esac ;;
 	pdns-backend-mysql)			MYSQL=yes ;;
 	pdns-backend-pgsql)			POSTGRESQL=yes ;;
 	phpbb3)					MYSQL=yes ;;
