@@ -89,9 +89,9 @@ idle-sleep = 1800
 max-tgz-age = 0
 max-reserved = 50
 reschedule-untestable-days = 3
-expire-old-days = 120
-reschedule-old-days = 90
-reschedule-old-count = 1000
+expire-old-days = 0
+reschedule-old-days = 120
+reschedule-old-count = 600
 expire-fail-days = 8
 reschedule-fail-days = 5
 reschedule-fail-count = 100
@@ -112,7 +112,7 @@ arch = amd64
 area = main
 components = main
 reschedule-old-days = 30
-expire-old-days = 45
+expire-old-days = 60
 
 [experimental/contrib]
 precedence = 45
@@ -123,7 +123,7 @@ distro = experimental
 arch = amd64
 area = contrib
 reschedule-old-days = 30
-expire-old-days = 45
+expire-old-days = 60
 
 [experimental/non-free]
 precedence = 45
@@ -134,7 +134,7 @@ distro = experimental
 arch = amd64
 area = non-free
 reschedule-old-days = 30
-expire-old-days = 45
+expire-old-days = 60
 
 
 [sid/main]
@@ -148,7 +148,7 @@ components = main
 # 60*60*24*2
 max-tgz-age = 172800
 reschedule-old-days = 30
-expire-old-days = 45
+expire-old-days = 60
 
 [sid/contrib]
 precedence = 45
@@ -159,7 +159,7 @@ distro = sid
 arch = amd64
 area = contrib
 reschedule-old-days = 30
-expire-old-days = 45
+expire-old-days = 60
 
 [sid/non-free]
 precedence = 45
@@ -170,7 +170,7 @@ distro = sid
 arch = amd64
 area = non-free
 reschedule-old-days = 30
-expire-old-days = 45
+expire-old-days = 60
 
 
 [jessie/main]
@@ -183,6 +183,8 @@ area = main
 components = main
 # 60*60*24*7
 max-tgz-age = 604800
+reschedule-old-days = 60
+expire-old-days = 90
 
 [jessie/contrib]
 precedence = 45
@@ -192,6 +194,8 @@ depends-sections = jessie/main jessie/non-free
 distro = jessie
 arch = amd64
 area = contrib
+reschedule-old-days = 60
+expire-old-days = 90
 
 [jessie/non-free]
 precedence = 45
@@ -201,6 +205,8 @@ depends-sections = jessie/main jessie/contrib
 distro = jessie
 arch = amd64
 area = non-free
+reschedule-old-days = 60
+expire-old-days = 90
 
 
 [wheezy/main]
@@ -285,6 +291,7 @@ area = main
 components = main
 # 60*60*24*30
 max-tgz-age = 2592000
+reschedule-old-count = 0
 
 [squeeze/contrib]
 precedence = 45
@@ -296,6 +303,7 @@ depends-sections = squeeze/main squeeze/non-free
 distro = squeeze
 arch = amd64
 area = contrib
+reschedule-old-count = 0
 
 [squeeze/non-free]
 precedence = 45
@@ -307,6 +315,7 @@ depends-sections = squeeze/main squeeze/contrib
 distro = squeeze
 arch = amd64
 area = non-free
+reschedule-old-count = 0
 
 
 ############################################################################
