@@ -20,5 +20,7 @@ PKGS="$PKGS insserv"
 PKGS="$PKGS dash"
 PKGS="$PKGS libdbus-1-3"
 PKGS="$PKGS grep"
+PKGS="$PKGS libsystemd0"
+PKGS="$PKGS libudev1"
 
 apt-get -y -t experimental install $PKGS
