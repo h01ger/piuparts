@@ -948,7 +948,7 @@ class Chroot:
         nameservers = ""
         with open("/etc/resolv.conf", "r") as f:
             for line in f:
-                if line.startswith("nameserver"):
+                if line.startswith("nameserver") or line.startswith("domain"):
                     nameservers += line
         create_file(full_name, nameservers)
         logging.debug("Created resolv.conf.")
