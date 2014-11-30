@@ -35,3 +35,16 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 	fi
 
 fi
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		polgen-doc)
+			# install-info problems during removal if the package survives
+			# polgen-doc was removed after lenny
+			log_debug
+			dpkg --remove polgen-doc
+			;;
+	esac
+
+fi
