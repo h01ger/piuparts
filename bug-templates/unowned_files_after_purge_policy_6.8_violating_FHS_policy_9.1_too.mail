@@ -1,5 +1,5 @@
 To: submit@bugs.debian.org
-Subject: unowned files after purge (policy 6.8) violating FHS (policy 9.1) too
+Subject: unowned files after purge (policy 6.8) violating FHS (policy 9.1) too:
 
 Package:
 Version:

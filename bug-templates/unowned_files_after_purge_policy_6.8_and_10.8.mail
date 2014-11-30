@@ -1,5 +1,5 @@
 To: submit@bugs.debian.org
-Subject: unowned files after purge (policy 6.8, 10.8)
+Subject: unowned files after purge (policy 6.8, 10.8):
 
 Package:
 Version:

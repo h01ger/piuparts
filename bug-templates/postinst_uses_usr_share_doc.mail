@@ -1,5 +1,5 @@
 To: submit@bugs.debian.org
-Subject: postinst uses /usr/share/doc content (Policy 12.3)
+Subject: postinst uses /usr/share/doc content (Policy 12.3):
 
 Package:
 Version:

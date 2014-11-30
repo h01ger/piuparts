@@ -36,6 +36,7 @@ piuparts (0.61) UNRELEASED; urgency=medium
     script and reports for unowned symlinks in [/usr]/lib[/<triplet>].
   * Rework the file-rc/sysvinit/upstart/systemd specific exceptions.
   * Update custom scripts handling databases, experimental, ... and some more.
+  * Update bug templates.
 
  -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100
 

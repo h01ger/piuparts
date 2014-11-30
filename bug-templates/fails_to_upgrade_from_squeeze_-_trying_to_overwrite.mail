@@ -1,5 +1,5 @@
 To: submit@bugs.debian.org
-Subject: fails to upgrade from squeeze - trying to overwrite ...
+Subject: fails to upgrade from 'squeeze' - trying to overwrite ...
 
 Package:
 Version:
