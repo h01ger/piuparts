@@ -24,6 +24,7 @@ piuparts (0.61) UNRELEASED; urgency=medium
       + /etc/modules-load.d/modules.conf  (dangling symlink to ../modules)
     - Create /etc/resolv.conf in the chroot using only the domain and
       nameserver entries found on the host.
+  * Remove debugging output for resolvconf.
   * lib/dwke.py: Fix parsing known_problems/*.conf using EXCLUDE_PATTERN.
   * Add "AddDefaultCharset utf-8" to the apache2 configuration snipplet
     example, so that logfiles are displayed as UTF-8.
