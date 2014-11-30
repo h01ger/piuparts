@@ -30,11 +30,6 @@ if [ "$PIUPARTS_PHASE" = "install" ]; then
 		esac
 		apt-get -y install $HEADERS-$FLAVOR
 		;;
-	resolvconf)
-		log_debug
-		echo "Debug: contents of /etc/resolv.conf"
-		cat /etc/resolv.conf
-		;;
     esac
 
 fi
