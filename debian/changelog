@@ -26,6 +26,8 @@ piuparts (0.61) UNRELEASED; urgency=medium
       nameserver entries found on the host.
   * Remove debugging output for resolvconf.
   * lib/dwke.py: Fix parsing known_problems/*.conf using EXCLUDE_PATTERN.
+  * piuparts.conf:
+    - Add flags-start-jessie, flags-end-jessie global variables.
   * distros.conf:
     - Add *updates, *backports, *proposed for jessie.
     - Switch 'testing' alias to 'stretch', but deactivate it for stable.
