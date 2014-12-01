@@ -614,6 +614,8 @@ class Section:
 
         test_count = 0
         self._check_tarball()
+        if not os.path.exists(self._get_tarball()):
+            self._error_wait_until = time.time() + 300
         for package_name, version in self._slave.get_reserved():
             self._throttle_if_overloaded()
             if interrupted or got_sighup:

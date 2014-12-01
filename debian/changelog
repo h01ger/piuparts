@@ -29,6 +29,8 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * distros.conf:
     - Add *updates, *backports, *proposed for jessie.
     - Switch 'testing' alias to 'stretch', but deactivate it for stable.
+  * piuparts-slave.py:
+    - Sleep for 5 minutes if basetgz creation is in progress or failed.
   * Add "AddDefaultCharset utf-8" to the apache2 configuration snipplet
     example, so that logfiles are displayed as UTF-8.
   * pre_install_foreign_architecture: New script to enable foreign
