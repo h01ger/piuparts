@@ -34,6 +34,7 @@ piuparts (0.61) UNRELEASED; urgency=medium
     architectures for testing cross toolchain packages.
   * pre_remove_40_find_unowned_lib_links, unowned_lib_symlink_*.conf: New
     script and reports for unowned symlinks in [/usr]/lib[/<triplet>].
+  * post_distupgrade_exceptions: Handle libdb5.1 removal in jessie.
   * Rework the file-rc/sysvinit/upstart/systemd specific exceptions.
   * Update custom scripts handling databases, experimental, ... and some more.
   * Update bug templates.

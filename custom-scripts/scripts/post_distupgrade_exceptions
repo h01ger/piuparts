@@ -21,3 +21,20 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] || \
 	esac
 
 fi
+
+if	[ "$PIUPARTS_DISTRIBUTION" = "jessie" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "jessie-proposed" ] ; then
+
+	# libdb5.1/wheezy is part of the minimal wheezy chroot and
+	# remains installed after distupgrade even if it no longer
+	# exists in jessie
+	# db5.1-util/jessie Conflicts/Replaces libdb5.1, so ensure it
+	# gets removed from the reference chroot, too
+	case ${PIUPARTS_OBJECTS%%=*} in
+		db5.1-util)
+			log_debug
+			dpkg --purge libdb5.1
+			;;
+	esac
+
+fi
