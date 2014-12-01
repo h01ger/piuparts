@@ -28,6 +28,7 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * lib/dwke.py: Fix parsing known_problems/*.conf using EXCLUDE_PATTERN.
   * piuparts.conf:
     - Add flags-start-jessie, flags-end-jessie global variables.
+    - Use --scriptsdir .../scripts-jessie for tests ending in jessie.
   * distros.conf:
     - Add *updates, *backports, *proposed for jessie.
     - Switch 'testing' alias to 'stretch', but deactivate it for stable.
@@ -40,6 +41,8 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * pre_remove_40_find_unowned_lib_links, unowned_lib_symlink_*.conf: New
     script and reports for unowned symlinks in [/usr]/lib[/<triplet>].
   * post_distupgrade_exceptions: Handle libdb5.1 removal in jessie.
+  * scripts-jessie/post_setup_jessie-fake-essential: New custom script.
+    - Make ucf fake-essential. (ucf may be used unconditionally during purge.)
   * Rework the file-rc/sysvinit/upstart/systemd specific exceptions.
   * Update custom scripts handling databases, experimental, ... and some more.
   * Update bug templates.

@@ -35,6 +35,8 @@ flags-start-jessie =
 
 # common flags for tests ending in jessie
 flags-end-jessie =
+# extra fake-essential packages for successfully purging in jessie
+	--scriptsdir /etc/piuparts/scripts-jessie
 
 # common flags for tests starting in wheezy
 flags-start-wheezy =
