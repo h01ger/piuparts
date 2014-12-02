@@ -29,6 +29,7 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * piuparts.conf:
     - Add flags-start-jessie, flags-end-jessie global variables.
     - Use --scriptsdir .../scripts-jessie for tests ending in jessie.
+    - Enable --warn-on-debsums-errors for wheezy2jessie upgrades.
   * distros.conf:
     - Add *updates, *backports, *proposed for jessie.
     - Switch 'testing' alias to 'stretch', but deactivate it for stable.
