@@ -35,6 +35,16 @@ flags-end-squeeze =
 	--warn-on-debsums-errors
 	--scriptsdir /etc/piuparts/scripts-squeeze
 
+flags-start-lenny =
+	--dpkg-noforce-unsafe-io
+	%(flags-start-squeeze)s
+flags-end-lenny =
+	--warn-on-debsums-errors
+	--skip-cronfiles-test
+	%(flags-end-squeeze)s
+	-i /etc/udev/
+	-i /etc/udev/rules.d/
+
 
 [global]
 # sections may be wrapped with continuation lines being indented
@@ -62,6 +72,7 @@ sections =
 	sid2experimental/main
 	testing2sid/main
 	squeeze2wheezy/main
+	lenny/main
 #
 	experimental/contrib
 	sid/contrib
@@ -85,6 +96,7 @@ sections =
 	sid2experimental/contrib
 	testing2sid/contrib
 	squeeze2wheezy/contrib
+	lenny/contrib
 #
 	experimental/non-free
 	sid/non-free
@@ -108,6 +120,7 @@ sections =
 	sid2experimental/non-free
 	testing2sid/non-free
 	squeeze2wheezy/non-free
+	lenny/non-free
 #
 proxy = http://localhost:3128
 #
@@ -834,6 +847,43 @@ depends-sections = squeeze/main squeeze-backports/main squeeze-backports/contrib
 distro = squeeze-backports-sloppy
 arch = amd64
 area = non-free
+
+
+[lenny/main]
+precedence = 110
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-lenny)s
+distro = lenny
+arch = amd64
+area = main
+components = main
+reschedule-old-count = 0
+
+[lenny/contrib]
+precedence = 110
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-lenny)s
+depends-sections = lenny/main lenny/non-free
+distro = lenny
+arch = amd64
+area = contrib
+reschedule-old-count = 0
+
+[lenny/non-free]
+precedence = 110
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-lenny)s
+depends-sections = lenny/main lenny/contrib
+distro = lenny
+arch = amd64
+area = non-free
+reschedule-old-count = 0
 
 
 ############################################################################
