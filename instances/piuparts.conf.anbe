@@ -48,6 +48,7 @@ sections =
 	jessie-pu/main
 	wheezy/main
 	wheezy-proposed/main
+	wheezy-security/main
 	wheezy-pu/main
 	squeeze/main
 	squeeze-security/main
@@ -65,6 +66,7 @@ sections =
 	jessie-pu/contrib
 	wheezy/contrib
 	wheezy-proposed/contrib
+#	wheezy-security/contrib
 	wheezy-pu/contrib
 	squeeze/contrib
 #	squeeze-security/contrib
@@ -82,6 +84,7 @@ sections =
 	jessie-pu/non-free
 	wheezy/non-free
 	wheezy-proposed/non-free
+#	wheezy-security/non-free
 	wheezy-pu/non-free
 	squeeze/non-free
 #	squeeze-security/non-free
@@ -380,6 +383,41 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = wheezy/main wheezy/contrib
 distro = wheezy
+arch = amd64
+area = non-free
+
+
+[wheezy-security/main]
+precedence = 20
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy/main
+distro = wheezy/updates
+arch = amd64
+area = main
+components = main
+
+[wheezy-security/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy/main
+distro = wheezy/updates
+arch = amd64
+area = contrib
+
+[wheezy-security/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy/main
+distro = wheezy/updates
 arch = amd64
 area = non-free
 
