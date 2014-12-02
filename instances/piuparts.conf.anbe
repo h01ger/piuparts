@@ -51,6 +51,7 @@ sections =
 	squeeze/main
 	squeeze-security/main
 	squeeze-updates/main
+	squeeze-pu/main
 	sid2experimental/main
 	testing2sid/main
 	squeeze2wheezy/main
@@ -66,6 +67,7 @@ sections =
 	squeeze/contrib
 #	squeeze-security/contrib
 #	squeeze-updates/contrib
+	squeeze-pu/contrib
 	sid2experimental/contrib
 	testing2sid/contrib
 	squeeze2wheezy/contrib
@@ -81,6 +83,7 @@ sections =
 	squeeze/non-free
 #	squeeze-security/non-free
 #	squeeze-updates/non-free
+	squeeze-pu/non-free
 	sid2experimental/non-free
 	testing2sid/non-free
 	squeeze2wheezy/non-free
@@ -522,6 +525,44 @@ piuparts-flags =
 	%(flags-end-squeeze)s
 depends-sections = squeeze/main
 distro = squeeze-updates
+arch = amd64
+area = non-free
+reschedule-old-count = 0
+
+
+[squeeze-pu/main]
+precedence = 20
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze/main
+distro = squeeze-proposed-updates
+arch = amd64
+area = main
+components = main
+reschedule-old-count = 0
+
+[squeeze-pu/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze/main squeeze/non-free
+distro = squeeze-proposed-updates
+arch = amd64
+area = contrib
+reschedule-old-count = 0
+
+[squeeze-pu/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze/main squeeze/contrib
+distro = squeeze-proposed-updates
 arch = amd64
 area = non-free
 reschedule-old-count = 0
