@@ -71,6 +71,7 @@ sections =
 	squeeze-backports-sloppy/main
 	sid2experimental/main
 	testing2sid/main
+	wheezy2proposed/main
 	squeeze2proposed/main
 	squeeze2wheezy/main
 	squeeze2wheezy-rcmd/main
@@ -100,6 +101,7 @@ sections =
 	squeeze-backports-sloppy/contrib
 	sid2experimental/contrib
 	testing2sid/contrib
+	wheezy2proposed/contrib
 	squeeze2proposed/contrib
 	squeeze2wheezy/contrib
 	squeeze2wheezy-rcmd/contrib
@@ -129,6 +131,7 @@ sections =
 	squeeze-backports-sloppy/non-free
 	sid2experimental/non-free
 	testing2sid/non-free
+	wheezy2proposed/non-free
 	squeeze2proposed/non-free
 	squeeze2wheezy/non-free
 	squeeze2wheezy-rcmd/non-free
@@ -1152,6 +1155,44 @@ distro = squeeze-backports
 arch = amd64
 area = non-free
 upgrade-test-distros = squeeze squeeze-backports wheezy
+
+
+[wheezy2proposed/main]
+precedence = 60
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = amd64
+area = main
+components = main
+distro = wheezy
+upgrade-test-distros = wheezy wheezy-proposed
+
+[wheezy2proposed/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy2proposed/main wheezy2proposed/non-free
+arch = amd64
+area = contrib
+distro = wheezy
+upgrade-test-distros = wheezy wheezy-proposed
+
+[wheezy2proposed/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy2proposed/main wheezy2proposed/contrib
+arch = amd64
+area = non-free
+distro = wheezy
+upgrade-test-distros = wheezy wheezy-proposed
 
 
 [testing2sid/main]
