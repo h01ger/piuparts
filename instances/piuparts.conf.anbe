@@ -73,6 +73,7 @@ sections =
 	testing2sid/main
 	squeeze2proposed/main
 	squeeze2wheezy/main
+	squeeze2wheezy-rcmd/main
 	lenny/main
 	lenny2squeeze/main
 #
@@ -99,6 +100,7 @@ sections =
 	testing2sid/contrib
 	squeeze2proposed/contrib
 	squeeze2wheezy/contrib
+	squeeze2wheezy-rcmd/contrib
 	lenny/contrib
 	lenny2squeeze/contrib
 #
@@ -125,6 +127,7 @@ sections =
 	testing2sid/non-free
 	squeeze2proposed/non-free
 	squeeze2wheezy/non-free
+	squeeze2wheezy-rcmd/non-free
 	lenny/non-free
 	lenny2squeeze/non-free
 #
@@ -1017,6 +1020,50 @@ arch = amd64
 area = non-free
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
+
+
+[squeeze2wheezy-rcmd/main]
+precedence = 70
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = amd64
+area = main
+components = main
+distro = squeeze
+upgrade-test-distros = squeeze wheezy
+reschedule-old-count = 0
+
+[squeeze2wheezy-rcmd/contrib]
+precedence = 95
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+depends-sections = squeeze2wheezy-rcmd/main squeeze2wheezy-rcmd/non-free
+arch = amd64
+area = contrib
+distro = squeeze
+upgrade-test-distros = squeeze wheezy
+reschedule-old-count = 0
+
+[squeeze2wheezy-rcmd/non-free]
+precedence = 95
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+depends-sections = squeeze2wheezy-rcmd/main squeeze2wheezy-rcmd/contrib
+arch = amd64
+area = non-free
+distro = squeeze
+upgrade-test-distros = squeeze wheezy
+reschedule-old-count = 0
 
 
 [testing2sid/main]

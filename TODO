@@ -79,6 +79,10 @@ for 0.6x:
   - java stacktraces
   - "Can't locate .* in @INC"
 
+- we should probably have an install test with --enable-recommends and
+without --warn-on-others to avoid adding artificial barriers where package
+subsets are configured
+
 
 for 0.7x and later:
 
