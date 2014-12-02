@@ -57,6 +57,7 @@ sections =
 	squeeze-updates/main
 	squeeze-pu/main
 	squeeze-backports/main
+	squeeze-backports-sloppy/main
 	sid2experimental/main
 	testing2sid/main
 	squeeze2wheezy/main
@@ -78,6 +79,7 @@ sections =
 #	squeeze-updates/contrib
 	squeeze-pu/contrib
 	squeeze-backports/contrib
+	squeeze-backports-sloppy/contrib
 	sid2experimental/contrib
 	testing2sid/contrib
 	squeeze2wheezy/contrib
@@ -99,6 +101,7 @@ sections =
 #	squeeze-updates/non-free
 	squeeze-pu/non-free
 	squeeze-backports/non-free
+	squeeze-backports-sloppy/non-free
 	sid2experimental/non-free
 	testing2sid/non-free
 	squeeze2wheezy/non-free
@@ -756,6 +759,41 @@ piuparts-flags =
 	%(flags-end-squeeze)s
 depends-sections = squeeze/main squeeze-backports/main squeeze-backports/contrib
 distro = squeeze-backports
+arch = amd64
+area = non-free
+
+
+[squeeze-backports-sloppy/main]
+precedence = 40
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze/main squeeze-backports/main
+distro = squeeze-backports-sloppy
+arch = amd64
+area = main
+components = main
+
+[squeeze-backports-sloppy/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze/main squeeze-backports/main squeeze-backports/non-free
+distro = squeeze-backports-sloppy
+arch = amd64
+area = contrib
+
+[squeeze-backports-sloppy/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze/main squeeze-backports/main squeeze-backports/contrib
+distro = squeeze-backports-sloppy
 arch = amd64
 area = non-free
 
