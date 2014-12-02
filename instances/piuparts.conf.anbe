@@ -74,6 +74,7 @@ sections =
 	squeeze2proposed/main
 	squeeze2wheezy/main
 	squeeze2wheezy-rcmd/main
+	squeeze2wheezy-pu/main
 	lenny/main
 	lenny2squeeze/main
 #
@@ -101,6 +102,7 @@ sections =
 	squeeze2proposed/contrib
 	squeeze2wheezy/contrib
 	squeeze2wheezy-rcmd/contrib
+	squeeze2wheezy-pu/contrib
 	lenny/contrib
 	lenny2squeeze/contrib
 #
@@ -128,6 +130,7 @@ sections =
 	squeeze2proposed/non-free
 	squeeze2wheezy/non-free
 	squeeze2wheezy-rcmd/non-free
+	squeeze2wheezy-pu/non-free
 	lenny/non-free
 	lenny2squeeze/non-free
 #
@@ -1064,6 +1067,47 @@ area = non-free
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
 reschedule-old-count = 0
+
+
+[squeeze2wheezy-pu/main]
+precedence = 60
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+depends-sections = squeeze2wheezy/main wheezy/main
+arch = amd64
+area = main
+components = main
+upgrade-test-distros = squeeze wheezy-proposed-updates
+reschedule-old-days = 30
+expire-old-days = 45
+
+[squeeze2wheezy-pu/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+depends-sections = squeeze2wheezy/main squeeze2wheezy/non-free wheezy/main wheezy/contrib wheezy/non-free
+arch = amd64
+area = contrib
+upgrade-test-distros = squeeze wheezy-proposed-updates
+reschedule-old-days = 30
+expire-old-days = 45
+
+[squeeze2wheezy-pu/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+depends-sections = squeeze2wheezy/main squeeze2wheezy/contrib wheezy/main wheezy/contrib wheezy/non-free
+arch = amd64
+area = non-free
+upgrade-test-distros = squeeze wheezy-proposed-updates
+reschedule-old-days = 30
+expire-old-days = 45
 
 
 [testing2sid/main]
