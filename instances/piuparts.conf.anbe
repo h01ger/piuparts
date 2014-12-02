@@ -17,6 +17,13 @@ flags-leftovers =
 	%(flags-base)s
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
+flags-start-jessie =
+flags-end-jessie =
+	--scriptsdir /etc/piuparts/scripts-jessie
+flags-end-jessie-upgrade =
+	%(flags-end-jessie)s
+	--warn-on-debsums-errors
+
 flags-start-wheezy =
 flags-end-wheezy =
 	--warn-on-debsums-errors
@@ -89,7 +96,7 @@ idle-sleep = 1800
 max-tgz-age = 0
 max-reserved = 50
 reschedule-untestable-days = 3
-expire-old-days = 0
+expire-old-days = 180
 reschedule-old-days = 120
 reschedule-old-count = 600
 expire-fail-days = 8
@@ -177,6 +184,8 @@ expire-old-days = 60
 precedence = 10
 piuparts-flags =
 	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
 distro = jessie
 arch = amd64
 area = main
@@ -190,6 +199,8 @@ expire-old-days = 90
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
 depends-sections = jessie/main jessie/non-free
 distro = jessie
 arch = amd64
@@ -201,6 +212,8 @@ expire-old-days = 90
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
 depends-sections = jessie/main jessie/contrib
 distro = jessie
 arch = amd64
