@@ -6,7 +6,7 @@ set -e
 # /etc/dbconfig-common
 DBCONFIG="dbconfig-common"
 
-# for purging configuration from /var/lib/systemd/
+# For purging configuration from /var/lib/systemd/
 INITSYSTEMHELPERS="init-system-helpers"
 
 case ${PIUPARTS_DISTRIBUTION} in
@@ -24,6 +24,10 @@ OPENSSL=""
 case ${PIUPARTS_OBJECTS%%=*} in
 	dpkg)
 		# skip while creating the tarball
+		exit 0
+		;;
+	dbconfig-common|init-system-helpers)
+		# allow testing of the fake essential packages
 		exit 0
 		;;
 	stone)
