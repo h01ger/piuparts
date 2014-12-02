@@ -72,6 +72,7 @@ sections =
 	sid2experimental/main
 	testing2sid/main
 	wheezy2proposed/main
+	wheezy2jessie/main
 	squeeze2proposed/main
 	squeeze2wheezy/main
 	squeeze2wheezy-rcmd/main
@@ -102,6 +103,7 @@ sections =
 	sid2experimental/contrib
 	testing2sid/contrib
 	wheezy2proposed/contrib
+	wheezy2jessie/contrib
 	squeeze2proposed/contrib
 	squeeze2wheezy/contrib
 	squeeze2wheezy-rcmd/contrib
@@ -132,6 +134,7 @@ sections =
 	sid2experimental/non-free
 	testing2sid/non-free
 	wheezy2proposed/non-free
+	wheezy2jessie/non-free
 	squeeze2proposed/non-free
 	squeeze2wheezy/non-free
 	squeeze2wheezy-rcmd/non-free
@@ -1193,6 +1196,43 @@ arch = amd64
 area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy wheezy-proposed
+
+
+[wheezy2jessie/main]
+precedence = 80
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie-upgrade)s
+arch = amd64
+area = main
+components = main
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie-upgrade)s
+depends-sections = wheezy2jessie/main wheezy2jessie/non-free
+arch = amd64
+area = contrib
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie-upgrade)s
+depends-sections = wheezy2jessie/main wheezy2jessie/contrib
+arch = amd64
+area = non-free
+distro = wheezy
+upgrade-test-distros = wheezy jessie
 
 
 [testing2sid/main]
