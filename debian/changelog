@@ -24,8 +24,6 @@ piuparts (0.61) UNRELEASED; urgency=medium
       + /etc/modules-load.d/modules.conf  (dangling symlink to ../modules)
     - Create /etc/resolv.conf in the chroot using only the domain and
       nameserver entries found on the host.
-  * Remove debugging output for resolvconf.
-  * lib/dwke.py: Fix parsing known_problems/*.conf using EXCLUDE_PATTERN.
   * piuparts.conf:
     - Add flags-start-jessie, flags-end-jessie global variables.
     - Use --scriptsdir .../scripts-jessie for tests ending in jessie.
@@ -33,10 +31,14 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * distros.conf:
     - Add *updates, *backports, *proposed for jessie.
     - Switch 'testing' alias to 'stretch', but deactivate it for stable.
+  * piupartslib/dwke.py:
+    - Fix parsing of known_problems/*.conf that have EXCLUDE_PATTERN.
   * piuparts-slave.py:
-    - Sleep for 5 minutes if basetgz creation is in progress or failed.
+    - Avoid a busy loop by suspending a section for 5 minutes if basetgz
+      creation is in progress or failed.
   * Add "AddDefaultCharset utf-8" to the apache2 configuration snipplet
     example, so that logfiles are displayed as UTF-8.
+  * master-bin/detect_piuparts_issues: Another partial write error from tar.
   * pre_install_foreign_architecture: New script to enable foreign
     architectures for testing cross toolchain packages.
   * pre_remove_40_find_unowned_lib_links, unowned_lib_symlink_*.conf: New
@@ -46,6 +48,7 @@ piuparts (0.61) UNRELEASED; urgency=medium
     - Make ucf fake-essential. (ucf may be used unconditionally during purge.)
     - Make init-system-helpers fake-essential. (Systemd service link cleanup.)
   * Rework the file-rc/sysvinit/upstart/systemd specific exceptions.
+  * Remove debugging output for resolvconf.
   * Update custom scripts handling databases, experimental, ... and some more.
   * Update bug templates.
 
