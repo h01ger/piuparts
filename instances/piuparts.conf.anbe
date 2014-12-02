@@ -51,6 +51,7 @@ sections =
 	wheezy-security/main
 	wheezy-updates/main
 	wheezy-pu/main
+	wheezy-backports/main
 	squeeze/main
 	squeeze-proposed/main
 	squeeze-security/main
@@ -73,6 +74,7 @@ sections =
 #	wheezy-security/contrib
 #	wheezy-updates/contrib
 	wheezy-pu/contrib
+	wheezy-backports/contrib
 	squeeze/contrib
 	squeeze-proposed/contrib
 #	squeeze-security/contrib
@@ -95,6 +97,7 @@ sections =
 #	wheezy-security/non-free
 #	wheezy-updates/non-free
 	wheezy-pu/non-free
+	wheezy-backports/non-free
 	squeeze/non-free
 	squeeze-proposed/non-free
 #	squeeze-security/non-free
@@ -534,6 +537,41 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = wheezy-proposed/main wheezy-proposed/contrib
 distro = wheezy-proposed
+arch = amd64
+area = non-free
+
+
+[wheezy-backports/main]
+precedence = 40
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy/main
+distro = wheezy-backports
+arch = amd64
+area = main
+components = main
+
+[wheezy-backports/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy/main wheezy/non-free wheezy-backports/main wheezy-backports/non-free
+distro = wheezy-backports
+arch = amd64
+area = contrib
+
+[wheezy-backports/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy/main wheezy-backports/main wheezy-backports/contrib
+distro = wheezy-backports
 arch = amd64
 area = non-free
 
