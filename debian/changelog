@@ -43,6 +43,7 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * post_distupgrade_exceptions: Handle libdb5.1 removal in jessie.
   * scripts-jessie/post_setup_jessie-fake-essential: New custom script.
     - Make ucf fake-essential. (ucf may be used unconditionally during purge.)
+    - Make init-system-helpers fake-essential. (Systemd service link cleanup.)
   * Rework the file-rc/sysvinit/upstart/systemd specific exceptions.
   * Update custom scripts handling databases, experimental, ... and some more.
   * Update bug templates.

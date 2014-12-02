@@ -6,17 +6,27 @@ set -e
 # so add these packages to the "fake" essential set.
 USED_DURING_PURGE="ucf"
 
+# For purging configuration from /var/lib/systemd/
+INITSYSTEMHELPERS="init-system-helpers"
+
+case ${PIUPARTS_DISTRIBUTION} in
+	lenny*|squeeze*|wheezy*)
+		# package does not exist
+		INITSYSTEMHELPERS=""
+		;;
+esac
+
 
 case ${PIUPARTS_OBJECTS%%=*} in
 	dpkg)
 		# don't install fake essential packages while creating the tarball
 		exit 0
 		;;
-	ucf)
+	ucf|init-system-helpers)
 		# allow testing of the fake essential packages
 		exit 0
 		;;
 esac
 
 echo "*** Adding fake essential packages ***"
-apt-get install -yf $USED_DURING_PURGE
+apt-get install -yf $USED_DURING_PURGE $INITSYSTEMHELPERS
