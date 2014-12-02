@@ -43,6 +43,7 @@ sections =
 	experimental/main
 	sid/main
 	jessie/main
+	jessie-pu/main
 	wheezy/main
 	wheezy-proposed/main
 	squeeze/main
@@ -53,6 +54,7 @@ sections =
 	experimental/contrib
 	sid/contrib
 	jessie/contrib
+	jessie-pu/contrib
 	wheezy/contrib
 	wheezy-proposed/contrib
 	squeeze/contrib
@@ -63,6 +65,7 @@ sections =
 	experimental/non-free
 	sid/non-free
 	jessie/non-free
+	jessie-pu/non-free
 	wheezy/non-free
 	wheezy-proposed/non-free
 	squeeze/non-free
@@ -220,6 +223,41 @@ arch = amd64
 area = non-free
 reschedule-old-days = 60
 expire-old-days = 90
+
+
+[jessie-pu/main]
+precedence = 20
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie/main
+distro = jessie-proposed-updates
+arch = amd64
+area = main
+components = main
+
+[jessie-pu/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie/main jessie/non-free
+distro = jessie-proposed-updates
+arch = amd64
+area = contrib
+
+[jessie-pu/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie/main jessie/contrib
+distro = jessie-proposed-updates
+arch = amd64
+area = non-free
 
 
 [wheezy/main]
