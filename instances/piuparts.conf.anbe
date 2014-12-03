@@ -56,6 +56,7 @@ sections =
 	experimental/main
 	sid/main
 	stretch/main
+	stretch-pu/main
 	jessie/main
 	jessie-security/main
 	jessie-updates/main
@@ -89,6 +90,7 @@ sections =
 	experimental/contrib
 	sid/contrib
 	stretch/contrib
+	stretch-pu/contrib
 	jessie/contrib
 	jessie-security/contrib
 	jessie-updates/contrib
@@ -122,6 +124,7 @@ sections =
 	experimental/non-free
 	sid/non-free
 	stretch/non-free
+	stretch-pu/non-free
 	jessie/non-free
 	jessie-security/non-free
 	jessie-updates/non-free
@@ -302,6 +305,41 @@ arch = amd64
 area = non-free
 reschedule-old-days = 60
 expire-old-days = 90
+
+
+[stretch-pu/main]
+precedence = 20
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main
+distro = stretch-proposed-updates
+arch = amd64
+area = main
+components = main
+
+[stretch-pu/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main stretch/non-free
+distro = stretch-proposed-updates
+arch = amd64
+area = contrib
+
+[stretch-pu/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main stretch/contrib
+distro = stretch-proposed-updates
+arch = amd64
+area = non-free
 
 
 [jessie/main]
