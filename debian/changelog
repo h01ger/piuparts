@@ -31,6 +31,7 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * distros.conf:
     - Add *updates, *backports, *proposed for jessie.
     - Switch 'testing' alias to 'stretch', but deactivate it for stable.
+    - Add 'stable' alias pointing to 'jessie', deactivated as well.
   * piupartslib/dwke.py:
     - Fix parsing of known_problems/*.conf that have EXCLUDE_PATTERN.
   * piuparts-slave.py:
