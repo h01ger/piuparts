@@ -61,6 +61,7 @@ sections =
 	jessie-security/main
 	jessie-updates/main
 	jessie-pu/main
+	jessie-backports/main
 	wheezy/main
 	wheezy-proposed/main
 	wheezy-security/main
@@ -96,6 +97,7 @@ sections =
 	jessie-security/contrib
 	jessie-updates/contrib
 	jessie-pu/contrib
+	jessie-backports/contrib
 	wheezy/contrib
 	wheezy-proposed/contrib
 #	wheezy-security/contrib
@@ -131,6 +133,7 @@ sections =
 	jessie-security/non-free
 	jessie-updates/non-free
 	jessie-pu/non-free
+	jessie-backports/non-free
 	wheezy/non-free
 	wheezy-proposed/non-free
 #	wheezy-security/non-free
@@ -488,6 +491,41 @@ piuparts-flags =
 	%(flags-end-jessie)s
 depends-sections = jessie/main jessie/contrib
 distro = jessie-proposed-updates
+arch = amd64
+area = non-free
+
+
+[jessie-backports/main]
+precedence = 40
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie/main
+distro = jessie-backports
+arch = amd64
+area = main
+components = main
+
+[jessie-backports/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie/main jessie/non-free jessie-backports/main jessie-backports/non-free
+distro = jessie-backports
+arch = amd64
+area = contrib
+
+[jessie-backports/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie/main jessie-backports/main jessie-backports/contrib
+distro = jessie-backports
 arch = amd64
 area = non-free
 
