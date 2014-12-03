@@ -17,6 +17,9 @@ flags-leftovers =
 	%(flags-base)s
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
+flags-end-testing =
+	%(flags-end-stretch)s
+
 flags-start-stretch =
 flags-end-stretch =
 
@@ -90,6 +93,7 @@ sections =
 	squeeze2bpo2wheezy/main
 	lenny/main
 	lenny2squeeze/main
+	lenny222testing/main
 #
 	experimental/contrib
 	sid/contrib
@@ -128,6 +132,7 @@ sections =
 	squeeze2bpo2wheezy/contrib
 	lenny/contrib
 	lenny2squeeze/contrib
+	lenny222testing/contrib
 #
 	experimental/non-free
 	sid/non-free
@@ -166,6 +171,7 @@ sections =
 	squeeze2bpo2wheezy/non-free
 	lenny/non-free
 	lenny2squeeze/non-free
+	lenny222testing/non-free
 #
 proxy = http://localhost:3128
 #
@@ -1087,6 +1093,46 @@ arch = amd64
 area = non-free
 distro = lenny
 upgrade-test-distros = lenny squeeze
+reschedule-old-count = 0
+
+
+[lenny222testing/main]
+precedence = 120
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-testing)s
+arch = amd64
+area = main
+components = main
+distro = lenny
+upgrade-test-distros = lenny squeeze wheezy jessie testing
+reschedule-old-count = 0
+
+[lenny222testing/contrib]
+precedence = 120
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-testing)s
+depends-sections = lenny222testing/main lenny222testing/non-free
+arch = amd64
+area = contrib
+distro = lenny
+upgrade-test-distros = lenny squeeze wheezy jessie testing
+reschedule-old-count = 0
+
+[lenny222testing/non-free]
+precedence = 120
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-testing)s
+depends-sections = lenny222testing/main lenny222testing/contrib
+arch = amd64
+area = non-free
+distro = lenny
+upgrade-test-distros = lenny squeeze wheezy jessie testing
 reschedule-old-count = 0
 
 
