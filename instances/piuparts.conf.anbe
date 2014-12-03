@@ -20,6 +20,9 @@ flags-leftovers =
 flags-end-testing =
 	%(flags-end-stretch)s
 
+flags-start-stable =
+	%(flags-start-jessie)s
+
 flags-start-stretch =
 flags-end-stretch =
 
@@ -80,7 +83,7 @@ sections =
 	squeeze-backports-sloppy/main
 	sid2experimental/main
 	testing2sid/main
-	jessie2sid/main
+	stable2sid/main
 	jessie2stretch/main
 	jessie2bpo2stretch/main
 	wheezy2proposed/main
@@ -121,7 +124,7 @@ sections =
 	squeeze-backports-sloppy/contrib
 	sid2experimental/contrib
 	testing2sid/contrib
-	jessie2sid/contrib
+	stable2sid/contrib
 	jessie2stretch/contrib
 	jessie2bpo2stretch/contrib
 	wheezy2proposed/contrib
@@ -162,7 +165,7 @@ sections =
 	squeeze-backports-sloppy/non-free
 	sid2experimental/non-free
 	testing2sid/non-free
-	jessie2sid/non-free
+	stable2sid/non-free
 	jessie2stretch/non-free
 	jessie2bpo2stretch/non-free
 	wheezy2proposed/non-free
@@ -1614,38 +1617,38 @@ area = non-free
 upgrade-test-distros = jessie jessie-backports stretch
 
 
-[jessie2sid/main]
+[stable2sid/main]
 precedence = 70
 piuparts-flags =
 	%(flags-default)s
-	%(flags-start-jessie)s
+	%(flags-start-stable)s
 arch = amd64
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie sid
+distro = stable
+upgrade-test-distros = stable sid
 
-[jessie2sid/contrib]
+[stable2sid/contrib]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
-	%(flags-start-jessie)s
-depends-sections = jessie2sid/main jessie2sid/non-free
+	%(flags-start-stable)s
+depends-sections = stable2sid/main stable2sid/non-free
 arch = amd64
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie sid
+distro = stable
+upgrade-test-distros = stable sid
 
-[jessie2sid/non-free]
+[stable2sid/non-free]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
-	%(flags-start-jessie)s
-depends-sections = jessie2sid/main jessie2sid/contrib
+	%(flags-start-stable)s
+depends-sections = stable2sid/main stable2sid/contrib
 arch = amd64
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie sid
+distro = stable
+upgrade-test-distros = stable sid
 
 
 [testing2sid/main]
