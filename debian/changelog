@@ -1,4 +1,4 @@
-piuparts (0.61) UNRELEASED; urgency=medium
+piuparts (0.61) unstable; urgency=medium
 
   [ Michael Prokop ]
   * Support new scripts directive 'post_chroot_unpack', useful for adding
@@ -54,7 +54,7 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * Update custom scripts handling databases, experimental, ... and some more.
   * Update bug templates.
 
- -- Holger Levsen <holger@debian.org>  Sun, 26 Oct 2014 20:19:35 +0100
+ -- Holger Levsen <holger@debian.org>  Wed, 03 Dec 2014 19:55:26 +0100
 
 piuparts (0.60) unstable; urgency=medium
 
