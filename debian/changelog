@@ -22,8 +22,8 @@ piuparts (0.61) UNRELEASED; urgency=medium
   * piuparts.py:
     - Add to ignored_files:
       + /etc/modules-load.d/modules.conf  (dangling symlink to ../modules)
-    - Create /etc/resolv.conf in the chroot using only the domain and
-      nameserver entries found on the host.
+    - Place an up-to-date copy of the host's /etc/resolv.conf (with comments
+      stripped and whitespace normalized) in the chroot.
   * piuparts.conf:
     - Add flags-start-jessie, flags-end-jessie global variables.
     - Use --scriptsdir .../scripts-jessie for tests ending in jessie.

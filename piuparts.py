@@ -943,14 +943,14 @@ class Chroot:
         logging.debug("Created policy-rc.d and chmodded it.")
 
     def create_resolv_conf(self):
-        """Create a resolv.conf containing the nameservers from the host system."""
+        """Update resolv.conf based on the current configuration in the host system. Strip comments and whitespace."""
         full_name = self.relative("etc/resolv.conf")
-        nameservers = ""
+        resolvconf = ""
         with open("/etc/resolv.conf", "r") as f:
             for line in f:
-                if line.startswith("nameserver") or line.startswith("domain"):
-                    nameservers += line
-        create_file(full_name, nameservers)
+                if line.strip() and not line.startswith(('#', ';')):
+                    resolvconf += line.strip() + '\n'
+        create_file(full_name, resolvconf)
         logging.debug("Created resolv.conf.")
 
     def setup_minimal_chroot(self):
