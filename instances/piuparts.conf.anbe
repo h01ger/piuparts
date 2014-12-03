@@ -76,6 +76,7 @@ sections =
 	squeeze-backports-sloppy/main
 	sid2experimental/main
 	testing2sid/main
+	jessie2stretch/main
 	wheezy2proposed/main
 	wheezy2jessie/main
 	wheezy2bpo2jessie/main
@@ -110,6 +111,7 @@ sections =
 	squeeze-backports-sloppy/contrib
 	sid2experimental/contrib
 	testing2sid/contrib
+	jessie2stretch/contrib
 	wheezy2proposed/contrib
 	wheezy2jessie/contrib
 	wheezy2bpo2jessie/contrib
@@ -144,6 +146,7 @@ sections =
 	squeeze-backports-sloppy/non-free
 	sid2experimental/non-free
 	testing2sid/non-free
+	jessie2stretch/non-free
 	wheezy2proposed/non-free
 	wheezy2jessie/non-free
 	wheezy2bpo2jessie/non-free
@@ -1360,6 +1363,43 @@ distro = wheezy-backports
 arch = amd64
 area = non-free
 upgrade-test-distros = wheezy wheezy-backports jessie
+
+
+[jessie2stretch/main]
+precedence = 80
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+arch = amd64
+area = main
+components = main
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+[jessie2stretch/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+depends-sections = jessie2stretch/main jessie2stretch/non-free
+arch = amd64
+area = contrib
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+[jessie2stretch/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+depends-sections = jessie2stretch/main jessie2stretch/contrib
+arch = amd64
+area = non-free
+distro = jessie
+upgrade-test-distros = jessie stretch
 
 
 [testing2sid/main]
