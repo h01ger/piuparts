@@ -1,3 +1,11 @@
+piuparts (0.62) UNRELEASED; urgency=medium
+
+  [ Andreas Beckmann ]
+  * distros.conf: Reactivate 'testing' and 'stable' aliases, switch them back
+    to 'jessie' and 'wheezy' for ongoing development.
+
+ -- Andreas Beckmann <anbe@debian.org>  Wed, 03 Dec 2014 20:36:30 +0100
+
 piuparts (0.61) unstable; urgency=medium
 
   [ Michael Prokop ]
