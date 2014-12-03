@@ -121,8 +121,6 @@ piuparts-flags =
 distro = squeeze
 arch = i386
 reschedule-old-count = 50
-# 1 month (60*60*24*30)
-max-tgz-age = 2592000
 
 [squeeze2squeeze-lts]
 json-sections = none

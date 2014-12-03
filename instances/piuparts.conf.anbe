@@ -712,8 +712,6 @@ distro = squeeze
 arch = amd64
 area = main
 components = main
-# 60*60*24*30
-max-tgz-age = 2592000
 reschedule-old-count = 0
 
 [squeeze/contrib]
