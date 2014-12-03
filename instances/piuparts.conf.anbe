@@ -84,6 +84,7 @@ sections =
 	sid2experimental/main
 	testing2sid/main
 	stable2sid/main
+	stable2testing2sid/main
 	jessie2stretch/main
 	jessie2bpo2stretch/main
 	wheezy2proposed/main
@@ -125,6 +126,7 @@ sections =
 	sid2experimental/contrib
 	testing2sid/contrib
 	stable2sid/contrib
+	stable2testing2sid/contrib
 	jessie2stretch/contrib
 	jessie2bpo2stretch/contrib
 	wheezy2proposed/contrib
@@ -166,6 +168,7 @@ sections =
 	sid2experimental/non-free
 	testing2sid/non-free
 	stable2sid/non-free
+	stable2testing2sid/non-free
 	jessie2stretch/non-free
 	jessie2bpo2stretch/non-free
 	wheezy2proposed/non-free
@@ -1649,6 +1652,40 @@ arch = amd64
 area = non-free
 distro = stable
 upgrade-test-distros = stable sid
+
+
+[stable2testing2sid/main]
+precedence = 80
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stable)s
+arch = amd64
+area = main
+components = main
+distro = stable
+upgrade-test-distros = stable testing sid
+
+[stable2testing2sid/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stable)s
+depends-sections = stable2testing2sid/main stable2testing2sid/non-free
+arch = amd64
+area = contrib
+distro = stable
+upgrade-test-distros = stable testing sid
+
+[stable2testing2sid/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stable)s
+depends-sections = stable2testing2sid/main stable2testing2sid/contrib
+arch = amd64
+area = non-free
+distro = stable
+upgrade-test-distros = stable testing sid
 
 
 [testing2sid/main]
