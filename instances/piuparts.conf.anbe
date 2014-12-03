@@ -17,6 +17,9 @@ flags-leftovers =
 	%(flags-base)s
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
+flags-start-stretch =
+flags-end-stretch =
+
 flags-start-jessie =
 flags-end-jessie =
 	--scriptsdir /etc/piuparts/scripts-jessie
@@ -52,6 +55,7 @@ flags-end-lenny =
 sections =
 	experimental/main
 	sid/main
+	stretch/main
 	jessie/main
 	jessie-security/main
 	jessie-updates/main
@@ -84,6 +88,7 @@ sections =
 #
 	experimental/contrib
 	sid/contrib
+	stretch/contrib
 	jessie/contrib
 	jessie-security/contrib
 	jessie-updates/contrib
@@ -116,6 +121,7 @@ sections =
 #
 	experimental/non-free
 	sid/non-free
+	stretch/non-free
 	jessie/non-free
 	jessie-security/non-free
 	jessie-updates/non-free
@@ -254,6 +260,48 @@ arch = amd64
 area = non-free
 reschedule-old-days = 30
 expire-old-days = 60
+
+
+[stretch/main]
+precedence = 10
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+distro = stretch
+arch = amd64
+area = main
+components = main
+# 60*60*24*7
+max-tgz-age = 604800
+reschedule-old-days = 60
+expire-old-days = 90
+
+[stretch/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main stretch/non-free
+distro = stretch
+arch = amd64
+area = contrib
+reschedule-old-days = 60
+expire-old-days = 90
+
+[stretch/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main stretch/contrib
+distro = stretch
+arch = amd64
+area = non-free
+reschedule-old-days = 60
+expire-old-days = 90
 
 
 [jessie/main]
