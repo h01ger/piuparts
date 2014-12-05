@@ -58,7 +58,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      These pages are updated twice a day.
+      These pages are updated every six hours.
      </td>
     </tr>
     <tr class="normalrow">
@@ -73,7 +73,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2014-12-05</b> In preparation of the jessie release, another new suite was added: <em>jessie2proposed</em>, testing installation in jessie, then upgrade to jessie-proposed-upgrades, ending in purge as usual.
+      <b>2014-12-05</b> In preparation of the jessie release, another new suite was added: <em>jessie2proposed</em>, testing installation in jessie, then upgrade to jessie-proposed-upgrades, ending in purge as usual. Web pages are now updated four times a day.
      </td>
     </tr>
     <tr class="normalrow">
