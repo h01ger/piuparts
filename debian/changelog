@@ -6,6 +6,8 @@ piuparts (0.62) UNRELEASED; urgency=medium
 
   [ Holger Levsen ]
   * piuparts.conf.pejacevic: add new suite: jessie2proposed.
+  * piuparts.conf.piu-slave-1und1-01: merge changes from pejacevic config but
+    replace amd64 with i386. 
 
  -- Andreas Beckmann <anbe@debian.org>  Wed, 03 Dec 2014 20:36:30 +0100
 
