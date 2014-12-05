@@ -85,6 +85,8 @@ sections =
 	sid-nodoc
 	testing2sid
 	jessie
+#	jessie-proposed
+	jessie2proposed
 	wheezy2jessie
 	wheezy2bpo2jessie
 #	wheezy-proposed
@@ -190,6 +192,27 @@ piuparts-flags =
 distro = jessie
 # 1 week (60*60*24*7)
 max-tgz-age = 604800
+
+
+[jessie-proposed]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+distro = jessie-proposed
+
+
+[jessie2proposed]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+distro = jessie
+upgrade-test-distros = jessie jessie-proposed
 
 
 [wheezy2jessie]

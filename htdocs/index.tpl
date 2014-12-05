@@ -73,6 +73,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2014-12-05</b> In preparation of the jessie release, another new suite was added: <em>jessie2proposed</em>, testing installation in jessie, then upgrade to jessie-proposed-upgrades, ending in purge as usual.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2014-05-30</b> Results from debsums on wheezy2jessie and wheezy2bpo2jessie are not being ignored anymore as <a href="https://bugs.debian.org/744398" target="_blank">#744398</a> has been fixed.
      </td>
     </tr>
