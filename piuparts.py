@@ -610,7 +610,7 @@ def split_path(pathname):
         pathname = head
     return parts
 
-def canonicalize_path(root, pathname):
+def canonicalize_path(root, pathname, report_links=False):
     """Canonicalize a path name, simulating chroot at 'root'.
 
     When resolving the symlink, pretend (similar to chroot) that
@@ -619,8 +619,12 @@ def canonicalize_path(root, pathname):
     'root', but for security concerns, use chroot and have the
     kernel resolve symlinks instead.
 
+    Returns the final canonical path or a list of (path, target) tuples,
+    one for each symlink encountered.
+
     """
     #print "\nCANONICALIZE %s %s" % (root, pathname)
+    links = []
     seen = []
     parts = split_path(pathname)
     #print "PARTS ", list(reversed(parts))
@@ -647,12 +651,15 @@ def canonicalize_path(root, pathname):
         elif os.path.islink(rootedpath):
             target = os.readlink(rootedpath)
             #print "LINK to '%s'" % target
+            links.append((newpath, target))
             if os.path.isabs(target):
                 path = "/"
             parts.extend(split_path(target))
         else:
             path = newpath
     #print "FINAL '%s'" % path
+    if report_links:
+        return links
     return path
 
 
@@ -1271,6 +1278,8 @@ class Chroot:
                 else:
                     ofc = "?"
                 bad.append("%s (%s) != %s (%s)" %(f, of, fc, ofc))
+                for (link, target) in canonicalize_path(self.name, dn, report_links=True):
+                    bad.append("  %s -> %s" % (link, target))
         if bad:
             if overwrites:
                 logging.error("FAIL: silently overwrites files via directory symlinks:\n" +

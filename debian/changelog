@@ -1,6 +1,9 @@
 piuparts (0.62) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
+  * piuparts.py:
+    - Increase verbosity when reporting things installed over directory
+      symlinks: report all symlinks and their targets.
   * distros.conf: Reactivate 'testing' and 'stable' aliases, switch them back
     to 'jessie' and 'wheezy' for ongoing development.
 
