@@ -542,7 +542,7 @@ class Section:
         except MasterCantRecycle:
             logging.error("master has nothing to recycle")
             self._recycle_wait_until = max(time.time(), self._idle_wait_until) + 3600
-        except (MasterDidNotGreet, MasterIsCrazy, MasterCommunicationFailed):
+        except (MasterDidNotGreet, MasterIsCrazy, MasterCommunicationFailed, MasterNotOK):
             logging.error("connection to master failed")
             self._error_wait_until = time.time() + 900
             self._slave.close()

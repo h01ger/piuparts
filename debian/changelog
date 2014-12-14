@@ -8,6 +8,7 @@ piuparts (0.62) UNRELEASED; urgency=medium
     to 'jessie' and 'wheezy' for ongoing development.
   * piuparts-slave.py:
     - Handle Ctrl-C while downloading Packages files and flush/unreserve, too.
+    - Catch another exception that may happen while talking to the master.
 
   [ Holger Levsen ]
   * piuparts.conf.pejacevic: add new suite: jessie2proposed.
