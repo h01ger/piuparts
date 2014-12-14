@@ -6,6 +6,8 @@ piuparts (0.62) UNRELEASED; urgency=medium
       symlinks: report all symlinks and their targets.
   * distros.conf: Reactivate 'testing' and 'stable' aliases, switch them back
     to 'jessie' and 'wheezy' for ongoing development.
+  * piuparts-slave.py:
+    - Handle Ctrl-C while downloading Packages files and flush/unreserve, too.
 
   [ Holger Levsen ]
   * piuparts.conf.pejacevic: add new suite: jessie2proposed.

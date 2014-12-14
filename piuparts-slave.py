@@ -591,6 +591,7 @@ class Section:
 
 
     def _process(self):
+        global interrupted
         self._slave.close()
 
         packagenames = set([x[0] for x in self._slave.get_reserved()])
@@ -610,6 +611,8 @@ class Section:
                     logging.error("failed to fetch packages file for %s" % distro)
                     self._error_wait_until = time.time() + 900
                     return 0
+                except KeyboardInterrupt:
+                    interrupted = True
         del packagenames
 
         test_count = 0
