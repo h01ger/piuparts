@@ -67,6 +67,7 @@ sections =
 	jessie-security/main
 	jessie-updates/main
 	jessie-pu/main
+	jessie-nodocs/main
 	jessie-backports/main
 	wheezy/main
 	wheezy-proposed/main
@@ -109,6 +110,7 @@ sections =
 	jessie-security/contrib
 	jessie-updates/contrib
 	jessie-pu/contrib
+	jessie-nodocs/contrib
 	jessie-backports/contrib
 	wheezy/contrib
 	wheezy-proposed/contrib
@@ -151,6 +153,7 @@ sections =
 	jessie-security/non-free
 	jessie-updates/non-free
 	jessie-pu/non-free
+	jessie-nodocs/non-free
 	jessie-backports/non-free
 	wheezy/non-free
 	wheezy-proposed/non-free
@@ -516,6 +519,43 @@ piuparts-flags =
 depends-sections = jessie/main jessie/contrib
 distro = jessie-proposed-updates
 arch = amd64
+area = non-free
+
+
+[jessie-nodocs/main]
+precedence = 30
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-no-usr-share-doc
+distro = jessie
+arch = i386
+area = main
+components = main
+
+[jessie-nodocs/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-no-usr-share-doc
+depends-sections = jessie-nodocs/main jessie-nodocs/non-free
+distro = jessie
+arch = i386
+area = contrib
+
+[jessie-nodocs/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-no-usr-share-doc
+depends-sections = jessie-nodocs/main jessie-nodocs/contrib
+distro = jessie
+arch = i386
 area = non-free
 
 
