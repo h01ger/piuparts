@@ -29,8 +29,6 @@ flags-end-stretch =
 flags-start-jessie =
 flags-end-jessie =
 	--scriptsdir /etc/piuparts/scripts-jessie
-flags-end-jessie-upgrade =
-	%(flags-end-jessie)s
 	--warn-on-debsums-errors
 
 flags-start-wheezy =
@@ -1475,7 +1473,7 @@ precedence = 80
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
-	%(flags-end-jessie-upgrade)s
+	%(flags-end-jessie)s
 arch = amd64
 area = main
 components = main
@@ -1487,7 +1485,7 @@ precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
-	%(flags-end-jessie-upgrade)s
+	%(flags-end-jessie)s
 depends-sections = wheezy2jessie/main wheezy2jessie/non-free
 arch = amd64
 area = contrib
@@ -1499,7 +1497,7 @@ precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
-	%(flags-end-jessie-upgrade)s
+	%(flags-end-jessie)s
 depends-sections = wheezy2jessie/main wheezy2jessie/contrib
 arch = amd64
 area = non-free
@@ -1512,7 +1510,7 @@ precedence = 80
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
-	%(flags-end-jessie-upgrade)s
+	%(flags-end-jessie)s
 depends-sections = wheezy/main
 distro = wheezy-backports
 arch = amd64
@@ -1525,7 +1523,7 @@ precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
-	%(flags-end-jessie-upgrade)s
+	%(flags-end-jessie)s
 depends-sections = wheezy/main wheezy/non-free wheezy2bpo2jessie/main wheezy2bpo2jessie/non-free
 distro = wheezy-backports
 arch = amd64
@@ -1537,7 +1535,7 @@ precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
-	%(flags-end-jessie-upgrade)s
+	%(flags-end-jessie)s
 depends-sections = wheezy/main wheezy2bpo2jessie/main wheezy2bpo2jessie/contrib
 distro = wheezy-backports
 arch = amd64

@@ -6,6 +6,8 @@ piuparts (0.62) UNRELEASED; urgency=medium
       symlinks: report all symlinks and their targets.
     - Reinstall base system packages missing upon removal with
       --no-install-recommends.
+  * piuparts.conf:
+    - Enable --warn-on-debsums-errors for all jessie tests.
   * distros.conf: Reactivate 'testing' and 'stable' aliases, switch them back
     to 'jessie' and 'wheezy' for ongoing development.
   * piuparts-slave.py:

@@ -37,10 +37,6 @@ flags-start-jessie =
 flags-end-jessie =
 # extra fake-essential packages for successfully purging in jessie
 	--scriptsdir /etc/piuparts/scripts-jessie
-
-# common flags for tests ending in jessie after a distupgrade
-flags-end-jessie-upgrade =
-	%(flags-end-jessie)s
 # debsums failures won't be fixed in jessie, mostly related to
 # obsolete/renamed conffiles that moved to different packages
 	--warn-on-debsums-errors
@@ -221,7 +217,7 @@ json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
-	%(flags-end-jessie-upgrade)s
+	%(flags-end-jessie)s
 distro = wheezy
 upgrade-test-distros = wheezy jessie
 
@@ -232,7 +228,7 @@ json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
-	%(flags-end-jessie-upgrade)s
+	%(flags-end-jessie)s
 depends-sections = wheezy
 arch = amd64
 area = main
