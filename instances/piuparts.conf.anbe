@@ -88,6 +88,7 @@ sections =
 	jessie2bpo2stretch/main
 	wheezy2proposed/main
 	wheezy2jessie/main
+	wheezy2jessie-rcmd/main
 	wheezy2bpo2jessie/main
 	wheezy222testing/main
 	squeeze2proposed/main
@@ -131,6 +132,7 @@ sections =
 	jessie2bpo2stretch/contrib
 	wheezy2proposed/contrib
 	wheezy2jessie/contrib
+	wheezy2jessie-rcmd/contrib
 	wheezy2bpo2jessie/contrib
 	wheezy222testing/contrib
 	squeeze2proposed/contrib
@@ -174,6 +176,7 @@ sections =
 	jessie2bpo2stretch/non-free
 	wheezy2proposed/non-free
 	wheezy2jessie/non-free
+	wheezy2jessie-rcmd/non-free
 	wheezy2bpo2jessie/non-free
 	wheezy222testing/main
 	squeeze2proposed/non-free
@@ -1499,6 +1502,46 @@ piuparts-flags =
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
 depends-sections = wheezy2jessie/main wheezy2jessie/contrib
+arch = amd64
+area = non-free
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+
+[wheezy2jessie-rcmd/main]
+precedence = 80
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+arch = amd64
+area = main
+components = main
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie-rcmd/contrib]
+precedence = 95
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+depends-sections = wheezy2jessie-rcmd/main wheezy2jessie-rcmd/non-free
+arch = amd64
+area = contrib
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie-rcmd/non-free]
+precedence = 95
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+depends-sections = wheezy2jessie-rcmd/main wheezy2jessie-rcmd/contrib
 arch = amd64
 area = non-free
 distro = wheezy
