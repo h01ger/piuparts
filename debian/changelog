@@ -4,6 +4,8 @@ piuparts (0.62) UNRELEASED; urgency=medium
   * piuparts.py:
     - Increase verbosity when reporting things installed over directory
       symlinks: report all symlinks and their targets.
+    - Reinstall base system packages missing upon removal with
+      --no-install-recommends.
   * distros.conf: Reactivate 'testing' and 'stable' aliases, switch them back
     to 'jessie' and 'wheezy' for ongoing development.
   * piuparts-slave.py:

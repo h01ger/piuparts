@@ -1289,9 +1289,9 @@ class Chroot:
                         indent_string("\n".join(bad)))
 
     def remove_packages(self, packages):
-        """Remove packages in a chroot."""
+        """Remove packages in a chroot. May reinstall packages at the same time if they are suffixed with '+'."""
         if packages:
-            self.run(["apt-get", "remove"] + unqualify(packages), ignore_errors=True)
+            self.run(["apt-get", "remove", "--no-install-recommends"] + unqualify(packages), ignore_errors=True)
 
     def purge_packages(self, packages):
         """Purge packages in a chroot."""
