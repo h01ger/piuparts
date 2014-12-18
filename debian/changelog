@@ -8,6 +8,7 @@ piuparts (0.62) UNRELEASED; urgency=medium
       --no-install-recommends.
   * piuparts.conf:
     - Enable --warn-on-debsums-errors for all jessie tests.
+    - Add new suite: jessie-pu.
   * distros.conf: Reactivate 'testing' and 'stable' aliases, switch them back
     to 'jessie' and 'wheezy' for ongoing development.
   * piuparts-slave.py:
