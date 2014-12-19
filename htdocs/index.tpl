@@ -73,6 +73,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2014-12-19</b> Two more new suites were added: <em>jessie-pu</em>, to <em>only</em> test packages in jessie-proposed-updates and <em>wheezy2jessie-rcmd</em>, to test package upgrades from wheezy to jessie with --install-recommends.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2014-12-05</b> In preparation of the jessie release, another new suite was added: <em>jessie2proposed</em>, testing installation in jessie, then upgrade to jessie-proposed-upgrades, ending in purge as usual. Web pages are now updated four times a day.
      </td>
     </tr>
