@@ -85,6 +85,7 @@ sections =
 #	jessie-proposed
 	jessie2proposed
 	wheezy2jessie
+	wheezy2jessie-rcmd
 	wheezy2bpo2jessie
 #	wheezy-proposed
 	wheezy2proposed
@@ -230,6 +231,19 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+
+[wheezy2jessie-rcmd]
+precedence = 10
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 distro = wheezy
 upgrade-test-distros = wheezy jessie
 
