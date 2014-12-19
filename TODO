@@ -42,6 +42,7 @@ for 0.6x:
 - piuparts.conf.pejacevic: maybe use mirror via nfs (faster)
 
 - also test packages from security.d.o
+  => is jessie-pu sufficient? this should quickly include these packages
 
 - maybe compress all logfiles
 
@@ -82,6 +83,25 @@ for 0.6x:
 - we should probably have an install test with --enable-recommends and
 without --warn-on-others to avoid adding artificial barriers where package
 subsets are configured
+  (wheezy2jessie-rcmd is *not* the solution for this)
+
+- mount /dev/pts:
+  E: Can not write log (Is /dev/pts mounted?) - posix_openpt (2: No such file or directory)
+
+- record file ownership by user/group name, not id
+  new dynamic system users added to the base system may have a lower id in the
+  reference system than after actually testing some packages
+  e.g. group of /usr/lib/dbus-1.0/dbus-daemon-launch-helper (wheezy2jessie-pu)
+
+- there was some issue (not) terminating a test run by the slave with ^C^C,
+  forgot the details
+
+- report actually ignored files/patterns ROT13 encoded to be able to spot and
+  reschedule such tests
+
+- p-r: in the section summary page, report the piuparts flags being used
+
+- p-s: report age of the basetgz being used
 
 
 for 0.7x and later:

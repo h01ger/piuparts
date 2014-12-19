@@ -525,6 +525,7 @@ area = non-free
 
 [jessie-nodocs/main]
 precedence = 30
+description = + Testing without files in /usr/share/doc.
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
@@ -537,6 +538,7 @@ components = main
 
 [jessie-nodocs/contrib]
 precedence = 45
+description = + Testing without files in /usr/share/doc.
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
@@ -549,6 +551,7 @@ area = contrib
 
 [jessie-nodocs/non-free]
 precedence = 45
+description = + Testing without files in /usr/share/doc.
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
@@ -1269,6 +1272,7 @@ upgrade-test-distros = squeeze wheezy
 
 [squeeze2wheezy-rcmd/main]
 precedence = 70
+description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
@@ -1284,6 +1288,7 @@ reschedule-old-count = 0
 
 [squeeze2wheezy-rcmd/contrib]
 precedence = 95
+description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
@@ -1298,6 +1303,7 @@ reschedule-old-count = 0
 
 [squeeze2wheezy-rcmd/non-free]
 precedence = 95
+description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
@@ -1510,11 +1516,13 @@ upgrade-test-distros = wheezy jessie
 
 [wheezy2jessie-rcmd/main]
 precedence = 80
+description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 arch = amd64
 area = main
 components = main
@@ -1523,11 +1531,13 @@ upgrade-test-distros = wheezy jessie
 
 [wheezy2jessie-rcmd/contrib]
 precedence = 95
+description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd/main wheezy2jessie-rcmd/non-free
 arch = amd64
 area = contrib
@@ -1536,11 +1546,13 @@ upgrade-test-distros = wheezy jessie
 
 [wheezy2jessie-rcmd/non-free]
 precedence = 95
+description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd/main wheezy2jessie-rcmd/contrib
 arch = amd64
 area = non-free
