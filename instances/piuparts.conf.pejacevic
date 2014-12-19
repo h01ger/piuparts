@@ -88,8 +88,8 @@ sections =
 	wheezy2bpo2jessie
 #	wheezy-proposed
 	wheezy2proposed
-	squeeze2wheezy-proposed
 	wheezy
+	squeeze2wheezy-proposed
 	squeeze2wheezy
 	squeeze2bpo-sloppy
 	squeeze2bpo2wheezy
@@ -115,6 +115,8 @@ backup-directory = /srv/piuparts.debian.org/backup
 tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /
 components = main
+arch = amd64
+area = main
 # the slave-count setting is for the slave(s)
 slave-count = 4
 # 30*60
@@ -175,8 +177,6 @@ piuparts-flags =
 	%(flags-default)s
 depends-sections = sid
 distro = experimental
-arch = amd64
-area = main
 upgrade-test-distros = sid experimental
 
 
@@ -242,8 +242,6 @@ piuparts-flags =
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
 depends-sections = wheezy
-arch = amd64
-area = main
 distro = wheezy-backports
 upgrade-test-distros = wheezy wheezy-backports jessie
 
@@ -311,8 +309,6 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
 depends-sections = squeeze
-arch = amd64
-area = main
 distro = squeeze-backports
 upgrade-test-distros = squeeze squeeze-backports wheezy
 
@@ -325,8 +321,6 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
 depends-sections = squeeze squeeze2bpo2wheezy
-arch = amd64
-area = main
 upgrade-test-distros = squeeze squeeze-backports-sloppy
 
 
@@ -349,8 +343,6 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
 depends-sections = squeeze
-arch = amd64
-area = main
 distro = squeeze-lts
 upgrade-test-distros = squeeze squeeze-lts
 
