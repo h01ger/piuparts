@@ -73,12 +73,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2014-12-19</b> Two more new suites were added: <em>jessie-pu</em>, to <em>only</em> test packages in jessie-proposed-updates and <em>wheezy2jessie-rcmd</em>, to test package upgrades from wheezy to jessie with --install-recommends.
+      <b>2014-12-19</b> Two more new suites were added: <a href="https://piuparts.debian.org/jessie-pu">jessie-pu</a>, to <em>only</em> test packages in jessie-proposed-updates and <a href="https://piuparts.debian.org/wheezy2jessie-rcmd">wheezy2jessie-rcmd</a>, to test package upgrades from wheezy to jessie with --install-recommends.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2014-12-05</b> In preparation of the jessie release, another new suite was added: <em>jessie2proposed</em>, testing installation in jessie, then upgrade to jessie-proposed-upgrades, ending in purge as usual. Web pages are now updated four times a day.
+      <b>2014-12-05</b> In preparation of the jessie release, another new suite was added: <a href="https://piuparts.debian.org/jessie2proposed">jessie2proposed</a>, testing installation in jessie, then upgrade to jessie-proposed-upgrades, ending in purge as usual. Web pages are now updated four times a day.
      </td>
     </tr>
     <tr class="normalrow">
@@ -88,7 +88,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2014-05-22</b> Add squeeze-lts to the distros being testing (by testing squeeze2squeeze-lts upgrades).
+      <b>2014-05-22</b> Add squeeze-lts to the distros being testing (by testing <a href="https://piuparts.debian.org/squeeze2squeeze-lts">squeeze2squeeze-lts</a> upgrades).
      </td>
     </tr>
     <tr class="normalrow">
@@ -113,22 +113,22 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-06-05</b> In preparation of the first wheezy point release, another new suite was added: <em>squeeze2wheezy-proposed</em>, testing installation in squeeze, then upgrade to wheezy-proposed-upgrades, ending in purge as usual.
+      <b>2013-06-05</b> In preparation of the first wheezy point release, another new suite was added: <a href="https://piuparts.debian.org/squeeze2wheezy-proposed">squeeze2wheezy-proposed</a>, testing installation in squeeze, then upgrade to wheezy-proposed-upgrades, ending in purge as usual.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-05-30</b> Another new suite added: <em>wheezy2proposed</em>, testing installation in wheezy, then upgrade to wheezy-proposed-upgrades, ending in purge as usual.
+      <b>2013-05-30</b> Another new suite added: <a href="https://piuparts.debian.org/wheezy2proposed">wheezy2proposed</a>, testing installation in wheezy, then upgrade to wheezy-proposed-upgrades, ending in purge as usual.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-05-29</b> Another new suite added: <em>squeeze2bpo-sloppy</em>, testing the upgrade from squeeze to squeeze-backports-sloppy, ending in purge as usual.
+      <b>2013-05-29</b> Another new suite added: <a href="https://piuparts.debian.org/squeeze2bpo-sloppy">squeeze2bpo-sloppy</a>, testing the upgrade from squeeze to squeeze-backports-sloppy, ending in purge as usual.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-05-22</b> The webpages served by <a href="https://piuparts.debian.org">https://piuparts.debian.org</a> are updated twice a day now. Further changes which were applied last week: debsums failures have been reenabled, adequate is now run by piuparts (see <a href="https://bugs.debian.org/703902" target="_blank">#703902</a>) and two new suites were added: <em>experimental</em> and <em>sid-nodoc</em>, which tests sid without files in /usr/share/doc/&lt;package&gt;.
+      <b>2013-05-22</b> The webpages served by <a href="https://piuparts.debian.org">https://piuparts.debian.org</a> are updated twice a day now. Further changes which were applied last week: debsums failures have been reenabled, adequate is now run by piuparts (see <a href="https://bugs.debian.org/703902" target="_blank">#703902</a>) and two new suites were added: <a href="https://piuparts.debian.org/experimental">experimental</a> and <a href="https://piuparts.debian.org/sid-nodoc">sid-nodoc</a>, which tests sid without files in /usr/share/doc/&lt;package&gt;.
      </td>
     </tr>
     <tr class="normalrow">
@@ -144,7 +144,7 @@
     <tr class="normalrow">
      <td class="contentcell2">
       <b>2013-03-15</b> Among many other new features the 0.50 release offers much greater flexibility for configuring and selecting (partial) suites and different mirrors.
-	Therefore it is possible to test nearly arbitrary upgrade pathes. On piuparts.debian.org this is now used for testing <a href="https://piuparts.debian.org/squeeze2bpo2wheezy">squeeze2bpo2wheezy</a> and <a href="https://piuparts.debian.org/sid2/experimental">sid2experimental</a>. Thanks to Andreas Beckmann for this great new feature!
+	Therefore it is possible to test nearly arbitrary upgrade pathes. On piuparts.debian.org this is now used for testing <a href="https://piuparts.debian.org/squeeze2bpo2wheezy">squeeze2bpo2wheezy</a> and <a href="https://piuparts.debian.org/sid2experimental">sid2experimental</a>. Thanks to Andreas Beckmann for this great new feature!
      </td>
     </tr>
     <tr class="normalrow">
@@ -176,7 +176,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2012-01-30</b>: Add new suite to be tested, testing2sid, to catch upgrade problems before they reach testing.
+      <b>2012-01-30</b>: Add new suite to be tested, <a href="https://piuparts.debian.org/testing2sid">testing2sid</a>, to catch upgrade problems before they reach testing.
      </td>
     </tr>
     <tr class="normalrow">
@@ -236,7 +236,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2011-02-07</b>: Add <b>wheezy</b>! Whoohoo!<br>For now, the Wheezy distribution has just been added with the same testing options as Squeeze. In future, squeeze and lenny2squeeze will not be tested anymore, and squeeze2wheezy will also be added...
+      <b>2011-02-07</b>: Add <a href="https://piuparts.debian.org/wheezy">wheezy</a>! Whoohoo!<br>For now, the Wheezy distribution has just been added with the same testing options as Squeeze. In future, squeeze and lenny2squeeze will not be tested anymore, and squeeze2wheezy will also be added...
      </td>
     </tr>
     <tr class="normalrow">
