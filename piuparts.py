@@ -93,7 +93,7 @@ class DebianDefaults(Defaults):
         return ["main", "contrib", "non-free"]
 
     def get_mirror(self):
-        return [("http://cdn.debian.net/debian", self.get_components())]
+        return [("http://http.debian.net/debian", self.get_components())]
 
     def get_distribution(self):
         return [distro_info.DebianDistroInfo().devel()]

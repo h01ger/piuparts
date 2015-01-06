@@ -27,7 +27,7 @@ class DefaultsFactoryTests(unittest.TestCase):
 
         self.assertEqual(defaults.get_keyring(), '/usr/share/keyrings/debian-archive-keyring.gpg')
         self.assertEqual(defaults.get_components(), ["main", "contrib", "non-free"])
-        self.assertEqual(defaults.get_mirror(), [("http://cdn.debian.net/debian", ["main", "contrib", "non-free"])])
+        self.assertEqual(defaults.get_mirror(), [("http://http.debian.net/debian", ["main", "contrib", "non-free"])])
         self.assertEqual(defaults.get_distribution(), ['sid'])
 
     def test_new_defaults_return_ubuntu_defaults(self):

@@ -8,7 +8,7 @@
 
 [global]
 sections = sid
-mirror = http://cdn.debian.net/debian
+mirror = http://http.debian.net/debian
 master-host = localhost
 master-user = piupartsm
 piuparts-command = sudo piuparts --scriptsdir /etc/piuparts/scripts

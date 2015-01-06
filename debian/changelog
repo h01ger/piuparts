@@ -24,6 +24,13 @@ piuparts (0.63) UNRELEASED; urgency=medium
 
  -- Andreas Beckmann <anbe@debian.org>  Wed, 03 Dec 2014 20:36:30 +0100
 
+piuparts (0.62) unstable; urgency=medium
+
+  * Default to http://http.debian.net/debian instead of the deprecated
+    http://cdn.debian.net service as default mirror. (Closes: #774471)
+
+ -- Holger Levsen <holger@debian.org>  Tue, 06 Jan 2015 10:36:39 +0100
+
 piuparts (0.61) unstable; urgency=medium
 
   [ Michael Prokop ]
