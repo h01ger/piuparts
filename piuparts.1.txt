@@ -146,7 +146,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   Display messages from loglevel LEVEL, possible values are: error, info, dump, debug. The default is dump.
 
 *-m* 'url', *--mirror*='url'::
-  Which Debian mirror to use. The default is the first mirror named in _/etc/apt/sources.list_ or _http://cdn.debian.net/debian_ if none is found. This option may be used multiple times to use multiple mirrors. Only the first mirror is used with *debootstrap*.
+  Which Debian mirror to use. The default is the first mirror named in _/etc/apt/sources.list_ or _http://http.debian.net/debian_ if none is found. This option may be used multiple times to use multiple mirrors. Only the first mirror is used with *debootstrap*.
 +
 The 'components' that are used for a mirror can also be set with this option: a space separated list within the same argument (so you need to quote the entire argument in the shell). If no components are given explicitly, the usual Debian components are used (main, contrib, and non-free). For the mirrors read from _/etc/apt/sources.list_, the components are read from the same place.
 +
