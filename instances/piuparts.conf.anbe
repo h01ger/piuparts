@@ -153,6 +153,7 @@ sections =
 	squeeze-backports/main
 	squeeze-backports-sloppy/main
 	squeeze2proposed/main
+	squeeze2lts2wheezy/main
 	squeeze2wheezy/main
 	squeeze2wheezy-rcmd/main
 	squeeze2wheezy-pu/main
@@ -171,6 +172,7 @@ sections =
 	squeeze-backports/contrib
 	squeeze-backports-sloppy/contrib
 	squeeze2proposed/contrib
+	squeeze2lts2wheezy/contrib
 	squeeze2wheezy/contrib
 	squeeze2wheezy-rcmd/contrib
 	squeeze2wheezy-pu/contrib
@@ -189,6 +191,7 @@ sections =
 	squeeze-backports/non-free
 	squeeze-backports-sloppy/non-free
 	squeeze2proposed/non-free
+	squeeze2lts2wheezy/non-free
 	squeeze2wheezy/non-free
 	squeeze2wheezy-rcmd/non-free
 	squeeze2wheezy-pu/non-free
@@ -1315,6 +1318,47 @@ area = non-free
 distro = squeeze
 upgrade-test-distros = squeeze squeeze-proposed
 reschedule-old-count = 0
+
+
+[squeeze2lts2wheezy/main]
+precedence = 60
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = squeeze/main
+distro = squeeze-lts
+arch = i386
+area = main
+components = main
+upgrade-test-distros = squeeze squeeze-lts wheezy
+
+[squeeze2lts2wheezy/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = squeeze/main squeeze2lts2wheezy/main squeeze2lts2wheezy/non-free
+distro = squeeze-lts
+arch = i386
+area = contrib
+upgrade-test-distros = squeeze squeeze-lts wheezy
+
+[squeeze2lts2wheezy/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = squeeze/main squeeze2lts2wheezy/main squeeze2lts2wheezy/contrib
+distro = squeeze-lts
+arch = i386
+area = non-free
+upgrade-test-distros = squeeze squeeze-lts wheezy
 
 
 [squeeze2wheezy/main]
