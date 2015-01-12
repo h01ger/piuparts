@@ -29,6 +29,7 @@ esac
 case ${PIUPARTS_OBJECTS%%=*} in
 	*wine*)  go=yes ;;
 	education-thin-client-server|education-workstation)  go=yes ;;
+	playonlinux)  go=yes ;;
 esac
 
 test -n "$go" || exit 0
