@@ -149,6 +149,7 @@ sections =
 	squeeze-security/main
 	squeeze-updates/main
 	squeeze-pu/main
+	squeeze-lts/main
 	squeeze-backports/main
 	squeeze-backports-sloppy/main
 	squeeze2proposed/main
@@ -166,6 +167,7 @@ sections =
 #	squeeze-security/contrib
 #	squeeze-updates/contrib
 	squeeze-pu/contrib
+	squeeze-lts/contrib
 	squeeze-backports/contrib
 	squeeze-backports-sloppy/contrib
 	squeeze2proposed/contrib
@@ -183,6 +185,7 @@ sections =
 #	squeeze-security/non-free
 #	squeeze-updates/non-free
 	squeeze-pu/non-free
+	squeeze-lts/non-free
 	squeeze-backports/non-free
 	squeeze-backports-sloppy/non-free
 	squeeze2proposed/non-free
@@ -1004,6 +1007,41 @@ distro = squeeze-proposed-updates
 arch = amd64
 area = non-free
 reschedule-old-count = 0
+
+
+[squeeze-lts/main]
+precedence = 20
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze/main
+distro = squeeze-lts
+arch = amd64
+area = main
+components = main
+
+[squeeze-lts/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze/main squeeze/non-free
+distro = squeeze-lts
+arch = amd64
+area = contrib
+
+[squeeze-lts/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze/main squeeze/contrib
+distro = squeeze-lts
+arch = amd64
+area = non-free
 
 
 [squeeze-proposed/main]
