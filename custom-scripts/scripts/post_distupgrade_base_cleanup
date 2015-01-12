@@ -1,0 +1,57 @@
+#!/bin/sh
+set -e
+
+#
+# Remove obsolete base packages from the reference chroot.
+#
+# These packages are part of a minimal chroot in release R, but no
+# longer exist in release R+1.
+# Package dependencies will cause removal of the obsolete packages
+# during a subset of upgrade paths. Since these packages cannot be
+# reinstalled in release R+1 ensure they are always gone from the
+# final reference chroot.
+#
+
+# Only while creating the reference chroot.
+test "$PIUPARTS_PHASE" = "" || exit 0
+
+PURGE=
+
+mark_for_purge()
+{
+	pkg="$1"
+
+	# skip if the package is not installed
+	dpkg-query -s "$pkg" >/dev/null 2>&1 || return 0
+	status="$(dpkg-query -W -f '${Status}' $pkg)"
+	test "$status" != "unknown ok not-installed" || return 0
+	test "$status" != "deinstall ok config-files" || return 0
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		$pkg)
+			# keep it while testing it
+			;;
+		*)
+			PURGE="$PURGE $pkg"
+	esac
+}
+
+
+if	[ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-proposed" ] ; then
+
+	mark_for_purge libdb4.8
+
+fi
+
+if	[ "$PIUPARTS_DISTRIBUTION" = "jessie" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "jessie-proposed" ] ; then
+
+	mark_for_purge libdb5.1
+
+fi
+
+if [ -n "$PURGE" ]; then
+	echo "Removing packages from base system:$PURGE"
+	apt-get -y remove --purge $PURGE
+fi

@@ -16,6 +16,8 @@ piuparts (0.63) UNRELEASED; urgency=medium
     - Handle Ctrl-C while downloading Packages files and flush/unreserve, too.
     - Catch another exception that may happen while talking to the master.
   * scripts-no-usr-share-doc: Add exception for localepurge.
+  * post_distupgrade_base_cleanup: New custom script for generalized libdbX.Y
+    exceptions.
 
   [ Holger Levsen ]
   * piuparts.conf.pejacevic: add new suite: jessie2proposed.

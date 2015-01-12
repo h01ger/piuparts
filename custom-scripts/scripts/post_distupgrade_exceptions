@@ -5,36 +5,3 @@ log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
 }
 
-if	[ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-proposed" ] ; then
-
-	# libdb4.8/squeeze is part of the minimal squeeze chroot and
-	# remains installed after distupgrade even if it no longer
-	# exists in wheezy
-	# db4.8-util/wheezy Conflicts/Replaces libdb4.8, so ensure it
-	# gets removed from the reference chroot, too
-	case ${PIUPARTS_OBJECTS%%=*} in
-		db4.8-util|cyrus-*-2.2|libcyrus-imap-perl22|sa-learn-cyrus)
-			log_debug
-			dpkg --purge libdb4.8
-			;;
-	esac
-
-fi
-
-if	[ "$PIUPARTS_DISTRIBUTION" = "jessie" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "jessie-proposed" ] ; then
-
-	# libdb5.1/wheezy is part of the minimal wheezy chroot and
-	# remains installed after distupgrade even if it no longer
-	# exists in jessie
-	# db5.1-util/jessie Conflicts/Replaces libdb5.1, so ensure it
-	# gets removed from the reference chroot, too
-	case ${PIUPARTS_OBJECTS%%=*} in
-		db5.1-util)
-			log_debug
-			dpkg --purge libdb5.1
-			;;
-	esac
-
-fi
