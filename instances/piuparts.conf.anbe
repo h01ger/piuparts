@@ -73,13 +73,6 @@ sections =
 	wheezy-updates/main
 	wheezy-pu/main
 	wheezy-backports/main
-	squeeze/main
-	squeeze-proposed/main
-	squeeze-security/main
-	squeeze-updates/main
-	squeeze-pu/main
-	squeeze-backports/main
-	squeeze-backports-sloppy/main
 	sid2experimental/main
 	testing2sid/main
 	stable2sid/main
@@ -91,15 +84,6 @@ sections =
 	wheezy2jessie-rcmd/main
 	wheezy2bpo2jessie/main
 	wheezy222testing/main
-	squeeze2proposed/main
-	squeeze2wheezy/main
-	squeeze2wheezy-rcmd/main
-	squeeze2wheezy-pu/main
-	squeeze2bpo2wheezy/main
-	squeeze222testing/main
-	lenny/main
-	lenny2squeeze/main
-	lenny222testing/main
 #
 	experimental/contrib
 	sid/contrib
@@ -117,13 +101,6 @@ sections =
 #	wheezy-updates/contrib
 	wheezy-pu/contrib
 	wheezy-backports/contrib
-	squeeze/contrib
-	squeeze-proposed/contrib
-#	squeeze-security/contrib
-#	squeeze-updates/contrib
-	squeeze-pu/contrib
-	squeeze-backports/contrib
-	squeeze-backports-sloppy/contrib
 	sid2experimental/contrib
 	testing2sid/contrib
 	stable2sid/contrib
@@ -135,15 +112,6 @@ sections =
 	wheezy2jessie-rcmd/contrib
 	wheezy2bpo2jessie/contrib
 	wheezy222testing/contrib
-	squeeze2proposed/contrib
-	squeeze2wheezy/contrib
-	squeeze2wheezy-rcmd/contrib
-	squeeze2wheezy-pu/contrib
-	squeeze2bpo2wheezy/contrib
-	squeeze222testing/contrib
-	lenny/contrib
-	lenny2squeeze/contrib
-	lenny222testing/contrib
 #
 	experimental/non-free
 	sid/non-free
@@ -161,13 +129,6 @@ sections =
 #	wheezy-updates/non-free
 	wheezy-pu/non-free
 	wheezy-backports/non-free
-	squeeze/non-free
-	squeeze-proposed/non-free
-#	squeeze-security/non-free
-#	squeeze-updates/non-free
-	squeeze-pu/non-free
-	squeeze-backports/non-free
-	squeeze-backports-sloppy/non-free
 	sid2experimental/non-free
 	testing2sid/non-free
 	stable2sid/non-free
@@ -179,6 +140,48 @@ sections =
 	wheezy2jessie-rcmd/non-free
 	wheezy2bpo2jessie/non-free
 	wheezy222testing/main
+#
+	squeeze/main
+	squeeze-proposed/main
+	squeeze-security/main
+	squeeze-updates/main
+	squeeze-pu/main
+	squeeze-backports/main
+	squeeze-backports-sloppy/main
+	squeeze2proposed/main
+	squeeze2wheezy/main
+	squeeze2wheezy-rcmd/main
+	squeeze2wheezy-pu/main
+	squeeze2bpo2wheezy/main
+	squeeze222testing/main
+	lenny/main
+	lenny2squeeze/main
+	lenny222testing/main
+#
+	squeeze/contrib
+	squeeze-proposed/contrib
+#	squeeze-security/contrib
+#	squeeze-updates/contrib
+	squeeze-pu/contrib
+	squeeze-backports/contrib
+	squeeze-backports-sloppy/contrib
+	squeeze2proposed/contrib
+	squeeze2wheezy/contrib
+	squeeze2wheezy-rcmd/contrib
+	squeeze2wheezy-pu/contrib
+	squeeze2bpo2wheezy/contrib
+	squeeze222testing/contrib
+	lenny/contrib
+	lenny2squeeze/contrib
+	lenny222testing/contrib
+#
+	squeeze/non-free
+	squeeze-proposed/non-free
+#	squeeze-security/non-free
+#	squeeze-updates/non-free
+	squeeze-pu/non-free
+	squeeze-backports/non-free
+	squeeze-backports-sloppy/non-free
 	squeeze2proposed/non-free
 	squeeze2wheezy/non-free
 	squeeze2wheezy-rcmd/non-free
