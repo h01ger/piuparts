@@ -15,6 +15,7 @@ piuparts (0.63) UNRELEASED; urgency=medium
   * piuparts-slave.py:
     - Handle Ctrl-C while downloading Packages files and flush/unreserve, too.
     - Catch another exception that may happen while talking to the master.
+  * scripts-no-usr-share-doc: Add exception for localepurge.
 
   [ Holger Levsen ]
   * piuparts.conf.pejacevic: add new suite: jessie2proposed.

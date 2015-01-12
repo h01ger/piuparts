@@ -1,6 +1,10 @@
 #!/bin/sh
 set -e
 
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
 case ${PIUPARTS_OBJECTS%%=*} in
 	dpkg)
 		# skip while creating the tarball
@@ -28,3 +32,18 @@ if [ -n "$CANDIDATES" ]; then
 		apt-get -u --reinstall install $package
 	done
 fi
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	localepurge)
+		case ${PIUPARTS_DISTRIBUTION} in
+			lenny*|squeeze*) ;;
+			*)
+				# reinstall packages that will be reinstalled after purge
+				# to not record their /usr/share/doc content that is about to disappear
+				log_debug
+				EXTRA="base-passwd"
+				apt-get -u --reinstall --fix-missing install $(dpkg -S LC_MESSAGES | cut -d: -f1 | tr ', ' '\n' | sort -u) $EXTRA
+				;;
+		esac
+		;;
+esac
