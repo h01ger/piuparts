@@ -18,6 +18,7 @@ piuparts (0.63) UNRELEASED; urgency=medium
   * scripts-no-usr-share-doc: Add exception for localepurge.
   * post_distupgrade_base_cleanup: New custom script for generalized libdbX.Y
     exceptions.
+  * Update exceptions for squeeze-lts.
 
   [ Holger Levsen ]
   * piuparts.conf.pejacevic: add new suite: jessie2proposed.
