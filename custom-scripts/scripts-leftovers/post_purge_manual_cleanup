@@ -26,4 +26,8 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		log_debug
 		remove_ssl_cert ipop3d.pem
 		;;
+	smartlist)
+		log_debug
+		rm -fv /etc/aliases.????-??-??.??:??:??
+		;;
 esac
