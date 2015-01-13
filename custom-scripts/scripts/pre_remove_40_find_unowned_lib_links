@@ -10,6 +10,16 @@ do
 		test -L "$f" || continue
 		rl=$(readlink "$f")
 		test -n "${rl##/etc/alternatives/*}" || continue
-		dpkg-query -S "$f" >/dev/null 2>&1 || echo "UNOWNED SYMLINK $f -> $rl"
+		if ! dpkg-query -S "$f" >/dev/null 2>&1
+		then
+			case "$f" in
+				/lib/ld-lsb.so.?)
+					# created by lsb-core
+					;;
+				*)
+					echo "UNOWNED SYMLINK $f -> $rl"
+					;;
+			esac
+		fi
 	done
 done
