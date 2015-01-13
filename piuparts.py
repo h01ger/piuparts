@@ -330,6 +330,11 @@ class Settings:
             "/etc/ssl/certs/",
             "/etc/ssl/private/",
             "/etc/xml/",
+            "/usr/share/dh-python/"
+            "/usr/share/dh-python/dhpython/"
+            "/usr/share/dh-python/dhpython/build/"
+            "/usr/share/python3/",
+            "/usr/share/python3/debpython/",
             # HACKS
             ]
         self.ignored_patterns = [
