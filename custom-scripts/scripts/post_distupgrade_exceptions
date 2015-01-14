@@ -21,3 +21,13 @@ if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
 	esac
 
 fi
+
+if [ "$PIUPARTS_DISTRIBUTION" = "jessie" ]; then
+
+	# base-files only upgrades pristine /etc/nsswitch.conf
+	if grep -q ^gshadow: /etc/nsswitch.conf ; then
+		echo "Removing gshadow line from /etc/nsswitch.conf"
+		sed -i /^gshadow:/d /etc/nsswitch.conf
+	fi
+
+fi
