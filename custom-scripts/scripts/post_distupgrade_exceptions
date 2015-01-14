@@ -8,6 +8,10 @@ log_debug() {
 if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
+		tshark|\
+		wireshark|\
+		wireshark-common|\
+		wireshark-dbg|\
 		libcap2-bin)
 			# libcap2-bin/wheezy is part of the minimal chroot and recommends libpam-cap
 			# a conffile moved from libcap2-bin/squeeze to libpam-cap/wheezy
