@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+case "$PIUPARTS_DISTRIBUTION" in
+	squeeze) : ;;
+	*) exit 0 ;;
+esac
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	libblkid-dev)
+		#775350 - unhandled symlink to directory conversion
+		if [ ! -f /usr/share/doc/libblkid1/copyright ]; then
+			log_debug
+			apt-get install --reinstall libblkid1
+		fi
+		;;
+esac
