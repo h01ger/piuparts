@@ -15,6 +15,13 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
 				;;
 	esac
 
+	# squeeze does not properly upgrade adduser.conf, so generate a new one
+	if [ -f /etc/adduser.conf ]; then
+		if [ "$(md5sum /etc/adduser.conf | awk '{ print $1 }')" = "5b577c9cb18e4852fc7e45830d230ec1" ];
+		then
+			rm -fv /etc/adduser.conf
+		fi
+	fi
 fi
 
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
