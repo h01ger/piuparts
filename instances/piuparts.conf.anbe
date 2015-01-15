@@ -242,7 +242,7 @@ max-reserved = 50
 reschedule-untestable-days = 3
 expire-old-days = 180
 reschedule-old-days = 120
-reschedule-old-count = 600
+reschedule-old-count = 250
 expire-fail-days = 8
 reschedule-fail-days = 5
 reschedule-fail-count = 100
@@ -562,7 +562,7 @@ distro = jessie
 arch = amd64
 area = main
 components = main
-reschedule-old-days = 60
+reschedule-old-days = 30
 expire-old-days = 90
 
 [jessie/contrib]
@@ -575,7 +575,7 @@ depends-sections = jessie/main jessie/non-free
 distro = jessie
 arch = amd64
 area = contrib
-reschedule-old-days = 60
+reschedule-old-days = 30
 expire-old-days = 90
 
 [jessie/non-free]
@@ -588,7 +588,7 @@ depends-sections = jessie/main jessie/contrib
 distro = jessie
 arch = amd64
 area = non-free
-reschedule-old-days = 60
+reschedule-old-days = 30
 expire-old-days = 90
 
 
@@ -782,6 +782,7 @@ distro = wheezy
 arch = amd64
 area = main
 components = main
+reschedule-old-count = 100
 
 [wheezy/contrib]
 precedence = 45
@@ -921,6 +922,7 @@ distro = wheezy-proposed
 arch = amd64
 area = main
 components = main
+reschedule-old-count = 100
 
 [wheezy-proposed/contrib]
 precedence = 45
@@ -1533,6 +1535,7 @@ area = main
 components = main
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
+reschedule-old-count = 100
 
 [squeeze2wheezy/contrib]
 precedence = 95
@@ -2046,6 +2049,7 @@ area = main
 components = main
 distro = stable
 upgrade-test-distros = stable testing sid
+reschedule-old-count = 0
 
 [stable2testing2sid/contrib]
 precedence = 95
@@ -2057,6 +2061,7 @@ arch = amd64
 area = contrib
 distro = stable
 upgrade-test-distros = stable testing sid
+reschedule-old-count = 0
 
 [stable2testing2sid/non-free]
 precedence = 95
@@ -2068,6 +2073,7 @@ arch = amd64
 area = non-free
 distro = stable
 upgrade-test-distros = stable testing sid
+reschedule-old-count = 0
 
 
 [testing2sid/main]
