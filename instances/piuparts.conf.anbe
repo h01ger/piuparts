@@ -81,11 +81,11 @@ sections =
 	jessie-nodocs/main
 	jessie-backports/main
 	wheezy/main
+	wheezy-rcmd/main
 	wheezy-proposed/main
 	wheezy-security/main
 	wheezy-updates/main
 	wheezy-pu/main
-	wheezy-rcmd/main
 	wheezy-backports/main
 	sid2experimental/main
 	testing2sid/main
@@ -110,11 +110,11 @@ sections =
 	jessie-nodocs/contrib
 	jessie-backports/contrib
 	wheezy/contrib
+	wheezy-rcmd/contrib
 	wheezy-proposed/contrib
 #	wheezy-security/contrib
 #	wheezy-updates/contrib
 	wheezy-pu/contrib
-	wheezy-rcmd/contrib
 	wheezy-backports/contrib
 	sid2experimental/contrib
 	testing2sid/contrib
@@ -139,11 +139,11 @@ sections =
 	jessie-nodocs/non-free
 	jessie-backports/non-free
 	wheezy/non-free
+	wheezy-rcmd/non-free
 	wheezy-proposed/non-free
 #	wheezy-security/non-free
 #	wheezy-updates/non-free
 	wheezy-pu/non-free
-	wheezy-rcmd/non-free
 	wheezy-backports/non-free
 	sid2experimental/non-free
 	testing2sid/non-free
@@ -807,6 +807,47 @@ arch = amd64
 area = non-free
 
 
+[wheezy-rcmd/main]
+precedence = 400
+description = + With recommended packages.
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+	--install-recommends
+distro = wheezy
+arch = i386
+area = main
+components = main
+reschedule-old-count = 100
+
+[wheezy-rcmd/contrib]
+precedence = 45
+description = + With recommended packages.
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+	--install-recommends
+depends-sections = wheezy-rcmd/main wheezy-rcmd/non-free
+distro = wheezy
+arch = i386
+area = contrib
+
+[wheezy-rcmd/non-free]
+precedence = 45
+description = + With recommended packages.
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+	--install-recommends
+depends-sections = wheezy-rcmd/main wheezy-rcmd/contrib
+distro = wheezy
+arch = i386
+area = non-free
+
+
 [wheezy-security/main]
 precedence = 20
 piuparts-flags =
@@ -944,47 +985,6 @@ piuparts-flags =
 depends-sections = wheezy-proposed/main wheezy-proposed/contrib
 distro = wheezy-proposed
 arch = amd64
-area = non-free
-
-
-[wheezy-rcmd/main]
-precedence = 40
-description = + With recommended packages.
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-wheezy)s
-	%(flags-end-wheezy)s
-	--install-recommends
-distro = wheezy
-arch = i386
-area = main
-components = main
-reschedule-old-count = 100
-
-[wheezy-rcmd/contrib]
-precedence = 45
-description = + With recommended packages.
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-wheezy)s
-	%(flags-end-wheezy)s
-	--install-recommends
-depends-sections = wheezy-rcmd/main wheezy-rcmd/non-free
-distro = wheezy
-arch = i386
-area = contrib
-
-[wheezy-rcmd/non-free]
-precedence = 45
-description = + With recommended packages.
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-wheezy)s
-	%(flags-end-wheezy)s
-	--install-recommends
-depends-sections = wheezy-rcmd/main wheezy-rcmd/contrib
-distro = wheezy
-arch = i386
 area = non-free
 
 
