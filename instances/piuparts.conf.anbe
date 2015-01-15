@@ -56,6 +56,19 @@ flags-end-lenny =
 [global]
 # sections may be wrapped with continuation lines being indented
 # and may contain non-indented comments between continuation lines
+basetgz-sections =
+	tarball/sid/amd64
+	tarball/sid/i386
+	tarball/stretch/amd64
+	tarball/stretch/i386
+	tarball/jessie/amd64
+	tarball/jessie/i386
+	tarball/wheezy/amd64
+	tarball/wheezy/i386
+	tarball/squeeze/amd64
+	tarball/squeeze/i386
+	tarball/lenny/amd64
+	tarball/lenny/i386
 sections =
 	experimental/main
 	sid/main
@@ -224,7 +237,7 @@ backup-directory = /srv/piuparts/backup
 tmpdir = /tmp/piupartss
 slave-load-max = 9.5
 idle-sleep = 1800
-max-tgz-age = 0
+max-tgz-age = -1
 max-reserved = 50
 reschedule-untestable-days = 3
 expire-old-days = 180
@@ -233,6 +246,161 @@ reschedule-old-count = 600
 expire-fail-days = 8
 reschedule-fail-days = 5
 reschedule-fail-count = 100
+
+
+############################################################################
+###  Tarball creation.                                                   ###
+############################################################################
+
+
+[tarball/sid/amd64]
+piuparts-flags =
+	%(flags-default)s
+distro = None
+upgrade-test-distros = sid
+arch = amd64
+area = main
+components = main
+# 60*60*24*2
+max-tgz-age = 172800
+
+
+[tarball/sid/i386]
+piuparts-flags =
+	%(flags-default)s
+distro = None
+upgrade-test-distros = sid
+arch = i386
+area = main
+components = main
+# 60*60*24*2
+max-tgz-age = 172800
+
+
+[tarball/stretch/amd64]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+distro = None
+upgrade-test-distros = stretch
+arch = amd64
+area = main
+components = main
+# 60*60*24*7
+max-tgz-age = 604800
+
+
+[tarball/stretch/i386]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+distro = None
+upgrade-test-distros = stretch
+arch = i386
+area = main
+components = main
+# 60*60*24*7
+max-tgz-age = 604800
+
+
+[tarball/jessie/amd64]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+distro = None
+upgrade-test-distros = jessie
+arch = amd64
+area = main
+components = main
+# 60*60*24*30
+max-tgz-age = 2592000
+
+
+[tarball/jessie/i386]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+distro = None
+upgrade-test-distros = jessie
+arch = i386
+area = main
+components = main
+# 60*60*24*30
+max-tgz-age = 2592000
+
+
+[tarball/wheezy/amd64]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+distro = None
+upgrade-test-distros = wheezy
+arch = amd64
+area = main
+components = main
+# 60*60*24*30
+max-tgz-age = 2592000
+
+
+[tarball/wheezy/i386]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+distro = None
+upgrade-test-distros = wheezy
+arch = i386
+area = main
+components = main
+# 60*60*24*30
+max-tgz-age = 2592000
+
+
+[tarball/squeeze/amd64]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+distro = None
+upgrade-test-distros = squeeze
+arch = amd64
+area = main
+components = main
+max-tgz-age = 0
+
+
+[tarball/squeeze/i386]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+distro = None
+upgrade-test-distros = squeeze
+arch = i386
+area = main
+components = main
+max-tgz-age = 0
+
+
+[tarball/lenny/amd64]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+distro = None
+upgrade-test-distros = lenny
+arch = amd64
+area = main
+components = main
+max-tgz-age = 0
+
+
+[tarball/lenny/i386]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+distro = None
+upgrade-test-distros = lenny
+arch = i386
+area = main
+components = main
+max-tgz-age = 0
 
 
 ############################################################################
@@ -283,8 +451,6 @@ distro = sid
 arch = amd64
 area = main
 components = main
-# 60*60*24*2
-max-tgz-age = 172800
 reschedule-old-days = 30
 expire-old-days = 60
 
@@ -321,8 +487,6 @@ distro = stretch
 arch = amd64
 area = main
 components = main
-# 60*60*24*7
-max-tgz-age = 604800
 reschedule-old-days = 60
 expire-old-days = 90
 
@@ -398,8 +562,6 @@ distro = jessie
 arch = amd64
 area = main
 components = main
-# 60*60*24*7
-max-tgz-age = 604800
 reschedule-old-days = 60
 expire-old-days = 90
 
@@ -620,8 +782,6 @@ distro = wheezy
 arch = amd64
 area = main
 components = main
-# 60*60*24*30
-max-tgz-age = 2592000
 
 [wheezy/contrib]
 precedence = 45
