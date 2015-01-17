@@ -74,6 +74,7 @@ sections =
 	sid/main
 	sid-rcmd/main
 	stretch/main
+	stretch-rcmd/main
 	stretch-pu/main
 	jessie/main
 	jessie-rcmd/main
@@ -105,6 +106,7 @@ sections =
 	sid/contrib
 	sid-rcmd/contrib
 	stretch/contrib
+	stretch-rcmd/contrib
 	stretch-pu/contrib
 	jessie/contrib
 	jessie-rcmd/contrib
@@ -136,6 +138,7 @@ sections =
 	sid/non-free
 	sid-rcmd/non-free
 	stretch/non-free
+	stretch-rcmd/non-free
 	stretch-pu/non-free
 	jessie/non-free
 	jessie-rcmd/non-free
@@ -561,6 +564,46 @@ arch = amd64
 area = non-free
 reschedule-old-days = 60
 expire-old-days = 90
+
+
+[stretch-rcmd/main]
+precedence = 30
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+distro = stretch
+arch = i386
+area = main
+components = main
+
+[stretch-rcmd/contrib]
+precedence = 45
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch-rcmd/main stretch-rcmd/non-free
+distro = stretch
+arch = i386
+area = contrib
+
+[stretch-rcmd/non-free]
+precedence = 45
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch-rcmd/main stretch-rcmd/contrib
+distro = stretch
+arch = i386
+area = non-free
 
 
 [stretch-pu/main]
