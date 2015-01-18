@@ -65,3 +65,16 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
 	esac
 
 fi
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "experimental" ]; then
+
+	case ${PIUPARTS_OBJECTS} in
+		dnscache-run=1:1.05-9~exp2)
+			#664848: breaks dns resolution in chroot if installed in a chroot
+			log_debug
+			echo "*** ABORT - Installation broke DNS in chroot ***"
+			exit 1
+			;;
+	esac
+
+fi
