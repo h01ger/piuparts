@@ -100,6 +100,7 @@ sections =
 	wheezy2proposed/main
 	wheezy2jessie/main
 	wheezy2jessie-rcmd/main
+	wheezy2jessie-rcmd_i386/main
 	wheezy2bpo2jessie/main
 	wheezy222testing/main
 #
@@ -133,6 +134,7 @@ sections =
 	wheezy2proposed/contrib
 	wheezy2jessie/contrib
 	wheezy2jessie-rcmd/contrib
+	wheezy2jessie-rcmd_i386/contrib
 	wheezy2bpo2jessie/contrib
 	wheezy222testing/contrib
 #
@@ -166,6 +168,7 @@ sections =
 	wheezy2proposed/non-free
 	wheezy2jessie/non-free
 	wheezy2jessie-rcmd/non-free
+	wheezy2jessie-rcmd_i386/non-free
 	wheezy2bpo2jessie/non-free
 	wheezy222testing/main
 #
@@ -2019,6 +2022,52 @@ piuparts-flags =
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd/main wheezy2jessie-rcmd/contrib
 arch = amd64
+area = non-free
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+
+[wheezy2jessie-rcmd_i386/main]
+precedence = 80
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+arch = i386
+area = main
+components = main
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie-rcmd_i386/contrib]
+precedence = 95
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+depends-sections = wheezy2jessie-rcmd_i386/main wheezy2jessie-rcmd_i386/non-free
+arch = i386
+area = contrib
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie-rcmd_i386/non-free]
+precedence = 95
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+depends-sections = wheezy2jessie-rcmd_i386/main wheezy2jessie-rcmd_i386/contrib
+arch = i386
 area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy jessie
