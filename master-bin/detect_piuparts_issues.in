@@ -56,6 +56,7 @@ for SECTION in $SECTIONS ; do
 		rgrep -l -e 'No database found online on port 5432' $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e 'unable to connect to postgresql server' $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e 'Firebird .* server already running.' $MASTER/$SECTION/$subdir >> $FILE
+		find $MASTER/$SECTION/$subdir -name '*.log' -size 0 >> $FILE
 	done
 done
 if [ -s $FILE ] ; then
