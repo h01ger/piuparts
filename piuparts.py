@@ -862,6 +862,11 @@ class Chroot:
             return run(["chroot", self.name] + prefix + command,
                    ignore_errors=ignore_errors, timeout=settings.max_command_runtime)
 
+    def mkdir_p(self, path):
+        fullpath = self.relative(path)
+        if not os.path.isdir(fullpath):
+            os.makedirs(fullpath)
+
     def create_apt_sources(self, distro):
         """Create an /etc/apt/sources.list with a given distro."""
         lines = []
