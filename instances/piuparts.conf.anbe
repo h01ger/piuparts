@@ -490,8 +490,8 @@ expire-old-days = 60
 precedence = 30
 description = + With recommended packages.
 piuparts-flags =
-	%(flags-default)s
 	--install-recommends
+	%(flags-default)s
 distro = sid
 arch = i386
 area = main
@@ -503,8 +503,8 @@ expire-old-days = 90
 precedence = 45
 description = + With recommended packages.
 piuparts-flags =
-	%(flags-default)s
 	--install-recommends
+	%(flags-default)s
 depends-sections = sid-rcmd/main sid-rcmd/non-free
 distro = sid
 arch = i386
@@ -516,8 +516,8 @@ expire-old-days = 90
 precedence = 45
 description = + With recommended packages.
 piuparts-flags =
-	%(flags-default)s
 	--install-recommends
+	%(flags-default)s
 depends-sections = sid-rcmd/main sid-rcmd/contrib
 distro = sid
 arch = i386
@@ -937,13 +937,13 @@ area = non-free
 
 
 [wheezy-rcmd/main]
-precedence = 400
+precedence = 40
 description = + With recommended packages.
 piuparts-flags =
+	--install-recommends
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-	--install-recommends
 distro = wheezy
 arch = i386
 area = main
@@ -954,10 +954,10 @@ reschedule-old-count = 100
 precedence = 45
 description = + With recommended packages.
 piuparts-flags =
+	--install-recommends
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-	--install-recommends
 depends-sections = wheezy-rcmd/main wheezy-rcmd/non-free
 distro = wheezy
 arch = i386
@@ -967,10 +967,10 @@ area = contrib
 precedence = 45
 description = + With recommended packages.
 piuparts-flags =
+	--install-recommends
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-	--install-recommends
 depends-sections = wheezy-rcmd/main wheezy-rcmd/contrib
 distro = wheezy
 arch = i386
