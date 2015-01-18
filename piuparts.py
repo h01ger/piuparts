@@ -1488,10 +1488,13 @@ class Chroot:
     def mount_proc(self):
         """Mount /proc inside chroot."""
         self.run(["mount", "-t", "proc", "proc", "/proc"])
+        self.mkdir_p("dev/pts")
+        self.run(["mount", "-t", "devpts", "devpts", "/dev/pts"])
 
     def unmount_proc(self):
         """Unmount /proc inside chroot."""
         self.run(["umount", "/proc"], ignore_errors=True)
+        self.run(["umount", "/dev/pts"], ignore_errors=True)
         for bindmount in settings.bindmounts:
             run(["umount", self.relative(bindmount)], ignore_errors=True)
 

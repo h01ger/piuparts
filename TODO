@@ -85,9 +85,6 @@ without --warn-on-others to avoid adding artificial barriers where package
 subsets are configured
   (wheezy2jessie-rcmd is *not* the solution for this)
 
-- mount /dev/pts:
-  E: Can not write log (Is /dev/pts mounted?) - posix_openpt (2: No such file or directory)
-
 - record file ownership by user/group name, not id
   new dynamic system users added to the base system may have a lower id in the
   reference system than after actually testing some packages
@@ -143,7 +140,7 @@ for 0.8x and later:
 - make it possible to call aptitude (or similar) instead of apt-get and allow to
   override the commandline arguments.
 
-- mounting /proc and perhaps others (usbfs, sysfs, /dev/pts, etc.) in the chroot
+- mount perhaps others (usbfs, sysfs, etc.) in the chroot
   might be a good idea because some packages might need this.
 
 - rewrite piuparts-analyze to run over all sections and cache BTS responses
