@@ -72,6 +72,7 @@ basetgz-sections =
 sections =
 	experimental/main
 	sid/main
+	sid-plus/main
 	sid-rcmd/main
 	stretch/main
 	stretch-rcmd/main
@@ -104,6 +105,7 @@ sections =
 #
 	experimental/contrib
 	sid/contrib
+	sid-plus/contrib
 	sid-rcmd/contrib
 	stretch/contrib
 	stretch-rcmd/contrib
@@ -136,6 +138,7 @@ sections =
 #
 	experimental/non-free
 	sid/non-free
+	sid-plus/non-free
 	sid-rcmd/non-free
 	stretch/non-free
 	stretch-rcmd/non-free
@@ -484,6 +487,46 @@ arch = amd64
 area = non-free
 reschedule-old-days = 30
 expire-old-days = 60
+
+
+[sid-plus/main]
+precedence = 30
+description = Debian %(distro)s / %(area)s: package installation, removal, installation, removal, and purge test. Failing on leftovers after purge.
+piuparts-flags =
+	--install-remove-install
+	%(flags-leftovers)s
+distro = sid
+arch = amd64
+area = main
+components = main
+reschedule-old-days = 60
+expire-old-days = 90
+
+[sid-plus/contrib]
+precedence = 45
+description = Debian %(distro)s / %(area)s: package installation, removal, installation, removal, and purge test. Failing on leftovers after purge.
+piuparts-flags =
+	--install-remove-install
+	%(flags-leftovers)s
+depends-sections = sid-plus/main sid-plus/non-free
+distro = sid
+arch = amd64
+area = contrib
+reschedule-old-days = 60
+expire-old-days = 90
+
+[sid-plus/non-free]
+precedence = 45
+description = Debian %(distro)s / %(area)s: package installation, removal, installation, removal, and purge test. Failing on leftovers after purge.
+piuparts-flags =
+	--install-remove-install
+	%(flags-leftovers)s
+depends-sections = sid-plus/main sid-plus/contrib
+distro = sid
+arch = amd64
+area = non-free
+reschedule-old-days = 60
+expire-old-days = 90
 
 
 [sid-rcmd/main]
