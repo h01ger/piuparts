@@ -817,7 +817,7 @@ class Chroot:
         run(prefix + ["tar", "-C", self.name, "-zxf", tarball])
 
     def setup_from_schroot(self, schroot):
-        self.schroot_session = schroot.split(":")[1] + "-" + str(uuid.uuid1()) + "-piuparts"
+        self.schroot_session = schroot.split(":", 1)[-1] + "-" + str(uuid.uuid1()) + "-piuparts"
         run(['schroot', '--begin-session', '--chroot', schroot , '--session-name', self.schroot_session])
         ret_code, output = run(['schroot', '--chroot', "session:" + self.schroot_session, '--location'])
         self.name = output.strip()

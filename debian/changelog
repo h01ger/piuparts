@@ -7,6 +7,7 @@ piuparts (0.63) UNRELEASED; urgency=medium
     - Reinstall base system packages missing upon removal with
       --no-install-recommends.
     - Mount /dev/pts into the chroot. Wanted by recent apt.
+    - Fix usage of schroot with chroot names without ':'.  (Closes: #773874)
   * piuparts.conf:
     - Enable --warn-on-debsums-errors for all jessie tests.
     - Add new suite: jessie-pu (test only packages in jessie-proposed-updates).
