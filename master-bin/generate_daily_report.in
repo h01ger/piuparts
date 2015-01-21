@@ -80,6 +80,19 @@ nice \
 	>> $DAILYREPORT 2>&1
 date >> $DAILYREPORT
 
+echo "" >> $DAILYREPORT
+date >> $DAILYREPORT
+echo "Expiring old .html files:" >> $DAILYREPORT
+find $HTDOCS -name '* *.html' -mtime +30 -ls -delete >> $DAILYREPORT
+expire=$(mktemp)
+find $HTDOCS -name '*.html' -mtime +30 | head -n 500 > $expire
+if [ -s $expire ]; then
+	ls -ld $(cat $expire) >> $DAILYREPORT
+	rm -f $(cat $expire) >> $DAILYREPORT
+fi
+rm $expire
+date >> $DAILYREPORT
+
 cat $DAILYREPORT | mail -s piuparts-report $LOGNAME
 
 mv $FAILURESTAMP.new $FAILURESTAMP
