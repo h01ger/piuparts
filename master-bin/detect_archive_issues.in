@@ -22,7 +22,6 @@
 
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
-get_config_value HTDOCS global output-directory
 get_config_value URLBASE global urlbase https://piuparts.debian.org
 get_config_value DAYS global reschedule-untestable-days 7
 
@@ -47,9 +46,8 @@ for SECTION in $SECTIONS ; do
 	fi
 done
 if [ -s $URLS ]; then
-	mkdir -p $HTDOCS
-	date >> $HTDOCS/archive_issues.txt
-	cat $URLS >> $HTDOCS/archive_issues.txt
+	date >> $MASTER/archive_issues.txt
+	cat $URLS >> $MASTER/archive_issues.txt
 	echo "Broken packages detected!"
 	echo "(By grep'ing for"
 	echo "        'E: Broken packages',"
@@ -66,7 +64,7 @@ if [ -s $URLS ]; then
 	echo "If it is always the same package failing, it's likely to be an issue in the"
 	echo "package."
 	echo
-	grep -f $URLS $HTDOCS/archive_issues.txt | sort | uniq -c | sort -rn
+	grep -f $URLS $MASTER/archive_issues.txt | sort | uniq -c | sort -rn
 	echo
 fi
 rm $LOGS $URLS

@@ -18,6 +18,7 @@ piuparts (0.63) UNRELEASED; urgency=medium
   * piuparts-slave.py:
     - Handle Ctrl-C while downloading Packages files and flush/unreserve, too.
     - Catch another exception that may happen while talking to the master.
+  * detect_archive_issues: Move archive_issues.txt from htdocs/ to master/.
   * detect_piuparts_issues: Detect transient apt-cache failures.
   * generate_daily_report: Remove obsolete .html files (e.g. summaries for
     removed source packages or retired maintainers) after 30 days.

@@ -45,6 +45,7 @@ copy_to_backupdir() {
 
 test -n "$BACKUPDIR" || exit 0
 
+copy_to_backupdir archive_issues.txt
 copy_to_backupdir bts_stats.txt
 for SECTION in $SECTIONS ; do
 	mkdir -p $BACKUPDIR/$SECTION
