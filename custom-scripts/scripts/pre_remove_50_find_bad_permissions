@@ -1,6 +1,22 @@
 #!/bin/sh
 set -e
 
+case "$PIUPARTS_DISTRIBUTION" in
+lenny)
+
+    case ${PIUPARTS_OBJECTS%%=*} in
+	linpopup)
+		# package removed after lenny
+		for file in /var/lib/linpopup/messages.dat
+		do
+			test ! -f "$file" || chmod -c o-w "$file"
+		done
+		;;
+    esac
+
+;;
+esac
+
 if	[ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
 	[ "$PIUPARTS_DISTRIBUTION" = "squeeze/updates" ] || \
 	[ "$PIUPARTS_DISTRIBUTION" = "squeeze-updates" ] || \
@@ -12,13 +28,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	citadel-server|citadel-dbg|citadel-mta|citadel-suite|bcron-run|capisuite|debbugs|raccess4vbox3|smartlist|sxid)
 		#WORKSAROUND #684964: citadel-server: world writable config file: /etc/citadel/netconfigs/7
 		for file in /etc/citadel/netconfigs/7 /etc/citadel/refcount_adjustments.dat /etc/citadel/citadel.control
-		do
-			test ! -f "$file" || chmod -c o-w "$file"
-		done
-		;;
-	linpopup)
-		# package removed in squeeze
-		for file in /var/lib/linpopup/messages.dat
 		do
 			test ! -f "$file" || chmod -c o-w "$file"
 		done

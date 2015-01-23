@@ -5,6 +5,21 @@ log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
 }
 
+if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		linpopup)
+			# package removed after lenny
+			log_debug
+			for file in /var/lib/linpopup/messages.dat
+			do
+				test ! -f "$file" || chmod -c o-w "$file"
+			done
+			;;
+	esac
+
+fi
+
 if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
