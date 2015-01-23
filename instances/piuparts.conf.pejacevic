@@ -81,6 +81,7 @@ sections =
 	sid-nodoc
 	testing2sid
 	jessie
+	jessie-rcmd
 	jessie-pu
 #	jessie-proposed
 	jessie2proposed
@@ -190,6 +191,18 @@ piuparts-flags =
 distro = jessie
 # 1 week (60*60*24*7)
 max-tgz-age = 604800
+
+
+[jessie-rcmd]
+precedence = 10
+json-sections = none
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+distro = jessie
 
 
 [jessie-pu]
