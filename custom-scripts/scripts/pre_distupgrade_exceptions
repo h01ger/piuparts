@@ -17,7 +17,11 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
 
 	# squeeze does not properly upgrade adduser.conf, so generate a new one
 	if [ -f /etc/adduser.conf ]; then
-		if [ "$(md5sum /etc/adduser.conf | awk '{ print $1 }')" = "5b577c9cb18e4852fc7e45830d230ec1" ];
+		md5="$(md5sum /etc/adduser.conf | awk '{ print $1 }')"
+		# 5b577c9cb18e4852fc7e45830d230ec1: adduser/lenny pristine
+		# 28928669e36f1ab616dfda39af3d79a7: adduser/lenny + dpsyco-lib/lenny
+		if	[ "$md5" = "5b577c9cb18e4852fc7e45830d230ec1" ] || \
+			[ "$md5" = "28928669e36f1ab616dfda39af3d79a7" ]
 		then
 			rm -fv /etc/adduser.conf
 		fi
