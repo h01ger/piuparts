@@ -1003,7 +1003,7 @@ class Chroot:
 
     def configure_chroot(self):
         """Configure a chroot according to current settings"""
-        os.environ["PIUPARTS_DISTRIBUTION"] = settings.debian_distros[0]
+        os.environ["PIUPARTS_DISTRIBUTION"] = settings.distro_config.get_distribution(settings.debian_distros[0])
         if not settings.keep_sources_list:
             self.create_apt_sources(settings.debian_distros[0])
         self.create_apt_conf()
@@ -1019,14 +1019,14 @@ class Chroot:
         """Upgrade a chroot installation to each successive distro."""
         for distro in distros:
             logging.debug("Upgrading %s to %s" % (self.name, distro))
-            os.environ["PIUPARTS_DISTRIBUTION_NEXT"] = distro
+            os.environ["PIUPARTS_DISTRIBUTION_NEXT"] = settings.distro_config.get_distribution(distro)
             self.create_apt_sources(distro)
             # Run custom scripts before upgrade
             self.run_scripts("pre_distupgrade")
             self.run(["apt-get", "update"])
             self.run(["apt-get", "-yf", "dist-upgrade"])
             os.environ["PIUPARTS_DISTRIBUTION_PREV"] = os.environ["PIUPARTS_DISTRIBUTION"]
-            os.environ["PIUPARTS_DISTRIBUTION"] = distro
+            os.environ["PIUPARTS_DISTRIBUTION"] = settings.distro_config.get_distribution(distro)
             # Sometimes dist-upgrade won't upgrade the packages we want
             # to test because the new version depends on a newer library,
             # and installing that would require removing the old version
