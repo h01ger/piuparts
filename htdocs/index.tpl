@@ -73,6 +73,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2015-01-24</b> Another suite was added: <a href="https://piuparts.debian.org/jessie-rcmd">jessie-rcmd</a>, to test installations in jessie with --install-recommends.
+     </td>
+    </tr>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2014-12-19</b> Two more new suites were added: <a href="https://piuparts.debian.org/jessie-pu">jessie-pu</a>, to <em>only</em> test packages in jessie-proposed-updates and <a href="https://piuparts.debian.org/wheezy2jessie-rcmd">wheezy2jessie-rcmd</a>, to test package upgrades from wheezy to jessie with --install-recommends.
      </td>
     </tr>
