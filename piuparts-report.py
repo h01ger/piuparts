@@ -198,7 +198,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://packages.qa.debian.org" target="_blank">Package Tracking System</a>
+      <a href="https://tracker.debian.org" target="_blank">Debian Package Tracker (former: PTS)</a>
      </td>
     <tr class="normalrow">
      <td class="contentcell">
@@ -239,7 +239,7 @@ HTML_FOOTER = """
  <hr>
  <div id="footer">
   <div>
-   <a href="http://packages.qa.debian.org/piuparts" target="_blank">piuparts</a>
+   <a href="https://tracker.debian.org/piuparts" target="_blank">piuparts</a>
    is GPL2 <a href="https://packages.debian.org/changelogs/pool/main/p/piuparts/current/copyright" target="_blank">licenced</a>
    and was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by
    <a href="mailto:holger@layer-acht.org">Holger Levsen</a> and
@@ -368,7 +368,7 @@ $PACKAGE_LIST</ul>
 
 PKG_ERROR_TPL = \
 """<li>$RDEPS - <a href=\"$LOG\">$LOG</a>
-    (<a href=\"http://packages.qa.debian.org/$SDIR/$SPKG.html\" target=\"_blank\">PTS</a>)
+    (<a href=\"https://tracker.debian.org/pkg/$SPKG.html\" target=\"_blank\">PTS</a>)
     (<a href=\"https://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)
 $BUG</li>
 """
@@ -1122,7 +1122,7 @@ class Section:
             sourcerows +=   "<tr class=\"normalrow\">" \
                           + "<td class=\"labelcell\">Source:</td>" \
                           + "<td class=\"contentcell2\">" \
-                            + "<a href=\"http://packages.qa.debian.org/%s\" target=\"_blank\">%s</a>" \
+                            + "<a href=\"https://tracker.debian.org/%s\" target=\"_blank\">%s</a>" \
                               % (source, html_protect(source)) \
                             + "</td>" \
                           + "<td class=\"labelcell\">piuparts summary:</td>" \
@@ -1598,7 +1598,6 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
                                 'PACKAGE': bin_pkg,
                                 'BUG': get_bug_text(log),
                                 'RDEPS': rdep_cnt,
-                                'SDIR':source_subdir(src_pkg),
                                 'SPKG':src_pkg,
                                    })
 

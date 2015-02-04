@@ -73,6 +73,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2015-02-04</b> Link to the new <a href="https://tracker.debian.org">Debian Package Tracker</a> (tracker.debian.org) instead to the old <a href="https://packages.qa.debian.org">Package Tracker System</a> (PTS).
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2015-01-24</b> Another suite was added: <a href="https://piuparts.debian.org/jessie-rcmd">jessie-rcmd</a>, to test installations in jessie with --install-recommends.
      </td>
     </tr>
