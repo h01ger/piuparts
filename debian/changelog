@@ -35,8 +35,10 @@ piuparts (0.63) UNRELEASED; urgency=medium
   * piuparts.conf.piu-slave-1und1-01: merge changes from pejacevic config but
     replace amd64 with i386. 
   * crontab-master.in: update webpages every six hours. 
-  * piuparts-reports.py: Link to the new "Debian Package Tracker"
-    (tracker.debian.org) instead to the old "Package Tracker System" (PTS).
+  * piuparts-reports.py: 
+    - Link to the new "Debian Package Tracker" (tracker.debian.org) instead to
+      the old "Package Tracker System" (PTS).
+    - Switch links to lintian.debian.org to https.
 
  -- Andreas Beckmann <anbe@debian.org>  Wed, 03 Dec 2014 20:36:30 +0100
 
