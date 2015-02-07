@@ -239,7 +239,7 @@ HTML_FOOTER = """
  <hr>
  <div id="footer">
   <div>
-   <a href="https://tracker.debian.org/piuparts" target="_blank">piuparts</a>
+   <a href="https://tracker.debian.org/pkg/piuparts" target="_blank">piuparts</a>
    is GPL2 <a href="https://packages.debian.org/changelogs/pool/main/p/piuparts/current/copyright" target="_blank">licenced</a>
    and was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by
    <a href="mailto:holger@layer-acht.org">Holger Levsen</a> and
@@ -368,7 +368,7 @@ $PACKAGE_LIST</ul>
 
 PKG_ERROR_TPL = \
 """<li>$RDEPS - <a href=\"$LOG\">$LOG</a>
-    (<a href=\"https://tracker.debian.org/pkg/$SPKG.html\" target=\"_blank\">PTS</a>)
+    (<a href=\"https://tracker.debian.org/pkg/$SPKG\" target=\"_blank\">PTS</a>)
     (<a href=\"https://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)
 $BUG</li>
 """
