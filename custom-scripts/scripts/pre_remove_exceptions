@@ -19,6 +19,13 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		rm -f /usr/sbin/apt-listbugs
 		dpkg-divert --remove --rename /usr/sbin/apt-listbugs
 		;;
+	ffgtk|\
+	roger-router|\
+	roger-router-cli)
+		log_debug
+		# cleanup from pre_install_exceptions
+		dpkg-divert --remove --rename /usr/sbin/lpadmin
+		;;
 esac
 
 # Allow removal of the kernel running on the host from the chroot.

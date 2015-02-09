@@ -65,6 +65,13 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				# ltsp-client-core refuses installation unless this file exist
 				touch /etc/ltsp_chroot
 				;;
+	ffgtk|\
+	roger-router|\
+	roger-router-cli)
+			log_debug
+			# postinst tries to add a printer with lpadmin
+			dpkg-divert --rename /usr/sbin/lpadmin
+			;;
 	bugzilla3)
 			# checksetup.pl goes into infinite loop asking for them
 			log_debug
