@@ -74,12 +74,12 @@ sections =
 	sid/main
 	sid-plus/main
 	sid-rcmd/main
+	testing-rcmd/main
 	testing-nodocs/main
 	stretch/main
 	stretch-rcmd/main
 	stretch-pu/main
 	jessie/main
-	jessie-rcmd/main
 	jessie-security/main
 	jessie-updates/main
 	jessie-pu/main
@@ -109,12 +109,12 @@ sections =
 	sid/contrib
 	sid-plus/contrib
 	sid-rcmd/contrib
+	testing-rcmd/contrib
 	testing-nodocs/contrib
 	stretch/contrib
 	stretch-rcmd/contrib
 	stretch-pu/contrib
 	jessie/contrib
-	jessie-rcmd/contrib
 	jessie-security/contrib
 	jessie-updates/contrib
 	jessie-pu/contrib
@@ -144,12 +144,12 @@ sections =
 	sid/non-free
 	sid-plus/non-free
 	sid-rcmd/non-free
+	testing-rcmd/non-free
 	testing-nodocs/non-free
 	stretch/non-free
 	stretch-rcmd/non-free
 	stretch-pu/non-free
 	jessie/non-free
-	jessie-rcmd/non-free
 	jessie-security/non-free
 	jessie-updates/non-free
 	jessie-pu/non-free
@@ -575,6 +575,46 @@ reschedule-old-days = 60
 expire-old-days = 90
 
 
+[testing-rcmd/main]
+precedence = 30
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+distro = testing
+arch = i386
+area = main
+components = main
+
+[testing-rcmd/contrib]
+precedence = 45
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = testing-rcmd/main testing-rcmd/non-free
+distro = testing
+arch = i386
+area = contrib
+
+[testing-rcmd/non-free]
+precedence = 45
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = testing-rcmd/main testing-rcmd/contrib
+distro = testing
+arch = i386
+area = non-free
+
+
 [testing-nodocs/main]
 precedence = 30
 description = + Testing without files in /usr/share/doc.
@@ -768,46 +808,6 @@ arch = amd64
 area = non-free
 reschedule-old-days = 30
 expire-old-days = 90
-
-
-[jessie-rcmd/main]
-precedence = 30
-description = + With recommended packages.
-piuparts-flags =
-	--install-recommends
-	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
-distro = jessie
-arch = i386
-area = main
-components = main
-
-[jessie-rcmd/contrib]
-precedence = 45
-description = + With recommended packages.
-piuparts-flags =
-	--install-recommends
-	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
-depends-sections = jessie-rcmd/main jessie-rcmd/non-free
-distro = jessie
-arch = i386
-area = contrib
-
-[jessie-rcmd/non-free]
-precedence = 45
-description = + With recommended packages.
-piuparts-flags =
-	--install-recommends
-	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
-depends-sections = jessie-rcmd/main jessie-rcmd/contrib
-distro = jessie
-arch = i386
-area = non-free
 
 
 [jessie-security/main]
