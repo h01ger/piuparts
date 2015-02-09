@@ -103,6 +103,8 @@ sections =
 	wheezy2jessie-sysv/main
 	wheezy2bpo2jessie/main
 	wheezy222testing/main
+	squeeze222testing/main
+	lenny222testing/main
 #
 	experimental/contrib
 	sid/contrib
@@ -137,6 +139,8 @@ sections =
 	wheezy2jessie-sysv/contrib
 	wheezy2bpo2jessie/contrib
 	wheezy222testing/contrib
+	squeeze222testing/contrib
+	lenny222testing/contrib
 #
 	experimental/non-free
 	sid/non-free
@@ -171,6 +175,8 @@ sections =
 	wheezy2jessie-sysv/non-free
 	wheezy2bpo2jessie/non-free
 	wheezy222testing/main
+	squeeze222testing/non-free
+	lenny222testing/non-free
 #
 	squeeze/main
 	squeeze-proposed/main
@@ -186,10 +192,8 @@ sections =
 	squeeze2wheezy-rcmd/main
 	squeeze2wheezy-pu/main
 	squeeze2bpo2wheezy/main
-	squeeze222testing/main
 	lenny/main
 	lenny2squeeze/main
-	lenny222testing/main
 #
 	squeeze/contrib
 	squeeze-proposed/contrib
@@ -205,10 +209,8 @@ sections =
 	squeeze2wheezy-rcmd/contrib
 	squeeze2wheezy-pu/contrib
 	squeeze2bpo2wheezy/contrib
-	squeeze222testing/contrib
 	lenny/contrib
 	lenny2squeeze/contrib
-	lenny222testing/contrib
 #
 	squeeze/non-free
 	squeeze-proposed/non-free
@@ -224,10 +226,8 @@ sections =
 	squeeze2wheezy-rcmd/non-free
 	squeeze2wheezy-pu/non-free
 	squeeze2bpo2wheezy/non-free
-	squeeze222testing/non-free
 	lenny/non-free
 	lenny2squeeze/non-free
-	lenny222testing/non-free
 #
 proxy = http://localhost:3128
 #
