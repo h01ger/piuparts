@@ -40,6 +40,19 @@ get_config_value FAIL_COUNT global reschedule-fail-count 25
 get_config_value AUTO_RESCHEDULE	global auto-reschedule yes
 
 
+RECENT=$(mktemp)
+touch -d "2 days ago" "$RECENT"
+is_recent()
+{
+	local stamp
+	stamp="$1"
+	if [ -f "$stamp" ] && [ "$stamp" -nt "$RECENT" ]; then
+		return 0
+	fi
+	return 1
+}
+
+
 list_logs()
 {
 	__AGE="$1"
@@ -109,7 +122,9 @@ for SECTION in $SECTIONS ; do
 			test -f "recycle/${log#*/}" && echo "$log"
 		done > $EXPIRED
 		>$UNSORTED
-		list_logs $_AGE      $_COUNT      pass fail affected >> $UNSORTED
+		if is_recent idle.stamp ; then
+			list_logs $_AGE          $_COUNT                pass fail affected >> $UNSORTED
+		fi
 		list_logs $_FAIL_AGE $_FAIL_COUNT      fail affected >> $UNSORTED
 		for log in $(sort -u $UNSORTED) ; do
 			# skip if already scheduled
@@ -147,6 +162,7 @@ for SECTION in $SECTIONS ; do
 	fi
 	cd $OLDPWD
 done
+rm $RECENT
 rm $LOGS
 rm $OBSOLETE
 rm $EXPIRED

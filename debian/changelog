@@ -27,6 +27,7 @@ piuparts (0.63) UNRELEASED; urgency=medium
     removed source packages or retired maintainers) after 30 days.
   * reschedule_oldest_logs:
     - Fix gradual oldest-first recycling if nearly all logs are candidates.
+    - Recycle/expire pass/ logs only if the section is (recycle-)idle.
   * scripts-sysvinit/pre_distupgrade_zz_sysvinit: New custom script for doing
     wheezy->jessie upgrade tests while keeping sysvinit as init if possible.
   * scripts/pre_remove_40_find_unowned_lib_links: Ignore /lib/ld-lsb.so.[123]
