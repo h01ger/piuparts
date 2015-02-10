@@ -255,7 +255,7 @@ idle-sleep = 1800
 max-tgz-age = -1
 max-reserved = 50
 reschedule-untestable-days = 3
-expire-old-days = 180
+expire-old-days = 135
 reschedule-old-days = 120
 reschedule-old-count = 250
 expire-fail-days = 8
@@ -433,7 +433,7 @@ arch = amd64
 area = main
 components = main
 reschedule-old-days = 30
-expire-old-days = 60
+expire-old-days = 45
 
 [experimental/contrib]
 precedence = 45
@@ -444,7 +444,7 @@ distro = experimental
 arch = amd64
 area = contrib
 reschedule-old-days = 30
-expire-old-days = 60
+expire-old-days = 45
 
 [experimental/non-free]
 precedence = 45
@@ -455,7 +455,7 @@ distro = experimental
 arch = amd64
 area = non-free
 reschedule-old-days = 30
-expire-old-days = 60
+expire-old-days = 45
 
 
 [sid/main]
@@ -467,7 +467,7 @@ arch = amd64
 area = main
 components = main
 reschedule-old-days = 30
-expire-old-days = 60
+expire-old-days = 45
 
 [sid/contrib]
 precedence = 45
@@ -478,7 +478,7 @@ distro = sid
 arch = amd64
 area = contrib
 reschedule-old-days = 30
-expire-old-days = 60
+expire-old-days = 45
 
 [sid/non-free]
 precedence = 45
@@ -489,7 +489,7 @@ distro = sid
 arch = amd64
 area = non-free
 reschedule-old-days = 30
-expire-old-days = 60
+expire-old-days = 45
 
 
 [sid-plus/main]
@@ -503,7 +503,7 @@ arch = amd64
 area = main
 components = main
 reschedule-old-days = 60
-expire-old-days = 90
+expire-old-days = 75
 
 [sid-plus/contrib]
 precedence = 45
@@ -516,7 +516,7 @@ distro = sid
 arch = amd64
 area = contrib
 reschedule-old-days = 60
-expire-old-days = 90
+expire-old-days = 75
 
 [sid-plus/non-free]
 precedence = 45
@@ -529,7 +529,7 @@ distro = sid
 arch = amd64
 area = non-free
 reschedule-old-days = 60
-expire-old-days = 90
+expire-old-days = 75
 
 
 [sid-rcmd/main]
@@ -543,7 +543,7 @@ arch = i386
 area = main
 components = main
 reschedule-old-days = 60
-expire-old-days = 90
+expire-old-days = 75
 
 [sid-rcmd/contrib]
 precedence = 45
@@ -556,7 +556,7 @@ distro = sid
 arch = i386
 area = contrib
 reschedule-old-days = 60
-expire-old-days = 90
+expire-old-days = 75
 
 [sid-rcmd/non-free]
 precedence = 45
@@ -569,7 +569,7 @@ distro = sid
 arch = i386
 area = non-free
 reschedule-old-days = 60
-expire-old-days = 90
+expire-old-days = 75
 
 
 [testing-rcmd/main]
@@ -663,7 +663,7 @@ arch = amd64
 area = main
 components = main
 reschedule-old-days = 60
-expire-old-days = 90
+expire-old-days = 75
 
 [stretch/contrib]
 precedence = 45
@@ -676,7 +676,7 @@ distro = stretch
 arch = amd64
 area = contrib
 reschedule-old-days = 60
-expire-old-days = 90
+expire-old-days = 75
 
 [stretch/non-free]
 precedence = 45
@@ -689,7 +689,7 @@ distro = stretch
 arch = amd64
 area = non-free
 reschedule-old-days = 60
-expire-old-days = 90
+expire-old-days = 75
 
 
 [stretch-pu/main]
@@ -737,8 +737,7 @@ distro = jessie
 arch = amd64
 area = main
 components = main
-reschedule-old-days = 30
-expire-old-days = 90
+reschedule-old-count = 100
 
 [jessie/contrib]
 precedence = 45
@@ -750,8 +749,6 @@ depends-sections = jessie/main jessie/non-free
 distro = jessie
 arch = amd64
 area = contrib
-reschedule-old-days = 30
-expire-old-days = 90
 
 [jessie/non-free]
 precedence = 45
@@ -763,8 +760,6 @@ depends-sections = jessie/main jessie/contrib
 distro = jessie
 arch = amd64
 area = non-free
-reschedule-old-days = 30
-expire-old-days = 90
 
 
 [jessie-security/main]
@@ -1548,7 +1543,7 @@ area = main
 components = main
 distro = lenny
 upgrade-test-distros = lenny squeeze wheezy jessie testing
-reschedule-old-count = 0
+reschedule-old-count = 100
 
 [lenny222testing/contrib]
 precedence = 120
@@ -1561,7 +1556,7 @@ arch = amd64
 area = contrib
 distro = lenny
 upgrade-test-distros = lenny squeeze wheezy jessie testing
-reschedule-old-count = 0
+reschedule-old-count = 100
 
 [lenny222testing/non-free]
 precedence = 120
@@ -1574,7 +1569,7 @@ arch = amd64
 area = non-free
 distro = lenny
 upgrade-test-distros = lenny squeeze wheezy jessie testing
-reschedule-old-count = 0
+reschedule-old-count = 100
 
 
 [squeeze2proposed/main]
@@ -1837,7 +1832,7 @@ area = main
 components = main
 distro = squeeze
 upgrade-test-distros = squeeze wheezy jessie testing
-reschedule-old-count = 0
+reschedule-old-count = 100
 
 [squeeze222testing/contrib]
 precedence = 95
@@ -1850,7 +1845,7 @@ arch = amd64
 area = contrib
 distro = squeeze
 upgrade-test-distros = squeeze wheezy jessie testing
-reschedule-old-count = 0
+reschedule-old-count = 100
 
 [squeeze222testing/non-free]
 precedence = 95
@@ -1863,7 +1858,7 @@ arch = amd64
 area = non-free
 distro = squeeze
 upgrade-test-distros = squeeze wheezy jessie testing
-reschedule-old-count = 0
+reschedule-old-count = 100
 
 
 [wheezy2proposed/main]
@@ -1910,6 +1905,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -1922,6 +1918,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = wheezy2jessie/main wheezy2jessie/non-free
 arch = amd64
 area = contrib
@@ -1934,6 +1931,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = wheezy2jessie/main wheezy2jessie/contrib
 arch = amd64
 area = non-free
@@ -1949,6 +1947,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 arch = amd64
 area = main
@@ -1964,6 +1963,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd/main wheezy2jessie-rcmd/non-free
 arch = amd64
@@ -1979,6 +1979,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd/main wheezy2jessie-rcmd/contrib
 arch = amd64
@@ -1995,6 +1996,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 arch = i386
 area = main
@@ -2010,6 +2012,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd_i386/main wheezy2jessie-rcmd_i386/non-free
 arch = i386
@@ -2025,6 +2028,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd_i386/main wheezy2jessie-rcmd_i386/contrib
 arch = i386
@@ -2128,7 +2132,7 @@ area = main
 components = main
 distro = wheezy
 upgrade-test-distros = wheezy jessie testing
-reschedule-old-count = 0
+reschedule-old-count = 100
 
 [wheezy222testing/contrib]
 precedence = 95
@@ -2141,7 +2145,7 @@ arch = amd64
 area = contrib
 distro = wheezy
 upgrade-test-distros = wheezy jessie testing
-reschedule-old-count = 0
+reschedule-old-count = 100
 
 [wheezy222testing/non-free]
 precedence = 95
@@ -2154,7 +2158,7 @@ arch = amd64
 area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy jessie testing
-reschedule-old-count = 0
+reschedule-old-count = 100
 
 
 [jessie2stretch/main]
