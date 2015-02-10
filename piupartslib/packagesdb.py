@@ -717,15 +717,18 @@ class PackagesDB:
 
         try:
             statobj = self._logdb.stat(self._recycle, p["Package"], p["Version"])
-            stamp = statobj[stat.ST_CTIME]  # last inode modification = time of linking into recycle/
+            ctime = statobj[stat.ST_CTIME]  # last inode modification = time of linking into recycle/
+            mtime = statobj[stat.ST_MTIME]
         except OSError:
-            stamp = 0
+            ctime = 0
+            mtime = 0
 
         return (
                 min(rdep_chain_len, waiting_count),
                 waiting_count,
                 not self._logdb.log_exists(p, [self._ok]),  # prefer problematic logs
-                -stamp,  # prefer older
+                -ctime / 3600,  # prefer older, at 1 hour granularity to allow randomization
+                -mtime / 3600,  # prefer older, at 1 hour granularity to allow randomization
                 )
 
     def _find_packages_ready_for_testing(self):
