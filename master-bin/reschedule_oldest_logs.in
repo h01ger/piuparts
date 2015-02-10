@@ -67,6 +67,14 @@ for SECTION in $SECTIONS ; do
 	cd $MASTER/$SECTION
 	mkdir -p pass fail bugged affected recycle
 
+	recycle_was_idle=
+	find recycle/ -name '*.log' > $QUEUED
+	if [ ! -s $QUEUED ]; then
+		recycle_was_idle="empty"
+	elif [ -f "recycle.stamp" ] && [ "recycle.stamp" -nt "recycle" ]; then
+		recycle_was_idle="idle"
+	fi
+
 	# Clean up obsolete rescheduling requests
 	for log in $(find recycle/ -name '*.log' | cut -d"/" -f2) ; do
 		for dir in pass bugged affected fail ; do
@@ -89,7 +97,9 @@ for SECTION in $SECTIONS ; do
 		# FIXME: we ignore bugged here - ptyhon-bts is really the way to go
 		>$UNSORTED
 		if [ "$_EXPIRE_AGE" -gt "$_AGE" ]; then
+		    if [ -n "$recycle_was_idle" ]; then
 			list_logs $_EXPIRE_AGE      $_COUNT      pass fail affected >> $UNSORTED
+		    fi
 		fi
 		if [ "$_EXPIRE_FAIL_AGE" -gt "$_FAIL_AGE" ]; then
 			list_logs $_EXPIRE_FAIL_AGE $_FAIL_COUNT      fail affected >> $UNSORTED
@@ -115,7 +125,7 @@ for SECTION in $SECTIONS ; do
 		TOTAL_EXPIRED=$(($TOTAL_EXPIRED + $ECOUNT))
 		UCOUNT=$(wc -l $OBSOLETE | awk '{ print $1 }')
 		UNSCHEDULE=$(($UNSCHEDULE + $UCOUNT))
-		echo "$SECTION: $RCOUNT rescheduled, $ECOUNT expired, $UCOUNT obsolete"
+		echo "$SECTION: $RCOUNT rescheduled, $ECOUNT expired, $UCOUNT obsolete${recycle_was_idle:+ (recycle-was-${recycle_was_idle})}"
 		if [ -s $LOGS ]; then
 			ls -dtl $(cat $LOGS)
 			ln -f $(cat $LOGS) recycle/
