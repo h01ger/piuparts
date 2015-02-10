@@ -1,6 +1,11 @@
 #!/bin/sh
 set -e
 
+# Skip while creating the reference chroot.
+if [ "$PIUPARTS_PHASE" = "" ]; then
+	exit 0
+fi
+
 log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
 }
