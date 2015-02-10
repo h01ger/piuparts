@@ -47,7 +47,7 @@ list_logs()
 	shift 2
 	find "$@" -name "*.log" -mtime +$__AGE \
 		| tac \
-		| xargs --no-run-if-empty -n99999 -s999999 ls -dt \
+		| xargs --no-run-if-empty -n99999 -s1999999 ls -dt \
 		| tail -n $__COUNT
 }
 
