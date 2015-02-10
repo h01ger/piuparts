@@ -193,7 +193,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="http://lintian.debian.org" target="_blank">Lintian</a>
+      <a href="https://lintian.debian.org" target="_blank">Lintian</a>
      </td>
     </tr>
     <tr class="normalrow">

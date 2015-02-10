@@ -112,9 +112,6 @@ for 0.7x and later:
   sophisticated later).
 
 - rework known_problems:
-  - split detect_well_known_errors
-    - parsing the logfiles should stay there
-    - generating the html should be integrated into piuparts-report
   - use a number prefix for sorting
   - add title information
   - piuparts-report: "discover" the available known_problems, dont hardcode the

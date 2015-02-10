@@ -26,6 +26,7 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
 			rm -fv /etc/adduser.conf
 		fi
 	fi
+
 fi
 
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then

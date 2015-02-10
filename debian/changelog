@@ -14,6 +14,7 @@ piuparts (0.63) UNRELEASED; urgency=medium
     - Add new suite: jessie-pu (test only packages in jessie-proposed-updates).
     - Add new suite: jessie-rcmd (test with --install-recommends).
     - Add new suite: wheezy2jessie-rcmd (test with --install-recommends).
+  * piuparts.conf.anbe: Add many more example sections.
   * distros.conf: Reactivate 'testing' and 'stable' aliases, switch them back
     to 'jessie' and 'wheezy' for ongoing development.
   * piupartslib/packagesdb.py:
@@ -24,7 +25,7 @@ piuparts (0.63) UNRELEASED; urgency=medium
   * detect_archive_issues: Move archive_issues.txt from htdocs/ to master/.
   * detect_piuparts_issues: Detect transient apt-cache failures.
   * generate_daily_report: Remove obsolete .html files (e.g. summaries for
-    removed source packages or retired maintainers) after 30 days.
+    removed source packages or obsolete maintainer addresses) after 30 days.
   * reschedule_oldest_logs:
     - Fix gradual oldest-first recycling if nearly all logs are candidates.
     - Recycle/expire pass/ logs only if the section is (recycle-)idle.
@@ -36,13 +37,15 @@ piuparts (0.63) UNRELEASED; urgency=medium
   * post_distupgrade_base_cleanup: New custom script for generalized libdbX.Y
     exceptions.
   * Update exceptions for squeeze-lts.
+  * Add/update exceptions for many packages.
+  * Add/update some bug templates.
 
   [ Holger Levsen ]
   * piuparts.conf.pejacevic: add new suite: jessie2proposed.
   * piuparts.conf.piu-slave-1und1-01: merge changes from pejacevic config but
-    replace amd64 with i386. 
-  * crontab-master.in: update webpages every six hours. 
-  * piuparts-reports.py: 
+    replace amd64 with i386.
+  * crontab-master.in: update webpages every six hours.
+  * piuparts-reports.py:
     - Link to the new "Debian Package Tracker" (tracker.debian.org) instead to
       the old "Package Tracker System" (PTS).
     - Switch links to lintian.debian.org to https.
