@@ -33,6 +33,15 @@ if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
 			log_debug
 			apt-get install -yf libpam-cap
 			;;
+		phpgacl)
+			# #682825
+			# package not in wheezy
+			log_debug
+			for dir in /usr/share/phpgacl/admin/templates_c
+			do
+				test ! -d "$dir" || chmod -c o-w "$dir"
+			done
+			;;
 	esac
 
 fi
