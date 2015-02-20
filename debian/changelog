@@ -29,6 +29,8 @@ piuparts (0.63) UNRELEASED; urgency=medium
   * reschedule_oldest_logs:
     - Fix gradual oldest-first recycling if nearly all logs are candidates.
     - Recycle/expire pass/ logs only if the section is (recycle-)idle.
+  * scripts-apt-first/pre_distupgrade_zz_apt_first: New custom script for
+    upgrading apt first and having the new apt perform the remaining upgrade.
   * scripts-sysvinit/pre_distupgrade_zz_sysvinit: New custom script for doing
     wheezy->jessie upgrade tests while keeping sysvinit as init if possible.
   * scripts/pre_remove_40_find_unowned_lib_links: Ignore /lib/ld-lsb.so.[123]
