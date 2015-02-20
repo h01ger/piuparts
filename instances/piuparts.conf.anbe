@@ -101,6 +101,7 @@ sections =
 	wheezy2jessie-rcmd/main
 	wheezy2jessie-rcmd_i386/main
 	wheezy2jessie-sysv/main
+	wheezy2jessie-apt1st/main
 	wheezy2bpo2jessie/main
 	wheezy222testing/main
 	squeeze222testing/main
@@ -137,6 +138,7 @@ sections =
 	wheezy2jessie-rcmd/contrib
 	wheezy2jessie-rcmd_i386/contrib
 	wheezy2jessie-sysv/contrib
+	wheezy2jessie-apt1st/contrib
 	wheezy2bpo2jessie/contrib
 	wheezy222testing/contrib
 	squeeze222testing/contrib
@@ -173,6 +175,7 @@ sections =
 	wheezy2jessie-rcmd/non-free
 	wheezy2jessie-rcmd_i386/non-free
 	wheezy2jessie-sysv/non-free
+	wheezy2jessie-apt1st/non-free
 	wheezy2bpo2jessie/non-free
 	wheezy222testing/main
 	squeeze222testing/non-free
@@ -2077,6 +2080,52 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	--scriptsdir /etc/piuparts/scripts-sysvinit
 depends-sections = wheezy2jessie-sysv/main wheezy2jessie-sysv/contrib
+arch = amd64
+area = non-free
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+
+[wheezy2jessie-apt1st/main]
+precedence = 80
+description = + Upgrading apt before the rest of the system.
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+	--scriptsdir /etc/piuparts/scripts-apt-first
+arch = amd64
+area = main
+components = main
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie-apt1st/contrib]
+precedence = 95
+description = + Upgrading apt before the rest of the system.
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+	--scriptsdir /etc/piuparts/scripts-apt-first
+depends-sections = wheezy2jessie-apt1st/main wheezy2jessie-apt1st/non-free
+arch = amd64
+area = contrib
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie-apt1st/non-free]
+precedence = 95
+description = + Upgrading apt before the rest of the system.
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+	--scriptsdir /etc/piuparts/scripts-apt-first
+depends-sections = wheezy2jessie-apt1st/main wheezy2jessie-apt1st/contrib
 arch = amd64
 area = non-free
 distro = wheezy
