@@ -42,12 +42,20 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] || \
 
 	mark_for_purge libdb4.8
 
+	# gcc-4.4-base is part of the minimal squeeze chroot
+	# but it no longer exists in wheezy
+	mark_for_purge gcc-4.4-base
+
 fi
 
 if	[ "$PIUPARTS_DISTRIBUTION" = "jessie" ] || \
 	[ "$PIUPARTS_DISTRIBUTION" = "jessie-proposed" ] ; then
 
 	mark_for_purge libdb5.1
+
+	# gcc-4.7-base is part of the minimal wheezy chroot
+	# but it no longer exists in jessie
+	mark_for_purge gcc-4.7-base
 
 fi
 
