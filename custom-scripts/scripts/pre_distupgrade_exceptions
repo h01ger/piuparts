@@ -48,29 +48,6 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 
 fi
 
-if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
-
-	# dpkg/jessie no longer ships install-info
-	# which causes problems while removing packages from squeeze
-	# or earlier that no longer exist in wheezy or jessie
-	# (using the install-info package from jessie is not possible
-	# due to interface incompatibilities)
-
-	case ${PIUPARTS_OBJECTS%%=*} in
-		octave3.2-info)
-			# octave3.2-info was removed after squeeze
-			log_debug
-			dpkg --remove octave3.2-info
-			;;
-		polgen-doc)
-			# polgen-doc was removed after lenny
-			log_debug
-			dpkg --remove polgen-doc
-			;;
-	esac
-
-fi
-
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "experimental" ]; then
 
 	case ${PIUPARTS_OBJECTS} in
