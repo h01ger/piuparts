@@ -51,6 +51,8 @@ piuparts (0.63) UNRELEASED; urgency=medium
     - Link to the new "Debian Package Tracker" (tracker.debian.org) instead to
       the old "Package Tracker System" (PTS).
     - Switch links to lintian.debian.org to https.
+  * crontab-slave.in: try to start slave every hour to make sure it's always
+    running.
 
  -- Andreas Beckmann <anbe@debian.org>  Wed, 03 Dec 2014 20:36:30 +0100
 

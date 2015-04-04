@@ -4,6 +4,7 @@
 # start slave_run automatically after reboots
 #
 @reboot @sharedir@/piuparts/slave/slave_cleanup ; @sharedir@/piuparts/slave/slave_run
+42 * * * * @sharedir@/piuparts/slave/slave_cleanup ; ! @sharedir@/piuparts/slave/slave_run || echo "piuparts-slave started by cron"
 
 #
 # monitor slave session every hour
