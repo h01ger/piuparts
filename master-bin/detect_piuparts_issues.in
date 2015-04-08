@@ -42,6 +42,9 @@ for SECTION in $SECTIONS ; do
 		rgrep -l -e "ERROR:.*:Temporary directory is not a directory" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "No space left on device" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "E: You don't have enough free space in /var/cache/apt/archives/" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "E: Failed to write temporary StateFile /var/lib/apt/extended_states.tmp" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -E "(chfn|groupadd|useradd): cannot lock /etc/(group|gshadow|passwd|shadow|subuid); try again later." $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -E "(groupadd|useradd): failure while writing changes to /etc/(group|passwd)" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "ERROR: Command failed (status=-7): .* 'apt-cache'" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "^RuntimeError: maximum recursion depth exceeded while calling a Python object" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "^Traceback" $MASTER/$SECTION/$subdir >> $FILE
