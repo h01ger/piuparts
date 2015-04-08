@@ -48,6 +48,18 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 
 fi
 
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		ekeyd-uds)
+			# ekeyd-uds was removed after squeeze, maintainer scripts are incompatible with udev/jessie
+			log_debug
+			dpkg --purge ekeyd-uds
+			;;
+	esac
+
+fi
+
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "experimental" ]; then
 
 	case ${PIUPARTS_OBJECTS} in
