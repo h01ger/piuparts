@@ -25,6 +25,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	*-mips-linux-gnu)
 		FOREIGN="mips"
 		;;
+	crossbuild-essential-mipsel|\
 	*-mipsel-linux-gnu)
 		FOREIGN="mipsel"
 		;;
