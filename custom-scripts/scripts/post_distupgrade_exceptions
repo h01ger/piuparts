@@ -23,6 +23,7 @@ fi
 if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
+		kismet|\
 		tshark|\
 		wireshark|\
 		wireshark-common|\
