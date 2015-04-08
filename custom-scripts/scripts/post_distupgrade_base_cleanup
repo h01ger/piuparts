@@ -53,10 +53,6 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "jessie" ] || \
 
 	mark_for_purge libdb5.1
 
-	# gcc-4.7-base is part of the minimal wheezy chroot
-	# but it no longer exists in jessie
-	mark_for_purge gcc-4.7-base
-
 fi
 
 if [ -n "$PURGE" ]; then
