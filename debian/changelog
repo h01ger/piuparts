@@ -9,6 +9,8 @@ piuparts (0.63) UNRELEASED; urgency=medium
     - Mount /dev/pts into the chroot. Wanted by recent apt.
     - Fix usage of schroot with chroot names without ':'.  (Closes: #773874)
     - Resolve distro aliases before setting PIUPARTS_DISTRIBUTION.
+    - Fix running debootstrap if --do-not-verify-signatures is given.
+      (Closes: #781673)
   * piuparts.conf:
     - Enable --warn-on-debsums-errors for all jessie tests.
     - Add new suite: jessie-pu (test only packages in jessie-proposed-updates).

@@ -977,9 +977,11 @@ class Chroot:
         prefix = []
         if settings.eatmydata and os.path.isfile('/usr/bin/eatmydata'):
             prefix.append('eatmydata')
+        options = []
         if settings.do_not_verify_signatures:
             logging.info("Warning: not using --keyring option when running debootstrap!")
-        options = [settings.keyringoption]
+        else:
+            options.append("--keyring=%s" % settings.keyring)
         if settings.eatmydata:
             options.append('--include=eatmydata')
         options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
@@ -2862,10 +2864,8 @@ def parse_command_line():
         settings.keyring = defaults.get_keyring()
     settings.do_not_verify_signatures = opts.do_not_verify_signatures
     if settings.do_not_verify_signatures:
-        settings.keyringoption=""
         settings.apt_unauthenticated="Yes"
     else:
-        settings.keyringoption="--keyring=%s" % settings.keyring
         settings.apt_unauthenticated="No"
     settings.install_recommends = opts.install_recommends
     settings.eatmydata = not opts.no_eatmydata
