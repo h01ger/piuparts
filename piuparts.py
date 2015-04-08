@@ -1384,9 +1384,12 @@ class Chroot:
         root = self.relative(".")
         vdict = {}
         proc = os.path.join(root, "proc")
+        devpts = os.path.join(root, "dev/pts")
         for dirpath, dirnames, filenames in os.walk(root):
             assert dirpath[:len(root)] == root
             if dirpath[:len(proc) + 1] in [proc, proc + "/"]:
+                continue
+            if dirpath[:len(devpts) + 1] in [devpts, devpts + "/"]:
                 continue
             for name in [dirpath] + \
                         [os.path.join(dirpath, f) for f in filenames]:
