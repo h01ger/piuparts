@@ -43,6 +43,8 @@ piuparts (0.63) UNRELEASED; urgency=medium
   * Update exceptions for squeeze-lts.
   * Add/update exceptions for many packages.
   * Add/update some bug templates.
+  * known_problems/{initdscript_lsb_header_issue,insserv_error}.conf:
+    Report "service.*already provided", too.
 
   [ Holger Levsen ]
   * piuparts.conf.pejacevic: add new suite: jessie2proposed.
