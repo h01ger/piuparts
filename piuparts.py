@@ -320,7 +320,10 @@ class Settings:
             # work around #316521 dpkg: incomplete cleanup of empty directories
             "/etc/apache2/",
             "/etc/apache2/conf.d/",
+            "/etc/clamav/",
             "/etc/cron.d/",
+            "/etc/lighttpd/",
+            "/etc/lighttpd/conf-available/",
             "/etc/nagios-plugins/config/",
             "/etc/php5/",
             "/etc/php5/conf.d/",

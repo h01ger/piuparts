@@ -2,6 +2,10 @@ piuparts (0.63) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Add to ignored_files:
+      + /etc/clamav/
+      + /etc/lighttpd/
+      + /etc/lighttpd/conf-available/
     - Increase verbosity when reporting things installed over directory
       symlinks: report all symlinks and their targets.
     - Reinstall base system packages missing upon removal with
