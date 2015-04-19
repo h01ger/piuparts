@@ -103,14 +103,14 @@ class Config(UserDict.UserDict):
         debdist = distro_info.DebianDistroInfo()
 
         # start with e.g. "sid" -> "unstable"
-        distmap = collections.defaultdict( lambda : "unknown", [
-                              (debdist.old(), "oldstable"),
+        distmap = collections.defaultdict(lambda: "unknown", [
+            (debdist.old(), "oldstable"),
                               (debdist.devel(), "unstable"),
                               (debdist.stable(), "stable"),
                               (debdist.testing(), "testing"),
                               ("experimental", "experimental"),
                               ("rc", "experimental"),
-                              ])
+        ])
 
         # add mappings for e.g. "oldstable" -> "oldstable"
         distmap.update(dict([(val, val) for key, val in distmap.iteritems()]))
@@ -119,7 +119,7 @@ class Config(UserDict.UserDict):
         # currently returns 'Debian 6.0 "Squeeze"'
         dkey = lambda x: "Debian" + re.split('[ \.]', x(result="fullname"))[1]
         dfuncs = [debdist.old, debdist.stable, debdist.testing]
-        distmap.update(dict([(dkey(x),distmap[x()]) for x in dfuncs]))
+        distmap.update(dict([(dkey(x), distmap[x()]) for x in dfuncs]))
 
         return distmap
 
@@ -132,7 +132,7 @@ class Config(UserDict.UserDict):
         if not distrolist:
             distrolist = [self.get_distro()] + self.get_distros()
         mappedlist = [self._map_distro(x) for x in distrolist]
-        return reduce(lambda x,y: y if y != "unknown" else x, mappedlist)
+        return reduce(lambda x, y: y if y != "unknown" else x, mappedlist)
 
     def get_area(self):
         if self["area"] is not None:
@@ -154,13 +154,13 @@ class DistroConfig(UserDict.UserDict):
         UserDict.UserDict.__init__(self)
         self._mirror = mirror
         self._defaults = {
-                "uri": None,
+            "uri": None,
                 "distribution": None,
                 "components": None,
                 "target-release": None,
                 "depends": None,
                 "candidates": None,
-            }
+        }
         cp = ConfigParser.SafeConfigParser()
         cp.read(filename)
         for section in cp.sections():
@@ -195,7 +195,7 @@ class DistroConfig(UserDict.UserDict):
 
     def _get_packages_url(self, distro, area, arch):
         return "%s/dists/%s/%s/binary-%s/Packages" % (
-                self.get_mirror(distro),
+            self.get_mirror(distro),
                 self.get_distribution(distro),
                 area, arch)
 
@@ -205,7 +205,7 @@ class DistroConfig(UserDict.UserDict):
 
     def _get_sources_url(self, distro, area):
         return "%s/dists/%s/%s/source/Sources" % (
-                self.get_mirror(distro),
+            self.get_mirror(distro),
                 self.get_distribution(distro),
                 area)
 
@@ -228,7 +228,7 @@ class DistroConfig(UserDict.UserDict):
             todo = todo[1:]
             if not curr in seen:
                 seen.append(curr)
-                todo = (self.get(curr, "depends") or "").split() + [ curr ] + todo
+                todo = (self.get(curr, "depends") or "").split() + [curr] + todo
             elif not curr in done:
                 if include_virtual or not self._is_virtual(curr):
                     done.append(curr)

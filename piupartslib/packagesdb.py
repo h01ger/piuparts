@@ -54,6 +54,7 @@ def rfc822_like_header_parse(input):
             headers.append(line)
     return headers
 
+
 class Package(UserDict.UserDict):
 
     def __init__(self, headers):
@@ -266,7 +267,7 @@ class PackagesDB:
         "unknown",
         "unknown-preferred-alternative",  # obsolete
         "no-dependency-from-alternatives-exists",  # obsolete
-        #"does-not-exist",  # can only happen as query result for a dependency
+        # "does-not-exist",  # can only happen as query result for a dependency
     ]
 
     _good_states = [
@@ -476,7 +477,7 @@ class PackagesDB:
                                 prefer_alt = alternative
                                 prefer_alt_score = 2
                             elif prefer_alt_score < 1 and \
-                                 altdep_state in ["waiting-to-be-tested", "waiting-for-dependency-to-be-tested"]:
+                                    altdep_state in ["waiting-to-be-tested", "waiting-for-dependency-to-be-tested"]:
                                 prefer_alt = alternative
                                 prefer_alt_score = 1
                             elif prefer_alt_score < 0 and altdep_state == "unknown":
@@ -488,7 +489,7 @@ class PackagesDB:
                         package.prefer_alt_depends(header, d, prefer_alt)
 
         dep_states = [(dep, self.get_best_package_state(dep))
-                        for dep in package.dependencies()]
+                      for dep in package.dependencies()]
 
         for dep, dep_state in dep_states:
             if dep_state in self._propagate_error_state:
@@ -711,9 +712,9 @@ class PackagesDB:
 
         if not self._recycle_mode:
             return (
-                    min(rdep_chain_len, waiting_count),
+                min(rdep_chain_len, waiting_count),
                     waiting_count,
-                    )
+            )
 
         try:
             statobj = self._logdb.stat(self._recycle, p["Package"], p["Version"])
@@ -724,25 +725,25 @@ class PackagesDB:
             mtime = 0
 
         return (
-                min(rdep_chain_len, waiting_count),
+            min(rdep_chain_len, waiting_count),
                 waiting_count,
                 not self._logdb.log_exists(p, [self._ok]),  # prefer problematic logs
                 -ctime / 3600,  # prefer older, at 1 hour granularity to allow randomization
                 -mtime / 3600,  # prefer older, at 1 hour granularity to allow randomization
-                )
+        )
 
     def _find_packages_ready_for_testing(self):
         if self._candidates_for_testing is None:
             self._candidates_for_testing = [self.get_package(pn)
-                    for pn in self.get_pkg_names_in_state("waiting-to-be-tested")]
+                                            for pn in self.get_pkg_names_in_state("waiting-to-be-tested")]
             self._candidates_for_testing = [p for p in self._candidates_for_testing
-                    if not self._logdb.log_exists(p, [self._reserved]) or \
-                            self._logdb.log_exists(p, [self._recycle])]
+                                            if not self._logdb.log_exists(p, [self._reserved]) or
+                                            self._logdb.log_exists(p, [self._recycle])]
             if len(self._candidates_for_testing) > 1:
                 tuples = [(self._get_package_weight(p), random.random(), p)
-                        for p in self._candidates_for_testing]
+                          for p in self._candidates_for_testing]
                 self._candidates_for_testing = [x[-1]
-                        for x in sorted(tuples, reverse=True)]
+                                                for x in sorted(tuples, reverse=True)]
         return self._candidates_for_testing[:]
 
     def _remove_unavailable_candidate(self, p):

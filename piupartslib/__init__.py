@@ -29,6 +29,7 @@ import packagesdb
 
 
 class DecompressedStream():
+
     def __init__(self, fileobj, decompressor=None):
         self._input = fileobj
         self._decompressor = decompressor

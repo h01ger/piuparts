@@ -44,10 +44,11 @@ DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
 
 log_handler = None
 
+
 def setup_logging(log_level, log_file_name):
     logger = logging.getLogger()
 
-    global log_handler;
+    global log_handler
     logger.removeHandler(log_handler)
 
     if log_file_name:
@@ -58,6 +59,7 @@ def setup_logging(log_level, log_file_name):
     logger.addHandler(log_handler)
     logger.setLevel(log_level)
 
+
 def timestamp():
     return time.strftime("[%Y-%m-%d %H:%M:%S]")
 
@@ -66,18 +68,18 @@ class Config(piupartslib.conf.Config):
 
     def __init__(self, section="master", defaults_section=None):
         piupartslib.conf.Config.__init__(self, section,
-            {
-                "log-file": None,
-                "master-directory": ".",
-                "proxy": None,
-                "mirror": None,
-                "distro": None,
-                "area": None,
-                "arch": None,
-                "upgrade-test-distros": None,
-                "depends-sections": None,
-            },
-            defaults_section=defaults_section)
+                                         {
+                                         "log-file": None,
+                                         "master-directory": ".",
+                                         "proxy": None,
+                                         "mirror": None,
+                                         "distro": None,
+                                         "area": None,
+                                         "arch": None,
+                                         "upgrade-test-distros": None,
+                                         "depends-sections": None,
+                                         },
+                                         defaults_section=defaults_section)
 
 
 class CommandSyntaxError(Exception):
@@ -217,8 +219,8 @@ class Master(Protocol):
                 self._load_package_database(dep)
             db.set_dependency_databases([self._package_databases[dep] for dep in deps])
         db.load_packages_urls(
-                distro_config.get_packages_urls(
-                    config.get_distro(),
+            distro_config.get_packages_urls(
+                config.get_distro(),
                     config.get_area(),
                     config.get_arch()))
         if config.get_distro() != config.get_final_distro():
@@ -253,7 +255,6 @@ class Master(Protocol):
             return 0  # stamp outdated
         return ttl + random.randrange(120)
 
-
     def do_transaction(self):
         line = self._readline()
         if line:
@@ -274,6 +275,7 @@ class Master(Protocol):
         if len(args) != count:
             raise CommandSyntaxError("Need exactly %d args: %s %s" %
                                      (count, command, " ".join(args)))
+
     def dump_pkgs(self):
         for st in self._binary_db.get_states():
             for name in self._binary_db.get_pkg_names_in_state(st):

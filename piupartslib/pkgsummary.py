@@ -18,7 +18,6 @@
 # with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-
 # Piuparts summary generation module
 #
 # This module is used to create exportable section and global package testing
@@ -85,6 +84,7 @@ import json
 import datetime
 from collections import namedtuple, defaultdict
 
+
 class SummaryException(Exception):
     pass
 
@@ -96,28 +96,29 @@ DEFSEC = 'overall'
 FlagInfo = namedtuple('FlagInfo', ['word', 'priority', 'states'])
 
 flaginfo = {
-            'F': FlagInfo('Failed',  0, ["failed-testing"]),
+    'F': FlagInfo('Failed',  0, ["failed-testing"]),
             'X': FlagInfo('Blocked', 1, [
-                                         "cannot-be-tested",
-                                         "dependency-failed-testing",
-                                         "dependency-cannot-be-tested",
-                                         "dependency-does-not-exist",
-                                        ]),
+                          "cannot-be-tested",
+                          "dependency-failed-testing",
+                          "dependency-cannot-be-tested",
+                          "dependency-does-not-exist",
+                          ]),
             'W': FlagInfo('Waiting', 2, [
-                                         "waiting-to-be-tested",
-                                         "waiting-for-dependency-to-be-tested",
-                                        ]),
+                          "waiting-to-be-tested",
+                          "waiting-for-dependency-to-be-tested",
+                          ]),
             'P': FlagInfo('Passed',  3, [
-                                         "essential-required",
-                                         "successfully-tested",
-                                        ]),
+                          "essential-required",
+                          "successfully-tested",
+                          ]),
             '-': FlagInfo('Unknown', 4, [
-                                         "does-not-exist",
-                                         "unknown",
-                                        ]),
-           }
+                          "does-not-exist",
+                          "unknown",
+                          ]),
+}
 
-state2flg = dict([(y,x[0]) for x in flaginfo.iteritems() for y in x[1].states])
+state2flg = dict([(y, x[0]) for x in flaginfo.iteritems() for y in x[1].states])
+
 
 def worst_flag(*flags):
     try:
@@ -127,6 +128,7 @@ def worst_flag(*flags):
 
     return(flag)
 
+
 def get_flag(state):
     try:
         flag = state2flg[state]
@@ -134,6 +136,7 @@ def get_flag(state):
         raise SummaryException("Unknown state - " + state)
 
     return(flag)
+
 
 def new_summary():
     cdate_array = datetime.datetime.utcnow().ctime().split()
@@ -144,19 +147,20 @@ def new_summary():
     pkgstruct = defaultdict(lambda: defaultdict(lambda: dfltentry))
 
     return({
-               "_id"      : SUMMID,
-               "_version" : SUMMVER,
-               "_date"    : utcdate,
-               "_comment" : "Debian Piuparts Package Results - " \
-                            "https://anonscm.debian.org/cgit/piuparts/" \
+        "_id": SUMMID,
+               "_version": SUMMVER,
+               "_date": utcdate,
+               "_comment": "Debian Piuparts Package Results - "
+                            "https://anonscm.debian.org/cgit/piuparts/"
                             "piuparts.git/tree/piupartslib/pkgsummary.py",
-               "_type"    : "source",
-               "packages" : pkgstruct,
-          })
+               "_type": "source",
+               "packages": pkgstruct,
+    })
+
 
 def add_summary(summary, rep_sec, pkg, flag, block_cnt, url):
     if not flag in flaginfo or not isinstance(block_cnt, int) \
-           or not url.startswith('http'):
+            or not url.startswith('http'):
         raise SummaryException("Invalid summary argument")
 
     pdict = summary["packages"]
@@ -170,6 +174,7 @@ def add_summary(summary, rep_sec, pkg, flag, block_cnt, url):
 
     return summary
 
+
 def merge_summary(gbl_summ, sec_summ):
     spdict = sec_summ["packages"]
 
@@ -180,6 +185,7 @@ def merge_summary(gbl_summ, sec_summ):
             add_summary(gbl_summ, DEFSEC, pkg, flag, block_cnt, url)
 
     return gbl_summ
+
 
 def tooltip(summary, pkg):
     """Returns e.g. "Failed in testing and stable, blocking 5 packages"."""
@@ -210,9 +216,11 @@ def tooltip(summary, pkg):
 
     return tip
 
+
 def write_summary(summary, fname):
     with open(fname, 'w') as fl:
         json.dump(summary, fl, sort_keys=True, indent=1)
+
 
 def read_summary(fname):
     with open(fname, 'r') as fl:
@@ -228,7 +236,6 @@ if __name__ == '__main__':
 
     # read a global summary file and return DDPO info by package
     summary = read_summary(sys.argv[1])
-
 
     for pkg in summary['packages']:
         flag, blocked, url = summary['packages'][pkg][DEFSEC]

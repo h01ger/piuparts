@@ -7,6 +7,7 @@ import json
 
 import piupartslib.pkgsummary as pkgsummary
 
+
 class PkgSummaryTests(unittest.TestCase):
 
     def testSummFlaginfoStateDups(self):
@@ -18,25 +19,24 @@ class PkgSummaryTests(unittest.TestCase):
         self.assertEqual(states, nodups)
 
     def testSummGetFlag(self):
-        self.assertEqual( 'F', pkgsummary.get_flag('failed-testing'))
-        self.assertEqual( 'X', pkgsummary.get_flag('dependency-does-not-exist'))
-        self.assertEqual( 'P', pkgsummary.get_flag('successfully-tested'))
-        self.assertEqual( 'W', pkgsummary.get_flag('waiting-to-be-tested'))
+        self.assertEqual('F', pkgsummary.get_flag('failed-testing'))
+        self.assertEqual('X', pkgsummary.get_flag('dependency-does-not-exist'))
+        self.assertEqual('P', pkgsummary.get_flag('successfully-tested'))
+        self.assertEqual('W', pkgsummary.get_flag('waiting-to-be-tested'))
 
         with self.assertRaises(pkgsummary.SummaryException):
             pkgsummary.get_flag('bogus-state')
 
     def testSummWorstFlag(self):
-        self.assertEqual( 'F', pkgsummary.worst_flag('F'))
-        self.assertEqual( 'P', pkgsummary.worst_flag('P'))
-        self.assertEqual( 'F', pkgsummary.worst_flag('P', 'F'))
-        self.assertEqual( 'F', pkgsummary.worst_flag('F', 'F'))
-        self.assertEqual( 'W', pkgsummary.worst_flag('W', 'P'))
-        self.assertEqual( 'F', pkgsummary.worst_flag('W', 'P', 'F', 'X', '-'))
+        self.assertEqual('F', pkgsummary.worst_flag('F'))
+        self.assertEqual('P', pkgsummary.worst_flag('P'))
+        self.assertEqual('F', pkgsummary.worst_flag('P', 'F'))
+        self.assertEqual('F', pkgsummary.worst_flag('F', 'F'))
+        self.assertEqual('W', pkgsummary.worst_flag('W', 'P'))
+        self.assertEqual('F', pkgsummary.worst_flag('W', 'P', 'F', 'X', '-'))
 
         with self.assertRaises(pkgsummary.SummaryException):
             pkgsummary.worst_flag('Z')
-
 
 
 class PkgSummaryAddTests(unittest.TestCase):
@@ -56,34 +56,34 @@ class PkgSummaryAddTests(unittest.TestCase):
     def testSummAddArgValidation(self):
         with self.assertRaises(pkgsummary.SummaryException):
             pkgsummary.add_summary(
-                        self.summ, 'foodist', 'foopkg', 'Z', 0, 'http://foo')
+                self.summ, 'foodist', 'foopkg', 'Z', 0, 'http://foo')
         with self.assertRaises(pkgsummary.SummaryException):
             pkgsummary.add_summary(
-                        self.summ, 'foodist', 'foopkg', 'X', 'bogus',
+                self.summ, 'foodist', 'foopkg', 'X', 'bogus',
                         'http://foo')
         with self.assertRaises(pkgsummary.SummaryException):
             pkgsummary.add_summary(
-                        self.summ, 'foodist', 'foopkg', 'X', 1, 'ittp://foo')
+                self.summ, 'foodist', 'foopkg', 'X', 1, 'ittp://foo')
 
         pkgsummary.add_summary(
-                        self.summ, 'foodist', 'foopkg', 'X', 1, 'http://foo')
+            self.summ, 'foodist', 'foopkg', 'X', 1, 'http://foo')
 
     def testSummAddArgStorageFormat(self):
         # store non-overlapping entries
 
         pkgsummary.add_summary(self.summ, 'dist', 'pkg', 'X', 0, 'http://foo')
         pkgsummary.add_summary(
-                     self.summ, 'dist', 'pkg2', 'W', 1, 'http://foo2')
+            self.summ, 'dist', 'pkg2', 'W', 1, 'http://foo2')
         pkgsummary.add_summary(
-                     self.summ, 'dist2', 'pkg3', 'P', 2, 'http://foo3')
+            self.summ, 'dist2', 'pkg3', 'P', 2, 'http://foo3')
         self.assertEqual(
-                     ['X', 0, 'http://foo'],
+            ['X', 0, 'http://foo'],
                      self.summ['packages']['pkg']['dist'])
         self.assertEqual(
-                     ['W', 1, 'http://foo2'],
+            ['W', 1, 'http://foo2'],
                      self.summ['packages']['pkg2']['dist'])
         self.assertEqual(
-                     ['P', 2, 'http://foo3'],
+            ['P', 2, 'http://foo3'],
                      self.summ['packages']['pkg3']['dist2'])
 
     def testSummAddOverwriteFlag(self):

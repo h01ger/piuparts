@@ -353,7 +353,7 @@ ANALYSIS_BODY_TEMPLATE = """
 """
 
 PROB_TPL = \
-"""<tr class="titlerow"><td class="titlecell">
+    """<tr class="titlerow"><td class="titlecell">
 $HEADER in $SECTION, sorted by reverse dependency count.
 </td></tr><tr class="normalrow"><td class="contentcell2">
 $HELPTEXT
@@ -367,7 +367,7 @@ $PACKAGE_LIST</ul>
 """
 
 PKG_ERROR_TPL = \
-"""<li>$RDEPS - <a href=\"$LOG\">$LOG</a>
+    """<li>$RDEPS - <a href=\"$LOG\">$LOG</a>
     (<a href=\"https://tracker.debian.org/pkg/$SPKG\" target=\"_blank\">PTS</a>)
     (<a href=\"https://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)
 $BUG</li>
@@ -538,12 +538,13 @@ def html_protect(vstr):
     vstr = "&#39;".join(vstr.split("'"))
     return vstr
 
+
 def is_bad_state(state):
     bad_states = [
         #"successfully-tested",
         "failed-testing",
         "cannot-be-tested",
-        #"essential-required",  # obsolete
+        # "essential-required",  # obsolete
         #"waiting-to-be-tested",
         #"waiting-for-dependency-to-be-tested",
         "dependency-failed-testing",
@@ -558,10 +559,12 @@ def is_bad_state(state):
 
     return(state in bad_states)
 
+
 def emphasize_reason(reason):
     if is_bad_state(reason):
-        reason = "<em>"+reason+"</em>"
+        reason = "<em>" + reason + "</em>"
     return reason
+
 
 def source_subdir(source):
     if source[:3] == "lib":
@@ -569,8 +572,9 @@ def source_subdir(source):
     else:
         return source[:1]
 
+
 def source_summary_url(web_host, doc_root, section, src_pkg):
-    return( "https://%s%s/%s/source/%s/%s.html" %
+    return("https://%s%s/%s/source/%s/%s.html" %
               (
                   web_host,
                   doc_root,
@@ -578,7 +582,8 @@ def source_summary_url(web_host, doc_root, section, src_pkg):
                   source_subdir(src_pkg),
                   src_pkg,
               )
-          )
+           )
+
 
 def maintainer_subdir(maintainer):
     return maintainer.lower()[:1]
@@ -596,6 +601,7 @@ def find_files_with_suffix(vdir, suffix):
                 pass
     # sort by mtime
     return [x[1] for x in sorted(pairs)]
+
 
 def update_file(source, target):
     if os.path.exists(target):
@@ -617,7 +623,7 @@ def update_file(source, target):
         try:
             shutil.copyfile(source, target)
         except IOError as (errno, strerror):
-            logging.error("failed to copy %s to %s: I/O error(%d): %s" \
+            logging.error("failed to copy %s to %s: I/O error(%d): %s"
                            % (source, target, errno, strerror))
 
 
@@ -630,6 +636,7 @@ def copy_logs(logs_by_dir, output_dir):
             source = os.path.join(vdir, basename)
             target = os.path.join(fulldir, basename)
             update_file(source, target)
+
 
 def remove_old_logs(logs_by_dir, output_dir):
     for vdir in logs_by_dir:
@@ -657,6 +664,7 @@ def append_file(filename, contents):
     f.write(contents)
     f.close()
 
+
 def read_file(filename):
     f = file(filename, "r")
     l = f.readlines()
@@ -673,13 +681,13 @@ def write_template_html(filename, body, mapping={}):
         "content_md5": "",
         "piuparts_version": "",
         "time": "",
-        })
+    })
     content_md5 = hashlib.md5(htmlpage.safe_substitute(mapping)).hexdigest()
     mapping.update({
         "content_md5": content_md5,
         "piuparts_version": PIUPARTS_VERSION,
         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
-        })
+    })
     write_file(filename, htmlpage.safe_substitute(mapping))
 
 
@@ -687,12 +695,13 @@ def create_section_navigation(section_names, current_section, doc_root):
     tablerows = ""
     for section in section_names:
         tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell\"><a href='%s/%s'>%s</a></td></tr>\n") % \
-                          (doc_root, html_protect(section), html_protect(section))
+            (doc_root, html_protect(section), html_protect(section))
     tablerows += "<tr><td class=\"contentcell\"><a href=\"%s/%s/maintainer/\">by maintainer / uploader</a></td></tr>\n" \
                  % (doc_root, current_section)
     tablerows += "<tr><td class=\"contentcell\"><a href=\"%s/%s/source/\">by source package</a></td></tr>\n" \
                  % (doc_root, current_section)
     return tablerows;
+
 
 def get_email_address(maintainer):
     email = "INVALID maintainer address: %s" % (maintainer)
@@ -727,11 +736,11 @@ class Section:
         self._config = Config(section=section, defaults_section="global")
         self._config.read(CONFIG_FILE)
         self._distro_config = piupartslib.conf.DistroConfig(
-                DISTRO_CONFIG_FILE, self._config["mirror"])
+            DISTRO_CONFIG_FILE, self._config["mirror"])
         logging.debug("-------------------------------------------")
         logging.debug("Running section " + self._config.section)
 
-        self._section_directory = os.path.abspath(os.path.join(master_directory, \
+        self._section_directory = os.path.abspath(os.path.join(master_directory,
                                                                self._config.section))
         if not os.path.exists(self._section_directory):
             logging.debug("Warning: %s did not exist, now created. Did you ever let the slave work?"
@@ -748,8 +757,8 @@ class Section:
 
         self._source_db = piupartslib.packagesdb.PackagesDB(prefix=self._section_directory)
         self._source_db.load_packages_urls(
-                self._distro_config.get_sources_urls(
-                    self._config.get_distro(),
+            self._distro_config.get_sources_urls(
+                self._config.get_distro(),
                     self._config.get_area()))
         if self._config.get_distro() != self._config.get_final_distro():
             # take version numbers (or None) from final distro
@@ -785,8 +794,8 @@ class Section:
             # only cache the big base databases that don't have additional dependencies
             self._packagedb_cache[section] = db
         db.load_packages_urls(
-                self._distro_config.get_packages_urls(
-                    config.get_distro(),
+            self._distro_config.get_packages_urls(
+                config.get_distro(),
                     config.get_area(),
                     config.get_arch()))
         if config.get_distro() != config.get_final_distro():
@@ -803,9 +812,8 @@ class Section:
             "section_navigation": self._section_navigation,
             "doc_root": self._doc_root,
             "section": html_protect(self._config.section),
-            })
+        })
         write_template_html(filename, body, mapping)
-
 
     def write_log_list_page(self, filename, title, preface, logs):
         packages = {}
@@ -829,15 +837,15 @@ class Section:
             lines.append(line)
 
         if "FAIL" in preface:
-            title_style="alerttitlecell"
+            title_style = "alerttitlecell"
         else:
-            title_style="titlecell"
+            title_style = "titlecell"
 
         self._write_template_html(
-                filename,
+            filename,
                 LOG_LIST_BODY_TEMPLATE,
                 {
-                    "page_title": html_protect(title+" in "+self._config.section),
+                    "page_title": html_protect(title + " in " + self._config.section),
                     "title": html_protect(title),
                     "title_style": title_style,
                     "preface": preface,
@@ -845,7 +853,6 @@ class Section:
                     "versioncount": version_count,
                     "logrows": "".join(lines),
                 })
-
 
     def print_by_dir(self, output_directory, logs_by_dir):
         for vdir in logs_by_dir:
@@ -886,16 +893,16 @@ class Section:
 
             if package_name in self._log_name_cache[vdir]:
                 basename = package_name \
-                         + "_" \
+                    + "_" \
                          + self._log_name_cache[vdir][package_name] \
                          + ".log"
 
                 links.append("<a href=\"%s/%s\"%s>%s</a>" % (
-                        self._doc_root,
+                    self._doc_root,
                         os.path.join(self._config.section, vdir, basename),
                         style,
                         html_protect(self._log_name_cache[vdir][package_name]),
-                        ))
+                ))
 
         return links
 
@@ -914,9 +921,9 @@ class Section:
     def link_to_source_summary(self, package_name):
         source_name = self._binary_db.get_source(package_name)
         link = "<a href=\"%s/%s/source/%s\">%s</a>" % (
-                self._doc_root,
+            self._doc_root,
                 self._config.section,
-                source_subdir(source_name)+"/"+source_name+".html",
+                source_subdir(source_name) + "/" + source_name + ".html",
                 html_protect(package_name))
         return link
 
@@ -926,7 +933,7 @@ class Section:
             link = "<a href=\"%s/%s/%s\">%s</a>" % (
                 self._doc_root,
                 section,
-                "state-"+state+".html"+"#"+package_name,
+                "state-" + state + ".html" + "#" + package_name,
                 link_target)
         else:
             if link_target == package_name:
@@ -948,7 +955,7 @@ class Section:
             dirs = ["untestable"]
 
         if dirs != "":
-            links = self.find_links_to_logs (package_name, dirs, logs_by_dir)
+            links = self.find_links_to_logs(package_name, dirs, logs_by_dir)
             link = ", ".join(links)
 
         if "/bugged/" in link or "/affected/" in link:
@@ -989,7 +996,6 @@ class Section:
         shutil.copy(countsfile, self._output_directory)
 
         return total
-
 
     def create_maintainer_summaries(self, maintainers, source_data):
         logging.debug("Writing %d maintainer summaries in %s" % (len(maintainers), self._output_directory))
@@ -1046,19 +1052,19 @@ class Section:
             distrolinks += "</td></tr>"
 
             self._write_template_html(
-                    os.path.join(maintainer_subdir_path, maintainer + ".html"),
+                os.path.join(maintainer_subdir_path, maintainer + ".html"),
                     MAINTAINER_BODY_TEMPLATE,
                     {
-               "page_title": html_protect("Status of " \
-                                          + maintainer \
-                                          + " packages in " \
+                        "page_title": html_protect("Status of "
+                                          + maintainer
+                                          + " packages in "
                                           + self._config.section),
-               "maintainer": html_protect(maintainer+" in "+self._config.section),
-               "distrolinks": distrolinks,
-               "rows": rows + "".join([package_rows[state] for state in states]),
+                        "maintainer": html_protect(maintainer + " in " + self._config.section),
+                        "distrolinks": distrolinks,
+                        "rows": rows + "".join([package_rows[state] for state in states]),
                     })
 
-    def create_source_summary (self, source, logs_by_dir):
+    def create_source_summary(self, source, logs_by_dir):
         source_version = self._source_db.get_control_header(source, "Version")
         binaries = self._source_db.get_control_header(source, "Binary")
         maintainer = self._source_db.get_control_header(source, "Maintainer")
@@ -1082,11 +1088,11 @@ class Section:
             state = self._binary_db.get_package_state(binary)
 
             if not "waiting" in state and "dependency" in state:
-                state_style="lightalertlabelcell"
+                state_style = "lightalertlabelcell"
             elif state == "failed-testing":
-                state_style="lightlabelcell"
+                state_style = "lightlabelcell"
             else:
-                state_style="labelcell"
+                state_style = "labelcell"
 
             binary_version = self._binary_db.get_control_header(binary, "Version")
             binaryrows +=   "<tr class=\"normalrow\">" \
@@ -1109,10 +1115,12 @@ class Section:
                 failed = True
 
         if binaryrows != "":
-            source_state="unknown"
+            source_state = "unknown"
 
-            if success: source_state="<img src=\"%s/images/sunny.png\" alt=\"success\">" % self._doc_root
-            if failed:  source_state="<img src=\"%s/images/weather-severe-alert.png\" alt=\"failed\">" % self._doc_root
+            if success:
+                source_state = "<img src=\"%s/images/sunny.png\" alt=\"success\">" % self._doc_root
+            if failed:
+                source_state = "<img src=\"%s/images/weather-severe-alert.png\" alt=\"failed\">" % self._doc_root
 
             sourcerows =    "<tr class=\"titlerow\">" \
                           + "<td class=\"titlecell\" colspan=\"6\" id=\"%s\">%s in %s</td>" \
@@ -1157,19 +1165,20 @@ class Section:
                     os.path.join(source_summary_page_path, (source + ".html")),
                     SOURCE_PACKAGE_BODY_TEMPLATE,
                     {
-               "page_title": html_protect("Status of source package "+source+" in "+self._config.section),
-               "rows": sourcerows+binaryrows,
+                        "page_title": html_protect("Status of source package " + source + " in " + self._config.section),
+                        "rows": sourcerows + binaryrows,
                     })
 
             # return parsable values
-            if success: source_state = "pass"
-            if failed:  source_state = "fail"
+            if success:
+                source_state = "pass"
+            if failed:
+                source_state = "fail"
         else:
             source_state = "udeb"
             sourcerows = ""
 
         return sourcerows, binaryrows, source_state, maintainer, uploaders
-
 
     def create_package_summaries(self, logs_by_dir):
         logging.debug("Writing source summaries in %s" % self._config.section)
@@ -1206,17 +1215,16 @@ class Section:
 
         self.create_maintainer_summaries(maintainers, source_binary_rows)
 
-
     def make_section_stats_graph(self):
         countsfile = os.path.join(self._section_directory, "counts.txt")
         pngfile = os.path.join(self._output_directory, "states.png")
         grdevices = importr('grDevices')
         grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100, antialias="none")
         r = robjects.r
-        r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
+        r('t <- (read.table("' + countsfile + '",sep=",",header=1,row.names=1))')
         r('cname <- c("date",rep(colnames(t)))')
         # here we define how many days we wants stats for (163=half a year)
-        #r('v <- t[(nrow(t)-163):nrow(t),0:12]')
+        # r('v <- t[(nrow(t)-163):nrow(t),0:12]')
         # make graph since day 1
         r('v <- t[0:nrow(t),0:12]')
         # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
@@ -1224,7 +1232,7 @@ class Section:
                      "#fce94f", "#a40000", "#888a85", "#2e3436", "#729fcf", \
                      "#3465a4", "#204a87", "#555753"))')
         r('barplot(t(v),col = 1:13, \
-          main="Binary packages per state in '+self._config.section+'", \
+          main="Binary packages per state in ' + self._config.section + '", \
           xlab="", ylab="Number of binary packages", space=0, border=NA)')
         r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
         grdevices.dev_off()
@@ -1241,13 +1249,12 @@ class Section:
 
         return stats_html
 
-
     def create_and_link_to_analysises(self, state):
-        link="<ul>\n"
+        link = "<ul>\n"
         for template, linktarget in linktarget_by_template:
             # successful logs only have issues and failed logs only have errors
             if (state == "failed-testing" and template[-9:] != "issue.tpl") \
-                or (state == "successfully-tested" and template[-9:] == "issue.tpl"):
+                    or (state == "successfully-tested" and template[-9:] == "issue.tpl"):
                 substats = ""
 
                 tpl = os.path.join(self._output_directory, template)
@@ -1258,11 +1265,11 @@ class Section:
                     os.unlink(tpl)
 
                     self._write_template_html(
-                            os.path.join(self._output_directory, template[:-len(".tpl")]+".html"),
+                            os.path.join(self._output_directory, template[:-len(".tpl")] + ".html"),
                             ANALYSIS_BODY_TEMPLATE,
                             {
-                       "page_title": html_protect("Packages in state "+state+" "+linktarget),
-                       "rows": rows,
+                                "page_title": html_protect("Packages in state " + state + " " + linktarget),
+                                "rows": rows,
                             })
                     if state == "failed-testing":
                         count_bugged = string.count(rows, '"bugged/')
@@ -1283,7 +1290,7 @@ class Section:
                             substats += ": %s passed" % count_passed
                     link += "<li><a href=%s>%s</a>%s</li>\n" % \
                              (
-                                 template[:-len(".tpl")]+".html",
+                                 template[:-len(".tpl")] + ".html",
                                  linktarget,
                                  substats,
                              )
@@ -1340,10 +1347,10 @@ class Section:
                 os.path.join(self._output_directory, "index.html"),
                 SECTION_INDEX_BODY_TEMPLATE,
                 {
-            "page_title": html_protect(self._config.section+" statistics"),
-            "description": html_protect(description),
-            "tablerows": tablerows,
-            "packagesurl": "<br>".join([html_protect(url) for url in self._binary_db.get_urls()]),
+                    "page_title": html_protect(self._config.section + " statistics"),
+                    "description": html_protect(description),
+                    "tablerows": tablerows,
+                    "packagesurl": "<br>".join([html_protect(url) for url in self._binary_db.get_urls()]),
                 })
 
     def _show_providers(self, dep):
@@ -1380,7 +1387,7 @@ class Section:
                                          package2id(package["Package"]),
                                          self.link_to_source_summary(package["Package"]))
                 if with_counts:
-                    vlist += " (%d, %d)" % (self._binary_db.rrdep_count(package["Package"]), \
+                    vlist += " (%d, %d)" % (self._binary_db.rrdep_count(package["Package"]),
                                             self._binary_db.block_count(package["Package"]))
                 vlist += " (%s)" % html_protect(package["Maintainer"])
                 all_deps = unique(package.all_dependencies())
@@ -1409,19 +1416,17 @@ class Section:
                     os.path.join(self._output_directory, "state-%s.html" % state),
                     STATE_BODY_TEMPLATE,
                     {
-                                        "page_title": html_protect("Packages in state "+state+" in "+self._config.section),
+                                        "page_title": html_protect("Packages in state " + state + " in " + self._config.section),
                                         "state": html_protect(state),
                                         "list": vlist,
                                         "aside": aside,
                     })
-
 
     def archive_logfile(self, vdir, log):
         archivedir = os.path.join("archive", vdir)
         if not os.path.exists(archivedir):
             os.makedirs(archivedir)
         os.rename(os.path.join(vdir, log), os.path.join("archive", vdir, log))
-
 
     def cleanup_removed_packages(self, logs_by_dir):
         vdirs = logs_by_dir.keys()
@@ -1441,7 +1446,6 @@ class Section:
                                           (vdir, log, current))
                             self.archive_logfile(vdir, log)
                             logs_by_dir[vdir].remove(log)
-
 
     def generate_html(self):
         logging.debug("Finding log files")
@@ -1531,6 +1535,7 @@ class Section:
 
         self.generate_summary(web_host)
 
+
 def sections_by_precedence(sections):
     precedence = {}
     count = 0
@@ -1542,6 +1547,7 @@ def sections_by_precedence(sections):
 
     return sorted(sections, key=lambda x: precedence[x])
 
+
 def generate_global_summary(dir, sections):
     json_name = "summary.json"
 
@@ -1550,15 +1556,16 @@ def generate_global_summary(dir, sections):
     summary = pkgsummary.new_summary()
 
     for section in sections_by_precedence(sections):
-       sec_path = os.path.join(dir, section, json_name)
-       if os.path.isfile(sec_path):
-           sec_summ = pkgsummary.read_summary(sec_path)
-           summary = pkgsummary.merge_summary(summary, sec_summ)
+        sec_path = os.path.join(dir, section, json_name)
+        if os.path.isfile(sec_path):
+            sec_summ = pkgsummary.read_summary(sec_path)
+            summary = pkgsummary.merge_summary(summary, sec_summ)
 
     summary_path = os.path.join(dir, json_name)
     pkgsummary.write_summary(summary, summary_path)
 
 # START detect_well_known_errors
+
 
 def get_bug_text(logpath):
     bugpath = replace_ext(logpath, BUG_EXT)
@@ -1571,12 +1578,14 @@ def get_bug_text(logpath):
 
     return txt
 
+
 def populate_tpl(tmpl, vals):
 
     for key in vals:
         tmpl = re.sub("\$%s" % key, str(vals[key]), tmpl)
 
     return tmpl
+
 
 def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb):
 
@@ -1598,7 +1607,7 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
                                 'PACKAGE': bin_pkg,
                                 'BUG': get_bug_text(log),
                                 'RDEPS': rdep_cnt,
-                                'SPKG':src_pkg,
+                                'SPKG': src_pkg,
                                    })
 
     if len(pkg_text):
@@ -1609,8 +1618,9 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
                                 'COMMAND': problem.get_command(),
                                 'PACKAGE_LIST': pkg_text,
                                 'COUNT': len(failures),
-                                })
+        })
     return ""
+
 
 def update_html(section, html_dir, logdict, problem_list, failures, pkgsdb):
     for problem in problem_list:
@@ -1621,6 +1631,7 @@ def update_html(section, html_dir, logdict, problem_list, failures, pkgsdb):
         if len(tpl_text):
             with open(os.path.join(html_dir, problem.name[:-5] + TPL_EXT), 'w') as pf:
                 pf.write(tpl_text)
+
 
 def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
     workdirs = [os.path.join(sectiondir, x) for x in KPR_DIRS]
@@ -1641,7 +1652,7 @@ def make_bts_stats_graph(master_dir, out_dir):
     grdevices = importr('grDevices')
     grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100)
     r = robjects.r
-    r('t <- (read.table("'+countsfile+'",sep=",",header=1,row.names=1))')
+    r('t <- (read.table("' + countsfile + '",sep=",",header=1,row.names=1))')
     r('cname <- c("date",rep(colnames(t)))')
     # make graph since day 1
     r('v <- t[0:nrow(t),0:4]')
@@ -1689,10 +1700,10 @@ def main():
         # static pages
         logging.debug("Writing static pages")
         for page in ("index", "bug_howto"):
-            tpl = os.path.join(output_directory, page+".tpl")
+            tpl = os.path.join(output_directory, page + ".tpl")
             INDEX_BODY = "".join(read_file(tpl))
             write_template_html(
-                    os.path.join(output_directory, page+".html"),
+                    os.path.join(output_directory, page + ".html"),
                     INDEX_BODY,
                     {
                                    "page_title": "About piuparts.debian.org and News",

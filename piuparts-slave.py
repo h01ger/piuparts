@@ -46,11 +46,12 @@ apt_pkg.init_system()
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
-MAX_WAIT_TEST_RUN = 45*60
+MAX_WAIT_TEST_RUN = 45 * 60
 
 interrupted = False
 old_sigint_handler = None
 got_sighup = False
+
 
 def setup_logging(log_level, log_file_name):
     logger = logging.getLogger()
@@ -73,40 +74,42 @@ class Config(piupartslib.conf.Config):
     def __init__(self, section="slave", defaults_section=None):
         self.section = section
         piupartslib.conf.Config.__init__(self, section,
-            {
-                "sections": "slave",
-                "idle-sleep": 300,
-                "max-tgz-age": 2592000,
-                "min-tgz-retry-delay": 21600,
-                "master-host": None,
-                "master-user": None,
-                "master-command": None,
-                "proxy": None,
-                "mirror": None,
-                "piuparts-command": "sudo piuparts",
-                "piuparts-flags": "",
-                "tmpdir": None,
-                "distro": None,
-                "area": None,
-                "components": None,
-                "chroot-tgz": None,
-                "upgrade-test-distros": None,
-                "basetgz-directory": ".",
-                "max-reserved": 1,
-                "debug": "no",
-                "keep-sources-list": "no",
-                "arch": None,
-                "precedence": "1",
-                "slave-load-max": None,
-            },
-            defaults_section=defaults_section)
+                                         {
+                                         "sections": "slave",
+                                         "idle-sleep": 300,
+                                         "max-tgz-age": 2592000,
+                                         "min-tgz-retry-delay": 21600,
+                                         "master-host": None,
+                                         "master-user": None,
+                                         "master-command": None,
+                                         "proxy": None,
+                                         "mirror": None,
+                                         "piuparts-command": "sudo piuparts",
+                                         "piuparts-flags": "",
+                                         "tmpdir": None,
+                                         "distro": None,
+                                         "area": None,
+                                         "components": None,
+                                         "chroot-tgz": None,
+                                         "upgrade-test-distros": None,
+                                         "basetgz-directory": ".",
+                                         "max-reserved": 1,
+                                         "debug": "no",
+                                         "keep-sources-list": "no",
+                                         "arch": None,
+                                         "precedence": "1",
+                                         "slave-load-max": None,
+                                         },
+                                         defaults_section=defaults_section)
 
 
 class Alarm(Exception):
     pass
 
+
 def alarm_handler(signum, frame):
     raise Alarm
+
 
 def sigint_handler(signum, frame):
     global interrupted
@@ -114,6 +117,7 @@ def sigint_handler(signum, frame):
     print '\nSlave interrupted by the user, waiting for the current test to finish.'
     print 'Press Ctrl-C again to abort now.'
     signal(SIGINT, old_sigint_handler)
+
 
 def sighup_handler(signum, frame):
     global got_sighup
@@ -341,7 +345,7 @@ class Section:
         self._config = Config(section=section, defaults_section="global")
         self._config.read(CONFIG_FILE)
         self._distro_config = piupartslib.conf.DistroConfig(
-                DISTRO_CONFIG_FILE, self._config["mirror"])
+            DISTRO_CONFIG_FILE, self._config["mirror"])
         self._error_wait_until = 0
         self._idle_wait_until = 0
         self._recycle_wait_until = 0
@@ -362,7 +366,6 @@ class Section:
                 os.mkdir(rdir)
 
         self._slave = slave or Slave()
-
 
     def _throttle_if_overloaded(self):
         global interrupted
@@ -392,7 +395,6 @@ class Section:
             if secs < 300:
                 secs += random.randrange(30, 90)
 
-
     def _connect_to_master(self, recycle=False):
         self._slave.set_master_host(self._config["master-host"])
         self._slave.set_master_user(self._config["master-user"])
@@ -402,11 +404,10 @@ class Section:
         if recycle:
             self._slave.enable_recycling()
 
-
     def _get_tarball(self):
         basetgz = self._config["chroot-tgz"] or \
-                self._distro_config.get_basetgz(self._config.get_start_distro(),
-                                                self._config.get_arch())
+            self._distro_config.get_basetgz(self._config.get_start_distro(),
+                                            self._config.get_arch())
         return os.path.join(self._config["basetgz-directory"], basetgz)
 
     def _check_tarball(self):
@@ -453,7 +454,6 @@ class Section:
             return max(self._error_wait_until, self._recycle_wait_until)
         return max(self._error_wait_until, self._idle_wait_until)
 
-
     def run(self, do_processing=True, recycle=False):
         if time.time() < self.sleep_until(recycle=recycle):
             return 0
@@ -472,7 +472,7 @@ class Section:
             action = "Recycling"
         if not do_processing:
             action = "Flushing"
-        logging.info("%s section %s (precedence=%d)" \
+        logging.info("%s section %s (precedence=%d)"
                      % (action, self._config.section, self.precedence()))
 
         self._config = Config(section=self._config.section, defaults_section="global")
@@ -483,7 +483,7 @@ class Section:
             self._error_wait_until = time.time() + 3600
             return 0
         self._distro_config = piupartslib.conf.DistroConfig(
-                DISTRO_CONFIG_FILE, self._config["mirror"])
+            DISTRO_CONFIG_FILE, self._config["mirror"])
 
         if int(self._config["max-reserved"]) == 0:
             logging.info("disabled")
@@ -524,7 +524,6 @@ class Section:
             finally:
                 os.chdir(oldcwd)
         return 0
-
 
     def _talk_to_master(self, fetch=False, unreserve=False, recycle=False):
         flush = self._count_submittable_logs() > 0
@@ -589,7 +588,6 @@ class Section:
                 return True
         return False
 
-
     def _process(self):
         global interrupted
         self._slave.close()
@@ -601,8 +599,8 @@ class Section:
                 try:
                     pf = piupartslib.packagesdb.PackagesFile()
                     pf.load_packages_urls(
-                            self._distro_config.get_packages_urls(
-                                distro,
+                        self._distro_config.get_packages_urls(
+                            distro,
                                 self._config.get_area(),
                                 self._config.get_arch()),
                             packagenames)
@@ -631,7 +629,6 @@ class Section:
             self._slave.forget_reserved(package_name, version)
         self._talk_to_master(unreserve=interrupted)
         return test_count
-
 
     def _test_package(self, pname, pvers, packages_files):
         global old_sigint_handler
@@ -745,7 +742,7 @@ class Section:
                 output.write(" *** Process KILLED - exceed maximum run time ***\n")
             elif not "piuparts run ends" in lastline:
                 ret += 1024
-                output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n");
+                output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n")
 
         output.write("\n")
         output.write("ret=%d\n" % ret)
@@ -773,7 +770,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
         pids = [p.pid]
         if kill_all:
             ps = subprocess.Popen(["ps", "--no-headers", "-o", "pid", "--ppid", "%d" % p.pid],
-                                  stdout = subprocess.PIPE)
+                                  stdout=subprocess.PIPE)
             stdout, stderr = ps.communicate()
             pids.extend([int(pid) for pid in stdout.split()])
         if p.poll() is None:

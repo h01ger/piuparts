@@ -87,6 +87,7 @@ class Defaults:
     def get_keyring(self):
         """Return default keyring."""
 
+
 class DebianDefaults(Defaults):
 
     def get_components(self):
@@ -101,6 +102,7 @@ class DebianDefaults(Defaults):
     def get_keyring(self):
         return "/usr/share/keyrings/debian-archive-keyring.gpg"
 
+
 class UbuntuDefaults(Defaults):
 
     def get_components(self):
@@ -114,6 +116,7 @@ class UbuntuDefaults(Defaults):
 
     def get_keyring(self):
         return "/usr/share/keyrings/ubuntu-archive-keyring.gpg"
+
 
 class DefaultsFactory:
 
@@ -314,7 +317,7 @@ class Settings:
             "/var/lib/rbldns/",
             "/var/spool/powerdns/",     # pdns-server (#531134), pdns-recursor (#531135)
             # work around broken symlinks
-            "/usr/lib/python2.6/dist-packages/python-support.pth",  #635493 and #385775
+            "/usr/lib/python2.6/dist-packages/python-support.pth",  # 635493 and #385775
             "/usr/lib/python2.7/dist-packages/python-support.pth",
             "/etc/modules-load.d/modules.conf",
             # work around #316521 dpkg: incomplete cleanup of empty directories
@@ -339,7 +342,7 @@ class Settings:
             "/usr/share/python3/",
             "/usr/share/python3/debpython/",
             # HACKS
-            ]
+        ]
         self.ignored_patterns = [
             # system state
             "/dev/.*",
@@ -362,7 +365,7 @@ class Settings:
             "/var/lib/mercurial-server/.*",
             "/var/lib/onak/.*",
             "/var/lib/openvswitch/(pki/.*)?",
-            "/var/lib/vmm/(./.*)?",                     #682184
+            "/var/lib/vmm/(./.*)?",  # 682184
             "/var/log/exim/.*",
             "/var/log/exim4/.*",
             "/var/spool/exim/.*",
@@ -372,10 +375,10 @@ class Settings:
             "/var/www/.*",
             # HACKS
             "/lib/modules/.*/modules.*",
-            ]
+        ]
         self.non_pedantic_ignore_patterns = [
             "/tmp/.*"
-            ]
+        ]
 
 
 settings = Settings()
@@ -412,6 +415,7 @@ class TimeOffsetFormatter(logging.Formatter):
 
 DUMP = logging.DEBUG - 1
 HANDLERS = []
+
 
 def setup_logging(log_level, log_file_name):
     logging.addLevelName(DUMP, "DUMP")
@@ -464,6 +468,7 @@ def unqualify(packages):
 
 class Alarm(Exception):
     pass
+
 
 def alarm_handler(signum, frame):
     raise Alarm
@@ -528,10 +533,10 @@ def run(command, ignore_errors=False, timeout=0):
         logging.debug("Command ok: %s" % repr(command))
     elif ignore_errors:
         logging.debug("Command failed (status=%d), but ignoring error: %s" %
-              (p.returncode, repr(command)))
+                      (p.returncode, repr(command)))
     else:
         logging.error("Command failed (status=%d): %s\n%s" %
-              (p.returncode, repr(command), indent_string(output)))
+                      (p.returncode, repr(command), indent_string(output)))
         panic()
     return p.returncode, output
 
@@ -577,7 +582,7 @@ def make_metapackage(name, depends, conflicts):
     panic_handler_id = do_on_panic(lambda: shutil.rmtree(tmpdir))
     create_file(os.path.join(tmpdir, ".piuparts.tmpdir"), "metapackage creation")
     old_umask = os.umask(0)
-    os.makedirs(os.path.join(tmpdir, name, 'DEBIAN'), mode = 0755)
+    os.makedirs(os.path.join(tmpdir, name, 'DEBIAN'), mode=0755)
     os.umask(old_umask)
     control = deb822.Deb822()
     control['Package'] = name
@@ -607,7 +612,7 @@ def split_path(pathname):
     parts = []
     while pathname:
         (head, tail) = os.path.split(pathname)
-        #print "split '%s' => '%s' + '%s'" % (pathname, head, tail)
+        # print "split '%s' => '%s' + '%s'" % (pathname, head, tail)
         if tail:
             parts.append(tail)
         elif not head:
@@ -617,6 +622,7 @@ def split_path(pathname):
             break
         pathname = head
     return parts
+
 
 def canonicalize_path(root, pathname, report_links=False):
     """Canonicalize a path name, simulating chroot at 'root'.
@@ -631,18 +637,18 @@ def canonicalize_path(root, pathname, report_links=False):
     one for each symlink encountered.
 
     """
-    #print "\nCANONICALIZE %s %s" % (root, pathname)
+    # print "\nCANONICALIZE %s %s" % (root, pathname)
     links = []
     seen = []
     parts = split_path(pathname)
-    #print "PARTS ", list(reversed(parts))
+    # print "PARTS ", list(reversed(parts))
     path = "/"
     while parts:
         tag = "\n".join(parts + [path])
-        #print "TEST '%s' + " % path, list(reversed(parts))
+        # print "TEST '%s' + " % path, list(reversed(parts))
         if tag in seen or len(seen) > 1024:
             fullpath = os.path.join(path, *reversed(parts))
-            #print "LOOP %s" % fullpath
+            # print "LOOP %s" % fullpath
             path = fullpath
             logging.error("ELOOP: Too many symbolic links in '%s'" % path)
             break
@@ -658,14 +664,14 @@ def canonicalize_path(root, pathname, report_links=False):
             path = "/"
         elif os.path.islink(rootedpath):
             target = os.readlink(rootedpath)
-            #print "LINK to '%s'" % target
+            # print "LINK to '%s'" % target
             links.append((newpath, target))
             if os.path.isabs(target):
                 path = "/"
             parts.extend(split_path(target))
         else:
             path = newpath
-    #print "FINAL '%s'" % path
+    # print "FINAL '%s'" % path
     if report_links:
         return links
     return path
@@ -681,7 +687,7 @@ def is_broken_symlink(root, dirpath, filename):
 
     # The symlink chain, if any, has now been resolved. Does the target
     # exist?
-    #print "EXISTS ", pathname, os.path.exists(pathname)
+    # print "EXISTS ", pathname, os.path.exists(pathname)
     return not os.path.exists(pathname)
 
 
@@ -700,7 +706,7 @@ class Chroot:
         os.chmod(self.name, 0755)
         logging.debug("Created temporary directory %s" % self.name)
 
-    def create(self, temp_tgz = None):
+    def create(self, temp_tgz=None):
         """Create a chroot according to user's wishes."""
         self.panic_handler_id = do_on_panic(self.remove)
         if not settings.schroot:
@@ -821,21 +827,21 @@ class Chroot:
 
     def setup_from_schroot(self, schroot):
         self.schroot_session = schroot.split(":", 1)[-1] + "-" + str(uuid.uuid1()) + "-piuparts"
-        run(['schroot', '--begin-session', '--chroot', schroot , '--session-name', self.schroot_session])
+        run(['schroot', '--begin-session', '--chroot', schroot, '--session-name', self.schroot_session])
         ret_code, output = run(['schroot', '--chroot', "session:" + self.schroot_session, '--location'])
         self.name = output.strip()
-        logging.info("New schroot session in '%s'" % self.name);
+        logging.info("New schroot session in '%s'" % self.name)
 
     def setup_from_lvm(self, lvm_volume):
         """Create a chroot by creating an LVM snapshot."""
         self.lvm_base = os.path.dirname(lvm_volume)
         self.lvm_vol_name = os.path.basename(lvm_volume)
-        self.lvm_snapshot_name = self.lvm_vol_name + "-" + str(uuid.uuid1());
+        self.lvm_snapshot_name = self.lvm_vol_name + "-" + str(uuid.uuid1())
         self.lvm_snapshot = os.path.join(self.lvm_base, self.lvm_snapshot_name)
 
         logging.debug("Creating LVM snapshot %s from %s" % (self.lvm_snapshot, lvm_volume))
         run(['lvcreate', '-n', self.lvm_snapshot, '-s', lvm_volume, '-L', settings.lvm_snapshot_size])
-        logging.info("Mounting LVM snapshot to %s" % self.name);
+        logging.info("Mounting LVM snapshot to %s" % self.name)
         run(['mount', self.lvm_snapshot, self.name])
 
     def setup_from_dir(self, dirname):
@@ -859,11 +865,13 @@ class Chroot:
                                                  'usr/bin/eatmydata')):
             prefix.append('eatmydata')
         if settings.schroot:
-            return run(["schroot", "--preserve-environment", "--run-session", "--chroot", "session:" + self.schroot_session, "--directory", "/", "-u", "root", "--"] + prefix + command,
+            return run(
+                ["schroot", "--preserve-environment", "--run-session", "--chroot", "session:" +
+                    self.schroot_session, "--directory", "/", "-u", "root", "--"] + prefix + command,
                    ignore_errors=ignore_errors, timeout=settings.max_command_runtime)
         else:
             return run(["chroot", self.name] + prefix + command,
-                   ignore_errors=ignore_errors, timeout=settings.max_command_runtime)
+                       ignore_errors=ignore_errors, timeout=settings.max_command_runtime)
 
     def mkdir_p(self, path):
         fullpath = self.relative(path)
@@ -914,10 +922,10 @@ class Chroot:
         elif "http_proxy" in os.environ:
             proxy = os.environ["http_proxy"]
         else:
-            proxy = None;
-            pat = re.compile(r"^Acquire::http::Proxy\s+\"([^\"]+)\"", re.I);
+            proxy = None
+            pat = re.compile(r"^Acquire::http::Proxy\s+\"([^\"]+)\"", re.I)
             p = subprocess.Popen(["apt-config", "dump"],
-                             stdout=subprocess.PIPE)
+                                 stdout=subprocess.PIPE)
             stdout, _ = p.communicate()
             if stdout:
                 for line in stdout.split("\n"):
@@ -932,7 +940,7 @@ class Chroot:
             lines.append('Dpkg::Options {"--force-confdef";};\n')
 
         create_file(self.relative("etc/apt/apt.conf.d/piuparts"),
-            "".join(lines))
+                    "".join(lines))
 
     def create_dpkg_conf(self):
         """Create /etc/dpkg/dpkg.cfg.d/piuparts inside the chroot."""
@@ -946,7 +954,7 @@ class Chroot:
             if not os.path.exists(self.relative("etc/dpkg/dpkg.cfg.d")):
                 os.mkdir(self.relative("etc/dpkg/dpkg.cfg.d"))
             create_file(self.relative("etc/dpkg/dpkg.cfg.d/piuparts"),
-              "".join(lines))
+                        "".join(lines))
 
     def create_policy_rc_d(self):
         """Create a policy-rc.d that prevents daemons from running."""
@@ -976,7 +984,7 @@ class Chroot:
     def setup_minimal_chroot(self):
         """Set up a minimal Debian system in a chroot."""
         logging.debug("Setting up minimal chroot for %s at %s." %
-              (settings.debian_distros[0], self.name))
+                      (settings.debian_distros[0], self.name))
         prefix = []
         if settings.eatmydata and os.path.isfile('/usr/bin/eatmydata'):
             prefix.append('eatmydata')
@@ -1062,10 +1070,10 @@ class Chroot:
             logging.info("apt-cache does not know about any of the requested packages")
         else:
             logging.info("apt-cache knows about the following packages: " +
-                    ", ".join(known_packages))
+                         ", ".join(known_packages))
             if new_packages:
                 logging.info("the following packages are not in the archive: " +
-                        ", ".join(new_packages))
+                             ", ".join(new_packages))
         return known_packages
 
     def copy_files(self, source_names, target_name):
@@ -1079,10 +1087,10 @@ class Chroot:
                 shutil.copy(source_name, target_name)
             except IOError, detail:
                 logging.error("Error copying %s to %s: %s" %
-                      (source_name, target_name, detail))
+                              (source_name, target_name, detail))
                 panic()
 
-    def list_installed_files (self, pre_info, post_info):
+    def list_installed_files(self, pre_info, post_info):
         """List the new files installed, removed and modified between two dir trees.
         Actually, it is a nice output of the funcion diff_meta_dat."""
         (new, removed, modified) = diff_meta_data(pre_info, post_info)
@@ -1143,10 +1151,10 @@ class Chroot:
                 pre_info = self.save_meta_data()
 
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
-                self.list_installed_files (pre_info, self.save_meta_data())
+                self.list_installed_files(pre_info, self.save_meta_data())
 
                 self.run(apt_get_install)
-                self.list_installed_files (pre_info, self.save_meta_data())
+                self.list_installed_files(pre_info, self.save_meta_data())
 
             else:
                 self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
@@ -1156,7 +1164,7 @@ class Chroot:
                 logging.error("Could not install %s.", " ".join(unqualify(packages)))
                 panic()
 
-            logging.info ("Installation of %s ok", tmp_files)
+            logging.info("Installation of %s ok", tmp_files)
 
             if with_scripts:
                 self.run_scripts("post_install")
@@ -1179,13 +1187,12 @@ class Chroot:
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
                 self.run(apt_get_install)
-                self.list_installed_files (pre_info, self.save_meta_data())
+                self.list_installed_files(pre_info, self.save_meta_data())
             else:
                 self.run(apt_get_install)
 
             if with_scripts:
                 self.run_scripts("post_install")
-
 
     def get_selections(self):
         """Get current package selections in a chroot."""
@@ -1203,7 +1210,7 @@ class Chroot:
         (status, output) = self.run(["dpkg-divert", "--list"])
         return output.split("\n")
 
-    def get_modified_diversions(self, pre_install_diversions, post_install_diversions = None):
+    def get_modified_diversions(self, pre_install_diversions, post_install_diversions=None):
         """Check that diversions in chroot are identical (though potentially reordered)."""
         if post_install_diversions is None:
             post_install_diversions = self.get_diversions()
@@ -1226,7 +1233,7 @@ class Chroot:
             (status, output) = run(["dpkg-query", "-f", "${Version}\n", "-W", "adequate"], ignore_errors=True)
             logging.info("Running adequate version %s now." % output.strip())
             adequate_tags = [
-                    'bin-or-sbin-binary-requires-usr-lib-library',
+                'bin-or-sbin-binary-requires-usr-lib-library',
                     'broken-binfmt-detector',
                     'broken-binfmt-interpreter',
                     'incompatible-licenses',
@@ -1240,32 +1247,32 @@ class Chroot:
                     'pyshared-file-not-bytecompiled',
                     'symbol-size-mismatch',
                     'undefined-symbol',
-                    ]
+            ]
             boring_tags = [
-                    'obsolete-conffile',
+                'obsolete-conffile',
                     'broken-symlink',
-                    ]
-            ignored_tags = [ ]
+            ]
+            ignored_tags = []
             (status, output) = run(["adequate", "--root", self.name] + packages, ignore_errors=True)
             for tag in ignored_tags:
                 # ignore some tags
-                _regex = '^[^:]+: '+tag+' .*\n'
+                _regex = '^[^:]+: ' + tag + ' .*\n'
                 output = re.compile(_regex, re.MULTILINE).sub('', output)
             if output:
                 inadequate_results = ''
                 boring_results = ''
                 for tag in adequate_tags:
-                    if ' '+tag+' ' in output:
-                        inadequate_results += ' '+tag+' '
+                    if ' ' + tag + ' ' in output:
+                        inadequate_results += ' ' + tag + ' '
                 for tag in boring_tags:
-                    if ' '+tag+' ' in output:
-                        boring_results += ' '+tag+' '
+                    if ' ' + tag + ' ' in output:
+                        boring_results += ' ' + tag + ' '
                 if settings.warn_if_inadequate:
                     error_code = 'WARN'
                 else:
                     error_code = 'FAIL'
                 logging.error("%s: Inadequate results from running adequate!\n%s" %
-                                (error_code, indent_string(output.replace(self.name, ""))))
+                              (error_code, indent_string(output.replace(self.name, ""))))
                 if inadequate_results:
                     logging.error("%s: Running adequate resulted in inadequate tags found: %s" % (error_code, inadequate_results))
                 if boring_results:
@@ -1273,9 +1280,9 @@ class Chroot:
                 if not boring_results and not inadequate_results:
                     logging.error("%s: Found unknown tags running adequate." % error_code)
                 if status != 0:
-                    logging.error("%s: Exit code from adequate was %s!" % (error_code,status))
+                    logging.error("%s: Exit code from adequate was %s!" % (error_code, status))
                 if not settings.warn_if_inadequate:
-                     panic()
+                    panic()
 
     def list_paths_with_symlinks(self):
         file_owners = self.get_files_owned_by_packages()
@@ -1292,16 +1299,16 @@ class Chroot:
                     ofc = ", ".join(file_owners[fc])
                 else:
                     ofc = "?"
-                bad.append("%s (%s) != %s (%s)" %(f, of, fc, ofc))
+                bad.append("%s (%s) != %s (%s)" % (f, of, fc, ofc))
                 for (link, target) in canonicalize_path(self.name, dn, report_links=True):
                     bad.append("  %s -> %s" % (link, target))
         if bad:
             if overwrites:
                 logging.error("FAIL: silently overwrites files via directory symlinks:\n" +
-                        indent_string("\n".join(bad)))
+                              indent_string("\n".join(bad)))
             else:
                 logging.info("dirname part contains a symlink:\n" +
-                        indent_string("\n".join(bad)))
+                             indent_string("\n".join(bad)))
 
     def remove_packages(self, packages):
         """Remove packages in a chroot. May reinstall packages at the same time if they are suffixed with '+'."""
@@ -1337,7 +1344,7 @@ class Chroot:
         nondeps_to_purge = [name for name, state in nondeps.iteritems()
                             if state == "purge"]
         deps_to_install = [name for name, state in deps.iteritems()
-                          if state == "install"]
+                           if state == "install"]
 
         self.list_paths_with_symlinks()
         self.check_debsums()
@@ -1381,7 +1388,6 @@ class Chroot:
         # Now do a final run to see that everything worked.
         self.run(["dpkg", "--purge", "--pending"])
         self.run(["dpkg", "--remove", "--pending"])
-
 
     def save_meta_data(self):
         """Return the filesystem meta data for all objects in the chroot."""
@@ -1430,7 +1436,6 @@ class Chroot:
                 f.close()
         return vdict
 
-
     def check_for_no_processes(self, fail=None):
         """Check there are no processes running inside the chroot."""
         (status, output) = run(["lsof", "-w", "+D", self.name], ignore_errors=True)
@@ -1443,7 +1448,6 @@ class Chroot:
             if fail:
                 self.terminate_running_processes()
                 panic()
-
 
     def terminate_running_processes(self):
         """Terminate all processes running in the chroot."""
@@ -1470,7 +1474,6 @@ class Chroot:
                     pass
 
             time.sleep(5)
-
 
     def mount_selinux(self):
         if selinux_enabled():
@@ -1552,7 +1555,7 @@ class Chroot:
 
         vdir = self.relative("var/lib/dpkg/info")
         vlist = []
-        has_cronfiles  = False
+        has_cronfiles = False
         for p in packages:
             basename = p + ".list"
 
@@ -1576,7 +1579,7 @@ class Chroot:
 
         return has_cronfiles, vlist
 
-    def check_output_cronfiles (self, list):
+    def check_output_cronfiles(self, list):
         """Check if a given list of cronfiles has any output. Executes
         cron file as cron would do (except for SHELL)"""
         failed = False
@@ -1599,7 +1602,7 @@ class Chroot:
 
         vdir = self.relative("var/lib/dpkg/info")
         vlist = []
-        has_logrotatefiles  = False
+        has_logrotatefiles = False
         for p in packages:
             basename = p + ".list"
 
@@ -1627,7 +1630,7 @@ class Chroot:
         diff = diff_selections(self, old_selections)
         return diff.keys()
 
-    def check_output_logrotatefiles (self, list):
+    def check_output_logrotatefiles(self, list):
         """Check if a given list of logrotatefiles has any output. Executes
         logrotate file as logrotate would do from cron (except for SHELL)"""
         failed = False
@@ -1644,12 +1647,12 @@ class Chroot:
         if failed:
             panic()
 
-    def run_scripts (self, step):
+    def run_scripts(self, step):
         """ Run custom scripts to given step post-install|remove|purge"""
 
         if not settings.scriptsdirs:
             return
-        logging.info("Running scripts "+ step)
+        logging.info("Running scripts " + step)
         basepath = self.relative("tmp/scripts/")
         if not os.path.exists(basepath):
             logging.error("Scripts directory %s does not exist" % basepath)
@@ -1675,14 +1678,16 @@ class VirtServ(Chroot):
     def _awaitok(self, cmd):
         r = self._vs.stdout.readline().rstrip('\n')
         l = r.split(' ')
-        if l[0] != 'ok': self._fail('virtserver response to %s: %s' % (cmd, r))
+        if l[0] != 'ok':
+            self._fail('virtserver response to %s: %s' % (cmd, r))
         logging.debug('adt-virt << %s', r)
         return l[1:]
 
     def _vs_send(self, cmd):
         if type(cmd) == type([]):
             def maybe_quote(a):
-                if type(a) != type(()): return a
+                if type(a) != type(()):
+                    return a
                 (a,) = a
                 return urllib.quote(a)
             cmd = ' '.join(map(maybe_quote, cmd))
@@ -1712,12 +1717,13 @@ class VirtServ(Chroot):
         if self._vs is None:
             logging.debug('adt-virt || %s' % self._cmdline)
             self._vs = subprocess.Popen(self._cmdline, shell=True,
-                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=None)
+                                        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=None)
             self._awaitok('banner')
             self._caps = self._command('capabilities')
 
     def shutdown(self):
-        if self._vs is None: return
+        if self._vs is None:
+            return
         self._vs_send('quit')
         self._vs.stdin.close()
         self._vs.stdout.close()
@@ -1729,7 +1735,7 @@ class VirtServ(Chroot):
         dont_do_on_panic(self.panic_handler_id)
 
     def _fail(self, m):
-        logging.error("adt-virt-* error: "+m)
+        logging.error("adt-virt-* error: " + m)
         panic()
 
     def _open(self):
@@ -1741,14 +1747,21 @@ class VirtServ(Chroot):
     #  adt-virt revert
     def create_temp_tgz_file(self):
         return self
+
     def remove_temp_tgz_file(self, tgz):
-        if tgz is not self: self._fail('removing a tgz not supported')
+        if tgz is not self:
+            self._fail('removing a tgz not supported')
         # FIXME: anything else to do here?
+
     def pack_into_tgz(self, tgz):
-        if tgz is not self: self._fail('packing into tgz not supported')
-        if not 'revert' in self._caps: self._fail('testbed cannot revert')
+        if tgz is not self:
+            self._fail('packing into tgz not supported')
+        if not 'revert' in self._caps:
+            self._fail('testbed cannot revert')
+
     def unpack_from_tgz(self, tgz):
-        if tgz is not self: self._fail('unpacking from tgz not supported')
+        if tgz is not self:
+            self._fail('unpacking from tgz not supported')
         self._open()
 
     def _execute(self, cmdl, tolerate_errors=False):
@@ -1770,7 +1783,7 @@ class VirtServ(Chroot):
         if es and not tolerate_errors:
             stderr_data = self._getfilecontents(stderr)
             logging.error("Execution failed (status=%d): %s\n%s" %
-                (es, `cmdl`, indent_string(stderr_data)))
+                          (es, `cmdl`, indent_string(stderr_data)))
             panic()
         return (es, stdout, stderr)
 
@@ -1779,7 +1792,7 @@ class VirtServ(Chroot):
         stderr_data = self._getfilecontents(stderr)
         if es or stderr_data:
             logging.error('Internal command failed (status=%d): %s\n%s' %
-                (es, `cmdl`, indent_string(stderr_data)))
+                          (es, `cmdl`, indent_string(stderr_data)))
             panic()
         (_, tf) = create_temp_file()
         try:
@@ -1794,10 +1807,11 @@ class VirtServ(Chroot):
         (es, stdout, stderr) = self._execute(cmdl, tolerate_errors=True)
         stdout_data = self._getfilecontents(stdout)
         print >>sys.stderr, "VirtServ run", `command`, `cmdl`, '==>', `es`, `stdout`, `stderr`, '|', stdout_data
-        if es == 0 or ignore_errors: return (es, stdout_data)
+        if es == 0 or ignore_errors:
+            return (es, stdout_data)
         stderr_data = self._getfilecontents(stderr)
         logging.error('Command failed (status=%d): %s\n%s' %
-                    (es, `command`, indent_string(stdout_data + stderr_data)))
+                      (es, `command`, indent_string(stdout_data + stderr_data)))
         panic()
 
     def setup_minimal_chroot(self):
@@ -1806,18 +1820,21 @@ class VirtServ(Chroot):
     def _tbpath(self, with_junk):
         if not with_junk.startswith(self.name):
             logging.error("Un-mangling testbed path `%s' but it does not"
-                        "start with expected manglement `%s'" %
-                        (with_junk, self.name))
+                          "start with expected manglement `%s'" %
+                          (with_junk, self.name))
             panic()
         return with_junk[len(self.name):]
 
     def chmod(self, path, mode):
         self._execute(['chmod', ('0%o' % mode), self._tbpath(path)])
+
     def remove_files(self, paths):
         self._execute(['rm', '--'] + map(self._tbpath, paths))
+
     def copy_file(self, our_src, tb_dest):
         self._command(['copydown', (our_src,),
-                (self._tbpath(tb_dest)+'/'+os.path.basename(our_src),)])
+                       (self._tbpath(tb_dest) + '/' + os.path.basename(our_src),)])
+
     def create_file(self, path, data):
         path = self._tbpath(path)
         try:
@@ -1829,7 +1846,8 @@ class VirtServ(Chroot):
         finally:
             os.remove(tf)
 
-    class DummyStat: pass
+    class DummyStat:
+        pass
 
     def save_meta_data(self):
         mode_map = {
@@ -1845,7 +1863,7 @@ class VirtServ(Chroot):
         vdict = {}
 
         tf = self._execute_getoutput(['find', '/', '-xdev', '-printf',
-                "%y %m %U %G %s %p %l \\n".replace(' ', '\\0')])
+                                      "%y %m %U %G %s %p %l \\n".replace(' ', '\\0')])
         try:
             f = file(tf)
 
@@ -1853,17 +1871,20 @@ class VirtServ(Chroot):
                 line = ''
                 while 1:
                     splut = line.split('\0')
-                    if len(splut) == 8 and splut[7] == '\n': break
+                    if len(splut) == 8 and splut[7] == '\n':
+                        break
                     if len(splut) >= 8:
                         self._fail('aaargh wrong output from find: %s' %
-                                    urllib.quote(line), `splut`)
+                                   urllib.quote(line), `splut`)
                     l = f.readline()
                     if not l:
-                        if not line: break
+                        if not line:
+                            break
                         self._fail('aargh missing final newline from find'
-                                    ': %s, %s' % (`l`[0:200], `splut`[0:200]))
+                                   ': %s, %s' % (`l`[0:200], `splut`[0:200]))
                     line += l
-                if not line: break
+                if not line:
+                    break
 
                 st = VirtServ.DummyStat()
                 st.st_mode = mode_map[splut[0]] | int(splut[1], 8)
@@ -1916,14 +1937,21 @@ class VirtServ(Chroot):
             for l in f:
                 logging.error("FAIL: Broken symlink: " + l)
                 broken = True
-            if broken: panic()
+            if broken:
+                panic()
             logging.debug("No broken symlinks found.")
         finally:
             os.remove(tf)
 
-    def check_for_no_processes(self): pass # ?!
-    def mount_proc(self): pass
-    def unmount_proc(self): pass
+    def check_for_no_processes(self):
+        pass  # ?!
+
+    def mount_proc(self):
+        pass
+
+    def unmount_proc(self):
+        pass
+
 
 def selinux_enabled(enabled_test="/usr/sbin/selinuxenabled"):
     if os.access(enabled_test, os.X_OK):
@@ -1933,6 +1961,7 @@ def selinux_enabled(enabled_test="/usr/sbin/selinuxenabled"):
         else:
             return False
 
+
 def objects_are_different(pair1, pair2):
     """Are filesystem objects different based on their meta data?"""
     (m1, target1) = pair1
@@ -1940,11 +1969,12 @@ def objects_are_different(pair1, pair2):
     if (m1.st_mode != m2.st_mode or
         m1.st_uid != m2.st_uid or
         m1.st_gid != m2.st_gid or
-        target1 != target2):
+            target1 != target2):
         return True
     if stat.S_ISREG(m1.st_mode):
-        return m1.st_size != m2.st_size # or m1.st_mtime != m2.st_mtime
+        return m1.st_size != m2.st_size  # or m1.st_mtime != m2.st_mtime
     return False
+
 
 def format_object_attributes(pair):
     (st, target) = pair
@@ -1964,7 +1994,7 @@ def format_object_attributes(pair):
     if stat.S_ISSOCK(st.st_mode):
         ft += "s"
     res = "(%d, %d, %s %o, %d, %s)" % (
-            st.st_uid,
+        st.st_uid,
             st.st_gid,
             ft,
             st.st_mode,
@@ -2001,8 +2031,8 @@ def diff_meta_data(tree1, tree2):
     for name in tree1.keys()[:]:
         if name in tree2:
             if objects_are_different(tree1[name], tree2[name]):
-                logging.debug("Modified(uid, gid, mode, size, target): %s %s != %s" % \
-                        (name, format_object_attributes(tree1[name]), format_object_attributes(tree2[name])))
+                logging.debug("Modified(uid, gid, mode, size, target): %s %s != %s" %
+                              (name, format_object_attributes(tree1[name]), format_object_attributes(tree2[name])))
                 modified.append((name, tree1[name]))
             del tree1[name]
             del tree2[name]
@@ -2085,7 +2115,7 @@ def diff_selections(chroot, selections):
         if name not in selections:
             changes[name] = "purge"
         elif selections[name] != current[name] and \
-             selections[name] in ["purge", "install"]:
+                selections[name] in ["purge", "install"]:
             changes[name] = selections[name]
     for name, value in selections.iteritems():
         if name not in current:
@@ -2114,6 +2144,8 @@ def get_package_names_from_package_files(package_files):
 
 # Method to process a changes file, returning a list of all the .deb packages
 # from the 'Files' stanza.
+
+
 def process_changes(changes):
     # Determine the path to the changes file, then check if it's readable.
     dir_path = ""
@@ -2129,8 +2161,8 @@ def process_changes(changes):
 
     # Determine the packages in the changes file through the 'Files' stanza.
     field = 'Files'
-    pattern = re.compile(\
-        r'^'+field+r':' + r'''  # The field we want the contents from
+    pattern = re.compile(
+        r'^' + field + r':' + r'''  # The field we want the contents from
         (.*?)                   # The contents of the field
         \n([^ ]|$)              # Start of a new field or EOF
         ''',
@@ -2196,7 +2228,7 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
                          file_list(new, file_owners))
         else:
             logging.error("FAIL: Package purging left files on system:\n" +
-                         file_list(new, file_owners))
+                          file_list(new, file_owners))
             ok = False
     if removed:
         logging.error("FAIL: After purging files have disappeared:\n" +
@@ -2210,7 +2242,7 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
     if settings.warn_on_others and deps_info is not None:
         if warnnew:
             msg = ("Warning: Package purging left files on system:\n" +
-                   file_list(warnnew, file_owners) + \
+                   file_list(warnnew, file_owners) +
                    "These files seem to have been left by dependencies rather "
                    "than by packages\nbeing explicitly tested.\n")
             logging.info(msg)
@@ -2478,7 +2510,8 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
         chroot.remove()
 
         # leave indication in logfile why we do what we do
-        logging.info("Notice: package selections and meta data from target distro saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
+        logging.info(
+            "Notice: package selections and meta data from target distro saved, now starting over from source distro. See the description of --save-end-meta and --end-meta to learn why this is neccessary and how to possibly avoid it.")
 
         chroot = get_chroot()
         if temp_tgz is None:
@@ -2557,7 +2590,7 @@ def find_default_debian_mirrors():
             parts = line.split()
             if len(parts) > 2 and parts[0] == "deb":
                 mirrors.append((parts[1], parts[3:]))
-                break # Only use the first one, at least for now.
+                break  # Only use the first one, at least for now.
         f.close()
     except IOError:
         return None
@@ -2575,12 +2608,12 @@ def forget_ignores(option, opt, value, parser, *args, **kwargs):
 def set_basetgz_to_pbuilder(option, opt, value, parser, *args, **kwargs):
     parser.values.basetgz = "/var/cache/pbuilder/base.tgz"
 
+
 def parse_command_line():
     """Parse the command line, change global settings, return non-options."""
 
     parser = optparse.OptionParser(usage="%prog [options] package ...",
                                    version="piuparts %s" % VERSION)
-
 
     parser.add_option("-a", "--apt", action="store_true", default=False,
                       help="Command line arguments are package names " +
@@ -2867,9 +2900,9 @@ def parse_command_line():
         settings.keyring = defaults.get_keyring()
     settings.do_not_verify_signatures = opts.do_not_verify_signatures
     if settings.do_not_verify_signatures:
-        settings.apt_unauthenticated="Yes"
+        settings.apt_unauthenticated = "Yes"
     else:
-        settings.apt_unauthenticated="No"
+        settings.apt_unauthenticated = "No"
     settings.install_recommends = opts.install_recommends
     settings.eatmydata = not opts.no_eatmydata
     settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
@@ -2962,7 +2995,7 @@ def parse_command_line():
             settings.debian_mirrors = defaults.get_mirror()
 
     settings.distro_config = piupartslib.conf.DistroConfig(
-                DISTRO_CONFIG_FILE, settings.debian_mirrors[0][0])
+        DISTRO_CONFIG_FILE, settings.debian_mirrors[0][0])
 
     if settings.keep_sources_list and \
        (not settings.basetgz or len(settings.debian_distros) > 1):
@@ -2983,10 +3016,13 @@ def parse_command_line():
 
 
 def get_chroot():
-    if settings.adt_virt is None: return Chroot()
+    if settings.adt_virt is None:
+        return Chroot()
     return settings.adt_virt
 
 # Process the packages given in a list
+
+
 def process_packages(package_list):
     # Find the names of packages.
     if settings.args_are_package_files:
@@ -3008,7 +3044,7 @@ def process_packages(package_list):
         if not settings.no_install_purge_test:
             extra_packages = chroot.get_known_packages(settings.extra_old_packages)
             if not install_purge_test(chroot, chroot_state,
-                      package_files, packages, extra_packages):
+                                      package_files, packages, extra_packages):
                 logging.error("FAIL: Installation and purging test.")
                 panic()
             logging.info("PASS: Installation and purging test.")
@@ -3023,7 +3059,7 @@ def process_packages(package_list):
                 if not known_packages:
                     logging.info("Can't test upgrade: packages not known by apt-get.")
                 elif install_upgrade_test(chroot, chroot_state, package_files,
-                        packages, known_packages):
+                                          packages, known_packages):
                     logging.info("PASS: Installation, upgrade and purging tests.")
                 else:
                     logging.error("FAIL: Installation, upgrade and purging tests.")
@@ -3037,7 +3073,9 @@ def process_packages(package_list):
             logging.error("FAIL: Upgrading between Debian distributions.")
             panic()
 
-    if settings.adt_virt is not None: settings.adt_virt.shutdown()
+    if settings.adt_virt is not None:
+        settings.adt_virt.shutdown()
+
 
 def main():
     """Main program. But you knew that."""
@@ -3064,7 +3102,6 @@ def main():
 
     if "DISPLAY" in os.environ:
         del os.environ["DISPLAY"]
-
 
     changes_packages_list = []
     regular_packages_list = []

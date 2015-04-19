@@ -32,6 +32,7 @@ LOG_EXT = '.log'
 
 
 class Problem():
+
     """ Encapsulate a particular known problem """
 
     def __init__(self, probpath):
@@ -46,7 +47,6 @@ class Problem():
         self.required_tags = ["PATTERN", "WHERE", "ISSUE",
                               "HEADER", "HELPTEXT"]
         self.optional_tags = ["EXCLUDE_PATTERN", "EXPLAIN", "PRIORITY"]
-
 
         self.init_problem()
 
@@ -83,8 +83,8 @@ class Problem():
             while value[-1] == '\n':
                 value = value[:-1]
 
-            if  re.search("^\'.+\'$", value, re.MULTILINE|re.DOTALL) \
-             or re.search('^\".+\"$', value, re.MULTILINE|re.DOTALL):
+            if  re.search("^\'.+\'$", value, re.MULTILINE | re.DOTALL) \
+                    or re.search('^\".+\"$', value, re.MULTILINE | re.DOTALL):
                 value = value[1:-1]
 
             if name in self.required_tags or name in self.optional_tags:
@@ -102,7 +102,7 @@ class Problem():
                 for line in logbody.splitlines():
                     if self.inc_re.search(line):
                         if self.exc_re == None \
-                               or not self.exc_re.search(line):
+                                or not self.exc_re.search(line):
                             return True
 
         return False
@@ -118,6 +118,7 @@ class Problem():
 
 
 class FailureManager():
+
     """Class to track known failures encountered, by package,
        where (e.g. 'fail'), and known problem type"""
 
@@ -168,26 +169,31 @@ class FailureManager():
         self.failures.sort(key=keyfunc)
 
     def filtered(self, problem):
-        return [x for x in self.failures if problem==x.problem]
+        return [x for x in self.failures if problem == x.problem]
 
 
 def make_failure(where, problem, pkgspec):
     return (namedtuple('Failure', 'where problem pkgspec')(where, problem, pkgspec))
 
+
 def get_where(logpath):
     """Convert a path to a log file to the 'where' component (e.g. 'pass')"""
     return logpath.split('/')[-2]
+
 
 def replace_ext(fpath, newext):
     basename = os.path.splitext(os.path.split(fpath)[1])[0]
     return '/'.join(fpath.split('/')[:-1] + [basename + newext])
 
+
 def get_pkg(pkgspec):
     return pkgspec.split('_')[0]
+
 
 def get_kpr_path(logpath):
     """Return the kpr file path for a particular log path"""
     return replace_ext(logpath, KPR_EXT)
+
 
 def get_file_dict(workdirs, ext):
     """For files in [workdirs] with extension 'ext', create a dict of

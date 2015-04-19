@@ -3,6 +3,7 @@ import unittest
 import piupartslib.conf as conf
 import distro_info
 
+
 class ConfStdDistroTests(unittest.TestCase):
 
     def setUp(self):
@@ -14,7 +15,6 @@ class ConfStdDistroTests(unittest.TestCase):
         self.oldstable = debdist.old()
         self.testing = debdist.testing()
         self.experimental = 'experimental'
-
 
     def testConfStdDistroNames(self):
         self.assertEqual(self.oldstable, 'squeeze')
@@ -42,25 +42,25 @@ class ConfStdDistroTests(unittest.TestCase):
     def testConfMapProposedDistro(self):
 
         self.assertEqual(
-             self.cobj._map_distro('stable-proposed'), 'stable')
+            self.cobj._map_distro('stable-proposed'), 'stable')
         self.assertEqual(
-             self.cobj._map_distro(self.stable + '-proposed'), 'stable')
+            self.cobj._map_distro(self.stable + '-proposed'), 'stable')
 
     def testConfMapRemainingDistros(self):
 
         self.assertEqual(self.cobj._map_distro('rc-buggy'), 'experimental')
 
         self.assertEqual(
-             self.cobj._map_distro('Debian6.0.9'),
+            self.cobj._map_distro('Debian6.0.9'),
              self.cobj._map_distro('squeeze'))
         self.assertEqual(
-             self.cobj._map_distro('Debian7.4'),
+            self.cobj._map_distro('Debian7.4'),
              self.cobj._map_distro('wheezy'))
         self.assertEqual(
-             self.cobj._map_distro('Debian8'),
+            self.cobj._map_distro('Debian8'),
              self.cobj._map_distro('jessie'))
         self.assertEqual(
-             self.cobj._map_distro('Debian8.1'),
+            self.cobj._map_distro('Debian8.1'),
              self.cobj._map_distro('jessie'))
 
     def testConfGetStdDistro(self):
@@ -75,11 +75,11 @@ class ConfStdDistroTests(unittest.TestCase):
                 self.cobj.get_std_distro(['unknown', self.__dict__[std]]), std)
             self.assertEqual(
                 self.cobj.get_std_distro(
-                          ['unknown', 'unknown', self.__dict__[std]]), std)
+                    ['unknown', 'unknown', self.__dict__[std]]), std)
             self.assertEqual(
                 self.cobj.get_std_distro(
-                          [self.__dict__[std], 'unknown', 'unknown']), std)
+                    [self.__dict__[std], 'unknown', 'unknown']), std)
 
         self.assertEqual(self.cobj.get_std_distro(['unknown']), 'unknown')
         self.assertEqual(
-                self.cobj.get_std_distro(['unknown', 'unknown']), 'unknown')
+            self.cobj.get_std_distro(['unknown', 'unknown']), 'unknown')

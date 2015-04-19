@@ -37,17 +37,18 @@ KPR_DIRS = ('pass', 'bugged', 'affected', 'fail')
 
 
 class WKE_Config(piupartslib.conf.Config):
+
     """Configuration parameters for Well Known Errors"""
 
     def __init__(self):
         self.section = 'global'
 
         piupartslib.conf.Config.__init__(self, self.section,
-            {
-                "sections": "report",
-                "master-directory": ".",
-                "known-problem-directory": "@sharedir@/piuparts/known_problems",
-            }, "")
+                                         {
+                                         "sections": "report",
+                                         "master-directory": ".",
+                                         "known-problem-directory": "@sharedir@/piuparts/known_problems",
+                                         }, "")
 
 
 def setup_logging(log_level):
@@ -61,8 +62,10 @@ def write_file(filename, contents):
     with file(filename, "w") as f:
         f.write(contents)
 
+
 def mtime(path):
     return os.path.getmtime(path)
+
 
 def clean_cache_files(logdict, cachedict, recheck=False, recheck_failed=False,
                       skipnewer=False):
@@ -73,10 +76,10 @@ def clean_cache_files(logdict, cachedict, recheck=False, recheck_failed=False,
     for pkgspec in cachedict:
         try:
             if pkgspec not in logdict \
-            or (mtime(logdict[pkgspec])>mtime(cachedict[pkgspec]) and not skipnewer)\
-            or get_where(logdict[pkgspec]) != get_where(cachedict[pkgspec])\
-            or recheck\
-            or (recheck_failed and not get_where(cachedict[pkgspec]) in ['pass']):
+                or (mtime(logdict[pkgspec]) > mtime(cachedict[pkgspec]) and not skipnewer)\
+                or get_where(logdict[pkgspec]) != get_where(cachedict[pkgspec])\
+                or recheck\
+                    or (recheck_failed and not get_where(cachedict[pkgspec]) in ['pass']):
                 os.remove(cachedict[pkgspec])
                 count = count + 1
         except (IOError, OSError):
@@ -84,6 +87,7 @@ def clean_cache_files(logdict, cachedict, recheck=False, recheck_failed=False,
             pass
 
     return count
+
 
 def make_kprs(logdict, kprdict, problem_list):
     """Create kpr files, as necessary, so every log file has one
@@ -144,6 +148,7 @@ def process_section(section, config, problem_list,
 
     return (del_cnt, add_cnt, failures)
 
+
 def detect_well_known_errors(sections, config, problem_list, recheck, recheck_failed):
 
     for section in sections:
@@ -152,8 +157,8 @@ def detect_well_known_errors(sections, config, problem_list, recheck, recheck_fa
             logging.info("%s:" % section)
 
             (del_cnt, add_cnt, failures) = \
-                      process_section(section, config, problem_list,
-                                      recheck, recheck_failed)
+                process_section(section, config, problem_list,
+                                recheck, recheck_failed)
 
             logging.info("parsed logfiles: %d removed, %d added" % (del_cnt, add_cnt))
 
@@ -171,21 +176,21 @@ if __name__ == '__main__':
     setup_logging(logging.DEBUG)
 
     parser = argparse.ArgumentParser(
-                 description="Detect well known errors",
+        description="Detect well known errors",
                  epilog="""
 This script processes all log files against defined "known_problem" files,
 caching the problems found, by package, into ".kpr" files.
 """)
 
     parser.add_argument('sections', nargs='*', metavar='SECTION',
-            help="limit processing to the listed SECTION(s)")
+                        help="limit processing to the listed SECTION(s)")
 
     parser.add_argument('--recheck', dest='recheck', action='store_true',
-               help="recheck all log files (delete cache)")
+                        help="recheck all log files (delete cache)")
 
     parser.add_argument('--recheck-failed', dest='recheck_failed',
-               action='store_true',
-               help="recheck failed log files (delete cache)")
+                        action='store_true',
+                        help="recheck failed log files (delete cache)")
 
     args = parser.parse_args()
 

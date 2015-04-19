@@ -169,7 +169,7 @@ def mark_bugged_version(failed_log, bugged_log):
 
 def bts_update_found(bugnr, newversion):
     if "DEBEMAIL" in os.environ and os.environ["DEBEMAIL"]:
-        #subprocess.check_call(('bts', 'found', bugnr, newversion))
+        # subprocess.check_call(('bts', 'found', bugnr, newversion))
         print(' '.join(('bts', 'found', str(bugnr), newversion)))
 
 
@@ -194,9 +194,9 @@ def mark_logs_with_reported_bugs():
                 moved = True
                 break
             for bug_version in found_versions:
-                #print('DEBUG: %s/%s #%d %s' % (pname, pversion, bug, bug_version))
+                # print('DEBUG: %s/%s #%d %s' % (pname, pversion, bug, bug_version))
 
-                if apt_pkg.version_compare(pversion, bug_version) > 0: # pversion > bug_version
+                if apt_pkg.version_compare(pversion, bug_version) > 0:  # pversion > bug_version
                     bugged_logs = find_bugged_logs(failed_log)
                     if not bugged_logs and not moved:
                         print('%s/%s: Maybe the bug was filed earlier: https://bugs.debian.org/%d against %s/%s'
@@ -205,9 +205,9 @@ def mark_logs_with_reported_bugs():
                     for bugged_log in bugged_logs:
                         old_pversion = package_source_version(bugged_log)
                         bugged_errors = extract_errors(bugged_log)
-                        if (apt_pkg.version_compare(old_pversion, bug_version) == 0 # old_pversion == bug_version
+                        if (apt_pkg.version_compare(old_pversion, bug_version) == 0  # old_pversion == bug_version
                             and
-                            failed_errors == bugged_errors):
+                                failed_errors == bugged_errors):
                             # a bug was filed for an old version of the package,
                             # and the errors were the same back then - assume it is the same bug.
                             if not moved:
@@ -243,6 +243,8 @@ def report_packages_with_many_logs():
 
 
 piuparts_usertags_cache = None
+
+
 def all_piuparts_bugs():
     global piuparts_usertags_cache
     if piuparts_usertags_cache is None:
@@ -254,6 +256,7 @@ def piuparts_bugs_in(package):
     bugs = debianbts.get_bugs('package', package, 'bugs', all_piuparts_bugs(), 'archive', 'both')
     bugs.sort(reverse=True)
     return bugs
+
 
 def piuparts_bugs_affecting(package):
     bugs = debianbts.get_bugs('affects', package, 'bugs', all_piuparts_bugs(), 'archive', 'both')
