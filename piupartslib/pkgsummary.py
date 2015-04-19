@@ -96,7 +96,7 @@ DEFSEC = 'overall'
 FlagInfo = namedtuple('FlagInfo', ['word', 'priority', 'states'])
 
 flaginfo = {
-    'F': FlagInfo('Failed',  0, ["failed-testing"]),
+    'F': FlagInfo('Failed', 0, ["failed-testing"]),
             'X': FlagInfo('Blocked', 1, [
                           "cannot-be-tested",
                           "dependency-failed-testing",
@@ -107,7 +107,7 @@ flaginfo = {
                           "waiting-to-be-tested",
                           "waiting-for-dependency-to-be-tested",
                           ]),
-            'P': FlagInfo('Passed',  3, [
+            'P': FlagInfo('Passed', 3, [
                           "essential-required",
                           "successfully-tested",
                           ]),

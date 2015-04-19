@@ -489,7 +489,7 @@ def run(command, ignore_errors=False, timeout=0):
             p.kill()
         p.wait()
 
-    assert type(command) == type([])
+    assert isinstance(command, type([]))
     logging.debug("Starting command: %s" % command)
     env = os.environ.copy()
     env["LC_ALL"] = "C"
@@ -554,7 +554,7 @@ def create_file(name, contents):
         f = file(name, "w")
         f.write(contents)
         f.close()
-    except IOError, detail:
+    except IOError as detail:
         logging.error("Couldn't create file %s: %s" % (name, detail))
         panic()
 
@@ -565,7 +565,7 @@ def remove_files(filenames):
         logging.debug("Removing %s" % filename)
         try:
             os.remove(filename)
-        except OSError, detail:
+        except OSError as detail:
             logging.error("Couldn't remove %s: %s" % (filename, detail))
             panic()
 
@@ -582,7 +582,7 @@ def make_metapackage(name, depends, conflicts):
     panic_handler_id = do_on_panic(lambda: shutil.rmtree(tmpdir))
     create_file(os.path.join(tmpdir, ".piuparts.tmpdir"), "metapackage creation")
     old_umask = os.umask(0)
-    os.makedirs(os.path.join(tmpdir, name, 'DEBIAN'), mode=0755)
+    os.makedirs(os.path.join(tmpdir, name, 'DEBIAN'), mode=0o755)
     os.umask(old_umask)
     control = deb822.Deb822()
     control['Package'] = name
@@ -703,7 +703,7 @@ class Chroot:
         """Create a temporary directory for the chroot."""
         self.name = tempfile.mkdtemp(dir=settings.tmpdir)
         create_file(os.path.join(self.name, ".piuparts.tmpdir"), "chroot")
-        os.chmod(self.name, 0755)
+        os.chmod(self.name, 0o755)
         logging.debug("Created temporary directory %s" % self.name)
 
     def create(self, temp_tgz=None):
@@ -813,7 +813,7 @@ class Chroot:
 
         run(['tar', '-czf', tmpfile, '--one-file-system', '--exclude', 'tmp/scripts', '-C', self.name, './'])
 
-        os.chmod(tmpfile, 0644)
+        os.chmod(tmpfile, 0o644)
         os.rename(tmpfile, result)
         dont_do_on_panic(panic_handler_id)
 
@@ -967,7 +967,7 @@ class Chroot:
             policy += 'test "$1" = "firebird2.5-super" && exit 0\n'
         policy += "exit 101\n"
         create_file(full_name, policy)
-        os.chmod(full_name, 0755)
+        os.chmod(full_name, 0o755)
         logging.debug("Created policy-rc.d and chmodded it.")
 
     def create_resolv_conf(self):
@@ -1085,7 +1085,7 @@ class Chroot:
         for source_name in source_names:
             try:
                 shutil.copy(source_name, target_name)
-            except IOError, detail:
+            except IOError as detail:
                 logging.error("Error copying %s to %s: %s" %
                               (source_name, target_name, detail))
                 panic()
@@ -1657,8 +1657,7 @@ class Chroot:
         if not os.path.exists(basepath):
             logging.error("Scripts directory %s does not exist" % basepath)
             panic()
-        list_scripts = os.listdir(basepath)
-        list_scripts.sort()
+        list_scripts = sorted(os.listdir(basepath))
         for vfile in list_scripts:
             if vfile.startswith(step):
                 script = os.path.join("tmp/scripts", vfile)
@@ -1684,9 +1683,9 @@ class VirtServ(Chroot):
         return l[1:]
 
     def _vs_send(self, cmd):
-        if type(cmd) == type([]):
+        if isinstance(cmd, type([])):
             def maybe_quote(a):
-                if type(a) != type(()):
+                if not isinstance(a, type(())):
                     return a
                 (a,) = a
                 return urllib.quote(a)
@@ -1765,7 +1764,7 @@ class VirtServ(Chroot):
         self._open()
 
     def _execute(self, cmdl, tolerate_errors=False):
-        assert type(cmdl) == type([])
+        assert isinstance(cmdl, type([]))
         prefix = ['sh', '-ec', '''
             LC_ALL=C
             unset LANGUAGES
@@ -1783,7 +1782,7 @@ class VirtServ(Chroot):
         if es and not tolerate_errors:
             stderr_data = self._getfilecontents(stderr)
             logging.error("Execution failed (status=%d): %s\n%s" %
-                          (es, `cmdl`, indent_string(stderr_data)))
+                          (es, repr(cmdl), indent_string(stderr_data)))
             panic()
         return (es, stdout, stderr)
 
@@ -1792,7 +1791,7 @@ class VirtServ(Chroot):
         stderr_data = self._getfilecontents(stderr)
         if es or stderr_data:
             logging.error('Internal command failed (status=%d): %s\n%s' %
-                          (es, `cmdl`, indent_string(stderr_data)))
+                          (es, repr(cmdl), indent_string(stderr_data)))
             panic()
         (_, tf) = create_temp_file()
         try:
@@ -1806,12 +1805,12 @@ class VirtServ(Chroot):
         cmdl = ['sh', '-ec', 'cd /\n' + ' '.join(command)]
         (es, stdout, stderr) = self._execute(cmdl, tolerate_errors=True)
         stdout_data = self._getfilecontents(stdout)
-        print >>sys.stderr, "VirtServ run", `command`, `cmdl`, '==>', `es`, `stdout`, `stderr`, '|', stdout_data
+        print >>sys.stderr, "VirtServ run", repr(command), repr(cmdl), '==>', repr(es), repr(stdout), repr(stderr), '|', stdout_data
         if es == 0 or ignore_errors:
             return (es, stdout_data)
         stderr_data = self._getfilecontents(stderr)
         logging.error('Command failed (status=%d): %s\n%s' %
-                      (es, `command`, indent_string(stdout_data + stderr_data)))
+                      (es, repr(command), indent_string(stdout_data + stderr_data)))
         panic()
 
     def setup_minimal_chroot(self):
@@ -1867,21 +1866,21 @@ class VirtServ(Chroot):
         try:
             f = file(tf)
 
-            while 1:
+            while True:
                 line = ''
-                while 1:
+                while True:
                     splut = line.split('\0')
                     if len(splut) == 8 and splut[7] == '\n':
                         break
                     if len(splut) >= 8:
                         self._fail('aaargh wrong output from find: %s' %
-                                   urllib.quote(line), `splut`)
+                                   urllib.quote(line), repr(splut))
                     l = f.readline()
                     if not l:
                         if not line:
                             break
                         self._fail('aargh missing final newline from find'
-                                   ': %s, %s' % (`l`[0:200], `splut`[0:200]))
+                                   ': %s, %s' % (repr(l)[0:200], repr(splut)[0:200]))
                     line += l
                 if not line:
                     break
@@ -2061,8 +2060,7 @@ def diff_meta_data(tree1, tree2):
 
 def file_list(meta_infos, file_owners):
     """Return list of indented filenames."""
-    meta_infos = meta_infos[:]
-    meta_infos.sort()
+    meta_infos = sorted(meta_infos[:])
     vlist = []
     for name, data in meta_infos:
         (st, target) = data

@@ -319,7 +319,7 @@ class Slave:
             raise MasterNotOK()
 
     def _reserved_filename(self, name, version):
-        return os.path.join("reserved",  "%s_%s.log" % (name, version))
+        return os.path.join("reserved", "%s_%s.log" % (name, version))
 
     def remember_reservation(self, name, version):
         create_file(self._reserved_filename(name, version), "")

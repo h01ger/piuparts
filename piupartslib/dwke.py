@@ -101,7 +101,7 @@ class Problem():
             if self.inc_re.search(logbody, re.MULTILINE):
                 for line in logbody.splitlines():
                     if self.inc_re.search(line):
-                        if self.exc_re == None \
+                        if self.exc_re is None \
                                 or not self.exc_re.search(line):
                             return True
 

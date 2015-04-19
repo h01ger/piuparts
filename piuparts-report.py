@@ -622,7 +622,8 @@ def update_file(source, target):
     except OSError:
         try:
             shutil.copyfile(source, target)
-        except IOError as (errno, strerror):
+        except IOError as xxx_todo_changeme:
+            (errno, strerror) = xxx_todo_changeme.args
             logging.error("failed to copy %s to %s: I/O error(%d): %s"
                            % (source, target, errno, strerror))
 
@@ -820,8 +821,7 @@ class Section:
         for pathname, package, version in logs:
             packages[package] = packages.get(package, []) + [(pathname, version)]
 
-        names = packages.keys()
-        names.sort()
+        names = sorted(packages.keys())
         lines = []
         version_count = 0
         for package in names:
@@ -1062,7 +1062,7 @@ class Section:
                         "maintainer": html_protect(maintainer + " in " + self._config.section),
                         "distrolinks": distrolinks,
                         "rows": rows + "".join([package_rows[state] for state in states]),
-                    })
+            })
 
     def create_source_summary(self, source, logs_by_dir):
         source_version = self._source_db.get_control_header(source, "Version")

@@ -30,6 +30,7 @@ import subprocess
 import collections
 import re
 import distro_info
+from functools import reduce
 
 
 class MissingSection(Exception):

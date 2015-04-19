@@ -44,7 +44,7 @@ apt_pkg.init_system()
 
 def rfc822_like_header_parse(input):
     headers = []
-    while 1:
+    while True:
         line = input.readline()
         if not line or line in ["\r\n", "\n"]:
             break
@@ -220,7 +220,7 @@ class LogDB:
         # Let's make it follow the umask.
         umask = os.umask(0)
         os.umask(umask)
-        os.chmod(temp_name, 0666 & ~umask)
+        os.chmod(temp_name, 0o666 & ~umask)
 
         full_name = os.path.join(subdir, self._log_name(package, version))
         try:
