@@ -21,8 +21,7 @@ piuparts (0.63) UNRELEASED; urgency=medium
     - Add new suite: jessie-rcmd (test with --install-recommends).
     - Add new suite: wheezy2jessie-rcmd (test with --install-recommends).
   * piuparts.conf.anbe: Add many more example sections.
-  * distros.conf: Reactivate 'testing' and 'stable' aliases, switch them back
-    to 'jessie' and 'wheezy' for ongoing development.
+  * distros.conf: Reactivate 'testing' and 'stable' aliases.
   * piupartslib/packagesdb.py:
     - Consider logfile age in addition to the time waiting for recycling.
   * piuparts-slave.py:
