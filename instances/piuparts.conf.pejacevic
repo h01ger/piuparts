@@ -29,6 +29,14 @@ flags-leftovers =
 # perform some additional cleanup
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
+# common flags for tests starting in stretch
+flags-start-stretch =
+# no flags needed
+
+# common flags for tests ending in stretch
+flags-end-stretch =
+# no flags needed
+
 # common flags for tests starting in jessie
 flags-start-jessie =
 # no flags needed
@@ -80,6 +88,8 @@ sections =
 	sid
 	sid-nodoc
 	testing2sid
+	stretch
+	jessie2stretch
 	jessie
 	jessie-rcmd
 	jessie-pu
@@ -180,6 +190,28 @@ piuparts-flags =
 depends-sections = sid
 distro = experimental
 upgrade-test-distros = sid experimental
+
+
+[stretch]
+precedence = 3
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+distro = stretch
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
+
+
+[jessie2stretch]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+distro = jessie
+upgrade-test-distros = jessie stretch
 
 
 [jessie]
