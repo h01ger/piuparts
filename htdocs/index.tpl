@@ -73,6 +73,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2015-04-25</b> With the release of Jessie two new suites are being tested: <a href="https://piuparts.debian.org/jessie2stretch">jessie2stretch</a> and <a href="https://piuparts.debian.org/stretch">stretch</a>, which will become the next Debian release.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2015-02-04</b> Link to the new <a href="https://tracker.debian.org">Debian Package Tracker</a> (tracker.debian.org) instead to the old <a href="https://packages.qa.debian.org">Package Tracker System</a> (PTS).
      </td>
     </tr>
