@@ -17,9 +17,9 @@ class ConfStdDistroTests(unittest.TestCase):
         self.experimental = 'experimental'
 
     def testConfStdDistroNames(self):
-        self.assertEqual(self.oldstable, 'squeeze')
-        self.assertEqual(self.stable, 'wheezy')
-        self.assertEqual(self.testing, 'jessie')
+        self.assertEqual(self.oldstable, 'wheezy')
+        self.assertEqual(self.stable, 'jessie')
+        self.assertEqual(self.testing, 'stretch')
         self.assertEqual(self.unstable, 'sid')
         self.assertEqual(self.experimental, 'experimental')
 
@@ -62,6 +62,9 @@ class ConfStdDistroTests(unittest.TestCase):
         self.assertEqual(
             self.cobj._map_distro('Debian8.1'),
              self.cobj._map_distro('jessie'))
+        self.assertEqual(
+            self.cobj._map_distro('Debian9'),
+             self.cobj._map_distro('stretch'))
 
     def testConfGetStdDistro(self):
 

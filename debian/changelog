@@ -64,6 +64,8 @@ piuparts (0.63) UNRELEASED; urgency=medium
     running.
   * Use "autopep8 --max-line-length=160" to re-format all .py files, then also
     use "-a" on a 2nd run.
+  * test_config.py: update for Jessie being stable and Stretch being the new
+    testing suite.
 
  -- Andreas Beckmann <anbe@debian.org>  Wed, 03 Dec 2014 20:36:30 +0100
 
