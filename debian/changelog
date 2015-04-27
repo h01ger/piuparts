@@ -68,6 +68,8 @@ piuparts (0.63) UNRELEASED; urgency=medium
     testing suite.
   * debian/copyright: Remove space from W3C FreeUse licence name, thanks
     lintian. 
+  * Update piuparts.py, piuparts.1.txt and README_server.txt due to the fact
+    that jessie is the new stable and testing is stretch now.
 
  -- Andreas Beckmann <anbe@debian.org>  Wed, 03 Dec 2014 20:36:30 +0100
 
