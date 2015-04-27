@@ -1,4 +1,4 @@
-piuparts (0.63) UNRELEASED; urgency=medium
+piuparts (0.63) unstable; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -71,7 +71,7 @@ piuparts (0.63) UNRELEASED; urgency=medium
   * Update piuparts.py, piuparts.1.txt and README_server.txt due to the fact
     that jessie is the new stable and testing is stretch now.
 
- -- Andreas Beckmann <anbe@debian.org>  Wed, 03 Dec 2014 20:36:30 +0100
+ -- Holger Levsen <holger@debian.org>  Mon, 27 Apr 2015 16:46:29 +0200
 
 piuparts (0.62) unstable; urgency=medium
 
