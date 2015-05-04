@@ -284,6 +284,11 @@ used for all further sections.
  from first section a package is in is used for the source package
  html report.
 
+* "basetgz-sections" is an additional list of sections that are only
+ used to maintain the basetgz tarballs and will therefore be ignored
+ by all scripts except piuparts-slave.
+ This list is empty by default.
+
 * "master-host" is the host where the master exists. The slave will
  give this host to ssh. This option is mandatory.
 
@@ -405,6 +410,11 @@ section, too, and will serve as defaults for all other sections
  settings are the first entry (to test upgrades of "disappearing"
  packages) or the restricted set in a partial distribution (e.g.
  stable to backports to testing).
+ The special keyword "None" is used to denote that no packages
+ are to be tested, but only the basetgz tarball will be created
+ and refreshed regularily (for the distribution given in
+ 'upgrade-test-distros'). This reference basetgz can be shared
+ between several sections without being affected by their flags.
 
 * "area" is the archive area used to get the list of packages to
  be tested. The Packages file for this area will be loaded. The

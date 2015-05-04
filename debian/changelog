@@ -1,7 +1,16 @@
 piuparts (0.64) UNRELEASED; urgency=medium
  
+  [ Holger Levsen ]
   * Add FancyIndexing to piuparts-master.conf and enable apache syntax
     highlighting in vim. (Thanks DSA!)
+
+  [ Andreas Beckmann ]
+  * piuparts.conf:
+    - New global setting: basetgz-sections, used by piuparts-slave only.
+  * piuparts-slave.py:
+    - Add support for special sections that only create/refresh reference
+      basetgz tarballs without testing packages. The basetgz can be shared
+      between multiple sections without being affected by their flags.
 
  -- Holger Levsen <holger@debian.org>  Mon, 27 Apr 2015 17:01:28 +0200
 

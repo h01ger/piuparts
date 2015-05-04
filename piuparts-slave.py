@@ -76,6 +76,7 @@ class Config(piupartslib.conf.Config):
         piupartslib.conf.Config.__init__(self, section,
                                          {
                                          "sections": "slave",
+                                         "basetgz-sections": "",
                                          "idle-sleep": 300,
                                          "max-tgz-age": 2592000,
                                          "min-tgz-retry-delay": 21600,
@@ -349,6 +350,7 @@ class Section:
         self._error_wait_until = 0
         self._idle_wait_until = 0
         self._recycle_wait_until = 0
+        self._tarball_wait_until = 0
         self._slave_directory = os.path.abspath(section)
         if not os.path.exists(self._slave_directory):
             os.makedirs(self._slave_directory)
@@ -411,27 +413,35 @@ class Section:
         return os.path.join(self._config["basetgz-directory"], basetgz)
 
     def _check_tarball(self):
+        if int(self._config["max-tgz-age"]) < 0:
+            return
+
         oldcwd = os.getcwd()
         os.chdir(self._slave_directory)
 
         tgz = self._get_tarball()
         max_tgz_age = int(self._config["max-tgz-age"])
         min_tgz_retry_delay = int(self._config["min-tgz-retry-delay"])
+        ttl = 0
         needs_update = not os.path.exists(tgz)
         if not needs_update and max_tgz_age > 0:
             # tgz exists and age is limited, so check age
             now = time.time()
             age = now - os.path.getmtime(tgz)
+            ttl = max_tgz_age - age
             logging.info("Check-replace %s: age=%d vs. max=%d" % (tgz, age, max_tgz_age))
-            if age > max_tgz_age:
+            if ttl < 0:
                 if os.path.exists(tgz + ".log"):
                     age = now - os.path.getmtime(tgz + ".log")
+                ttl = min_tgz_retry_delay - age
                 logging.info("Limit-replace %s: last-retry=%d vs. min=%d" % (tgz, age, min_tgz_retry_delay))
-                if age > min_tgz_retry_delay:
+                if ttl < 0:
                     needs_update = True
                     logging.info("%s too old.  Forcing re-creation" % tgz)
         if needs_update:
             create_chroot(self._config, tgz, self._config.get_start_distro())
+            ttl = min_tgz_retry_delay
+        self._tarball_wait_until = time.time() + ttl
 
         os.chdir(oldcwd)
 
@@ -469,6 +479,18 @@ class Section:
             return 0
         self._distro_config = piupartslib.conf.DistroConfig(
                 DISTRO_CONFIG_FILE, self._config["mirror"])
+
+        if interrupted or got_sighup:
+            do_processing = False
+
+        if do_processing and time.time() > self._tarball_wait_until:
+            self._check_tarball()
+
+        if self._config.get_distro() == "None":
+            # section is for tarball creation only
+            self._idle_wait_until = self._tarball_wait_until + 60
+            self._recycle_wait_until = self._tarball_wait_until + 3600
+            return 0
 
         if interrupted or got_sighup:
             do_processing = False
@@ -899,6 +921,7 @@ def main():
         section_names = sys.argv[1:]
     else:
         section_names = global_config["sections"].split()
+        section_names += global_config["basetgz-sections"].split()
 
     persistent_connection = Slave()
     sections = []
