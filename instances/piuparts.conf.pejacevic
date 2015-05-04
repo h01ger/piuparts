@@ -82,6 +82,13 @@ flags-start-lenny =
 
 
 [global]
+basetgz-sections =
+	tarball/sid
+	tarball/stretch
+	tarball/jessie
+	tarball/wheezy
+	tarball/squeeze
+	tarball/lenny
 sections =
 	experimental
 	sid2experimental
@@ -145,6 +152,63 @@ reschedule-fail-count = 50
 reschedule-untestable-days = 2
 
 
+[tarball/sid]
+piuparts-flags =
+	%(flags-default)s
+distro = None
+upgrade-test-distros = sid
+# 3 days (60*60*24*3)
+max-tgz-age = 259200
+
+
+[tarball/stretch]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+distro = None
+upgrade-test-distros = stretch
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
+
+
+[tarball/jessie]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+distro = None
+upgrade-test-distros = jessie
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
+
+
+[tarball/wheezy]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+distro = None
+upgrade-test-distros = wheezy
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
+
+
+[tarball/squeeze]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+distro = None
+upgrade-test-distros = squeeze
+max-tgz-age = 0
+
+
+[tarball/lenny]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+distro = None
+upgrade-test-distros = lenny
+max-tgz-age = 0
+
+
 [experimental]
 precedence = 5
 piuparts-flags =
@@ -161,8 +225,6 @@ piuparts-flags =
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
 distro = sid
-# 3 days (60*60*24*3)
-max-tgz-age = 259200
 
 
 [sid-nodoc]
@@ -199,8 +261,6 @@ piuparts-flags =
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
 distro = stretch
-# 1 week (60*60*24*7)
-max-tgz-age = 604800
 
 
 [jessie2stretch]
@@ -221,8 +281,6 @@ piuparts-flags =
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
 distro = jessie
-# 1 week (60*60*24*7)
-max-tgz-age = 604800
 
 
 [jessie-rcmd]
@@ -313,8 +371,6 @@ piuparts-flags =
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
 distro = wheezy
-# 1 month (60*60*24*30)
-max-tgz-age = 2592000
 
 
 [wheezy-proposed]

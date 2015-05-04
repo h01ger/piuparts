@@ -7,6 +7,7 @@ piuparts (0.64) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * piuparts.conf:
     - New global setting: basetgz-sections, used by piuparts-slave only.
+    - Switch to separate tarball sections.
   * piuparts-slave.py:
     - Add support for special sections that only create/refresh reference
       basetgz tarballs without testing packages. The basetgz can be shared
