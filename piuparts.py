@@ -1179,20 +1179,22 @@ class Chroot:
             self.run(["apt-cache", "policy"])
             self.run(["apt-cache", "policy"] + unqualify(packages))
 
-            apt_get_install = ["apt-get", "-y"]
-            apt_get_install.extend(settings.distro_config.get_target_flags(
-                os.environ["PIUPARTS_DISTRIBUTION"]))
-            apt_get_install.append("install")
-            apt_get_install.extend(packages)
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
-                self.run(apt_get_install)
+
+            target_flags = settings.distro_config.get_target_flags(os.environ["PIUPARTS_DISTRIBUTION"])
+            self.apt_get_install(to_install=packages, flags=target_flags)
+
+            if settings.list_installed_files:
                 self.list_installed_files(pre_info, self.save_meta_data())
-            else:
-                self.run(apt_get_install)
 
             if with_scripts:
                 self.run_scripts("post_install")
+
+    def apt_get_install(self, to_install=[], flags=[]):
+        command = ["apt-get", "-y"] + flags + ["install"]
+        command.extend(to_install)
+        self.run(command)
 
     def get_selections(self):
         """Get current package selections in a chroot."""
