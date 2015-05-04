@@ -5,6 +5,9 @@ piuparts (0.64) UNRELEASED; urgency=medium
     highlighting in vim. (Thanks DSA!)
 
   [ Andreas Beckmann ]
+  * piuparts.py:
+    - Use 'dpkg-query -W' instead of 'dpkg --get-selections' to record
+      architecture and version information for installed packages, too.
   * piuparts.conf:
     - New global setting: basetgz-sections, used by piuparts-slave only.
     - Switch to separate tarball sections.

@@ -1200,11 +1200,18 @@ class Chroot:
 
     def get_selections(self):
         """Get current package selections in a chroot."""
-        (status, output) = self.run(["dpkg", "--get-selections", "*"])
-        vlist = [line.split() for line in output.split("\n") if line.strip()]
+        # "${Status}" emits three columns, e.g. "install ok installed"
+        (status, output) = self.run(["dpkg-query", "-W", "-f", "${Status}\\t${binary:Package}\\t${Version}\\n"])
         vdict = {}
-        for name, status in vlist:
-            vdict[name] = (status, None)
+        for line in [line for line in output.split("\n") if line.strip()]:
+            token = line.split()
+            status = token[0]
+            name = token[3]
+            if status == "install":
+                version = token[-1]
+            else:
+                version = None
+            vdict[name] = (status, version)
         return vdict
 
     def get_diversions(self):
