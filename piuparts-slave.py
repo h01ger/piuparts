@@ -460,6 +460,16 @@ class Section:
 
         self._throttle_if_overloaded()
 
+        self._config = Config(section=self._config.section, defaults_section="global")
+        try:
+            self._config.read(CONFIG_FILE)
+        except MissingSection:
+            logging.info("unknown section " + self._config.section)
+            self._error_wait_until = time.time() + 3600
+            return 0
+        self._distro_config = piupartslib.conf.DistroConfig(
+                DISTRO_CONFIG_FILE, self._config["mirror"])
+
         if interrupted or got_sighup:
             do_processing = False
 
@@ -474,16 +484,6 @@ class Section:
             action = "Flushing"
         logging.info("%s section %s (precedence=%d)"
                      % (action, self._config.section, self.precedence()))
-
-        self._config = Config(section=self._config.section, defaults_section="global")
-        try:
-            self._config.read(CONFIG_FILE)
-        except MissingSection:
-            logging.info("unknown")
-            self._error_wait_until = time.time() + 3600
-            return 0
-        self._distro_config = piupartslib.conf.DistroConfig(
-            DISTRO_CONFIG_FILE, self._config["mirror"])
 
         if int(self._config["max-reserved"]) == 0:
             logging.info("disabled")
