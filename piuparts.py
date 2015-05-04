@@ -1201,7 +1201,8 @@ class Chroot:
     def get_selections(self):
         """Get current package selections in a chroot."""
         # "${Status}" emits three columns, e.g. "install ok installed"
-        (status, output) = self.run(["dpkg-query", "-W", "-f", "${Status}\\t${binary:Package}\\t${Version}\\n"])
+        # "${binary:Package}" requires a multi-arch dpkg, so fall back to "${Package}" on older versions
+        (status, output) = self.run(["dpkg-query", "-W", "-f", "${Status}\\t${binary:Package}\\t${Package}\\t${Version}\\n"])
         vdict = {}
         for line in [line for line in output.split("\n") if line.strip()]:
             token = line.split()
