@@ -1,5 +1,5 @@
 piuparts (0.64) UNRELEASED; urgency=medium
- 
+
   [ Holger Levsen ]
   * Add FancyIndexing to piuparts-master.conf and enable apache syntax
     highlighting in vim. (Thanks DSA!)
@@ -8,6 +8,9 @@ piuparts (0.64) UNRELEASED; urgency=medium
   * piuparts.py:
     - Use 'dpkg-query -W' instead of 'dpkg --get-selections' to record
       architecture and version information for installed packages, too.
+    - Restore the selections to the package versions from the reference chroot
+      in scenarios like sid+experimental where more than one version could be
+      available. Use --force-yes since this may involve downgrades.
   * piuparts.conf:
     - New global setting: basetgz-sections, used by piuparts-slave only.
     - Switch to separate tarball sections.
@@ -87,7 +90,7 @@ piuparts (0.63) unstable; urgency=medium
   * test_config.py: update for Jessie being stable and Stretch being the new
     testing suite.
   * debian/copyright: Remove space from W3C FreeUse licence name, thanks
-    lintian. 
+    lintian.
   * Update piuparts.py, piuparts.1.txt and README_server.txt due to the fact
     that jessie is the new stable and testing is stretch now.
 

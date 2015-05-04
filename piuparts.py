@@ -1355,9 +1355,11 @@ class Chroot:
                              if state == "remove"]
         nondeps_to_purge = [name for name, (state, version) in nondeps.iteritems()
                             if state == "purge"]
-        deps_to_install = [name for name, (state, version) in deps.iteritems()
-                           if state == "install"]
         all_to_remove = deps_to_remove + deps_to_purge + nondeps_to_remove + nondeps_to_purge
+        all_to_install = [(name, version) for name, (state, version) in deps.iteritems()
+                          if state == "install"]
+        all_to_install += [(name, version) for name, (state, version) in nondeps.iteritems()
+                           if state == "install"]
 
         self.list_paths_with_symlinks()
         self.check_debsums()
@@ -1368,10 +1370,14 @@ class Chroot:
 
         # First remove all packages (and reinstall missing ones).
         self.remove_packages(deps_to_remove)
-        if deps_to_install:
+        if all_to_install:
+            version_qualified = [name for (name, version) in all_to_install
+                                 if version is None]
+            version_qualified += ["%s=%s" % (name, version) for (name, version) in all_to_install
+                                  if version is not None]
             self.apt_get_install(to_remove=all_to_remove,
-                                 to_install=deps_to_install,
-                                 flags=["--no-install-recommends"])
+                                 to_install=version_qualified,
+                                 flags=["--no-install-recommends", "--force-yes"])
         else:
             self.remove_packages(all_to_remove)
 
