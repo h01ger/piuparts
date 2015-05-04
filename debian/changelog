@@ -1,5 +1,7 @@
 piuparts (0.64) UNRELEASED; urgency=medium
  
+  * Add FancyIndexing to piuparts-master.conf and enable apache syntax
+    highlighting in vim. (Thanks DSA!)
 
  -- Holger Levsen <holger@debian.org>  Mon, 27 Apr 2015 17:01:28 +0200
 
