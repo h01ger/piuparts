@@ -1191,9 +1191,11 @@ class Chroot:
             if with_scripts:
                 self.run_scripts("post_install")
 
-    def apt_get_install(self, to_install=[], flags=[]):
+    def apt_get_install(self, to_install=[], to_remove=[], to_purge=[], flags=[]):
         command = ["apt-get", "-y"] + flags + ["install"]
         command.extend(to_install)
+        command.extend(["%s-" % x for x in unqualify(to_remove)])
+        command.extend(["%s_" % x for x in unqualify(to_purge)])
         self.run(command)
 
     def get_selections(self):
@@ -1313,9 +1315,9 @@ class Chroot:
                              indent_string("\n".join(bad)))
 
     def remove_packages(self, packages):
-        """Remove packages in a chroot. May reinstall packages at the same time if they are suffixed with '+'."""
+        """Remove packages in a chroot."""
         if packages:
-            self.run(["apt-get", "remove", "--no-install-recommends"] + unqualify(packages), ignore_errors=True)
+            self.run(["apt-get", "remove"] + unqualify(packages), ignore_errors=True)
 
     def purge_packages(self, packages):
         """Purge packages in a chroot."""
@@ -1347,6 +1349,7 @@ class Chroot:
                             if state == "purge"]
         deps_to_install = [name for name, state in deps.iteritems()
                            if state == "install"]
+        all_to_remove = deps_to_remove + deps_to_purge + nondeps_to_remove + nondeps_to_purge
 
         self.list_paths_with_symlinks()
         self.check_debsums()
@@ -1357,9 +1360,12 @@ class Chroot:
 
         # First remove all packages (and reinstall missing ones).
         self.remove_packages(deps_to_remove)
-        self.remove_packages(deps_to_remove + deps_to_purge +
-                             nondeps_to_remove + nondeps_to_purge +
-                             ["%s+" % x for x in deps_to_install])
+        if deps_to_install:
+            self.apt_get_install(to_remove=all_to_remove,
+                                 to_install=deps_to_install,
+                                 flags=["--no-install-recommends"])
+        else:
+            self.remove_packages(all_to_remove)
 
         # Run custom scripts after removing all packages.
         self.run_scripts("post_remove")
