@@ -1204,7 +1204,7 @@ class Chroot:
         vlist = [line.split() for line in output.split("\n") if line.strip()]
         vdict = {}
         for name, status in vlist:
-            vdict[name] = status
+            vdict[name] = (status, None)
         return vdict
 
     def get_diversions(self):
@@ -1333,21 +1333,21 @@ class Chroot:
         changes = diff_selections(self, selections)
         deps = {}
         nondeps = {}
-        for name, state in changes.iteritems():
+        for name, state_version in changes.iteritems():
             if name in packages:
-                nondeps[name] = state
+                nondeps[name] = state_version
             else:
-                deps[name] = state
+                deps[name] = state_version
 
-        deps_to_remove = [name for name, state in deps.iteritems()
+        deps_to_remove = [name for name, (state, version) in deps.iteritems()
                           if state == "remove"]
-        deps_to_purge = [name for name, state in deps.iteritems()
+        deps_to_purge = [name for name, (state, version) in deps.iteritems()
                          if state == "purge"]
-        nondeps_to_remove = [name for name, state in nondeps.iteritems()
+        nondeps_to_remove = [name for name, (state, version) in nondeps.iteritems()
                              if state == "remove"]
-        nondeps_to_purge = [name for name, state in nondeps.iteritems()
+        nondeps_to_purge = [name for name, (state, version) in nondeps.iteritems()
                             if state == "purge"]
-        deps_to_install = [name for name, state in deps.iteritems()
+        deps_to_install = [name for name, (state, version) in deps.iteritems()
                            if state == "install"]
         all_to_remove = deps_to_remove + deps_to_purge + nondeps_to_remove + nondeps_to_purge
 
@@ -2117,15 +2117,16 @@ def diff_selections(chroot, selections):
        set to to restore original selections."""
     changes = {}
     current = chroot.get_selections()
-    for name, value in current.iteritems():
+    for name, (value, version) in current.iteritems():
         if name not in selections:
-            changes[name] = "purge"
-        elif selections[name] != current[name] and \
-                selections[name] in ["purge", "install"]:
+            changes[name] = ("purge", None)
+        elif selections[name][0] != value and \
+                selections[name][0] in ["purge", "install"]:
             changes[name] = selections[name]
-    for name, value in selections.iteritems():
-        if name not in current:
-            changes[name] = "install"
+    for name, (value, version) in selections.iteritems():
+        if name not in current or \
+            current[name][1] != version:
+                changes[name] = selections[name]
     return changes
 
 
