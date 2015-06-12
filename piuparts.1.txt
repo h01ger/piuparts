@@ -1,6 +1,7 @@
 piuparts(1)
 ===========
 :doctype: manpage
+:revdate: 2015-05-12
 
 NAME
 ----
@@ -305,9 +306,5 @@ SEE ALSO
 AUTHOR
 ------
 Lars Wirzenius (liw@iki.fi) and others
-
-DATE
-----
-2012-06-22
 
 // vim: set filetype=asciidoc:

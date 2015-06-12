@@ -6,6 +6,9 @@ piuparts (0.64) UNRELEASED; urgency=medium
   * Use httpredir.debian.org instead of http.debian.net. (Closes: #783617)
   * Add support for adequate tag missing-pkgconfig-dependency.
     (Closes: #783528)
+  * Use revdate: in the asciidoc headers of manpages instead of DATE in the
+    body to achieve reproducible builds and set the revdate: to the last
+    modification date of each manpage.
 
   [ Andreas Beckmann ]
   * piuparts.py:

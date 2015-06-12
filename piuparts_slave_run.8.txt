@@ -1,6 +1,7 @@
 piuparts_slave_run(8)
 =====================
 :doctype: manpage
+:revdate: 2013-05-27
 
 NAME
 ----
@@ -43,9 +44,5 @@ SEE ALSO
 AUTHOR
 ------
 Holger Levsen (holger@layer-acht.org)
-
-DATE
-----
-2013-05-27
 
 // vim: set filetype=asciidoc:
