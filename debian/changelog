@@ -3,6 +3,7 @@ piuparts (0.64) UNRELEASED; urgency=medium
   [ Holger Levsen ]
   * Add FancyIndexing to piuparts-master.conf and enable apache syntax
     highlighting in vim. (Thanks DSA!)
+  * Use httpredir.debian.org instead of http.debian.net. (Closes: #783617)
 
   [ Andreas Beckmann ]
   * piuparts.py:
