@@ -1253,6 +1253,7 @@ class Chroot:
                     'library-not-found',
                     'missing-alternative',
                     'missing-copyright-file',
+                    'missing-pkgconfig-dependency',
                     'missing-symbol-version-information',
                     'program-name-collision',
                     'py-file-not-bytecompiled',

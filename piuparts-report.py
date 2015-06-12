@@ -430,6 +430,7 @@ linktarget_by_template = [
     ("broken_binfmt_interpreter_inadequate_issue.tpl", "but adequate did not find the interpreter registered with update_binfmts"),
     ("missing_alternative_inadequate_issue.tpl", "but adequate found a missing alternative"),
     ("missing_copyright_file_inadequate_issue.tpl", "but adequate couldn't find a copyright file"),
+    ("missing_pkgconfig-dependency_issue.tpl", "but adequate found a missing pkgconfig dependency"),
     ("program_name_collision_inadequate_issue.tpl", "but adequate found a program name collision"),
     ("py_file_not_bytecompiled_inadequate_issue.tpl", "but adequate found a .py file that is not byte-compiled"),
     ("pyshared_file_not_bytecompiled_inadequate_issue.tpl", "but adequate found a .py file in /usr/share/pyshared that is not byte-compiled"),
