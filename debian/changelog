@@ -1,4 +1,4 @@
-piuparts (0.64) UNRELEASED; urgency=medium
+piuparts (0.64) unstable; urgency=medium
 
   [ Holger Levsen ]
   * Add FancyIndexing to piuparts-master.conf and enable apache syntax
@@ -25,7 +25,7 @@ piuparts (0.64) UNRELEASED; urgency=medium
       basetgz tarballs without testing packages. The basetgz can be shared
       between multiple sections without being affected by their flags.
 
- -- Holger Levsen <holger@debian.org>  Mon, 27 Apr 2015 17:01:28 +0200
+ -- Holger Levsen <holger@debian.org>  Fri, 12 Jun 2015 13:42:52 +0200
 
 piuparts (0.63) unstable; urgency=medium
 
