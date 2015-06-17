@@ -1522,9 +1522,6 @@ class Chroot:
     def mount_proc(self):
         """Mount /proc inside chroot."""
         self.run(["mount", "-t", "proc", "proc", "/proc"])
-        etcmtab = self.relative("etc/mtab")
-        if not os.path.lexists(etcmtab):
-            os.symlink("../proc/mounts", etcmtab)
         self.mkdir_p("dev/pts")
         self.run(["mount", "-t", "devpts", "devpts", "/dev/pts"])
 
