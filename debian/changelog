@@ -6,6 +6,8 @@ piuparts (0.65) UNRELEASED; urgency=medium
   * scripts/post_distupgrade_exceptions:
     - Fix the /etc/nsswitch.conf wheezy -> jessie upgrade handling.
   * Add bug template for wheezy -> jessie -> stretch upgrades.
+  * scripts/pre_remove_40_find_unowned_lib_links: Ignore some symlinks caused
+    by mpi-default-dev.
 
  -- Holger Levsen <holger@debian.org>  Fri, 12 Jun 2015 13:43:42 +0200
 
