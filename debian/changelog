@@ -9,7 +9,7 @@ piuparts (0.65) UNRELEASED; urgency=medium
     - Fix the /etc/nsswitch.conf wheezy -> jessie upgrade handling.
   * Add bug template for wheezy -> jessie -> stretch upgrades.
   * scripts/pre_remove_40_find_unowned_lib_links: Ignore some symlinks caused
-    by mpi-default-dev.
+    by mpi-default-dev and libglide2/libglide3.
 
  -- Holger Levsen <holger@debian.org>  Fri, 12 Jun 2015 13:43:42 +0200
 

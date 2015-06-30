@@ -17,6 +17,11 @@ do
 					# created by lsb-core
 					continue
 					;;
+				/usr/lib/libglide.so.2|\
+				/usr/lib/libglide3.so.3)
+					# created by maintainer script
+					continue
+					;;
 				/usr/lib/libfmpich.so.12|\
 				/usr/lib/libmpich.so.12|\
 				/usr/lib/libmpichcxx.so.12|\
