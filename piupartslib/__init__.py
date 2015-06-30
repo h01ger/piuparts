@@ -96,6 +96,8 @@ def open_packages_url(url):
     elif ext == '.gz':
         decompressor = zlib.decompressobj(16 + zlib.MAX_WBITS)
         decompressed = DecompressedStream(socket, decompressor)
+    elif ext == '':
+        decompressed = socket
     else:
         raise ext
     return (url, decompressed)
