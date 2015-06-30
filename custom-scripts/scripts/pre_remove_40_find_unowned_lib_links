@@ -15,11 +15,10 @@ do
 			case "$f" in
 				/lib/ld-lsb.so.?)
 					# created by lsb-core
-					;;
-				*)
-					echo "UNOWNED SYMLINK $f -> $rl"
+					continue
 					;;
 			esac
+			echo "UNOWNED SYMLINK $f -> $rl"
 		fi
 	done
 done
