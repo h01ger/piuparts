@@ -221,10 +221,10 @@ Note that file: addresses works if the directories are made accessible from with
 
 *--testdebs-repo*='deb-line'::
   Provide an additional line to be appended to sources.list, e.g.
-    'deb <URL> <distrib> <components>' or
-    'deb file:// </bind/mount> ./'
-  If only an URL or local path is given as argument, "deb", "file://", and
-  "./" will be prepended/appended as needed.
+    'deb [ trusted=yes ] <URL> <distrib> <components>' or
+    'deb [ trusted=yes ] file:// </bind/mount> ./'
+  If only an URL or local path is given as argument, "deb [ trusted=yes ]",
+  "file://", and "./" will be prepended/appended as needed.
   The "testdebs" repository provides the packages to be tested (and some
   additional dependencies, if needed, e.g. all packages built from the same
   source package as the (binary) package being tested) and can be used for
@@ -233,6 +233,9 @@ Note that file: addresses works if the directories are made accessible from with
   for installing the target packages. Dependency resolution will be done by
   apt-get. The packages to be tested can be passed as .debs or as package
   names (with '--apt').
+  The "trusted=yes" option causes this (and only this) repository to be
+  trustworthy even if the Packages file is not signed, such that a
+  (globally acting) '--do-not-verify-signatures' will not be needed.
 
 *-t directory*, *--tmpdir*='directory'::
   Use directory as the place where temporary files and directories are created. The default is the environment variable *TMPDIR*, or _/tmp_ if not set.

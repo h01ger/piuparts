@@ -3,6 +3,8 @@ piuparts (0.65) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * piuparts.py:
     - Ensure /etc/mtab exists in the chroot.
+    - Create sources.list entries for --testdebs-repo with '[ trusted=yes ]'
+      to avoid needing --do-not-verify-signatures which would act globally.
   * scripts/post_distupgrade_exceptions:
     - Fix the /etc/nsswitch.conf wheezy -> jessie upgrade handling.
   * Add bug template for wheezy -> jessie -> stretch upgrades.

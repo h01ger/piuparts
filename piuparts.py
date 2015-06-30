@@ -897,9 +897,9 @@ class Chroot:
             if settings.testdebs_repo.startswith("deb"):
                 debline = settings.testdebs_repo
             elif settings.testdebs_repo.startswith("/"):
-                debline = "deb file://%s ./" % settings.testdebs_repo
+                debline = "deb [ trusted=yes ] file://%s ./" % settings.testdebs_repo
             else:
-                debline = "deb %s ./" % settings.testdebs_repo
+                debline = "deb [ trusted=yes ] %s ./" % settings.testdebs_repo
             logging.debug("enabling testdebs repository '%s'" % debline)
             create_file(self.relative("etc/apt/sources.list.d/piuparts-testdebs-repo.list"), debline + "\n")
             if update:
