@@ -429,11 +429,27 @@ class PackagesDB:
                     more += dep_pkg.dependencies()
         return circular
 
-    def _lookup_package_state(self, package):
+    def _is_successfully_tested(self, package):
+        # a pass/ log exists but no corresponding recycle/ log exists
+        if self._logdb.log_exists(package, [self._ok]):
+            if not (self._recycle_mode and self._logdb.log_exists(package, [self._recycle])):
+                return True
+        return False
+
+    def _lookup_package_state(self, package, use_cached_success):
         if self._recycle_mode and self._logdb.log_exists(package, [self._recycle]):
             return "unknown"
         if self._logdb.log_exists(package, [self._ok]):
-            return "successfully-tested"
+            success = True
+            if not use_cached_success:
+                # if a pass/ log exists but any dependency may be not
+                # trivially satisfiable do not skip dependency resolution
+                for dep in package.dependencies():
+                    if not self.get_package(dep, resolve_virtual=True):
+                        success = False
+                        break
+            if success:
+                return "successfully-tested"
         if self._logdb.log_exists(package, [self._fail] + self._morefail):
             return "failed-testing"
         if self._logdb.log_exists(package, [self._evil]):
@@ -501,6 +517,8 @@ class PackagesDB:
                 testable = False
                 break
         if testable:
+            if self._is_successfully_tested(package):
+                return "successfully-tested"
             return "waiting-to-be-tested"
 
         # treat circular-dependencies as testable (for the part of the circle)
@@ -517,6 +535,8 @@ class PackagesDB:
                     testable = False
                     break
             if testable:
+                if self._is_successfully_tested(package):
+                    return "successfully-tested"
                 return "waiting-to-be-tested"
 
         for dep, dep_state in dep_states:
@@ -525,7 +545,7 @@ class PackagesDB:
 
         return "unknown"
 
-    def _compute_package_states(self):
+    def _compute_package_states(self, use_cached_success=False):
         if self._in_state is not None:
             return
 
@@ -543,7 +563,7 @@ class PackagesDB:
         todo = []
 
         for package_name, package in self._packages.iteritems():
-            state = self._lookup_package_state(package)
+            state = self._lookup_package_state(package, use_cached_success)
             assert state in self._states
             self._package_state[package_name] = state
             if state == "unknown":
@@ -552,7 +572,7 @@ class PackagesDB:
                 self._in_state[state].append(package_name)
 
         for db in self._dependency_databases:
-            db._compute_package_states()
+            db._compute_package_states(use_cached_success=True)
 
         while todo:
             package_names = todo
