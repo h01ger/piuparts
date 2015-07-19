@@ -28,6 +28,9 @@ do
 	while read f ; do
 		if [ -d "$f" ]; then
 			: # ignore directories
+		elif [ "$f" = "/home" ]; then
+			: # ignore directory shipped by base-files that is
+			  # turned into a file by our post_setup_forbid_home script
 		elif [ -L "$f" ]; then
 			: # ignore links
 		elif [ -z "${f%%/etc/*}" ]; then
