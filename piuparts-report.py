@@ -555,6 +555,7 @@ def is_bad_state(state):
         "unknown",
         "unknown-preferred-alternative",  # obsolete
         "no-dependency-from-alternatives-exists",  # obsolete
+        #"foreign:*",
         "does-not-exist",
     ]
 

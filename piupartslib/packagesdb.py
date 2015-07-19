@@ -276,13 +276,14 @@ class PackagesDB:
         "unknown",
         "unknown-preferred-alternative",  # obsolete
         "no-dependency-from-alternatives-exists",  # obsolete
+        # "foreign:*",  # can only happen as query result for a dependency
         # "does-not-exist",  # can only happen as query result for a dependency
     ]
 
     _good_states = [
         "successfully-tested",
         "essential-required",
-    ]
+    ] + ["foreign:%s" % arch for arch in set(_foreign_packages.values())]
 
     _obsolete_states = [
         "essential-required",
@@ -714,8 +715,7 @@ class PackagesDB:
                 if state != "does-not-exist":
                     return state
         if package_name in self._foreign_packages:
-            # HACK! these are arch=i386 packages needed on amd64
-            return "essential-required"
+            return "foreign:%s" % self._foreign_packages[package_name]
         return "does-not-exist"
 
     def get_best_package_state(self, package_name, resolve_virtual=True, recurse=True):

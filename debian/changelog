@@ -9,6 +9,7 @@ piuparts (0.65) UNRELEASED; urgency=medium
   * piupartslib/packagesdb.py:
     - Put package in 'dependency-does-not-exist' state if a pass/ log exists
       but a dependency has been removed from the archive since then.
+    - Prepare improvements for handling foreign arch dependencies.
   * piupartslib/open_packages_url(): support uncompressed Packages files.
   * piuparts-master-backend.py:
     - Catch URLError, log it and abort without backtrace.
