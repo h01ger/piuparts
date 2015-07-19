@@ -53,6 +53,7 @@ is_recent()
 }
 
 
+TMPLIST=$(mktemp)
 list_logs()
 {
 	__AGE="$1"
@@ -61,7 +62,8 @@ list_logs()
 	find "$@" -name "*.log" -mtime +$__AGE \
 		| tac \
 		| xargs --no-run-if-empty -n99999 -s1999999 ls -dt \
-		| tail -n $__COUNT
+		> $TMPLIST
+	tail -n $__COUNT $TMPLIST
 }
 
 
@@ -163,6 +165,7 @@ for SECTION in $SECTIONS ; do
 	cd $OLDPWD
 done
 rm $RECENT
+rm $TMPLIST
 rm $LOGS
 rm $OBSOLETE
 rm $EXPIRED
