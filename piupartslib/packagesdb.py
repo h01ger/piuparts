@@ -251,6 +251,15 @@ class LogfileExists(Exception):
 
 class PackagesDB:
 
+    # these packages are uses as dependencies but are only available
+    # from foreign architectures
+    # HACK: this hardcoded list should be moved to some data file
+    _foreign_packages = {
+        "ia32-libs-i386": "i386",
+        "ia32-libs-gtk-i386": "i386",
+        "libnss-mdns-i386": "i386",
+    }
+
     # keep in sync with piuparts-report.py: emphasize_reason()
     # FIXME: can we reorder this list or remove entries without breaking the counts.txt for the plot?
     _states = [
@@ -704,7 +713,7 @@ class PackagesDB:
                 state = db.get_package_state(package_name, resolve_virtual=resolve_virtual, recurse=False)
                 if state != "does-not-exist":
                     return state
-        if package_name in ["ia32-libs-i386", "ia32-libs-gtk-i386", "libnss-mdns-i386"]:
+        if package_name in self._foreign_packages:
             # HACK! these are arch=i386 packages needed on amd64
             return "essential-required"
         return "does-not-exist"
