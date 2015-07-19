@@ -32,6 +32,7 @@ import os
 import fcntl
 import time
 import random
+from urllib2 import URLError
 
 import piupartslib
 from piupartslib.packagesdb import LogfileExists
@@ -421,8 +422,11 @@ def main():
     os.chdir(master_directory)
 
     m = Master(sys.stdin, sys.stdout)
-    while m.do_transaction():
-        pass
+    try:
+        while m.do_transaction():
+            pass
+    except URLError as e:
+        logging.error("ABORT: URLError: " + str(e.reason))
 
     logging.debug(timestamp() + " disconnected")
 
