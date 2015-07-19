@@ -80,7 +80,7 @@ class DecompressedStream():
 def open_packages_url(url):
     """Open a Packages.bz2 file pointed to by a URL"""
     socket = None
-    for ext in ['.bz2', '.gz']:
+    for ext in ['.bz2', '.gz', '']:
         try:
             socket = urllib2.urlopen(url + ext)
         except urllib2.HTTPError as httperror:
