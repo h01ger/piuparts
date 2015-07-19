@@ -95,6 +95,7 @@ sections =
 	testing2sid/main
 	stable2sid/main
 	stable2testing2sid/main
+	jessie2proposed/main
 	jessie2stretch/main
 	jessie2bpo2stretch/main
 	wheezy2proposed/main
@@ -133,6 +134,7 @@ sections =
 	testing2sid/contrib
 	stable2sid/contrib
 	stable2testing2sid/contrib
+	jessie2proposed/contrib
 	jessie2stretch/contrib
 	jessie2bpo2stretch/contrib
 	wheezy2proposed/contrib
@@ -171,6 +173,7 @@ sections =
 	testing2sid/non-free
 	stable2sid/non-free
 	stable2testing2sid/non-free
+	jessie2proposed/non-free
 	jessie2stretch/non-free
 	jessie2bpo2stretch/non-free
 	wheezy2proposed/non-free
@@ -2252,6 +2255,44 @@ area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy jessie testing
 reschedule-old-count = 100
+
+
+[jessie2proposed/main]
+precedence = 60
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = amd64
+area = main
+components = main
+distro = jessie
+upgrade-test-distros = jessie jessie-proposed
+
+[jessie2proposed/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie2proposed/main jessie2proposed/non-free
+arch = amd64
+area = contrib
+distro = jessie
+upgrade-test-distros = jessie jessie-proposed
+
+[jessie2proposed/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie2proposed/main jessie2proposed/contrib
+arch = amd64
+area = non-free
+distro = jessie
+upgrade-test-distros = jessie jessie-proposed
 
 
 [jessie2stretch/main]
