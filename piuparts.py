@@ -2811,10 +2811,10 @@ def parse_command_line():
 
     parser.add_option("--fake-essential-packages",
                       action="append", default=[],
-                      help="Install these additional packages in the base chroot. They won't be purged after the test. " +
+                      help="Install additional packages in the base chroot that are not removed after the test. " +
                       "Takes a comma separated list of package names and can be given multiple times. " +
                       "Useful for packages that can be used during purge of the package to be tested " +
-                      "or to test if the package to be tested mishandles this package.")
+                      "or to test whether the package to be tested mishandles these packages.")
 
     parser.add_option("--extra-old-packages",
                       action="append", default=[],
