@@ -188,6 +188,7 @@ class Settings:
         self.install_remove_install = False
         self.install_purge_install = False
         self.list_installed_files = False
+        self.fake_essential_packages = []
         self.extra_old_packages = []
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
@@ -754,6 +755,8 @@ class Chroot:
 
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
+
+        self.install_packages_by_name(settings.fake_essential_packages)
 
         if settings.savetgz and not temp_tgz:
             self.pack_into_tgz(settings.savetgz)
@@ -2806,6 +2809,13 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Remove package after installation and reinstall. For testing installation in config-files-remaining state.")
 
+    parser.add_option("--fake-essential-packages",
+                      action="append", default=[],
+                      help="Install these additional packages in the base chroot. They won't be purged after the test. " +
+                      "Takes a comma separated list of package names and can be given multiple times. " +
+                      "Useful for packages that can be used during purge of the package to be tested " +
+                      "or to test if the package to be tested mishandles this package.")
+
     parser.add_option("--extra-old-packages",
                       action="append", default=[],
                       help="Install these additional packages along with the old packages from the archive. " +
@@ -2957,6 +2967,7 @@ def parse_command_line():
     settings.install_purge_install = opts.install_purge_install
     settings.install_remove_install = opts.install_remove_install
     settings.list_installed_files = opts.list_installed_files
+    [settings.fake_essential_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.fake_essential_packages]
     [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
     settings.skip_cronfiles_test = opts.skip_cronfiles_test
     settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test
