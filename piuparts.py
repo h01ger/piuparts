@@ -244,6 +244,7 @@ class Settings:
             "/var/cache/ldconfig/aux-cache",
             "/var/crash/",
             "/var/games/",
+            "/root/.rnd",
             # package management
             "/etc/apt/apt.conf.d/01autoremove-kernels",
             "/etc/apt/secring.gpg",
