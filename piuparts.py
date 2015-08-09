@@ -571,7 +571,7 @@ def remove_files(filenames):
             panic()
 
 
-def make_metapackage(name, depends, conflicts):
+def make_metapackage(name, depends, conflicts, arch='all'):
     """Return the path to a .deb created just for satisfying dependencies
 
     Caller is responsible for removing the temporary directory containing the
@@ -588,7 +588,7 @@ def make_metapackage(name, depends, conflicts):
     control = deb822.Deb822()
     control['Package'] = name
     control['Version'] = '0.invalid.0'
-    control['Architecture'] = 'all'
+    control['Architecture'] = arch
     control['Maintainer'] = ('piuparts developers team '
                              '<piuparts-devel@lists.alioth.debian.org>')
     control['Description'] = ('Dummy package to satisfy dependencies - '
@@ -2344,6 +2344,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
         depends = []
         conflicts = []
         provides = []
+        arch = 'all'
         for control in control_infos:
             if control.get("pre-depends"):
                 depends.extend([x.strip() for x in control["pre-depends"].split(',')])
@@ -2353,13 +2354,19 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
                 conflicts.extend([x.strip() for x in control["conflicts"].split(',')])
             if control.get("provides"):
                 provides.extend([x.strip() for x in control["provides"].split(',')])
+            if control.get("architecture"):
+                a = control["architecture"]
+                if arch == 'all':
+                    arch = a
+                if arch != a:
+                    logging.info("architecture mismatch: %s != %s)" % (arch, a))
         for provided in provides:
             if provided in conflicts:
                 conflicts.remove(provided)
         all_depends = ", ".join(depends)
         all_conflicts = ", ".join(conflicts)
         metapackage = make_metapackage("piuparts-depends-dummy",
-                                       all_depends, all_conflicts)
+                                       depends=all_depends, conflicts=all_conflicts, arch=arch)
         cleanup_metapackage = lambda: shutil.rmtree(os.path.dirname(metapackage))
         panic_handler_id = do_on_panic(cleanup_metapackage)
 

@@ -11,6 +11,8 @@ piuparts (0.65) UNRELEASED; urgency=medium
     - Increase permitted command output volume from 3 MB to 4 MB (for daptup).
     - Only ignore 'dpkg -i' failures that can be fixed by 'apt-get -f
       install'.  (Closes: #794628)
+    - Set Architecture of piuparts-depends-dummy to match the package to be
+      tested.
   * piuparts.conf.anbe: Add some more example sections.
   * piupartslib/packagesdb.py:
     - Put package in 'dependency-does-not-exist' state if a pass/ log exists
