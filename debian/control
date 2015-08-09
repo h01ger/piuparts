@@ -83,7 +83,7 @@ Description: piuparts master components
  as it is done on https://piuparts.debian.org/.
  .
  This package provides the piuparts-master, which needs one or more slaves to
- operate. It also contains piuparts-reports to generate web pages with the
+ operate. It also contains piuparts-report to generate web pages with the
  testing results as well as documentation.
 
 Package: piuparts-slave
@@ -124,7 +124,7 @@ Breaks:
 Replaces:
  piuparts (<= 0.44)
 Description: common piuparts components
- piupartslib, common library used by piuparts-master, -reports, -analyze and
+ piupartslib, common library used by piuparts-master, -report, -analyze and
  -slave.
  .
  See https://piuparts.debian.org or the piuparts package to learn more about
