@@ -1150,18 +1150,19 @@ class Chroot:
             apt_get_install.extend(settings.distro_config.get_target_flags(
                 os.environ["PIUPARTS_DISTRIBUTION"]))
             apt_get_install.append("install")
+
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
 
-                self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
+            self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
+
+            if settings.list_installed_files:
                 self.list_installed_files(pre_info, self.save_meta_data())
 
-                self.run(apt_get_install)
-                self.list_installed_files(pre_info, self.save_meta_data())
+            self.run(apt_get_install)
 
-            else:
-                self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
-                self.run(apt_get_install)
+            if settings.list_installed_files:
+                self.list_installed_files(pre_info, self.save_meta_data())
 
             if not self.is_installed(unqualify(packages)):
                 logging.error("Could not install %s.", " ".join(unqualify(packages)))
