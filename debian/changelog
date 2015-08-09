@@ -9,6 +9,8 @@ piuparts (0.65) UNRELEASED; urgency=medium
       chroot that are not removed after the test. These are available during
       purge and for checking against mistreatment.
     - Increase permitted command output volume from 3 MB to 4 MB (for daptup).
+    - Only ignore 'dpkg -i' failures that can be fixed by 'apt-get -f
+      install'.  (Closes: #794628)
   * piuparts.conf.anbe: Add some more example sections.
   * piupartslib/packagesdb.py:
     - Put package in 'dependency-does-not-exist' state if a pass/ log exists

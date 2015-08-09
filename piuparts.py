@@ -1154,7 +1154,13 @@ class Chroot:
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
 
-            self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
+            (ret, out) = self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
+            if ret != 0:
+                if "dependency problems - leaving unconfigured" in out:
+                    pass
+                else:
+                    logging.error("Installation failed")
+                    panic()
 
             if settings.list_installed_files:
                 self.list_installed_files(pre_info, self.save_meta_data())
