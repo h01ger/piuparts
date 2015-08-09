@@ -2738,7 +2738,7 @@ def parse_command_line():
                            "etc/apt/sources.list (only makes sense " +
                            "with --basetgz).")
 
-    parser.add_option("-l", "--log-file", metavar="FILENAME",
+    parser.add_option("-l", "--log-file", "--logfile", metavar="FILENAME",
                       help="Write log file to FILENAME in addition to " +
                            "the standard output.")
 
