@@ -117,6 +117,7 @@ Architecture: all
 Depends:
  python-apt,
  python-distro-info,
+ python-lzma,
  ${misc:Depends},
  ${python:Depends}
 Breaks:

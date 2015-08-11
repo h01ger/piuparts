@@ -18,9 +18,11 @@ piuparts (0.65) UNRELEASED; urgency=medium
     - Put package in 'dependency-does-not-exist' state if a pass/ log exists
       but a dependency has been removed from the archive since then.
     - Prepare improvements for handling foreign arch dependencies.
-  * piupartslib/open_packages_url(): Support uncompressed Packages files.
+  * piupartslib/open_packages_url(): Support xz-compressed and uncompressed
+    Packages files.
   * piuparts-master-backend.py:
     - Catch URLError, log it and abort without backtrace.
+  * piuparts-common: Add Depends: python-lzma.
   * scripts/post_distupgrade_exceptions:
     - Fix the /etc/nsswitch.conf wheezy -> jessie upgrade handling.
   * scripts/pre_remove_40_find_unowned_lib_links: Ignore some symlinks caused
