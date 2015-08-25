@@ -1,3 +1,9 @@
+piuparts (0.67) UNRELEASED; urgency=medium
+
+  * Continue development.
+
+ -- Holger Levsen <holger@debian.org>  Wed, 26 Aug 2015 01:00:23 +0200
+
 piuparts (0.66) unstable; urgency=medium
 
   * Add python-lzma to build-depends, as the tests need it now.
