@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright © 2011-2014 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2011-2015 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -251,6 +251,15 @@ class LogfileExists(Exception):
 
 class PackagesDB:
 
+    # these packages are uses as dependencies but are only available
+    # from foreign architectures
+    # HACK: this hardcoded list should be moved to some data file
+    _foreign_packages = {
+        "ia32-libs-i386": "i386",
+        "ia32-libs-gtk-i386": "i386",
+        "libnss-mdns-i386": "i386",
+    }
+
     # keep in sync with piuparts-report.py: emphasize_reason()
     # FIXME: can we reorder this list or remove entries without breaking the counts.txt for the plot?
     _states = [
@@ -267,13 +276,14 @@ class PackagesDB:
         "unknown",
         "unknown-preferred-alternative",  # obsolete
         "no-dependency-from-alternatives-exists",  # obsolete
+        # "foreign:*",  # can only happen as query result for a dependency
         # "does-not-exist",  # can only happen as query result for a dependency
     ]
 
     _good_states = [
         "successfully-tested",
         "essential-required",
-    ]
+    ] + ["foreign:%s" % arch for arch in set(_foreign_packages.values())]
 
     _obsolete_states = [
         "essential-required",
@@ -429,11 +439,27 @@ class PackagesDB:
                     more += dep_pkg.dependencies()
         return circular
 
-    def _lookup_package_state(self, package):
+    def _is_successfully_tested(self, package):
+        # a pass/ log exists but no corresponding recycle/ log exists
+        if self._logdb.log_exists(package, [self._ok]):
+            if not (self._recycle_mode and self._logdb.log_exists(package, [self._recycle])):
+                return True
+        return False
+
+    def _lookup_package_state(self, package, use_cached_success):
         if self._recycle_mode and self._logdb.log_exists(package, [self._recycle]):
             return "unknown"
         if self._logdb.log_exists(package, [self._ok]):
-            return "successfully-tested"
+            success = True
+            if not use_cached_success:
+                # if a pass/ log exists but any dependency may be not
+                # trivially satisfiable do not skip dependency resolution
+                for dep in package.dependencies():
+                    if not self.get_package(dep, resolve_virtual=True):
+                        success = False
+                        break
+            if success:
+                return "successfully-tested"
         if self._logdb.log_exists(package, [self._fail] + self._morefail):
             return "failed-testing"
         if self._logdb.log_exists(package, [self._evil]):
@@ -501,6 +527,8 @@ class PackagesDB:
                 testable = False
                 break
         if testable:
+            if self._is_successfully_tested(package):
+                return "successfully-tested"
             return "waiting-to-be-tested"
 
         # treat circular-dependencies as testable (for the part of the circle)
@@ -517,6 +545,8 @@ class PackagesDB:
                     testable = False
                     break
             if testable:
+                if self._is_successfully_tested(package):
+                    return "successfully-tested"
                 return "waiting-to-be-tested"
 
         for dep, dep_state in dep_states:
@@ -525,7 +555,7 @@ class PackagesDB:
 
         return "unknown"
 
-    def _compute_package_states(self):
+    def _compute_package_states(self, use_cached_success=False):
         if self._in_state is not None:
             return
 
@@ -543,7 +573,7 @@ class PackagesDB:
         todo = []
 
         for package_name, package in self._packages.iteritems():
-            state = self._lookup_package_state(package)
+            state = self._lookup_package_state(package, use_cached_success)
             assert state in self._states
             self._package_state[package_name] = state
             if state == "unknown":
@@ -552,7 +582,7 @@ class PackagesDB:
                 self._in_state[state].append(package_name)
 
         for db in self._dependency_databases:
-            db._compute_package_states()
+            db._compute_package_states(use_cached_success=True)
 
         while todo:
             package_names = todo
@@ -684,9 +714,8 @@ class PackagesDB:
                 state = db.get_package_state(package_name, resolve_virtual=resolve_virtual, recurse=False)
                 if state != "does-not-exist":
                     return state
-        if package_name in ["ia32-libs-i386", "ia32-libs-gtk-i386", "libnss-mdns-i386"]:
-            # HACK! these are arch=i386 packages needed on amd64
-            return "essential-required"
+        if package_name in self._foreign_packages:
+            return "foreign:%s" % self._foreign_packages[package_name]
         return "does-not-exist"
 
     def get_best_package_state(self, package_name, resolve_virtual=True, recurse=True):

@@ -42,6 +42,17 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		;;
 esac
 
+if [ "$PIUPARTS_DISTRIBUTION" = "wheezy-backports" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libreoffice-style-*)
+			log_debug
+			apt-get -y -t $PIUPARTS_DISTRIBUTION install ${PIUPARTS_OBJECTS%%=*} libreoffice-common-
+			;;
+	esac
+
+fi
+
 #
 # the remaining exceptions are only for the initial package installation
 #
@@ -80,17 +91,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			echo "bugzilla3 bugzilla3/bugzilla_admin_pwd password bzbzbzbz" | debconf-set-selections
 			;;
 esac
-
-if [ "$PIUPARTS_DISTRIBUTION" = "wheezy-backports" ]; then
-
-	case ${PIUPARTS_OBJECTS%%=*} in
-		libreoffice-style-*)
-			log_debug
-			apt-get -y -t $PIUPARTS_DISTRIBUTION install ${PIUPARTS_OBJECTS%%=*} libreoffice-common-
-			;;
-	esac
-
-fi
 
 if [ "$PIUPARTS_DISTRIBUTION" = "squeeze-backports" ]; then
 

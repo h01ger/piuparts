@@ -10,7 +10,7 @@ do
 			info="OBSOLETE CONFFILE $file REGISTERED BY $pkg"
 			query=$(dpkg-query -S $file)
 			owner=${query%: ${file}}
-			if [ "$owner" != "$pkg" ]; then
+			if [ "${owner%:*}" != "$pkg" ]; then
 				info="${info} OWNER CHANGED TO $owner"
 			fi
 			if [ ! -f "$file" ]; then

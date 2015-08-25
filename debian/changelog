@@ -1,6 +1,34 @@
 piuparts (0.65) UNRELEASED; urgency=medium
 
-  * continue development...
+  [ Andreas Beckmann ]
+  * piuparts.py:
+    - Ensure /etc/mtab exists in the chroot.
+    - Create sources.list entries for --testdebs-repo with '[ trusted=yes ]'
+      to avoid needing --do-not-verify-signatures which would act globally.
+    - Add --fake-essential-packages option to include packages in the base
+      chroot that are not removed after the test. These are available during
+      purge and for checking against mistreatment.
+    - Increase permitted command output volume from 3 MB to 4 MB (for daptup).
+    - Only ignore 'dpkg -i' failures that can be fixed by 'apt-get -f
+      install'.  (Closes: #794628)
+    - Set Architecture of piuparts-depends-dummy to match the package to be
+      tested.
+  * piuparts.conf.anbe: Add some more example sections.
+  * piupartslib/packagesdb.py:
+    - Put package in 'dependency-does-not-exist' state if a pass/ log exists
+      but a dependency has been removed from the archive since then.
+    - Prepare improvements for handling foreign arch dependencies.
+  * piupartslib/open_packages_url(): Support xz-compressed and uncompressed
+    Packages files.
+  * piuparts-master-backend.py:
+    - Catch URLError, log it and abort without backtrace.
+  * piuparts-common: Add Depends: python-lzma.
+  * scripts/post_distupgrade_exceptions:
+    - Fix the /etc/nsswitch.conf wheezy -> jessie upgrade handling.
+  * scripts/pre_remove_40_find_unowned_lib_links: Ignore some symlinks caused
+    by mpi-default-dev and libglide2/libglide3.
+  * Add/adjust some exceptions for ancient packages.
+  * Add bug template for wheezy -> jessie -> stretch upgrades.
 
  -- Holger Levsen <holger@debian.org>  Fri, 12 Jun 2015 13:43:42 +0200
 

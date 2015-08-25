@@ -15,11 +15,27 @@ do
 			case "$f" in
 				/lib/ld-lsb.so.?)
 					# created by lsb-core
+					continue
 					;;
-				*)
-					echo "UNOWNED SYMLINK $f -> $rl"
+				/usr/lib/libglide.so.2|\
+				/usr/lib/libglide3.so.3)
+					# created by maintainer script
+					continue
+					;;
+				/usr/lib/libfmpich.so.12|\
+				/usr/lib/libmpich.so.12|\
+				/usr/lib/libmpichcxx.so.12|\
+				/usr/lib/libmpichf90.so.12)
+					if [ -f /etc/alternatives/libmpi.so ]
+					then
+						# managed by mpi-default-dev via alternatives
+						# to /usr/lib/<triplet>/lib${impl}.so
+						# ldconfig adds the "real" soname links
+						continue
+					fi
 					;;
 			esac
+			echo "UNOWNED SYMLINK $f -> $rl"
 		fi
 	done
 done

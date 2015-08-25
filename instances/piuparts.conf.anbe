@@ -79,6 +79,7 @@ sections =
 	stretch/main
 	stretch-pu/main
 	jessie/main
+	jessie-rcmd/main
 	jessie-security/main
 	jessie-updates/main
 	jessie-pu/main
@@ -94,6 +95,7 @@ sections =
 	testing2sid/main
 	stable2sid/main
 	stable2testing2sid/main
+	jessie2proposed/main
 	jessie2stretch/main
 	jessie2bpo2stretch/main
 	wheezy2proposed/main
@@ -116,6 +118,7 @@ sections =
 	stretch/contrib
 	stretch-pu/contrib
 	jessie/contrib
+	jessie-rcmd/contrib
 	jessie-security/contrib
 	jessie-updates/contrib
 	jessie-pu/contrib
@@ -131,6 +134,7 @@ sections =
 	testing2sid/contrib
 	stable2sid/contrib
 	stable2testing2sid/contrib
+	jessie2proposed/contrib
 	jessie2stretch/contrib
 	jessie2bpo2stretch/contrib
 	wheezy2proposed/contrib
@@ -153,6 +157,7 @@ sections =
 	stretch/non-free
 	stretch-pu/non-free
 	jessie/non-free
+	jessie-rcmd/non-free
 	jessie-security/non-free
 	jessie-updates/non-free
 	jessie-pu/non-free
@@ -168,6 +173,7 @@ sections =
 	testing2sid/non-free
 	stable2sid/non-free
 	stable2testing2sid/non-free
+	jessie2proposed/non-free
 	jessie2stretch/non-free
 	jessie2bpo2stretch/non-free
 	wheezy2proposed/non-free
@@ -177,7 +183,7 @@ sections =
 	wheezy2jessie-sysv/non-free
 	wheezy2jessie-apt1st/non-free
 	wheezy2bpo2jessie/non-free
-	wheezy222testing/main
+	wheezy222testing/non-free
 	squeeze222testing/non-free
 	lenny222testing/non-free
 #
@@ -762,6 +768,47 @@ piuparts-flags =
 depends-sections = jessie/main jessie/contrib
 distro = jessie
 arch = amd64
+area = non-free
+
+
+[jessie-rcmd/main]
+precedence = 40
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+distro = jessie
+arch = i386
+area = main
+components = main
+reschedule-old-count = 100
+
+[jessie-rcmd/contrib]
+precedence = 45
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie-rcmd/main jessie-rcmd/non-free
+distro = jessie
+arch = i386
+area = contrib
+
+[jessie-rcmd/non-free]
+precedence = 45
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie-rcmd/main jessie-rcmd/contrib
+distro = jessie
+arch = i386
 area = non-free
 
 
@@ -2208,6 +2255,44 @@ area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy jessie testing
 reschedule-old-count = 100
+
+
+[jessie2proposed/main]
+precedence = 60
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = amd64
+area = main
+components = main
+distro = jessie
+upgrade-test-distros = jessie jessie-proposed
+
+[jessie2proposed/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie2proposed/main jessie2proposed/non-free
+arch = amd64
+area = contrib
+distro = jessie
+upgrade-test-distros = jessie jessie-proposed
+
+[jessie2proposed/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie2proposed/main jessie2proposed/contrib
+arch = amd64
+area = non-free
+distro = jessie
+upgrade-test-distros = jessie jessie-proposed
 
 
 [jessie2stretch/main]

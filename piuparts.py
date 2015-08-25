@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright © 2010-2014 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2010-2015 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -147,7 +147,7 @@ class Settings:
         self.defaults = None
         self.tmpdir = None
         self.keep_tmpdir = False
-        self.max_command_output_size = 3 * 1024 * 1024  # 3 MB (daptup on dist-upgrade)
+        self.max_command_output_size = 4 * 1024 * 1024  # 4 MB (daptup on dist-upgrade)
         self.max_command_runtime = 30 * 60  # 30 minutes (texlive-full on dist-upgrade)
         self.single_changes_list = False
         self.args_are_package_files = True
@@ -188,6 +188,7 @@ class Settings:
         self.install_remove_install = False
         self.install_purge_install = False
         self.list_installed_files = False
+        self.fake_essential_packages = []
         self.extra_old_packages = []
         self.skip_cronfiles_test = False
         self.skip_logrotatefiles_test = False
@@ -570,7 +571,7 @@ def remove_files(filenames):
             panic()
 
 
-def make_metapackage(name, depends, conflicts):
+def make_metapackage(name, depends, conflicts, arch='all'):
     """Return the path to a .deb created just for satisfying dependencies
 
     Caller is responsible for removing the temporary directory containing the
@@ -587,7 +588,7 @@ def make_metapackage(name, depends, conflicts):
     control = deb822.Deb822()
     control['Package'] = name
     control['Version'] = '0.invalid.0'
-    control['Architecture'] = 'all'
+    control['Architecture'] = arch
     control['Maintainer'] = ('piuparts developers team '
                              '<piuparts-devel@lists.alioth.debian.org>')
     control['Description'] = ('Dummy package to satisfy dependencies - '
@@ -755,6 +756,8 @@ class Chroot:
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
 
+        self.install_packages_by_name(settings.fake_essential_packages)
+
         if settings.savetgz and not temp_tgz:
             self.pack_into_tgz(settings.savetgz)
 
@@ -897,9 +900,9 @@ class Chroot:
             if settings.testdebs_repo.startswith("deb"):
                 debline = settings.testdebs_repo
             elif settings.testdebs_repo.startswith("/"):
-                debline = "deb file://%s ./" % settings.testdebs_repo
+                debline = "deb [ trusted=yes ] file://%s ./" % settings.testdebs_repo
             else:
-                debline = "deb %s ./" % settings.testdebs_repo
+                debline = "deb [ trusted=yes ] %s ./" % settings.testdebs_repo
             logging.debug("enabling testdebs repository '%s'" % debline)
             create_file(self.relative("etc/apt/sources.list.d/piuparts-testdebs-repo.list"), debline + "\n")
             if update:
@@ -1147,18 +1150,25 @@ class Chroot:
             apt_get_install.extend(settings.distro_config.get_target_flags(
                 os.environ["PIUPARTS_DISTRIBUTION"]))
             apt_get_install.append("install")
+
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
 
-                self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
+            (ret, out) = self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
+            if ret != 0:
+                if "dependency problems - leaving unconfigured" in out:
+                    pass
+                else:
+                    logging.error("Installation failed")
+                    panic()
+
+            if settings.list_installed_files:
                 self.list_installed_files(pre_info, self.save_meta_data())
 
-                self.run(apt_get_install)
-                self.list_installed_files(pre_info, self.save_meta_data())
+            self.run(apt_get_install)
 
-            else:
-                self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
-                self.run(apt_get_install)
+            if settings.list_installed_files:
+                self.list_installed_files(pre_info, self.save_meta_data())
 
             if not self.is_installed(unqualify(packages)):
                 logging.error("Could not install %s.", " ".join(unqualify(packages)))
@@ -2331,6 +2341,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
         depends = []
         conflicts = []
         provides = []
+        arch = 'all'
         for control in control_infos:
             if control.get("pre-depends"):
                 depends.extend([x.strip() for x in control["pre-depends"].split(',')])
@@ -2340,13 +2351,19 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
                 conflicts.extend([x.strip() for x in control["conflicts"].split(',')])
             if control.get("provides"):
                 provides.extend([x.strip() for x in control["provides"].split(',')])
+            if control.get("architecture"):
+                a = control["architecture"]
+                if arch == 'all':
+                    arch = a
+                if arch != a:
+                    logging.info("architecture mismatch: %s != %s)" % (arch, a))
         for provided in provides:
             if provided in conflicts:
                 conflicts.remove(provided)
         all_depends = ", ".join(depends)
         all_conflicts = ", ".join(conflicts)
         metapackage = make_metapackage("piuparts-depends-dummy",
-                                       all_depends, all_conflicts)
+                                       depends=all_depends, conflicts=all_conflicts, arch=arch)
         cleanup_metapackage = lambda: shutil.rmtree(os.path.dirname(metapackage))
         panic_handler_id = do_on_panic(cleanup_metapackage)
 
@@ -2732,7 +2749,7 @@ def parse_command_line():
                            "etc/apt/sources.list (only makes sense " +
                            "with --basetgz).")
 
-    parser.add_option("-l", "--log-file", metavar="FILENAME",
+    parser.add_option("-l", "--log-file", "--logfile", metavar="FILENAME",
                       help="Write log file to FILENAME in addition to " +
                            "the standard output.")
 
@@ -2802,6 +2819,13 @@ def parse_command_line():
     parser.add_option("--install-remove-install",
                       action="store_true", default=False,
                       help="Remove package after installation and reinstall. For testing installation in config-files-remaining state.")
+
+    parser.add_option("--fake-essential-packages",
+                      action="append", default=[],
+                      help="Install additional packages in the base chroot that are not removed after the test. " +
+                      "Takes a comma separated list of package names and can be given multiple times. " +
+                      "Useful for packages that can be used during purge of the package to be tested " +
+                      "or to test whether the package to be tested mishandles these packages.")
 
     parser.add_option("--extra-old-packages",
                       action="append", default=[],
@@ -2954,6 +2978,7 @@ def parse_command_line():
     settings.install_purge_install = opts.install_purge_install
     settings.install_remove_install = opts.install_remove_install
     settings.list_installed_files = opts.list_installed_files
+    [settings.fake_essential_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.fake_essential_packages]
     [settings.extra_old_packages.extend([i.strip() for i in csv.split(",")]) for csv in opts.extra_old_packages]
     settings.skip_cronfiles_test = opts.skip_cronfiles_test
     settings.skip_logrotatefiles_test = opts.skip_logrotatefiles_test

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright © 2013 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2013-2015 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -19,6 +19,7 @@
 
 
 import bz2
+import lzma
 import zlib
 import urllib2
 
@@ -80,7 +81,7 @@ class DecompressedStream():
 def open_packages_url(url):
     """Open a Packages.bz2 file pointed to by a URL"""
     socket = None
-    for ext in ['.bz2', '.gz']:
+    for ext in ['.xz', '.bz2', '.gz', '']:
         try:
             socket = urllib2.urlopen(url + ext)
         except urllib2.HTTPError as httperror:
@@ -96,6 +97,11 @@ def open_packages_url(url):
     elif ext == '.gz':
         decompressor = zlib.decompressobj(16 + zlib.MAX_WBITS)
         decompressed = DecompressedStream(socket, decompressor)
+    elif ext == '.xz':
+        decompressor = lzma.LZMADecompressor()
+        decompressed = DecompressedStream(socket, decompressor)
+    elif ext == '':
+        decompressed = socket
     else:
         raise ext
     return (url, decompressed)

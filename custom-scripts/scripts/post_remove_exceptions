@@ -15,4 +15,16 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				;;
 		esac
 		;;
+	asclassic)
+		case "$PIUPARTS_DISTRIBUTION" in
+			lenny)
+				# purging works in lenny
+				;;
+			*)
+				log_debug
+				# postrm purge unconditionally removes some files that may be gone already
+				sed -i 's/rm system.steprc menudefs.hook/rm -f system.steprc menudefs.hook/' /var/lib/dpkg/info/asclassic.postrm
+				;;
+		esac
+		;;
 esac
