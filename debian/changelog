@@ -1,4 +1,4 @@
-piuparts (0.65) UNRELEASED; urgency=medium
+piuparts (0.65) unstable; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -30,7 +30,7 @@ piuparts (0.65) UNRELEASED; urgency=medium
   * Add/adjust some exceptions for ancient packages.
   * Add bug template for wheezy -> jessie -> stretch upgrades.
 
- -- Holger Levsen <holger@debian.org>  Fri, 12 Jun 2015 13:43:42 +0200
+ -- Holger Levsen <holger@debian.org>  Tue, 25 Aug 2015 08:23:51 +0000
 
 piuparts (0.64) unstable; urgency=medium
 
