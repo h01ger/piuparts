@@ -750,7 +750,7 @@ class Chroot:
         # Useful for adjusting apt configuration e.g. for internal mirror usage
         self.run_scripts("post_chroot_unpack")
 
-        if settings.basetgz or settings.schroot:
+        if settings.basetgz or settings.schroot or settings.existing_chroot:
             self.run(["apt-get", "-yf", "dist-upgrade"])
         self.minimize()
 
