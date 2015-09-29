@@ -73,6 +73,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2015-09-29</b> Another new suite was added: <a href="https://piuparts.debian.org/wheezy-pu">wheezy-pu</a>, to <em>only</em> test packages in wheezy-proposed-updates.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2015-04-25</b> With the release of Jessie two new suites are being tested: <a href="https://piuparts.debian.org/jessie2stretch">jessie2stretch</a> and <a href="https://piuparts.debian.org/stretch">stretch</a>, which will become the next Debian release.
      </td>
     </tr>

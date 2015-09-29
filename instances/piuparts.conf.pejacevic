@@ -108,6 +108,7 @@ sections =
 #	wheezy-proposed
 	wheezy2proposed
 	wheezy
+	wheezy-pu
 	squeeze2wheezy-proposed
 	squeeze2wheezy
 	squeeze2bpo-sloppy
@@ -381,6 +382,17 @@ piuparts-flags =
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
 distro = wheezy-proposed
+
+
+[wheezy-pu]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy
+distro = wheezy-proposed-updates
 
 
 [wheezy2proposed]

@@ -1,6 +1,6 @@
 piuparts (0.67) UNRELEASED; urgency=medium
 
-  * Continue development.
+  * Add wheezy-pu to the suites being tested. (Closes: #800094)
 
  -- Holger Levsen <holger@debian.org>  Wed, 26 Aug 2015 01:00:23 +0200
 
