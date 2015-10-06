@@ -75,7 +75,9 @@ if [ -d /var/lib/mysql ]; then
 	echo "mysql-server-5.1 mysql-server-5.1/postrm_remove_databases boolean true" | debconf-set-selections
 	echo "mysql-server-5.5 mysql-server-5.5/postrm_remove_databases boolean true" | debconf-set-selections
 	echo "mysql-server-5.6 mysql-server-5.6/postrm_remove_databases boolean true" | debconf-set-selections
+	# wrong template name is used in jessie
 	echo "mariadb-server-10.0 mysql-server-10.0/postrm_remove_databases boolean true" | debconf-set-selections
+	echo "mariadb-server-10.0 mariadb-server-10.0/postrm_remove_databases boolean true" | debconf-set-selections
 	echo "percona-xtradb-cluster-server-5.5 mysql-server-5.1/postrm_remove_databases boolean true" | debconf-set-selections
 fi
 

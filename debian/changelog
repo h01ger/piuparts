@@ -8,6 +8,7 @@ piuparts (0.67) UNRELEASED; urgency=medium
     - Ensure /etc/mtab exists in the chroot.
   * scripts/post_distupgrade_exceptions:
     - Fix the /etc/nsswitch.conf wheezy -> jessie upgrade handling.
+  * Update custom scripts handling databases.
   * Add bug template for wheezy -> jessie -> stretch upgrades.
 
  -- Holger Levsen <holger@debian.org>  Wed, 26 Aug 2015 01:00:23 +0200
