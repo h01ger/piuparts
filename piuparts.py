@@ -51,6 +51,7 @@ import pickle
 import subprocess
 import urllib
 import uuid
+from collections import namedtuple
 from signal import alarm, signal, SIGALRM, SIGTERM, SIGKILL
 
 try:
@@ -1424,6 +1425,7 @@ class Chroot:
 
     def save_meta_data(self):
         """Return the filesystem meta data for all objects in the chroot."""
+        FileInfo = namedtuple('FileInfo', ['st', 'target'])
         self.run(["apt-get", "clean"])
         root = self.relative(".")
         vdict = {}
@@ -1444,7 +1446,7 @@ class Chroot:
                     target = None
                     if stat.S_ISDIR(st.st_mode):
                         name += "/"
-                vdict[name[len(root):]] = (st, target)
+                vdict[name[len(root):]] = FileInfo(st, target)
         return vdict
 
     def relative(self, pathname):
@@ -1997,22 +1999,20 @@ def selinux_enabled(enabled_test="/usr/sbin/selinuxenabled"):
             return False
 
 
-def objects_are_different(pair1, pair2):
+def objects_are_different(obj1, obj2):
     """Are filesystem objects different based on their meta data?"""
-    (m1, target1) = pair1
-    (m2, target2) = pair2
-    if (m1.st_mode != m2.st_mode or
-        m1.st_uid != m2.st_uid or
-        m1.st_gid != m2.st_gid or
-            target1 != target2):
+    if (obj1.st.st_mode != obj2.st.st_mode or
+            obj1.st.st_uid != obj2.st.st_uid or
+            obj1.st.st_gid != obj2.st.st_gid or
+            obj1.target != obj2.target):
         return True
-    if stat.S_ISREG(m1.st_mode):
-        return m1.st_size != m2.st_size  # or m1.st_mtime != m2.st_mtime
+    if stat.S_ISREG(obj1.st.st_mode):
+        return obj1.st.st_size != obj2.st.st_size  # or obj1.st.st_mtime != obj2.st.st_mtime
     return False
 
 
-def format_object_attributes(pair):
-    (st, target) = pair
+def format_object_attributes(obj):
+    st = obj.st
     ft = ""
     if stat.S_ISDIR(st.st_mode):
         ft += "d"
@@ -2034,7 +2034,7 @@ def format_object_attributes(pair):
             ft,
             st.st_mode,
             st.st_size,
-            target)
+            obj.target)
     return res
 
 
@@ -2098,11 +2098,10 @@ def file_list(meta_infos, file_owners):
     """Return list of indented filenames."""
     meta_infos = sorted(meta_infos[:])
     vlist = []
-    for name, data in meta_infos:
-        (st, target) = data
+    for name, obj in meta_infos:
         info = ""
-        if target is not None:
-            info = " -> %s" % target
+        if obj.target is not None:
+            info = " -> %s" % obj.target
         vlist.append("  %s%s\t" % (name, info))
         key = name
         if key.endswith('/'):
