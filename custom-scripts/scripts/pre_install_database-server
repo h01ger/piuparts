@@ -47,18 +47,10 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	drupal7-mod-*)				MYSQL=yes ;;
 	frontaccounting)			MYSQL=yes ;;
 	fossology-agents)			POSTGRESQL=yes ;;
-	fusionforge-plugin-blocks)		POSTGRESQL=yes ;;
-	fusionforge-plugin-extsubproj)		POSTGRESQL=yes ;;
-	fusionforge-plugin-gravatar)		POSTGRESQL=yes ;;
-	fusionforge-plugin-hudson)		POSTGRESQL=yes ;;
-	fusionforge-plugin-mediawiki)		POSTGRESQL=yes ;;
-	fusionforge-plugin-moinmoin)		POSTGRESQL=yes ;;
-	fusionforge-plugin-projectlabels)	POSTGRESQL=yes ;;
-	fusionforge-plugin-scmarch)		POSTGRESQL=yes ;;
-	fusionforge-plugin-scmcvs)		POSTGRESQL=yes ;;
-	fusionforge-plugin-scmdarcs)		POSTGRESQL=yes ;;
+	fusionforge-plugin-*)			FUSIONFORGE=yes ;;
 	fusionforge-standard)			POSTGRESQL=yes ;;
 	fusioninventory-for-glpi)		MYSQL=yes ;;
+	gforge-db-postgresql)			POSTGRESQL=yes ;;
 	gforge-lists-mailman)			POSTGRESQL=yes ;;
 	gforge-plugin-extratabs)		POSTGRESQL=yes ;;
 	gforge-plugin-mediawiki)		POSTGRESQL=yes ;;
@@ -187,6 +179,18 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	zabbix-server-mysql)			MYSQL=yes ;;
 	zabbix-server-pgsql)			POSTGRESQL=yes ;;
 esac
+
+if [ "$FUSIONFORGE" = "yes" ]; then
+	case $PIUPARTS_DISTRIBUTION in
+		wheezy*|jessie)
+			POSTGRESQL=yes
+			;;
+		*)
+			echo "Installing fusionforge-db-local..."
+			apt-get -y install fusionforge-db-local
+			;;
+	esac
+fi
 
 if [ "$MYSQL" = "yes" ]; then
 	echo "Installing mysql-server..."
