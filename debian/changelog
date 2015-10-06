@@ -6,6 +6,8 @@ piuparts (0.67) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * piuparts.py:
     - Ensure /etc/mtab exists in the chroot.
+  * scripts/post_distupgrade_exceptions:
+    - Fix the /etc/nsswitch.conf wheezy -> jessie upgrade handling.
 
  -- Holger Levsen <holger@debian.org>  Wed, 26 Aug 2015 01:00:23 +0200
 
@@ -39,8 +41,6 @@ piuparts (0.65) unstable; urgency=medium
   * piuparts-master-backend.py:
     - Catch URLError, log it and abort without backtrace.
   * piuparts-common: Add Depends: python-lzma.
-  * scripts/post_distupgrade_exceptions:
-    - Fix the /etc/nsswitch.conf wheezy -> jessie upgrade handling.
   * scripts/pre_remove_40_find_unowned_lib_links: Ignore some symlinks caused
     by mpi-default-dev and libglide2/libglide3.
   * Add/adjust some exceptions for ancient packages.

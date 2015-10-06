@@ -50,9 +50,9 @@ fi
 if [ "$PIUPARTS_DISTRIBUTION" = "jessie" ]; then
 
 	# base-files only upgrades pristine /etc/nsswitch.conf
-	if grep -q ^gshadow: /etc/nsswitch.conf ; then
-		echo "Removing gshadow line from /etc/nsswitch.conf"
-		sed -i /^gshadow:/d /etc/nsswitch.conf
+	if ! grep -q ^gshadow: /etc/nsswitch.conf ; then
+		echo "Adding gshadow line to /etc/nsswitch.conf"
+		sed -i '/^shadow:/a gshadow:        files' /etc/nsswitch.conf
 	fi
 
 fi
