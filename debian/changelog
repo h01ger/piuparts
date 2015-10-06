@@ -1,6 +1,11 @@
 piuparts (0.67) UNRELEASED; urgency=medium
 
+  [ Holger Levsen ]
   * Add wheezy-pu to the suites being tested. (Closes: #800094)
+
+  [ Andreas Beckmann ]
+  * piuparts.py:
+    - Ensure /etc/mtab exists in the chroot.
 
  -- Holger Levsen <holger@debian.org>  Wed, 26 Aug 2015 01:00:23 +0200
 
@@ -14,7 +19,6 @@ piuparts (0.65) unstable; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
-    - Ensure /etc/mtab exists in the chroot.
     - Create sources.list entries for --testdebs-repo with '[ trusted=yes ]'
       to avoid needing --do-not-verify-signatures which would act globally.
     - Add --fake-essential-packages option to include packages in the base
