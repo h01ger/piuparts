@@ -1425,9 +1425,20 @@ class Chroot:
 
     def save_meta_data(self):
         """Return the filesystem meta data for all objects in the chroot."""
-        FileInfo = namedtuple('FileInfo', ['st', 'target'])
+        FileInfo = namedtuple('FileInfo', ['st', 'target', 'user', 'group'])
         self.run(["apt-get", "clean"])
+        logging.debug("Recording chroot state")
         root = self.relative(".")
+        uidmap = {}
+        with open(self.relative("etc/passwd"), "r") as passwd:
+            for line in passwd:
+                (usr, x, uid) = line.split(":")[0:3]
+                uidmap[int(uid)] = usr
+        gidmap = {}
+        with open(self.relative("etc/group"), "r") as group:
+            for line in group:
+                (grp, x, gid) = line.split(":")[0:3]
+                gidmap[int(gid)] = grp
         vdict = {}
         proc = os.path.join(root, "proc")
         devpts = os.path.join(root, "dev/pts")
@@ -1446,7 +1457,15 @@ class Chroot:
                     target = None
                     if stat.S_ISDIR(st.st_mode):
                         name += "/"
-                vdict[name[len(root):]] = FileInfo(st, target)
+                if st.st_uid in uidmap:
+                    user = uidmap[st.st_uid]
+                else:
+                    user = "#%d" % st.st_uid
+                if st.st_gid in gidmap:
+                    group = gidmap[st.st_gid]
+                else:
+                    group = "#%d" % st.st_gid
+                vdict[name[len(root):]] = FileInfo(st, target, user, group)
         return vdict
 
     def relative(self, pathname):
@@ -2002,8 +2021,8 @@ def selinux_enabled(enabled_test="/usr/sbin/selinuxenabled"):
 def objects_are_different(obj1, obj2):
     """Are filesystem objects different based on their meta data?"""
     if (obj1.st.st_mode != obj2.st.st_mode or
-            obj1.st.st_uid != obj2.st.st_uid or
-            obj1.st.st_gid != obj2.st.st_gid or
+            obj1.user != obj2.user or
+            obj1.group != obj2.group or
             obj1.target != obj2.target):
         return True
     if stat.S_ISREG(obj1.st.st_mode):
@@ -2028,9 +2047,9 @@ def format_object_attributes(obj):
         ft += "l"
     if stat.S_ISSOCK(st.st_mode):
         ft += "s"
-    res = "(%d, %d, %s %o, %d, %s)" % (
-        st.st_uid,
-            st.st_gid,
+    res = "(%s, %s, %s %o, %d, %s)" % (
+            obj.user,
+            obj.group,
             ft,
             st.st_mode,
             st.st_size,
@@ -2066,7 +2085,7 @@ def diff_meta_data(tree1, tree2):
     for name in tree1.keys()[:]:
         if name in tree2:
             if objects_are_different(tree1[name], tree2[name]):
-                logging.debug("Modified(uid, gid, mode, size, target): %s %s != %s" %
+                logging.debug("Modified(user, group, mode, size, target): %s expected%s != found%s" %
                               (name, format_object_attributes(tree1[name]), format_object_attributes(tree2[name])))
                 modified.append((name, tree1[name]))
             del tree1[name]

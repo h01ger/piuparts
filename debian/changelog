@@ -6,6 +6,7 @@ piuparts (0.67) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * piuparts.py:
     - Ensure /etc/mtab exists in the chroot.
+    - Record and compare file owner and group names instead of uid/gid.
   * scripts/post_distupgrade_exceptions:
     - Fix the /etc/nsswitch.conf wheezy -> jessie upgrade handling.
   * Update custom scripts handling databases.
