@@ -735,9 +735,8 @@ class Chroot:
         # Copy scripts dirs into the chroot, merging all dirs together,
         # later files overwriting earlier ones.
         if settings.scriptsdirs:
+            self.mkdir_p("tmp/scripts/")
             dest = self.relative("tmp/scripts/")
-            if not os.path.exists(self.relative("tmp/scripts/")):
-                os.mkdir(dest)
             for sdir in settings.scriptsdirs:
                 logging.debug("Copying scriptsdir %s to %s" % (sdir, dest))
                 for sfile in os.listdir(sdir):
@@ -955,8 +954,7 @@ class Chroot:
             lines.append('force-confdef\n')
             logging.info("Warning: dpkg has been configured to use the force-confdef option. This will hide problems, see #466118.")
         if lines:
-            if not os.path.exists(self.relative("etc/dpkg/dpkg.cfg.d")):
-                os.mkdir(self.relative("etc/dpkg/dpkg.cfg.d"))
+            self.mkdir_p("etc/dpkg/dpkg.cfg.d")
             create_file(self.relative("etc/dpkg/dpkg.cfg.d/piuparts"),
                         "".join(lines))
 
