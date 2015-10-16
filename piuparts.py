@@ -1260,7 +1260,7 @@ class Chroot:
                     'broken-binfmt-detector',
                     'broken-binfmt-interpreter',
                     'incompatible-licenses',
-                    'ldd',
+                    'ldd-failure',
                     'library-not-found',
                     'missing-alternative',
                     'missing-copyright-file',

@@ -434,7 +434,7 @@ linktarget_by_template = [
     ("program_name_collision_inadequate_issue.tpl", "but adequate found a program name collision"),
     ("py_file_not_bytecompiled_inadequate_issue.tpl", "but adequate found a .py file that is not byte-compiled"),
     ("pyshared_file_not_bytecompiled_inadequate_issue.tpl", "but adequate found a .py file in /usr/share/pyshared that is not byte-compiled"),
-    ("ldd_inadequate_issue.tpl", "but adequate encountered unexpected ldd warnings"),
+    ("ldd_inadequate_issue.tpl", "but adequate failed to run ldd on a binary or library"),
     ("library_not_found_inadequate_issue.tpl", "but adequate couldn't find a required library"),
     ("undefined_symbol_inadequate_issue.tpl", "but adequate found an undefined symbol"),
     ("symbol-size-mismatch_inadequate_issue.tpl", "but adequate found that a symbol has changed size since the package was built"),
