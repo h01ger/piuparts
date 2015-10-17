@@ -8,12 +8,14 @@ set -e
 MYSQL=
 POSTGRESQL=
 SQLITE3=
+FUSIONFORGE=
+CLIENT=
 
 case ${PIUPARTS_OBJECTS%%=*} in
 	acidbase)				MYSQL=yes ;;
-	auth2db)				MYSQL=yes ;;
-	auth2db-common)				MYSQL=yes ;;
-	auth2db-frontend)			MYSQL=yes ;;
+	auth2db)				MYSQL=yes ; CLIENT=yes ;;
+	auth2db-common)				MYSQL=yes ; CLIENT=yes ;;
+	auth2db-frontend)			MYSQL=yes ; CLIENT=yes ;;
 	b2evolution)				MYSQL=yes ;;
 	bacula-director-mysql)			MYSQL=yes ;;
 	bacula-director-mysql-dbg)		MYSQL=yes ;;
@@ -181,8 +183,8 @@ case ${PIUPARTS_OBJECTS%%=*} in
 esac
 
 if [ "$FUSIONFORGE" = "yes" ]; then
-	case $PIUPARTS_DISTRIBUTION in
-		wheezy*|jessie)
+	case "$PIUPARTS_DISTRIBUTION" in
+		wheezy*|jessie|jessie/updates)
 			POSTGRESQL=yes
 			;;
 		*)
@@ -194,7 +196,7 @@ fi
 
 if [ "$MYSQL" = "yes" ]; then
 	echo "Installing mysql-server..."
-	apt-get -y install mysql-server
+	apt-get -y install mysql-server ${CLIENT:+mysql-client}
 fi
 
 if [ "$POSTGRESQL" = "yes" ]; then

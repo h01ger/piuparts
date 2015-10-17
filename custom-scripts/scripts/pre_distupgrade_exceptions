@@ -40,6 +40,18 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 				;;
 	esac
 
+	# WORKSAROUND #698562: upgrade from squeeze => wheezy fails if database has not been created before the upgrade
+	case ${PIUPARTS_OBJECTS%%=*} in
+		pdns-backend-mysql)
+				log_debug
+				dpkg --purge pdns-backend-mysql
+				;;
+		pdns-backend-pgsql)
+				log_debug
+				dpkg --purge pdns-backend-pgsql
+				;;
+	esac
+
 	# WORKSAROUND #655969: lirc: prompting due to modified conffiles which where not modified by the user: /etc/lirc/hardware.conf
 	if [ -f /etc/lirc/hardware.conf ]; then
 		log_debug
