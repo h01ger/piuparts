@@ -700,6 +700,7 @@ class Chroot:
     def __init__(self):
         self.name = None
         self.bootstrapped = False
+        self.mounts = []
 
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
@@ -765,6 +766,7 @@ class Chroot:
         """Remove a chroot and all its contents."""
         if not settings.keep_tmpdir and os.path.exists(self.name):
             self.terminate_running_processes()
+            self.unmount_all()
             if not settings.schroot:
                 self.unmount_selinux()
                 self.unmount_proc()
@@ -1547,6 +1549,24 @@ class Chroot:
             return self.relative('/selinux')
         else:
             return self.relative('/sys/fs/selinux')
+
+    def mount(self, source, path, fstype=None, opts=None):
+        """Mount something into the chroot and remember it for unmount_all()."""
+        self.mkdir_p(path)
+        fullpath = self.relative(path)
+        command = ["mount"]
+        if fstype is not None:
+            command.extend(["-t", fstype])
+        if opts is not None:
+            command.extend(["-o", opts])
+        command.extend([source, fullpath])
+        run(command)
+        self.mounts.append(fullpath)
+
+    def unmount_all(self):
+        """Unmount everything we mount()ed into the chroot."""
+        for mountpoint in reversed(self.mounts):
+            run(["umount", mountpoint], ignore_errors=True)
 
     def mount_proc(self):
         """Mount /proc inside chroot."""
