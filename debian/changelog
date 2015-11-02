@@ -3,6 +3,7 @@ piuparts (0.68) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * piuparts.py:
     - Simplify mounting/unmounting into the chroot.
+    - Mount a 64 MB tmpfs onto /dev/shm in the chroot.  (Closes: #793487)
 
  -- Holger Levsen <holger@debian.org>  Sat, 17 Oct 2015 16:42:39 +0200
 

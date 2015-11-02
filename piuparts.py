@@ -1558,6 +1558,7 @@ class Chroot:
         if not os.path.lexists(etcmtab):
             os.symlink("../proc/mounts", etcmtab)
         self.mount("devpts", "/dev/pts", fstype="devpts")
+        self.mount("tmpfs", "/dev/shm", fstype="tmpfs", opts="size=65536k")
         if selinux_enabled():
             self.mount("/sys/fs/selinux", self.selinuxfs_path(), opts="bind,ro")
 
