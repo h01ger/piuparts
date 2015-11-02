@@ -769,7 +769,6 @@ class Chroot:
             self.unmount_all()
             if not settings.schroot:
                 self.unmount_selinux()
-                self.unmount_proc()
             if settings.lvm_volume:
                 logging.debug('Unmounting and removing LVM snapshot %s' % self.lvm_snapshot_name)
                 run(['umount', self.name])
@@ -1028,8 +1027,7 @@ class Chroot:
         self.create_policy_rc_d()
         self.create_resolv_conf()
         for bindmount in settings.bindmounts:
-            run(["mkdir", "-p", self.relative(bindmount)])
-            run(["mount", "-obind", bindmount, self.relative(bindmount)])
+            self.mount(bindmount, bindmount, opts="bind")
         self.run(["apt-get", "update"])
 
     def upgrade_to_distros(self, distros, packages):
@@ -1569,20 +1567,12 @@ class Chroot:
             run(["umount", mountpoint], ignore_errors=True)
 
     def mount_proc(self):
-        """Mount /proc inside chroot."""
-        self.run(["mount", "-t", "proc", "proc", "/proc"])
+        """Mount /proc etc. inside chroot."""
+        self.mount("proc", "/proc", fstype="proc")
         etcmtab = self.relative("etc/mtab")
         if not os.path.lexists(etcmtab):
             os.symlink("../proc/mounts", etcmtab)
-        self.mkdir_p("dev/pts")
-        self.run(["mount", "-t", "devpts", "devpts", "/dev/pts"])
-
-    def unmount_proc(self):
-        """Unmount /proc inside chroot."""
-        self.run(["umount", "/proc"], ignore_errors=True)
-        self.run(["umount", "/dev/pts"], ignore_errors=True)
-        for bindmount in settings.bindmounts:
-            run(["umount", self.relative(bindmount)], ignore_errors=True)
+        self.mount("devpts", "/dev/pts", fstype="devpts")
 
     def is_ignored(self, pathname):
         """Is a file (or dir or whatever) to be ignored?"""
@@ -2021,9 +2011,6 @@ class VirtServ(Chroot):
         pass  # ?!
 
     def mount_proc(self):
-        pass
-
-    def unmount_proc(self):
         pass
 
 
