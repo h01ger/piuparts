@@ -730,7 +730,6 @@ class Chroot:
 
         if not settings.schroot:
             self.mount_proc()
-            self.mount_selinux()
         self.configure_chroot()
 
         # Copy scripts dirs into the chroot, merging all dirs together,
@@ -767,8 +766,6 @@ class Chroot:
         if not settings.keep_tmpdir and os.path.exists(self.name):
             self.terminate_running_processes()
             self.unmount_all()
-            if not settings.schroot:
-                self.unmount_selinux()
             if settings.lvm_volume:
                 logging.debug('Unmounting and removing LVM snapshot %s' % self.lvm_snapshot_name)
                 run(['umount', self.name])
@@ -1527,26 +1524,14 @@ class Chroot:
 
             time.sleep(5)
 
-    def mount_selinux(self):
-        if selinux_enabled():
-            run(["mkdir", "-p", self.selinuxfs_relative_path()])
-            run(["mount", "--bind", "/sys/fs/selinux", self.selinuxfs_relative_path()])
-            run(["mount", "-o", "remount,ro,bind", self.selinuxfs_relative_path()])
-            logging.info("SElinux mounted into chroot")
-
-    def unmount_selinux(self):
-        if selinux_enabled():
-            run(["umount", self.selinuxfs_relative_path()])
-            logging.info("SElinux unmounted from chroot")
-
     # If /selinux is present, assume that this is the only supported
     # location by libselinux. Otherwise use the new location.
     # /selinux was shipped by the libselinux package until wheezy.
-    def selinuxfs_relative_path(self):
+    def selinuxfs_path(self):
         if os.path.isdir(self.relative('/selinux')):
-            return self.relative('/selinux')
+            return '/selinux'
         else:
-            return self.relative('/sys/fs/selinux')
+            return '/sys/fs/selinux'
 
     def mount(self, source, path, fstype=None, opts=None):
         """Mount something into the chroot and remember it for unmount_all()."""
@@ -1573,6 +1558,8 @@ class Chroot:
         if not os.path.lexists(etcmtab):
             os.symlink("../proc/mounts", etcmtab)
         self.mount("devpts", "/dev/pts", fstype="devpts")
+        if selinux_enabled():
+            self.mount("/sys/fs/selinux", self.selinuxfs_path(), opts="bind,ro")
 
     def is_ignored(self, pathname):
         """Is a file (or dir or whatever) to be ignored?"""
