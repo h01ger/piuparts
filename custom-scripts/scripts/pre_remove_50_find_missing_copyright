@@ -1,6 +1,16 @@
 #!/bin/sh
 set -e
 
+is_installed()
+{
+	local pkg="$1"
+	dpkg-query -s "$pkg" >/dev/null 2>&1 || return 1
+	local status="$(dpkg-query -W -f '${Status}' $pkg)"
+	test "$status" != "unknown ok not-installed" || return 1
+	test "$status" != "deinstall ok config-files" || return 1
+	return 0
+}
+
 failed=
 for pkg in ${PIUPARTS_OBJECTS%%=*}
 do
@@ -20,10 +30,7 @@ do
 	esac
 
 	# skip check if the package is not installed
-	dpkg-query -s "$pkg" >/dev/null 2>&1 || continue
-	status="$(dpkg-query -W -f '${Status}' $pkg)"
-	test "$status" != "unknown ok not-installed" || continue
-	test "$status" != "deinstall ok config-files" || continue
+	is_installed "$pkg" || continue
 
 	docdir="/usr/share/doc/$pkg"
 	copyright="$docdir/copyright"

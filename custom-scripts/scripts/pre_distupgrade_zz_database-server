@@ -1,6 +1,16 @@
 #!/bin/sh
 set -e
 
+is_installed()
+{
+	local pkg="$1"
+	dpkg-query -s "$pkg" >/dev/null 2>&1 || return 1
+	local status="$(dpkg-query -W -f '${Status}' $pkg)"
+	test "$status" != "unknown ok not-installed" || return 1
+	test "$status" != "deinstall ok config-files" || return 1
+	return 0
+}
+
 # Skip while creating the reference chroot.
 if [ "$PIUPARTS_PHASE" = "" ]; then
 	exit 0
@@ -32,13 +42,10 @@ esac
 
 for pkg in $CANDIDATES
 do
-	# skip if the package is not installed
-	dpkg-query -s "$pkg" >/dev/null 2>&1 || continue
-	status="$(dpkg-query -W -f '${Status}' $pkg)"
-	test "$status" != "unknown ok not-installed" || continue
-	test "$status" != "deinstall ok config-files" || continue
-
-	PACKAGES="$PACKAGES $pkg"
+	if is_installed "$pkg"
+	then
+		PACKAGES="$PACKAGES $pkg"
+	fi
 done
 
 if [ -n "$PACKAGES" ]
