@@ -9,10 +9,10 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
 		crm114)
-				#562946
-				log_debug
-				echo "crm114 crm114/forceupgrade boolean true" | debconf-set-selections
-				;;
+			#562946
+			log_debug
+			echo "crm114 crm114/forceupgrade boolean true" | debconf-set-selections
+			;;
 	esac
 
 	# squeeze does not properly upgrade adduser.conf, so generate a new one
@@ -31,25 +31,23 @@ fi
 
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 
-	# dpkg 1.16 does not like the bad cnews version number cr.g7-40.4
-	# cnews was removed after lenny
 	case ${PIUPARTS_OBJECTS%%=*} in
 		cnews)
-				log_debug
-				dpkg --purge cnews
-				;;
-	esac
-
-	# WORKSAROUND #698562: upgrade from squeeze => wheezy fails if database has not been created before the upgrade
-	case ${PIUPARTS_OBJECTS%%=*} in
+			# dpkg 1.16 does not like the bad cnews version number cr.g7-40.4
+			# cnews was removed after lenny
+			log_debug
+			dpkg --purge cnews
+			;;
 		pdns-backend-mysql)
-				log_debug
-				dpkg --purge pdns-backend-mysql
-				;;
+			# WORKSAROUND #698562: upgrade from squeeze => wheezy fails if database has not been created before the upgrade
+			log_debug
+			dpkg --purge pdns-backend-mysql
+			;;
 		pdns-backend-pgsql)
-				log_debug
-				dpkg --purge pdns-backend-pgsql
-				;;
+			# WORKSAROUND #698562: upgrade from squeeze => wheezy fails if database has not been created before the upgrade
+			log_debug
+			dpkg --purge pdns-backend-pgsql
+			;;
 	esac
 
 	# WORKSAROUND #655969: lirc: prompting due to modified conffiles which where not modified by the user: /etc/lirc/hardware.conf

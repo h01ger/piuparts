@@ -61,26 +61,29 @@ if [ "$PIUPARTS_PHASE" != "install" ]; then
 fi
 
 case ${PIUPARTS_OBJECTS%%=*} in
-	samhain)		log_debug
-				# work around #749602
-				mkdir -p /var/state/samhain/
-				touch /var/state/samhain/samhain_file
-				;;
-	fai-nfsroot)		log_debug
-				# fai-nfsroot refuses installation unless this file exist
-				touch /.THIS_IS_THE_FAI_NFSROOT
-				;;
+	samhain)
+			# work around #749602
+			log_debug
+			mkdir -p /var/state/samhain/
+			touch /var/state/samhain/samhain_file
+			;;
+	fai-nfsroot)
+			# fai-nfsroot refuses installation unless this file exist
+			log_debug
+			touch /.THIS_IS_THE_FAI_NFSROOT
+			;;
 	education-thin-client|\
 	ltsp-client|\
-	ltsp-client-core)	log_debug
-				# ltsp-client-core refuses installation unless this file exist
-				touch /etc/ltsp_chroot
-				;;
+	ltsp-client-core)
+			# ltsp-client-core refuses installation unless this file exist
+			log_debug
+			touch /etc/ltsp_chroot
+			;;
 	ffgtk|\
 	roger-router|\
 	roger-router-cli)
-			log_debug
 			# postinst tries to add a printer with lpadmin
+			log_debug
 			dpkg-divert --rename /usr/sbin/lpadmin
 			;;
 	bugzilla3)
@@ -154,18 +157,18 @@ if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
 		bootcd-ia64)
-				if [ "$PIUPARTS_TEST" = "distupgrade" ] && [ "$(uname -m)" = "x86_64" ]; then
-					#622690: bootcd-ia64 has a Pre-Depends/Depends cycle that apt cannot resolve
-					log_debug
-					apt-get -y install bootcd-i386
-				fi
-				;;
-		mini-buildd-bld|mini-buildd-rep)
-				#632955, #656746 - time limit exceeded during install
+			if [ "$PIUPARTS_TEST" = "distupgrade" ] && [ "$(uname -m)" = "x86_64" ]; then
+				#622690: bootcd-ia64 has a Pre-Depends/Depends cycle that apt cannot resolve
 				log_debug
-				echo "*** ABORT - Installation would deadlock ***"
-				exit 1
-				;;
+				apt-get -y install bootcd-i386
+			fi
+			;;
+		mini-buildd-bld|mini-buildd-rep)
+			#632955, #656746 - time limit exceeded during install
+			log_debug
+			echo "*** ABORT - Installation would deadlock ***"
+			exit 1
+			;;
 	esac
 
 fi
@@ -175,53 +178,53 @@ if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 	# install undeclared dependencies
 	case ${PIUPARTS_OBJECTS%%=*} in
 		clamav-getfiles)
-				#603082
-				log_debug
-				apt-get -y install curl
-				;;
+			#603082
+			log_debug
+			apt-get -y install curl
+			;;
 		cyrus-*-2.2|sa-learn-cyrus)
-				#694254 db4.2-util exists in lenny only and is needed for upgrades to wheezy
-				log_debug
-				apt-get -y install db4.2-util
-				;;
+			#694254 db4.2-util exists in lenny only and is needed for upgrades to wheezy
+			log_debug
+			apt-get -y install db4.2-util
+			;;
 		debian-edu-artwork-usplash)
-				# postinst fails without update-initramfs
-				log_debug
-				apt-get -y install initramfs-tools
-				;;
+			# postinst fails without update-initramfs
+			log_debug
+			apt-get -y install initramfs-tools
+			;;
 		gforge-shell-postgresql|gforge-plugin-scmcvs|gforge-plugin-scmsvn)
-				#604218
-				log_debug
-				apt-get -y install libcap2
-				;;
+			#604218
+			log_debug
+			apt-get -y install libcap2
+			;;
 		otrs2)
-				#561889
-				log_debug
-				apt-get -y install libapache2-mod-perl2
-				;;
+			#561889
+			log_debug
+			apt-get -y install libapache2-mod-perl2
+			;;
 		sdic-gene95)
-				#478592
-				log_debug
-				apt-get -y install bzip2 wget
-				;;
+			#478592
+			log_debug
+			apt-get -y install bzip2 wget
+			;;
 		tftpd-hpa)
-				#522780
-				log_debug
-				apt-get -y install update-inetd
-				;;
+			#522780
+			log_debug
+			apt-get -y install update-inetd
+			;;
 		ttf-beteckna)
-				#502707
-				log_debug
-				apt-get -y install defoma
-				;;
+			#502707
+			log_debug
+			apt-get -y install defoma
+			;;
 	esac
 
 	# prefer inn over cnews (bad version number cr.g7-40.4)
 	case ${PIUPARTS_OBJECTS%%=*} in
 		newsx|post-faq)
-				log_debug
-				apt-get -y install inn
-				;;
+			log_debug
+			apt-get -y install inn
+			;;
 	esac
 
 	# work around postinst failures

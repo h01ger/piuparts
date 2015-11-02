@@ -14,16 +14,16 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		fi
 		;;
 	apt-listbugs)
-		log_debug
 		# cleanup from post_install_exceptions
+		log_debug
 		rm -f /usr/sbin/apt-listbugs
 		dpkg-divert --remove --rename /usr/sbin/apt-listbugs
 		;;
 	ffgtk|\
 	roger-router|\
 	roger-router-cli)
-		log_debug
 		# cleanup from pre_install_exceptions
+		log_debug
 		dpkg-divert --remove --rename /usr/sbin/lpadmin
 		;;
 esac
