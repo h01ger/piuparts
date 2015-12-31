@@ -5,6 +5,10 @@ piuparts (0.68) UNRELEASED; urgency=medium
     - Simplify mounting/unmounting into the chroot.
     - Mount a 64 MB tmpfs onto /dev/shm in the chroot.  (Closes: #793487)
 
+  [ Holger Levsen ]
+  * Very sadly replacing openlogo-nd-50.png with openlogo-50_blackribbon.png.
+    Thanks and farewell, Ian.
+
  -- Holger Levsen <holger@debian.org>  Sat, 17 Oct 2015 16:42:39 +0200
 
 piuparts (0.67) unstable; urgency=medium
