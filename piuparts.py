@@ -151,6 +151,7 @@ class Settings:
         self.max_command_output_size = 4 * 1024 * 1024  # 4 MB (daptup on dist-upgrade)
         self.max_command_runtime = 30 * 60  # 30 minutes (texlive-full on dist-upgrade)
         self.single_changes_list = False
+        self.single_packages = False
         self.args_are_package_files = True
         # distro setup
         self.proxy = None
@@ -2873,6 +2874,10 @@ def parse_command_line():
                       action="store_true",
                       help="test all packages from all changes files together.")
 
+    parser.add_option("--single-packages", default=False,
+                      action="store_true",
+                      help="test all packages from the command line individually.")
+
     parser.add_option("--skip-cronfiles-test",
                       action="store_true", default=False,
                       help="Skip testing the output from the cron files.")
@@ -2943,6 +2948,7 @@ def parse_command_line():
     settings.tmpdir = opts.tmpdir
     settings.keep_tmpdir = opts.keep_tmpdir
     settings.single_changes_list = opts.single_changes_list
+    settings.single_packages = opts.single_packages
     settings.args_are_package_files = not opts.apt
     # distro setup
     settings.proxy = opts.proxy
@@ -3183,7 +3189,11 @@ def main():
             process_packages(package_list)
 
     if regular_packages_list:
-        process_packages(regular_packages_list)
+        if settings.single_packages:
+            for package in regular_packages_list:
+                process_packages([package])
+        else:
+            process_packages(regular_packages_list)
 
     logging.info("PASS: All tests.")
     logging.info("piuparts run ends.")
