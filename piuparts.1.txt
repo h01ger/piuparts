@@ -31,7 +31,7 @@ Note that this does not work with experimental, because *apt-get* does not autom
 
 Command line arguments are the paths to package files (e.g., _piuparts_1.0-1_all.deb_), paths to changes files (e.g., _piuparts_1.0-1_i386.changes_), or names of packages, if the '--apt' option is given.
 
-When processing changes files, by default, all packages in a changes file will be processed together with all individual packages given on the command line. Then each package given on the command line is processed in a single group. If the '--single-changes-list' is used, the packages in all changes files are processed together along with any individual packages that were given on the command line.
+When processing changes files, by default, all packages in a changes file will be processed together with all individual packages given on the command line. Then each package given on the command line is processed in a single group. If the '--single-changes-list' is used, the packages in all changes files are processed together along with any individual packages that were given on the command line. To avoid this behaviour, it is possible to specify '--single-packages'.
 
 *piuparts* outputs to the standard output some log messages to show what is going on. If a log file is used, the messages go there as well.
 
@@ -215,7 +215,7 @@ Note that file: addresses works if the directories are made accessible from with
   When processing changes files, piuparts will process the packages in each individual changes file seperately. This option will set piuparts to scan the packages of all changes files together along with any individual package files that may have been given on the command line.
 
 *--single-packages*::
-  Process every paths to package file or package name individually. The piuparts process runs multiple times.
+  Process every package file or package name individually, thus piuparts process runs multiple times. This option can be useful with conflicting packages.
 
 *--skip-minimize*::
   Allow skip minimize chroot step. This is useful when you want to test several packages with piuparts. You can prepare a tarball already minimized and skip this step in all the tests. This is the default now.
