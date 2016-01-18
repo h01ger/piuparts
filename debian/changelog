@@ -13,6 +13,11 @@ piuparts (0.68) UNRELEASED; urgency=medium
   * Add option "--single-packages" to test every package specified via path or
     package name individually. (Closes: #810237)
 
+  [ Michael Prokop ]
+  * piuparts.py:
+    - Execute dist-upgrade also when using --existing-chroot option.
+      (Closes: #798266)
+
  -- Holger Levsen <holger@debian.org>  Sat, 17 Oct 2015 16:42:39 +0200
 
 piuparts (0.67) unstable; urgency=medium
