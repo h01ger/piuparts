@@ -1,4 +1,8 @@
-piuparts (0.68) UNRELEASED; urgency=medium
+piuparts (0.68) unstable; urgency=medium
+
+  * Dedicated to the memory of Ian Murdock.
+    Thank you very much for starting and shaping Debian, Ian! The world would
+    be very different today without your work and you will never be forgotten.
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -14,7 +18,7 @@ piuparts (0.68) UNRELEASED; urgency=medium
     - Execute dist-upgrade also when using --existing-chroot option.
       (Closes: #798266)
 
- -- Holger Levsen <holger@debian.org>  Sat, 17 Oct 2015 16:42:39 +0200
+ -- Holger Levsen <holger@debian.org>  Tue, 02 Feb 2016 10:33:40 +0100
 
 piuparts (0.67) unstable; urgency=medium
 
