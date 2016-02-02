@@ -5,10 +5,6 @@ piuparts (0.68) UNRELEASED; urgency=medium
     - Simplify mounting/unmounting into the chroot.
     - Mount a 64 MB tmpfs onto /dev/shm in the chroot.  (Closes: #793487)
 
-  [ Holger Levsen ]
-  * Very sadly replacing openlogo-nd-50.png with openlogo-50_blackribbon.png.
-    Thanks and farewell, Ian.
-
   [ Sven Haardiek ]
   * Add option "--single-packages" to test every package specified via path or
     package name individually. (Closes: #810237)
