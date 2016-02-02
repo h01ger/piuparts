@@ -1,6 +1,6 @@
 piuparts (0.69) UNRELEASED; urgency=medium
 
-  * piuparts.1.txt: Fix typo pointed out by Дилян Палаузов.
+  * piuparts.1.txt: Fix typo, thanks to Дилян Палаузов.
 
  -- Holger Levsen <holger@debian.org>  Tue, 02 Feb 2016 10:38:51 +0100
 
