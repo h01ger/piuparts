@@ -94,7 +94,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 
 *--distupgrade-to-testdebs*::
   Use the "testdebs" repository to override the packages in the distupgrade
-  target distribution. This allows to test complex upgrade paths before the
+  target distribution. This allows one to test complex upgrade paths before the
   packages enter the archive.
 
 *--extra-repo*='deb-line'::

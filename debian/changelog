@@ -1,6 +1,6 @@
 piuparts (0.69) UNRELEASED; urgency=medium
 
-  * piuparts.1.txt: Fix typo, thanks to Дилян Палаузов.
+  * piuparts.1.txt: Fix typos, thanks to Дилян Палаузов and lintian.
   * Bump standards version to 3.9.7, no changes needed.
   * Use more secure https URL for Vcs-Git: header, thanks lintian.
 
