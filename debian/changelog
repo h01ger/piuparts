@@ -1,8 +1,10 @@
 piuparts (0.69) UNRELEASED; urgency=medium
 
   * piuparts.1.txt: Fix typos, thanks to Дилян Палаузов and lintian.
-  * Bump standards version to 3.9.7, no changes needed.
-  * Use more secure https URL for Vcs-Git: header, thanks lintian.
+  * debian/control:
+    - Bump standards version to 3.9.7, no changes needed.
+    - Use more secure https URL for Vcs-Git: header, thanks lintian.
+    - Use /git/ not /cgit/ in Vcs-* headers.
 
  -- Holger Levsen <holger@debian.org>  Tue, 02 Feb 2016 10:38:51 +0100
 
