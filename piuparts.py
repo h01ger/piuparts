@@ -317,6 +317,7 @@ class Settings:
             "/var/lib/gozerbot/",
             "/var/lib/nagios/",         # nagios* (#668756)
             "/var/lib/onioncat/",       # onioncat
+            "/var/lib/pkcs11proxyd/",   # caml-crush-server (#810703)
             "/var/lib/rbldns/",
             "/var/spool/powerdns/",     # pdns-server (#531134), pdns-recursor (#531135)
             # work around broken symlinks

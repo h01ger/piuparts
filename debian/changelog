@@ -5,6 +5,8 @@ piuparts (0.69) UNRELEASED; urgency=medium
     - Bump standards version to 3.9.7, no changes needed.
     - Use more secure https URL for Vcs-Git: header, thanks lintian.
     - Use /git/ not /cgit/ in Vcs-* headers.
+  * piuparts.py: add to ignored_files:
+    - /var/lib/pkcs11proxyd/ (Closes: #810703)
 
  -- Holger Levsen <holger@debian.org>  Tue, 02 Feb 2016 10:38:51 +0100
 
