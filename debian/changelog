@@ -1,3 +1,9 @@
+piuparts (0.70) UNRELEASED; urgency=medium
+
+  * continue development… 
+
+ -- Holger Levsen <holger@debian.org>  Sat, 13 Feb 2016 12:48:14 +0100
+
 piuparts (0.69) unstable; urgency=medium
 
   * piuparts.py: add to ignored_files:
