@@ -1,4 +1,4 @@
-piuparts (0.69) UNRELEASED; urgency=medium
+piuparts (0.69) unstable; urgency=medium
 
   * piuparts.py: add to ignored_files:
     - /var/lib/pkcs11proxyd/ (Closes: #810703)
@@ -9,7 +9,7 @@ piuparts (0.69) UNRELEASED; urgency=medium
     - Use /git/ not /cgit/ in Vcs-* headers.
   * debian/copyright: bump years for my contributions to 2016.
 
- -- Holger Levsen <holger@debian.org>  Tue, 02 Feb 2016 10:38:51 +0100
+ -- Holger Levsen <holger@debian.org>  Sat, 13 Feb 2016 12:46:10 +0100
 
 piuparts (0.68) unstable; urgency=medium
 
