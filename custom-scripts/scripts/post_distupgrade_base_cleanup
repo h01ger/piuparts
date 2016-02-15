@@ -62,6 +62,13 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "jessie" ] || \
 
 fi
 
+if	[ "$PIUPARTS_DISTRIBUTION" = "stretch" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "stretch-proposed" ] ; then
+
+	mark_for_purge libprocps3
+
+fi
+
 if [ -n "$PURGE" ]; then
 	echo "Removing packages from base system:$PURGE"
 	apt-get -y remove --purge $PURGE
