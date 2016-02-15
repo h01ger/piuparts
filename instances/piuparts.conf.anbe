@@ -935,7 +935,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
-depends-sections = jessie/main jessie/non-free jessie-backports/main jessie-backports/non-free
+depends-sections = jessie/main jessie/contrib jessie/non-free jessie-backports/main jessie-backports/non-free
 distro = jessie-backports
 arch = amd64
 area = contrib
@@ -946,7 +946,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
-depends-sections = jessie/main jessie-backports/main jessie-backports/contrib
+depends-sections = jessie/main jessie/contrib jessie/non-free jessie-backports/main jessie-backports/contrib
 distro = jessie-backports
 arch = amd64
 area = non-free
@@ -2351,7 +2351,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-depends-sections = jessie/main jessie/non-free jessie2bpo2stretch/main jessie2bpo2stretch/non-free
+depends-sections = jessie/main jessie/contrib jessie/non-free jessie2bpo2stretch/main jessie2bpo2stretch/non-free
 distro = jessie-backports
 arch = amd64
 area = contrib
@@ -2363,7 +2363,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-depends-sections = jessie/main jessie2bpo2stretch/main jessie2bpo2stretch/contrib
+depends-sections = jessie/main jessie/contrib jessie/non-free jessie2bpo2stretch/main jessie2bpo2stretch/contrib
 distro = jessie-backports
 arch = amd64
 area = non-free
