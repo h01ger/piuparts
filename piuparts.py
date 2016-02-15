@@ -1541,6 +1541,7 @@ class Chroot:
 
     def mount(self, source, path, fstype=None, opts=None):
         """Mount something into the chroot and remember it for unmount_all()."""
+        path = canonicalize_path(self.name, path)
         self.mkdir_p(path)
         fullpath = self.relative(path)
         command = ["mount"]

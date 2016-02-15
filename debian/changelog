@@ -5,6 +5,8 @@ piuparts (0.70) UNRELEASED; urgency=medium
     - Add to ignored_files:
       + /etc/sysctl.d/99-sysctl.conf (dangling symlink to ../sysctl.conf)
       + /var/log/btmp
+    - Canonicalize mountpoint inside the chroot to avoid mounting over
+      symlinks and possibly outside the chroot.
     - --install-remove-install runs 'apt-get install --reinstall $pkg', too.
   * post_distupgrade_base_cleanup: Remove libprocps3 in stretch.
   * pre_remove_40_find_unowned_lib_links: Handle another mpi alternative.
