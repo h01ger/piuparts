@@ -1128,11 +1128,11 @@ class Chroot:
                 installed = False
         return installed
 
-    def install_packages(self, package_files, packages, with_scripts=True):
+    def install_packages(self, package_files, packages, with_scripts=True, reinstall=False):
         if package_files:
             self.install_package_files(package_files, packages, with_scripts=with_scripts)
         else:
-            self.install_packages_by_name(packages, with_scripts=with_scripts)
+            self.install_packages_by_name(packages, with_scripts=with_scripts, reinstall=reinstall)
 
     def install_package_files(self, package_files, packages=None, with_scripts=False):
         if packages and settings.testdebs_repo:
@@ -1181,7 +1181,7 @@ class Chroot:
 
             remove_files([self.relative(name) for name in tmp_files])
 
-    def install_packages_by_name(self, packages, with_scripts=True):
+    def install_packages_by_name(self, packages, with_scripts=True, reinstall=False):
         if packages:
             if with_scripts:
                 self.run_scripts("pre_install")
@@ -1193,7 +1193,7 @@ class Chroot:
                 pre_info = self.save_meta_data()
 
             target_flags = settings.distro_config.get_target_flags(os.environ["PIUPARTS_DISTRIBUTION"])
-            self.apt_get_install(to_install=packages, flags=target_flags)
+            self.apt_get_install(to_install=packages, flags=target_flags, reinstall=reinstall)
 
             if settings.list_installed_files:
                 self.list_installed_files(pre_info, self.save_meta_data())
@@ -1201,8 +1201,10 @@ class Chroot:
             if with_scripts:
                 self.run_scripts("post_install")
 
-    def apt_get_install(self, to_install=[], to_remove=[], to_purge=[], flags=[]):
+    def apt_get_install(self, to_install=[], to_remove=[], to_purge=[], flags=[], reinstall=False):
         command = ["apt-get", "-y"] + flags + ["install"]
+        if reinstall:
+            command.append("--reinstall")
         command.extend(to_install)
         command.extend(["%s-" % x for x in unqualify(to_remove)])
         command.extend(["%s_" % x for x in unqualify(to_purge)])
@@ -2433,6 +2435,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
         chroot.remove_packages(packages)
         logging.info("Reinstalling after remove")
         chroot.install_packages(package_files, packages, with_scripts=True)
+        chroot.install_packages(package_files, packages, with_scripts=True, reinstall=True)
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
