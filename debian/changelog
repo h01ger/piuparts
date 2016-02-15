@@ -8,6 +8,8 @@ piuparts (0.70) UNRELEASED; urgency=medium
     - --install-remove-install runs 'apt-get install --reinstall $pkg', too.
   * post_distupgrade_base_cleanup: Remove libprocps3 in stretch.
   * pre_remove_40_find_unowned_lib_links: Handle another mpi alternative.
+  * Add bug template for maintainer scripts incorrectly complaining about
+    being called with unknown arguments.
 
  -- Holger Levsen <holger@debian.org>  Sat, 13 Feb 2016 12:48:14 +0100
 

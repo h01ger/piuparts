@@ -1,0 +1,24 @@
+To: submit@bugs.debian.org
+Subject: foobar called with unknown argument `foobar'
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed the maintainer scripts of your
+package don't support all the ways they are going to be called.
+
+See policy 6.5 at
+https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-mscriptsinstact
+
+From the attached log (scroll to the bottom...):
+
+
+Testing reinstallation in sid:
+
+
+Cheers,
