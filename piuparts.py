@@ -292,6 +292,7 @@ class Settings:
             "/var/log/dpkg.log",
             # system logfiles
             "/var/log/auth.log",
+            "/var/log/btmp",
             "/var/log/daemon.log",
             "/var/log/debug",
             "/var/log/faillog",
