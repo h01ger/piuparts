@@ -2,7 +2,8 @@ Things to do for piuparts
 =========================
 
 Please also check the BTS, especially the bugs with a severity higher than
-wishlist!
+wishlist! And see the bottom of this file for wishlist bugs someone once
+expressed…
 
 
 for 0.7x, during the stretch development cycle:
@@ -164,3 +165,15 @@ for 0.8x and later:
   - create archive of broken packages to provide test cases for piuparts testing.
   - create emacspeak-broken-dpkg-preconfigure package for broken repo. (then later
     put more broken packages in there and use that for testing piuparts)
+
+
+
+(Closed) wishlist bugs are listed here so it's easier to find information
+about them should one wants to implement support for those. Usually wishlist
+bugs are closed not because the feature is unwanted, but because noone is
+working on them… see http://blog.liw.fi/posts/wishlist-bugs for a longer
+rationale.
+
+- #664727 - support cowbuilder in addition to pbuilder
+- #588042 - add an option to override the log file instead of append to it
+
