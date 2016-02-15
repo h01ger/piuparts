@@ -25,7 +25,8 @@ do
 				/usr/lib/libfmpich.so.12|\
 				/usr/lib/libmpich.so.12|\
 				/usr/lib/libmpichcxx.so.12|\
-				/usr/lib/libmpichf90.so.12)
+				/usr/lib/libmpichf90.so.12|\
+				/usr/lib/libmpichfort.so.12)
 					if [ -f /etc/alternatives/libmpi.so ]
 					then
 						# managed by mpi-default-dev via alternatives
