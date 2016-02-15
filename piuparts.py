@@ -321,9 +321,10 @@ class Settings:
             "/var/lib/rbldns/",
             "/var/spool/powerdns/",     # pdns-server (#531134), pdns-recursor (#531135)
             # work around broken symlinks
+            "/etc/modules-load.d/modules.conf",
+            "/etc/sysctl.d/99-sysctl.conf",
             "/usr/lib/python2.6/dist-packages/python-support.pth",  # 635493 and #385775
             "/usr/lib/python2.7/dist-packages/python-support.pth",
-            "/etc/modules-load.d/modules.conf",
             # work around #316521 dpkg: incomplete cleanup of empty directories
             "/etc/apache2/",
             "/etc/apache2/conf.d/",

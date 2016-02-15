@@ -1,6 +1,9 @@
 piuparts (0.70) UNRELEASED; urgency=medium
 
-  * continue development… 
+  [ Andreas Beckmann ]
+  * piuparts.py:
+    - Add to ignored_files:
+      + /etc/sysctl.d/99-sysctl.conf (dangling symlink to ../sysctl.conf)
 
  -- Holger Levsen <holger@debian.org>  Sat, 13 Feb 2016 12:48:14 +0100
 
