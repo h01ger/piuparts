@@ -176,4 +176,5 @@ rationale.
 
 - #664727 - support cowbuilder in addition to pbuilder
 - #588042 - add an option to override the log file instead of append to it
-
+- #354842 - New option: remove /usr/local
+- #403648 - New test: Try unpack, then remove?
