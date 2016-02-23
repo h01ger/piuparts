@@ -6,15 +6,6 @@ log_debug() {
 }
 
 case ${PIUPARTS_OBJECTS%%=*} in
-	file-rc)
-		case "$PIUPARTS_DISTRIBUTION" in
-			lenny|squeeze*)
-				log_debug
-				# removal wont work if sysv-rc isn't reinstalled
-				yes 'Yes, do as I say!' | apt-get -y --force-yes install sysv-rc
-				;;
-		esac
-		;;
 	asclassic)
 		case "$PIUPARTS_DISTRIBUTION" in
 			lenny)
