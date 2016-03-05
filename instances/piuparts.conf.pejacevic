@@ -438,10 +438,12 @@ piuparts-flags =
 depends-sections = squeeze
 distro = squeeze-backports
 upgrade-test-distros = squeeze squeeze-backports wheezy
+reschedule-old-count = 0
+reschedule-fail-count = 0
 
 
 [squeeze2bpo-sloppy]
-precedence = 6
+precedence = 99
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -449,10 +451,12 @@ piuparts-flags =
 	%(flags-end-squeeze)s
 depends-sections = squeeze squeeze2bpo2wheezy
 upgrade-test-distros = squeeze squeeze-backports-sloppy
+reschedule-old-count = 0
+reschedule-fail-count = 0
 
 
 [squeeze]
-precedence = 7
+precedence = 99
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -460,10 +464,11 @@ piuparts-flags =
 	%(flags-end-squeeze)s
 distro = squeeze
 reschedule-old-count = 0
+reschedule-fail-count = 0
 
 
 [squeeze2squeeze-lts]
-precedence = 8
+precedence = 99
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -472,6 +477,8 @@ piuparts-flags =
 depends-sections = squeeze
 distro = squeeze-lts
 upgrade-test-distros = squeeze squeeze-lts
+reschedule-old-count = 0
+reschedule-fail-count = 0
 
 
 [lenny2squeeze]

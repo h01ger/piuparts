@@ -34,7 +34,7 @@ for 0.7x, during the stretch development cycle:
     - packages processed per day and section, master writes submissions.txt
       since 0.45 for all sections.
     - generate simple diagrams: number of source + binary packages in all
-      single distros: lenny, squeeze, wheezy, jessie, sid.
+      single distros: lenny, squeeze, wheezy, jessie, stretch, sid.
     - graph about piuparts stati for all sections combined? (possible ignore
       successful)
 

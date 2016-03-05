@@ -13,6 +13,11 @@ piuparts (0.70) UNRELEASED; urgency=medium
   * Add bug template for maintainer scripts incorrectly complaining about
     being called with unknown arguments.
 
+  [ Holger Levsen ]
+  * conf/distros.conf and instances/piuparts.conf.pejacevic: move squeeze to
+    archive.debian.org, stop testing squeeze only suites - but keep testing
+    upgrades to wheezy suites.
+
  -- Holger Levsen <holger@debian.org>  Sat, 13 Feb 2016 12:48:14 +0100
 
 piuparts (0.69) unstable; urgency=medium
