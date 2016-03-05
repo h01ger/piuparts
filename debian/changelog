@@ -1,4 +1,4 @@
-piuparts (0.69~bpo80+1) jessie-backports; urgency=medium
+piuparts (0.69~bpo8+1) jessie-backports; urgency=medium
 
   * Rebuild for jessie-backports.
 
