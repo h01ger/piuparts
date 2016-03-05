@@ -1,3 +1,9 @@
+piuparts (0.69~bpo80+1) jessie-backports; urgency=medium
+
+  * Rebuild for jessie-backports.
+
+ -- Holger Levsen <holger@debian.org>  Sat, 05 Mar 2016 15:09:23 +0100
+
 piuparts (0.69) unstable; urgency=medium
 
   * piuparts.py: add to ignored_files:
