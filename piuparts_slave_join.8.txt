@@ -33,7 +33,7 @@ See *screen*(1) for full instructions on how to navigate between displays. In sh
     Navigates to display <n>. Slaves are found at screens 1 through 'slave-count', defined in the piuparts configuration file.
 
 *Ctrl-A d*::
-    Detatch from *screen*. The session can be re-established with *piuparts-slave-join*.
+    Detach from *screen*. The session can be re-established with *piuparts-slave-join*.
 
 SEE ALSO
 --------

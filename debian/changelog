@@ -17,6 +17,7 @@ piuparts (0.70) UNRELEASED; urgency=medium
   * conf/distros.conf and instances/piuparts.conf.pejacevic: move squeeze to
     archive.debian.org, stop testing squeeze only suites - but keep testing
     upgrades to wheezy suites.
+  * Fix typo in piuparts_slave_join.8.txt, thanks lintian. 
 
  -- Holger Levsen <holger@debian.org>  Sat, 13 Feb 2016 12:48:14 +0100
 
