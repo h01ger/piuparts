@@ -176,5 +176,7 @@ rationale.
 
 - #664727 - support cowbuilder in addition to pbuilder
 - #588042 - add an option to override the log file instead of append to it
-- #354842 - New option: remove /usr/local
-- #403648 - New test: Try unpack, then remove?
+- #354842 - new option: remove /usr/local
+- #660896 - new option: use etckeeper and show how modified files have changed
+- #403648 - new test: Try unpack, then remove?
+- #665016 - new test: more checks on alternatives
