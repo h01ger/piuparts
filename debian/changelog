@@ -1,4 +1,4 @@
-piuparts (0.70) UNRELEASED; urgency=medium
+piuparts (0.70) unstable; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -19,7 +19,7 @@ piuparts (0.70) UNRELEASED; urgency=medium
     upgrades to wheezy suites.
   * Fix typo in piuparts_slave_join.8.txt, thanks lintian. 
 
- -- Holger Levsen <holger@debian.org>  Sat, 13 Feb 2016 12:48:14 +0100
+ -- Holger Levsen <holger@debian.org>  Tue, 08 Mar 2016 13:00:22 +0100
 
 piuparts (0.69) unstable; urgency=medium
 
