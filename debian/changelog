@@ -3,6 +3,8 @@ piuparts (0.71) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * piuparts.py:
     - Define namedtuple FileInfo globally s.t. it can be pickled.
+  * piuparts-reports.py:
+    - Skip section on HTTPError while downloading Packages.
 
   [ Holger Levsen ]
 
@@ -27,7 +29,7 @@ piuparts (0.70) unstable; urgency=medium
   * conf/distros.conf and instances/piuparts.conf.pejacevic: move squeeze to
     archive.debian.org, stop testing squeeze only suites - but keep testing
     upgrades to wheezy suites.
-  * Fix typo in piuparts_slave_join.8.txt, thanks lintian. 
+  * Fix typo in piuparts_slave_join.8.txt, thanks lintian.
 
  -- Holger Levsen <holger@debian.org>  Tue, 08 Mar 2016 13:00:22 +0100
 

@@ -37,6 +37,7 @@ import re
 import string
 import yaml
 import hashlib
+from urllib2 import HTTPError
 
 # if python-rpy2 ain't installed, we don't draw fancy graphs
 try:
@@ -1698,6 +1699,8 @@ def main():
                 section.generate_output(output_directory, section_names, problem_list, web_host)
             except MissingSection as e:
                 logging.error("Configuration Error in section '%s': %s" % (section_name, e))
+            except HTTPError as e:
+                logging.error("Failed to fetch Packages files for section '%s' : %s" % (section_name, e))
 
         # static pages
         logging.debug("Writing static pages")
