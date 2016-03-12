@@ -697,6 +697,8 @@ def is_broken_symlink(root, dirpath, filename):
     return not os.path.exists(pathname)
 
 
+FileInfo = namedtuple('FileInfo', ['st', 'target', 'user', 'group'])
+
 class Chroot:
 
     """A chroot for testing things in."""
@@ -1426,7 +1428,6 @@ class Chroot:
 
     def save_meta_data(self):
         """Return the filesystem meta data for all objects in the chroot."""
-        FileInfo = namedtuple('FileInfo', ['st', 'target', 'user', 'group'])
         self.run(["apt-get", "clean"])
         logging.debug("Recording chroot state")
         root = self.relative(".")

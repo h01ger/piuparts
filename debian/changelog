@@ -1,6 +1,10 @@
 piuparts (0.71) UNRELEASED; urgency=medium
 
-  * continue development…
+  [ Andreas Beckmann ]
+  * piuparts.py:
+    - Define namedtuple FileInfo globally s.t. it can be pickled.
+
+  [ Holger Levsen ]
 
  -- Holger Levsen <holger@debian.org>  Tue, 08 Mar 2016 13:02:42 +0100
 
