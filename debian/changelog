@@ -9,6 +9,7 @@ piuparts (0.71) UNRELEASED; urgency=medium
   * post_setup_forbid_home: Adjust for basefiles now shipping /home/
 
   [ Holger Levsen ]
+  * Bump standards version to 3.9.8, no changes needed.
 
  -- Holger Levsen <holger@debian.org>  Tue, 08 Mar 2016 13:02:42 +0100
 
