@@ -27,7 +27,7 @@ From the attached log (scroll to the bottom...):
 This problem is usually caused by running mktexlsr (or texhash) without
 path arguments from a maintainer script.
 
-The recommende solution is to switch to use dh_installtex and have this
+The recommended solution is to switch to use dh_installtex and have this
 generate most (or perhaps even all) of the maintainer scripts content.
 
 Otherwise run mktexlsr with the tree as argument where the package
