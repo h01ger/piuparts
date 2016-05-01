@@ -9,7 +9,6 @@ if [ "$PIUPARTS_PHASE" = "install" ]; then
 
     case ${PIUPARTS_OBJECTS%%=*} in
 	*dkms)
-		log_debug
 		# Install kernel headers, so that dkms tries to build a module
 		HEADERS=linux-headers
 		FLAVOR=unknown
@@ -28,7 +27,15 @@ if [ "$PIUPARTS_PHASE" = "install" ]; then
 				FLAVOR=$FLAVOR_i386
 				;;
 		esac
-		apt-get -y install $HEADERS-$FLAVOR
+		case ${PIUPARTS_OBJECTS} in
+			*=None)
+				# do not test discontinued packages - they won't support newer kernels
+				;;
+			*)
+				log_debug
+				apt-get -y install $HEADERS-$FLAVOR
+				;;
+		esac
 		;;
     esac
 
