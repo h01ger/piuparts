@@ -179,8 +179,11 @@ def mark_logs_with_reported_bugs():
         pversion = package_source_version(failed_log)
         failed_errors = extract_errors(failed_log)
         moved = False
-        abugs = piuparts_bugs_affecting(pname)
-        bugs = piuparts_bugs_in(pname)
+        try:
+            abugs = piuparts_bugs_affecting(pname)
+            bugs = piuparts_bugs_in(pname)
+        except SOAPpy.Errors.HTTPError:
+            continue
         for bug in abugs + bugs:
             if moved:
                 break
