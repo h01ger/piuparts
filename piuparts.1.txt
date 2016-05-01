@@ -163,6 +163,10 @@ Note that file: addresses works if the directories are made accessible from with
 *--no-adequate*::
   Don't run adequate after installation. The default is to run adequate, provided it is installed.
 
+*--no-check-valid-until*::
+  Set apt option Acquire::Check-Valid-Until=false in the chroot to ignore the
+  expiration of Release files. This is needed for testing archived releases.
+
 *--no-diversions*::
   Don't check for broken diversions.
 

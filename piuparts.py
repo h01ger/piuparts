@@ -162,6 +162,7 @@ class Settings:
         self.keep_sources_list = False
         self.keyring = None
         self.do_not_verify_signatures = False
+        self.no_check_valid_until = False
         self.install_recommends = False
         self.eatmydata = True
         self.dpkg_force_unsafe_io = True
@@ -924,6 +925,8 @@ class Chroot:
         lines.append('APT::Install-Suggests "0";\n')
         lines.append('APT::Get::AllowUnauthenticated "%s";\n' % settings.apt_unauthenticated)
         lines.append('Acquire::PDiffs "false";\n')
+        if settings.no_check_valid_until:
+            lines.append('Acquire::Check-Valid-Until "false";\n')
         if settings.proxy:
             proxy = settings.proxy
         elif "http_proxy" in os.environ:
@@ -2730,6 +2733,11 @@ def parse_command_line():
                       action='store_true',
                       help="Do not verify signatures from the Release files when running debootstrap.")
 
+    parser.add_option("--no-check-valid-until",
+                      default=False,
+                      action='store_true',
+                      help="Set apt option Acquire::Check-Valid-Until=false for testing archived releases.")
+
     parser.add_option("--allow-database", default=False,
                       action='store_true',
                       help="Allow database servers (MySQL, PostgreSQL) to be started in the chroot.")
@@ -2977,6 +2985,7 @@ def parse_command_line():
         settings.apt_unauthenticated = "Yes"
     else:
         settings.apt_unauthenticated = "No"
+    settings.no_check_valid_until = opts.no_check_valid_until
     settings.install_recommends = opts.install_recommends
     settings.eatmydata = not opts.no_eatmydata
     settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
