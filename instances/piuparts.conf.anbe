@@ -1237,6 +1237,7 @@ distro = squeeze-lts
 arch = amd64
 area = main
 components = main
+reschedule-old-count = 0
 
 [squeeze-lts/contrib]
 precedence = 45
@@ -1248,6 +1249,7 @@ depends-sections = squeeze/main squeeze/non-free
 distro = squeeze-lts
 arch = amd64
 area = contrib
+reschedule-old-count = 0
 
 [squeeze-lts/non-free]
 precedence = 45
@@ -1259,6 +1261,7 @@ depends-sections = squeeze/main squeeze/contrib
 distro = squeeze-lts
 arch = amd64
 area = non-free
+reschedule-old-count = 0
 
 
 [squeeze-backports/main]
@@ -1272,6 +1275,7 @@ distro = squeeze-backports
 arch = amd64
 area = main
 components = main
+reschedule-old-count = 0
 
 [squeeze-backports/contrib]
 precedence = 45
@@ -1283,6 +1287,7 @@ depends-sections = squeeze/main squeeze-backports/main squeeze-backports/non-fre
 distro = squeeze-backports
 arch = amd64
 area = contrib
+reschedule-old-count = 0
 
 [squeeze-backports/non-free]
 precedence = 45
@@ -1294,6 +1299,7 @@ depends-sections = squeeze/main squeeze-backports/main squeeze-backports/contrib
 distro = squeeze-backports
 arch = amd64
 area = non-free
+reschedule-old-count = 0
 
 
 [squeeze-backports-sloppy/main]
@@ -1307,6 +1313,7 @@ distro = squeeze-backports-sloppy
 arch = amd64
 area = main
 components = main
+reschedule-old-count = 0
 
 [squeeze-backports-sloppy/contrib]
 precedence = 45
@@ -1318,6 +1325,7 @@ depends-sections = squeeze/main squeeze-backports/main squeeze-backports/non-fre
 distro = squeeze-backports-sloppy
 arch = amd64
 area = contrib
+reschedule-old-count = 0
 
 [squeeze-backports-sloppy/non-free]
 precedence = 45
@@ -1329,6 +1337,7 @@ depends-sections = squeeze/main squeeze-backports/main squeeze-backports/contrib
 distro = squeeze-backports-sloppy
 arch = amd64
 area = non-free
+reschedule-old-count = 0
 
 
 [lenny/main]
@@ -1470,6 +1479,7 @@ arch = i386
 area = main
 components = main
 upgrade-test-distros = squeeze squeeze-lts wheezy
+reschedule-old-count = 0
 
 [squeeze2lts2wheezy/contrib]
 precedence = 95
@@ -1483,6 +1493,7 @@ distro = squeeze-lts
 arch = i386
 area = contrib
 upgrade-test-distros = squeeze squeeze-lts wheezy
+reschedule-old-count = 0
 
 [squeeze2lts2wheezy/non-free]
 precedence = 95
@@ -1496,6 +1507,7 @@ distro = squeeze-lts
 arch = i386
 area = non-free
 upgrade-test-distros = squeeze squeeze-lts wheezy
+reschedule-old-count = 0
 
 
 [squeeze2wheezy/main]
