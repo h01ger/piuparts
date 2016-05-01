@@ -38,6 +38,7 @@ flags-end-wheezy =
 
 flags-start-squeeze =
 	-i /etc/shells
+	--no-check-valid-until
 flags-end-squeeze =
 	--warn-on-debsums-errors
 	--scriptsdir /etc/piuparts/scripts-squeeze

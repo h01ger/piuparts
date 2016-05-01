@@ -43,6 +43,8 @@ flags-start-squeeze =
 # up to squeeze a non-empty /etc/shells was shipped, actually installing
 # and removing a shell would remove its entry from /etc/shells
 	-i /etc/shells
+# squeeze has been archived
+	--no-check-valid-until
 
 # common flags for tests ending in squeeze
 flags-end-squeeze =

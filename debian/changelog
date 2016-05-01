@@ -5,6 +5,8 @@ piuparts (0.71) UNRELEASED; urgency=medium
     - Define namedtuple FileInfo globally s.t. it can be pickled.
     - New option --no-check-valid-until to set apt option
       Acquire::Check-Valid-Until=false for testing archived releases.
+  * piuparts.conf:
+    - Use --no-check-valid-until for squeeze.
   * distros.conf: squeeze-* has been archived/removed.
   * piuparts-reports.py:
     - Skip section on HTTPError while downloading Packages.
