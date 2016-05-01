@@ -499,8 +499,23 @@ def run(command, ignore_errors=False, timeout=0):
     assert isinstance(command, type([]))
     logging.debug("Starting command: %s" % command)
     env = os.environ.copy()
-    env["LC_ALL"] = "C"
-    env["LANGUAGES"] = ""
+    for var in ["LANG",
+            "LANGUAGE",
+            "LC_CTYPE",
+            "LC_NUMERIC",
+            "LC_TIME",
+            "LC_COLLATE",
+            "LC_MONETARY",
+            "LC_MESSAGES",
+            "LC_PAPER",
+            "LC_NAME",
+            "LC_ADDRESS",
+            "LC_TELEPHONE",
+            "LC_MEASUREMENT",
+            "LC_IDENTIFICATION",
+            "LC_ALL"]:
+        if var in env:
+            del env[var]
     env["PIUPARTS_OBJECTS"] = ' '.join(str(vobject) for vobject in settings.testobjects)
     devnull = open('/dev/null', 'r')
     p = subprocess.Popen(command, env=env, stdin=devnull,
