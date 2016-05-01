@@ -8,6 +8,7 @@ piuparts (0.71) UNRELEASED; urgency=medium
   * piuparts.conf:
     - Use --no-check-valid-until for squeeze.
     - New section [wheezy-security] (also used by wheezy LTS).
+    - New section [jessie-security].
   * distros.conf: squeeze-* has been archived/removed.
   * piuparts-reports.py:
     - Skip section on HTTPError while downloading Packages.

@@ -101,6 +101,7 @@ sections =
 	jessie2stretch
 	jessie
 	jessie-rcmd
+	jessie-security
 	jessie-pu
 #	jessie-proposed
 	jessie2proposed
@@ -297,6 +298,17 @@ piuparts-flags =
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
 distro = jessie
+
+
+[jessie-security]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie
+distro = jessie/updates
 
 
 [jessie-pu]
