@@ -35,6 +35,18 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		log_debug
 		dpkg-divert --remove --rename /usr/sbin/lpadmin
 		;;
+	freedombox-setup)
+		log_debug
+		# cleanup from pre_install_exceptions
+		if [ -e /etc/motd.orig ]; then
+			if [ -L /etc/motd ]; then
+				rm -v /etc/motd
+			fi
+			if [ ! -e /etc/motd ]; then
+				mv -v /etc/motd.orig /etc/motd
+			fi
+		fi
+		;;
 esac
 
 # Allow removal of the kernel running on the host from the chroot.

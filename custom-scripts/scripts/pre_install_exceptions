@@ -91,6 +91,13 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			log_debug
 			dpkg-divert --rename /usr/sbin/lpadmin
 			;;
+	freedombox-setup)
+			log_debug
+			# replaces /etc/motd by a symlink
+			if [ -e /etc/motd ] && [ ! -L /etc/motd ] && [ ! -e /etc/motd.orig ]; then
+				mv -v /etc/motd /etc/motd.orig
+			fi
+			;;
 	bugzilla3)
 			# checksetup.pl goes into infinite loop asking for them
 			log_debug
