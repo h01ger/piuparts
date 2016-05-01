@@ -41,8 +41,8 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				# reinstall packages that will be reinstalled after purge
 				# to not record their /usr/share/doc content that is about to disappear
 				log_debug
-				EXTRA="base-passwd"
-				apt-get -u --reinstall --fix-missing install $(dpkg -S LC_MESSAGES | cut -d: -f1 | tr ', ' '\n' | sort -u) $EXTRA
+				EXTRA=""
+				apt-get -u --reinstall --fix-missing install $(dpkg -S LC_MESSAGES 'man/??/man' | cut -d: -f1 | tr ', ' '\n' | sort -u) $EXTRA
 				;;
 		esac
 		;;
