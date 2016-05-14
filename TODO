@@ -177,6 +177,10 @@ rationale.
 - #664727 - support cowbuilder in addition to pbuilder
 - #588042 - add an option to override the log file instead of append to it
 - #354842 - new option: remove /usr/local
+- #558819 - new option: check that daemon stop scripts don't fail even if the daemon doesn't run
 - #660896 - new option: use etckeeper and show how modified files have changed
 - #403648 - new test: Try unpack, then remove?
+- #561444 - new test: install, remove configuration files, re-install, check that configuration files don't re-appear
+- #561445 - new test: install, mangle configuration file, re-install, check that manglement is still there
 - #665016 - new test: more checks on alternatives
+- #658731 - add pattern for owned files that are always an error
