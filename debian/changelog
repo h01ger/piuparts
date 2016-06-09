@@ -1,6 +1,6 @@
 piuparts (0.72) UNRELEASED; urgency=medium
 
-  * continue development… 
+  * instances/piuparts.conf.pejacevic: test jessie2bpo and jessie2bpo2stretch.
 
  -- Holger Levsen <holger@debian.org>  Thu, 05 May 2016 14:04:29 +0200
 

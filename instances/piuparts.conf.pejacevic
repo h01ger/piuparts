@@ -99,6 +99,8 @@ sections =
 	testing2sid
 	stretch
 	jessie2stretch
+	jessie2bpo2stretch
+	jessie2bpo
 	jessie
 	jessie-rcmd
 	jessie-security
@@ -278,6 +280,27 @@ piuparts-flags =
 distro = jessie
 upgrade-test-distros = jessie stretch
 
+[jessie2bpo2stretch]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+depends-sections = jessie
+distro = jessie-backports
+upgrade-test-distros = jessie jessie-backports stretch
+
+[jessie2bpo]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie
+distro = jessie-backports
+upgrade-test-distros = jessie jessie-backports
 
 [jessie]
 precedence = 3
