@@ -183,5 +183,6 @@ rationale.
 - #561444 - new test: install, remove configuration files, re-install, check that configuration files don't re-appear
 - #561445 - new test: install, mangle configuration file, re-install, check that manglement is still there
 - #665016 - new test: more checks on alternatives
+- #810323 - new test: deconfiguring and configuring a package again
 - #658731 - add pattern for owned files that are always an error
 - #682741 - add a second set of ignoreed files and patterns for "partial purge" tests
