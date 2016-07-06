@@ -205,6 +205,7 @@ class Settings:
         self.warn_if_inadequate = True
         self.pedantic_purge_test = False
         self.ignored_files = [
+            # /root/.rnd should *not* be listed here, see #750099
             # piuparts state
             "/usr/sbin/policy-rc.d",
             # system state
