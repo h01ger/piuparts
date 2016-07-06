@@ -3,6 +3,8 @@ piuparts (0.72) UNRELEASED; urgency=medium
   * instances/piuparts.conf.pejacevic: test jessie2bpo and jessie2bpo2stretch.
   * Fix devpts mounting to use the correct gid=5,mode=620 mount options.
     Patch taken from Adam Conrad. (Closes: #829146)
+  * custom-scripts/scripts/pre_remove_exceptions: force removal of usrmerge
+    package. (Closes: #798374)
 
  -- Holger Levsen <holger@debian.org>  Thu, 05 May 2016 14:04:29 +0200
 
