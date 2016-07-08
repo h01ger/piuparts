@@ -46,6 +46,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				mv -v /etc/motd.orig /etc/motd
 			fi
 		fi
+		;;
 	usrmerge)
 		log_debug
 		# force removal of usrmerge package
