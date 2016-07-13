@@ -6,6 +6,7 @@ piuparts (0.72) UNRELEASED; urgency=medium
       Patch taken from Adam Conrad. (Closes: #829146)
     - explain (as a code comment) why /root/.rnd shouldn't be ignored.
       (Closes: #750099)
+    - Add /var/log/apt/eipp.log.xz to ignored files. (Closes: #830527)
   * custom-scripts/scripts/pre_remove_exceptions: force removal of usrmerge
     package. (Closes: #798374)
 

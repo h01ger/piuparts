@@ -289,6 +289,7 @@ class Settings:
             "/var/log/alternatives.log",
             "/var/log/apt/history.log",
             "/var/log/apt/term.log",
+            "/var/log/apt/eipp.log.xz",
             "/var/log/bootstrap.log",
             "/var/log/dbconfig-common/dbc.log",
             "/var/log/dpkg.log",
