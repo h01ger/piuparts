@@ -17,9 +17,6 @@ class ConfStdDistroTests(unittest.TestCase):
         self.experimental = 'experimental'
 
     def testConfStdDistroNames(self):
-        self.assertEqual(self.oldstable, 'wheezy')
-        self.assertEqual(self.stable, 'jessie')
-        self.assertEqual(self.testing, 'stretch')
         self.assertEqual(self.unstable, 'sid')
         self.assertEqual(self.experimental, 'experimental')
 
