@@ -1,3 +1,11 @@
+piuparts (0.62+deb8u1) UNRELEASED; urgency=medium
+
+  [ Stefano Rivera ]
+  * Don't test the current Debian release status, tracking that is
+    distro-info-data's problem. (Closes: #827411)
+
+ -- Holger Levsen <holger@debian.org>  Wed, 03 Aug 2016 12:01:32 +0200
+
 piuparts (0.62) unstable; urgency=medium
 
   * Default to http://http.debian.net/debian instead of the deprecated
