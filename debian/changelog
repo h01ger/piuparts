@@ -1,4 +1,4 @@
-piuparts (0.72) UNRELEASED; urgency=medium
+piuparts (0.72) unstable; urgency=medium
 
   [ Holger Levsen ]
   * instances/piuparts.conf.pejacevic: test jessie2bpo and jessie2bpo2stretch.
@@ -15,7 +15,7 @@ piuparts (0.72) UNRELEASED; urgency=medium
   * Don't test the current Debian release status, tracking that is
     distro-info-data's problem. (Closes: #827411)
 
- -- Holger Levsen <holger@debian.org>  Thu, 05 May 2016 14:04:29 +0200
+ -- Holger Levsen <holger@debian.org>  Wed, 03 Aug 2016 11:24:56 +0200
 
 piuparts (0.71) unstable; urgency=medium
 
