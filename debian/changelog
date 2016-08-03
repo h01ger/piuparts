@@ -1,5 +1,6 @@
 piuparts (0.72) UNRELEASED; urgency=medium
 
+  [ Holger Levsen ]
   * instances/piuparts.conf.pejacevic: test jessie2bpo and jessie2bpo2stretch.
   * piuparts.py:
     - Fix devpts mounting to use the correct gid=5,mode=620 mount options.
@@ -9,6 +10,10 @@ piuparts (0.72) UNRELEASED; urgency=medium
     - Add /var/log/apt/eipp.log.xz to ignored files. (Closes: #830527)
   * custom-scripts/scripts/pre_remove_exceptions: force removal of usrmerge
     package. (Closes: #798374)
+
+  [ Stefano Rivera ]
+  * Don't test the current Debian release status, tracking that is
+    distro-info-data's problem. (Closes: #827411)
 
  -- Holger Levsen <holger@debian.org>  Thu, 05 May 2016 14:04:29 +0200
 
