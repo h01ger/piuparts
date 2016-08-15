@@ -1,3 +1,9 @@
+piuparts (0.72~bpo8+1) jessie-backports; urgency=medium
+
+  * Rebuild for jessie-backports.
+
+ -- Holger Levsen <holger@debian.org>  Mon, 15 Aug 2016 15:15:58 +0200
+
 piuparts (0.72) unstable; urgency=medium
 
   [ Holger Levsen ]
