@@ -1,6 +1,7 @@
 piuparts (0.73) UNRELEASED; urgency=medium
 
   * Add /etc/rc[1-5].d/ to ignored files. (Closes: #834766)
+    This is a workaround for #834524.
 
  -- Holger Levsen <holger@debian.org>  Wed, 03 Aug 2016 11:44:50 +0200
 

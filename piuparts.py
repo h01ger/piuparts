@@ -340,6 +340,7 @@ class Settings:
             "/etc/php5/",
             "/etc/php5/conf.d/",
             "/etc/php5/mods-available/",
+            # work around #834524:
             "/etc/rc1.d/",
             "/etc/rc2.d/",
             "/etc/rc3.d/",
