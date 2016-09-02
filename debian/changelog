@@ -1,10 +1,10 @@
-piuparts (0.62+deb8u1) UNRELEASED; urgency=medium
+piuparts (0.62+deb8u1) unstable; urgency=medium
 
   [ Stefano Rivera ]
   * Don't test the current Debian release status, tracking that is
     distro-info-data's problem. (Closes: #827411)
 
- -- Holger Levsen <holger@debian.org>  Wed, 03 Aug 2016 12:01:32 +0200
+ -- Holger Levsen <holger@debian.org>  Fri, 02 Sep 2016 20:23:20 +0200
 
 piuparts (0.62) unstable; urgency=medium
 
