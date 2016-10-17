@@ -178,6 +178,7 @@ class Settings:
         self.lvm_snapshot_size = "1G"
         self.adt_virt = None
         self.existing_chroot = None
+        self.hard_link = False
         self.schroot = None
         self.end_meta = None
         self.save_end_meta = None
@@ -879,7 +880,7 @@ class Chroot:
         """Create chroot from an existing one."""
         # if on same device, make hard link
         cmd = ["cp"]
-        if os.stat(dirname).st_dev == os.stat(self.name).st_dev:
+        if settings.hard_link and os.stat(dirname).st_dev == os.stat(self.name).st_dev:
             cmd += ["-al"]
             logging.debug("Hard linking %s to %s" % (dirname, self.name))
         else:
@@ -2774,6 +2775,11 @@ def parse_command_line():
                            "chroot, instead of building a new one with " +
                            "debootstrap")
 
+    parser.add_option("--hard-link", default=False,
+                      action='store_true',
+                      help="When using --existing-chroot, and the source dir is on the same"
+                           "filesystem, hard-link files instead of copying them.")
+
     parser.add_option("-i", "--ignore", action="append", metavar="FILENAME",
                       default=[],
                       help="Add FILENAME to list of filenames to be " +
@@ -3023,6 +3029,7 @@ def parse_command_line():
     settings.lvm_volume = opts.lvm_volume
     settings.lvm_snapshot_size = opts.lvm_snapshot_size
     settings.existing_chroot = opts.existing_chroot
+    settings.hard_link = opts.hard_link
     settings.schroot = opts.schroot
     settings.end_meta = opts.end_meta
     settings.save_end_meta = opts.save_end_meta

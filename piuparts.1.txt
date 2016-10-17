@@ -90,7 +90,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *-e* 'dirname', *--existing-chroot*='dirname'::
   Use the specified directory as source for the new chroot, instead of building
   a new one with debootstrap. This is similar to '--basetgz', but the contents
-  are not archived.
+  are not archived. See also the --hard-link option.
 
 *--distupgrade-to-testdebs*::
   Use the "testdebs" repository to override the packages in the distupgrade
@@ -110,6 +110,11 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   mistreatment.
   Takes a comma separated list of package names and can be given multiple
   times.
+
+*--hard-link*::
+  When the --existing-chroot option is used, and the source directory is on the
+  same filesystem, hard-link files instead of copying them. This is faster, but
+  any modifications to files will be reflected in the originals.
 
 *-i* 'filename', *--ignore*='filename'::
   Add a filename to the list of filenames to be ignored when comparing changes before and after installation. By default, piuparts ignores files that always change during a package installation and uninstallation, such as *dpkg* status files. The filename should be relative to the root of the chroot (e.g., _var/lib/dpkg/status_). This option can be used as many times as necessary.
