@@ -1,7 +1,5 @@
 piuparts (0.73) UNRELEASED; urgency=medium
 
-  * Add /etc/rc[1-5].d/ to ignored files. (Closes: #834766)
-    This is a workaround for #834524.
   * Add new option, --hard-link, and do *not* use it by default.
     (Closes: #841025)
 
