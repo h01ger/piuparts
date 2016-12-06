@@ -1,9 +1,9 @@
-piuparts (0.73) UNRELEASED; urgency=medium
+piuparts (0.73) unstable; urgency=medium
 
   * Add new option, --hard-link, and do *not* use it by default.
     (Closes: #841025)
 
- -- Holger Levsen <holger@debian.org>  Wed, 03 Aug 2016 11:44:50 +0200
+ -- Holger Levsen <holger@debian.org>  Tue, 06 Dec 2016 18:14:19 +0100
 
 piuparts (0.72) unstable; urgency=medium
 
