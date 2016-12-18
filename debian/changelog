@@ -1,3 +1,9 @@
+piuparts (0.73~bpo8+1) jessie-backports; urgency=medium
+
+  * Rebuild for jessie-backports.
+
+ -- Holger Levsen <holger@debian.org>  Sun, 18 Dec 2016 12:35:12 +0100
+
 piuparts (0.73) unstable; urgency=medium
 
   * Add new option, --hard-link, and do *not* use it by default.
