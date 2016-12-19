@@ -1,6 +1,6 @@
 piuparts (0.74) UNRELEASED; urgency=medium
 
-  * 
+  * pre_install_database-server: Use default-mysql-* from stretch onwards.
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 19 Dec 2016 03:10:28 +0100
 

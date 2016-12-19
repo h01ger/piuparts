@@ -10,6 +10,7 @@ POSTGRESQL=
 SQLITE3=
 FUSIONFORGE=
 CLIENT=
+INSTALL=
 
 case ${PIUPARTS_OBJECTS%%=*} in
 	acidbase)				MYSQL=yes ;;
@@ -191,25 +192,33 @@ if [ "$FUSIONFORGE" = "yes" ]; then
 			POSTGRESQL=yes
 			;;
 		*)
-			echo "Installing fusionforge-db-local..."
-			apt-get -y install fusionforge-db-local
+			INSTALL="$INSTALL fusionforge-db-local"
 			;;
 	esac
 fi
 
 if [ "$MYSQL" = "yes" ]; then
-	echo "Installing mysql-server..."
-	apt-get -y install mysql-server ${CLIENT:+mysql-client}
+	case "$PIUPARTS_DISTRIBUTION" in
+		lenny*|squeeze*|wheezy*|jessie*)
+			INSTALL="$INSTALL mysql-server ${CLIENT:+mysql-client}"
+			;;
+		*)
+			INSTALL="$INSTALL default-mysql-server ${CLIENT:+default-mysql-client}"
+			;;
+	esac
 fi
 
 if [ "$POSTGRESQL" = "yes" ]; then
-	echo "Installing postgresql..."
-	apt-get -y install postgresql
+	INSTALL="$INSTALL postgresql"
 fi
 
 if [ "$SQLITE3" = "yes" ]; then
-	echo "Installing sqlite3..."
-	apt-get -y install sqlite3
+	INSTALL="$INSTALL sqlite3"
+fi
+
+if [ -n "$INSTALL" ]; then
+	echo "Installing ${INSTALL# }..."
+	apt-get -y install $INSTALL
 fi
 
 exit 0

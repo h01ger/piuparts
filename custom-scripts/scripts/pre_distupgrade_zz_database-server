@@ -17,6 +17,7 @@ if [ "$PIUPARTS_PHASE" = "" ]; then
 fi
 
 CANDIDATES=""
+CANDIDATES="$CANDIDATES default-mysql-server"
 CANDIDATES="$CANDIDATES mysql-server"
 CANDIDATES="$CANDIDATES postgresql"
 CANDIDATES="$CANDIDATES postgresql-8.4"
