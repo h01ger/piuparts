@@ -3208,6 +3208,9 @@ def main():
     # Packages that don't use debconf will lose.
     os.environ["DEBIAN_FRONTEND"] = "noninteractive"
 
+    # Reduce the amount of ESC-codes in the logfile.
+    os.environ["DPKG_COLORS"] = "never"
+
     if "DISPLAY" in os.environ:
         del os.environ["DISPLAY"]
 
