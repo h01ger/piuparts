@@ -369,6 +369,7 @@ $PACKAGE_LIST</ul>
 
 PKG_ERROR_TPL = \
     """<li>$RDEPS - <a href=\"$LOG\">$LOG</a>
+    """<li>$RDEPS - <a href=\"$LOG\">$LOG</a>$ARCH
     (<a href=\"https://tracker.debian.org/pkg/$SPKG\" target=\"_blank\">PTS</a>)
     (<a href=\"https://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)
 $BUG</li>
@@ -1098,10 +1099,14 @@ class Section:
                 state_style = "labelcell"
 
             binary_version = self._binary_db.get_control_header(binary, "Version")
+            binary_arch = self._binary_db.get_control_header(binary, "Architecture")
+            archsuffix = ""
+            if binary_arch == "all":
+                archsuffix = ":all"
             binaryrows +=   "<tr class=\"normalrow\">" \
                           + "<td class=\"labelcell\">Binary:</td>" \
-                          + "<td class=\"contentcell2\">%s</td>" \
-                            % binary\
+                          + "<td class=\"contentcell2\">%s%s</td>" \
+                            % (binary, archsuffix) \
                           + "<td class=\"%s\">piuparts-result:</td>" \
                             % state_style \
                           + "<td class=\"contentcell2\">%s %s</td>" \
@@ -1389,6 +1394,8 @@ class Section:
                 vlist += "<li id=\"%s\">%s" % (
                                          package2id(package["Package"]),
                                          self.link_to_source_summary(package["Package"]))
+                if package["Architecture"] == "all":
+                    vlist += ":all"
                 if with_counts:
                     vlist += " (%d, %d)" % (self._binary_db.rrdep_count(package["Package"]),
                                             self._binary_db.block_count(package["Package"]))
@@ -1598,6 +1605,9 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
         bin_pkg = get_pkg(failure.pkgspec)
         src_pkg = pkgsdb.get_source(bin_pkg)
         rdep_cnt = pkgsdb.rrdep_count(bin_pkg)
+        bin_arch = ""
+        if pkgsdb.get_control_header(bin_pkg, "Architecture") == "all":
+            bin_arch = " [all]"
 
         if bugged_section is False and failure.where != 'fail':
             bugged_section = True
@@ -1608,6 +1618,7 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
         pkg_text += populate_tpl(ftpl, {
                                 'LOG': log,
                                 'PACKAGE': bin_pkg,
+                                'ARCH': bin_arch,
                                 'BUG': get_bug_text(log),
                                 'RDEPS': rdep_cnt,
                                 'SPKG': src_pkg,
