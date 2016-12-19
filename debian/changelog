@@ -3,6 +3,8 @@ piuparts (0.74) UNRELEASED; urgency=medium
   * piuparts-reports.py:
     - Mark arch:all packages with an :all suffix in package lists.
   * pre_install_database-server: Use default-mysql-* from stretch onwards.
+  * known_problems/debsums_mismatch_*.conf: Report missing symlinks and
+    directories.
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 19 Dec 2016 03:10:28 +0100
 
