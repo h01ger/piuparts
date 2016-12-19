@@ -15,33 +15,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	lib*cuda1)
 		FOREIGN="i386"
 		;;
-	crossbuild-essential-arm64|\
-	*-aarch64-linux-gnu)
-		FOREIGN="arm64"
-		;;
-	crossbuild-essential-armel|\
-	*-arm-linux-gnueabi)
-		FOREIGN="armel"
-		;;
-	crossbuild-essential-armhf|\
-	*-arm-linux-gnueabihf)
-		FOREIGN="armhf"
-		;;
-	*-mips-linux-gnu)
-		FOREIGN="mips"
-		;;
-	crossbuild-essential-mipsel|\
-	*-mipsel-linux-gnu)
-		FOREIGN="mipsel"
-		;;
-	crossbuild-essential-powerpc|\
-	*-powerpc-linux-gnu)
-		FOREIGN="powerpc"
-		;;
-	crossbuild-essential-ppc64el|\
-	*-powerpc64le-linux-gnu)
-		FOREIGN="ppc64el"
-		;;
 esac
 
 if [ -n "$FOREIGN" ] && [ "$FOREIGN" != "$(dpkg --print-architecture)" ]; then
