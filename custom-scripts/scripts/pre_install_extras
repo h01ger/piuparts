@@ -8,7 +8,10 @@ log_debug() {
 if [ "$PIUPARTS_PHASE" = "install" ]; then
 
     case ${PIUPARTS_OBJECTS%%=*} in
-	*dkms)
+	*dkms|\
+	ktap|\
+	zfs-*|\
+	zfsutils-linux)
 		# Install kernel headers, so that dkms tries to build a module
 		HEADERS=linux-headers
 		FLAVOR=unknown
