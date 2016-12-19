@@ -33,7 +33,11 @@ do
 	>$f2
 	dpkg -L "$pkg" | sort | \
 	while read f ; do
-		if [ -d "$f" ]; then
+		if [ "$f" != "${f#package diverts others to: }" ]; then
+			: # skip diversion information
+		elif [ "$f" != "${f#locally diverted to: }" ]; then
+			: # skip diversion information
+		elif [ -d "$f" ]; then
 			: # ignore directories
 		elif [ "$f" = "/home" ]; then
 			: # ignore directory shipped by base-files that is
