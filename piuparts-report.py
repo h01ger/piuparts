@@ -368,7 +368,6 @@ $PACKAGE_LIST</ul>
 """
 
 PKG_ERROR_TPL = \
-    """<li>$RDEPS - <a href=\"$LOG\">$LOG</a>
     """<li>$RDEPS - <a href=\"$LOG\">$LOG</a>$ARCH
     (<a href=\"https://tracker.debian.org/pkg/$SPKG\" target=\"_blank\">PTS</a>)
     (<a href=\"https://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)
