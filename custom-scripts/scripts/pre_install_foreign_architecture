@@ -10,6 +10,11 @@ esac
 FOREIGN=
 
 case ${PIUPARTS_OBJECTS%%=*} in
+	nvidia-driver|\
+	nvidia-legacy-*xx-driver|\
+	lib*cuda1)
+		FOREIGN="i386"
+		;;
 	crossbuild-essential-arm64|\
 	*-aarch64-linux-gnu)
 		FOREIGN="arm64"
