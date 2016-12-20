@@ -1,5 +1,7 @@
 piuparts (0.74) UNRELEASED; urgency=medium
 
+  * piuparts-analyze.py:
+    - Also consider bugs filed against source packages.
   * piuparts-reports.py:
     - Mark arch:all packages with an :all suffix in package lists.
   * pre_install_database-server: Use default-mysql-* from stretch onwards.
