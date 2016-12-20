@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# we rely on wget being available, make sure to use "--include=wget" in your deboostrap cmdline
+# we rely on gnupg and wget being available,
+# make sure to use "--include=gnupg,wget" in your debootstrap cmdline
 echo "Setting up https://example.com/internal_key.asc for apt-get usage."
 wget -O - 'https://example.com/internal_key.asc' | apt-key add -
 
