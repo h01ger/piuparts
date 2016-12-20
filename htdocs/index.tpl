@@ -73,6 +73,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2016-12-04</b> <a href="https://nthykier.wordpress.com/2016/12/04/piuparts-integration-in-britney/">piuparts results have been integrated with britney</a>, the tool the release team uses for testing migrations.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2016-06-09</b> Two new suites were added: <a href="https://piuparts.debian.org/jessi2bpo">jessie2bpo</a>, to test packages upgrades from jessie to jessie-backports and <a href="https://piuparts.debian.org/jessi2bpo2stretch">jessie2bpo2stretch</a>, where these packages are also tested for upgrading to stretch.
      </td>
     </tr>
