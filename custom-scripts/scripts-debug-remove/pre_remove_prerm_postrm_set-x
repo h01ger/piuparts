@@ -7,7 +7,7 @@ set_minus_x()
 
 	if [ -f $script ]; then
 		if head -n 1 $script | grep -qE '/bin/(ba)?sh' ; then
-			echo "DEBUG PURGE: enabling 'set -x' in ${script##*/}"
+			echo "DEBUG REMOVE: enabling 'set -x' in ${script##*/}"
 			sed -i '2 i set -x' $script
 		else
 			echo "Unsupported script type in $script:"
@@ -21,6 +21,8 @@ arch=$(dpkg --print-architecture)
 for target in ${PIUPARTS_OBJECTS%%=*}
 do
 	pkg=${target}
+	set_minus_x /var/lib/dpkg/info/$pkg.prerm
 	set_minus_x /var/lib/dpkg/info/$pkg.postrm
+	set_minus_x /var/lib/dpkg/info/$pkg:$arch.prerm
 	set_minus_x /var/lib/dpkg/info/$pkg:$arch.postrm
 done

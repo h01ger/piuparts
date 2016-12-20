@@ -2,3 +2,4 @@ rm_conffile /etc/piuparts/piuparts.conf 0.45~
 rm_conffile /etc/piuparts/scripts-leftovers/post_purge_dbconfig_cleanup 0.47~
 mv_conffile /etc/piuparts/scripts/post_install_find_bad_permissions /etc/piuparts/scripts/pre_remove_50_find_bad_permissions 0.47~
 rm_conffile /etc/piuparts/scripts/post_remove_extras 0.61~
+rm_conffile /etc/piuparts/scripts-debug-prerm/pre_remove_prerm_set-x 0.74~
