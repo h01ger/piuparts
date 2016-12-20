@@ -227,11 +227,8 @@ depends-sections = sid
 
 [sid]
 precedence = 1
-description = + Fails if there are leftover files after purge.
 piuparts-flags =
-	%(flags-leftovers)s
-# Once there are no packages left which leave files on purge behind,
-# --pedantic-purge-test should be added
+	%(flags-default)s
 distro = sid
 
 

@@ -3,6 +3,9 @@ piuparts (0.74) UNRELEASED; urgency=medium
   * piuparts.conf:
     - New section [sid-strict], testing with --install-remove-install and
       failing on leftover files.
+    - Only warn on leftover files for [sid] and use the same settings for
+      both [sid] and [stretch], since these are now used britney to block
+      testing migration in case of regressions.
   * piuparts-analyze.py:
     - Also consider bugs filed against source packages.
   * piuparts-reports.py:
