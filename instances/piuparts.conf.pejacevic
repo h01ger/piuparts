@@ -95,6 +95,7 @@ sections =
 	experimental
 	sid2experimental
 	sid
+	sid-strict
 	sid-nodoc
 	testing2sid
 	stretch
@@ -228,6 +229,18 @@ depends-sections = sid
 precedence = 1
 description = + Fails if there are leftover files after purge.
 piuparts-flags =
+	%(flags-leftovers)s
+# Once there are no packages left which leave files on purge behind,
+# --pedantic-purge-test should be added
+distro = sid
+
+
+[sid-strict]
+precedence = 4
+json-sections = none
+description = + Fails if there are leftover files after purge.
+piuparts-flags =
+	--install-remove-install
 	%(flags-leftovers)s
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added

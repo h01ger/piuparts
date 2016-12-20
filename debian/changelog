@@ -1,5 +1,8 @@
 piuparts (0.74) UNRELEASED; urgency=medium
 
+  * piuparts.conf:
+    - New section [sid-strict], testing with --install-remove-install and
+      failing on leftover files.
   * piuparts-analyze.py:
     - Also consider bugs filed against source packages.
   * piuparts-reports.py:
