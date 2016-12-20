@@ -30,3 +30,10 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		esac
 		;;
 esac
+
+if [ -f /var/run/piuparts-stamp-dkms-installed ]; then
+	rm /var/run/piuparts-stamp-dkms-installed
+	# if dkms built a kernel module, there might be a
+	# leftover 'sleep' process from progress reporting
+	sleep 3
+fi

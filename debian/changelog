@@ -3,6 +3,8 @@ piuparts (0.74) UNRELEASED; urgency=medium
   * piuparts-reports.py:
     - Mark arch:all packages with an :all suffix in package lists.
   * pre_install_database-server: Use default-mysql-* from stretch onwards.
+  * scripts/post-{install,purge}-exceptions: Wait for dkms progress indicator
+    to terminate.
   * known_problems/debsums_mismatch_*.conf: Report missing symlinks and
     directories.
 
