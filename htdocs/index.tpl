@@ -73,6 +73,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2016-12-20</b> Another suite added: <a href="https://piuparts.debian.org/sid-strict">sid-strict</a>, to test packages a bit stricter than usual: first instead of a simple install, an install, followed by a remove and then install is done and then file leftover after purge are also considered an error.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2016-12-04</b> <a href="https://nthykier.wordpress.com/2016/12/04/piuparts-integration-in-britney/">piuparts results have been integrated with britney</a>, the tool the release team uses for testing migrations.
      </td>
     </tr>
