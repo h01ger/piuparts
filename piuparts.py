@@ -765,7 +765,7 @@ class Chroot:
             for sdir in settings.scriptsdirs:
                 logging.debug("Copying scriptsdir %s to %s" % (sdir, dest))
                 for sfile in os.listdir(sdir):
-                    if (sfile.startswith("post_") or sfile.startswith("pre_")) \
+                    if (sfile.startswith("post_") or sfile.startswith("pre_") or sfile.startswith("is_testable_")) \
                             and not ".dpkg-" in sfile \
                             and os.path.isfile(os.path.join(sdir, sfile)):
                         shutil.copy(os.path.join(sdir, sfile), dest)
@@ -1729,7 +1729,7 @@ class Chroot:
         if failed:
             panic()
 
-    def run_scripts(self, step):
+    def run_scripts(self, step, ignore_errors=False):
         """ Run custom scripts to given step post-install|remove|purge"""
 
         if not settings.scriptsdirs:
@@ -1740,10 +1740,13 @@ class Chroot:
             logging.error("Scripts directory %s does not exist" % basepath)
             panic()
         list_scripts = sorted(os.listdir(basepath))
+        errorcodes=0
         for vfile in list_scripts:
             if vfile.startswith(step):
                 script = os.path.join("tmp/scripts", vfile)
-                self.run([script])
+                errorcode, output = self.run([script], ignore_errors=ignore_errors)
+                errorcodes = errorcodes | errorcode
+        return errorcodes
 
 
 class VirtServ(Chroot):
@@ -2606,6 +2609,11 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     chroot.check_for_no_processes(fail=True)
 
+    if chroot.run_scripts("is_testable", ignore_errors=True) != 0:
+        logging.info("SKIP: All tests. Package cannot be tested with piuparts: %s.", " ".join(packages))
+        chroot.remove()
+        return True
+
     chroot.run_scripts("pre_test")
 
     os.environ["PIUPARTS_PHASE"] = "install"
@@ -3149,7 +3157,12 @@ def process_packages(package_list):
         chroot_state["selections"] = chroot.get_selections()
         chroot_state["diversions"] = chroot.get_diversions()
 
-        if not settings.no_install_purge_test:
+        testable = True
+        if chroot.run_scripts("is_testable", ignore_errors=True) != 0:
+            logging.info("SKIP: All tests. Package cannot be tested with piuparts: %s.", " ".join(packages))
+            testable = False
+
+        if testable and not settings.no_install_purge_test:
             extra_packages = chroot.get_known_packages(settings.extra_old_packages)
             if not install_purge_test(chroot, chroot_state,
                                       package_files, packages, extra_packages):
@@ -3157,7 +3170,7 @@ def process_packages(package_list):
                 panic()
             logging.info("PASS: Installation and purging test.")
 
-        if not settings.no_upgrade_test:
+        if testable and not settings.no_upgrade_test:
             if not settings.args_are_package_files and not settings.testdebs_repo:
                 logging.info("Can't test upgrades: -a or --apt option used.")
             else:

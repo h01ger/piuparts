@@ -222,6 +222,14 @@ Before metadata of the chroot is recorded for later comparison.
 'pre_test_' - at the beginning of each test. After metadata of
 the chroot was recorded for later comparison.
 
+'is_testable_' - before *installing* your package. If this script
+returns a non-zero return value, the installation of the package
+will be skipped, but the test will be reported as successful.
+Use this to flag packages that cannot be be tested with piuparts
+by design (e.g. usrmerge), require not publicly available external
+ressources (e.g. some downloader packages) or are broken beyond
+repair (e.g. buggy packages in archived releases).
+
 'pre_install_' - before *installing* your package. Depending on
 the test, this may be run multiple times. The PIUPARTS_TEST and
 PIUPARTS_PHASE variables can be used to distinguish the cases.
