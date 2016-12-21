@@ -20,6 +20,8 @@ piuparts (0.74) UNRELEASED; urgency=medium
     onwards.
   * scripts/post-{install,purge}-exceptions: Wait for dkms progress indicator
     to terminate.
+  * scripts/is_testable_uninstallable: New custom script to exclude some
+    uninstallable (or similarily broken) packages from being tested.
   * custom-scripts/scripts-debug-{remove,purge}: Improved debugging of
     maintainer scripts during package removal.
   * known_problems/debsums_mismatch_*.conf: Report missing symlinks and

@@ -1,0 +1,78 @@
+#!/bin/sh
+set -e
+
+# Return a non-zero error code to have piuparts skip testing an
+# uninstallable (or otherwise untestable) package.
+
+skip_test()
+{
+	echo "Skipping piuparts test: $*"
+	exit 1
+}
+
+skip_always()
+{
+	skip_test "$@"
+}
+
+skip_distupgrade()
+{
+	if [ "$PIUPARTS_TEST" = "distupgrade" ]; then
+		skip_test "$@"
+	fi
+}
+
+
+# * For uninstallable *broken* packages we usually run the normal
+#   installation+purge tests (which will fail and get the package marked
+#   as bugged) and only skip the distupgrade tests since there is no point
+#   in upgrading something that could not be installed as a start.
+#   Automatically marking the upgrade logs as bugged would also be more
+#   difficult, since the bug is in some *old* version.
+# * For packages requiring *external resources* not available in piuparts
+#   we usually skip the failing initial install, too, since that is
+#   *not a bug* in the package.
+
+case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
+	bugzilla3@lenny)
+		# removed after squeeze
+		skip_distupgrade "was excluded from squeeze-lts"
+		;;
+	distributed-net@lenny|\
+	distributed-net@squeeze)
+		skip_distupgrade "#655922: noninteractive install: postinst loops infinitely"
+		;;
+	dnscache-run@lenny)
+		skip_distupgrade "#664848: breaks dns resolution in chroot"
+		;;
+	dynare-matlab@squeeze)
+		skip_distupgrade "requires a matlab installation"
+		;;
+	dynare-matlab@*|\
+	matlab-gdf@*|\
+	matlab-support@*)
+		skip_always "requires a matlab installation"
+		;;
+	nautilus-dropbox@wheezy)
+		skip_distupgrade "#770402: downloads awfully slow, hangs during installation"
+		;;
+	runit-run@lenny)
+		skip_distupgrade "#542157: fails to install"
+		;;
+	sdic-eijiro@lenny)
+		skip_distupgrade "requires a dictionary CD"
+		;;
+	sdic-eijiro@*)
+		skip_always "requires a dictionary CD"
+		;;
+	steam@jessie)
+		skip_distupgrade "#772598: cannot preseed licence acceptance"
+		;;
+	ttf-root-installer@lenny)
+		skip_always "download location disappeared"
+		;;
+	webissues-server@jessie)
+		# removed after jessie
+		skip_distupgrade "#677062: fails to purge - command ucf in postrm not found"
+		;;
+esac
