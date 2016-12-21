@@ -47,11 +47,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			fi
 		fi
 		;;
-	usrmerge)
-		log_debug
-		# force removal of usrmerge package
-		rm -v /etc/dpkg/dpkg.cfg.d/usrmerge
-		;;
 esac
 
 # Allow removal of the kernel running on the host from the chroot.

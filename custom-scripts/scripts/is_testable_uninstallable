@@ -71,6 +71,9 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	ttf-root-installer@lenny)
 		skip_always "download location disappeared"
 		;;
+	usrmerge@*)
+		skip_always "performs piuparts-unfriendy filesystem layout changes"
+		;;
 	webissues-server@jessie)
 		# removed after jessie
 		skip_distupgrade "#677062: fails to purge - command ucf in postrm not found"
