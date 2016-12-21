@@ -15,6 +15,7 @@ piuparts (0.74) UNRELEASED; urgency=medium
     - Also consider bugs filed against source packages.
   * piuparts-reports.py:
     - Mark arch:all packages with an :all suffix in package lists.
+    - Report skipped tests.
   * scripts/pre_install_database-server: Use default-mysql-* from stretch
     onwards.
   * scripts/post-{install,purge}-exceptions: Wait for dkms progress indicator
@@ -23,6 +24,8 @@ piuparts (0.74) UNRELEASED; urgency=medium
     maintainer scripts during package removal.
   * known_problems/debsums_mismatch_*.conf: Report missing symlinks and
     directories.
+  * known_problems/test_was_skipped_issue.conf: New known problem for skipped
+    tests.
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 19 Dec 2016 03:10:28 +0100
 

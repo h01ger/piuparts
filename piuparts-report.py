@@ -450,6 +450,7 @@ linktarget_by_template = [
     ("unowned_lib_symlink_issue.tpl", "but logfile reports unowned lib symlinks"),
     ("piuparts-depends-dummy_issue.tpl", "but logfile reports piuparts-depends-dummy.deb could not be installed"),
     ("used_exception_issue.tpl", "but package used a piuparts exception"),
+    ("test_was_skipped_issue.tpl", "but package test was skipped"),
 
     ("dependency_error.tpl", "due to unsatisfied dependencies"),
     ("packages_have_been_kept_back_error.tpl", "...and logfile also contains 'packages have been kept back'"),
