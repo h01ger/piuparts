@@ -83,7 +83,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2016-06-09</b> Two new suites were added: <a href="https://piuparts.debian.org/jessi2bpo">jessie2bpo</a>, to test packages upgrades from jessie to jessie-backports and <a href="https://piuparts.debian.org/jessi2bpo2stretch">jessie2bpo2stretch</a>, where these packages are also tested for upgrading to stretch.
+      <b>2016-06-09</b> Two new suites were added: <a href="https://piuparts.debian.org/jessie2bpo">jessie2bpo</a>, to test packages upgrades from jessie to jessie-backports and <a href="https://piuparts.debian.org/jessie2bpo2stretch">jessie2bpo2stretch</a>, where these packages are also tested for upgrading to stretch.
      </td>
     </tr>
     <tr class="normalrow">
