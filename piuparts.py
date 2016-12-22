@@ -1579,8 +1579,8 @@ class Chroot:
         """Unmount everything we mount()ed into the chroot."""
 
         # Workaround to unmount /proc/sys/fs/binfmt_misc which is mounted by
-        # update-binfmts but never unmounted, see:
-        # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=704037
+        # update-binfmts but never unmounted
+        # This workaround can be removed once #847788 is fixed
         run(["umount", self.relative("/proc/sys/fs/binfmt_misc")], ignore_errors=True)
 
         for mountpoint in reversed(self.mounts):
