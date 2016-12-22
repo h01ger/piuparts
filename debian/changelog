@@ -1,5 +1,6 @@
 piuparts (0.74) UNRELEASED; urgency=medium
 
+  [ Andreas Beckmann ]
   * piuparts.py:
     - Add new class of is_testable_* custom scripts: A non-zero return value
       makes the test succeed without actually installing the package. Use for
@@ -28,6 +29,12 @@ piuparts (0.74) UNRELEASED; urgency=medium
     directories.
   * known_problems/test_was_skipped_issue.conf: New known problem for skipped
     tests.
+
+  [ Holger Levsen ]
+  * Apply patch by Antonio Ospite to workaround #847788 by force-unmounting
+    /proc/sys/fs/binfmt_misc - some java packages trigger update-binfmts,
+    which mounts /proc/sys/fs/binfmt_misc but never unmounts it.
+    (Closes: #704037) - Thanks Antonio!
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 19 Dec 2016 03:10:28 +0100
 
