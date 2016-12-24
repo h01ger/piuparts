@@ -52,6 +52,7 @@ import subprocess
 import urllib
 import uuid
 from collections import namedtuple
+from distutils.version import LooseVersion
 from signal import alarm, signal, SIGALRM, SIGTERM, SIGKILL
 
 try:
@@ -1162,14 +1163,39 @@ class Chroot:
             self.install_packages_by_name(packages, with_scripts=with_scripts)
             return
         if package_files:
+            # We need an absolute path here so that apt-get can
+            # distinguish our deb from a request to install a package
+            # from a suite called 'tmp'
             self.copy_files(package_files, "tmp")
             tmp_files = [os.path.basename(a) for a in package_files]
-            tmp_files = [os.path.join("tmp", name) for name in tmp_files]
+            tmp_files = [os.path.join("/tmp", name) for name in tmp_files]
+
+            # Check whether apt can install debs
+            #
+            # If it can, this is preferable to the traditional `dpkg
+            # -i foo.deb && apt-get install -yf` approach:
+            #
+            # - the traditional approach can 'resolve' the dependency
+            #   by removing the package we are trying to install
+            #
+            # - the new approach successfully handles simultaneously
+            #   installing a new binary package and its transitional
+            #   dummy package
+            (status, output) = run(["dpkg-query", "-f", "${Version}\n", "-W", "apt"], ignore_errors=True)
+            apt_can_install_debs = LooseVersion(output.strip()) >= LooseVersion("1.1")
 
             if with_scripts:
                 self.run_scripts("pre_install")
 
-            apt_get_install = ["apt-get", "-yf"]
+            if apt_can_install_debs:
+                # --allow-downgrades is required in order to permit
+                # installing a deb with the same version as that
+                # already installed, which we need to do at various
+                # points in piuparts testing
+                apt_get_install = ["apt-get", "-y", "--allow-downgrades"]
+            else:
+                apt_get_install = ["apt-get", "-yf"]
+
             apt_get_install.extend(settings.distro_config.get_target_flags(
                 os.environ["PIUPARTS_DISTRIBUTION"]))
             apt_get_install.append("install")
@@ -1177,18 +1203,23 @@ class Chroot:
             if settings.list_installed_files:
                 pre_info = self.save_meta_data()
 
-            (ret, out) = self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
-            if ret != 0:
-                if "dependency problems - leaving unconfigured" in out:
-                    pass
-                else:
-                    logging.error("Installation failed")
-                    panic()
+            if apt_can_install_debs:
+                self.run(apt_get_install + tmp_files)
+            else:
+                logging.info("apt too old; falling back to dpkg -i && apt-get install -yf")
 
-            if settings.list_installed_files:
-                self.list_installed_files(pre_info, self.save_meta_data())
+                (ret, out) = self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
+                if ret != 0:
+                    if "dependency problems - leaving unconfigured" in out:
+                        pass
+                    else:
+                        logging.error("Installation failed")
+                        panic()
 
-            self.run(apt_get_install)
+                if settings.list_installed_files:
+                    self.list_installed_files(pre_info, self.save_meta_data())
+
+                self.run(apt_get_install)
 
             if settings.list_installed_files:
                 self.list_installed_files(pre_info, self.save_meta_data())

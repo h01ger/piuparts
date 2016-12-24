@@ -39,6 +39,11 @@ piuparts (0.74) UNRELEASED; urgency=medium
     (Closes: #704037) - Thanks Antonio!
   * Add build-depends to dh-python, thanks lintian.
 
+  [ Sean Whitton ]
+  * piuparts.py: use `apt-get install ./foo.deb` instead of `dpkg -i
+    ./foo.deb && apt-get install -yf` for more reliable dependency
+    resolution. (Closes: #825487)
+
  -- Andreas Beckmann <anbe@debian.org>  Mon, 19 Dec 2016 03:10:28 +0100
 
 piuparts (0.73) unstable; urgency=medium
