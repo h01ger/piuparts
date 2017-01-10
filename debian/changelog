@@ -37,6 +37,7 @@ piuparts (0.74) UNRELEASED; urgency=medium
     /proc/sys/fs/binfmt_misc - some java packages trigger update-binfmts,
     which mounts /proc/sys/fs/binfmt_misc but never unmounts it.
     (Closes: #704037) - Thanks Antonio!
+  * Add build-depends to dh-python, thanks lintian.
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 19 Dec 2016 03:10:28 +0100
 

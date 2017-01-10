@@ -7,6 +7,7 @@ Priority: extra
 Standards-Version: 3.9.8
 Build-Depends:
  debhelper (>= 9.20120909~),
+ dh-python,
  python (>= 2.7),
  python-debian,
  python-apt,
