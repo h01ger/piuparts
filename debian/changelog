@@ -29,6 +29,8 @@ piuparts (0.74) UNRELEASED; urgency=medium
     directories.
   * known_problems/test_was_skipped_issue.conf: New known problem for skipped
     tests.
+  * detect_network_issues: add "E: The repository '.*' does no longer have a
+    Release file." to the detected issues.
 
   [ Holger Levsen ]
   * Apply patch by Antonio Ospite to workaround #847788 by force-unmounting
