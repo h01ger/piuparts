@@ -38,6 +38,7 @@ piuparts (0.74) UNRELEASED; urgency=medium
     which mounts /proc/sys/fs/binfmt_misc but never unmounts it.
     (Closes: #704037) - Thanks Antonio!
   * Add build-depends to dh-python, thanks lintian.
+  * Bump copyright years.
 
   [ Sean Whitton ]
   * piuparts.py: use `apt-get install ./foo.deb` instead of `dpkg -i
