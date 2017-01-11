@@ -1,26 +1,6 @@
 #!/bin/sh
 set -e
 
-test "$PIUPARTS_DISTRIBUTION" = "experimental" || exit 0
+# This script is an empty stub, it may be removed at some point in the future.
 
-# apt-get -t experimental dist-upgrade may pull in too many
-# packages that are not co-installable in experimental
-# so maintain a list of packages in the sid base system
-# that are in experimental, too, and don't cause problems
-
-PKGS=""
-PKGS="$PKGS apt"
-PKGS="$PKGS libc6"
-PKGS="$PKGS libc-bin"
-PKGS="$PKGS libgcc1"
-PKGS="$PKGS libstdc++6"
-PKGS="$PKGS multiarch-support"
-PKGS="$PKGS findutils"
-PKGS="$PKGS insserv"
-PKGS="$PKGS dash"
-PKGS="$PKGS libdbus-1-3"
-PKGS="$PKGS grep"
-PKGS="$PKGS libsystemd0"
-PKGS="$PKGS libudev1"
-
-apt-get -y -t experimental install $PKGS
+exit 0
