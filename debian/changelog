@@ -2,6 +2,8 @@ piuparts (0.74) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Add to ignored_files:
+      + /etc/modprobe.d/
     - Add new class of is_testable_* custom scripts: A non-zero return value
       makes the test succeed without actually installing the package. Use for
       packages that cannot be tested with piuparts by design or are broken in

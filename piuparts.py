@@ -338,6 +338,7 @@ class Settings:
             "/etc/cron.d/",
             "/etc/lighttpd/",
             "/etc/lighttpd/conf-available/",
+            "/etc/modprobe.d/",
             "/etc/nagios-plugins/config/",
             "/etc/php5/",
             "/etc/php5/conf.d/",
