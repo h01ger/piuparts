@@ -199,6 +199,7 @@ sections =
 	squeeze2wheezy/main
 	squeeze2wheezy_i386/main
 	squeeze2wheezy-rcmd/main
+	squeeze2wheezy-rcmd_i386/main
 	squeeze2wheezy-pu/main
 	squeeze2bpo2wheezy/main
 	lenny/main
@@ -212,6 +213,7 @@ sections =
 	squeeze2wheezy/contrib
 	squeeze2wheezy_i386/contrib
 	squeeze2wheezy-rcmd/contrib
+	squeeze2wheezy-rcmd_i386/contrib
 	squeeze2wheezy-pu/contrib
 	squeeze2bpo2wheezy/contrib
 	lenny/contrib
@@ -225,6 +227,7 @@ sections =
 	squeeze2wheezy/non-free
 	squeeze2wheezy_i386/non-free
 	squeeze2wheezy-rcmd/non-free
+	squeeze2wheezy-rcmd_i386/non-free
 	squeeze2wheezy-pu/non-free
 	squeeze2bpo2wheezy/non-free
 	lenny/non-free
@@ -1675,6 +1678,50 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = squeeze2wheezy-rcmd/main squeeze2wheezy-rcmd/contrib
 arch = amd64
+area = non-free
+distro = squeeze
+upgrade-test-distros = squeeze wheezy
+reschedule-old-count = 0
+
+
+[squeeze2wheezy-rcmd_i386/main]
+precedence = 70
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = i386
+area = main
+components = main
+distro = squeeze
+upgrade-test-distros = squeeze wheezy
+reschedule-old-count = 0
+
+[squeeze2wheezy-rcmd_i386/contrib]
+precedence = 95
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+depends-sections = squeeze2wheezy-rcmd_i386/main squeeze2wheezy-rcmd_i386/non-free
+arch = i386
+area = contrib
+distro = squeeze
+upgrade-test-distros = squeeze wheezy
+reschedule-old-count = 0
+
+[squeeze2wheezy-rcmd_i386/non-free]
+precedence = 95
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-wheezy)s
+depends-sections = squeeze2wheezy-rcmd_i386/main squeeze2wheezy-rcmd_i386/contrib
+arch = i386
 area = non-free
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
