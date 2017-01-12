@@ -1008,6 +1008,7 @@ class Chroot:
                 if line.strip() and not line.startswith(('#', ';')):
                     resolvconf += line.strip() + '\n'
         create_file(full_name, resolvconf)
+        os.chmod(full_name, 0o644)
         logging.debug("Created resolv.conf.")
 
     def setup_minimal_chroot(self):
