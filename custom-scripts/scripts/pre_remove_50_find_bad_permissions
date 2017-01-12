@@ -17,14 +17,10 @@ lenny)
 ;;
 esac
 
-if	[ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "squeeze/updates" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "squeeze-updates" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "squeeze-proposed-updates" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "squeeze-proposed" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
+case "$PIUPARTS_DISTRIBUTION" in
+lenny|squeeze*)
 
-case ${PIUPARTS_OBJECTS%%=*} in
+    case ${PIUPARTS_OBJECTS%%=*} in
 	citadel-server|citadel-dbg|citadel-mta|citadel-suite|bcron-run|capisuite|debbugs|raccess4vbox3|smartlist|sxid)
 		#WORKSAROUND #684964: citadel-server: world writable config file: /etc/citadel/netconfigs/7
 		for file in /etc/citadel/netconfigs/7 /etc/citadel/refcount_adjustments.dat /etc/citadel/citadel.control
@@ -32,17 +28,15 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			test ! -f "$file" || chmod -c o-w "$file"
 		done
 		;;
+    esac
+
+;;
 esac
 
-fi
+case "$PIUPARTS_DISTRIBUTION" in
+wheezy*)
 
-if	[ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "wheezy/updates" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-updates" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-proposed-updates" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-proposed" ]; then
-
-case ${PIUPARTS_OBJECTS%%=*} in
+    case ${PIUPARTS_OBJECTS%%=*} in
 	citadel-server|citadel-dbg|citadel-mta|citadel-suite|bcron|bcron-run|capisuite|debbugs|exmh|nmh|raccess4vbox3|smartlist|xlbiff)
 		#WORKSAROUND #684964: citadel-server: world writable config file: /etc/citadel/netconfigs/7
 		for file in /etc/citadel/netconfigs/7 /etc/citadel/refcount_adjustments.dat /var/lib/citadel/data/refcount_adjustments.dat
@@ -50,9 +44,10 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			test ! -f "$file" || chmod -c o-w "$file"
 		done
 		;;
-esac
+    esac
 
-fi
+;;
+esac
 
 case ${PIUPARTS_OBJECTS%%=*} in
 	gpe-tetris|gpe)
