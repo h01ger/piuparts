@@ -17,6 +17,8 @@ flags-leftovers =
 	%(flags-base)s
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
+flags-start-testing =
+	%(flags-start-stretch)s
 flags-end-testing =
 	%(flags-end-stretch)s
 
@@ -239,6 +241,8 @@ sections =
 	lenny/non-free
 	lenny2squeeze/non-free
 #
+json-sections = none
+#
 proxy = http://localhost:3128
 #
 mirror = http://ftp.de.debian.org/debian
@@ -251,7 +255,7 @@ piuparts-command =
 	sudo
 	nice
 	env PYTHONPATH=%(PYTHONPATH)s
-	timeout -s INT -k 5m 30m
+	timeout -s INT -k 5m 110m
 	/srv/piuparts/sbin/piuparts
 PYTHONPATH = /srv/piuparts/lib/python2.7/dist-packages
 master-directory = /srv/piuparts/master
@@ -623,8 +627,8 @@ description = + With recommended packages.
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
+	%(flags-start-testing)s
+	%(flags-end-testing)s
 distro = testing
 arch = i386
 area = main
@@ -636,8 +640,8 @@ description = + With recommended packages.
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
+	%(flags-start-testing)s
+	%(flags-end-testing)s
 depends-sections = testing-rcmd/main testing-rcmd/non-free
 distro = testing
 arch = i386
@@ -649,8 +653,8 @@ description = + With recommended packages.
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
+	%(flags-start-testing)s
+	%(flags-end-testing)s
 depends-sections = testing-rcmd/main testing-rcmd/contrib
 distro = testing
 arch = i386
@@ -662,8 +666,8 @@ precedence = 30
 description = + Testing without files in /usr/share/doc.
 piuparts-flags =
 	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
+	%(flags-start-testing)s
+	%(flags-end-testing)s
 	--scriptsdir /etc/piuparts/scripts-no-usr-share-doc
 distro = testing
 arch = i386
@@ -675,8 +679,8 @@ precedence = 45
 description = + Testing without files in /usr/share/doc.
 piuparts-flags =
 	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
+	%(flags-start-testing)s
+	%(flags-end-testing)s
 	--scriptsdir /etc/piuparts/scripts-no-usr-share-doc
 depends-sections = testing-nodocs/main testing-nodocs/non-free
 distro = testing
@@ -688,8 +692,8 @@ precedence = 45
 description = + Testing without files in /usr/share/doc.
 piuparts-flags =
 	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
+	%(flags-start-testing)s
+	%(flags-end-testing)s
 	--scriptsdir /etc/piuparts/scripts-no-usr-share-doc
 depends-sections = testing-nodocs/main testing-nodocs/contrib
 distro = testing
@@ -1217,7 +1221,8 @@ distro = wheezy-proposed
 arch = amd64
 area = main
 components = main
-reschedule-old-count = 100
+reschedule-old-count = 333
+reschedule-old-days = 25
 
 [wheezy-proposed/contrib]
 precedence = 45
@@ -1229,6 +1234,7 @@ depends-sections = wheezy-proposed/main wheezy-proposed/non-free
 distro = wheezy-proposed
 arch = amd64
 area = contrib
+reschedule-old-days = 25
 
 [wheezy-proposed/non-free]
 precedence = 45
@@ -1240,6 +1246,7 @@ depends-sections = wheezy-proposed/main wheezy-proposed/contrib
 distro = wheezy-proposed
 arch = amd64
 area = non-free
+reschedule-old-days = 25
 
 
 [wheezy-backports/main]
@@ -2281,6 +2288,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -2293,6 +2301,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch/main jessie2stretch/non-free
 arch = amd64
 area = contrib
@@ -2305,6 +2314,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch/main jessie2stretch/contrib
 arch = amd64
 area = non-free
@@ -2471,6 +2481,7 @@ reschedule-old-count = 0
 precedence = 60
 piuparts-flags =
 	%(flags-default)s
+	%(flags-start-testing)s
 arch = amd64
 area = main
 components = main
@@ -2482,6 +2493,7 @@ reschedule-old-count = 0
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
+	%(flags-start-testing)s
 depends-sections = testing2sid/main testing2sid/non-free
 arch = amd64
 area = contrib
@@ -2493,6 +2505,7 @@ reschedule-old-count = 0
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
+	%(flags-start-testing)s
 depends-sections = testing2sid/main testing2sid/contrib
 arch = amd64
 area = non-free
