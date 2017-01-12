@@ -62,6 +62,10 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	nautilus-dropbox@wheezy)
 		skip_distupgrade "#770402: downloads awfully slow, hangs during installation"
 		;;
+	python-milter@lenny|\
+	spf-milter-python@lenny)
+		skip_always "virus signatures in python-milter may trigger the firewall"
+		;;
 	runit-run@lenny)
 		skip_distupgrade "#542157: fails to install"
 		;;
