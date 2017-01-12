@@ -72,6 +72,7 @@ basetgz-sections =
 	tarball/lenny/i386
 sections =
 	experimental/main
+	experimental_i386/main
 	sid/main
 	sid-plus/main
 	sid-rcmd/main
@@ -113,6 +114,7 @@ sections =
 	lenny222testing/main
 #
 	experimental/contrib
+	experimental_i386/contrib
 	sid/contrib
 	sid-plus/contrib
 	sid-rcmd/contrib
@@ -154,6 +156,7 @@ sections =
 	lenny222testing/contrib
 #
 	experimental/non-free
+	experimental_i386/non-free
 	sid/non-free
 	sid-plus/non-free
 	sid-rcmd/non-free
@@ -460,6 +463,41 @@ piuparts-flags =
 depends-sections = experimental/main sid/main sid/contrib sid/non-free
 distro = experimental
 arch = amd64
+area = non-free
+reschedule-old-days = 30
+expire-old-days = 45
+
+
+[experimental_i386/main]
+precedence = 40
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid-rcmd/main
+distro = experimental
+arch = i386
+area = main
+components = main
+reschedule-old-days = 30
+expire-old-days = 45
+
+[experimental_i386/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+depends-sections = experimental_i386/main sid-rcmd/main sid-rcmd/contrib sid-rcmd/non-free
+distro = experimental
+arch = i386
+area = contrib
+reschedule-old-days = 30
+expire-old-days = 45
+
+[experimental_i386/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+depends-sections = experimental_i386/main sid-rcmd/main sid-rcmd/contrib sid-rcmd/non-free
+distro = experimental
+arch = i386
 area = non-free
 reschedule-old-days = 30
 expire-old-days = 45
