@@ -1,0 +1,111 @@
+#!/bin/sh
+set -e
+
+# Copyright © 2013-2017 Andreas Beckmann (anbe@debian.org)
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+
+. @sharedir@/piuparts/lib/read_config.sh
+
+get_config_value MASTER global master-directory
+get_config_value SECTIONS global sections
+
+
+TESTING="stretch"
+
+current=""
+longterm=""
+pass=""
+
+for arg in "$@"
+do
+	case "$arg" in
+		--pass)
+			shift
+			pass="pass"
+			;;
+		--current)
+			shift
+			current="yes"
+			;;
+		--longterm)
+			shift
+			longterm="yes"
+			;;
+		*)
+			break
+			;;
+	esac
+done
+
+test -n "$1" || exit 1
+
+subdirs="$pass fail bugged affected"
+pattern=' ('"$1"')\.conf$'
+
+
+#
+# mark logs matching kpr tag $1 for recycling
+#
+TOTAL=0
+OLDPWD=$(pwd)
+LIST=$(mktemp)
+for SECTION in $SECTIONS ; do
+	test -d $MASTER/$SECTION || continue
+	go=
+	if [ -z "$current$longterm" ]; then
+		go=yes
+	else
+		case "$SECTION" in
+			# don't catch old*stable222testing
+			*$TESTING*|testing*|*sid*|*experimental*)
+				if [ "$current" = "yes" ]; then
+					go=yes
+				fi
+				;;
+			*222testing*)
+				if [ "$longterm" = "yes" ]; then
+					go=yes
+				fi
+				;;
+		esac
+	fi
+	if [ "$go" != "yes" ]; then
+		echo "Skip: $SECTION"
+		continue
+	fi
+	cd $MASTER
+	searchdirs=""
+	for dir in $subdirs ; do
+		searchdirs="$searchdirs $SECTION/$dir"
+	done
+	mkdir -p $searchdirs $SECTION/recycle
+
+	grep -rlE "$pattern" --include '*.kpr' $searchdirs | sed 's/\.kpr$/.log/' > $LIST
+	for log in $(cat $LIST)
+	do
+		if [ -f "$log" ] && [ ! -f "$SECTION/recycle/$(basename $log)" ]; then
+			TOTAL=$(( $TOTAL + 1 ))
+			ln -fv "$log" $SECTION/recycle/ || true
+		fi
+	done
+	cd "$OLDPWD"
+done
+rm -f $LIST
+
+if [ "$TOTAL" -gt "0" ]; then
+	echo "Marked $TOTAL logfiles for recycling."
+fi
