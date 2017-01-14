@@ -10,6 +10,7 @@ piuparts (0.74) UNRELEASED; urgency=medium
       an unfixable way.  (Closes: #682739)
     - Ensure /etc/resolv.conf in the chroot has permissions 0644 to match a
       possible recreation of that file by resolvconf.  (Closes: #660350)
+    - Increase output limit to 8 MB.  (Closes: #794331)
   * piuparts.conf:
     - New section [sid-strict], testing with --install-remove-install and
       failing on leftover files.
