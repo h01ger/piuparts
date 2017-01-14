@@ -43,6 +43,8 @@ piuparts (0.74) UNRELEASED; urgency=medium
     maintainer scripts during package removal.
   * known_problems/debsums_mismatch_*.conf: Report missing symlinks and
     directories.
+  * known_problems/needs_rebuild_issue.conf: Report "called
+    emacs-package-install as a new-style add-on, but has no compat file"
   * known_problems/test_was_skipped_issue.conf: New known problem for skipped
     tests.
   * detect_network_issues: add "E: The repository '.*' does no longer have a
