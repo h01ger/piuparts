@@ -150,7 +150,7 @@ class Settings:
         self.tmpdir = None
         self.keep_tmpdir = False
         self.max_command_output_size = 8 * 1024 * 1024  # 8 MB (google-android-ndk-installer on install) (daptup on dist-upgrade)
-        self.max_command_runtime = 30 * 60  # 30 minutes (texlive-full on dist-upgrade)
+        self.max_command_runtime = 60 * 60  # 60 minutes (texlive-full and blends metapackages on dist-upgrade)
         self.single_changes_list = False
         self.single_packages = False
         self.args_are_package_files = True
