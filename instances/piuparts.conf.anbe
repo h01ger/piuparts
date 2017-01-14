@@ -78,6 +78,7 @@ sections =
 	sid/main
 	sid-plus/main
 	sid-rcmd/main
+	sid-ipi/main
 	testing-rcmd/main
 	testing-nodocs/main
 	stretch/main
@@ -120,6 +121,7 @@ sections =
 	sid/contrib
 	sid-plus/contrib
 	sid-rcmd/contrib
+	sid-ipi/contrib
 	testing-rcmd/contrib
 	testing-nodocs/contrib
 	stretch/contrib
@@ -162,6 +164,7 @@ sections =
 	sid/non-free
 	sid-plus/non-free
 	sid-rcmd/non-free
+	sid-ipi/non-free
 	testing-rcmd/non-free
 	testing-nodocs/non-free
 	stretch/non-free
@@ -1473,6 +1476,52 @@ distro = lenny
 arch = amd64
 area = non-free
 reschedule-old-count = 0
+
+
+############################################################################
+###  Install, remove, purge, install, remove, and purge tests.           ###
+############################################################################
+
+
+[sid-ipi/main]
+precedence = 175
+description = Debian %(distro)s / %(area)s: package installation, purge, installation, removal, and purge test.
+piuparts-flags =
+	--install-purge-install
+	--warn-on-leftovers-after-purge
+	-i /var/lib/ghc/package.conf.d/package.cache
+	%(flags-leftovers)s
+distro = sid
+arch = amd64
+area = main
+components = main
+reschedule-old-count = 100
+
+[sid-ipi/contrib]
+precedence = 175
+description = Debian %(distro)s / %(area)s: package installation, purge, installation, removal, and purge test.
+piuparts-flags =
+	--install-purge-install
+	--warn-on-leftovers-after-purge
+	-i /var/lib/ghc/package.conf.d/package.cache
+	%(flags-leftovers)s
+depends-sections = sid-ipi/main sid-ipi/non-free
+distro = sid
+arch = amd64
+area = contrib
+
+[sid-ipi/non-free]
+precedence = 175
+description = Debian %(distro)s / %(area)s: package installation, purge, installation, removal, and purge test.
+piuparts-flags =
+	--install-purge-install
+	--warn-on-leftovers-after-purge
+	-i /var/lib/ghc/package.conf.d/package.cache
+	%(flags-leftovers)s
+depends-sections = sid-ipi/main sid-ipi/contrib
+distro = sid
+arch = amd64
+area = non-free
 
 
 ############################################################################
