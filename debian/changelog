@@ -8,6 +8,8 @@ piuparts (0.74) UNRELEASED; urgency=medium
       makes the test succeed without actually installing the package. Use for
       packages that cannot be tested with piuparts by design or are broken in
       an unfixable way.  (Closes: #682739)
+    - Ensure /etc/resolv.conf in the chroot has permissions 0644 to match a
+      possible recreation of that file by resolvconf.  (Closes: #660350)
   * piuparts.conf:
     - New section [sid-strict], testing with --install-remove-install and
       failing on leftover files.
