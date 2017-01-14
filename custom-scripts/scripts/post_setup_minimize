@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+# only while creating the tarball
+if [ "${PIUPARTS_OBJECTS%%=*}" = "dpkg" ]
+then
+	case $PIUPARTS_DISTRIBUTION in
+		sid|stretch)
+			dpkg --purge lsb-base tzdata
+			;;
+	esac
+fi
