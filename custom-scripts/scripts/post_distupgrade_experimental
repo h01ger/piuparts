@@ -1,6 +1,0 @@
-#!/bin/sh
-set -e
-
-# This script is an empty stub, it may be removed at some point in the future.
-
-exit 0
