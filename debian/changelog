@@ -19,6 +19,8 @@ piuparts (0.74) UNRELEASED; urgency=medium
       both [sid] and [stretch], since these are now used britney to block
       testing migration in case of regressions.
   * piuparts.conf.anbe: Add some more example sections.
+  * piuparts-slave.py:
+    - Increase test timeout to 90 minutes.
   * piuparts-analyze.py:
     - Also consider bugs filed against source packages.
   * piuparts-reports.py:

@@ -46,7 +46,7 @@ apt_pkg.init_system()
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
-MAX_WAIT_TEST_RUN = 45 * 60
+MAX_WAIT_TEST_RUN = 90 * 60
 
 interrupted = False
 old_sigint_handler = None
