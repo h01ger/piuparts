@@ -59,6 +59,9 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	matlab-support@*)
 		skip_always "requires a matlab installation"
 		;;
+	localepurge@*)
+		skip_distupgrade "requires a full --reinstall to restore disappeared files"
+		;;
 	nautilus-dropbox@wheezy)
 		skip_distupgrade "#770402: downloads awfully slow, hangs during installation"
 		;;
