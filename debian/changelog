@@ -37,6 +37,8 @@ piuparts (0.74) UNRELEASED; urgency=medium
     uninstallable (or similarily broken) packages from being tested.
   * scripts/post_setup_minimize: New custom script to minimize chroots.
     - Remove tzdata and lsb-base from sid and stretch.
+  * scripts/post_setup_dummy_users: New custom script to create dummy groups
+    and users that block ids that are likely being used by the host system.
   * custom-scripts/scripts-debug-{remove,purge}: Improved debugging of
     maintainer scripts during package removal.
   * known_problems/debsums_mismatch_*.conf: Report missing symlinks and

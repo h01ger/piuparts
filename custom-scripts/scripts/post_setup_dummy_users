@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	dpkg)
+		# skip while creating the tarball
+		exit 0
+		;;
+esac
+
+for id in $(seq 100 149) $(seq 1000 1010)
+do
+	getent group $id > /dev/null || groupadd --system -g $id dummy$id
+	getent passwd $id > /dev/null || useradd --system -u $id -g 100 dummy$id
+done
