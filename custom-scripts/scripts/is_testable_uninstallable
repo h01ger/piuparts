@@ -6,8 +6,8 @@ set -e
 
 # Packages in main don't qualify for "external services out of our
 # control". They only qualify for "utterly broken" once on archive.d.o.
-# There are very few exceptions to this:
-# - usrmerge, which is is one-way.
+# There are very few exceptions to this rule:
+# - usrmerge, which is one-way.
 # - localepurge, which seems hard to undo without a complete --reinstall.
 
 skip_test()

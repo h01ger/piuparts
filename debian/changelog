@@ -14,9 +14,9 @@ piuparts (0.74) UNRELEASED; urgency=medium
     - Increase single command time limit to 60 minutes.
   * piuparts.conf:
     - New section [sid-strict], testing with --install-remove-install and
-      failing on leftover files.
+      failing on leftover files.  (Closes: #604406)
     - Only warn on leftover files for [sid] and use the same settings for
-      both [sid] and [stretch], since these are now used britney to block
+      both [sid] and [stretch], since these are now used by britney to block
       testing migration in case of regressions.
   * piuparts.conf.anbe: Add some more example sections.
   * piuparts-slave.py:
@@ -41,18 +41,19 @@ piuparts (0.74) UNRELEASED; urgency=medium
     and users that block ids that are likely being used by the host system.
   * scripts/post_{setup,distupgrade}_experimental: Removed, obsolete since
     restoring the initial package selection supports downgrades (0.64).
-  * custom-scripts/scripts-debug-{remove,purge}: Improved debugging of
+  * custom-scripts/scripts-debug-{remove,purge}/: Improved debugging of
     maintainer scripts during package removal.
+  * Overhaul some more custom scripts.
   * known_problems/debsums_mismatch_*.conf: Report missing symlinks and
     directories.
   * known_problems/needs_rebuild_issue.conf: Report "called
     emacs-package-install as a new-style add-on, but has no compat file"
   * known_problems/test_was_skipped_issue.conf: New known problem for skipped
     tests.
-  * detect_network_issues: add "E: The repository '.*' does no longer have a
-    Release file." to the detected issues.
-  * detect_piuparts_issues: Detect 'invoke-rc.d: initscript mysql, action
-    "restart" failed.'
+  * master-bin/detect_network_issues: Detect "E: The repository '.*' does no
+    longer have a Release file."
+  * master-bin/detect_piuparts_issues: Detect 'invoke-rc.d: initscript mysql,
+    action "restart" failed.'
   * master-bin/reschedule_piuparts_tests: New helper script for rescheduling
     piuparts tests based on detected known problems.
 
