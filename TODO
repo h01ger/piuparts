@@ -129,7 +129,7 @@ for 0.8x and later:
 
 for 0.8x and later:
 
-- find_default_debian_mirrors: 
+- find_default_debian_mirrors:
   - check whether find_default_debian_mirrors produces something useful if
     sources.list does not exist (and sources.list.d/*.list is there instead)
   - maybe just copy sources.list(.d/*) instead?

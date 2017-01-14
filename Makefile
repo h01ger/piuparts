@@ -157,6 +157,11 @@ clean:
 
 
 # for maintainer convenience only
+check-whitespace:
+	grep -r --exclude-dir .git --exclude '*.pyc' --exclude '*.png' --exclude '*.ico' -E '\s+$$' . || echo "no trailing whitespace found"
+	grep -r --exclude-dir .git --exclude '*.pyc' --exclude '*.png' --exclude '*.ico' -P ' \t' . || echo "no space-tab combo found"
+
+# for maintainer convenience only
 tg-deps:
 	tg summary --graphviz | dot -T png -o deps.png
 	xli deps.png &
