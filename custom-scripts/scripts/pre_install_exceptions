@@ -113,6 +113,18 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			;;
 esac
 
+if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		ttf-root-installer)
+			#774163: missing Depends: ca-certificates
+			log_debug
+			apt-get -y install ca-certificates
+			;;
+	esac
+
+fi
+
 if	[ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
 	[ "$PIUPARTS_DISTRIBUTION" = "squeeze-backports" ] || \
 	[ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
