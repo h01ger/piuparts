@@ -47,6 +47,12 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			fi
 		fi
 		;;
+	reseed)
+		log_debug
+		# cleanup from pre_install_exceptions
+		test ! -L /usr/sbin/reseed || rm /usr/sbin/reseed
+		dpkg-divert --remove --rename /usr/sbin/reseed
+		;;
 esac
 
 # Allow removal of the kernel running on the host from the chroot.

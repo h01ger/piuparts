@@ -98,6 +98,12 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				mv -v /etc/motd /etc/motd.orig
 			fi
 			;;
+	reseed)
+			log_debug
+			# postinst runs reseed which accesses the net
+			dpkg-divert --rename /usr/sbin/reseed
+			ln -s /bin/true /usr/sbin/reseed
+			;;
 	bugzilla3)
 			# checksetup.pl goes into infinite loop asking for them
 			log_debug
