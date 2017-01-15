@@ -60,8 +60,8 @@ piuparts (0.74) unstable; urgency=medium
     longer have a Release file."
   * master-bin/detect_piuparts_issues: Detect 'invoke-rc.d: initscript mysql,
     action "restart" failed.'
-  * master-bin/reschedule_piuparts_tests: New helper script for rescheduling
-    piuparts tests based on detected known problems.
+  * master-bin/reschedule_piuparts_tests: New experimental helper script for
+    rescheduling piuparts tests based on detected known problems.
 
   [ Holger Levsen ]
   * Apply patch by Antonio Ospite to workaround #847788 by force-unmounting

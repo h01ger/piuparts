@@ -26,6 +26,7 @@ get_config_value SECTIONS global sections
 
 TESTING="stretch"
 
+dryrun=""
 current=""
 longterm=""
 pass=""
@@ -44,6 +45,10 @@ do
 		--longterm)
 			shift
 			longterm="yes"
+			;;
+		--dryrun)
+			shift
+			dryrun="yes"
 			;;
 		*)
 			break
@@ -99,7 +104,11 @@ for SECTION in $SECTIONS ; do
 	do
 		if [ -f "$log" ] && [ ! -f "$SECTION/recycle/$(basename $log)" ]; then
 			TOTAL=$(( $TOTAL + 1 ))
-			ln -fv "$log" $SECTION/recycle/ || true
+			if [ -n "$dryrun" ]; then
+				echo "candidate: $log"
+			else
+				ln -fv "$log" $SECTION/recycle/ || true
+			fi
 		fi
 	done
 	cd "$OLDPWD"
@@ -107,5 +116,9 @@ done
 rm -f $LIST
 
 if [ "$TOTAL" -gt "0" ]; then
-	echo "Marked $TOTAL logfiles for recycling."
+	if [ -n "$dryrun" ]; then
+		echo "Found $TOTAL candidate logfiles for recycling."
+	else
+		echo "Marked $TOTAL logfiles for recycling."
+	fi
 fi
