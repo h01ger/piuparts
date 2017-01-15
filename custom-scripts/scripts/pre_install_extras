@@ -5,9 +5,14 @@ log_debug() {
 	echo "Debug: piuparts extra for package $PIUPARTS_OBJECTS"
 }
 
-if [ "$PIUPARTS_PHASE" = "install" ]; then
+#
+# these extras are only for the initial package installation
+#
+if [ "$PIUPARTS_PHASE" != "install" ]; then
+	exit 0
+fi
 
-    case ${PIUPARTS_OBJECTS%%=*} in
+case ${PIUPARTS_OBJECTS%%=*} in
 	*dkms|\
 	ktap|\
 	zfs-*|\
@@ -40,6 +45,4 @@ if [ "$PIUPARTS_PHASE" = "install" ]; then
 				;;
 		esac
 		;;
-    esac
-
-fi
+esac

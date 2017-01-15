@@ -9,7 +9,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 esac
 
 case $PIUPARTS_DISTRIBUTION in
-	lenny|squeeze|squeeze-proposed)
+	lenny|squeeze)
 		exit 0
 		;;
 esac

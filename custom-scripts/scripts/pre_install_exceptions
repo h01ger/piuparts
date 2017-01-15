@@ -119,7 +119,6 @@ if [ "$PIUPARTS_DISTRIBUTION" = "squeeze-backports" ]; then
 fi
 
 if	[ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "squeeze-proposed" ] || \
 	[ "$PIUPARTS_DISTRIBUTION" = "squeeze-backports" ] || \
 	[ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 
