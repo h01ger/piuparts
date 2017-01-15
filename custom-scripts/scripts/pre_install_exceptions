@@ -149,6 +149,20 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
 			log_debug
 			apt-get -y install udev
 			;;
+		jhove|\
+		libbytecode-java|\
+		libcodemodel-java|\
+		libjavassist-java|\
+		libjdic-java|\
+		libjgroups-java|\
+		libjibx-java|\
+		libpj-java|\
+		libswingx-java)
+			# these packages depend on sun-java* | java2-runtime
+			# install default-jre to satisfy the java2-runtime dependency
+			log_debug
+			apt-get -y install default-jre
+			;;
 	esac
 
 fi
