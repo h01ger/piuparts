@@ -48,6 +48,12 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 			log_debug
 			dpkg --purge cnews
 			;;
+		nfsbooted)
+			# sysv-rc fails migration to dependency based boot sequence if nfsbooted is installed
+			# nfsbooted was removed after lenny
+			log_debug
+			dpkg --purge nfsbooted
+			;;
 		pdns-backend-mysql)
 			# WORKSAROUND #698562: upgrade from squeeze => wheezy fails if database has not been created before the upgrade
 			log_debug
