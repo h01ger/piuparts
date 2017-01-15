@@ -15,6 +15,13 @@ is_installed()
 	return 0
 }
 
+dbconfig_enable_purge()
+{
+	log_debug
+	echo "$1 $1${2+/$2}/dbconfig-remove boolean true" | debconf-set-selections
+	echo "$1 $1${2+/$2}/purge boolean true" | debconf-set-selections
+}
+
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
@@ -81,6 +88,14 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
 			# ekeyd-uds was removed after squeeze, maintainer scripts are incompatible with udev/jessie
 			log_debug
 			dpkg --purge ekeyd-uds
+			;;
+		otrs2)
+			#707075: cannot automatically upgrade from wheezy to jessie due to mysql storage engine change
+			if is_installed mysql-server; then
+				log_debug
+				dbconfig_enable_purge otrs2
+				dpkg --purge otrs2
+			fi
 			;;
 	esac
 
