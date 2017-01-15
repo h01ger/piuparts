@@ -1,4 +1,4 @@
-piuparts (0.74) UNRELEASED; urgency=medium
+piuparts (0.74) unstable; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -70,7 +70,7 @@ piuparts (0.74) UNRELEASED; urgency=medium
     ./foo.deb && apt-get install -yf` for more reliable dependency
     resolution. (Closes: #825487)
 
- -- Andreas Beckmann <anbe@debian.org>  Mon, 19 Dec 2016 03:10:28 +0100
+ -- Holger Levsen <holger@debian.org>  Sun, 15 Jan 2017 11:59:00 +0100
 
 piuparts (0.73) unstable; urgency=medium
 
