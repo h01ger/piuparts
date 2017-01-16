@@ -15,6 +15,8 @@ piuparts (0.75) UNRELEASED; urgency=medium
     - Add new suite: stretch-pu (test packages in stretch-proposed-updates).
     - Add new suite: stretch2proposed.
   * Add/adjust some exceptions for ancient packages.
+  * scripts/pre_install_extras: Add examples how to preseed license acceptance
+    for non-free and downloader packages.
   * scripts/pre_distupgrade_zz_database-server: Run pg_upgradecluster during
     dist-upgrades.
   * Detect more database setup issues.

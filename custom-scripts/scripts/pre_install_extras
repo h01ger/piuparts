@@ -47,31 +47,32 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		;;
 	firmware-ipw2x00)
 		log_debug
-		echo "firmware-ipw2x00 firmware-ipw2x00/license/accepted boolean true" | debconf-set-selections
+		#echo "firmware-ipw2x00 firmware-ipw2x00/license/accepted boolean true" | debconf-set-selections
 		;;
 	firmware-ivtv)
 		log_debug
-		echo "firmware-ivtv firmware-ivtv/license/accepted boolean true" | debconf-set-selections
+		#echo "firmware-ivtv firmware-ivtv/license/accepted boolean true" | debconf-set-selections
 		;;
 	fonts-mathematica)
 		log_debug
-		echo "fonts-mathematica mathematica-fonts/accept_license boolean true" | debconf-set-selections
+		#echo "fonts-mathematica mathematica-fonts/accept_license boolean true" | debconf-set-selections
 		;;
 	mathematica-fonts|ttf-mathematica4.1)
 		log_debug
 		apt-get -y install wget
-		echo "mathematica-fonts mathematica-fonts/accept_license boolean true" | debconf-set-selections
+		#echo "mathematica-fonts mathematica-fonts/accept_license boolean true" | debconf-set-selections
 		if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
-			echo "ttf-mathematica4.1 ttf-mathematica4.1/accept_license boolean true" | debconf-set-selections
+			log_debug
+			#echo "ttf-mathematica4.1 ttf-mathematica4.1/accept_license boolean true" | debconf-set-selections
 		fi
 		;;
 	steam|steam-devices|steamcmd)
 		log_debug
-		echo "steam steam/question select I AGREE" | debconf-set-selections
+		#echo "steam steam/question select I AGREE" | debconf-set-selections
 		;;
 	zekr-quran-translations-en)
 		log_debug
-		echo "zekr-quran-translations-en quran-translations-en/accepted-Zekr-Quran-Trans boolean true" | debconf-set-selections
+		#echo "zekr-quran-translations-en quran-translations-en/accepted-Zekr-Quran-Trans boolean true" | debconf-set-selections
 		;;
 esac
 
@@ -81,7 +82,7 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
 	case ${PIUPARTS_OBJECTS%%=*} in
 		*sun-java5-*|*sun-java6-*)
 			log_debug
-			echo "sun-java6-jre shared/accepted-sun-dlj-v1-1 boolean true" | debconf-set-selections
+			#echo "sun-java6-jre shared/accepted-sun-dlj-v1-1 boolean true" | debconf-set-selections
 			;;
 		jajuk|\
 		liblucene2-java|\
@@ -95,7 +96,7 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
 		worldwind)
 			# these packages depend on sun-java* only
 			log_debug
-			echo "sun-java6-jre shared/accepted-sun-dlj-v1-1 boolean true" | debconf-set-selections
+			#echo "sun-java6-jre shared/accepted-sun-dlj-v1-1 boolean true" | debconf-set-selections
 			;;
 	esac
 
