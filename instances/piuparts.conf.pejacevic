@@ -102,6 +102,7 @@ sections =
 	stretch-rcmd
 	stretch-security
 	stretch-pu
+#	stretch-proposed
 #	stretch2proposed
 	jessie2stretch
 	jessie2stretch-rcmd
@@ -317,6 +318,16 @@ piuparts-flags =
 	%(flags-end-stretch)s
 depends-sections = stretch
 distro = stretch-proposed-updates
+
+
+[stretch-proposed]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+distro = jessie-stretch
 
 
 [stretch2proposed]
