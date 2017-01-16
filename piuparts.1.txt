@@ -226,6 +226,14 @@ Note that file: addresses works if the directories are made accessible from with
 *--single-packages*::
   Process every package file or package name individually, thus piuparts process runs multiple times. This option can be useful with conflicting packages.
 
+*--shell-on-error*::
+  Start an interactive shell in the chroot after an error occurred.
+  This should help debugging failures directly inside the piuparts test environment.
+  The chroot cleanup will continue after the shell terminates.
+  Note: This does not work if the piuparts command is prefixed with 'timeout',
+  which is usually the case in command lines directly copied from logfiles
+  from a master-slave setup. Removing the 'timeout' part is sufficient.
+
 *--skip-minimize*::
   Allow skip minimize chroot step. This is useful when you want to test several packages with piuparts. You can prepare a tarball already minimized and skip this step in all the tests. This is the default now.
 

@@ -149,6 +149,7 @@ class Settings:
         self.defaults = None
         self.tmpdir = None
         self.keep_tmpdir = False
+        self.shell_on_error = False
         self.max_command_output_size = 8 * 1024 * 1024  # 8 MB (google-android-ndk-installer on install) (daptup on dist-upgrade)
         self.max_command_runtime = 60 * 60  # 60 minutes (texlive-full and blends metapackages on dist-upgrade)
         self.single_changes_list = False
@@ -895,6 +896,15 @@ class Chroot:
             src = os.path.join(dirname, name)
             dst = os.path.join(self.name, name)
             run(cmd + [src, dst])
+
+    def interactive_shell(self):
+        logging.info("Entering interactive shell in %s" % self.name)
+        env = os.environ.copy()
+        env['debian_chroot'] = "piuparts:%s" % self.name
+        try:
+            subprocess.call(['chroot', self.name, 'bash', '-l'], env=env)
+        except:
+            pass
 
     def run(self, command, ignore_errors=False):
         prefix = []
@@ -2665,6 +2675,9 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
         chroot.remove()
         return True
 
+    if settings.shell_on_error:
+        panic_handler_id = do_on_panic(lambda: chroot.interactive_shell())
+
     chroot.run_scripts("pre_test")
 
     os.environ["PIUPARTS_PHASE"] = "install"
@@ -2709,6 +2722,11 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     chroot.check_for_no_processes(fail=True)
 
     result = check_results(chroot, chroot_state, file_owners)
+
+    if settings.shell_on_error:
+        dont_do_on_panic(panic_handler_id)
+        if not result:
+            chroot.interactive_shell()
 
     chroot.remove()
 
@@ -2996,6 +3014,10 @@ def parse_command_line():
                       action="append", default=[],
                       help="Directory where are placed the custom scripts. Can be given multiple times.")
 
+    parser.add_option("--shell-on-error", default=False,
+                      action='store_true',
+                      help="Execute an interactive shell in the chroot if an error occurred.")
+
     parser.add_option("-t", "--tmpdir", metavar="DIR",
                       help="Use DIR for temporary storage. Default is " +
                            "$TMPDIR or /tmp.")
@@ -3045,6 +3067,7 @@ def parse_command_line():
 
     settings.tmpdir = opts.tmpdir
     settings.keep_tmpdir = opts.keep_tmpdir
+    settings.shell_on_error = opts.shell_on_error
     settings.single_changes_list = opts.single_changes_list
     settings.single_packages = opts.single_packages
     settings.args_are_package_files = not opts.apt
@@ -3203,6 +3226,9 @@ def process_packages(package_list):
         chroot = get_chroot()
         chroot.create()
 
+        if settings.shell_on_error:
+            panic_handler_id = do_on_panic(lambda: chroot.interactive_shell())
+
         chroot_state = {}
         chroot_state["tree"] = chroot.save_meta_data()
         chroot_state["selections"] = chroot.get_selections()
@@ -3236,6 +3262,9 @@ def process_packages(package_list):
                 else:
                     logging.error("FAIL: Installation, upgrade and purging tests.")
                     panic()
+
+        if settings.shell_on_error:
+            dont_do_on_panic(panic_handler_id)
 
         chroot.remove()
     else:
