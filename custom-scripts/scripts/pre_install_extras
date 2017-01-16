@@ -53,4 +53,16 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		log_debug
 		echo "firmware-ivtv firmware-ivtv/license/accepted boolean true" | debconf-set-selections
 		;;
+	fonts-mathematica)
+		log_debug
+		echo "fonts-mathematica mathematica-fonts/accept_license boolean true" | debconf-set-selections
+		;;
+	mathematica-fonts|ttf-mathematica4.1)
+		log_debug
+		apt-get -y install wget
+		echo "mathematica-fonts mathematica-fonts/accept_license boolean true" | debconf-set-selections
+		if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
+			echo "ttf-mathematica4.1 ttf-mathematica4.1/accept_license boolean true" | debconf-set-selections
+		fi
+		;;
 esac
