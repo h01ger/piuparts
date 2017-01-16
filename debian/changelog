@@ -6,6 +6,8 @@ piuparts (0.75) UNRELEASED; urgency=medium
       + /etc/php/7.0/ and selected subdirs
     - Run panic handlers in reverse order.
     - Unmount /proc/sys/fs/binfmt_misc only if mounted.
+  * piuparts.conf:
+    - Add new suite: stretch-rcmd (test with --install-recommends).
   * Add/adjust some exceptions for ancient packages.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 15 Jan 2017 20:34:58 +0100
