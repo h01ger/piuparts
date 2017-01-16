@@ -29,6 +29,12 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				;;
 		esac
 		;;
+	virtualbox-ext-pack)
+		#802143: virtualbox-ext-pack leaves VBoxSVC processes running
+		# these should terminate within 5 seconds if not used
+		log_debug
+		sleep 10
+		;;
 esac
 
 if [ -f /var/run/piuparts-stamp-dkms-installed ]; then
