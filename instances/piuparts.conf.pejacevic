@@ -101,6 +101,7 @@ sections =
 	stretch
 	stretch-rcmd
 	jessie2stretch
+	jessie2stretch-rcmd
 	jessie2bpo2stretch
 	jessie2bpo
 	jessie
@@ -303,6 +304,20 @@ piuparts-flags =
 distro = jessie
 upgrade-test-distros = jessie stretch
 
+
+[jessie2stretch-rcmd]
+precedence = 10
+json-sections = none
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+
 [jessie2bpo2stretch]
 precedence = 3
 json-sections = none
@@ -314,6 +329,7 @@ depends-sections = jessie
 distro = jessie-backports
 upgrade-test-distros = jessie jessie-backports stretch
 
+
 [jessie2bpo]
 precedence = 3
 json-sections = none
@@ -324,6 +340,7 @@ piuparts-flags =
 depends-sections = jessie
 distro = jessie-backports
 upgrade-test-distros = jessie jessie-backports
+
 
 [jessie]
 precedence = 3
@@ -402,6 +419,7 @@ upgrade-test-distros = wheezy jessie
 
 [wheezy2jessie-rcmd]
 precedence = 10
+json-sections = none
 description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
