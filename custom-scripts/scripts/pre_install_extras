@@ -65,6 +65,10 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			echo "ttf-mathematica4.1 ttf-mathematica4.1/accept_license boolean true" | debconf-set-selections
 		fi
 		;;
+	steam|steam-devices|steamcmd)
+		log_debug
+		echo "steam steam/question select I AGREE" | debconf-set-selections
+		;;
 	zekr-quran-translations-en)
 		log_debug
 		echo "zekr-quran-translations-en quran-translations-en/accepted-Zekr-Quran-Trans boolean true" | debconf-set-selections
