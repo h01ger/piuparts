@@ -8,7 +8,7 @@ do
 		while read file md5expected obs
 		do
 			info="OBSOLETE CONFFILE $file REGISTERED BY $pkg"
-			query=$(dpkg-query -S $file)
+			query=$(dpkg-query -S "$file" || echo "???: $file")
 			owner=${query%: ${file}}
 			if [ "${owner%:*}" != "$pkg" ]; then
 				info="${info} OWNER CHANGED TO $owner"
