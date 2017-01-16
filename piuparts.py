@@ -1624,7 +1624,9 @@ class Chroot:
         # Workaround to unmount /proc/sys/fs/binfmt_misc which is mounted by
         # update-binfmts but never unmounted
         # This workaround can be removed once #847788 is fixed
-        run(["umount", self.relative("/proc/sys/fs/binfmt_misc")], ignore_errors=True)
+        binfmt_misc = self.relative("/proc/sys/fs/binfmt_misc")
+        if os.path.ismount(binfmt_misc):
+            self.mounts.append(binfmt_misc)
 
         for mountpoint in reversed(self.mounts):
             run(["umount", mountpoint], ignore_errors=True)
