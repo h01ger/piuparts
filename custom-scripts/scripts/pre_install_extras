@@ -45,4 +45,12 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				;;
 		esac
 		;;
+	firmware-ipw2x00)
+		log_debug
+		echo "firmware-ipw2x00 firmware-ipw2x00/license/accepted boolean true" | debconf-set-selections
+		;;
+	firmware-ivtv)
+		log_debug
+		echo "firmware-ivtv firmware-ivtv/license/accepted boolean true" | debconf-set-selections
+		;;
 esac
