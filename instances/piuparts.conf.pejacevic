@@ -131,7 +131,7 @@ master-command = /srv/piuparts.debian.org/share/piuparts/piuparts-master
 piuparts-command =
 	sudo
 	env PYTHONPATH=%(PYTHONPATH)s
-	timeout -s INT -k 5m 35m
+	timeout -s INT -k 5m 80m
 	/srv/piuparts.debian.org/sbin/piuparts
 PYTHONPATH = /srv/piuparts.debian.org/lib/python2.7/dist-packages
 master-directory = /srv/piuparts.debian.org/master
