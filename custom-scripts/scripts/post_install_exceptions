@@ -34,3 +34,13 @@ if is_installed dkms; then
 	# leftover 'sleep' process from progress reporting
 	sleep 3
 fi
+
+for pgconf in /etc/postgresql/*/main/postgresql.conf
+do
+	test -f "$pgconf" && test -r "$pgconf" || continue
+	port=$(awk '/^port/ { print $3 }' "$pgconf")
+	if [ "-n" $port ] && [ "$port" != "5432" ]
+	then
+		echo "Non-default port in $pgconf"
+	fi
+done

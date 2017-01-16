@@ -221,4 +221,14 @@ if [ -n "$INSTALL" ]; then
 	apt-get -y install $INSTALL
 fi
 
+for pgconf in /etc/postgresql/*/main/postgresql.conf
+do
+	test -f "$pgconf" && test -r "$pgconf" || continue
+	port=$(awk '/^port/ { print $3 }' "$pgconf")
+	if [ "-n" $port ] && [ "$port" != "5432" ]
+	then
+		echo "Non-default port in $pgconf"
+	fi
+done
+
 exit 0
