@@ -157,7 +157,7 @@ for SECTION in $SECTIONS ; do
 		find recycle/ -name '*.log' > $QUEUED
 		NUM_QUEUED=$(wc -l < $QUEUED)
 		TOTAL_QUEUED=$(($TOTAL_QUEUED + $NUM_QUEUED))
-		echo "queued: $NUM_QUEUED"
+		echo "queued: $NUM_QUEUED$(is_recent idle.stamp || echo " not-idle")"
 		echo
 		echo "#########################################################"
 		echo
