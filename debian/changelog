@@ -1,6 +1,9 @@
 piuparts (0.75) UNRELEASED; urgency=medium
 
   * piuparts.py:
+    - Add to ignored_files:
+      + /etc/network/
+      + /etc/php/7.0/ and selected subdirs
     - Run panic handlers in reverse order.
   * Add/adjust some exceptions for ancient packages.
 
