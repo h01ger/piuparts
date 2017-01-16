@@ -66,3 +66,29 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		fi
 		;;
 esac
+
+if	[ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		*sun-java5-*|*sun-java6-*)
+			log_debug
+			echo "sun-java6-jre shared/accepted-sun-dlj-v1-1 boolean true" | debconf-set-selections
+			;;
+		jajuk|\
+		liblucene2-java|\
+		libworldwind-java|\
+		omegat|\
+		robocode|\
+		solr-common|\
+		solr-tomcat5.5|\
+		weirdx|\
+		weka|\
+		worldwind)
+			# these packages depend on sun-java* only
+			log_debug
+			echo "sun-java6-jre shared/accepted-sun-dlj-v1-1 boolean true" | debconf-set-selections
+			;;
+	esac
+
+fi
