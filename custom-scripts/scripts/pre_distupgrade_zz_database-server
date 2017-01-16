@@ -22,6 +22,8 @@ CANDIDATES="$CANDIDATES mysql-server"
 CANDIDATES="$CANDIDATES postgresql"
 CANDIDATES="$CANDIDATES postgresql-8.4"
 CANDIDATES="$CANDIDATES postgresql-9.1"
+CANDIDATES="$CANDIDATES postgresql-9.4"
+CANDIDATES="$CANDIDATES postgresql-9.6"
 
 case "$PIUPARTS_DISTRIBUTION_NEXT" in
 	jessie)
@@ -49,9 +51,55 @@ do
 	fi
 done
 
+test ! -x /usr/bin/pg_lsclusters || pg_lsclusters
+
 if [ -n "$PACKAGES" ]
 then
 	echo "Upgrading ${PACKAGES# } early"
 	apt-get update
 	apt-get -y install $PACKAGES
 fi
+
+upgrade_pg_cluster()
+{
+	local from=$1
+	local to=$2
+
+	if ! is_installed postgresql-${from}
+	then
+		return 0
+	fi
+
+	if ! is_installed postgresql-${to}
+	then
+		apt-get -y install postgresql-${to}
+	fi
+
+	if is_installed postgresql-${from} && is_installed postgresql-${to}
+	then
+		echo "Updating PostgreSQL Cluster from ${from} to ${to}"
+		pg_dropcluster ${to} main --stop
+		pg_upgradecluster -v ${to} ${from} main
+		pg_dropcluster ${from} main
+	fi
+}
+
+case "${PIUPARTS_DISTRIBUTION}:${PIUPARTS_DISTRIBUTION_NEXT}" in
+	lenny:squeeze)
+		upgrade_pg_cluster 8.3 8.4
+		;;
+	squeeze:wheezy)
+		upgrade_pg_cluster 8.4 9.1
+		;;
+	wheezy:jessie)
+		upgrade_pg_cluster 9.1 9.4
+		;;
+	jessie:stretch)
+		upgrade_pg_cluster 9.4 9.6
+		;;
+	jessie:sid)
+		upgrade_pg_cluster 9.4 9.6
+		;;
+esac
+
+test ! -x /usr/bin/pg_lsclusters || pg_lsclusters

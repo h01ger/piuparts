@@ -57,6 +57,7 @@ for SECTION in $SECTIONS ; do
 		rgrep -l -e 'userdel: user .* is currently logged in' $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -i -E 'invoke-rc.d: initscript mysql, action "(start|restart)" failed.' $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -i -e 'invoke-rc.d: initscript postgresql, action "start" failed.' $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e 'The PostgreSQL server failed to start.' $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -i -e 'FATAL:  could not create shared memory segment: No space left on device' $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e 'No database found online on port 5432' $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e 'unable to connect to postgresql server' $MASTER/$SECTION/$subdir >> $FILE
