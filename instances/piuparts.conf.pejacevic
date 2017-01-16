@@ -100,6 +100,7 @@ sections =
 	testing2sid
 	stretch
 	stretch-rcmd
+	stretch-security
 	jessie2stretch
 	jessie2stretch-rcmd
 	jessie2bpo2stretch
@@ -292,6 +293,17 @@ piuparts-flags =
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
 distro = stretch
+
+
+[stretch-security]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch
+distro = stretch/updates
 
 
 [jessie2stretch]

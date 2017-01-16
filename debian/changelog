@@ -9,6 +9,7 @@ piuparts (0.75) UNRELEASED; urgency=medium
   * piuparts.conf:
     - Add new suite: stretch-rcmd (test with --install-recommends).
     - Add new suite: jessie2stretch-rcmd (test with --install-recommends).
+    - Add new suite: stretch-security.
   * Add/adjust some exceptions for ancient packages.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 15 Jan 2017 20:34:58 +0100
