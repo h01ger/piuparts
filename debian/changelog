@@ -8,6 +8,7 @@ piuparts (0.75) UNRELEASED; urgency=medium
     - Add --shell-on-error option to simplify debugging of piuparts failures.
       Starts an interactive shell in the chroot if an error occurred.
     - Unmount /proc/sys/fs/binfmt_misc only if mounted.
+    - Query the apt version in the chroot.  (Closes: #851517)
   * piuparts.conf:
     - Add new suite: stretch-rcmd (test with --install-recommends).
     - Add new suite: jessie2stretch-rcmd (test with --install-recommends).

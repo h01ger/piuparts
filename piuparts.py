@@ -1202,7 +1202,7 @@ class Chroot:
             # - the new approach successfully handles simultaneously
             #   installing a new binary package and its transitional
             #   dummy package
-            (status, output) = run(["dpkg-query", "-f", "${Version}\n", "-W", "apt"], ignore_errors=True)
+            (status, output) = self.run(["dpkg-query", "-f", "${Version}\n", "-W", "apt"], ignore_errors=True)
             apt_can_install_debs = LooseVersion(output.strip()) >= LooseVersion("1.1")
             apt_can_install_debs = False
 
