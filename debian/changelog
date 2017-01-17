@@ -59,7 +59,7 @@ piuparts (0.74) unstable; urgency=medium
   * scripts/post_distupgrade_exceptions: Work around some jessie->stretch
     issues.
   * scripts/is_testable_uninstallable: New custom script to exclude some
-    uninstallable (or similarily broken) packages from being tested.
+    uninstallable (or similarly broken) packages from being tested.
   * scripts/post_setup_minimize: New custom script to minimize chroots.
     - Remove tzdata and lsb-base from sid and stretch.
   * scripts/post_setup_dummy_users: New custom script to create dummy groups
