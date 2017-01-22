@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Do nothing if the script already ran.
+# The pre_install step can be run multiple times.
+[ -e /usr/bin/update-alternatives.orig ] && exit 0
+
+dpkg-divert --divert /usr/bin/update-alternatives.orig --rename /usr/bin/update-alternatives
+cat >/usr/bin/update-alternatives <<'EOT'
+#!/bin/sh
+echo "LOG-ALTERNATIVES: dpkg=${DPKG_MAINTSCRIPT_PACKAGE}: piuparts=${PIUPARTS_OBJECTS}: $0 $@" >>/tmp/log-alternatives.log
+exec /usr/bin/update-alternatives.orig "$@"
+EOT
+chmod +x /usr/bin/update-alternatives
