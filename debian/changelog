@@ -25,6 +25,8 @@ piuparts (0.75) UNRELEASED; urgency=medium
   * Detect more database setup issues.
   * known_problems/piuparts-depends-dummy_error.conf: Recognize the failure
     from 'apt-get install piuparts-depends-dummy.deb'.
+  * known_problems/problems_and_no_force_error.conf: Recognize the apt 1.1
+    message on attempted removal of essential packages.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 15 Jan 2017 20:34:58 +0100
 
