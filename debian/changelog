@@ -28,6 +28,7 @@ piuparts (0.75) UNRELEASED; urgency=medium
     from 'apt-get install piuparts-depends-dummy.deb'.
   * known_problems/problems_and_no_force_error.conf: Recognize the apt 1.1
     message on attempted removal of essential packages.
+  * master-bin/detect_piuparts_issues: Recognize more cases of full disks.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 15 Jan 2017 20:34:58 +0100
 
