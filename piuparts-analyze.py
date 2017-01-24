@@ -175,51 +175,56 @@ def bts_update_found(bugnr, newversion):
 
 def mark_logs_with_reported_bugs():
     for failed_log in find_logs("fail"):
-        pname = package_name(failed_log)
-        pversion = package_source_version(failed_log)
-        failed_errors = extract_errors(failed_log)
-        moved = False
         try:
+            pname = package_name(failed_log)
+            pversion = package_source_version(failed_log)
+            try:
+                failed_errors = extract_errors(failed_log)
+            except IOError:
+                print('IOError while processing %s' % failed_log)
+                continue
+            moved = False
             abugs = piuparts_bugs_affecting(pname)
             bugs = piuparts_bugs_in(pname)
-        except SOAPpy.Errors.HTTPError:
-            continue
-        for bug in abugs + bugs:
-            if moved:
-                break
-            if bug in abugs:
-                bugged = "affected"
-            else:
-                bugged = "bugged"
-            found_versions = get_bug_versions(bug)
-            if pversion in found_versions:
-                move_to_bugged(failed_log, bugged, bug)
-                moved = True
-                break
-            for bug_version in found_versions:
-                # print('DEBUG: %s/%s #%d %s' % (pname, pversion, bug, bug_version))
+            for bug in abugs + bugs:
+                if moved:
+                    break
+                if bug in abugs:
+                    bugged = "affected"
+                else:
+                    bugged = "bugged"
+                found_versions = get_bug_versions(bug)
+                if pversion in found_versions:
+                    move_to_bugged(failed_log, bugged, bug)
+                    moved = True
+                    break
+                for bug_version in found_versions:
+                    # print('DEBUG: %s/%s #%d %s' % (pname, pversion, bug, bug_version))
 
-                if apt_pkg.version_compare(pversion, bug_version) > 0:  # pversion > bug_version
-                    bugged_logs = find_bugged_logs(failed_log)
-                    if not bugged_logs and not moved:
-                        print('%s/%s: Maybe the bug was filed earlier: https://bugs.debian.org/%d against %s/%s'
-                              % (pname, pversion, bug, pname, bug_version))
-                        break
-                    for bugged_log in bugged_logs:
-                        old_pversion = package_source_version(bugged_log)
-                        bugged_errors = extract_errors(bugged_log)
-                        if (apt_pkg.version_compare(old_pversion, bug_version) == 0  # old_pversion == bug_version
-                            and
-                                failed_errors == bugged_errors):
-                            # a bug was filed for an old version of the package,
-                            # and the errors were the same back then - assume it is the same bug.
-                            if not moved:
-                                mark_bugged_version(failed_log, bugged_log)
-                                moved = True
-                                bts_update_found(bug, pversion)
-                                break
-        if not moved:
-            write_bug_file(failed_log, abugs + bugs)
+                    if apt_pkg.version_compare(pversion, bug_version) > 0:  # pversion > bug_version
+                        bugged_logs = find_bugged_logs(failed_log)
+                        if not bugged_logs and not moved:
+                            print('%s/%s: Maybe the bug was filed earlier: https://bugs.debian.org/%d against %s/%s'
+                                  % (pname, pversion, bug, pname, bug_version))
+                            break
+                        for bugged_log in bugged_logs:
+                            old_pversion = package_source_version(bugged_log)
+                            bugged_errors = extract_errors(bugged_log)
+                            if (apt_pkg.version_compare(old_pversion, bug_version) == 0  # old_pversion == bug_version
+                                and
+                                    failed_errors == bugged_errors):
+                                # a bug was filed for an old version of the package,
+                                # and the errors were the same back then - assume it is the same bug.
+                                if not moved:
+                                    mark_bugged_version(failed_log, bugged_log)
+                                    moved = True
+                                    bts_update_found(bug, pversion)
+                                    break
+            if not moved:
+                write_bug_file(failed_log, abugs + bugs)
+        except:
+            print('ERROR processing %s' % failed_log)
+            print sys.exc_info()[0]
 
 
 def report_packages_with_many_logs():
