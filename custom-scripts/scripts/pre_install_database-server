@@ -108,6 +108,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	neutron-server)				SQLITE3=yes ;;
 	neutron-*-agent)			SQLITE3=yes ;;
 	nginx-naxsi-ui)				MYSQL=yes ;;
+	obs-api)				MYSQL=yes ;;
 	ocsinventory-reports)			MYSQL=yes ;;
 	ocsinventory-server)			MYSQL=yes ;;
 	openacs)				POSTGRESQL=yes ;;
@@ -188,7 +189,7 @@ esac
 
 if [ "$FUSIONFORGE" = "yes" ]; then
 	case "$PIUPARTS_DISTRIBUTION" in
-		wheezy*|jessie|jessie/updates)
+		wheezy*|jessie|jessie/updates|jessie-updates|jessie-proposed-updates)
 			POSTGRESQL=yes
 			;;
 		*)

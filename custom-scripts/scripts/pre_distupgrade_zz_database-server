@@ -18,8 +18,8 @@ fi
 
 CANDIDATES=""
 CANDIDATES="$CANDIDATES default-mysql-server"
-CANDIDATES="$CANDIDATES mysql-server"
 CANDIDATES="$CANDIDATES postgresql"
+CANDIDATES="$CANDIDATES postgresql-8.3"
 CANDIDATES="$CANDIDATES postgresql-8.4"
 CANDIDATES="$CANDIDATES postgresql-9.1"
 CANDIDATES="$CANDIDATES postgresql-9.4"
@@ -28,6 +28,15 @@ CANDIDATES="$CANDIDATES postgresql-9.6"
 case "$PIUPARTS_DISTRIBUTION_NEXT" in
 	jessie)
 		CANDIDATES="$CANDIDATES mysql-server-5.5"
+		;;
+esac
+
+case "$PIUPARTS_DISTRIBUTION_NEXT" in
+	stretch)
+		: # no mysql-server
+		;;
+	*)
+		CANDIDATES="$CANDIDATES mysql-server"
 		;;
 esac
 
@@ -72,6 +81,7 @@ upgrade_pg_cluster()
 
 	if ! is_installed postgresql-${to}
 	then
+		echo "Installing postgresql-${to}"
 		apt-get -y install postgresql-${to}
 	fi
 
