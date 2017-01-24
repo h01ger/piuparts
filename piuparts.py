@@ -51,8 +51,8 @@ import pickle
 import subprocess
 import urllib
 import uuid
+import apt_pkg
 from collections import namedtuple
-from distutils.version import LooseVersion
 from signal import alarm, signal, SIGALRM, SIGTERM, SIGKILL
 
 try:
@@ -61,6 +61,8 @@ except ImportError:
     from debian_bundle import deb822
 
 import piupartslib.conf
+
+apt_pkg.init_system()
 
 DISTRO_CONFIG_FILE = "/etc/piuparts/distros.conf"
 
@@ -1184,35 +1186,27 @@ class Chroot:
             self.install_packages_by_name(packages, with_scripts=with_scripts)
             return
         if package_files:
-            # We need an absolute path here so that apt-get can
-            # distinguish our deb from a request to install a package
-            # from a suite called 'tmp'
-            self.copy_files(package_files, "tmp")
-            tmp_files = [os.path.basename(a) for a in package_files]
-            tmp_files = [os.path.join("/tmp", name) for name in tmp_files]
-
-            # Check whether apt can install debs
+            # Check whether apt-get can install debs (supported since apt 1.1)
             #
-            # If it can, this is preferable to the traditional `dpkg
-            # -i foo.deb && apt-get install -yf` approach:
-            #
-            # - the traditional approach can 'resolve' the dependency
-            #   by removing the package we are trying to install
-            #
-            # - the new approach successfully handles simultaneously
-            #   installing a new binary package and its transitional
-            #   dummy package
+            # If it can, this is preferable to the traditional
+            #   `dpkg -i foo.deb && apt-get -yf install`
+            # approach since 'apt-get -yf install' can 'resolve' dependency
+            # problems by removing the package we are trying to install
             (status, output) = self.run(["dpkg-query", "-f", "${Version}\n", "-W", "apt"], ignore_errors=True)
-            apt_can_install_debs = LooseVersion(output.strip()) >= LooseVersion("1.1")
+            apt_can_install_debs = apt_pkg.version_compare(output.strip(), "1.1") >= 0
+
+            # This must look like a local path so that apt-get can
+            # distinguish it from a 'package/suite' request.
+            self.copy_files(package_files, "tmp")
+            tmp_files = [os.path.join("./tmp", os.path.basename(a)) for a in package_files]
 
             if with_scripts:
                 self.run_scripts("pre_install")
 
             if apt_can_install_debs:
-                # --allow-downgrades is required in order to permit
-                # installing a deb with the same version as that
-                # already installed, which we need to do at various
-                # points in piuparts testing
+                # --allow-downgrades is also required in order to permit
+                # installing a deb with the same version as that already
+                # installed
                 apt_get_install = ["apt-get", "-y", "--allow-downgrades"]
             else:
                 apt_get_install = ["apt-get", "-yf"]
@@ -1227,8 +1221,6 @@ class Chroot:
             if apt_can_install_debs:
                 self.run(apt_get_install + tmp_files)
             else:
-                logging.info("apt too old; falling back to dpkg -i && apt-get install -yf")
-
                 (ret, out) = self.run(["dpkg", "-i"] + tmp_files, ignore_errors=True)
                 if ret != 0:
                     if "dependency problems - leaving unconfigured" in out:
