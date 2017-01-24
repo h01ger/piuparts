@@ -2476,10 +2476,12 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
 
         # Install the metapackage
         chroot.install_package_files([metapackage], with_scripts=False)
+
+        # Check whether it got installed, the 'dpkg -i p-d-d.deb && apt-get -yf install' approach
+        # may not have installed it, cannot happen with 'apt-get install p-d-d.deb' (since stretch)
         if not chroot.is_installed(["piuparts-depends-dummy"]):
             logging.error("Installation of piuparts-depends-dummy FAILED")
-            # FIXME: too many failures
-            # panic()
+            # don't panic(), too many problems on old distros
 
         # Now remove it
         metapackagename = os.path.basename(metapackage)[:-4]
