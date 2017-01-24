@@ -163,7 +163,7 @@ reschedule-old-count = 250
 expire-fail-days = 15
 reschedule-fail-days = 10
 reschedule-fail-count = 50
-reschedule-untestable-days = 2
+reschedule-untestable-days = 1
 
 
 [tarball/sid]
