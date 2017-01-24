@@ -1204,7 +1204,6 @@ class Chroot:
             #   dummy package
             (status, output) = self.run(["dpkg-query", "-f", "${Version}\n", "-W", "apt"], ignore_errors=True)
             apt_can_install_debs = LooseVersion(output.strip()) >= LooseVersion("1.1")
-            apt_can_install_debs = False
 
             if with_scripts:
                 self.run_scripts("pre_install")

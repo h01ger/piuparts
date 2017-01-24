@@ -66,7 +66,6 @@ for SECTION in $SECTIONS ; do
 		rgrep -l -e 'createuser: could not connect to database postgres: could not connect to server: No such file or directory' $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e 'Non-default port in /etc/postgresql/.*/main/postgresql.conf' $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e 'Firebird .* server already running.' $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -e 'E: Command line option --allow-downgrades is not understood' $MASTER/$SECTION/$subdir >> $FILE
 		find $MASTER/$SECTION/$subdir -name '*.log' -size 0 >> $FILE
 	done
 done
