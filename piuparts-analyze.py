@@ -131,7 +131,7 @@ def get_bug_versions(bug):
     Newest versions are returned first."""
     # debianbts returns it in the format package/1.2.3 or 1.2.3 which will become 1.2.3
     versions = []
-    for found_version in debianbts.get_status((bug,))[0].found_versions:
+    for found_version in debianbts.get_status(bug)[0].found_versions:
         v = found_version.rsplit('/', 1)[-1]
         if v == "None":
             # only allow the distro-qualified "$distro/None" version

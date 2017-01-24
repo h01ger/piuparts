@@ -15,6 +15,8 @@ piuparts (0.75) UNRELEASED; urgency=medium
     - Add new suite: stretch-security.
     - Add new suite: stretch-pu (test packages in stretch-proposed-updates).
     - Add new suite: stretch2proposed.
+  * piuparts-analyze.py:
+    - Adjust debianbts syntax to be compatible with both jessie and stretch.
   * Add/adjust some exceptions for ancient packages.
   * scripts/pre_install_extras: Add examples how to preseed license acceptance
     for non-free and downloader packages.
