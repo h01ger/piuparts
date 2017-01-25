@@ -55,6 +55,23 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		;;
 esac
 
+case "$PIUPARTS_DISTRIBUTION" in
+	stretch*|sid)
+		case ${PIUPARTS_OBJECTS%%=*} in
+			init|\
+			ltsp-client)
+				log_debug
+				# requires removal of essential packages
+				if [ ! -f /etc/apt/apt.conf.d/piuparts-allow-remove-essential ]
+				then
+					echo "Enabling APT::Get::allow-remove-essential"
+					echo 'APT::Get::allow-remove-essential "true";' >> /etc/apt/apt.conf.d/piuparts-allow-remove-essential
+				fi
+				;;
+		esac
+		;;
+esac
+
 # Allow removal of the kernel running on the host from the chroot.
 UNAME_R="$(uname -r)"
 echo "linux-image-$UNAME_R linux-image-$UNAME_R/prerm/removing-running-kernel-$UNAME_R boolean false" | debconf-set-selections

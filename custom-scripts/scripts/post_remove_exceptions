@@ -5,6 +5,9 @@ log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
 }
 
+# cleanup from pre_remove_exceptions
+rm -fv /etc/apt/apt.conf.d/piuparts-allow-remove-essential
+
 case ${PIUPARTS_OBJECTS%%=*} in
 	asclassic)
 		case "$PIUPARTS_DISTRIBUTION" in
