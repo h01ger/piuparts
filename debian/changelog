@@ -1,9 +1,11 @@
 piuparts (0.75) UNRELEASED; urgency=medium
 
+  [ Andreas Beckmann ]
   * piuparts.py:
     - Add to ignored_files:
       + /etc/network/
       + /etc/php/7.0/ and selected subdirs
+      + /var/lib/apache2/
     - Run panic handlers in reverse order.
     - Add --shell-on-error option to simplify debugging of piuparts failures.
       Starts an interactive shell in the chroot if an error occurred.
