@@ -350,6 +350,7 @@ class Settings:
             "/etc/php/7.0/apache2/conf.d/",
             "/etc/php/7.0/cli/",
             "/etc/php/7.0/cli/conf.d/",
+            "/etc/php/7.0/mods-available/",
             "/etc/php/7.0/phpdbg/",
             "/etc/php/7.0/phpdbg/conf.d/",
             "/etc/php5/",
@@ -365,6 +366,7 @@ class Settings:
             "/usr/share/dh-python/dhpython/build/",
             "/usr/share/python3/",
             "/usr/share/python3/debpython/",
+            "/var/lib/apache2/",
             # HACKS
         ]
         self.ignored_patterns = [
