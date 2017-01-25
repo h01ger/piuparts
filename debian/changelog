@@ -26,6 +26,8 @@ piuparts (0.75) UNRELEASED; urgency=medium
     for non-free and downloader packages.
   * scripts/pre_distupgrade_zz_database-server: Run pg_upgradecluster during
     dist-upgrades.
+  * scripts/post_distupgrade_hack_debsums: Limit to squeeze->wheezy and merge
+    into scripts/post_distupgrade_exceptions.
   * scripts/{pre,post}_remove_exceptions: Support removal of essential
     packages with apt-get from stretch onwards.
   * known_problems/piuparts-depends-dummy_error.conf: Recognize the failure

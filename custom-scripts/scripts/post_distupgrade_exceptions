@@ -22,6 +22,12 @@ fi
 
 if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
 
+	# https://bugs.debian.org/687611
+	if [ -f /usr/share/keyrings/debian-archive-removed-keys.gpg~ ]; then
+		echo "FIXING /usr/share/keyrings/debian-archive-removed-keys.gpg~"
+		mv -v /usr/share/keyrings/debian-archive-removed-keys.gpg~ /usr/share/keyrings/debian-archive-removed-keys.gpg
+	fi
+
 	case ${PIUPARTS_OBJECTS%%=*} in
 		kismet|\
 		tshark|\
