@@ -3,6 +3,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * Clean up leftover /etc/piuparts/scripts/post_setup_experimental.
     (Closes: #854317)
+  * scripts/pre_remove_40_find_missing_md5sums: Correctly escape backslashes
+    in filenames.
 
   [ Holger Levsen ]
   * piuparts.py: apply patch from Maxime Lareo to allow usage of
