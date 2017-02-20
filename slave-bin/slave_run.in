@@ -59,9 +59,9 @@ screen -S $SESSIONNAME -d -m
 echo "Started screen session '$SESSIONNAME'."
 
 # run this on a single slave or a sequence of slaves
-# FIXME: this should really test whether $1 is an integer and within SLAVECOUNT
-if [ "$1" != "" ] ; then
-	SLAVES=$1
+# (use value given, if given and an integer and <= $SLAVECOUNT)
+if [ "$1" != "" ] && [ "$1" -eq "$1" ] && [ "$1" -le "$SLAVECOUNT" ] ; then
+	SLAVES="$(seq $1)"
 else
 	SLAVES="$(seq $SLAVECOUNT)"
 fi

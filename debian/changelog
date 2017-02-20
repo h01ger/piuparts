@@ -8,6 +8,10 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * Update README_pejacevic.txt.
   * Update (the unused example) piuparts.conf.piu-slave-1und1-01 to match
     piuparts.conf.piu-slave-bm-a except for arch and mirror.
+  * slave_run: Fix bug which prevented a different number of slaves to be
+    started than defined in the configuration. Also add a check to ensure that
+    this optional argument is an integer and within the defined maximum number
+    of slaves.
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 06 Feb 2017 01:11:27 +0100
 
