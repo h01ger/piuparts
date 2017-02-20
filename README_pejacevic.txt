@@ -13,8 +13,7 @@ piuparts-master and piuparts-slaves packages as described in
 piuparts.debian.org is a setup running on several systems:
 pejacevic.debian.org, running the piuparts-master instance and an apache
 webserver to display the results and piu-slave-bm-a.debian.org, running
-four piuparts-slave nodes. Not yet in operation there is another,
-piu-slave-1und1-01.debian.org, which soon shall go into operation...
+four piuparts-slave nodes to run the actual tests.
 
 === piuparts installation from source
 

@@ -1,8 +1,11 @@
 piuparts (0.76) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
-  * Clean up leftover /etc/piuparts/scripts/post_setup_experimental
+  * Clean up leftover /etc/piuparts/scripts/post_setup_experimental.
     (Closes: #854317)
+
+  [ Holger Levsen ]
+  * Update README_pejacevic.txt.
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 06 Feb 2017 01:11:27 +0100
 
