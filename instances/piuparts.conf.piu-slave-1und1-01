@@ -29,6 +29,14 @@ flags-leftovers =
 # perform some additional cleanup
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
+# common flags for tests starting in stretch
+flags-start-stretch =
+# no flags needed
+
+# common flags for tests ending in stretch
+flags-end-stretch =
+# no flags needed
+
 # common flags for tests starting in jessie
 flags-start-jessie =
 # no flags needed
@@ -76,21 +84,45 @@ flags-start-lenny =
 
 
 [global]
+basetgz-sections =
+	tarball/sid
+	tarball/stretch
+	tarball/jessie
+	tarball/wheezy
+	tarball/squeeze
+	tarball/lenny
 sections =
 	experimental
 	sid2experimental
 	sid
+	sid-strict
 	sid-nodoc
 	testing2sid
+	stretch
+	stretch-rcmd
+	stretch-security
+	stretch-pu
+#	stretch-proposed
+#	stretch2proposed
+	jessie2stretch
+	jessie2stretch-rcmd
+	jessie2bpo2stretch
+	jessie2bpo
 	jessie
+	jessie-rcmd
+	jessie-security
+	jessie-pu
 #	jessie-proposed
 	jessie2proposed
 	wheezy2jessie
+	wheezy2jessie-rcmd
 	wheezy2bpo2jessie
 #	wheezy-proposed
 	wheezy2proposed
-	squeeze2wheezy-proposed
 	wheezy
+	wheezy-security
+	wheezy-pu
+	squeeze2wheezy-proposed
 	squeeze2wheezy
 	squeeze2bpo-sloppy
 	squeeze2bpo2wheezy
@@ -105,7 +137,7 @@ master-command = /srv/piuparts.debian.org/share/piuparts/piuparts-master
 piuparts-command =
 	sudo
 	env PYTHONPATH=%(PYTHONPATH)s
-	timeout -s INT -k 5m 35m
+	timeout -s INT -k 5m 80m
 	/srv/piuparts.debian.org/sbin/piuparts
 PYTHONPATH = /srv/piuparts.debian.org/lib/python2.7/dist-packages
 master-directory = /srv/piuparts.debian.org/master
@@ -116,6 +148,8 @@ backup-directory = /srv/piuparts.debian.org/backup
 tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /
 components = main
+arch = i386
+area = main
 # the slave-count setting is for the slave(s)
 slave-count = 4
 # 30*60
@@ -129,7 +163,64 @@ reschedule-old-count = 250
 expire-fail-days = 15
 reschedule-fail-days = 10
 reschedule-fail-count = 50
-reschedule-untestable-days = 2
+reschedule-untestable-days = 1
+
+
+[tarball/sid]
+piuparts-flags =
+	%(flags-default)s
+distro = None
+upgrade-test-distros = sid
+# 3 days (60*60*24*3)
+max-tgz-age = 259200
+
+
+[tarball/stretch]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+distro = None
+upgrade-test-distros = stretch
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
+
+
+[tarball/jessie]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+distro = None
+upgrade-test-distros = jessie
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
+
+
+[tarball/wheezy]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+distro = None
+upgrade-test-distros = wheezy
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
+
+
+[tarball/squeeze]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+distro = None
+upgrade-test-distros = squeeze
+max-tgz-age = 0
+
+
+[tarball/lenny]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+distro = None
+upgrade-test-distros = lenny
+max-tgz-age = 0
 
 
 [experimental]
@@ -142,14 +233,21 @@ depends-sections = sid
 
 [sid]
 precedence = 1
+piuparts-flags =
+	%(flags-default)s
+distro = sid
+
+
+[sid-strict]
+precedence = 4
+json-sections = none
 description = + Fails if there are leftover files after purge.
 piuparts-flags =
+	--install-remove-install
 	%(flags-leftovers)s
 # Once there are no packages left which leave files on purge behind,
 # --pedantic-purge-test should be added
 distro = sid
-# 3 days (60*60*24*3)
-max-tgz-age = 259200
 
 
 [sid-nodoc]
@@ -176,9 +274,119 @@ piuparts-flags =
 	%(flags-default)s
 depends-sections = sid
 distro = experimental
-arch = i386
-area = main
 upgrade-test-distros = sid experimental
+
+
+[stretch]
+precedence = 3
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+distro = stretch
+
+
+[stretch-rcmd]
+precedence = 10
+json-sections = none
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+distro = stretch
+
+
+[stretch-security]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch
+distro = stretch/updates
+
+
+[stretch-pu]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch
+distro = stretch-proposed-updates
+
+
+[stretch-proposed]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+distro = jessie-stretch
+
+
+[stretch2proposed]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+distro = stretch
+upgrade-test-distros = stretch stretch-proposed
+
+
+[jessie2stretch]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+
+[jessie2stretch-rcmd]
+precedence = 10
+json-sections = none
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+
+[jessie2bpo2stretch]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+depends-sections = jessie
+distro = jessie-backports
+upgrade-test-distros = jessie jessie-backports stretch
+
+
+[jessie2bpo]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie
+distro = jessie-backports
+upgrade-test-distros = jessie jessie-backports
 
 
 [jessie]
@@ -188,8 +396,40 @@ piuparts-flags =
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
 distro = jessie
-# 1 week (60*60*24*7)
-max-tgz-age = 604800
+
+
+[jessie-rcmd]
+precedence = 10
+json-sections = none
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+distro = jessie
+
+
+[jessie-security]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie
+distro = jessie/updates
+
+
+[jessie-pu]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-jessie)s
+depends-sections = jessie
+distro = jessie-proposed-updates
 
 
 [jessie-proposed]
@@ -224,6 +464,20 @@ distro = wheezy
 upgrade-test-distros = wheezy jessie
 
 
+[wheezy2jessie-rcmd]
+precedence = 10
+json-sections = none
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+
 [wheezy2bpo2jessie]
 precedence = 5
 json-sections = none
@@ -232,8 +486,6 @@ piuparts-flags =
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
 depends-sections = wheezy
-arch = i386
-area = main
 distro = wheezy-backports
 upgrade-test-distros = wheezy wheezy-backports jessie
 
@@ -246,8 +498,6 @@ piuparts-flags =
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
 distro = wheezy
-# 1 month (60*60*24*30)
-max-tgz-age = 2592000
 
 
 [wheezy-proposed]
@@ -258,6 +508,28 @@ piuparts-flags =
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
 distro = wheezy-proposed
+
+
+[wheezy-security]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy
+distro = wheezy/updates
+
+
+[wheezy-pu]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-wheezy)s
+depends-sections = wheezy
+distro = wheezy-proposed-updates
 
 
 [wheezy2proposed]
@@ -301,27 +573,24 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
 depends-sections = squeeze
-arch = i386
-area = main
 distro = squeeze-backports
 upgrade-test-distros = squeeze squeeze-backports wheezy
 
 
 [squeeze2bpo-sloppy]
-precedence = 6
+precedence = 99
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
 depends-sections = squeeze squeeze2bpo2wheezy
-arch = i386
-area = main
 upgrade-test-distros = squeeze squeeze-backports-sloppy
+reschedule-old-count = 0
 
 
 [squeeze]
-precedence = 7
+precedence = 99
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -329,20 +598,21 @@ piuparts-flags =
 	%(flags-end-squeeze)s
 distro = squeeze
 reschedule-old-count = 0
+reschedule-fail-count = 0
 
 
 [squeeze2squeeze-lts]
-precedence = 8
+precedence = 99
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
 depends-sections = squeeze
-arch = i386
-area = main
 distro = squeeze-lts
 upgrade-test-distros = squeeze squeeze-lts
+reschedule-old-count = 0
+reschedule-fail-count = 0
 
 
 [lenny2squeeze]
