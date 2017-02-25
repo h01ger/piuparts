@@ -16,7 +16,7 @@ if [ "$PIUPARTS_PHASE" = "" ]; then
 	exit 0
 fi
 
-CANDIDATES=""
+CANDIDATES=
 CANDIDATES="$CANDIDATES default-mysql-server"
 CANDIDATES="$CANDIDATES postgresql"
 CANDIDATES="$CANDIDATES postgresql-8.3"
@@ -40,7 +40,8 @@ case "$PIUPARTS_DISTRIBUTION_NEXT" in
 		;;
 esac
 
-PACKAGES=""
+PACKAGES=
+SWITCH_TO_MARIADB=
 
 # early upgrade runs into even more trouble for some packages ...
 case ${PIUPARTS_OBJECTS%%=*} in
@@ -52,6 +53,46 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		;;
 esac
 
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ]; then
+	# recommended/suggested/related package mysql-server gets removed during dist-upgrade
+	case ${PIUPARTS_OBJECTS%%=*} in
+		bacula-director-mysql|\
+		bacula-director-mysql-dbg)
+			SWITCH_TO_MARIADB=yes
+			;;
+		bareos-database-mysql)
+			SWITCH_TO_MARIADB=yes
+			;;
+		icinga2-ido-mysql)
+			SWITCH_TO_MARIADB=yes
+			;;
+		openstack-cloud-services)
+			SWITCH_TO_MARIADB=yes
+			;;
+		pdns-backend-mysql)
+			SWITCH_TO_MARIADB=yes
+			;;
+		phpmyadmin)
+			SWITCH_TO_MARIADB=yes
+			;;
+		pnopaste)
+			SWITCH_TO_MARIADB=yes
+			;;
+		redmine-mysql)
+			SWITCH_TO_MARIADB=yes
+			;;
+		tango-db|\
+		tango-db-dbg|\
+		tango-accesscontrol|\
+		tango-accesscontrol-dbg)
+			SWITCH_TO_MARIADB=yes
+			;;
+		yubikey-val)
+			SWITCH_TO_MARIADB=yes
+			;;
+	esac
+fi
+
 for pkg in $CANDIDATES
 do
 	if is_installed "$pkg"
@@ -59,6 +100,13 @@ do
 		PACKAGES="$PACKAGES $pkg"
 	fi
 done
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ] && [ "$SWITCH_TO_MARIADB" = "yes" ]; then
+	if is_installed "mysql-server"
+	then
+		PACKAGES="$PACKAGES default-mysql-server mysql-server-"
+	fi
+fi
 
 test ! -x /usr/bin/pg_lsclusters || pg_lsclusters
 
@@ -81,12 +129,14 @@ upgrade_pg_cluster()
 
 	if ! is_installed postgresql-${to}
 	then
+		echo ""
 		echo "Installing postgresql-${to}"
 		apt-get -y install postgresql-${to}
 	fi
 
 	if is_installed postgresql-${from} && is_installed postgresql-${to}
 	then
+		echo ""
 		echo "Updating PostgreSQL Cluster from ${from} to ${to}"
 		pg_dropcluster ${to} main --stop
 		pg_upgradecluster -v ${to} ${from} main

@@ -3,6 +3,9 @@ piuparts (0.76) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * Clean up leftover /etc/piuparts/scripts/post_setup_experimental.
     (Closes: #854317)
+  * scripts/pre_distupgrade_zz_database-server: Switch from mysql-server to
+    default-mysql-server (aka mariadb-server) for selected packages on
+    upgrades to stretch, otherwise they will lose their database server.
   * scripts/pre_remove_40_find_missing_md5sums: Correctly escape backslashes
     in filenames.
 
