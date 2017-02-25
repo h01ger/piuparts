@@ -12,7 +12,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     started than defined in the configuration. Also add a check to ensure that
     this optional argument is an integer and within the defined maximum number
     of slaves.
-  * piuparty.ps: apply patch from Maxime Lareo to allow usage of
+  * piuparty.py: apply patch from Maxime Lareo to allow usage of
     --keep-sources-list without --basetgz. (Closes: #841157)
   * Add instances/piuparts.conf.piu-slave-ubc-01 as a link, just like
     piu-slave-bm-a. Thanks to DSA for setting up this 2nd test node!
