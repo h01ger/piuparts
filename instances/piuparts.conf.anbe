@@ -31,11 +31,13 @@ flags-end-stretch =
 flags-start-jessie =
 flags-end-jessie =
 	--warn-on-debsums-errors
+	--warn-on-install-over-symlink
 	--scriptsdir /etc/piuparts/scripts-jessie
 
 flags-start-wheezy =
 flags-end-wheezy =
 	--warn-on-debsums-errors
+	--warn-on-install-over-symlink
 	--scriptsdir /etc/piuparts/scripts-wheezy
 
 flags-start-squeeze =
@@ -43,13 +45,13 @@ flags-start-squeeze =
 	--no-check-valid-until
 flags-end-squeeze =
 	--warn-on-debsums-errors
+	--warn-on-install-over-symlink
 	--scriptsdir /etc/piuparts/scripts-squeeze
 
 flags-start-lenny =
 	--dpkg-noforce-unsafe-io
 	%(flags-start-squeeze)s
 flags-end-lenny =
-	--warn-on-debsums-errors
 	--skip-cronfiles-test
 	%(flags-end-squeeze)s
 	-i /etc/udev/
