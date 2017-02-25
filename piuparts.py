@@ -207,6 +207,7 @@ class Settings:
         self.warn_on_others = False
         self.warn_on_leftovers_after_purge = False
         self.warn_on_debsums_errors = False
+        self.warn_on_install_over_symlink = False
         self.warn_if_inadequate = True
         self.pedantic_purge_test = False
         self.ignored_files = [
@@ -1403,6 +1404,8 @@ class Chroot:
             else:
                 logging.info("dirname part contains a symlink:\n" +
                              indent_string("\n".join(bad)))
+            if not settings.warn_on_install_over_symlink:
+                panic()
 
     def remove_packages(self, packages):
         """Remove packages in a chroot."""
@@ -3042,6 +3045,11 @@ def parse_command_line():
                       help="Print a warning rather than failing if "
                            "debsums reports modified files.")
 
+    parser.add_option("--warn-on-install-over-symlink",
+                      action="store_true", default=False,
+                      help="Print a warning rather than failing if "
+                           "files are installed over existing symlinks.")
+
     parser.add_option("--fail-if-inadequate",
                       action="store_true", default=False,
                       help="Fail on inadequate results from running adequate.")
@@ -3126,6 +3134,7 @@ def parse_command_line():
     settings.warn_on_others = opts.warn_on_others
     settings.warn_on_leftovers_after_purge = opts.warn_on_leftovers_after_purge
     settings.warn_on_debsums_errors = opts.warn_on_debsums_errors
+    settings.warn_on_install_over_symlink = opts.warn_on_install_over_symlink
     settings.warn_if_inadequate = not opts.fail_if_inadequate
     settings.pedantic_purge_test = opts.pedantic_purge_test
     settings.ignored_files += opts.ignore

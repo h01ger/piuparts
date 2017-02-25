@@ -1,6 +1,9 @@
 piuparts (0.76) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
+  * piuparts.py:
+    - Make install_over_symlink tests fail by default, add
+      --warn-on-install-over-symlink option to demote this to a warning.
   * Clean up leftover /etc/piuparts/scripts/post_setup_experimental.
     (Closes: #854317)
   * scripts/pre_distupgrade_zz_database-server: Switch from mysql-server to
