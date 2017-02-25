@@ -2872,8 +2872,7 @@ def parse_command_line():
     parser.add_option("--keep-sources-list",
                       action="store_true", default=False,
                       help="Don't modify the chroot's " +
-                           "etc/apt/sources.list (only makes sense " +
-                           "with --basetgz).")
+                           "etc/apt/sources.list.")
 
     parser.add_option("-l", "--log-file", "--logfile", metavar="FILENAME",
                       help="Write log file to FILENAME in addition to " +
@@ -3182,10 +3181,9 @@ def parse_command_line():
     settings.distro_config = piupartslib.conf.DistroConfig(
         DISTRO_CONFIG_FILE, settings.debian_mirrors[0][0])
 
-    if settings.keep_sources_list and \
-       (not settings.basetgz or len(settings.debian_distros) > 1):
-        logging.error("--keep-sources-list only makes sense with --basetgz "
-                      "and only one distribution")
+    if settings.keep_sources_list and len(settings.debian_distros) > 1:
+        logging.error("--keep-sources-list only makes sense "
+                      "with only one distribution")
         exitcode = 1
 
     if not args:

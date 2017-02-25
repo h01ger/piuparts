@@ -138,7 +138,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
  Use FILE as the keyring to use with debootstrap when creating chroots.
 
 *--keep-sources-list*::
-  Don't modify the chroot's etc/apt/sources.list (only makes sense with '--basetgz').
+  Don't modify the chroot's etc/apt/sources.list.
 
 *--list-installed-files*::
   List the files added to the chroot after the installation of the package and after the installation of the package dependencies.

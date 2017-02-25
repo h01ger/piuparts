@@ -12,6 +12,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
     started than defined in the configuration. Also add a check to ensure that
     this optional argument is an integer and within the defined maximum number
     of slaves.
+  * piuparty.ps: apply patch from Maxime Lareo to allow usage of
+    --keep-sources-list without --basetgz. (Closes: #841157)
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 06 Feb 2017 01:11:27 +0100
 
