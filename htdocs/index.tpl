@@ -74,7 +74,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2017-02-25</b> To cope with the ever increasing Debian archive, a second slave node was added to the <code>piuparts.debian.org setup</code>, so that now there is
+      <b>2017-02-25</b> To cope with the ever increasing Debian archive, a second slave node was added to the <code>piuparts.debian.org</code> setup, so that now there is
 	<a href="https://db.debian.org/machines.cgi?host=pejacevic">pejacevic<a>, the master host, plus
 	<a href="https://db.debian.org/machines.cgi?host=piu-slave-bm-a">piu-slave-bm-a</a>, the old node, and
 	<a href="https://db.debian.org/machines.cgi?host=piu-slave-ubc-01">piu-slave-ubc-01</a>, the new node. All these nodes still only run the <code>amd64</code> architecture,
