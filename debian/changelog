@@ -18,7 +18,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     piuparts.conf.pejacevic, with the only change being the Debian mirror.
     Thanks to DSA for setting up this 2nd test node!
   * htdocs/index.tpl:
-    - Announce 2nd piuparts-slave in htdocs/index.tpl
+    - Announce 2nd piuparts-slave and explain this is a three host setup now.
     - Make "contribute" a link.
 
  -- Andreas Beckmann <anbe@debian.org>  Mon, 06 Feb 2017 01:11:27 +0100
