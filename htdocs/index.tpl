@@ -74,11 +74,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2017-02-25</b> To cope with the ever increasing Debian archive, a second slave node was added to the <pre>piuparts.debian.org setup</pre>, so that now there is
+      <b>2017-02-25</b> To cope with the ever increasing Debian archive, a second slave node was added to the <code>piuparts.debian.org setup</code>, so that now there is
 	<a href="https://db.debian.org/machines.cgi?host=pejacevic">pejacevic<a>, the master host, plus
 	<a href="https://db.debian.org/machines.cgi?host=piu-slave-bm-a">piu-slave-bm-a</a>, the old node, and
-	<a href="https://db.debian.org/machines.cgi?host=piu-slave-ubc-01">piu-slave-ubc-01</a>, the new node. All these nodes still only run the <pre>amd64</pre> architecture,
-        help to extend the code (and the web UI) to support testing several architectures would be greatly appriciated. Many thanks to <a href="https://dsa.debian.org/">DSA</a> for maintaining the machines <pre>piuparts.debian.org</pre> is being run on!
+	<a href="https://db.debian.org/machines.cgi?host=piu-slave-ubc-01">piu-slave-ubc-01</a>, the new node. All these nodes still only run the <code>amd64</code> architecture,
+        help to extend the code (and the web UI) to support testing several architectures would be greatly appriciated. Many thanks to <a href="https://dsa.debian.org/">DSA</a> for maintaining the machines <code>piuparts.debian.org</code> is being run on!
      </td>
     </tr>
     <tr class="normalrow">
