@@ -180,7 +180,7 @@ More checks should be added as we become aware of them.
 
 == Authors
 
-Last updated: October 2014
+Last updated: February 2017
 
 Holger Levsen <holger@layer-acht.org>
 
