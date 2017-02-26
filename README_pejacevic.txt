@@ -10,10 +10,13 @@ piuparts-master and piuparts-slaves packages as described in
 
 == Installation
 
-piuparts.debian.org is a setup running on several systems:
-pejacevic.debian.org, running the piuparts-master instance and an apache
-webserver to display the results and piu-slave-bm-a.debian.org, running
-four piuparts-slave nodes to run the actual tests.
+piuparts.debian.org is a setup running on three systems:
+
+* pejacevic.debian.org, running the piuparts-master instance and an apache
+  webserver to display the results.
+* piu-slave-bm-a.debian.org, running four piuparts-slave nodes to run the
+  actual tests.
+* piu-slave-ubc-01.debian.org, running four piuparts-slave nodes as well.
 
 === piuparts installation from source
 
@@ -35,7 +38,7 @@ four piuparts-slave nodes to run the actual tests.
 === User setup
 
 On pejacevic the piuparts-master user piupartsm needs to be created, on
-piu-slave-bm-a a piupartss user is needed for the slave.
+piu-slave-bm-a and piu-slave-ubc-01 a piupartss user is needed for the slave.
 Both are members of the group piuparts and '/srv/piuparts.debian.org' needs to
 be chmod 2775 and chown piuparts(sm):piuparts.
 
@@ -67,7 +70,7 @@ command="/srv/piuparts.debian.org/share/piuparts/piuparts-master",from="2001:41c
 
 This is actually done by DSA:
 
-==== '/etc/sudoers' for piu-slave-bm-a and piu-slave-1und1-01
+==== '/etc/sudoers' for piu-slave-bm-a and piu-slave-ubc-01
 
 ----
 # The piuparts slave needs to handle chroots.
