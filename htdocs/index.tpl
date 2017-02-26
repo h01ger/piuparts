@@ -73,6 +73,15 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2017-02-25</b> To cope with the ever increasing Debian archive, a second slave node was added to the <pre>piuparts.debian.org setup</pre>, so that now there is
+	<a href="https://db.debian.org/machines.cgi?host=pejacevic">pejacevic<a>, the master host, plus
+	<a href="https://db.debian.org/machines.cgi?host=piu-slave-bm-a">piu-slave-bm-a</a>, the old node, and
+	<a href="https://db.debian.org/machines.cgi?host=piu-slave-ubc-01">piu-slave-ubc-01</a>, the new node. All these nodes still only run the <pre>amd64</pre> architecture,
+        help to extend the code (and the web UI) to support testing several architectures would be greatly appriciated. Many thanks to <a href="https://dsa.debian.org/">DSA</a> for maintaining the machines <pre>piuparts.debian.org</pre> is being run on!
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2016-12-20</b> Another suite added: <a href="https://piuparts.debian.org/sid-strict">sid-strict</a>, to test packages a bit stricter than usual: first instead of a simple install, an install, followed by a remove and then install is done and then file leftover after purge are also considered an error.
      </td>
     </tr>
