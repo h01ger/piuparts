@@ -5,15 +5,15 @@ piuparts (0.76) UNRELEASED; urgency=medium
     (Closes: #854317)
 
   [ Holger Levsen ]
-  * Update README_pejacevic.txt.
-  * Update (the unused example) piuparts.conf.piu-slave-1und1-01 to match
-    piuparts.conf.piu-slave-bm-a except for arch and mirror.
+  * piuparts.py: apply patch from Maxime Lareo to allow usage of
+    --keep-sources-list without --basetgz. (Closes: #841157)
   * slave_run: Fix bug which prevented a different number of slaves to be
     started than defined in the configuration. Also add a check to ensure that
     this optional argument is an integer and within the defined maximum number
     of slaves.
-  * piuparts.py: apply patch from Maxime Lareo to allow usage of
-    --keep-sources-list without --basetgz. (Closes: #841157)
+  * Update README_pejacevic.txt.
+  * Update (the unused example) piuparts.conf.piu-slave-1und1-01 to match
+    piuparts.conf.piu-slave-bm-a except for arch and mirror.
   * Add instances/piuparts.conf.piu-slave-ubc-01 based on
     piuparts.conf.pejacevic, with the only change being the Debian mirror.
     Thanks to DSA for setting up this 2nd test node!
