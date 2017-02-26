@@ -48,6 +48,8 @@ flags-end-jessie =
 # debsums failures won't be fixed in jessie, mostly related to
 # obsolete/renamed conffiles that moved to different packages
 	--warn-on-debsums-errors
+# won't be fixed in jessie
+	--warn-on-install-over-symlink
 
 # common flags for tests starting in wheezy
 flags-start-wheezy =
@@ -59,6 +61,8 @@ flags-end-wheezy =
 	--scriptsdir /etc/piuparts/scripts-wheezy
 # debsums failures won't be fixed in wheezy
 	--warn-on-debsums-errors
+# won't be fixed in wheezy
+	--warn-on-install-over-symlink
 
 # common flags for tests starting in squeeze
 flags-start-squeeze =
@@ -72,8 +76,9 @@ flags-start-squeeze =
 flags-end-squeeze =
 # extra fake-essential packages for successfully purging in squeeze
 	--scriptsdir /etc/piuparts/scripts-squeeze
-# debsums failures won't be fixed in squeeze
+# squeeze has been archived
 	--warn-on-debsums-errors
+	--warn-on-install-over-symlink
 
 # common flags for tests starting in lenny
 flags-start-lenny =
