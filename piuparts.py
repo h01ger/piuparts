@@ -1789,15 +1789,15 @@ class Chroot:
     def run_scripts(self, step, ignore_errors=False):
         """ Run custom scripts to given step post-install|remove|purge"""
 
+        errorcodes = 0
         if not settings.scriptsdirs:
-            return
+            return errorcodes
         logging.info("Running scripts " + step)
         basepath = self.relative("tmp/scripts/")
         if not os.path.exists(basepath):
             logging.error("Scripts directory %s does not exist" % basepath)
             panic()
         list_scripts = sorted(os.listdir(basepath))
-        errorcodes=0
         for vfile in list_scripts:
             if vfile.startswith(step):
                 script = os.path.join("tmp/scripts", vfile)

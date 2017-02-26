@@ -2,6 +2,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Do not require --scriptsdir for proper operation.  (Closes: #855038)
     - Make install_over_symlink tests fail by default, add
       --warn-on-install-over-symlink option to demote this to a warning.
   * piuparts.conf:
