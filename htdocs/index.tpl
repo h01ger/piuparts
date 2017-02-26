@@ -53,7 +53,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      You can talk to us on #debian-qa on irc.debian.org (OFTC) or send an email on the <a href="https://lists.alioth.debian.org/mailman/listinfo/piuparts-devel" target="_blank">piuparts development mailinglist</a>. The best ways to contribute are to provide patches via GIT pull requests and/or to file bugs based on piuparts runs.
+      You can talk to us on #debian-qa on irc.debian.org (OFTC) or send an email on the <a href="https://lists.alioth.debian.org/mailman/listinfo/piuparts-devel" target="_blank">piuparts development mailinglist</a>. The best ways to <a href="https://anonscm.debian.org/git/piuparts/piuparts.git/tree/CONTRIBUTING">contribute</a> are to provide patches via GIT pull requests and/or to file bugs based on piuparts runs.
      </td>
     </tr>
     <tr class="normalrow">
