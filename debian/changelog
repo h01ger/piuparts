@@ -16,8 +16,11 @@ piuparts (0.76) UNRELEASED; urgency=medium
     in filenames.
 
   [ Holger Levsen ]
-  * piuparts.py: apply patch from Maxime Lareo to allow usage of
-    --keep-sources-list without --basetgz. (Closes: #841157)
+  * piuparts.py:
+    - Apply patch from Maxime Lareo to allow usage of --keep-sources-list
+      without --basetgz. (Closes: #841157)
+    - Add to ignored_patterns:
+      + /srv/.* (Closes: #848186)
   * slave_run: Fix bug which prevented a different number of slaves to be
     started than defined in the configuration. Also add a check to ensure that
     this optional argument is an integer and within the defined maximum number

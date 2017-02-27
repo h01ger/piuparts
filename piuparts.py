@@ -400,6 +400,7 @@ class Settings:
             "/var/spool/news/.*",
             "/var/spool/squid/(../.*)?",
             "/var/www/.*",
+            "/srv/.*", # 848186
             # HACKS
             "/lib/modules/.*/modules.*",
         ]
