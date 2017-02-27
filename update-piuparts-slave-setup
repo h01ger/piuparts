@@ -5,7 +5,7 @@ set -e
 #  update piuparts slave setup from git (eg. used on piu-slave-*.debian.org)
 #
 
-# Copyright 2009-2013 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2013, 2017 Holger Levsen (holger@layer-acht.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -92,7 +92,15 @@ done
 #
 # create working dir
 #
-mkdir -p $PIUPARTS_TMPDIR
+if [ ! -d $PIUPARTS_TMPDIR ] ; then
+	if ! [ -L $PIUPARTS_TMPDIR ] && [ -d /srv/piuparts-workspace ] ; then
+		ln -sf /srv/piuparts-workspace $PIUPARTS_TMPDIR
+	fi
+fi
+if [ ! -d $PIUPARTS_TMPDIR ] && [ ! -L $PIUPARTS_TMPDIR ] ; then
+	echo "$PIUPARTS_TMPDIR is neither a directory nor link, please fix."
+	exit 1
+fi
 
 #
 # update slave home
