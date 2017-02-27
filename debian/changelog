@@ -28,6 +28,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * Add instances/piuparts.conf.piu-slave-ubc-01 based on
     piuparts.conf.pejacevic, with the only change being the Debian mirror.
     Thanks to DSA for setting up this 2nd test node!
+  * Update instances/piuparts.conf.piu-slave-1und1-01 to match the other
+    examples, except for the wanted differences (=arch and mirror).
   * htdocs/index.tpl:
     - Announce 2nd piuparts-slave and explain this is a three host setup now.
     - Make "contribute" a link.
