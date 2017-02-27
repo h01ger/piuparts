@@ -74,6 +74,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2017-02-27</b> Thanks again to DSA, <a href="https://munin.debian.org/debian.org/pejacevic.debian.org/cpu.html">pejacevic.debian.org</a> is now a quad-core system instead of the single core system it was until now.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2017-02-25</b> To cope with the ever increasing Debian archive, a second slave node was added to the <code>piuparts.debian.org</code> setup, so that now there is
 	<a href="https://db.debian.org/machines.cgi?host=pejacevic">pejacevic<a>, the master host, plus
 	<a href="https://db.debian.org/machines.cgi?host=piu-slave-bm-a">piu-slave-bm-a</a>, the old node, and
