@@ -1,6 +1,11 @@
 #!/bin/sh
 set -e
 
+# Skip while creating the reference chroot.
+if [ "$PIUPARTS_PHASE" = "" ]; then
+	exit 0
+fi
+
 is_installed()
 {
 	local pkg="$1"
@@ -11,10 +16,13 @@ is_installed()
 	return 0
 }
 
-# Skip while creating the reference chroot.
-if [ "$PIUPARTS_PHASE" = "" ]; then
-	exit 0
-fi
+retry_configure_pending()
+{
+	echo ""
+	echo "Upgrade didn't go smooth, trying dpkg --configure --pending"
+	dpkg --configure --pending
+}
+
 
 CANDIDATES=
 CANDIDATES="$CANDIDATES default-mysql-server"
@@ -42,6 +50,7 @@ esac
 
 PACKAGES=
 SWITCH_TO_MARIADB=
+RETRY="false"
 
 # early upgrade runs into even more trouble for some packages ...
 case ${PIUPARTS_OBJECTS%%=*} in
@@ -59,6 +68,9 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ]; then
 		bacula-director-mysql|\
 		bacula-director-mysql-dbg)
 			SWITCH_TO_MARIADB=yes
+			# (new) transitively recommended package mariadb-server-x.y gets
+			# configured (and the server started) too late (after ourselves)
+			RETRY="retry_configure_pending"
 			;;
 		bareos-database-mysql)
 			SWITCH_TO_MARIADB=yes
@@ -114,7 +126,7 @@ if [ -n "$PACKAGES" ]
 then
 	echo "Upgrading ${PACKAGES# } early"
 	apt-get update
-	apt-get -y install $PACKAGES
+	apt-get -y install $PACKAGES || $RETRY
 fi
 
 upgrade_pg_cluster()
