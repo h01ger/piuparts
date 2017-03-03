@@ -59,7 +59,9 @@ case "$PIUPARTS_DISTRIBUTION" in
 	stretch*|sid)
 		case ${PIUPARTS_OBJECTS%%=*} in
 			init|\
-			ltsp-client)
+			education-thin-client|\
+			ltsp-client|\
+			ltsp-client-core)
 				log_debug
 				# requires removal of essential packages
 				if [ ! -f /etc/apt/apt.conf.d/piuparts-allow-remove-essential ]

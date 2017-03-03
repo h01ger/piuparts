@@ -16,6 +16,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
     database server was started too late - after a client tried to access it.
   * scripts/pre_remove_40_find_missing_md5sums: Correctly escape backslashes
     in filenames.
+  * scripts/pre_remove_exceptions: Handle removal of more packages pulling in
+    'init'.
 
   [ Holger Levsen ]
   * piuparts.py:
