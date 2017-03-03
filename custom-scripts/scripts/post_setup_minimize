@@ -5,6 +5,9 @@ set -e
 if [ "${PIUPARTS_OBJECTS%%=*}" = "dpkg" ]
 then
 	case $PIUPARTS_DISTRIBUTION in
+		jessie)
+			dpkg --purge gcc-4.8-base
+			;;
 		sid|stretch)
 			dpkg --purge lsb-base tzdata
 			;;
