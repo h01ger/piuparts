@@ -25,6 +25,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * scripts/pre_remove_exceptions: Handle removal of more packages pulling in
     'init'.
   * Add bug template for failing to upgrade from testing to sid.
+  * Add bug template for shipping broken symlinks.
 
   [ Holger Levsen ]
   * piuparts.py:
