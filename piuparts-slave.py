@@ -758,7 +758,7 @@ class Section:
             ret, f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
             if not f or f[-1] != '\n':
                 f += '\n'
-            output.write(f)
+            output.write(f.replace('\033', '[ESC]'))
             lastline = f.split('\n')[-2]
             if ret < 0:
                 output.write(" *** Process KILLED - exceed maximum run time ***\n")

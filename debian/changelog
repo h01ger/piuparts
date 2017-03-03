@@ -8,6 +8,9 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * piuparts.conf:
     - Set --warn-on-install-over-symlink for tests ending before stretch.
   * piuparts.conf.anbe: Add some more example sections.
+  * piuparts-slave.py:
+    - Replace literal ESC (0x1b) chars with string '[ESC]' for easier
+      copy+paste from logfiles.
   * Clean up leftover /etc/piuparts/scripts/post_setup_experimental.
     (Closes: #854317)
   * scripts/pre_distupgrade_zz_database-server: Switch from mysql-server to
