@@ -106,6 +106,7 @@ sections =
 	jessie2proposed/main
 	jessie2stretch/main
 	jessie2stretch-rcmd_i386/main
+	jessie2stretch-iri/main
 	jessie2bpo2stretch/main
 	wheezy2proposed/main
 	wheezy2jessie/main
@@ -150,6 +151,7 @@ sections =
 	jessie2proposed/contrib
 	jessie2stretch/contrib
 	jessie2stretch-rcmd_i386/contrib
+	jessie2stretch-iri/contrib
 	jessie2bpo2stretch/contrib
 	wheezy2proposed/contrib
 	wheezy2jessie/contrib
@@ -194,6 +196,7 @@ sections =
 	jessie2proposed/non-free
 	jessie2stretch/non-free
 	jessie2stretch-rcmd_i386/non-free
+	jessie2stretch-iri/non-free
 	jessie2bpo2stretch/non-free
 	wheezy2proposed/non-free
 	wheezy2jessie/non-free
@@ -2502,6 +2505,49 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch-rcmd_i386/main jessie2stretch-rcmd_i386/contrib
 arch = i386
+area = non-free
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+
+[jessie2stretch-iri/main]
+precedence = 90
+description = Debian %(area)s: package installation and removal in jessie, then upgrade to stretch, installation, removal, and purge test.
+piuparts-flags =
+	--install-remove-install
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+arch = amd64
+area = main
+components = main
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+[jessie2stretch-iri/contrib]
+precedence = 95
+description = Debian %(area)s: package installation and removal in jessie, then upgrade to stretch, installation, removal, and purge test.
+piuparts-flags =
+	--install-remove-install
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+depends-sections = jessie2stretch-iri/main jessie2stretch-iri/non-free
+arch = amd64
+area = contrib
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+[jessie2stretch-iri/non-free]
+precedence = 95
+description = Debian %(area)s: package installation and removal in jessie, then upgrade to stretch, installation, removal, and purge test.
+piuparts-flags =
+	--install-remove-install
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+depends-sections = jessie2stretch-iri/main jessie2stretch-iri/contrib
+arch = amd64
 area = non-free
 distro = jessie
 upgrade-test-distros = jessie stretch
