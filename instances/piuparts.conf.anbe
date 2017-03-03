@@ -113,6 +113,7 @@ sections =
 	wheezy2jessie-rcmd_i386/main
 	wheezy2jessie-sysv/main
 	wheezy2jessie-apt1st/main
+	wheezy2jessie-iri/main
 	wheezy2bpo2jessie/main
 	wheezy222testing/main
 	squeeze222testing/main
@@ -156,6 +157,7 @@ sections =
 	wheezy2jessie-rcmd_i386/contrib
 	wheezy2jessie-sysv/contrib
 	wheezy2jessie-apt1st/contrib
+	wheezy2jessie-iri/contrib
 	wheezy2bpo2jessie/contrib
 	wheezy222testing/contrib
 	squeeze222testing/contrib
@@ -199,6 +201,7 @@ sections =
 	wheezy2jessie-rcmd_i386/non-free
 	wheezy2jessie-sysv/non-free
 	wheezy2jessie-apt1st/non-free
+	wheezy2jessie-iri/non-free
 	wheezy2bpo2jessie/non-free
 	wheezy222testing/non-free
 	squeeze222testing/non-free
@@ -2253,6 +2256,49 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	--scriptsdir /etc/piuparts/scripts-apt-first
 depends-sections = wheezy2jessie-apt1st/main wheezy2jessie-apt1st/contrib
+arch = amd64
+area = non-free
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+
+[wheezy2jessie-iri/main]
+precedence = 90
+description = Debian %(area)s: package installation and removal in wheezy, then upgrade to jessie, installation, removal, and purge test.
+piuparts-flags =
+	--install-remove-install
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+arch = amd64
+area = main
+components = main
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie-iri/contrib]
+precedence = 95
+description = Debian %(area)s: package installation and removal in wheezy, then upgrade to jessie, installation, removal, and purge test.
+piuparts-flags =
+	--install-remove-install
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+depends-sections = wheezy2jessie-iri/main wheezy2jessie-iri/non-free
+arch = amd64
+area = contrib
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie-iri/non-free]
+precedence = 95
+description = Debian %(area)s: package installation and removal in wheezy, then upgrade to jessie, installation, removal, and purge test.
+piuparts-flags =
+	--install-remove-install
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+depends-sections = wheezy2jessie-iri/main wheezy2jessie-iri/contrib
 arch = amd64
 area = non-free
 distro = wheezy
