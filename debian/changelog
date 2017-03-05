@@ -10,6 +10,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
     - Make install_over_symlink tests fail by default, add
       --warn-on-install-over-symlink option to demote this to a warning.
     - Add --install-suggests option.
+    - Fall back to generating the reference chroot state on-the-fly if the
+      --end-meta file is missing.
   * piuparts.conf:
     - Use --warn-on-install-over-symlink for tests ending before stretch.
     - Enable scripts-log-alternatives for [sid] and [stretch].  (See: #850917)

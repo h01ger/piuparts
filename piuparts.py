@@ -2630,10 +2630,15 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     chroot = get_chroot()
     chroot.create()
 
+    chroot_state = None
     if settings.end_meta:
-        # load root_info and selections
-        chroot_state = load_meta_data(settings.end_meta)
-    else:
+        if os.path.exists(settings.end_meta):
+            # load root_info and selections
+            chroot_state = load_meta_data(settings.end_meta)
+        else:
+            logging.info("Cannot load chroot state from %s - generating it on-the-fly." % settings.end_meta)
+
+    if chroot_state is None:
         temp_tgz = None
         if chroot.was_bootstrapped():
             temp_tgz = chroot.create_temp_tgz_file()
