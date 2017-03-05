@@ -49,6 +49,7 @@ python-syntax-check:
 build: build-stamp
 
 build-stamp: $(SCRIPTS_GENERATED) $(DOCS_GENERATED) Makefile
+	$(MAKE) -C instances
 	$(MAKE) python-syntax-check
 	touch $@
 
@@ -154,6 +155,7 @@ clean:
 	rm -f piuparts.1.xml README.xml README_server.xml docbook-xsl.css piuparts.html
 	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc tests/*.pyc
 	rm -f $(SCRIPTS_GENERATED)
+	$(MAKE) -C instances clean
 
 
 # for maintainer convenience only

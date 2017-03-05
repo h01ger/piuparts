@@ -128,7 +128,7 @@ sections =
 	squeeze2squeeze-lts
 	squeeze
 	lenny2squeeze
-mirror = http://mirror.1und1.de/debian/
+mirror = @MIRROR@
 master-host = pejacevic.debian.org
 master-user = piupartsm
 bts-from = piuparts-devel@lists.alioth.debian.org
@@ -147,7 +147,7 @@ backup-directory = /srv/piuparts.debian.org/backup
 tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /
 components = main
-arch = i386
+arch = @ARCH@
 area = main
 # the slave-count setting is for the slave(s)
 slave-count = 4
@@ -233,6 +233,7 @@ depends-sections = sid
 [sid]
 precedence = 1
 piuparts-flags =
+	--scriptsdir /etc/piuparts/scripts-log-alternatives
 	%(flags-default)s
 distro = sid
 
@@ -279,6 +280,7 @@ upgrade-test-distros = sid experimental
 [stretch]
 precedence = 3
 piuparts-flags =
+	--scriptsdir /etc/piuparts/scripts-log-alternatives
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s

@@ -12,6 +12,10 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * piuparts-slave.py:
     - Replace literal ESC (0x1b) chars with string '[ESC]' for easier
       copy+paste from logfiles.
+  * instances/*: Generate the config files piuparts.conf.pejacevic,
+    piuparts.conf.piu-slave-bm-a, piuparts.conf.piu-slave-ubc-01 (new) and
+    piuparts.conf.piu-slave-1und1-01 (unused) from a common template to keep
+    the settings in sync, since they should only differ in mirror and arch.
   * Clean up leftover /etc/piuparts/scripts/post_setup_experimental.
     (Closes: #854317)
   * scripts/post_setup_minimize:
@@ -39,13 +43,6 @@ piuparts (0.76) UNRELEASED; urgency=medium
     this optional argument is an integer and within the defined maximum number
     of slaves.
   * Update README_pejacevic.txt and README_server.txt.
-  * Update (the unused example) piuparts.conf.piu-slave-1und1-01 to match
-    piuparts.conf.piu-slave-bm-a except for arch and mirror.
-  * Add instances/piuparts.conf.piu-slave-ubc-01 based on
-    piuparts.conf.pejacevic, with the only change being the Debian mirror.
-    Thanks to DSA for setting up this 2nd test node!
-  * Update instances/piuparts.conf.piu-slave-1und1-01 to match the other
-    examples, except for the wanted differences (=arch and mirror).
   * Drop instances/piuparts.conf.lamarr and …/piuparts.conf.goldwasser.
   * htdocs/index.tpl:
     - Announce 2nd piuparts-slave and explain this is a three host setup now.
