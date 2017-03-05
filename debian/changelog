@@ -48,6 +48,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     started than defined in the configuration. Also add a check to ensure that
     this optional argument is an integer and within the defined maximum number
     of slaves.
+  * slave_stop: New script to stop all piuparts-slaves on a host.
   * Update README_pejacevic.txt and README_server.txt.
   * Drop instances/piuparts.conf.lamarr and …/piuparts.conf.goldwasser.
   * htdocs/index.tpl:

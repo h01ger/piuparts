@@ -75,6 +75,7 @@ To set this up for yourself, the following steps should suffice:
  '/usr/share/doc/piuparts-slave/examples/' to learn which.
 . Run '/usr/bin/piuparts_slave_run' and 'piuparts_slave_join' to actually
  let the slave(s) run and to join their sessions.
+. Run '/usr/bin/piuparts_slave_stop' to stop all piuparts-slaves on a host.
 . The logs go into the master account, into subdirectories.
 
 === Tuning the setup

@@ -1,2 +1,3 @@
 /usr/share/piuparts/slave/slave_run /usr/bin/piuparts_slave_run
 /usr/share/piuparts/slave/slave_join /usr/bin/piuparts_slave_join
+/usr/share/piuparts/slave/slave_stop /usr/bin/piuparts_slave_stop
