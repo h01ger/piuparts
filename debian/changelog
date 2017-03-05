@@ -35,6 +35,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * scripts/pre_remove_exceptions: Handle removal of more packages pulling in
     'init'.
   * Add/update exceptions for ancient packages.
+  * master-bin/detect_piuparts_issues: Recognize more cases of full disks.
   * Add bug template for failing to upgrade from testing to sid.
   * Add bug template for shipping broken symlinks.
 
