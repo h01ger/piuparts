@@ -38,7 +38,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     started than defined in the configuration. Also add a check to ensure that
     this optional argument is an integer and within the defined maximum number
     of slaves.
-  * Update README_pejacevic.txt.
+  * Update README_pejacevic.txt and README_server.txt.
   * Update (the unused example) piuparts.conf.piu-slave-1und1-01 to match
     piuparts.conf.piu-slave-bm-a except for arch and mirror.
   * Add instances/piuparts.conf.piu-slave-ubc-01 based on
@@ -46,6 +46,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     Thanks to DSA for setting up this 2nd test node!
   * Update instances/piuparts.conf.piu-slave-1und1-01 to match the other
     examples, except for the wanted differences (=arch and mirror).
+  * Drop instances/piuparts.conf.lamarr and …/piuparts.conf.goldwasser.
   * htdocs/index.tpl:
     - Announce 2nd piuparts-slave and explain this is a three host setup now.
     - Make "contribute" a link.

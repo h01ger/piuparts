@@ -571,7 +571,7 @@ link:https://anonscm.debian.org/cgit/piuparts/piuparts.git/tree/README_pejacevic
 To generate the report on the master host run:
 
 ----
-piupartsm@goldwasser:~$ /usr/share/piuparts/master/generate_daily_report
+piupartsm@pejacevic:~$ /usr/share/piuparts/master/generate_daily_report
 ----
 
 // vim: set filetype=asciidoc:
