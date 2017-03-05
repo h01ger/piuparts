@@ -40,6 +40,12 @@ if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
 			log_debug
 			apt-get install -yf libpam-cap
 			;;
+		ogre-doc-nonfree)
+			# #773059 - ogre-doc: unhandled symlink to directory conversion: /usr/share/doc/PACKAGE
+			# package removed after lenny
+			log_debug
+			apt-get install -yf ogre-1.8-doc
+			;;
 		phpgacl)
 			# #682825
 			# package not in wheezy
