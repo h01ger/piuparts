@@ -53,7 +53,7 @@ for SECTION in $SECTIONS ; do
 		fi
 	done
 	NUM_CPU=$(grep -c ^processor /proc/cpuinfo)
-	find archive/ -name '*.log' | xargs -P $NUM_CPU -r xz -f
+	find archive/ -name '*.log' | xargs -P $NUM_CPU -n 1 -r xz -f
 	if [ -n "$OUTPUT" ] ; then
 		echo
 		echo
