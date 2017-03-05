@@ -6,6 +6,9 @@ piuparts (0.77) UNRELEASED; urgency=medium
       packages.
     - Only warn on broken symlinks found between installing the dependencies
       of the package to be tested and installing the package itself.
+    - Keep track of md5sums of the list of available packages in the chroot
+      to recognize mirror pushes during distupgrade tests and outdated
+      --end-meta meta-data.
   * piupartslib/packagesdb.py:
     - Add new state "outdated" to ignore packages if a dependency distro
       already has a newer version.  (Closes: #856846)

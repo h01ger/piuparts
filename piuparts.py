@@ -748,6 +748,7 @@ class Chroot:
         self.name = None
         self.bootstrapped = False
         self.mounts = []
+        self.avail_md5_history = []
 
     def create_temp_dir(self):
         """Create a temporary directory for the chroot."""
@@ -799,6 +800,7 @@ class Chroot:
         if settings.basetgz or settings.schroot or settings.existing_chroot:
             self.run(["apt-get", "-yf", "dist-upgrade"])
         self.minimize()
+        self.remember_available_md5()
 
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
@@ -1086,6 +1088,13 @@ class Chroot:
             self.mount(bindmount, bindmount, opts="bind")
         self.run(["apt-get", "update"])
 
+    def remember_available_md5(self):
+        """Keep a history of 'apt-cache dumpavail | md5sum' after initial
+           setup and each dist-upgrade step to notice outdated reference
+           chroot metadata"""
+        errorcode, avail_md5 = self.run(["sh", "-c", "apt-cache dumpavail | md5sum"])
+        self.avail_md5_history.append(avail_md5.split()[0])
+
     def upgrade_to_distros(self, distros, packages):
         """Upgrade a chroot installation to each successive distro."""
         for distro in distros:
@@ -1096,6 +1105,7 @@ class Chroot:
             self.run_scripts("pre_distupgrade")
             self.run(["apt-get", "update"])
             self.run(["apt-get", "-yf", "dist-upgrade"])
+            self.remember_available_md5()
             os.environ["PIUPARTS_DISTRIBUTION_PREV"] = os.environ["PIUPARTS_DISTRIBUTION"]
             os.environ["PIUPARTS_DISTRIBUTION"] = settings.distro_config.get_distribution(distro)
             # Sometimes dist-upgrade won't upgrade the packages we want
@@ -1426,6 +1436,11 @@ class Chroot:
         """Restore package selections in a chroot to the state in
         'reference_chroot_state'."""
 
+        if reference_chroot_state["avail_md5"] != self.avail_md5_history:
+            logging.warn("History of available packages does not match - reference chroot may be outdated")
+            logging.debug(" reference: %s" % " ".join(reference_chroot_state["avail_md5"]))
+            logging.debug(" current  : %s" % " ".join(self.avail_md5_history))
+
         selections = reference_chroot_state["selections"]
         packages = unqualify(packages_qualified)
 
@@ -1548,6 +1563,7 @@ class Chroot:
 
     def get_state_meta_data(self):
         chroot_state = {}
+        chroot_state["avail_md5"] = self.avail_md5_history
         chroot_state["tree"] = self.get_tree_meta_data()
         chroot_state["selections"] = self.get_selections()
         chroot_state["diversions"] = self.get_diversions()
