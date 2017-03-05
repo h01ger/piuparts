@@ -279,7 +279,7 @@ basetgz-directory = /srv/piuparts/slave/basetgz
 output-directory = /srv/piuparts/htdocs
 backup-directory = /srv/piuparts/backup
 tmpdir = /tmp/piupartss
-slave-load-max = 9.5
+slave-load-max = 20.5
 idle-sleep = 1800
 max-tgz-age = -1
 max-reserved = 50
@@ -1012,7 +1012,7 @@ distro = jessie-proposed
 arch = amd64
 area = main
 components = main
-reschedule-old-count = 333
+reschedule-old-count = 500
 reschedule-old-days = 25
 
 [jessie-proposed/contrib]
@@ -1624,6 +1624,8 @@ components = main
 distro = lenny
 upgrade-test-distros = lenny squeeze wheezy jessie testing
 reschedule-old-count = 100
+expire-fail-days = 20
+reschedule-fail-days = 12
 
 [lenny222testing/contrib]
 precedence = 120
@@ -2218,6 +2220,7 @@ area = main
 components = main
 distro = wheezy
 upgrade-test-distros = wheezy jessie
+reschedule-old-count = 0
 
 [wheezy2jessie-sysv/contrib]
 precedence = 95
@@ -2233,6 +2236,7 @@ arch = amd64
 area = contrib
 distro = wheezy
 upgrade-test-distros = wheezy jessie
+reschedule-old-count = 0
 
 [wheezy2jessie-sysv/non-free]
 precedence = 95
@@ -2248,6 +2252,7 @@ arch = amd64
 area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy jessie
+reschedule-old-count = 0
 
 
 [wheezy2jessie-apt1st/main]
@@ -2264,6 +2269,7 @@ area = main
 components = main
 distro = wheezy
 upgrade-test-distros = wheezy jessie
+reschedule-old-count = 0
 
 [wheezy2jessie-apt1st/contrib]
 precedence = 95
@@ -2279,6 +2285,7 @@ arch = amd64
 area = contrib
 distro = wheezy
 upgrade-test-distros = wheezy jessie
+reschedule-old-count = 0
 
 [wheezy2jessie-apt1st/non-free]
 precedence = 95
@@ -2294,6 +2301,7 @@ arch = amd64
 area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy jessie
+reschedule-old-count = 0
 
 
 [wheezy2jessie-iri/main]
