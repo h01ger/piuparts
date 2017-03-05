@@ -36,6 +36,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * htdocs/index.tpl:
     - Announce 2nd piuparts-slave and explain this is a three host setup now.
     - Make "contribute" a link.
+  * archive_old_logs: use xargs -P to compress old logs in parallel.
 
   [ Michael Stapelberg ]
   * Add support for logging update-alternatives calls using optional
