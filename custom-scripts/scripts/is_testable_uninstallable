@@ -87,8 +87,4 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	usrmerge@*)
 		skip_always "performs piuparts-unfriendy filesystem layout changes"
 		;;
-	webissues-server@jessie)
-		# removed after jessie
-		skip_distupgrade "#677062: fails to purge - command ucf in postrm not found"
-		;;
 esac
