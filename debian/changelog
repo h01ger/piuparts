@@ -38,6 +38,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
     - Make "contribute" a link.
   * archive_old_logs: use xargs -P $NUM_CPU and -n 1 to compress old logs in
     parallel.
+  * update-piuparts-(master|slave)-setup: touch $PIUPARTS_TMPDIR/.nobackup to
+    exclude it from backups made by DSA.
 
   [ Michael Stapelberg ]
   * Add support for logging update-alternatives calls using optional

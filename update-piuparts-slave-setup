@@ -101,6 +101,8 @@ if [ ! -d $PIUPARTS_TMPDIR ] && [ ! -L $PIUPARTS_TMPDIR ] ; then
 	echo "$PIUPARTS_TMPDIR is neither a directory nor link, please fix."
 	exit 1
 fi
+# tell DSA not to back it up
+touch PIUPARTS_TMPDIR/.nobackup
 
 #
 # update slave home
