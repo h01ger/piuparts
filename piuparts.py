@@ -387,6 +387,7 @@ class Settings:
             "/var/lib/ucf/.*",
             "/var/lib/update-rc.d/.*",
             # application data
+            "/srv/.*",  # 848186
             "/var/lib/citadel/(data/.*)?",
             "/var/lib/mercurial-server/.*",
             "/var/lib/onak/.*",
@@ -399,7 +400,6 @@ class Settings:
             "/var/spool/news/.*",
             "/var/spool/squid/(../.*)?",
             "/var/www/.*",
-            "/srv/.*", # 848186
             # HACKS
             "/lib/modules/.*/modules.*",
         ]

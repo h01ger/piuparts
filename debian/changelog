@@ -8,8 +8,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
     - Make install_over_symlink tests fail by default, add
       --warn-on-install-over-symlink option to demote this to a warning.
   * piuparts.conf:
-    - Set --warn-on-install-over-symlink for tests ending before stretch.
-    - Enable scripts-log-alternatives for [sid] and [stretch]. (see #850917)
+    - Use --warn-on-install-over-symlink for tests ending before stretch.
+    - Enable scripts-log-alternatives for [sid] and [stretch].  (See: #850917)
   * piuparts.conf.anbe: Add some more example sections.
   * piuparts-slave.py:
     - Replace literal ESC (0x1b) chars with string '[ESC]' for easier
@@ -34,6 +34,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     in filenames.
   * scripts/pre_remove_exceptions: Handle removal of more packages pulling in
     'init'.
+  * Add/update exceptions for ancient packages.
   * Add bug template for failing to upgrade from testing to sid.
   * Add bug template for shipping broken symlinks.
 

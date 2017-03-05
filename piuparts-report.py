@@ -3,7 +3,7 @@
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
 # Copyright 2009-2014 Holger Levsen (holger@layer-acht.org)
-# Copyright © 2011-2014 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2011-2016 Andreas Beckmann (anbe@debian.org)
 # Copyright 2013 David Steele (dsteele@gmail.com)
 #
 # This program is free software; you can redistribute it and/or modify it
