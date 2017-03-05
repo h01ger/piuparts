@@ -28,7 +28,7 @@ get_config_value SLAVEROOT global slave-directory
 
 ( sleep 2 && pkill --signal INT --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' ) &
 cd $SLAVEROOT
-tail -f slave/screenlog.? &
+tail -f screenlog.? &
 
 while pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' ; do
 	sleep 1
