@@ -2,6 +2,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Remove from ignored_files:
+      - /usr/share/keyrings/debian-archive-removed-keys.gpg~
     - Do not require --scriptsdir for proper operation.  (Closes: #855038)
     - Make install_over_symlink tests fail by default, add
       --warn-on-install-over-symlink option to demote this to a warning.

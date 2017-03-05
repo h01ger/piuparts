@@ -261,7 +261,6 @@ class Settings:
             "/etc/apt/trustdb.gpg",
             "/etc/apt/trusted.gpg",
             "/etc/apt/trusted.gpg~",
-            "/usr/share/keyrings/debian-archive-removed-keys.gpg~",
             "/var/cache/apt/archives/lock",
             "/var/cache/apt/archives/partial/",
             "/var/cache/apt/pkgcache.bin",
