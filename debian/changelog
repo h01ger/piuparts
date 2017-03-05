@@ -20,6 +20,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     (Closes: #854317)
   * scripts/post_setup_minimize:
     - Exclude gcc-4.8-base from jessie chroot.
+  * scripts/pre_install_database-server: Add/fix some database requirements.
   * scripts/pre_distupgrade_zz_database-server: Switch from mysql-server to
     default-mysql-server (aka mariadb-server) for selected packages on
     upgrades to stretch, otherwise they will lose their database server.

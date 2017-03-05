@@ -95,6 +95,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	libdspam7-drv-mysql)			MYSQL=yes ;;
 	libdspam7-drv-pgsql)			POSTGRESQL=yes ;;
 	mantis)					MYSQL=yes ;;
+	med-bio-dev)				POSTGRESQL=yes ;;
 	moodle)					POSTGRESQL=yes ; MYSQL=yes ;;
 	moodle-book)				POSTGRESQL=yes ;;
 	moodle-debian-edu-*)			POSTGRESQL=yes ;;
@@ -169,7 +170,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 	tango-db-dbg)				MYSQL=yes ;;
 	textpattern)				MYSQL=yes ;;
 	torrentflux)				MYSQL=yes ;;
-	tt-rss)					POSTGRESQL=yes ;;
+	tt-rss)					MYSQL=yes ;;
 	tuskar)					SQLITE3=yes ;;
 	tuskar-api)				SQLITE3=yes ;;
 	tuskar-common)				SQLITE3=yes ;;
