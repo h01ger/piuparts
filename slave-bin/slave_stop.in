@@ -24,15 +24,18 @@ set -e
 . @sharedir@/piuparts/lib/read_config.sh
 
 get_config_value SLAVEROOT global slave-directory
+get_config_value SLAVECOUNT global slave-count 1
 
-
-( sleep 2 && pkill --signal INT --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' ) &
+( sleep 1 && pkill --signal INT --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' ) &
 cd $SLAVEROOT
-tail -f screenlog.? &
+for i in $(seq 1 $SLAVECOUNT) ; do
+	tail -f screenlog.$i &
+done
 
-while pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' ; do
+while ( pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs echo "slaves running: " ) ; do
 	sleep 1
 done
 
-pkill --full 'tail -f slave/screenlog.?'
+pkill --full 'tail -f slave/screenlog.'
 
+echo "All slaves have stop running now."
