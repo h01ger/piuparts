@@ -14,6 +14,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * piuparts-slave.py:
     - Replace literal ESC (0x1b) chars with string '[ESC]' for easier
       copy+paste from logfiles.
+  * piuparts-analyze.py:
+    - Also process untestable/*.log.
   * instances/*: Generate the config files piuparts.conf.pejacevic,
     piuparts.conf.piu-slave-bm-a, piuparts.conf.piu-slave-ubc-01 (new) and
     piuparts.conf.piu-slave-1und1-01 (unused) from a common template to keep

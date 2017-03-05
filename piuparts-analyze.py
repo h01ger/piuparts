@@ -174,7 +174,7 @@ def bts_update_found(bugnr, newversion):
 
 
 def mark_logs_with_reported_bugs():
-    for failed_log in find_logs("fail"):
+    for failed_log in find_logs("fail") + find_logs("untestable"):
         try:
             pname = package_name(failed_log)
             pversion = package_source_version(failed_log)
