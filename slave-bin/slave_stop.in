@@ -32,7 +32,8 @@ for i in $(seq 1 $SLAVECOUNT) ; do
 	tail -f screenlog.$i &
 done
 
-while ( pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs echo "slaves running: " ) ; do
+while pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' ; do
+	pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs -r echo "slaves running: "
 	sleep 1
 done
 
