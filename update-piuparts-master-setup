@@ -105,7 +105,7 @@ done
 #
 mkdir -p $PIUPARTS_TMPDIR
 # tell DSA not to back it up
-touch PIUPARTS_TMPDIR/.nobackup
+touch $PIUPARTS_TMPDIR/.nobackup
 
 #
 # update master home

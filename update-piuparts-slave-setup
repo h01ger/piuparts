@@ -102,7 +102,7 @@ if [ ! -d $PIUPARTS_TMPDIR ] && [ ! -L $PIUPARTS_TMPDIR ] ; then
 	exit 1
 fi
 # tell DSA not to back it up
-touch PIUPARTS_TMPDIR/.nobackup
+touch $PIUPARTS_TMPDIR/.nobackup
 
 #
 # update slave home
