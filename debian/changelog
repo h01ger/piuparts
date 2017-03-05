@@ -7,7 +7,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
       --warn-on-install-over-symlink option to demote this to a warning.
   * piuparts.conf:
     - Set --warn-on-install-over-symlink for tests ending before stretch.
-    - Enable scripts-log-alternatives for [sid] and [stretch].
+    - Enable scripts-log-alternatives for [sid] and [stretch]. (see #850917)
   * piuparts.conf.anbe: Add some more example sections.
   * piuparts-slave.py:
     - Replace literal ESC (0x1b) chars with string '[ESC]' for easier
