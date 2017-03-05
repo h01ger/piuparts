@@ -249,6 +249,10 @@ if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 			log_debug
 			apt-get -y install defoma
 			;;
+		ttf-mscorefonts-installer)
+			log_debug
+			apt-get -y install ca-certificates
+			;;
 	esac
 
 	# prefer inn over cnews (bad version number cr.g7-40.4)
