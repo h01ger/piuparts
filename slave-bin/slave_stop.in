@@ -26,21 +26,30 @@ set -e
 get_config_value SLAVEROOT global slave-directory
 get_config_value SLAVECOUNT global slave-count 1
 
-pkill --signal INT --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' &
+
+cleanup_tails() {
+	pkill --full 'tail -f screenlog.'
+}
+
 cd $SLAVEROOT
+trap cleanup_tails INT TERM EXIT
 for i in $(seq 1 $SLAVECOUNT) ; do
 	tail -f screenlog.$i &
 done
+sleep 0.5
+pkill --signal INT --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave'
 
 i=1
 while pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' > /dev/null ; do
 	echo -n "$(date -u +%T) - "
-	pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs -r echo "slaves running: "
-	sleep $(( $i * $i ))
+	pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs -r echo -n "slaves running: "
+        SLEEP=$(( $i * $i ))
+	echo " sleeping ${SLEEP}sec now..."
 	i=$(( $i + 1 ))
 done
 echo -n "$(date -u +%T) - "
-pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs echo "slaves running: "
+pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs echo "slaves running: (should list none) "
 
+trap - INT TERM EXIT
 pkill --full 'tail -f screenlog.'
 pkill --full 'SCREEN -S piuparts_slave_screen -d -m'
