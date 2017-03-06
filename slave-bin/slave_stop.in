@@ -32,10 +32,15 @@ for i in $(seq 1 $SLAVECOUNT) ; do
 	tail -f screenlog.$i &
 done
 
+i=1
 while pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' > /dev/null ; do
+	echo -n "$(date -u +%T) - "
 	pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs -r echo "slaves running: "
-	sleep 1
+	sleep $(( $i * $i ))
+	let i+=1
 done
+echo -n "$(date -u +%T) - "
+pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs echo "slaves running: "
 
 pkill --full 'tail -f screenlog.'
 pkill --full 'SCREEN -S piuparts_slave_screen -d -m'
