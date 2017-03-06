@@ -37,7 +37,7 @@ while pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piup
 	echo -n "$(date -u +%T) - "
 	pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs -r echo "slaves running: "
 	sleep $(( $i * $i ))
-	let i+=1
+	i=$(( $i + 1 ))
 done
 echo -n "$(date -u +%T) - "
 pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs echo "slaves running: "
