@@ -45,6 +45,7 @@ while pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piup
 	pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs -r echo -n "slaves running: "
         SLEEP=$(( $i * $i ))
 	echo " sleeping ${SLEEP}sec now..."
+	sleep $SLEEP
 	i=$(( $i + 1 ))
 done
 echo -n "$(date -u +%T) - "
