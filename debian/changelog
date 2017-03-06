@@ -70,6 +70,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
     parallel.
   * update-piuparts-(master|slave)-setup: touch $PIUPARTS_TMPDIR/.nobackup to
     exclude it from backups made by DSA.
+  * conf/crontab-master.in: try to run piuparts-report three times a day
+    instead of four, which hasn't worked out for a long time.
 
   [ Michael Stapelberg ]
   * Add support for logging update-alternatives calls using optional

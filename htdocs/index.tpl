@@ -59,7 +59,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      These pages are updated every six hours.
+      These pages are updated every eight hours.
      </td>
     </tr>
     <tr class="normalrow">
@@ -70,6 +70,11 @@
     <tr class="titlerow">
      <td class="titlecell">
       News
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2017-03-06</b> Try to update the webpages three times a day instead of four. In the past the updates took longer than six hours, so effectivly only two updates per day were done.
      </td>
     </tr>
     <tr class="normalrow">
