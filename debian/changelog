@@ -43,6 +43,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     scripts/is_testable_uninstallable, scripts/post_distupgrade_exceptions and
     scripts/pre_install_exceptions.
   * master-bin/detect_piuparts_issues: Recognize more cases of full disks.
+  * master-bin/detect_network_issues: Recognize unauthenticated packages.
   * Add known_problems/problems_and_no_force_issue.conf to recognize the
     apt 1.1 message on attempted removal of essential packages.
   * Add bug template for failing to upgrade from testing to sid.
