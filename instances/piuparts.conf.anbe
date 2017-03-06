@@ -126,6 +126,7 @@ sections =
 	sid/contrib
 	sid-plus/contrib
 	sid-rcmd/contrib
+	sid-bl/contrib
 	sid-ipi/contrib
 	testing-rcmd/contrib
 	testing-nodocs/contrib
@@ -171,6 +172,7 @@ sections =
 	sid/non-free
 	sid-plus/non-free
 	sid-rcmd/non-free
+	sid-bl/non-free
 	sid-ipi/non-free
 	testing-rcmd/non-free
 	testing-nodocs/non-free
@@ -664,6 +666,30 @@ distro = sid
 arch = amd64
 area = main
 components = main
+
+[sid-bl/contrib]
+precedence = 130
+description = + Failing on broken symlinks.
+piuparts-flags =
+	%(flags-leftovers)s
+	--fail-on-broken-symlinks
+	--install-recommends
+depends-sections = sid-bl/main sid-bl/non-free
+distro = sid
+arch = amd64
+area = contrib
+
+[sid-bl/non-free]
+precedence = 130
+description = + Failing on broken symlinks.
+piuparts-flags =
+	%(flags-leftovers)s
+	--fail-on-broken-symlinks
+	--install-recommends
+depends-sections = sid-bl/main sid-bl/contrib
+distro = sid
+arch = amd64
+area = non-free
 
 
 [testing-rcmd/main]
