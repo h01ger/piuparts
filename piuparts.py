@@ -168,6 +168,7 @@ class Settings:
         self.do_not_verify_signatures = False
         self.no_check_valid_until = False
         self.install_recommends = False
+        self.install_suggests = False
         self.eatmydata = True
         self.dpkg_force_unsafe_io = True
         self.dpkg_force_confdef = False
@@ -967,7 +968,7 @@ class Chroot:
         """Create /etc/apt/apt.conf.d/piuparts inside the chroot."""
         lines = ['APT::Get::Assume-Yes "yes";\n']
         lines.append('APT::Install-Recommends "%d";\n' % int(settings.install_recommends))
-        lines.append('APT::Install-Suggests "0";\n')
+        lines.append('APT::Install-Suggests "%d";\n' % int(settings.install_suggests))
         lines.append('APT::Get::AllowUnauthenticated "%s";\n' % settings.apt_unauthenticated)
         lines.append('Acquire::PDiffs "false";\n')
         if settings.no_check_valid_until:
@@ -2865,6 +2866,10 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Enable the installation of Recommends.")
 
+    parser.add_option("--install-suggests",
+                      action="store_true", default=False,
+                      help="Enable the installation of Suggests.")
+
     parser.add_option("-k", "--keep-tmpdir",
                       action="store_true", default=False,
                       help="Don't remove the temporary directory for the " +
@@ -3095,6 +3100,7 @@ def parse_command_line():
         settings.apt_unauthenticated = "No"
     settings.no_check_valid_until = opts.no_check_valid_until
     settings.install_recommends = opts.install_recommends
+    settings.install_suggests = opts.install_suggests
     settings.eatmydata = not opts.no_eatmydata
     settings.dpkg_force_unsafe_io = not opts.dpkg_noforce_unsafe_io
     settings.dpkg_force_confdef = opts.dpkg_force_confdef

@@ -128,6 +128,9 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *--install-recommends*::
   Enable installation of Recommends.
 
+*--install-suggests*::
+  Enable installation of Suggests.
+
 *--install-remove-install*::
   Remove package after installation and reinstall. For testing installation in config-files-remaining state.
 

@@ -9,6 +9,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     - Do not require --scriptsdir for proper operation.  (Closes: #855038)
     - Make install_over_symlink tests fail by default, add
       --warn-on-install-over-symlink option to demote this to a warning.
+    - Add --install-suggests option.
   * piuparts.conf:
     - Use --warn-on-install-over-symlink for tests ending before stretch.
     - Enable scripts-log-alternatives for [sid] and [stretch].  (See: #850917)
