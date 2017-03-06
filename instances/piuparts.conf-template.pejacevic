@@ -113,6 +113,7 @@ sections =
 	jessie-pu
 #	jessie-proposed
 	jessie2proposed
+	wheezy222testing
 	wheezy2jessie
 	wheezy2jessie-rcmd
 	wheezy2bpo2jessie
@@ -452,6 +453,17 @@ piuparts-flags =
 	%(flags-end-jessie)s
 distro = jessie
 upgrade-test-distros = jessie jessie-proposed
+
+
+[wheezy222testing]
+precedence = 30
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-stretch)s
+distro = wheezy
+upgrade-test-distros = wheezy jessie stretch
 
 
 [wheezy2jessie]

@@ -15,6 +15,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * piuparts.conf:
     - Use --warn-on-install-over-symlink for tests ending before stretch.
     - Enable scripts-log-alternatives for [sid] and [stretch].  (See: #850917)
+    - Add new suite: wheezy222testing, upgrading wheezy -> jessie -> stretch.
   * piuparts.conf.anbe: Add some more example sections.
   * piuparts-slave.py:
     - Replace literal ESC (0x1b) chars with string '[ESC]' for easier
