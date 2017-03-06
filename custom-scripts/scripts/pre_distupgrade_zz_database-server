@@ -78,7 +78,8 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ]; then
 		icinga2-ido-mysql)
 			SWITCH_TO_MARIADB=yes
 			;;
-		openstack-cloud-services)
+		openstack-cloud-services|\
+		openstack-cloud-identity)
 			SWITCH_TO_MARIADB=yes
 			;;
 		pdns-backend-mysql)
