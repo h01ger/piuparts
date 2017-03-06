@@ -64,7 +64,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * Update README_pejacevic.txt and README_server.txt.
   * Drop instances/piuparts.conf.lamarr and …/piuparts.conf.goldwasser.
   * htdocs/index.tpl:
-    - Announce 2nd piuparts-slave and explain this is a three host setup now.
+    - Announce 2nd piuparts-slave, explain this is a three host setup now,
+      mention that pejacevic is a four core system and other news.
     - Make "contribute" a link.
   * archive_old_logs: use xargs -P $NUM_CPU and -n 1 to compress old logs in
     parallel.
