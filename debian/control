@@ -65,6 +65,7 @@ Depends:
  xz-utils,
  python-yaml,
  ${misc:Depends},
+ python (>= 2.7),
  ${python:Depends}
 Recommends:
  apache2 | httpd,
@@ -98,6 +99,7 @@ Depends:
  screen,
  sudo,
  ${misc:Depends},
+ python (>= 2.7),
  ${python:Depends}
 Suggests:
  schroot

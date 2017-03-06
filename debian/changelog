@@ -47,6 +47,9 @@ piuparts (0.76) UNRELEASED; urgency=medium
     apt 1.1 message on attempted removal of essential packages.
   * Add bug template for failing to upgrade from testing to sid.
   * Add bug template for shipping broken symlinks.
+  * Add python (>= 2.7) to the depends of piuparts-master and piuparts-slave
+    as dh-python has been changed to only add python depends if it finds
+    python code in PATH. Thanks lintian.
 
   [ Holger Levsen ]
   * piuparts.py:
