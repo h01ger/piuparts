@@ -12,6 +12,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     - Add --install-suggests option.
     - Fall back to generating the reference chroot state on-the-fly if the
       --end-meta file is missing.
+    - Make logged command lines shell-safe with pipes.quote().
   * piuparts.conf:
     - Use --warn-on-install-over-symlink for tests ending before stretch.
     - Enable scripts-log-alternatives for [sid] and [stretch].  (See: #850917)
@@ -20,6 +21,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * piuparts-slave.py:
     - Replace literal ESC (0x1b) chars with string '[ESC]' for easier
       copy+paste from logfiles.
+    - Make logged command lines shell-safe with pipes.quote().
   * piuparts-analyze.py:
     - Also process untestable/*.log.
   * instances/*: Generate the config files piuparts.conf.pejacevic,

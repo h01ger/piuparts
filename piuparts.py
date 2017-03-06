@@ -52,6 +52,7 @@ import subprocess
 import urllib
 import uuid
 import apt_pkg
+import pipes
 from collections import namedtuple
 from signal import alarm, signal, SIGALRM, SIGTERM, SIGKILL
 
@@ -486,7 +487,7 @@ def indent_string(str):
 
 
 def quote_spaces(vlist):
-    return ["'%s'" % x if ' ' in x else x for x in vlist]
+    return [pipes.quote(x) for x in vlist]
 
 
 def unqualify(packages):

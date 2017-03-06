@@ -36,6 +36,7 @@ import fcntl
 import random
 import ConfigParser
 import apt_pkg
+import pipes
 
 import piupartslib.conf
 import piupartslib.packagesdb
@@ -783,7 +784,7 @@ def log_name(package, version):
 
 
 def quote_spaces(vlist):
-    return ["'%s'" % x if ' ' in x else x for x in vlist]
+    return [pipes.quote(x) for x in vlist]
 
 
 def run_test_with_timeout(cmd, maxwait, kill_all=True):
