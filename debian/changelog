@@ -2,6 +2,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Add to ignored_files:
+      + /usr/share/texmf/ls-R
     - Remove from ignored_files:
       - /usr/share/keyrings/debian-archive-removed-keys.gpg~
     - Do not require --scriptsdir for proper operation.  (Closes: #855038)

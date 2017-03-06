@@ -334,6 +334,7 @@ class Settings:
             "/etc/sysctl.d/99-sysctl.conf",  # -> ../sysctl.conf (target obsoleted by sysctl.d)
             "/usr/lib/python2.6/dist-packages/python-support.pth",  # 635493 and #385775
             "/usr/lib/python2.7/dist-packages/python-support.pth",
+            "/usr/share/texmf/ls-R",  # -> /var/lib/texmf/ls-R-TEXMFMAIN (link owned by tex-common, target created with mktexlsr from texlive-binaries)
             # work around #316521 dpkg: incomplete cleanup of empty directories
             "/etc/apache2/",
             "/etc/apache2/conf.d/",
