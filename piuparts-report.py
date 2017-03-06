@@ -420,6 +420,7 @@ linktarget_by_template = [
     ("unowned_files_after_purge_issue.tpl", "but logfile contains unowned files after purge"),
     ("maintainer_script_issue.tpl", "but logfile contains maintainer script failures"),
     ("db_setup_issue.tpl", "but logfile contains failure to setup a database"),
+    ("problems_and_no_force_issue.tpl", "but logfile reports that not enough force was used"),
     ("installs_over_symlink_issue.tpl", "but package installs something over existing symlinks"),
     ("broken_symlinks_issue.tpl", "but logfile contains 'broken symlinks'"),
     ("unknown_inadequate_issue.tpl", "but logfile contains unknown inadequate issues"),
