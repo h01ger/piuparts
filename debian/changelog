@@ -41,7 +41,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     'init'.
   * Add/update exceptions for ancient packages.
   * master-bin/detect_piuparts_issues: Recognize more cases of full disks.
-  * known_problems/problems_and_no_force_issue.conf: New, recognize the
+  * Add known_problems/problems_and_no_force_issue.conf to recognize the
     apt 1.1 message on attempted removal of essential packages.
   * Add bug template for failing to upgrade from testing to sid.
   * Add bug template for shipping broken symlinks.
