@@ -1,7 +1,7 @@
 piuparts_slave_run(8)
 =====================
 :doctype: manpage
-:revdate: 2013-05-27
+:revdate: 2017-03-06
 
 NAME
 ----
@@ -39,7 +39,7 @@ Make sure to also read */usr/share/doc/piuparts-master/README_server.txt*.
 
 SEE ALSO
 --------
-*piuparts*(1), *piuparts_slave_join*(8), *screen*(1)
+*piuparts*(1), *piuparts_slave_join*(8), *piuparts_slave_stop*(8), *screen*(1)
 
 AUTHOR
 ------

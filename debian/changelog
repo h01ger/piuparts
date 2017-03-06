@@ -59,6 +59,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
     this optional argument is an integer and within the defined maximum number
     of slaves.
   * slave_stop: New script to stop all piuparts-slaves on a host.
+  * slave_stop.8: Add new manpage for this new script, also update slave_run.8
+    to mention slave_stop.8.
   * Update README_pejacevic.txt and README_server.txt.
   * Drop instances/piuparts.conf.lamarr and …/piuparts.conf.goldwasser.
   * htdocs/index.tpl:

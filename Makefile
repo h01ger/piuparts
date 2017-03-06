@@ -23,7 +23,7 @@ endif
 SCRIPTS_TEMPLATES	 = $(wildcard *.in master-bin/*.in slave-bin/*.in conf/*.in)
 SCRIPTS_PYTHON_BINARY	 = $(wildcard *.py master-bin/*.py slave-bin/*.py)
 SCRIPTS_GENERATED	 = $(SCRIPTS_TEMPLATES:.in=) $(SCRIPTS_PYTHON_BINARY:.py=)
-DOCS_GENERATED		 = piuparts.1 piuparts.1.html piuparts_slave_run.8 piuparts_slave_join.8 README.html README_server.html
+DOCS_GENERATED		 = piuparts.1 piuparts.1.html piuparts_slave_run.8 piuparts_slave_join.8 piuparts_slave_stop.8 README.html README_server.html
 
 define placeholder_substitution
 	sed -r \
@@ -70,6 +70,9 @@ piuparts_slave_run.8: piuparts_slave_run.8.txt
 piuparts_slave_join.8: piuparts_slave_join.8.txt
 	a2x -f manpage piuparts_slave_join.8.txt
 
+piuparts_slave_stop.8: piuparts_slave_stop.8.txt
+	a2x -f manpage piuparts_slave_stop.8.txt
+
 piuparts.1.html: piuparts.1.txt
 	a2x --copy -f xhtml piuparts.1.txt
 
@@ -79,10 +82,11 @@ install-doc: build-stamp
 	install -d $(DESTDIR)$(man1dir)
 	install -m 0644 piuparts.1 $(DESTDIR)$(man1dir)/
 	install -d $(DESTDIR)$(man8dir)
-	install -m 0644 piuparts_slave_run.8 piuparts_slave_join.8 $(DESTDIR)$(man8dir)/
+	install -m 0644 piuparts_slave_run.8 piuparts_slave_join.8 piuparts_slave_stop.8 $(DESTDIR)$(man8dir)/
 	gzip -9f $(DESTDIR)$(man1dir)/piuparts.1
 	gzip -9f $(DESTDIR)$(man8dir)/piuparts_slave_run.8
 	gzip -9f $(DESTDIR)$(man8dir)/piuparts_slave_join.8
+	gzip -9f $(DESTDIR)$(man8dir)/piuparts_slave_stop.8
 	install -m 0644 piuparts.1.html $(DESTDIR)$(docdir)/
 
 install-conf: build-stamp
