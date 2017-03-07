@@ -36,14 +36,19 @@ if [ -e $LOCKFILE ]; then
 fi
 date > $LOCKFILE
 
+R_STARTDATE=$(date -u +%s)
+
 #
 # various scripts to detect issues and cleanup
 #
 OUTPUT=$(mktemp)
 for SCRIPT in detect_network_issues detect_piuparts_issues archive_old_logs report_newly_bugged_packages ; do
+  STARTDATE=$(date -u +%s)
   @sharedir@/piuparts/master/$SCRIPT 2>&1 > $OUTPUT
+  FINALDATE=$(date -u +%s)
   if [ -s $OUTPUT ] ; then
-	cat $OUTPUT | mail -s $SCRIPT $LOGNAME
+	RUNTIME=$(date -u -d "$FINALDATE seconds - $STARTDATE seconds" +%T)
+	( echo -e "Runtime: $RUNTIME\n" ; cat $OUTPUT ) | mail -s $SCRIPT $LOGNAME
   fi
 done
 rm $OUTPUT
@@ -91,9 +96,11 @@ if [ -s $expire ]; then
 	rm -f $(cat $expire) >> $DAILYREPORT
 fi
 rm $expire
-date >> $DAILYREPORT
 
-cat $DAILYREPORT | mail -s piuparts-report $LOGNAME
+FINALDATE=$(date -u +%s)
+RUNTIME=$(date -u -d "$FINALDATE seconds - $R_STARTDATE seconds" +%T)
+
+( echo -e "Runtime: $RUNTIME\n" ; cat $DAILYREPORT ) | mail -s piuparts-report $LOGNAME
 
 mv $FAILURESTAMP.new $FAILURESTAMP
 rm -f $LOCKFILE
