@@ -51,9 +51,6 @@ piuparts (0.76) UNRELEASED; urgency=medium
     failures when attempting to remove essential packages.
   * Add bug template for failing to upgrade from testing to sid.
   * Add bug template for shipping broken symlinks.
-  * Add python (>= 2.7) to the depends of piuparts-master and piuparts-slave
-    as dh-python has been changed to only add python depends if it finds
-    python code in PATH. Thanks lintian.
 
   [ Holger Levsen ]
   * piuparts.py:
@@ -61,6 +58,9 @@ piuparts (0.76) UNRELEASED; urgency=medium
       without --basetgz. (Closes: #841157)
     - Add to ignored_patterns:
       + /srv/.* (Closes: #848186)
+  * Add python (>= 2.7) to the depends of piuparts-master and piuparts-slave
+    as dh-python has been changed to only add python depends if it finds
+    python code in PATH. Thanks lintian.
   * slave_run: Fix bug which prevented a different number of slaves to be
     started than defined in the configuration. Also add a check to ensure that
     this optional argument is an integer and within the defined maximum number
