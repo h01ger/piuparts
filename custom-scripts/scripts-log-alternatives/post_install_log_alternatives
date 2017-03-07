@@ -1,7 +1,11 @@
 #!/bin/sh
+set -e
 
 [ ! -e /usr/bin/update-alternatives.orig ] && exit 0
 rm /usr/bin/update-alternatives
 dpkg-divert --rename --remove /usr/bin/update-alternatives
-cat /tmp/log-alternatives.log
-rm /tmp/log-alternatives.log
+
+if [ -f /tmp/log-alternatives.log ]; then
+	cat /tmp/log-alternatives.log
+	rm /tmp/log-alternatives.log
+fi

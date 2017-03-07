@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Do nothing if the script already ran.
 # The pre_install step can be run multiple times.
