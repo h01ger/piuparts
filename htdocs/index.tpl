@@ -74,7 +74,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2017-03-06</b> Try to update the webpages three times a day instead of four. In the past updating took longer than six hours, so effectivly only two updates per day were done.
+      <b>2017-03-07</b> Another suite added: <a href="https://piuparts.debian.org/wheezy222testing">wheezy222testing</a>, to test package installation in wheezy, then upgrade to jessie, then upgrade to testing.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2017-03-06</b> Change cron to try to update the webpages three times a day instead of four. In the past updating took longer than six hours, so effectivly only two updates per day were done.
      </td>
     </tr>
     <tr class="normalrow">
