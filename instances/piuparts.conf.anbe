@@ -645,23 +645,14 @@ piuparts-flags =
 	%(flags-leftovers)s
 	--fail-on-broken-symlinks
 	--install-recommends
+	--fake-essential-packages libjs-sphinxdoc
 # ignore broken symlinks
-	-i /etc/systemd/system/display-manager.service
-	-i /usr/lib/python2.7/dist-packages/wx.pth
-	-i /usr/share/icons/default.kde4
-	-i /usr/share/nginx/modules
-	-i /usr/share/qt4/plugins
+	-i :/etc/systemd/system/display-manager.service
 # ignore broken symlinks (patterns)
 	-I /usr/include/python2\.7_d/.*\.h
 	-I /usr/include/python3\.5dm/.*\.h
-	-I /usr/lib/.*/python2\.7/site-packages/vtk
-	-I /usr/share/doc/kde/HTML/.*/common
-	-I /usr/share/doc/.*/_static/doctools\.js
-	-I /usr/share/doc/.*/_static/jquery\.js
-	-I /usr/share/doc/.*/_static/searchtools\.js
-	-I /usr/share/doc/.*/_static/sidebar\.js
-	-I /usr/share/doc/.*/_static/underscore\.js
-	-I /usr/share/doc/.*/jquery
+	-I :/usr/share/doc/kde/HTML/.*/common
+	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
 distro = sid
 arch = amd64
 area = main
