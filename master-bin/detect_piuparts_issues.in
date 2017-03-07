@@ -28,6 +28,7 @@ get_config_value SECTIONS global sections
 # detect piuparts problems
 #
 
+BEGIN=$(date -u)
 FILE=`mktemp`
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
@@ -70,10 +71,13 @@ for SECTION in $SECTIONS ; do
 		find $MASTER/$SECTION/$subdir -name '*.log' -size 0 >> $FILE
 	done
 done
+END=$(date -u)
 if [ -s $FILE ] ; then
 	echo "piuparts problem detected!"
 	echo "(By grep'ing for 'tar: .*.tar.gz: Cannot open: No such file or directory'"
 	echo "and for some python errors and tracebacks in failed logs.)"
+	echo
+	echo "Begin: $BEGIN  End: $END"
 	echo
 	echo "Please review the following logfiles/packages."
         echo "If it is always the same package failing, it's likely to be an issue in the"
