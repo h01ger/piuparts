@@ -1546,6 +1546,13 @@ class Chroot:
                 vdict[name[len(root):]] = FileInfo(st, target, user, group)
         return vdict
 
+    def get_state_meta_data(self):
+        chroot_state = {}
+        chroot_state["tree"] = self.save_meta_data()
+        chroot_state["selections"] = self.get_selections()
+        chroot_state["diversions"] = self.get_diversions()
+        return chroot_state
+
     def relative(self, pathname):
         if pathname.startswith('/'):
             return os.path.join(self.name, pathname[1:])
@@ -2498,10 +2505,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
 
         if settings.install_purge_install:
             # save chroot state with all deps installed
-            chroot_state_with_deps = {}
-            chroot_state_with_deps["tree"] = deps_info
-            chroot_state_with_deps["selections"] = chroot.get_selections()
-            chroot_state_with_deps["diversions"] = chroot.get_diversions()
+            chroot_state_with_deps = chroot.get_state_meta_data()
 
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
@@ -2653,11 +2657,8 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
         chroot.check_for_no_processes(fail=True)
 
-        # set root_info and selections
-        chroot_state = {}
-        chroot_state["tree"] = chroot.save_meta_data()
-        chroot_state["selections"] = chroot.get_selections()
-        chroot_state["diversions"] = chroot.get_diversions()
+        # get root_info and selections
+        chroot_state = chroot.get_state_meta_data()
 
         if settings.save_end_meta:
             # save root_info and selections
@@ -3247,10 +3248,7 @@ def process_packages(package_list):
         if settings.shell_on_error:
             panic_handler_id = do_on_panic(lambda: chroot.interactive_shell())
 
-        chroot_state = {}
-        chroot_state["tree"] = chroot.save_meta_data()
-        chroot_state["selections"] = chroot.get_selections()
-        chroot_state["diversions"] = chroot.get_diversions()
+        chroot_state = chroot.get_state_meta_data()
 
         testable = True
         if chroot.run_scripts("is_testable", ignore_errors=True) != 0:
