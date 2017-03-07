@@ -1422,10 +1422,11 @@ class Chroot:
         if packages:
             self.run(["dpkg", "--purge"] + unqualify(packages), ignore_errors=True)
 
-    def restore_selections(self, selections, packages_qualified):
+    def restore_selections(self, reference_chroot_state, packages_qualified):
         """Restore package selections in a chroot to the state in
-        'selections'."""
+        'reference_chroot_state'."""
 
+        selections = reference_chroot_state["selections"]
         packages = unqualify(packages_qualified)
 
         changes = diff_selections(self, selections)
@@ -2511,7 +2512,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
 
     if settings.install_purge_install:
         file_owners = chroot.get_files_owned_by_packages()
-        chroot.restore_selections(chroot_state_with_deps["selections"], packages)
+        chroot.restore_selections(chroot_state_with_deps, packages)
         logging.info("Validating chroot after purge")
         chroot.check_debsums()
         chroot.check_for_no_processes()
@@ -2535,7 +2536,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
     chroot.disable_testdebs_repo()
 
     # Remove all packages from the chroot that weren't there initially.
-    chroot.restore_selections(chroot_state["selections"], packages)
+    chroot.restore_selections(chroot_state, packages)
 
     chroot.check_for_no_processes(fail=True)
     chroot.check_for_broken_symlinks()
@@ -2576,7 +2577,7 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
     chroot.disable_testdebs_repo()
 
     # Remove all packages from the chroot that weren't there initially.
-    chroot.restore_selections(chroot_state["selections"], packages)
+    chroot.restore_selections(chroot_state, packages)
 
     chroot.check_for_no_processes(fail=True)
     chroot.check_for_broken_symlinks()
@@ -2725,7 +2726,7 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     file_owners = chroot.get_files_owned_by_packages()
 
     # Remove all packages from the chroot that weren't in the reference chroot.
-    chroot.restore_selections(chroot_state["selections"], packages_qualified)
+    chroot.restore_selections(chroot_state, packages_qualified)
 
     chroot.check_for_no_processes(fail=True)
 
