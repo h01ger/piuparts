@@ -2338,13 +2338,13 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
 
     If settings.warn_on_others is True and deps_info is not None, then only
     print a warning rather than failing if the current chroot contains files
-    that are in deps_info but not in root_info.  (In this case, deps_info
+    that are in deps_info but not in chroot_state["tree"].  (In this case, deps_info
     should be the result of chroot.get_tree_meta_data() right after the
     dependencies are installed, but before the actual packages to test are
     installed.)
     """
 
-    root_info = chroot_state["tree"]
+    reference_info = chroot_state["tree"]
     ok = True
     if settings.check_broken_diversions:
         (removed, added) = chroot.get_modified_diversions(chroot_state["diversions"])
@@ -2359,8 +2359,8 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
 
     current_info = chroot.get_tree_meta_data()
     if settings.warn_on_others and deps_info is not None:
-        (new, removed, modified) = diff_meta_data(root_info, current_info)
-        (depsnew, depsremoved, depsmodified) = diff_meta_data(root_info,
+        (new, removed, modified) = diff_meta_data(reference_info, current_info)
+        (depsnew, depsremoved, depsmodified) = diff_meta_data(reference_info,
                                                               deps_info)
 
         warnnew = prune_files_list(new, depsnew)
@@ -2368,7 +2368,7 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
         warnmodified = prune_files_list(modified, depsmodified)
 
     else:
-        (new, removed, modified) = diff_meta_data(root_info, current_info)
+        (new, removed, modified) = diff_meta_data(reference_info, current_info)
 
     if new:
         if settings.warn_on_leftovers_after_purge:
@@ -2641,7 +2641,6 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     chroot_state = None
     if settings.end_meta:
         if os.path.exists(settings.end_meta):
-            # load root_info and selections
             chroot_state = load_meta_data(settings.end_meta)
         else:
             logging.info("Cannot load chroot state from %s - generating it on-the-fly." % settings.end_meta)
@@ -2657,11 +2656,9 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
         chroot.check_for_no_processes(fail=True)
 
-        # get root_info and selections
         chroot_state = chroot.get_state_meta_data()
 
         if settings.save_end_meta:
-            # save root_info and selections
             save_meta_data(settings.save_end_meta, chroot_state)
 
         chroot.remove()

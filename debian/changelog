@@ -1,6 +1,7 @@
 piuparts (0.77) UNRELEASED; urgency=medium
 
   * piuparts.py:
+    - Refactor internal handling of reference chroot state.
   * piuparts-slave.py:
   * piuparts-analyze.py:
   * piuparts-report.py:
