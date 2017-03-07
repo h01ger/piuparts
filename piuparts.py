@@ -1224,7 +1224,7 @@ class Chroot:
             apt_get_install.append("install")
 
             if settings.list_installed_files:
-                pre_info = self.save_meta_data()
+                pre_info = self.get_tree_meta_data()
 
             if apt_can_install_debs:
                 self.run(apt_get_install + tmp_files)
@@ -1238,12 +1238,12 @@ class Chroot:
                         panic()
 
                 if settings.list_installed_files:
-                    self.list_installed_files(pre_info, self.save_meta_data())
+                    self.list_installed_files(pre_info, self.get_tree_meta_data())
 
                 self.run(apt_get_install)
 
             if settings.list_installed_files:
-                self.list_installed_files(pre_info, self.save_meta_data())
+                self.list_installed_files(pre_info, self.get_tree_meta_data())
 
             if not self.is_installed(unqualify(packages)):
                 logging.error("Could not install %s.", " ".join(unqualify(packages)))
@@ -1265,13 +1265,13 @@ class Chroot:
             self.run(["apt-cache", "policy"] + unqualify(packages))
 
             if settings.list_installed_files:
-                pre_info = self.save_meta_data()
+                pre_info = self.get_tree_meta_data()
 
             target_flags = settings.distro_config.get_target_flags(os.environ["PIUPARTS_DISTRIBUTION"])
             self.apt_get_install(to_install=packages, flags=target_flags, reinstall=reinstall)
 
             if settings.list_installed_files:
-                self.list_installed_files(pre_info, self.save_meta_data())
+                self.list_installed_files(pre_info, self.get_tree_meta_data())
 
             if with_scripts:
                 self.run_scripts("post_install")
@@ -1502,7 +1502,7 @@ class Chroot:
         self.run(["dpkg", "--purge", "--pending"])
         self.run(["dpkg", "--remove", "--pending"])
 
-    def save_meta_data(self):
+    def get_tree_meta_data(self):
         """Return the filesystem meta data for all objects in the chroot."""
         self.run(["apt-get", "clean"])
         logging.debug("Recording chroot state")
@@ -1548,7 +1548,7 @@ class Chroot:
 
     def get_state_meta_data(self):
         chroot_state = {}
-        chroot_state["tree"] = self.save_meta_data()
+        chroot_state["tree"] = self.get_tree_meta_data()
         chroot_state["selections"] = self.get_selections()
         chroot_state["diversions"] = self.get_diversions()
         return chroot_state
@@ -2003,7 +2003,7 @@ class VirtServ(Chroot):
     class DummyStat:
         pass
 
-    def save_meta_data(self):
+    def get_tree_meta_data(self):
         mode_map = {
             's': stat.S_IFSOCK,
             'l': stat.S_IFLNK,
@@ -2339,7 +2339,7 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
     If settings.warn_on_others is True and deps_info is not None, then only
     print a warning rather than failing if the current chroot contains files
     that are in deps_info but not in root_info.  (In this case, deps_info
-    should be the result of chroot.save_meta_data() right after the
+    should be the result of chroot.get_tree_meta_data() right after the
     dependencies are installed, but before the actual packages to test are
     installed.)
     """
@@ -2357,7 +2357,7 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
                           indent_string("\n".join(removed)))
             ok = False
 
-    current_info = chroot.save_meta_data()
+    current_info = chroot.get_tree_meta_data()
     if settings.warn_on_others and deps_info is not None:
         (new, removed, modified) = diff_meta_data(root_info, current_info)
         (depsnew, depsremoved, depsmodified) = diff_meta_data(root_info,
@@ -2501,7 +2501,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
         # Save the file ownership information so we can tell which
         # modifications were caused by the actual packages we are testing,
         # rather than by their dependencies.
-        deps_info = chroot.save_meta_data()
+        deps_info = chroot.get_tree_meta_data()
 
         if settings.install_purge_install:
             # save chroot state with all deps installed
