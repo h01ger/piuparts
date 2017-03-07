@@ -76,12 +76,12 @@ if [ -s $FILE ] ; then
 	echo "and for some python errors and tracebacks in failed logs.)"
 	echo
 	echo "Please review the following logfiles/packages."
-        echo "If it is always the same package failing, it's likely to be an issue in the"
+	echo "If it is always the same package failing, it's likely to be an issue in the"
 	echo "package."
 	echo
 		sort -u $FILE | xargs rm -v
 	echo
-        echo "----------------------------------------------------------------------"
+	echo "----------------------------------------------------------------------"
 	echo
 fi
 rm $FILE

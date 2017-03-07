@@ -58,9 +58,9 @@ if [ -s $URLS ]; then
 	echo 'The following packages have been moved to $section/untestable and will be'
 	echo "tested again in $DAYS days."
 	echo
-        echo "Broken packages are usually a temporary problem in the archive and are"
-        echo "caught by other tools like britney or https://qa.debian.org/dose/debcheck.html"
-        echo
+	echo "Broken packages are usually a temporary problem in the archive and are"
+	echo "caught by other tools like britney or https://qa.debian.org/dose/debcheck.html"
+	echo
 	echo "If it is always the same package failing, it's likely to be an issue in the"
 	echo "package."
 	echo

@@ -43,7 +43,7 @@ i=1
 while pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' > /dev/null ; do
 	echo -n "$(date -u +%T) - "
 	pgrep --full '/usr/bin/python /srv/piuparts.debian.org/share/piuparts/piuparts-slave' | xargs -r echo -n "slaves running: "
-        SLEEP=$(( $i * $i ))
+	SLEEP=$(( $i * $i ))
 	echo -n " sleeping ${SLEEP}sec now..."
 	for j in $(seq 1 $SLEEP) ; do
 		sleep 1
