@@ -42,13 +42,13 @@ piuparts (0.76) UNRELEASED; urgency=medium
     in filenames.
   * scripts/pre_remove_exceptions: Handle removal of more packages pulling in
     'init'.
-  * Add/update exceptions for ancient packages in scripts-log-alternatives/,
-    scripts/is_testable_uninstallable, scripts/post_distupgrade_exceptions and
-    scripts/pre_install_exceptions.
+  * Add/update exceptions for ancient packages in
+    scripts/is_testable_uninstallable, scripts/pre_install_exceptions, and
+    scripts/post_distupgrade_exceptions.
   * master-bin/detect_piuparts_issues: Recognize more cases of full disks.
   * master-bin/detect_network_issues: Recognize unauthenticated packages.
-  * Add known_problems/problems_and_no_force_issue.conf to recognize the
-    apt 1.1 message on attempted removal of essential packages.
+  * Add known_problems/problems_and_no_force_issue.conf to recognize non-fatal
+    failures when attempting to remove essential packages.
   * Add bug template for failing to upgrade from testing to sid.
   * Add bug template for shipping broken symlinks.
   * Add python (>= 2.7) to the depends of piuparts-master and piuparts-slave
