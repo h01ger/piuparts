@@ -487,8 +487,9 @@ def indent_string(str):
     return "\n".join(["  " + line for line in str.split("\n")])
 
 
-def quote_spaces(vlist):
-    return [pipes.quote(x) for x in vlist]
+def command2string(command):
+    """Quote s.t. copy+paste from the logfile gives a runnable command in the shell."""
+    return " ".join([pipes.quote(arg) for arg in command])
 
 
 def unqualify(packages):
@@ -3310,7 +3311,7 @@ def main():
     logging.info("The FAQ also explains how to contact us in case you think piuparts is wrong.")
     logging.info("-" * 78)
     logging.info("piuparts version %s starting up." % VERSION)
-    logging.info("Command line arguments: %s" % " ".join(quote_spaces(sys.argv)))
+    logging.info("Command line arguments: %s" % command2string(sys.argv))
     logging.info("Running on: %s %s %s %s %s" % os.uname())
 
     # Make sure debconf does not ask questions and stop everything.

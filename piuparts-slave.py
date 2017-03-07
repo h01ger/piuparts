@@ -755,7 +755,7 @@ class Section:
             subdir = "untestable"
 
         if ret == 0:
-            output.write("Executing: %s\n" % " ".join(quote_spaces(command)))
+            output.write("Executing: %s\n" % command2string(command))
             ret, f = run_test_with_timeout(command, MAX_WAIT_TEST_RUN)
             if not f or f[-1] != '\n':
                 f += '\n'
@@ -783,8 +783,9 @@ def log_name(package, version):
     return "%s_%s.log" % (package, version)
 
 
-def quote_spaces(vlist):
-    return [pipes.quote(x) for x in vlist]
+def command2string(command):
+    """Quote s.t. copy+paste from the logfile gives a runnable command in the shell."""
+    return " ".join([pipes.quote(arg) for arg in command])
 
 
 def run_test_with_timeout(cmd, maxwait, kill_all=True):
@@ -826,7 +827,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
                 except OSError:
                     pass
 
-    logging.debug("Executing: %s" % " ".join(quote_spaces(cmd)))
+    logging.debug("Executing: %s" % command2string(cmd))
 
     stdout = ""
     p = subprocess.Popen(cmd, preexec_fn=os.setpgrp,
@@ -884,8 +885,8 @@ def create_chroot(config, tarball, distro):
             logging.info("Creating new tarball %s" % tarball)
             output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n\n",
                                        time.gmtime()))
-            output.write("Executing: " + " ".join(quote_spaces(command)) + "\n\n")
-            logging.debug("Executing: " + " ".join(quote_spaces(command)))
+            output.write("Executing: " + command2string(command) + "\n\n")
+            logging.debug("Executing: " + command2string(command))
             p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             for line in p.stdout:
                 output.write(line)
