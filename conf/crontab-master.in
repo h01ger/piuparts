@@ -14,7 +14,7 @@
 #
 # reschedule old logs twice a day
 #
-00 3,15 * * * @sharedir@/piuparts/master/reschedule_oldest_logs
+0 3,15 * * * @sharedir@/piuparts/master/reschedule_oldest_logs
 
 #
 # monitor for problems once a day
