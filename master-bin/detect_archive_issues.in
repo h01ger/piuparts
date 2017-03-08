@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# Copyright © 2009-2017 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2011-2013 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -25,6 +25,7 @@ get_config_value SECTIONS global sections
 get_config_value URLBASE global urlbase https://piuparts.debian.org
 get_config_value DAYS global reschedule-untestable-days 7
 
+STARTDATE=$(date -u +%s)
 
 #
 # detect packages which are/were untestable due to archive issue and mark them as such
@@ -48,6 +49,10 @@ done
 if [ -s $URLS ]; then
 	date >> $MASTER/archive_issues.txt
 	cat $URLS >> $MASTER/archive_issues.txt
+	FINALDATE=$(date -u +%s)
+	RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
+	echo "Runtime: $RUNTIME"
+	echo
 	echo "Broken packages detected!"
 	echo "(By grep'ing for"
 	echo "        'E: Broken packages',"

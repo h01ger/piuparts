@@ -82,7 +82,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
     four times a day, which hasn't worked out for a long time.
   * generate_daily_report.in: measure runtime of this script and the scripts
     started by it.
-  * detect_(network|piuparts)_issues.in: measure runtimes too.
+  * detect_(network|piuparts|archive)_issues.in: measure runtimes too.
 
   [ Michael Stapelberg ]
   * Add support for logging update-alternatives calls using optional
