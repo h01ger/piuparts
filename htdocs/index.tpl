@@ -74,7 +74,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2017-03-07</b> Another suite added: <a href="https://piuparts.debian.org/wheezy222testing">wheezy222testing</a>, to test package installation in wheezy, then upgrade to jessie, then upgrade to testing.
+      <b>2017-03-07</b> Another suite added: <a href="https://piuparts.debian.org/wheezy222testing">wheezy222testing</a>, to test package installation in wheezy, then upgrade to jessie, then upgrade to testing, then removal and purge..
      </td>
     </tr>
     <tr class="normalrow">
