@@ -47,7 +47,7 @@ for SCRIPT in detect_network_issues detect_piuparts_issues archive_old_logs repo
   @sharedir@/piuparts/master/$SCRIPT 2>&1 > $OUTPUT
   FINALDATE=$(date -u +%s)
   if [ -s $OUTPUT ] ; then
-	RUNTIME=$(date -u -d "$FINALDATE seconds - $STARTDATE seconds" +%T)
+	RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
 	( echo "Runtime: $RUNTIME" ; echo ; cat $OUTPUT ) | mail -s $SCRIPT $LOGNAME
   fi
 done
@@ -98,7 +98,7 @@ fi
 rm $expire
 
 FINALDATE=$(date -u +%s)
-RUNTIME=$(date -u -d "$FINALDATE seconds - $R_STARTDATE seconds" +%T)
+RUNTIME=$(date -u -d "0 $FINALDATE seconds - $R_STARTDATE seconds" +%T)
 
 ( echo "Runtime: $RUNTIME" ; echo ; cat $DAILYREPORT ) | mail -s piuparts-report $LOGNAME
 

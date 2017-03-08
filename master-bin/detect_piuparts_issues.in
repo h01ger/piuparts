@@ -73,7 +73,7 @@ for SECTION in $SECTIONS ; do
 done
 if [ -s $FILE ] ; then
 	FINALDATE=$(date -u +%s)
-	RUNTIME=$(date -u -d "$FINALDATE seconds - $STARTDATE seconds" +%T)
+	RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
 	echo "Runtime: $RUNTIME"
 	echo
 	echo "piuparts problem detected!"
