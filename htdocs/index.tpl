@@ -33,7 +33,7 @@
       <li> piu-slave-bm-a runs four piuparts-slave instances, which then run piuparts itself.</li>
       <li> piu-slave-ubc-01 also runs four piuparts-slave instances.</li>
      </ul>
-      These hosts run as virtualized hardware on <a href="http://bits.debian.org/2013/04/bytemark-donation.html" target="_blank">this nice cluster</a> hosted at <a href="http://www.bytemark.co.uk" target="_blank">Bytemark</a> and at the University of British Columbia.
+      The first two of these hosts run as virtualized hardware on <a href="http://bits.debian.org/2013/04/bytemark-donation.html" target="_blank">a nice cluster</a> hosted at <a href="http://www.bytemark.co.uk" target="_blank">Bytemark</a> and the last one runs virtualised at the University of British Columbia.
      </td>
     </tr>
     <tr class="normalrow">
