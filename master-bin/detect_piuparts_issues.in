@@ -23,6 +23,7 @@
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
 
+STARTDATE=$(date -u +%s)
 
 #
 # detect piuparts problems
@@ -71,6 +72,10 @@ for SECTION in $SECTIONS ; do
 	done
 done
 if [ -s $FILE ] ; then
+	FINALDATE=$(date -u +%s)
+	RUNTIME=$(date -u -d "$FINALDATE seconds - $STARTDATE seconds" +%T)
+	echo "Runtime: $RUNTIME"
+	echo
 	echo "piuparts problem detected!"
 	echo "(By grep'ing for 'tar: .*.tar.gz: Cannot open: No such file or directory'"
 	echo "and for some python errors and tracebacks in failed logs.)"
