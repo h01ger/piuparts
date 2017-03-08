@@ -5,6 +5,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * piuparts-slave.py:
   * piuparts-analyze.py:
   * piuparts-report.py:
+    - Plot all states in the graphs.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 

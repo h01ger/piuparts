@@ -3,7 +3,7 @@
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
 # Copyright 2009-2014 Holger Levsen (holger@layer-acht.org)
-# Copyright © 2011-2016 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2011-2017 Andreas Beckmann (anbe@debian.org)
 # Copyright 2013 David Steele (dsteele@gmail.com)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -1230,20 +1230,23 @@ class Section:
         grdevices = importr('grDevices')
         grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100, antialias="none")
         r = robjects.r
+        states = self._binary_db.get_states()
+        r('nstate = %d' % len(states))
         r('t <- (read.table("' + countsfile + '",sep=",",header=1,row.names=1))')
         r('cname <- c("date",rep(colnames(t)))')
         # here we define how many days we wants stats for (163=half a year)
-        # r('v <- t[(nrow(t)-163):nrow(t),0:12]')
+        # r('v <- t[(nrow(t)-163):nrow(t),0:nstate]')
         # make graph since day 1
-        r('v <- t[0:nrow(t),0:12]')
+        r('v <- t[0:nrow(t),0:nstate]')
         # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
+        r('palsize = 13')
         r('palette(c("#4e9a06", "#ef2929", "#d3d7cf", "#5c3566", "#c4a000", \
                      "#fce94f", "#a40000", "#888a85", "#2e3436", "#729fcf", \
                      "#3465a4", "#204a87", "#555753"))')
-        r('barplot(t(v),col = 1:13, \
+        r('barplot(t(v),col = 1:palsize, \
           main="Binary packages per state in ' + self._config.section + '", \
           xlab="", ylab="Number of binary packages", space=0, border=NA)')
-        r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:13,xjust=0.5,yjust=0,bty="n")')
+        r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:palsize,xjust=0.5,yjust=0,bty="n")')
         grdevices.dev_off()
 
         stats_html = "<tr class=\"normalrow\"> " \
