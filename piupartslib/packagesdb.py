@@ -276,6 +276,7 @@ class PackagesDB:
         "unknown",
         "unknown-preferred-alternative",  # obsolete
         "no-dependency-from-alternatives-exists",  # obsolete
+        "outdated",
         # "foreign:*",  # can only happen as query result for a dependency
         # "does-not-exist",  # can only happen as query result for a dependency
     ]
@@ -467,6 +468,12 @@ class PackagesDB:
         return "unknown"
 
     def _compute_package_state(self, package):
+        # Check if dependency databases have a newer version of this package.
+        for db in self._dependency_databases:
+            v = db.get_version(package["Package"])
+            if v is not None and apt_pkg.version_compare(package["Version"], v) < 0:
+                return "outdated";
+
         # First attempt to resolve (still-unresolved) multiple alternative depends
         # Definitely sub-optimal, but improvement over blindly selecting first one
         # Select the first alternative in the highest of the following states:
@@ -702,6 +709,11 @@ class PackagesDB:
     def get_package_state(self, package_name, resolve_virtual=True, recurse=True):
         self._compute_package_states()
         if package_name in self._package_state:
+            if recurse and self._package_state[package_name] == "outdated":
+                for db in self._dependency_databases:
+                    state = db.get_package_state(package_name, resolve_virtual=resolve_virtual, recurse=False)
+                    if state not in ["does-not-exist", "outdated"]:
+                        return state
             return self._package_state[package_name]
         if package_name in self._virtual_packages:
             if resolve_virtual:

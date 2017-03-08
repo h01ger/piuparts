@@ -2,6 +2,9 @@ piuparts (0.77) UNRELEASED; urgency=medium
 
   * piuparts.py:
     - Refactor internal handling of reference chroot state.
+  * piupartslib/packagesdb.py:
+    - Add new state "outdated" to ignore packages if a dependency distro
+      already has a newer version.  (Closes: #856846)
   * piuparts-slave.py:
   * piuparts-analyze.py:
   * piuparts-report.py:

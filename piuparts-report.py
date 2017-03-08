@@ -558,6 +558,7 @@ def is_bad_state(state):
         "unknown",
         "unknown-preferred-alternative",  # obsolete
         "no-dependency-from-alternatives-exists",  # obsolete
+        "outdated",
         #"foreign:*",
         "does-not-exist",
     ]
@@ -1241,10 +1242,10 @@ class Section:
         # make graph since day 1
         r('v <- t[0:nrow(t),0:nstate]')
         # thanks to http://tango.freedesktop.org/Generic_Icon_Theme_Guidelines for those nice colors
-        r('palsize = 13')
+        r('palsize = 14')
         r('palette(c("#4e9a06", "#ef2929", "#d3d7cf", "#5c3566", "#c4a000", \
                      "#fce94f", "#a40000", "#888a85", "#2e3436", "#729fcf", \
-                     "#3465a4", "#204a87", "#555753"))')
+                     "#3465a4", "#204a87", "#555753", "#ce5c00"))')
         r('barplot(t(v),col = 1:palsize, \
           main="Binary packages per state in ' + self._config.section + '", \
           xlab="", ylab="Number of binary packages", space=0, border=NA)')
