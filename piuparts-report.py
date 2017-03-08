@@ -1234,8 +1234,8 @@ class Section:
         active_states = self._binary_db.get_active_states()
         r('nstate = %d' % len(states))
         r('snames = c(%s)' % ','.join(['"%s"' % s if s in active_states else '"(%s)"' % s for s in states]))
-        r('t <- (read.table("' + countsfile + '",sep=",",header=1,row.names=1))')
-        r('cname <- c("date",rep(colnames(t)))')
+        r('cnames = c("date",snames)')
+        r('t <- (read.table("' + countsfile + '",sep=",",header=0,skip=1,col.names=cnames,row.names=1,fill=TRUE))')
         # here we define how many days we wants stats for (163=half a year)
         # r('v <- t[(nrow(t)-163):nrow(t),0:nstate]')
         # make graph since day 1

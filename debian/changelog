@@ -6,6 +6,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * piuparts-analyze.py:
   * piuparts-report.py:
     - Plot all states in the graphs.
+    - Support new states in plots (varying number of columns in counts.txt).
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 
