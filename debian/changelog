@@ -78,8 +78,8 @@ piuparts (0.76) UNRELEASED; urgency=medium
     parallel.
   * update-piuparts-(master|slave)-setup: touch $PIUPARTS_TMPDIR/.nobackup to
     exclude it from backups made by DSA.
-  * conf/crontab-master.in: try to run piuparts-report three times a day
-    instead of four, which hasn't worked out for a long time.
+  * conf/crontab-master.in: run piuparts-report twice a day instead of trying
+    four times a day, which hasn't worked out for a long time.
   * generate_daily_report.in: measure runtime of this script and the scripts
     started by it.
 
