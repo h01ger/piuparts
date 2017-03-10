@@ -139,6 +139,8 @@ for SECTION in $SECTIONS ; do
 	find recycle/ -name '*.log' > $QUEUED
 
 	if [ -s $LOGS ] || [ -s $OBSOLETE ] || [ -s $EXPIRED ] || [ -s $QUEUED ] ; then
+		echo "#########################################################" >> $OUTPUT
+		echo >> $OUTPUT
 		RCOUNT=$(wc -l $LOGS | awk '{ print $1 }')
 		TOTAL=$(($TOTAL + $RCOUNT))
 		ECOUNT=$(wc -l $EXPIRED | awk '{ print $1 }')
@@ -161,8 +163,6 @@ for SECTION in $SECTIONS ; do
 		NUM_QUEUED=$(wc -l < $QUEUED)
 		TOTAL_QUEUED=$(($TOTAL_QUEUED + $NUM_QUEUED))
 		echo "queued: $NUM_QUEUED$(is_recent idle.stamp || echo " not-idle")" >> $OUTPUT
-		echo >> $OUTPUT
-		echo "#########################################################" >> $OUTPUT
 		echo >> $OUTPUT
 	fi
 	cd $OLDPWD
@@ -192,6 +192,7 @@ fi
 if [ "$TOTAL_QUEUED" -gt "0" ]; then
 	echo "Queued logs: $TOTAL_QUEUED"
 fi
+echo
 
 cat $OUTPUT
 rm -f $OUTPUT
