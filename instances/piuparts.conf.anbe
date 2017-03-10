@@ -642,15 +642,19 @@ expire-old-days = 75
 precedence = 130
 description = + Failing on broken symlinks.
 piuparts-flags =
-	%(flags-leftovers)s
+	%(flags-default)s
 	--fail-on-broken-symlinks
 	--install-recommends
 	--fake-essential-packages libjs-sphinxdoc
 # ignore broken symlinks
 	-i :/etc/systemd/system/display-manager.service
+	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26231/exe
+	-i :/usr/share/qt4/plugins
+	-i :/usr/share/quilt/compat/sendmail
 # ignore broken symlinks (patterns)
 	-I /usr/include/python2\.7_d/.*\.h
-	-I /usr/include/python3\.5dm/.*\.h
+	-I /usr/include/python3\..dm/.*\.h
+	-I :/usr/lib/jvm/java-.*-openjdk-.*/src\.zip
 	-I :/usr/share/doc/kde/HTML/.*/common
 	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
 distro = sid
@@ -662,9 +666,13 @@ components = main
 precedence = 130
 description = + Failing on broken symlinks.
 piuparts-flags =
-	%(flags-leftovers)s
+	%(flags-default)s
 	--fail-on-broken-symlinks
 	--install-recommends
+# ignore broken symlinks (patterns)
+	-I /usr/include/python2\.7_d/.*\.h
+	-I /usr/include/python3\..dm/.*\.h
+	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
 depends-sections = sid-bl/main sid-bl/non-free
 distro = sid
 arch = amd64
@@ -674,9 +682,13 @@ area = contrib
 precedence = 130
 description = + Failing on broken symlinks.
 piuparts-flags =
-	%(flags-leftovers)s
+	%(flags-default)s
 	--fail-on-broken-symlinks
 	--install-recommends
+# ignore broken symlinks (patterns)
+	-I /usr/include/python2\.7_d/.*\.h
+	-I /usr/include/python3\..dm/.*\.h
+	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
 depends-sections = sid-bl/main sid-bl/contrib
 distro = sid
 arch = amd64
