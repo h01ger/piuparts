@@ -82,6 +82,7 @@ sections =
 	sid-rcmd/main
 	sid-bl/main
 	sid-ipi/main
+	sid-debug/main
 	testing-rcmd/main
 	testing-nodocs/main
 	stretch/main
@@ -128,6 +129,7 @@ sections =
 	sid-rcmd/contrib
 	sid-bl/contrib
 	sid-ipi/contrib
+	sid-debug/contrib
 	testing-rcmd/contrib
 	testing-nodocs/contrib
 	stretch/contrib
@@ -174,6 +176,7 @@ sections =
 	sid-rcmd/non-free
 	sid-bl/non-free
 	sid-ipi/non-free
+	sid-debug/non-free
 	testing-rcmd/non-free
 	testing-nodocs/non-free
 	stretch/non-free
@@ -691,6 +694,35 @@ piuparts-flags =
 	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
 depends-sections = sid-bl/main sid-bl/contrib
 distro = sid
+arch = amd64
+area = non-free
+
+
+[sid-debug/main]
+precedence = 40
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid/main
+distro = sid-debug
+arch = amd64
+area = main
+components = main
+
+[sid-debug/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid/main sid/contrib sid/non-free
+distro = sid-debug
+arch = amd64
+area = contrib
+
+[sid-debug/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid/main sid/contrib sid/non-free
+distro = sid-debug
 arch = amd64
 area = non-free
 
