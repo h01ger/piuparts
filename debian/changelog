@@ -59,6 +59,7 @@ piuparts (0.76) UNRELEASED; urgency=medium
       without --basetgz. (Closes: #841157)
     - Add to ignored_patterns:
       + /srv/.* (Closes: #848186)
+    - Add my copyright note according to git blame.
   * Add python (>= 2.7) to the depends of piuparts-master and piuparts-slave
     as dh-python has been changed to only add python depends if it finds
     python code in PATH. Thanks lintian.
