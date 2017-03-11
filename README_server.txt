@@ -400,7 +400,7 @@ section, too, and will serve as defaults for all other sections
 * "mirror" tells the slave which mirror it is to use. The slave
  gives this to piuparts when it runs it. The URLs for Packages and
  Sources files will be generated from this setting, too. Default
- (for fetching Packages/Sources): "http://httpredir.debian.org/debian".
+ (for fetching Packages/Sources): "http://deb.debian.org/debian".
 
 * "distro" is the distribution the slave should tell piuparts to
  use for basic install/purge testing. It is also possible to use a

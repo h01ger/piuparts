@@ -62,6 +62,9 @@ piuparts (0.76) UNRELEASED; urgency=medium
   * Add python (>= 2.7) to the depends of piuparts-master and piuparts-slave
     as dh-python has been changed to only add python depends if it finds
     python code in PATH. Thanks lintian.
+  * Replace httpredir.debian.org with deb.debian.org everywhere: with deb.d.o
+    apt will use SRV records to go directly to the mirror, with httpredir.d.o
+    there will be http redirects for every file.
   * slave_run: Fix bug which prevented a different number of slaves to be
     started than defined in the configuration. Also add a check to ensure that
     this optional argument is an integer and within the defined maximum number
