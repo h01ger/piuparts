@@ -87,6 +87,7 @@ sections =
 	testing-nodocs/main
 	stretch/main
 	stretch-pu/main
+	stretch-debug/main
 	jessie/main
 	jessie-rcmd/main
 	jessie-proposed/main
@@ -134,6 +135,7 @@ sections =
 	testing-nodocs/contrib
 	stretch/contrib
 	stretch-pu/contrib
+	stretch-debug/contrib
 	jessie/contrib
 	jessie-rcmd/contrib
 	jessie-proposed/contrib
@@ -181,6 +183,7 @@ sections =
 	testing-nodocs/non-free
 	stretch/non-free
 	stretch-pu/non-free
+	stretch-debug/non-free
 	jessie/non-free
 	jessie-rcmd/non-free
 	jessie-proposed/non-free
@@ -707,6 +710,7 @@ distro = sid-debug
 arch = amd64
 area = main
 components = main
+reschedule-old-count = 0
 
 [sid-debug/contrib]
 precedence = 45
@@ -716,6 +720,7 @@ depends-sections = sid/main sid/contrib sid/non-free
 distro = sid-debug
 arch = amd64
 area = contrib
+reschedule-old-count = 0
 
 [sid-debug/non-free]
 precedence = 45
@@ -725,6 +730,7 @@ depends-sections = sid/main sid/contrib sid/non-free
 distro = sid-debug
 arch = amd64
 area = non-free
+reschedule-old-count = 0
 
 
 [testing-rcmd/main]
@@ -880,6 +886,44 @@ depends-sections = stretch/main stretch/contrib
 distro = stretch-proposed-updates
 arch = amd64
 area = non-free
+
+
+[stretch-debug/main]
+precedence = 40
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main
+distro = stretch-debug
+arch = amd64
+area = main
+components = main
+reschedule-old-count = 0
+
+[stretch-debug/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main stretch/contrib stretch/non-free
+distro = stretch-debug
+arch = amd64
+area = contrib
+reschedule-old-count = 0
+
+[stretch-debug/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main stretch/contrib stretch/non-free
+distro = stretch-debug
+arch = amd64
+area = non-free
+reschedule-old-count = 0
 
 
 [jessie/main]
