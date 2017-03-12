@@ -1670,7 +1670,7 @@ class Chroot:
                 return True
         return False
 
-    def check_for_broken_symlinks(self):
+    def check_for_broken_symlinks(self, warn_only=None):
         """Check that all symlinks in chroot are non-broken."""
         if not settings.check_broken_symlinks:
             return
@@ -1691,7 +1691,7 @@ class Chroot:
                         target = "<unknown>"
                     broken.append("%s -> %s" % (name, target))
         if broken:
-            if settings.warn_broken_symlinks:
+            if settings.warn_broken_symlinks or warn_only:
                 logging.error("WARN: Broken symlinks:\n%s" %
                               indent_string("\n".join(broken)))
             else:
@@ -2508,7 +2508,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
             chroot_state_with_deps = chroot.get_state_meta_data()
 
     chroot.check_for_no_processes()
-    chroot.check_for_broken_symlinks()
+    chroot.check_for_broken_symlinks(warn_only=True)  # warn only since no scripts could fix up things after installing the dependencies
 
     chroot.install_packages(package_files, packages, with_scripts=False)
 

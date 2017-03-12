@@ -4,6 +4,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Refactor internal handling of reference chroot state.
     - Do not run custom scripts before/after installing fake essential
       packages.
+    - Only warn on broken symlinks found between installing the dependencies
+      of the package to be tested and installing the package itself.
   * piupartslib/packagesdb.py:
     - Add new state "outdated" to ignore packages if a dependency distro
       already has a newer version.  (Closes: #856846)
