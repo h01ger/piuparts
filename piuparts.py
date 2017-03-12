@@ -803,7 +803,7 @@ class Chroot:
         # Run custom scripts after creating the chroot.
         self.run_scripts("post_setup")
 
-        self.install_packages_by_name(settings.fake_essential_packages)
+        self.install_packages_by_name(settings.fake_essential_packages, with_scripts=False)
 
         if settings.savetgz and not temp_tgz:
             self.pack_into_tgz(settings.savetgz)
