@@ -44,10 +44,10 @@ for SECTION in $SECTIONS ; do
 		rgrep -l -e "E: You don't have enough free space in /var/cache/apt/archives/" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "E: Failed to write temporary StateFile /var/lib/apt/extended_states.tmp" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "passwd: Authentication token manipulation error" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -E "(chfn|groupadd|useradd): cannot lock /etc/(group|gshadow|passwd|shadow|subuid); try again later." $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -E "(groupadd|useradd): failure while writing changes to /etc/(group|passwd|shadow)" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -E "(chfn|groupadd|useradd): (cannot lock|failure while writing changes to) /etc/(group|gshadow|passwd|shadow|subuid)" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -E "(groupadd|useradd): (unable to lock|cannot rewrite) (group|password) file" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "E: Sub-process Popen returned an error code (2)" $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l -e "chroot: failed to run command '.*': Permission denied" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "ERROR: Command failed (status=-7): .* 'apt-cache'" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "^RuntimeError: maximum recursion depth exceeded while calling a Python object" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "^Traceback" $MASTER/$SECTION/$subdir >> $FILE

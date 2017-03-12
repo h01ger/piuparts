@@ -34,6 +34,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Mark logfiles for immediate recycling upon first appearance.
   * master-bin/detect_network_issues:
     - Detect outdated reference chroot meta data.
+  * master-bin/detect_piuparts_issues:
+    - Recognize more problems caused by a full filesystem.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 
