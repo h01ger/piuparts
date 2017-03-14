@@ -562,15 +562,7 @@ class PackagesDB:
 
         return "unknown"
 
-    def _compute_package_states(self, use_cached_success=False):
-        if self._in_state is not None:
-            return
-
-        self._stamp = time.time()
-
-        for subdir in self._all:
-            self._logdb.bulk_load_dir(subdir)
-
+    def _initialize_package_states(self, use_cached_success):
         self._find_all_packages()
 
         self._package_state = {}
@@ -587,6 +579,19 @@ class PackagesDB:
                 todo.append(package_name)
             else:
                 self._in_state[state].append(package_name)
+
+        return todo
+
+    def _compute_package_states(self, use_cached_success=False):
+        if self._in_state is not None:
+            return
+
+        self._stamp = time.time()
+
+        for subdir in self._all:
+            self._logdb.bulk_load_dir(subdir)
+
+        todo = self._initialize_package_states(use_cached_success=use_cached_success)
 
         for db in self._dependency_databases:
             db._compute_package_states(use_cached_success=True)
