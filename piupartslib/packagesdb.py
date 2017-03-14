@@ -447,7 +447,13 @@ class PackagesDB:
                 return True
         return False
 
-    def _lookup_package_state(self, package, use_cached_success):
+    def _lookup_package_state(self, package, use_cached_success, check_outdated):
+        if check_outdated:
+            # Check if dependency databases have a newer version of this package.
+            for db in self._dependency_databases:
+                v = db.get_version(package["Package"])
+                if v is not None and apt_pkg.version_compare(package["Version"], v) < 0:
+                    return "outdated";
         if self._recycle_mode and self._logdb.log_exists(package, [self._recycle]):
             return "unknown"
         if self._logdb.log_exists(package, [self._ok]):
@@ -468,12 +474,6 @@ class PackagesDB:
         return "unknown"
 
     def _compute_package_state(self, package):
-        # Check if dependency databases have a newer version of this package.
-        for db in self._dependency_databases:
-            v = db.get_version(package["Package"])
-            if v is not None and apt_pkg.version_compare(package["Version"], v) < 0:
-                return "outdated";
-
         # First attempt to resolve (still-unresolved) multiple alternative depends
         # Definitely sub-optimal, but improvement over blindly selecting first one
         # Select the first alternative in the highest of the following states:
@@ -562,7 +562,7 @@ class PackagesDB:
 
         return "unknown"
 
-    def _initialize_package_states(self, use_cached_success):
+    def _initialize_package_states(self, use_cached_success, check_outdated):
         self._find_all_packages()
 
         self._package_state = {}
@@ -572,7 +572,7 @@ class PackagesDB:
         todo = []
 
         for package_name, package in self._packages.iteritems():
-            state = self._lookup_package_state(package, use_cached_success)
+            state = self._lookup_package_state(package, use_cached_success, check_outdated)
             assert state in self._states
             self._package_state[package_name] = state
             if state == "unknown":
@@ -591,10 +591,14 @@ class PackagesDB:
         for subdir in self._all:
             self._logdb.bulk_load_dir(subdir)
 
-        todo = self._initialize_package_states(use_cached_success=use_cached_success)
+        todo = self._initialize_package_states(use_cached_success=use_cached_success, check_outdated=False)
 
         for db in self._dependency_databases:
             db._compute_package_states(use_cached_success=True)
+
+        if self._dependency_databases:
+            # redo the initialization to properly resolve "outdated" packages after the dependency databases have been initialized
+            todo = self._initialize_package_states(use_cached_success=use_cached_success, check_outdated=True)
 
         while todo:
             package_names = todo
