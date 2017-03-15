@@ -25,6 +25,8 @@ get_config_value SECTIONS global sections
 get_config_value URLBASE global urlbase https://piuparts.debian.org
 get_config_value DAYS global reschedule-untestable-days 7
 
+ISSUE_LOG="$MASTER/archive_issues.txt"
+
 STARTDATE=$(date -u +%s)
 
 #
@@ -35,6 +37,7 @@ LOGS=`mktemp`
 URLS=`mktemp`
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
+	URL_SED="s#$MASTER/$SECTION/fail#$URLBASE/$SECTION/untestable#"
 	mkdir -p $MASTER/$SECTION/fail/ $MASTER/$SECTION/untestable/
 	# '-mtime +0' actually means '24 hours or older'
 	find $MASTER/$SECTION/fail -name '*.log' -mtime +0 | xargs -r \
@@ -44,12 +47,12 @@ for SECTION in $SECTIONS ; do
 		do
 			mv $package_log $MASTER/$SECTION/untestable/
 		done
-		sed "s#$MASTER/$SECTION/fail#$URLBASE/$SECTION/untestable#" $LOGS >> $URLS
+		sed "$URL_SED" $LOGS >> $URLS
 	fi
 done
 if [ -s $URLS ]; then
-	date >> $MASTER/archive_issues.txt
-	cat $URLS >> $MASTER/archive_issues.txt
+	date >> $ISSUE_LOG
+	cat $URLS >> $ISSUE_LOG
 	FINALDATE=$(date -u +%s)
 	RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
 	echo "Runtime: $RUNTIME"
@@ -70,7 +73,7 @@ if [ -s $URLS ]; then
 	echo "If it is always the same package failing, it's likely to be an issue in the"
 	echo "package."
 	echo
-	grep -f $URLS $MASTER/archive_issues.txt | sort | uniq -c | sort -rn
+	grep -f $URLS $ISSUE_LOG | sort | uniq -c | sort -rn
 	echo
 fi
 rm $LOGS $URLS
