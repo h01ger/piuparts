@@ -613,7 +613,7 @@ class PackagesDB:
                     else:
                         self._in_state[state].append(package_name)
                         self._package_state[package_name] = state
-                        done.append(package)
+                        done.append(package_name)
             if not done:
                 # If we didn't do anything this time, we sure aren't going
                 # to do anything the next time either.

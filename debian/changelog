@@ -9,6 +9,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * piupartslib/packagesdb.py:
     - Add new state "outdated" to ignore packages if a dependency distro
       already has a newer version.  (Closes: #856846)
+    - Resolve packages in "outdated" state after dependency databases are
+      initialized.
   * piuparts-slave.py:
   * piuparts-analyze.py:
   * piuparts-report.py:
