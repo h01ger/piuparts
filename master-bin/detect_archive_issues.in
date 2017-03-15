@@ -38,13 +38,18 @@ URLS=`mktemp`
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 	URL_SED="s#$MASTER/$SECTION/fail#$URLBASE/$SECTION/untestable#"
-	mkdir -p $MASTER/$SECTION/fail/ $MASTER/$SECTION/untestable/
+	mkdir -p $MASTER/$SECTION/fail/ $MASTER/$SECTION/untestable/ $MASTER/$SECTION/recycle/
 	# '-mtime +0' actually means '24 hours or older'
 	find $MASTER/$SECTION/fail -name '*.log' -mtime +0 | xargs -r \
 		grep -l -E "E: Broken packages|E: Unable to correct problems, you have held broken packages|E: Error, pkgProblemResolver::Resolve generated breaks" 2>/dev/null > $LOGS
 	if [ -s $LOGS ]; then
 		for package_log in $(cat $LOGS)
 		do
+			URL=$(echo "$package_log" | sed "$URL_SED")
+			if ! grep -q "$URL" $ISSUE_LOG ; then
+				# immediately recycle upon first appearance
+				ln -f $package_log $MASTER/$SECTION/recycle/
+			fi
 			mv $package_log $MASTER/$SECTION/untestable/
 		done
 		sed "$URL_SED" $LOGS >> $URLS

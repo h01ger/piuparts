@@ -18,6 +18,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Support new states in plots (varying number of columns in counts.txt).
   * master-bin/detect_archive_issues:
     - Look at failed logs older than 24 hours (48 hours previously).
+    - Mark logfiles for immediate recycling upon first appearance.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 
