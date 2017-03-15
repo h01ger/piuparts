@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Copyright © 2009-2017 Holger Levsen (holger@layer-acht.org)
-# Copyright © 2011-2013 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2011-2017 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -36,7 +36,8 @@ URLS=`mktemp`
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 	mkdir -p $MASTER/$SECTION/fail/ $MASTER/$SECTION/untestable/
-	find $MASTER/$SECTION/fail -name '*.log' -mtime +1 | xargs -r \
+	# '-mtime +0' actually means '24 hours or older'
+	find $MASTER/$SECTION/fail -name '*.log' -mtime +0 | xargs -r \
 		grep -l -E "E: Broken packages|E: Unable to correct problems, you have held broken packages|E: Error, pkgProblemResolver::Resolve generated breaks" 2>/dev/null > $LOGS
 	if [ -s $LOGS ]; then
 		for package_log in $(cat $LOGS)
