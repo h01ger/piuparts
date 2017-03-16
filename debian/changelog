@@ -1741,7 +1741,7 @@ piuparts (0.43) unstable; urgency=low
     and --end-meta.
   * piuparts-report.py:
     - add support for more static pages and add bug_howto.tpl, explaining how
-      to file meaningful bugs piuparts-analyse understands. This page also
+      to file meaningful bugs piuparts-analyze understands. This page also
       links to the templates used for bug filing.
   * piuparts-slave.py: make status message more useful by including the
     section.

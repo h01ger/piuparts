@@ -232,7 +232,7 @@
      <td class="contentcell2">
       <b>2012-03-05</b>: temporarily disabled this again until we've sorted out problems with it.
       <br>
-      <b>2012-02-20</b>: piuparts-analyse now sends commands the BTS: if a bug has not been explicitly marked fixed in the new version, it can rather very savely be assumed it's still present.
+      <b>2012-02-20</b>: piuparts-analyze now sends commands the BTS: if a bug has not been explicitly marked fixed in the new version, it can rather very savely be assumed it's still present.
      </td>
     </tr>
     <tr class="normalrow">
@@ -242,7 +242,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2012-01-22</b>: Since some weeks, piuparts-analyse is captable of moving logfiles from fail to bugged, if there is a bug report usertagged 'piuparts' against that package+version combination. Thus, since today there is a webpage, explaining <a href="bug_howto.html">how to file bugs based on tests run on piuparts.debian.org</a>. So now the question how to help can easily be answered: read that page and start filing bugs!
+      <b>2012-01-22</b>: Since some weeks, piuparts-analyze is captable of moving logfiles from fail to bugged, if there is a bug report usertagged 'piuparts' against that package+version combination. Thus, since today there is a webpage, explaining <a href="bug_howto.html">how to file bugs based on tests run on piuparts.debian.org</a>. So now the question how to help can easily be answered: read that page and start filing bugs!
      </td>
     </tr>
     <tr class="normalrow">

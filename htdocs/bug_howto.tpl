@@ -25,7 +25,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	If there already is a bug describing the same problem you're seeing in the piuparts logfile, you can usertag it, so that the next piuparts-analyse run will be able to link the bug report with the logfile on piuparts.debian.org. (piuparts-analyse runs twice a day.)
+	If there already is a bug describing the same problem you're seeing in the piuparts logfile, you can usertag it, so that the next piuparts-analyze run will be able to link the bug report with the logfile on piuparts.debian.org. (piuparts-analyze runs twice a day.)
 	<pre>
  User: debian-qa@lists.debian.org
  Usertags 987654 + piuparts
@@ -92,7 +92,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	Sometimes there is a bug in another package which affects a package being tested. The following explains how to tell this to the BTS in a way piuparts-analyse will pick up:
+	Sometimes there is a bug in another package which affects a package being tested. The following explains how to tell this to the BTS in a way piuparts-analyze will pick up:
      </td>
     </tr>
     <tr class="normalrow">
