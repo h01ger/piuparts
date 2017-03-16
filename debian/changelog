@@ -12,6 +12,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Resolve packages in "outdated" state after dependency databases are
       initialized.
   * piuparts-slave.py:
+    - Run piuparts but skip tests to create tarballs.
   * piuparts-analyze.py:
   * piuparts-report.py:
     - Plot all states in the graphs.
