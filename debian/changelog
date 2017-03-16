@@ -29,6 +29,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * master-bin/detect_archive_issues:
     - Look at failed logs older than 24 hours (48 hours previously).
     - Mark logfiles for immediate recycling upon first appearance.
+  * master-bin/detect_network_issues:
+    - Detect outdated reference chroot meta data.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 
