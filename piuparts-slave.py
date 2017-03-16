@@ -95,6 +95,7 @@ class Config(piupartslib.conf.Config):
                                          "chroot-tgz": None,
                                          "upgrade-test-distros": None,
                                          "basetgz-directory": ".",
+                                         "chroot-meta-auto": None,
                                          "max-reserved": 1,
                                          "debug": "no",
                                          "keep-sources-list": "no",
@@ -640,6 +641,15 @@ class Section:
         self._check_tarball()
         if not os.path.exists(self._get_tarball()):
             self._error_wait_until = time.time() + 300
+        if self._config["chroot-meta-auto"]:
+            if os.path.exists(self._config["chroot-meta-auto"]):
+                try:
+                    age = time.time() - os.path.getmtime(self._config["chroot-meta-auto"])
+                    if age > 6 * 3600:
+                        os.unlink(self._config["chroot-meta-auto"])
+                        logging.info("Deleting old %s" % self._config["chroot-meta-auto"])
+                except OSError:
+                    pass
         for package_name, version in self._slave.get_reserved():
             self._throttle_if_overloaded()
             if interrupted or got_sighup:
@@ -690,6 +700,11 @@ class Section:
                 command.extend(["-d", distro])
         if self._config["keep-sources-list"] in ["yes", "true"]:
             command.append("--keep-sources-list")
+        if distupgrade and self._config["chroot-meta-auto"]:
+            if not os.path.exists(self._config["chroot-meta-auto"]):
+                command.extend(["-S", self._config["chroot-meta-auto"]])
+            else:
+                command.extend(["-B", self._config["chroot-meta-auto"]])
         command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
         subdir = "fail"
@@ -766,6 +781,13 @@ class Section:
             elif not "piuparts run ends" in lastline:
                 ret += 1024
                 output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n")
+            elif distupgrade and self._config["chroot-meta-auto"] and \
+                    "History of available packages does not match - reference chroot may be outdated" in f:
+                try:
+                    os.unlink(self._config["chroot-meta-auto"])
+                    logging.info("Deleting outdated %s" % self._config["chroot-meta-auto"])
+                except OSError:
+                    pass
 
         output.write("\n")
         output.write("ret=%d\n" % ret)
