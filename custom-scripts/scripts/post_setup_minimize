@@ -2,7 +2,7 @@
 set -e
 
 # only while creating the tarball
-if [ "${PIUPARTS_OBJECTS%%=*}" = "dpkg" ]
+if [ "${PIUPARTS_OBJECTS%%=*}" = "TARBALL" ]
 then
 	case $PIUPARTS_DISTRIBUTION in
 		jessie)

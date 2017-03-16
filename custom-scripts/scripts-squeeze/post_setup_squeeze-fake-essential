@@ -11,7 +11,7 @@ FAILS_TO_REMOVE=
 
 
 case ${PIUPARTS_OBJECTS%%=*} in
-	dpkg)
+	TARBALL)
 		# don't install fake essential packages while creating the tarball
 		exit 0
 		;;

@@ -12,11 +12,14 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Resolve packages in "outdated" state after dependency databases are
       initialized.
   * piuparts-slave.py:
-    - Run piuparts but skip tests to create tarballs.
+    - Run piuparts on dummy package "TARBALL" (but skip tests) to create
+      tarballs.
   * piuparts-analyze.py:
   * piuparts-report.py:
     - Plot all states in the graphs.
     - Support new states in plots (varying number of columns in counts.txt).
+  * custom-scripts: Check for dummy package "TARBALL" to detect tarball
+    creation phase.
   * master-bin/detect_archive_issues:
     - Look at failed logs older than 24 hours (48 hours previously).
     - Mark logfiles for immediate recycling upon first appearance.

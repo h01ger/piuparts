@@ -874,7 +874,7 @@ def create_chroot(config, tarball, distro):
     command.extend(["-d", distro])
     command.extend(["-s", tarball + ".new"])
     command.extend(['--no-install-purge-test', '--no-upgrade-test'])
-    command.extend(["--apt", "dpkg"])
+    command.extend(["--apt", "TARBALL"])  # dummy package name
 
     output_name = tarball + ".log"
     with open(output_name, "we") as output:

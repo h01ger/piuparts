@@ -2,7 +2,7 @@
 set -e
 
 case ${PIUPARTS_OBJECTS%%=*} in
-	dpkg)
+	TARBALL)
 		# skip while creating the tarball
 		exit 0
 		;;
