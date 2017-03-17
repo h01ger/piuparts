@@ -1458,9 +1458,15 @@ class Section:
                         logs_by_dir[vdir].remove(log)
                     else:
                         current = self._binary_db.get_version(package)
+                        state = self._binary_db.get_package_state(package, resolve_virtual=False, recurse=False)
                         if version != current:
                             logging.debug("Archiving %s/%s, package is outdated (%s)" %
                                           (vdir, log, current))
+                            self.archive_logfile(vdir, log)
+                            logs_by_dir[vdir].remove(log)
+                        elif state == "outdated":
+                            logging.debug("Archiving %s/%s, package is superseded" %
+                                          (vdir, log))
                             self.archive_logfile(vdir, log)
                             logs_by_dir[vdir].remove(log)
 
