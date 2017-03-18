@@ -1,5 +1,6 @@
 piuparts (0.77) UNRELEASED; urgency=medium
 
+  [ Andreas Beckmann ]
   * piuparts.py:
     - Refactor internal handling of reference chroot state.
     - Do not run custom scripts before/after installing fake essential
@@ -36,6 +37,9 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Detect outdated reference chroot meta data.
   * master-bin/detect_piuparts_issues:
     - Recognize more problems caused by a full filesystem.
+
+  [ Holger Levsen ]
+  * update TODO. Work on buster has begun. \o/ 
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 

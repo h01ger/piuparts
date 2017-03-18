@@ -6,7 +6,7 @@ wishlist! And see the bottom of this file for wishlist bugs someone once
 expressed…
 
 
-for 0.7x, during the stretch development cycle:
+for 0.7x, during the buster development cycle:
 
 - README_server.txt: rewrite style a bit more. its super easy to setup now!
 
@@ -34,7 +34,7 @@ for 0.7x, during the stretch development cycle:
     - packages processed per day and section, master writes submissions.txt
       since 0.45 for all sections.
     - generate simple diagrams: number of source + binary packages in all
-      single distros: lenny, squeeze, wheezy, jessie, stretch, sid.
+      single distros: lenny, squeeze, wheezy, jessie, stretch, buster, sid.
     - graph about piuparts stati for all sections combined? (possible ignore
       successful)
 
@@ -43,9 +43,6 @@ for 0.7x, during the stretch development cycle:
   same with slave and tmp.
 
 - piuparts.conf.pejacevic: maybe use mirror via nfs (faster)
-
-- also test packages from security.d.o
-  => is jessie-pu sufficient? this should quickly include these packages
 
 - maybe compress all logfiles
 
