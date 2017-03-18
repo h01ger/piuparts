@@ -25,7 +25,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Plot all states in the graphs.
     - Support new states in plots (varying number of columns in counts.txt).
     - Reorder stacking in the bts_stats plot.
-    - Defer rewriting unmodified maintainer and source summaries.
+    - Defer rewriting unmodified maintainer and source summaries, refresh them
+      once per month.
   * custom-scripts: Check for dummy package "TARBALL" to detect tarball
     creation phase.
   * master-bin/detect_archive_issues:

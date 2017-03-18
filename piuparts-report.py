@@ -38,6 +38,7 @@ import string
 import yaml
 import hashlib
 import pickle
+import random
 from urllib2 import HTTPError
 
 # if python-rpy2 ain't installed, we don't draw fancy graphs
@@ -704,7 +705,10 @@ def write_template_html(filename, body, mapping={}, defer_if_unmodified=False, m
     if defer_if_unmodified:
         if filename in md5cache['old'] and md5cache['old'][filename] == content_md5 and os.path.exists(filename):
             md5cache['unmodified'] += 1
-            if fileage(filename) < 7 * 86400:
+            # defer updating the file between 1 and 4 weeks
+            minage = 1 * 7 * 86400
+            maxage = 4 * 7 * 86400
+            if fileage(filename) < random.randint(minage, maxage):
                 return
             md5cache['refreshed'] += 1
 
@@ -718,7 +722,10 @@ def write_template_html(filename, body, mapping={}, defer_if_unmodified=False, m
                     break
                 if line.startswith("<!-- ") and line[5:5 + len(content_md5)] == content_md5:
                     md5cache['unmodified'] += 1
-                    if fileage(filename) < 7 * 86400:
+                    # defer updating the file between 1 and 4 weeks
+                    minage = 1 * 7 * 86400
+                    maxage = 4 * 7 * 86400
+                    if fileage(filename) < random.randint(minage, maxage):
                         return
                     md5cache['refreshed'] += 1
                     break
