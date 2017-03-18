@@ -37,6 +37,7 @@ import re
 import string
 import yaml
 import hashlib
+import pickle
 from urllib2 import HTTPError
 
 # if python-rpy2 ain't installed, we don't draw fancy graphs
@@ -679,7 +680,7 @@ def read_file(filename):
     return l
 
 
-def write_template_html(filename, body, mapping={}):
+def write_template_html(filename, body, mapping={}, md5cache=None):
     header = HTML_HEADER
     footer = HTML_FOOTER
     htmlpage = string.Template(header + body + footer)
@@ -690,12 +691,18 @@ def write_template_html(filename, body, mapping={}):
         "time": "",
     })
     content_md5 = hashlib.md5(htmlpage.safe_substitute(mapping)).hexdigest()
+
+    if md5cache is not None:
+        md5cache['new'][filename] = content_md5
+
     mapping.update({
         "content_md5": content_md5,
         "piuparts_version": PIUPARTS_VERSION,
         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
     })
     write_file(filename, htmlpage.safe_substitute(mapping))
+    if md5cache is not None:
+        md5cache['written'] += 1
 
 
 def create_section_navigation(section_names, current_section, doc_root):
@@ -775,6 +782,7 @@ class Section:
                     self._config.get_area()))
 
         self._log_name_cache = {}
+        self._md5cache = { 'old': {}, 'new': {}, 'written': 0, 'unmodified': 0, 'refreshed': 0 }
 
     def _load_package_database(self, section, master_directory):
         if section in self._package_databases:
@@ -820,7 +828,7 @@ class Section:
             "doc_root": self._doc_root,
             "section": html_protect(self._config.section),
         })
-        write_template_html(filename, body, mapping)
+        write_template_html(filename, body, mapping, md5cache=self._md5cache)
 
     def write_log_list_page(self, filename, title, preface, logs):
         packages = {}
@@ -1471,6 +1479,13 @@ class Section:
                             logs_by_dir[vdir].remove(log)
 
     def generate_html(self):
+        md5cachefile = os.path.join(self._output_directory, '.md5cache')
+        try:
+            with open(md5cachefile, "r") as f:
+                self._md5cache['old'] = pickle.load(f)
+        except IOError:
+            pass
+
         logging.debug("Finding log files")
         dirs = ["pass", "fail", "bugged", "affected", "reserved", "untestable"]
         logs_by_dir = {}
@@ -1501,6 +1516,11 @@ class Section:
 
         logging.debug("Writing stats pages for %s" % self._config.section)
         self.write_state_pages()
+
+        logging.debug("Wrote %d out of %d html files" % (self._md5cache['written'], len(self._md5cache['new'])))
+        with open(md5cachefile, "w") as f:
+            pickle.dump(self._md5cache['new'], f)
+
 
     def generate_summary(self, web_host):
         summary_path = os.path.join(self._output_directory, "summary.json")
