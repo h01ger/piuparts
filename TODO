@@ -46,9 +46,6 @@ for 0.7x, during the buster development cycle:
 
 - maybe compress all logfiles
 
-- look for a solution to use the global debian mirror for debian-backports,
-  too, to avoid hardcoding a specific mirror in distros.conf
-
 - if it weren't for 'slave-bin/slave_cleanup', the slave would only need
   rights to run "sudo piuparts" but nothing else. If we can clean this up,
   the sudoers.d should recommend sudo (lsof|kill|umount) for admins.
