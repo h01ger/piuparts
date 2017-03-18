@@ -680,7 +680,13 @@ def read_file(filename):
     return l
 
 
-def write_template_html(filename, body, mapping={}, md5cache=None):
+def fileage(filename):
+    mtime = os.path.getmtime(filename)
+    now = time.time()
+    return now - mtime
+
+
+def write_template_html(filename, body, mapping={}, defer_if_unmodified=False, md5cache=None):
     header = HTML_HEADER
     footer = HTML_FOOTER
     htmlpage = string.Template(header + body + footer)
@@ -694,6 +700,28 @@ def write_template_html(filename, body, mapping={}, md5cache=None):
 
     if md5cache is not None:
         md5cache['new'][filename] = content_md5
+
+    if defer_if_unmodified:
+        if filename in md5cache['old'] and md5cache['old'][filename] == content_md5 and os.path.exists(filename):
+            md5cache['unmodified'] += 1
+            if fileage(filename) < 7 * 86400:
+                return
+            md5cache['refreshed'] += 1
+
+    if defer_if_unmodified and not filename in md5cache['old'] and os.path.exists(filename):
+        # read the first 10 lines of the old file and look for a matching md5sum
+        with open(filename, "r") as f:
+            lineno = 0
+            for x in range(10):
+                line = f.readline()
+                if not line:
+                    break
+                if line.startswith("<!-- ") and line[5:5 + len(content_md5)] == content_md5:
+                    md5cache['unmodified'] += 1
+                    if fileage(filename) < 7 * 86400:
+                        return
+                    md5cache['refreshed'] += 1
+                    break
 
     mapping.update({
         "content_md5": content_md5,
@@ -821,14 +849,14 @@ class Section:
                     config.get_area(),
                     config.get_arch()))
 
-    def _write_template_html(self, filename, body, mapping={}):
+    def _write_template_html(self, filename, body, mapping={}, defer_if_unmodified=False):
         mapping = mapping.copy()
         mapping.update({
             "section_navigation": self._section_navigation,
             "doc_root": self._doc_root,
             "section": html_protect(self._config.section),
         })
-        write_template_html(filename, body, mapping, md5cache=self._md5cache)
+        write_template_html(filename, body, mapping, defer_if_unmodified=defer_if_unmodified, md5cache=self._md5cache)
 
     def write_log_list_page(self, filename, title, preface, logs):
         packages = {}
@@ -1076,7 +1104,8 @@ class Section:
                         "maintainer": html_protect(maintainer + " in " + self._config.section),
                         "distrolinks": distrolinks,
                         "rows": rows + "".join([package_rows[state] for state in states]),
-            })
+                    },
+                    defer_if_unmodified=True)
 
     def create_source_summary(self, source, logs_by_dir):
         source_version = self._source_db.get_control_header(source, "Version")
@@ -1185,7 +1214,8 @@ class Section:
                     {
                         "page_title": html_protect("Status of source package " + source + " in " + self._config.section),
                         "rows": sourcerows + binaryrows,
-                    })
+                    },
+                    defer_if_unmodified=True)
 
             # return parsable values
             if success:
@@ -1517,7 +1547,9 @@ class Section:
         logging.debug("Writing stats pages for %s" % self._config.section)
         self.write_state_pages()
 
-        logging.debug("Wrote %d out of %d html files" % (self._md5cache['written'], len(self._md5cache['new'])))
+        logging.debug("Wrote %d out of %d html files, refreshed %d out of %d unmodified files" % ( \
+                self._md5cache['written'], len(self._md5cache['new']),
+                self._md5cache['refreshed'], self._md5cache['unmodified']))
         with open(md5cachefile, "w") as f:
             pickle.dump(self._md5cache['new'], f)
 
