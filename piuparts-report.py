@@ -1680,15 +1680,14 @@ def make_bts_stats_graph(master_dir, out_dir):
     grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100)
     r = robjects.r
     r('t <- (read.table("' + countsfile + '",sep=",",header=1,row.names=1))')
-    r('cname <- c("date",rep(colnames(t)))')
     # make graph since day 1
-    r('v <- t[0:nrow(t),0:4]')
+    r('v <- t[c(4, 2, 3, 1)]')  # reorder columns
     # tango colors again:
-    r('palette(c("#8ae234", "#ef2929", "#4e9a06", "#a40000"))')
-    r('barplot(t(v),col = 1:5, \
+    r('palette(c("#a40000", "#ef2929", "#4e9a06", "#8ae234"))')
+    r('barplot(t(v),col = 1:4, \
         main="Bugs with usertag=piuparts and user=debian-qa@lists.debian.org", \
         xlab="", ylab="Total number of RC and non-RC bugs submitted and closed", space=0, border=NA)')
-    r('legend(x="bottom",legend=colnames(t), ncol=2,fill=1:5,xjust=0.5,yjust=0,bty="n")')
+    r('legend("right", legend=rev(colnames(v)), fill=rev(1:4), inset=0.05, bty="n")')
     grdevices.dev_off()
 
 

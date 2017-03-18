@@ -24,6 +24,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * piuparts-report.py:
     - Plot all states in the graphs.
     - Support new states in plots (varying number of columns in counts.txt).
+    - Reorder stacking in the bts_stats plot.
   * custom-scripts: Check for dummy package "TARBALL" to detect tarball
     creation phase.
   * master-bin/detect_archive_issues:
