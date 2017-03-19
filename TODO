@@ -170,6 +170,7 @@ rationale.
 
 piuparts:
 - #664727 - support cowbuilder in addition to pbuilder
+- #798306 - piuparts should support [trusted=yes] in "file deb src" sources.list lines
 - #588042 - add an option to override the log file instead of append to it
 - #354842 - new option: remove /usr/local
 - #558819 - new option: check that daemon stop scripts don't fail even if the daemon doesn't run
