@@ -151,7 +151,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     <tr class="normalrow">
      <td class="contentcell">
       piuparts.d.o configuration:<br>
-      <a href="https://anonscm.debian.org/cgit/piuparts/piuparts.git/tree/instances/piuparts.conf.pejacevic?h=develop" target="_blank">piuparts.conf</a>,<br>
+      <a href="https://anonscm.debian.org/cgit/piuparts/piuparts.git/tree/instances/piuparts.conf-template.pejacevic?h=develop" target="_blank">piuparts.conf</a>,<br>
       <a href="https://anonscm.debian.org/cgit/piuparts/piuparts.git/tree/conf/distros.conf?h=develop" target="_blank">distros.conf</a><br> and
       <a href="https://anonscm.debian.org/cgit/piuparts/piuparts.git/tree/custom-scripts?h=develop" target="_blank">scripts</a>
      </td>

@@ -12,6 +12,10 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * scripts/post_distupgrade_base_cleanup: Remove (transitional) sysvinit from
     stretch.  (Closes: #860819)
 
+  [ Holger Levsen ]
+  * piuparts-report.py:
+    - update navigation to point to piuparts.conf-template.pejacevic.
+
  -- Holger Levsen <holger@debian.org>  Sat, 03 Jun 2017 18:28:36 +0200
 
 piuparts (0.76) unstable; urgency=medium
