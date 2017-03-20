@@ -40,6 +40,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
 
   [ Holger Levsen ]
   * update TODO. Work on buster has begun. \o/ 
+  * piuparts-report.py:
+    - update navigation to point to piuparts.conf-template.pejacevic.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 
