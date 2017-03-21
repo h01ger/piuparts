@@ -42,6 +42,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * update TODO. Work on buster has begun. \o/ 
   * piuparts-report.py:
     - update navigation to point to piuparts.conf-template.pejacevic.
+  * generate_daily_report.in: only add runtime to external script output if
+    not already included.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 
