@@ -14,6 +14,8 @@ is_installed()
 PKGS=""
 
 if [ "$PIUPARTS_DISTRIBUTION" = "jessie-backports" ]; then
+	# downgrading them from jessie-backports to jessie during removal
+	# is problematic due to triggers
 	! is_installed systemd || PKGS="${PKGS} systemd"
 	! is_installed udev || PKGS="${PKGS} udev"
 fi
