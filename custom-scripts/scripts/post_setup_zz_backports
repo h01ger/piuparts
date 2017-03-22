@@ -1,0 +1,23 @@
+#!/bin/sh
+set -e
+
+is_installed()
+{
+	local pkg="$1"
+	dpkg-query -s "$pkg" >/dev/null 2>&1 || return 1
+	local status="$(dpkg-query -W -f '${Status}' $pkg)"
+	test "$status" != "unknown ok not-installed" || return 1
+	test "$status" != "deinstall ok config-files" || return 1
+	return 0
+}
+
+PKGS=""
+
+if [ "$PIUPARTS_DISTRIBUTION" = "jessie-backports" ]; then
+	! is_installed systemd || PKGS="${PKGS} systemd"
+	! is_installed udev || PKGS="${PKGS} udev"
+fi
+
+if [ -n "$PKGS" ]; then
+	apt-get -y -t "$PIUPARTS_DISTRIBUTION" install $PKGS
+fi

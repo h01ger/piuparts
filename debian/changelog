@@ -30,6 +30,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
       once per month.
   * custom-scripts: Check for dummy package "TARBALL" to detect tarball
     creation phase.
+  * scripts/post_setup_zz_backports: Avoid downgrading systemd/udev from
+    jessie-backports to jessie during removal phase.  (Closes: #856845)
   * master-bin/detect_archive_issues:
     - Look at failed logs older than 24 hours (48 hours previously).
     - Mark logfiles for immediate recycling upon first appearance.
