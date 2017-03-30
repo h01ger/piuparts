@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright 2009 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009, 2017 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2011-2012 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -24,6 +24,7 @@ get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
 get_config_value DAYS global reschedule-untestable-days 7
 
+STARTDATE=$(date -u +%s)
 
 #
 # find packages which have been in untestable for more than $DAYS days and reschedule them for testing
@@ -35,6 +36,10 @@ for SECTION in $SECTIONS ; do
 	find $MASTER/$SECTION/untestable/ -mtime +$DAYS -name "*.log" 2>/dev/null >> $LOGS
 done
 if [ -s $LOGS ] ; then
+	FINALDATE=$(date -u +%s)
+	RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
+	echo "Runtime: $RUNTIME"
+	echo
 	echo "Untestable packages detected, which have been tested more than $DAYS days ago!"
 	echo "These packages have been rescheduled for piuparts testing."
 	echo

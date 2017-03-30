@@ -47,6 +47,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - update navigation to point to piuparts.conf-template.pejacevic.
   * generate_daily_report.in: only add runtime to external script output if
     not already included.
+  * master-bin/report_untestable_packages.in: also report runtime.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 
