@@ -74,6 +74,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2017-04-07</b> Another suite added: <a href="https://piuparts.debian.org/jessie222sid">jessie222sid</a>, to test package installation in jessie, then upgrade to stretch, then upgrade to sid, then removal and purge..
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2017-03-08</b> Changed cron to update the webpages two times a day instead of four. In the past updating took longer than six hours, so effectivly only two updates per day were done anyway.
      </td>
     </tr>
