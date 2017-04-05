@@ -74,7 +74,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2017-03-08</b> Change cron to update the webpages two times a day instead of four. In the past updating took longer than six hours, so effectivly only two updates per day were done anyway.
+      <b>2017-03-08</b> Changed cron to update the webpages two times a day instead of four. In the past updating took longer than six hours, so effectivly only two updates per day were done anyway.
      </td>
     </tr>
     <tr class="normalrow">
