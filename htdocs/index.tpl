@@ -74,7 +74,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2017-04-07</b> Another suite added: <a href="https://piuparts.debian.org/jessie222sid">jessie222sid</a>, to test package installation in jessie, then upgrade to stretch, then upgrade to sid, then removal and purge..
+      <b>2017-04-07</b> Another suite added: <a href="https://piuparts.debian.org/stable222sid">stable222sid</a>, to test package installation in stable (currently jessie), then upgrade to testing (currently stretch), then upgrade to sid (always unstable), then removal and purge..
      </td>
     </tr>
     <tr class="normalrow">

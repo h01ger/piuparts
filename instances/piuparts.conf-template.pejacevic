@@ -103,6 +103,7 @@ sections =
 	stretch-pu
 #	stretch-proposed
 #	stretch2proposed
+	stable222sid
 	jessie2stretch
 	jessie2stretch-rcmd
 	jessie2bpo2stretch
@@ -113,7 +114,6 @@ sections =
 	jessie-pu
 #	jessie-proposed
 	jessie2proposed
-	jessie222sid
 	wheezy222testing
 	wheezy2jessie
 	wheezy2jessie-rcmd
@@ -457,14 +457,14 @@ distro = jessie
 upgrade-test-distros = jessie jessie-proposed
 
 
-[jessie222sid]
+[stable222sid]
 precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-distro = wheezy
+distro = jessie
 upgrade-test-distros = jessie stretch sid
 
 
