@@ -48,8 +48,10 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * generate_daily_report.in: only add runtime to external script output if
     not already included.
   * master-bin/report_untestable_packages.in: also report runtime.
-  * Add new suite: stable222sid, upgrading jessie -> stretch -> sid.
-   (Closes: #859620)
+  * instances/piuparts.conf-template.pejacevic: 
+    - Add new suite: stable222sid, upgrading jessie -> stretch -> sid.
+      (Closes: #859620)
+    - Adjust precedences for one third of the tested suites.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 

@@ -226,7 +226,7 @@ max-tgz-age = 0
 
 
 [experimental]
-precedence = 5
+precedence = 3
 piuparts-flags =
 	%(flags-default)s
 distro = experimental
@@ -242,7 +242,7 @@ distro = sid
 
 
 [sid-strict]
-precedence = 4
+precedence = 5
 json-sections = none
 description = + Fails if there are leftover files after purge.
 piuparts-flags =
@@ -272,7 +272,7 @@ reschedule-old-count = 0
 
 
 [sid2experimental]
-precedence = 4
+precedence = 3
 piuparts-flags =
 	%(flags-default)s
 depends-sections = sid
@@ -281,7 +281,7 @@ upgrade-test-distros = sid experimental
 
 
 [stretch]
-precedence = 3
+precedence = 4
 piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-log-alternatives
 	%(flags-default)s
@@ -291,7 +291,7 @@ distro = stretch
 
 
 [stretch-rcmd]
-precedence = 10
+precedence = 4
 json-sections = none
 description = + With recommended packages.
 piuparts-flags =
@@ -303,7 +303,7 @@ distro = stretch
 
 
 [stretch-security]
-precedence = 3
+precedence = 2
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -346,7 +346,7 @@ upgrade-test-distros = stretch stretch-proposed
 
 
 [jessie2stretch]
-precedence = 3
+precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -357,7 +357,7 @@ upgrade-test-distros = jessie stretch
 
 
 [jessie2stretch-rcmd]
-precedence = 10
+precedence = 6
 json-sections = none
 description = + Testing with --install-recommends.
 piuparts-flags =
@@ -370,7 +370,7 @@ upgrade-test-distros = jessie stretch
 
 
 [jessie2bpo2stretch]
-precedence = 3
+precedence = 5
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -382,7 +382,7 @@ upgrade-test-distros = jessie jessie-backports stretch
 
 
 [jessie2bpo]
-precedence = 3
+precedence = 5
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -394,7 +394,7 @@ upgrade-test-distros = jessie jessie-backports
 
 
 [jessie]
-precedence = 3
+precedence = 5
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
@@ -403,7 +403,7 @@ distro = jessie
 
 
 [jessie-rcmd]
-precedence = 10
+precedence = 5
 json-sections = none
 description = + With recommended packages.
 piuparts-flags =
@@ -415,7 +415,7 @@ distro = jessie
 
 
 [jessie-security]
-precedence = 3
+precedence = 2
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -426,7 +426,7 @@ distro = jessie/updates
 
 
 [jessie-pu]
-precedence = 3
+precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -437,7 +437,7 @@ distro = jessie-proposed-updates
 
 
 [jessie-proposed]
-precedence = 3
+precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -447,7 +447,7 @@ distro = jessie-proposed
 
 
 [jessie2proposed]
-precedence = 3
+precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -458,7 +458,7 @@ upgrade-test-distros = jessie jessie-proposed
 
 
 [stable222sid]
-precedence = 4
+precedence = 7
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -469,7 +469,7 @@ upgrade-test-distros = jessie stretch sid
 
 
 [wheezy222testing]
-precedence = 30
+precedence = 6
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -480,7 +480,7 @@ upgrade-test-distros = wheezy jessie stretch
 
 
 [wheezy2jessie]
-precedence = 3
+precedence = 7
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -491,7 +491,7 @@ upgrade-test-distros = wheezy jessie
 
 
 [wheezy2jessie-rcmd]
-precedence = 10
+precedence = 8
 json-sections = none
 description = + Testing with --install-recommends.
 piuparts-flags =
@@ -505,7 +505,7 @@ upgrade-test-distros = wheezy jessie
 
 
 [wheezy2bpo2jessie]
-precedence = 5
+precedence = 8
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -517,7 +517,7 @@ upgrade-test-distros = wheezy wheezy-backports jessie
 
 
 [wheezy]
-precedence = 3
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -527,7 +527,7 @@ distro = wheezy
 
 
 [wheezy-proposed]
-precedence = 3
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -537,7 +537,7 @@ distro = wheezy-proposed
 
 
 [wheezy-security]
-precedence = 3
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -548,7 +548,7 @@ distro = wheezy/updates
 
 
 [wheezy-pu]
-precedence = 3
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -559,7 +559,7 @@ distro = wheezy-proposed-updates
 
 
 [wheezy2proposed]
-precedence = 3
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -570,7 +570,7 @@ upgrade-test-distros = wheezy wheezy-proposed
 
 
 [squeeze2wheezy-proposed]
-precedence = 4
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -581,7 +581,7 @@ upgrade-test-distros = squeeze wheezy-proposed
 
 
 [squeeze2wheezy]
-precedence = 4
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -592,7 +592,7 @@ upgrade-test-distros = squeeze wheezy
 
 
 [squeeze2bpo2wheezy]
-precedence = 6
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
