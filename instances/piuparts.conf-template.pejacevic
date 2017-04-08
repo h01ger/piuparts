@@ -254,7 +254,7 @@ distro = sid
 
 
 [sid-nodoc]
-precedence = 100
+precedence = 9
 description = + Testing without files in /usr/share/doc.
 piuparts-flags =
 	%(flags-default)s
@@ -458,7 +458,7 @@ upgrade-test-distros = jessie jessie-proposed
 
 
 [stable222sid]
-precedence = 7
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
