@@ -53,6 +53,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
       (Closes: #859620)
     - Adjust precedences for one third of the tested suites.
       TODO: once stable222sid has been fully tested, change precedence to 3.
+  * Update README_server.txt.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 

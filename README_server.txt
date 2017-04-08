@@ -355,8 +355,8 @@ section, too, and will serve as defaults for all other sections
 * "idle-sleep" is the length of time the slave should wait before
  querying the master again if the master didn't have any new
  packages to test. In seconds, so a value of 300 would mean five
- minutes, and that seems to be a good value when there are fairly
- few slaves per master. The default is 300 seconds.
+ minutes, and that seems to be a good value for a repo that gets
+ updated frequently. The default is 300 seconds.
 
 * "max-tgz-age" is used to specify the maximum age (in seconds)
  after which basesystem tarballs will be recreated. If recreation
