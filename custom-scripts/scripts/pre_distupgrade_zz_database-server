@@ -75,7 +75,8 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ]; then
 		bareos-database-mysql)
 			SWITCH_TO_MARIADB=yes
 			;;
-		icinga2-ido-mysql)
+		icinga2-ido-mysql|\
+		icinga-web-config-icinga2-ido-mysql)
 			SWITCH_TO_MARIADB=yes
 			;;
 		openstack-cloud-services|\
@@ -84,6 +85,7 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ]; then
 			;;
 		pdns-backend-mysql)
 			SWITCH_TO_MARIADB=yes
+			RETRY="retry_configure_pending"
 			;;
 		phpmyadmin)
 			SWITCH_TO_MARIADB=yes
@@ -92,6 +94,11 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ]; then
 			SWITCH_TO_MARIADB=yes
 			;;
 		redmine-mysql)
+			SWITCH_TO_MARIADB=yes
+			;;
+		roundcube-core|\
+		roundcube|\
+		roundcube-plugins)
 			SWITCH_TO_MARIADB=yes
 			;;
 		tango-db|\
@@ -125,7 +132,7 @@ test ! -x /usr/bin/pg_lsclusters || pg_lsclusters
 
 if [ -n "$PACKAGES" ]
 then
-	echo "Upgrading ${PACKAGES# } early"
+	echo "Upgrading early: ${PACKAGES# }"
 	apt-get update
 	apt-get -y install $PACKAGES || $RETRY
 fi
@@ -143,14 +150,14 @@ upgrade_pg_cluster()
 	if ! is_installed postgresql-${to}
 	then
 		echo ""
-		echo "Installing postgresql-${to}"
+		echo "Installing: postgresql-${to}"
 		apt-get -y install postgresql-${to}
 	fi
 
 	if is_installed postgresql-${from} && is_installed postgresql-${to}
 	then
 		echo ""
-		echo "Updating PostgreSQL Cluster from ${from} to ${to}"
+		echo "Upgrading PostgreSQL Cluster from ${from} to ${to}"
 		pg_dropcluster ${to} main --stop
 		pg_upgradecluster -v ${to} ${from} main
 		pg_dropcluster ${from} main
