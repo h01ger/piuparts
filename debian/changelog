@@ -2,6 +2,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Add to ignored_files:
+      + /etc/rc.local
     - Refactor internal handling of reference chroot state.
     - Do not run custom scripts before/after installing fake essential
       packages.

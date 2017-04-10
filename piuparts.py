@@ -246,6 +246,7 @@ class Settings:
             "/etc/passwd",
             "/etc/passwd-",
             "/etc/passwd.org",
+            "/etc/rc.local",
             "/etc/shadow",
             "/etc/shadow-",
             "/etc/shadow.org",
