@@ -4,6 +4,9 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * distros.conf:
     - Add aliases for oldstable and oldoldstable.
     - Update aliases for stretch being released as stable.
+  * piuparts.py:
+    - Add to ignored_files:
+      + /etc/rc.local
 
  -- Holger Levsen <holger@debian.org>  Sat, 03 Jun 2017 18:28:36 +0200
 
