@@ -1640,10 +1640,11 @@ class Chroot:
         else:
             return '/sys/fs/selinux'
 
-    def mount(self, source, path, fstype=None, opts=None):
+    def mount(self, source, path, fstype=None, opts=None, no_mkdir=False):
         """Mount something into the chroot and remember it for unmount_all()."""
         path = canonicalize_path(self.name, path)
-        self.mkdir_p(path)
+        if not no_mkdir:
+            self.mkdir_p(path)
         fullpath = self.relative(path)
         command = ["mount"]
         if fstype is not None:
@@ -1673,7 +1674,9 @@ class Chroot:
         etcmtab = self.relative("etc/mtab")
         if not os.path.lexists(etcmtab):
             os.symlink("../proc/mounts", etcmtab)
-        self.mount("devpts", "/dev/pts", fstype="devpts", opts="gid=5,mode=620")
+        self.mount("devpts", "/dev/pts", fstype="devpts", opts="newinstance,noexec,nosuid,gid=5,mode=0620,ptmxmode=0666")
+        if not os.path.islink(self.relative("dev/ptmx")):
+            self.mount(self.relative("dev/pts/ptmx"), "/dev/ptmx", opts="bind", no_mkdir=True)
         self.mount("tmpfs", "/dev/shm", fstype="tmpfs", opts="size=65536k")
         if selinux_enabled():
             self.mount("/sys/fs/selinux", self.selinuxfs_path(), opts="bind,ro")
