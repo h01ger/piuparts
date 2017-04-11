@@ -1,22 +1,25 @@
 # m h dom mon dow (0|7=sun,1=mon)    command
 
+# set PATH, variable substitution is not supported (PATH=$PATH:/my/bin)
+PATH=@sharedir@/piuparts/slave:/usr/bin:/bin
+
 #
 # start slave_run automatically after reboots
 #
-@reboot @sharedir@/piuparts/slave/slave_cleanup ; @sharedir@/piuparts/slave/slave_run
-42 * * * * @sharedir@/piuparts/slave/slave_cleanup ; ! @sharedir@/piuparts/slave/slave_run >/dev/null 2>&1 || echo "piuparts-slave started by cron"
+@reboot slave_cleanup ; slave_run
+42 * * * * slave_cleanup ; ! slave_run >/dev/null 2>&1 || echo "piuparts-slave started by cron"
 
 #
 # monitor slave session every hour
 #
-16 * * * * @sharedir@/piuparts/slave/detect_slave_problems
+16 * * * * detect_slave_problems
 
 #
 # monitor for problems every six hours
 #
-23 */6 * * * @sharedir@/piuparts/slave/detect_leftover_processes
+23 */6 * * * detect_leftover_processes
 
 #
 # monitor for cruft in the temporary directory once a day
 #
-00  0 * * * @sharedir@/piuparts/slave/detect_tmp_cruft
+0  0  * * * detect_tmp_cruft

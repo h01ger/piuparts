@@ -1,34 +1,37 @@
 # m h dom mon dow (0|7=sun,1=mon)    command
 
+# set PATH, variable substitution is not supported (PATH=$PATH:/my/bin)
+PATH=@sharedir@/piuparts/master:/usr/bin:/bin
+
 #
 # cleanup $HTDOCS/daily.lock
 #
-@reboot @sharedir@/piuparts/master/master_cleanup
+@reboot master_cleanup
 
 #
 # generate reports twice a day
 #  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
 #
-0  0,12 * * * @sharedir@/piuparts/master/generate_daily_report
+0  0,12 * * * generate_daily_report
 
 #
 # reschedule old logs twice a day
 #
-0 3,15 * * * @sharedir@/piuparts/master/reschedule_oldest_logs
+0  3,15 * * * reschedule_oldest_logs
 
 #
 # monitor for problems once a day
 # - these may result in packages being retested
 # - if that's not the case, run them from within generate_daily_report
 #
-30 3-21/6 * * * @sharedir@/piuparts/master/detect_network_issues
-45 3-21/6 * * * @sharedir@/piuparts/master/detect_piuparts_issues
-0  22 * * * @sharedir@/piuparts/master/detect_archive_issues
-30 22 * * * @sharedir@/piuparts/master/report_untestable_packages
-0  23 * * * @sharedir@/piuparts/master/report_stale_reserved_packages
+30 3-21/6 * * * detect_network_issues
+45 3-21/6 * * * detect_piuparts_issues
+0  22 * * * detect_archive_issues
+30 22 * * * report_untestable_packages
+0  23 * * * report_stale_reserved_packages
 
 #
 # misc
 #
-0  2 * * * @sharedir@/piuparts/master/prepare_backup
-55 23 * * * @sharedir@/piuparts/master/gather_bts_stats
+0  2  * * * prepare_backup
+55 23 * * * gather_bts_stats
