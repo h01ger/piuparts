@@ -36,6 +36,11 @@ for SECTION in $SECTIONS ; do
 		distro=${DISTROS##* }
 		distro=${distro%-proposed}
 		timeout 60m @sharedir@/piuparts/piuparts-analyze $distro 2>&1 > $OUTPUT
+		if [ $? = 124 ]; then
+			echo >> $OUTPUT
+			echo "Killed after timeout" >> $OUTPUT
+		fi
+
 		if [ -s $OUTPUT ]; then
 			echo $SECTION
 			cat $OUTPUT
