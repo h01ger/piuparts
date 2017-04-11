@@ -14,6 +14,9 @@ piuparts (0.77) UNRELEASED; urgency=medium
       --end-meta meta-data.
     - Mount a new devpts instance on /dev/pts and /dev/ptmx inside the chroot
       for better pty separation from the host. Inspired by pbuilder.
+    - Arguments to the --ignore/--ignore-regexp options (and internal
+      ignored_files/ignored_patterns settings) that are prefixed with a ':'
+      will verbosely log the ignored files if matched.
   * piupartslib/packagesdb.py:
     - Add new state "outdated" to ignore packages if a dependency distro
       already has a newer version.  (Closes: #856846)

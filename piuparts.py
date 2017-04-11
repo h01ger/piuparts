@@ -1681,12 +1681,22 @@ class Chroot:
         if selinux_enabled():
             self.mount("/sys/fs/selinux", self.selinuxfs_path(), opts="bind,ro")
 
-    def is_ignored(self, pathname):
+    def is_ignored(self, pathname, info="PATH"):
         """Is a file (or dir or whatever) to be ignored?"""
         if pathname in settings.ignored_files:
             return True
+        if ':' + pathname in settings.ignored_files:
+            logging.info("IGNORED %s: %s" % (info, pathname))
+            return True
         for pattern in settings.ignored_patterns:
+            if pattern[0] == ':':
+                verbose = True
+                pattern = pattern[1:]
+            else:
+                verbose = False
             if re.search('^' + pattern + '$', pathname):
+                if verbose:
+                    logging.info("IGNORED %s: %s" % (info, pathname))
                 return True
         return False
 
@@ -1704,7 +1714,7 @@ class Chroot:
                 if name.startswith(self.name):
                     name = name[len(self.name):]
                 ret = is_broken_symlink(self.name, dirpath, filename)
-                if ret and not self.is_ignored(name):
+                if ret and not self.is_ignored(name, info="broken symlink"):
                     try:
                         target = os.readlink(full_name)
                     except os.error:
@@ -2180,20 +2190,38 @@ def diff_meta_data(tree1, tree2):
     tree2 = tree2.copy()
 
     for name in settings.ignored_files:
+        if name[0] == ':':
+            verbose = True
+            name = name[1:]
+        else:
+            verbose = False
         if name in tree1:
+            if verbose:
+                logging.info("IGNORED PATH@1: %s" % name)
             del tree1[name]
         if name in tree2:
+            if verbose:
+                logging.info("IGNORED PATH@2: %s" % name)
             del tree2[name]
 
     for pattern in settings.ignored_patterns:
+        if pattern[0] == ':':
+            verbose = True
+            pattern = pattern[1:]
+        else:
+            verbose = False
         pat = re.compile(pattern)
         for name in tree1.keys():
             m = pat.search(name)
             if m:
+                if verbose:
+                    logging.info("IGNORED PATH@1: %s" % name)
                 del tree1[name]
         for name in tree2.keys():
             m = pat.search(name)
             if m:
+                if verbose:
+                    logging.info("IGNORED PATH@2: %s" % name)
                 del tree2[name]
 
     modified = []
@@ -2881,13 +2909,15 @@ def parse_command_line():
     parser.add_option("-i", "--ignore", action="append", metavar="FILENAME",
                       default=[],
                       help="Add FILENAME to list of filenames to be " +
-                           "ignored when comparing changes to chroot.")
+                           "ignored when comparing changes to chroot."
+                           "FILENAMES prefixed with ':' will be reported verbosely.")
 
     parser.add_option("-I", "--ignore-regex", action="append",
                       metavar="REGEX", default=[],
                       help="Add REGEX to list of Perl compatible regular " +
                            "expressions for filenames to be " +
-                           "ignored when comparing changes to chroot.")
+                           "ignored when comparing changes to chroot."
+                           "Patterns prefixed with ':' will report all matches verbosely.")
 
     parser.add_option("--install-recommends",
                       action="store_true", default=False,
