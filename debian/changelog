@@ -31,6 +31,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Flush pending logfiles upon startup.
   * piuparts-analyze.py:
     - Process newest logfiles first, in case of timeouts.
+    - Drop report_packages_with_many_logs(), obsoleted by archiving old logs.
   * piuparts-report.py:
     - Plot all states in the graphs.
     - Support new states in plots (varying number of columns in counts.txt).

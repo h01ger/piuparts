@@ -231,29 +231,6 @@ def mark_logs_with_reported_bugs():
             print sys.exc_info()[0]
 
 
-def report_packages_with_many_logs():
-    failed_logs = find_logs("fail")
-    packages = {}
-    for failed_log in failed_logs:
-        package = package_name(failed_log)
-        packages[package] = packages.get(package, []) + [failed_log]
-    for package, failed_logs in packages.iteritems():
-        printed = False
-        if len(failed_logs) > 1:
-            print "Many failures:"
-            for failed_log in failed_logs:
-                print "  ", failed_log
-            printed = True
-        bugged_logs = find_bugged_logs(failed_logs[0])
-        if bugged_logs:
-            print "Already bugged?"
-            for failed_log in failed_logs + bugged_logs:
-                print "  ", failed_log
-            printed = True
-        if printed:
-            print
-
-
 piuparts_usertags_cache = None
 
 
@@ -281,7 +258,6 @@ def main():
         global distro
         distro = sys.argv[1]
     mark_logs_with_reported_bugs()
-    report_packages_with_many_logs()
 
 
 if __name__ == "__main__":
