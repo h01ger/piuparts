@@ -25,6 +25,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Add "chroot-meta-auto" config option to automatically maintain cached
       target chroot meta data (using --end-meta and --save-end-meta) for
       distupgrade tests instead of generating it on-the-fly.
+    - Flush pending logfiles upon startup.
   * piuparts-analyze.py:
   * piuparts-report.py:
     - Plot all states in the graphs.

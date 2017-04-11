@@ -961,6 +961,10 @@ def main():
         logging.error("no sections found")
         return
 
+    # flush logs from previous run
+    for section in sections:
+        section.run(do_processing=False)
+
     while True:
         global got_sighup
         test_count = 0
