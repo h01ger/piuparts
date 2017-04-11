@@ -224,6 +224,8 @@ def mark_logs_with_reported_bugs():
                                     break
             if not moved:
                 write_bug_file(failed_log, abugs + bugs)
+        except KeyboardInterrupt:
+            raise
         except:
             print('ERROR processing %s' % failed_log)
             print sys.exc_info()[0]
