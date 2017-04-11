@@ -406,7 +406,7 @@ class Settings:
             "/var/spool/squid/(../.*)?",
             "/var/www/.*",
             # HACKS
-            "/lib/modules/.*/modules.*",
+            ":/lib/modules/([^/]*/(modules.*)?)?",
         ]
         self.non_pedantic_ignore_patterns = [
             "/tmp/.*"
