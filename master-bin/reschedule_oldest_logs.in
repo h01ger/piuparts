@@ -43,6 +43,11 @@ get_config_value FAIL_COUNT global reschedule-fail-count 25
 get_config_value AUTO_RESCHEDULE	global auto-reschedule yes
 
 
+if [ -n "$*" ]; then
+	SECTIONS="$*"
+fi
+
+
 RECENT=$(mktemp)
 touch -d "2 days ago" "$RECENT"
 is_recent()
