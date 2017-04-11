@@ -1,6 +1,13 @@
 #!/bin/sh
 set -e
 
+case ${PIUPARTS_OBJECTS%%=*} in
+	TARBALL)
+		# skip while creating the tarball
+		exit 0
+		;;
+esac
+
 if [ ! -f /etc/dpkg/dpkg.cfg.d/piuparts-force-unsafe-io ]
 then
 	if dpkg --force-help | grep -q unsafe-io
