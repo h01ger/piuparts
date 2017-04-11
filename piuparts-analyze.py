@@ -49,8 +49,10 @@ distro = "?"
 
 
 def find_logs(directory):
-    return [os.path.join(directory, x)
+    """Returns list of logfiles sorted by age, newest first."""
+    logs = [os.path.join(directory, x)
             for x in os.listdir(directory) if x.endswith(".log")]
+    return [y[1] for y in reversed(sorted([(os.path.getmtime(x), x) for x in logs]))]
 
 
 def find_bugged_logs(failed_log):

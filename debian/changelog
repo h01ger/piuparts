@@ -27,6 +27,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
       distupgrade tests instead of generating it on-the-fly.
     - Flush pending logfiles upon startup.
   * piuparts-analyze.py:
+    - Process newest logfiles first, in case of timeouts.
   * piuparts-report.py:
     - Plot all states in the graphs.
     - Support new states in plots (varying number of columns in counts.txt).
