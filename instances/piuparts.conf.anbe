@@ -652,12 +652,12 @@ piuparts-flags =
 	%(flags-default)s
 	--fail-on-broken-symlinks
 	--install-recommends
+	--scriptsdir /etc/piuparts/scripts-broken-symlinks
 	--fake-essential-packages libjs-sphinxdoc
 # ignore broken symlinks
 	-i :/etc/systemd/system/display-manager.service
 	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26231/exe
 	-i :/usr/share/qt4/plugins
-	-i :/usr/share/quilt/compat/sendmail
 # ignore broken symlinks (patterns)
 	-I /usr/include/python2\.7_d/.*\.h
 	-I /usr/include/python3\..dm/.*\.h
@@ -676,6 +676,7 @@ piuparts-flags =
 	%(flags-default)s
 	--fail-on-broken-symlinks
 	--install-recommends
+	--scriptsdir /etc/piuparts/scripts-broken-symlinks
 # ignore broken symlinks (patterns)
 	-I /usr/include/python2\.7_d/.*\.h
 	-I /usr/include/python3\..dm/.*\.h
@@ -692,6 +693,7 @@ piuparts-flags =
 	%(flags-default)s
 	--fail-on-broken-symlinks
 	--install-recommends
+	--scriptsdir /etc/piuparts/scripts-broken-symlinks
 # ignore broken symlinks (patterns)
 	-I /usr/include/python2\.7_d/.*\.h
 	-I /usr/include/python3\..dm/.*\.h

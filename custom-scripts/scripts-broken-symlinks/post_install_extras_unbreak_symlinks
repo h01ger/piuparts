@@ -1,0 +1,208 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+is_installed()
+{
+	local pkg="$1"
+	dpkg-query -s "$pkg" >/dev/null 2>&1 || return 1
+	local status="$(dpkg-query -W -f '${Status}' $pkg)"
+	test "$status" != "unknown ok not-installed" || return 1
+	test "$status" != "deinstall ok config-files" || return 1
+	return 0
+}
+
+EXTRA=
+
+# if package $1 is installed, $2... should be installed as well
+install_extra_package()
+{
+	local p q
+	p=$1
+	shift
+	if is_installed "$p" ; then
+		for q in "$@"
+		do
+			if ! is_installed "$q" ; then
+				EXTRA="$EXTRA $q"
+			fi
+		done
+	fi
+}
+
+# /etc/xdg/menus/cinnamon-applications-merged -> applications-merged
+install_extra_package cinnamon-common		extra-xdg-menus
+
+# /usr/bin/db_sql -> db5.3_sql
+# #686875
+install_extra_package db-util			db5.3-sql-util
+
+# /usr/bin/pykdeuic4-3.5 -> ../lib/python3/dist-packages/PyQt4/uic/pykdeuic4.py
+# python-kde4-dev: Depends: python-kde4 | python3-pykde4
+install_extra_package python-kde4-dev		python3-pykde4
+
+# /usr/include/libreoffice/sal/typesizes.h -> ../../x86_64-linux-gnu/libreoffice/sal/typesizes.h
+# /usr/lib/libreoffice/sdk/index.html -> ../../../share/doc/libreoffice/sdk/index.html
+# libreoffice-dev: Suggests: libreoffice-dev-doc
+install_extra_package libreoffice-dev-common	libreoffice-dev libreoffice-dev-doc
+
+# /usr/lib/codeaster/outils/xmgrace -> ../../../bin/xmgrace
+# /usr/lib/codeaster/outils/eficasQt -> ../../../bin/eficasQt
+# /usr/lib/codeaster/outils/eficas -> ../../../bin/eficas
+# /usr/lib/codeaster/outils/gmsh -> ../../../bin/gmsh
+# code-aster-gui: Suggests: eficas, gmsh, grace
+install_extra_package code-aster-gui		eficas gmsh grace
+
+# /usr/lib/doublecmd/doc -> ../../share/doublecmd/doc
+# doublecmd-common: Suggests: doublecmd-help-en | doublecmd-help
+install_extra_package doublecmd-common		doublecmd-help-en
+
+# /usr/lib/python2.7/dist-packages/wx.pth -> ../../wx/python/wx.pth
+# python-wxversion, alternative set up by python-wxgtk3.0, #857757
+install_extra_package python-wxversion		python-wxgtk3.0
+
+# /usr/lib/wml/exec/wml_aux_weblint -> ../../../bin/weblint
+# /usr/lib/wml/exec/wml_aux_freetable -> ../../../bin/freetable
+# wml: Suggests: freetable, weblint-perl
+install_extra_package wml			freetable weblint-perl
+
+# /usr/lib/x86_64-linux-gnu/dbus-1.0/debug-build/share/dbus-1/system.d -> ../../../../../../share/dbus-1/system.d
+install_extra_package dbus-1-dbg		systemd
+
+# /usr/lib/x86_64-linux-gnu/qt-default/qtchooser/default.conf -> ../../../../share/qtchooser/qt4-x86_64-linux-gnu.conf
+install_extra_package libqtcore4		qtchooser
+
+# /usr/share/GNUstep/Libraries/gnustep-base/Versions/1.24/Resources/NSTimeZones/zones -> ../../../../../../../zoneinfo
+# gnustep-base-common, #857153
+install_extra_package gnustep-base-common	tzdata
+
+# /usr/share/bacula-common/dbc_database.conf -> /etc/dbconfig-common/bacula-director-pgsql.conf
+install_extra_package bacula-common-pgsql	bacula-director-pgsql
+install_extra_package bacula-common-mysql	bacula-director-mysql
+install_extra_package bacula-common-sqlite3	bacula-director-sqlite3
+
+# /usr/share/bug/distccmon-gnome/presubj -> ../../doc/distcc/reporting-bugs.txt
+# distccmon-gnome: Suggests: distcc
+install_extra_package distccmon-gnome		distcc
+
+# /usr/share/citadel-webcit/static/icons -> ../../icons/gnome/24x24/mimetypes
+# citadel-webcit: Suggests: gnome-icon-theme
+install_extra_package citadel-webcit		gnome-icon-theme
+
+# /usr/share/doc/apache2-data/changelog.Debian.gz -> ../apache2/changelog.Debian.gz
+# apache2: Depends: apache2-data
+install_extra_package apache2-data		apache2
+
+# /usr/share/doc/binutils-doc/ld -> ../binutils/ld
+# /usr/share/doc/binutils-doc/gprof -> ../binutils/gprof
+# /usr/share/doc/binutils-doc/gas -> ../binutils/gas
+# /usr/share/doc/binutils-doc/bfd -> ../binutils/bfd
+# binutils-doc: Suggests: binutils
+install_extra_package binutils-doc		binutils
+
+# /usr/share/doc/exim4-dev/changelog.gz -> ../exim4-base/changelog.gz
+# /usr/share/doc/exim4-dev/README.Debian.gz -> ../exim4-base/README.Debian.gz
+install_extra_package exim4-dev			exim4-base
+
+# /usr/share/doc/gimp-help-common/html -> ../../gimp/2.0/help
+install_extra_package gimp-help-common		gimp-help-en
+
+# /usr/share/gnome/help/gnumeric/C/images -> ../../../../xml/docbook/stylesheet/nwalsh/images
+# gnumeric-doc: Suggests: docbook-xsl
+install_extra_package gnumeric-doc		docbook-xsl
+
+# /usr/share/doc/keyboard-configuration/xorg.lst -> ../../X11/xkb/rules/xorg.lst
+install_extra_package keyboard-configuration	xkb-data
+
+# /usr/share/doc/libboost1.62-doc/HTML/boost -> ../../../../include/boost
+# libboost1.62-doc: libboost1.62-dev
+install_extra_package libboost1.61-doc		libboost1.61-dev
+install_extra_package libboost1.62-doc		libboost1.62-dev
+install_extra_package libboost1.63-doc		libboost1.63-dev
+
+# /usr/share/doc/libembperl-perl/examples/forms/js/prototype.js -> ../../../../../javascript/prototype/prototype.js
+# libembperl-perl: Suggests: libjs-prototype
+install_extra_package libembperl-perl		libjs-prototype
+
+# /usr/share/doc/libgraphicsmagick1-dev/images -> ../graphicsmagick/www/images
+# libgraphicsmagick1-dev: Suggests: graphicsmagick
+install_extra_package libgraphicsmagick1-dev	graphicsmagick
+
+# /usr/share/doc/libvirt-doc/changelog.gz -> ../libvirt0/changelog.gz
+install_extra_package libvirt-doc		libvirt0
+
+# /usr/share/doc/mkvtoolnix/README.source -> ../quilt/README.source
+install_extra_package mkvtoolnix		quilt nullmailer
+
+# /usr/share/doc/python-ly/html -> ../python-ly-doc/html
+# python-ly: Suggests: python-ly-doc
+install_extra_package python-ly			python-ly-doc
+install_extra_package python3-ly		python-ly-doc
+
+# /usr/share/doc/python-statsmodels-doc/examples -> ../python-statsmodels/examples
+# python-statsmodels-doc: Suggests: python-statsmodels
+install_extra_package python-statsmodels-doc	python-statsmodels
+
+# /usr/share/eclipse/dropins/eclox/eclipse/plugins/org.gna.eclox.help_0.10.1/html/doxygen-doc -> ../../../../../../../doc/doxygen/html
+# doxygen: Suggests: doxygen-doc
+install_extra_package eclipse-eclox		doxygen-doc
+
+# /usr/share/games/neverball/ttf/wqy-microhei.ttc -> ../../../fonts/truetype/wqy/wqy-microhei.ttc
+# neverball-common: Suggests: fonts-wqy-microhei
+install_extra_package neverball-common		fonts-wqy-microhei
+
+# /usr/share/gtkmorph/pixmaps -> ../xmorph/pixmaps
+# /usr/share/man/man1/morph.1.gz -> xmorph.1.gz
+install_extra_package libmorph			gtkmorph xmorph
+
+# /usr/share/icons/default.kde4 -> oxygen
+install_extra_package kde-runtime-data		oxygen-icon-theme
+
+# /usr/share/man/man3/libwildmagic-common.3.gz -> libwildmagic.3.gz
+# libwildmagic-common: Suggests: libwildmagic5
+install_extra_package libwildmagic-common	libwildmagic5
+
+# /usr/share/nginx/modules -> ../../lib/nginx/modules
+install_extra_package nginx-common		libnginx-mod-http-echo
+
+# /usr/share/org-mode/scripts/ditaa.jar -> ../../ditaa/ditaa.jar
+# org-mode: Suggests: ditaa
+install_extra_package org-mode			ditaa
+
+# /usr/share/pyshared/MoinMoin/words -> /etc/moin/words
+# /etc/moin/words -> /usr/share/dict/words
+install_extra_package python-moinmoin		wamerican
+
+# /usr/share/quassel/scripts/inxi -> ../../../bin/inxi
+# quassel-data: Suggests: inxi
+install_extra_package quassel-data		inxi
+
+# /usr/share/quilt/compat/sendmail -> ../../../sbin/sendmail
+# quilt: Suggests: default-mta | mail-transport-agent
+install_extra_package quilt			nullmailer
+
+# /usr/share/uim/loader.scm -> /var/lib/uim/loader.scm
+# /usr/share/uim/installed-modules.scm -> /var/lib/uim/installed-modules.scm
+install_extra_package libuim-data		uim-utils
+
+# /var/lib/gridengine/lib/lx-* -> /usr/lib/gridengine
+install_extra_package gridengine-common		gridengine-client db-util
+
+if [ -n "$EXTRA" ]; then
+	log_debug
+	echo "Installing extra packages: ${EXTRA# }"
+	apt-get -y install $EXTRA
+fi
+
+# /etc/vdr/remote.conf -> /var/lib/vdr/remote.conf
+# /etc/vdr/setup.conf -> /var/lib/vdr/setup.conf
+# /var/lib/vdr/commands.conf -> ../../cache/vdr/commands.conf
+# /var/lib/vdr/reccmds.conf -> ../../cache/vdr/reccmds.conf
+if is_installed vdr ; then
+	for f in /var/lib/vdr/remote.conf /var/lib/vdr/setup.conf /var/cache/vdr/reccmds.conf /var/cache/vdr/commands.conf ; do
+		test -e $f || touch $f
+	done
+fi
