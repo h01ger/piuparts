@@ -66,8 +66,9 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Add new suite: stable222sid, upgrading jessie -> stretch -> sid and
       oldstable2222sid, upgrading from wheezy -> jessie -> stretch -> sid
       (Closes: #859620)
-    - Adjust precedences for one third of the tested suites.
-      TODO: once oldstable2222sid has been fully tested, change precedence to 5 or 6.
+    - Adjust precedences for most of the tested suites, set precedence to 100
+      for suites which don't change anymore.
+      TODO: once oldstable222sid has been fully tested, change precedence to 5 or 6.
     - Set idle-sleep to 3600 seconds, the results pages are only updated twice
       a day anyway.
   * Update README_server.txt.

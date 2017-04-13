@@ -529,7 +529,7 @@ upgrade-test-distros = wheezy wheezy-backports jessie
 
 
 [wheezy]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -539,7 +539,7 @@ distro = wheezy
 
 
 [wheezy-proposed]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -549,7 +549,7 @@ distro = wheezy-proposed
 
 
 [wheezy-security]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -560,7 +560,7 @@ distro = wheezy/updates
 
 
 [wheezy-pu]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -571,7 +571,7 @@ distro = wheezy-proposed-updates
 
 
 [wheezy2proposed]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -582,7 +582,7 @@ upgrade-test-distros = wheezy wheezy-proposed
 
 
 [squeeze2wheezy-proposed]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -593,7 +593,7 @@ upgrade-test-distros = squeeze wheezy-proposed
 
 
 [squeeze2wheezy]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -604,7 +604,7 @@ upgrade-test-distros = squeeze wheezy
 
 
 [squeeze2bpo2wheezy]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -616,7 +616,7 @@ upgrade-test-distros = squeeze squeeze-backports wheezy
 
 
 [squeeze2bpo-sloppy]
-precedence = 99
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -628,7 +628,7 @@ reschedule-old-count = 0
 
 
 [squeeze]
-precedence = 99
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -640,7 +640,7 @@ reschedule-fail-count = 0
 
 
 [squeeze2squeeze-lts]
-precedence = 99
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -654,7 +654,7 @@ reschedule-fail-count = 0
 
 
 [lenny2squeeze]
-precedence = 99
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
