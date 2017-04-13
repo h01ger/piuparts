@@ -74,6 +74,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2017-04-13</b> Added wheezy-lts to the distros being testing (by testing <a href="https://piuparts.debian.org/wheezy2wheezy-lts">wheezy2wheezy-lts</a> upgrades).
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2017-04-10</b> Another suite added: <a href="https://piuparts.debian.org/oldstable2222sid">oldstable2222sid</a>, to test package installation in oldstable (currently wheezy), then upgrade to stable (currently jessie), then upgrade to testung (currently stretch), then upgrade to sid (always unstable), then removal and purge..
      </td>
     </tr>

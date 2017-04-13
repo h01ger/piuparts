@@ -63,9 +63,11 @@ piuparts (0.77) UNRELEASED; urgency=medium
     not already included.
   * master-bin/report_untestable_packages.in: also report runtime.
   * instances/piuparts.conf-template.pejacevic: 
-    - Add new suite: stable222sid, upgrading jessie -> stretch -> sid and
-      oldstable2222sid, upgrading from wheezy -> jessie -> stretch -> sid
-      (Closes: #859620)
+    - Add new suite to be tested:
+      - stable222sid, upgrading jessie -> stretch -> sid
+      - oldstable2222sid, upgrading from wheezy -> jessie -> stretch -> sid
+        (Closes: #859620)
+      - wheezy2wheezy-lts, for installation in wheezy and upgrade to wheezy-lts.
     - Adjust precedences for most of the tested suites, set precedence to 100
       for suites which don't change anymore.
       TODO: once oldstable222sid has been fully tested, change precedence to 5 or 6.
