@@ -75,13 +75,13 @@ for SECTION in $SECTIONS ; do
 		go=yes
 	else
 		case "$SECTION" in
-			# don't catch old*stable222testing
+			# don't catch old*stable22testing
 			*$TESTING*|testing*|*sid*|*experimental*)
 				if [ "$current" = "yes" ]; then
 					go=yes
 				fi
 				;;
-			*222testing*)
+			*22testing*)
 				if [ "$longterm" = "yes" ]; then
 					go=yes
 				fi

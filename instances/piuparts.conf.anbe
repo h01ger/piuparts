@@ -119,7 +119,7 @@ sections =
 	wheezy2jessie-apt1st/main
 	wheezy2jessie-iri/main
 	wheezy2bpo2jessie/main
-	wheezy222testing/main
+	oldstable22testing/main
 	squeeze222testing/main
 	lenny222testing/main
 #
@@ -167,7 +167,7 @@ sections =
 	wheezy2jessie-apt1st/contrib
 	wheezy2jessie-iri/contrib
 	wheezy2bpo2jessie/contrib
-	wheezy222testing/contrib
+	oldstable22testing/contrib
 	squeeze222testing/contrib
 	lenny222testing/contrib
 #
@@ -215,7 +215,7 @@ sections =
 	wheezy2jessie-apt1st/non-free
 	wheezy2jessie-iri/non-free
 	wheezy2bpo2jessie/non-free
-	wheezy222testing/non-free
+	oldstable22testing/non-free
 	squeeze222testing/non-free
 	lenny222testing/non-free
 #
@@ -2498,7 +2498,7 @@ area = non-free
 upgrade-test-distros = wheezy wheezy-backports jessie
 
 
-[wheezy222testing/main]
+[oldstable22testing/main]
 precedence = 80
 piuparts-flags =
 	%(flags-default)s
@@ -2511,26 +2511,26 @@ distro = wheezy
 upgrade-test-distros = wheezy jessie testing
 reschedule-old-count = 100
 
-[wheezy222testing/contrib]
+[oldstable22testing/contrib]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-testing)s
-depends-sections = wheezy222testing/main wheezy222testing/non-free
+depends-sections = oldstable22testing/main oldstable22testing/non-free
 arch = amd64
 area = contrib
 distro = wheezy
 upgrade-test-distros = wheezy jessie testing
 reschedule-old-count = 100
 
-[wheezy222testing/non-free]
+[oldstable22testing/non-free]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-testing)s
-depends-sections = wheezy222testing/main wheezy222testing/contrib
+depends-sections = oldstable22testing/main oldstable22testing/contrib
 arch = amd64
 area = non-free
 distro = wheezy

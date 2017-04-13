@@ -66,13 +66,13 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - only act on sections with precedence < 100.
   * instances/piuparts.conf-template.pejacevic: 
     - Add new suite to be tested:
-      - stable222sid, upgrading jessie -> stretch -> sid
-      - oldstable2222sid, upgrading from wheezy -> jessie -> stretch -> sid
+      - stable22sid, upgrading jessie -> stretch -> sid
+      - oldstable222sid, upgrading from wheezy -> jessie -> stretch -> sid
         (Closes: #859620)
       - wheezy2wheezy-lts, for installation in wheezy and upgrade to wheezy-lts.
     - Adjust precedences for most of the tested suites, set precedence to 100
       for suites which don't change anymore.
-      TODO: once oldstable222sid has been fully tested, change precedence to 5 or 6.
+      TODO: once oldstable22sid has been fully tested, change precedence to 5 or 6.
     - Set idle-sleep to 3600 seconds, the results pages are only updated twice
       a day anyway.
   * Update README_server.txt.
@@ -97,7 +97,7 @@ piuparts (0.76) unstable; urgency=medium
   * piuparts.conf:
     - Use --warn-on-install-over-symlink for tests ending before stretch.
     - Enable scripts-log-alternatives for [sid] and [stretch].  (See: #850917)
-    - Add new suite: wheezy222testing, upgrading wheezy -> jessie -> stretch.
+    - Add new suite: oldstable22testing, upgrading wheezy -> jessie -> stretch.
   * piuparts.conf.anbe: Add some more example sections.
   * distros.conf: Add support for sid-debug, stretch-debug.
   * piuparts-slave.py:
