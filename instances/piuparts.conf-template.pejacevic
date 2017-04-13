@@ -459,7 +459,7 @@ upgrade-test-distros = jessie jessie-proposed
 
 
 [stable222sid]
-precedence = 10
+precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
