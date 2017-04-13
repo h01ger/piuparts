@@ -34,7 +34,7 @@ LOGS=`mktemp`
 for SECTION in $SECTIONS ; do
 	# only act on sections with precedence < 100
 	get_config_value PRECEDENCE $SECTION precedence 1
-	if [ $PRECEDENCE gt 99 ] ; then continue ; fi
+	if [ $PRECEDENCE -gt 99 ] ; then continue ; fi
 	# only act on sections with untestable packages
 	test -d $MASTER/$SECTION/untestable || continue
 	find $MASTER/$SECTION/untestable/ -mtime +$DAYS -name "*.log" 2>/dev/null >> $LOGS
