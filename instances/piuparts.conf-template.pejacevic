@@ -121,7 +121,6 @@ sections =
 	wheezy2bpo2jessie
 #	wheezy-proposed
 	wheezy2proposed
-	wheezy2wheezy-lts
 	wheezy
 	wheezy-security
 	wheezy-pu
@@ -581,16 +580,6 @@ piuparts-flags =
 distro = wheezy
 upgrade-test-distros = wheezy wheezy-proposed
 
-[wheezy2wheezy-lts]
-precedence = 7
-json-sections = none
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-wheezy)s
-	%(flags-end-wheezy)s
-depends-sections = wheezy
-distro = wheezy-lts
-upgrade-test-distros = wheezy wheezy-lts
 
 [squeeze2wheezy-proposed]
 precedence = 100

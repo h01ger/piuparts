@@ -69,7 +69,6 @@ piuparts (0.77) UNRELEASED; urgency=medium
       - stable22sid, upgrading jessie -> stretch -> sid
       - oldstable222sid, upgrading from wheezy -> jessie -> stretch -> sid
         (Closes: #859620)
-      - wheezy2wheezy-lts, for installation in wheezy and upgrade to wheezy-lts.
     - Adjust precedences for most of the tested suites, set precedence to 100
       for suites which don't change anymore.
       TODO: once oldstable22sid has been fully tested, change precedence to 5 or 6.
