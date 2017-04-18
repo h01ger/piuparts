@@ -1135,7 +1135,7 @@ class Section:
                               + "</tr>\n"
                 continue
 
-            state = self._binary_db.get_package_state(binary)
+            state = self._binary_db.get_package_state(binary, recurse=False)
 
             if not "waiting" in state and "dependency" in state:
                 state_style = "lightalertlabelcell"
