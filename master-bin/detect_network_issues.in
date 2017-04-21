@@ -61,11 +61,7 @@ if [ -s $FILE ] ; then
 	echo
 	echo "Network problems on detected!"
 	echo "(By grep'ing for"
-	echo "    'Cannot initiate the connection to',"
-	echo "    'Failed to fetch',"
-	echo "    'Some index files failed to download',"
-	echo "    'Hash Sum mismatch',"
-	echo "    'The following signatures were invalid'"
+	grep rgrep $0 | grep -v "grep rgrep" | cut -d "\$" -f1
 	echo "in failed logs.)"
 	echo "Test failures due to modified /usr/share/doc/*/changelog.*"
 	echo "are caused by mirror updates during the test."

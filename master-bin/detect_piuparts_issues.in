@@ -77,8 +77,9 @@ if [ -s $FILE ] ; then
 	echo "Runtime: $RUNTIME"
 	echo
 	echo "piuparts problem detected!"
-	echo "(By grep'ing for 'tar: .*.tar.gz: Cannot open: No such file or directory'"
-	echo "and for some python errors and tracebacks in failed logs.)"
+	echo "(By grep'ing for)
+	grep rgrep $0 | grep -v "grep rgrep" | cut -d "\$" -f1
+	echo "in failed logs.)"
 	echo
 	echo "Please review the following logfiles/packages."
 	echo "If it is always the same package failing, it's likely to be an issue in the"

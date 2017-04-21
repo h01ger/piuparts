@@ -64,6 +64,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * master-bin/report_untestable_packages.in: 
     - also report runtime.
     - only act on sections with precedence < 100.
+  * master-bin/detect_network_issues.in: dynamically report detected issues.
+  * master-bin/detect_piuparts_issues.in: dynamically report detected issues.
   * instances/piuparts.conf-template.pejacevic: 
     - Add new suite to be tested:
       - stable22sid, upgrading jessie -> stretch -> sid
