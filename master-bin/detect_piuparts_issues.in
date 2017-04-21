@@ -77,7 +77,7 @@ if [ -s $FILE ] ; then
 	echo "Runtime: $RUNTIME"
 	echo
 	echo "piuparts problem detected!"
-	echo "(By grep'ing for)
+	echo "(By grep'ing for)"
 	grep rgrep $0 | grep -v "grep rgrep" | cut -d "\$" -f1
 	echo "in failed logs.)"
 	echo
