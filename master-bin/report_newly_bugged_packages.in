@@ -32,10 +32,7 @@ OUTPUT=$(mktemp)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 		cd $MASTER/$SECTION
-		get_config_value DISTROS $SECTION upgrade-test-distros ''
-		distro=${DISTROS##* }
-		distro=${distro%-proposed}
-		timeout 60m @sharedir@/piuparts/piuparts-analyze $distro 2>&1 > $OUTPUT
+		timeout 60m @sharedir@/piuparts/piuparts-analyze 2>&1 > $OUTPUT
 		if [ $? = 124 ]; then
 			echo >> $OUTPUT
 			echo "Killed after timeout" >> $OUTPUT
