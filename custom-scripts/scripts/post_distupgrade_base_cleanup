@@ -66,6 +66,7 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "stretch" ] || \
 	[ "$PIUPARTS_DISTRIBUTION" = "stretch-proposed" ] ; then
 
 	mark_for_purge libprocps3
+	mark_for_purge sysvinit
 
 fi
 

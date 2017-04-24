@@ -9,6 +9,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
       + /etc/rc.local
       + /etc/X11/Xwrapper.config  (Closes: #859929)
       + /var/lib/apt/daily_lock
+  * scripts/post_distupgrade_base_cleanup: Remove (transitional) sysvinit from
+    stretch.  (Closes: #860819)
 
  -- Holger Levsen <holger@debian.org>  Sat, 03 Jun 2017 18:28:36 +0200
 
