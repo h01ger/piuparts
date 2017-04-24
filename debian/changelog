@@ -39,6 +39,8 @@ piuparts (0.77) UNRELEASED; urgency=medium
       once per month.
   * custom-scripts: Check for dummy package "TARBALL" to detect tarball
     creation phase.
+  * scripts/post_distupgrade_base_cleanup: Remove (transitional) sysvinit from
+    stretch.  (Closes: #860819)
   * scripts/post_{setup,distupgrade}_zz_backports: Avoid downgrading
     systemd/udev from jessie-backports to jessie during removal phase.
     (Closes: #856845)
