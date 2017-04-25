@@ -43,6 +43,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     creation phase.
   * scripts/post_distupgrade_base_cleanup: Remove (transitional) sysvinit from
     stretch.  (Closes: #860819)
+  * scripts/pre_distupgrade_exceptions: Add exceptions for old buggy packages.
   * scripts/post_{setup,distupgrade}_zz_backports: Avoid downgrading
     systemd/udev from jessie-backports to jessie during removal phase.
     (Closes: #856845)

@@ -60,6 +60,16 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 			log_debug
 			dpkg --purge cnews
 			;;
+		lcl-utils)
+			# WORKSAROUND #696075: lcl-utils: directory vs. symlink mess after squeeze => wheezy upgrade: /etc/lazarus
+			# the renaming was performed in the postinst of lcl-utils-0.9.30.4,
+			# which was not the owner of the old /etc/lazarus,
+		        # therefore dpkg does never forget about the old conffiles
+			log_debug
+			if [ -d /etc/lazarus ] && [ ! -L /etc/lazarus ]; then
+				mv -v /etc/lazarus /etc/lazarus.bak
+			fi
+			;;
 		nfsbooted)
 			# sysv-rc fails migration to dependency based boot sequence if nfsbooted is installed
 			# nfsbooted was removed after lenny
