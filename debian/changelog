@@ -57,6 +57,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Run twice per day, moving new logs to untestable within 24-36 hours.
   * master-bin/detect_network_issues:
     - Detect outdated reference chroot meta data.
+    - Detect alternate wording of gpg verification error.
   * master-bin/detect_piuparts_issues:
     - Recognize more problems caused by a full filesystem.
 
