@@ -89,6 +89,13 @@ fi
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
+		*cyrus*)
+			# something was not working properly during the upgrade from 2.2 to 2.4
+			if is_installed cyrus-common && [ ! -d /var/lib/cyrus/db ]; then
+				echo "FIXING missing /var/lib/cyrus/db"
+				cyrus-makedirs --cleansquat
+			fi
+			;;
 		ekeyd-uds)
 			# ekeyd-uds was removed after squeeze, maintainer scripts are incompatible with udev/jessie
 			log_debug
