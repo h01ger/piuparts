@@ -105,6 +105,7 @@ sections =
 	sid-strict
 	sid-nodoc
 	testing2sid
+	stable2sid
 	stretch
 	stretch-rcmd
 	stretch-security
@@ -278,6 +279,17 @@ piuparts-flags =
 distro = testing
 upgrade-test-distros = testing sid
 reschedule-old-count = 0
+
+
+[stable2sid]
+precedence = 10
+json-sections = none
+description = + Find possible issues before the package migrates to testing.
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stable)s
+distro = stable
+upgrade-test-distros = stable sid
 
 
 [sid2experimental]
