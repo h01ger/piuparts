@@ -17,6 +17,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Arguments to the --ignore/--ignore-regexp options (and internal
       ignored_files/ignored_patterns settings) that are prefixed with a ':'
       will verbosely log the ignored files if matched.
+  * distros.conf: Add alias for oldstable.
   * piupartslib/packagesdb.py:
     - Add new state "outdated" to ignore packages if a dependency distro
       already has a newer version.  (Closes: #856846)
