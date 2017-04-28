@@ -74,12 +74,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2017-04-28</b> Another suite added: <a href="https://piuparts.debian.org/stable2sid">stable2sid</a>, to test package installation in stable (currently jessie), then upgrade directly to sid (always unstable), then removal and purge... This is useful to detect bugs before the reach testing.
+      <b>2017-04-28</b> Another suite added: <a href="https://piuparts.debian.org/stable2sid">stable2sid</a>, to test package installation in stable (currently jessie), then upgrade directly to sid (always unstable), then removal and purge... This is useful to detect bugs before they reach testing.
      </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2017-04-10</b> Another suite added: <a href="https://piuparts.debian.org/oldstable222sid">oldstable222sid</a>, to test package installation in oldstable (currently wheezy), then upgrade to stable (currently jessie), then upgrade to testung (currently stretch), then upgrade to sid (always unstable), then removal and purge..
+      <b>2017-04-10</b> Another suite added: <a href="https://piuparts.debian.org/oldstable222sid">oldstable222sid</a>, to test package installation in oldstable (currently wheezy), then upgrade to stable (currently jessie), then upgrade to testing (currently stretch), then upgrade to sid (always unstable), then removal and purge..
      </td>
     </tr>
     <tr class="normalrow">
