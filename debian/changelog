@@ -88,6 +88,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Set idle-sleep to 3600 seconds, the results pages are only updated twice
       a day anyway.
   * Update README_server.txt.
+  * htdocs/index.tpl: announce new suites.
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 
