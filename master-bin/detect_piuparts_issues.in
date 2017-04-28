@@ -35,6 +35,7 @@ for SECTION in $SECTIONS ; do
 	for subdir in fail bugged affected ; do
 		test -d $MASTER/$SECTION/$subdir || continue
 		rgrep -l 'PIUPARTS OUTPUT INCOMPLETE' $MASTER/$SECTION/$subdir >> $FILE
+		rgrep -l "WARNING: History of available packages does not match - reference chroot may be outdated" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -E "tar( \(child\))?: .*.tar.gz: Cannot open: No such file or directory" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "tar: Error is not recoverable: exiting now" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -e "tar: .*: Wrote only .* of .* bytes" $MASTER/$SECTION/$subdir >> $FILE

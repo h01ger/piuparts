@@ -51,7 +51,6 @@ for SECTION in $SECTIONS ; do
 		rgrep -l "E: Sub-process rred received a segmentation fault." $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l -E "ERROR: Command failed \(status=-7\):.*'apt-get', 'update'" $MASTER/$SECTION/$subdir >> $FILE
 		rgrep -l 'WARNING: The following packages cannot be authenticated!' $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l "WARNING: History of available packages does not match - reference chroot may be outdated" $MASTER/$SECTION/$subdir >> $FILE
 	done
 done
 if [ -s $FILE ] ; then
