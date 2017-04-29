@@ -220,6 +220,7 @@ class Settings:
             # system state
             "/boot/grub/",
             "/etc/X11/",
+            "/etc/X11/Xwrapper.config",         #859929
             "/etc/X11/default-display-manager",
             "/etc/aliases",
             "/etc/aliases.db",
