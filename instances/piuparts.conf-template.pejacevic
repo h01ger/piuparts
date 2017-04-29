@@ -23,14 +23,6 @@ flags-leftovers =
 # perform some additional cleanup
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
-# aliases for the definitions below
-flags-start-testing = %(flags-start-stretch)s
-flags-stop-testing = %(flags-stop-stretch)s
-flags-start-stable = %(flags-start-jessie)s
-flags-stop-stable = %(flags-stop-jessie)s
-flags-start-oldstable = %(flags-start-wheezy)s
-flags-stop-oldstable = %(flags-stop-wheezy)s
-
 # common flags for tests starting in stretch
 flags-start-stretch =
 # no flags needed
@@ -87,7 +79,7 @@ flags-start-lenny =
 # dpkg --force-unsafe-io was added in squeeze
 	--dpkg-noforce-unsafe-io
 # same flags needed as in squeeze
-	%(flags-start-squeeze)s
+        %(flags-start-squeeze)s
 
 
 [global]
@@ -123,7 +115,7 @@ sections =
 	jessie-pu
 #	jessie-proposed
 	jessie2proposed
-	oldstable222sid
+        oldstable222sid
 	oldstable22testing
 	wheezy2jessie
 	wheezy2jessie-rcmd
@@ -352,7 +344,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-distro = stretch-proposed
+distro = jessie-stretch
 
 
 [stretch2proposed]
@@ -483,9 +475,10 @@ precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
-	%(flags-start-stable)s
-distro = stable
-upgrade-test-distros = stable testing sid
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+distro = jessie
+upgrade-test-distros = jessie stretch sid
 
 
 [oldstable222sid]
@@ -493,9 +486,10 @@ precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
-	%(flags-start-oldstable)s
-distro = oldstable
-upgrade-test-distros = oldstable stable testing sid
+	%(flags-start-wheezy)s
+	%(flags-end-stretch)s
+distro = wheezy
+upgrade-test-distros = wheezy jessie stretch sid
 
 
 [oldstable22testing]
@@ -503,10 +497,10 @@ precedence = 6
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
-	%(flags-start-oldstable)s
-	%(flags-end-testing)s
-distro = oldstable
-upgrade-test-distros = oldstable stable testing
+	%(flags-start-wheezy)s
+	%(flags-end-stretch)s
+distro = wheezy
+upgrade-test-distros = wheezy jessie stretch
 
 
 [wheezy2jessie]
