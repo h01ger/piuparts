@@ -121,6 +121,22 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
 			;;
 	esac
 
+	#825650: libreoffice-common: prompting due to modified conffiles which were not modified by the user: /etc/libreoffice/sofficerc
+	# migration did not work properly while upgrading from squeeze to wheezy,
+	# gets messed up further while upgrading from wheezy to jessie,
+	# eventually leading to problems while upgrading from jessie to stretch
+	if is_installed openoffice.org-common; then
+		if [ -f /etc/openoffice/sofficerc ] && [ -f /etc/libreoffice/sofficerc ]; then
+			log_debug
+			for file in sofficerc soffice.sh psprint.conf
+			do
+				if [ -f /etc/openoffice/$file ] && [ -f /etc/libreoffice/$file ]; then
+					rm -v /etc/openoffice/$file
+				fi
+			done
+		fi
+	fi
+
 fi
 
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "experimental" ]; then
