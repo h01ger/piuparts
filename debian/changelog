@@ -7,6 +7,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * piuparts.py:
     - Add to ignored_files:
       + /etc/rc.local
+      + /etc/X11/Xwrapper.config  (Closes: #859929)
 
  -- Holger Levsen <holger@debian.org>  Sat, 03 Jun 2017 18:28:36 +0200
 
