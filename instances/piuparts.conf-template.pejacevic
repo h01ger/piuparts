@@ -1,4 +1,4 @@
-	[DEFAULT]
+[DEFAULT]
 # these are needed always
 flags-base =
 # see https://bugs.debian.org/604807
