@@ -1,4 +1,4 @@
-[DEFAULT]
+	[DEFAULT]
 # these are needed always
 flags-base =
 # see https://bugs.debian.org/604807
@@ -279,7 +279,7 @@ json-sections = none
 description = + Find possible issues before the package migrates to testing.
 piuparts-flags =
 	%(flags-default)s
-	%(flags-start-stable)s
+	%(flags-start-jessie)s
 distro = stable
 upgrade-test-distros = stable sid
 
