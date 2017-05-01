@@ -29,29 +29,43 @@ STARTDATE=$(date -u +%s)
 # detect network/mirror problems
 #
 
+newline="
+"
+tab="	"
+PATTERN=
+DISPLAY_PATTERN=
+
+add_pattern()
+{
+	PATTERN="${PATTERN:+${PATTERN}|}($1)"
+	DISPLAY_PATTERN="${DISPLAY_PATTERN:+${DISPLAY_PATTERN}${newline}}${tab}$1"
+}
+
+add_pattern "Cannot initiate the connection to"
+add_pattern "Hash Sum mismatch"
+add_pattern "Failed to fetch.*Could not resolve"
+add_pattern "Failed to fetch.*Something wicked happened resolving"
+add_pattern "Failed to fetch.*Unable to connect to"
+add_pattern "E: Method http has died unexpectedly"
+add_pattern "Some index files failed to download, they have been ignored, or old ones used instead."
+add_pattern "Some index files failed to download. They have been ignored, or old ones used instead."
+add_pattern "W: GPG error: .* Release: The following signatures were invalid: BADSIG"
+add_pattern "W: GPG error: .* InRelease: The following signatures were invalid: NODATA"
+add_pattern "W: GPG error: .* InRelease: Clearsigned file isn't valid, got 'NODATA'"
+add_pattern "E: The repository '.*' does no longer have a Release file."
+add_pattern "E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing"
+add_pattern "E: Version '.*' for '.*' was not found"
+add_pattern 'E: Method file has died unexpectedly!'
+add_pattern "E: Sub-process rred received a segmentation fault."
+add_pattern "ERROR: Command failed \(status=-7\):.*'apt-get', 'update'"
+add_pattern 'WARNING: The following packages cannot be authenticated!'
+
 FILE=`mktemp`
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 	for subdir in fail bugged affected ; do
 		test -d $MASTER/$SECTION/$subdir || continue
-		rgrep -l "Cannot initiate the connection to" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l "Hash Sum mismatch" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -e "Failed to fetch.*Could not resolve" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -e "Failed to fetch.*Something wicked happened resolving" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -e "Failed to fetch.*Unable to connect to" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l "E: Method http has died unexpectedly" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l "Some index files failed to download, they have been ignored, or old ones used instead." $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l "Some index files failed to download. They have been ignored, or old ones used instead." $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -e "W: GPG error: .* Release: The following signatures were invalid: BADSIG" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -e "W: GPG error: .* InRelease: The following signatures were invalid: NODATA" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -e "W: GPG error: .* InRelease: Clearsigned file isn't valid, got 'NODATA'" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -e "E: The repository '.*' does no longer have a Release file." $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l "E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -e "E: Version '.*' for '.*' was not found" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l 'E: Method file has died unexpectedly!' $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l "E: Sub-process rred received a segmentation fault." $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l -E "ERROR: Command failed \(status=-7\):.*'apt-get', 'update'" $MASTER/$SECTION/$subdir >> $FILE
-		rgrep -l 'WARNING: The following packages cannot be authenticated!' $MASTER/$SECTION/$subdir >> $FILE
+		grep -r -l -E --include '*.log' "$PATTERN" $MASTER/$SECTION/$subdir >> $FILE
 	done
 done
 if [ -s $FILE ] ; then
@@ -61,17 +75,18 @@ if [ -s $FILE ] ; then
 	echo
 	echo "Network problems on detected!"
 	echo "(By grep'ing for"
-	grep rgrep $0 | grep -v "grep rgrep" | cut -d "\$" -f1
+	echo "$DISPLAY_PATTERN"
 	echo "in failed logs.)"
-	echo "Test failures due to modified /usr/share/doc/*/changelog.*"
-	echo "are caused by mirror updates during the test."
 	echo
 	echo "The following logfiles have been deleted:"
 	echo
 	echo "----------------------------------------------------------------------"
 	echo
-	for LOG in $(sort -u $FILE) ; do
-		rm -v $LOG
+	for log in $(sort -u $FILE)
+	do
+		echo "$log"
+		grep -E "$PATTERN" "$log" | perl -e 'print grep !$seen{$_}++, <>;' | head -n 10 | sed "s/^/${tab}/"
+		rm -f "$log"
 	done
 	echo
 fi

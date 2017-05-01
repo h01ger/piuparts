@@ -58,9 +58,11 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Mark logfiles for immediate recycling upon first appearance.
     - Run twice per day, moving new logs to untestable within 24-36 hours.
   * master-bin/detect_network_issues:
-    - Detect outdated reference chroot meta data.
+    - Report the issues found in each logfile.
     - Detect alternate wording of gpg verification error.
   * master-bin/detect_piuparts_issues:
+    - Report the issues found in each logfile.
+    - Detect outdated reference chroot meta data.
     - Recognize more problems caused by a full filesystem.
     - Recognize more failures when connecting to databases.
 
@@ -75,7 +77,6 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - only act on sections with precedence < 100.
   * master-bin/detect_network_issues.in:
     - dynamically report detected issues.
-    - move check for outdated reference chroot to detect_piuparts_issues.
   * master-bin/detect_piuparts_issues.in:
     - dynamically report detected issues.
   * instances/piuparts.conf-template.pejacevic: 
