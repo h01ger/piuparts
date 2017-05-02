@@ -44,6 +44,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
       once per month.
   * custom-scripts: Check for dummy package "TARBALL" to detect tarball
     creation phase.
+  * scripts/post_setup_dummy_users: Skip regular users when testing dpsyco*.
   * scripts/post_distupgrade_base_cleanup: Remove (transitional) sysvinit from
     stretch.  (Closes: #860819)
   * scripts/pre_distupgrade_exceptions:

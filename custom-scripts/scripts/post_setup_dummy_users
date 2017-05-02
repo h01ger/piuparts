@@ -1,14 +1,21 @@
 #!/bin/sh
 set -e
 
+sys_ids=$(seq 100 149)
+usr_ids=$(seq 1000 1010)
+
 case ${PIUPARTS_OBJECTS%%=*} in
 	TARBALL)
 		# skip while creating the tarball
 		exit 0
 		;;
+	dpsyco*)
+		# may kill processes of these users on the host if they exist in the chroot
+		usr_ids=
+		;;
 esac
 
-for id in $(seq 100 149) $(seq 1000 1010)
+for id in $sys_ids $usr_ids
 do
 	getent group $id > /dev/null || groupadd --system -g $id dummy$id
 	getent passwd $id > /dev/null || useradd --system -u $id -g 100 dummy$id
