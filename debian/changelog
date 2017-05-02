@@ -1,7 +1,8 @@
 piuparts (0.77) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
-  * distros.conf: Add alias for oldstable.
+  * distros.conf:
+    - Add aliases for oldstable and oldoldstable.
 
  -- Holger Levsen <holger@debian.org>  Sat, 03 Jun 2017 18:28:36 +0200
 
