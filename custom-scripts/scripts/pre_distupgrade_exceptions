@@ -49,6 +49,12 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
 		fi
 	fi
 
+	# prevent disappearance of /etc/udev/rules.d/
+	if is_installed libticables3; then
+		log_debug
+		touch /etc/udev/rules.d/.piuparts.dummy
+	fi
+
 fi
 
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
