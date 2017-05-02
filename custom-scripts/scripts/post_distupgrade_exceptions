@@ -5,6 +5,9 @@ log_debug() {
 	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
 }
 
+# E: Could not perform immediate configuration on ...
+rm -fv /etc/apt/apt.conf.d/piuparts-disable-immediate-configure
+
 if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
