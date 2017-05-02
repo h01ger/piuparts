@@ -29,15 +29,15 @@ get_config_value SLAVECOUNT global slave-count 1
 
 SESSIONNAME=piuparts_slave_screen
 
-cleanup_tails() {
-	pkill --full 'tail -f screenlog.'
-}
-
 cd $SLAVEROOT
-trap cleanup_tails INT TERM EXIT
+LOGS=
 for i in $(seq 1 $SLAVECOUNT) ; do
-	tail -f screenlog.$i &
+	LOGS="$LOGS screenlog.$i"
 done
+tail -f $LOGS &
+TAILPID=$!
+trap "kill $TAILPID" INT TERM EXIT
+
 sleep 0.5
 pkill --signal INT --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave'
 
@@ -58,5 +58,5 @@ echo -n "$(date -u +%T) - "
 pgrep --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave' | xargs echo "slaves running: (should list none) "
 
 trap - INT TERM EXIT
-pkill --full 'tail -f screenlog.'
+kill $TAILPID
 pkill --full "SCREEN -S $SESSIONNAME -d -m"
