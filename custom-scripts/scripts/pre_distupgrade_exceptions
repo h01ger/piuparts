@@ -30,10 +30,11 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
 			log_debug
 			echo "crm114 crm114/forceupgrade boolean true" | debconf-set-selections
 			;;
-		slapd)
+		slapd|\
+		slapd-dbg)
 			# squeeze postinst wants to restore a backup from lenny that was never created
 			log_debug
-			dpkg --purge slapd
+			dpkg --purge slapd slapd-dbg
 			;;
 	esac
 
@@ -66,7 +67,8 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 			log_debug
 			dpkg --purge cnews
 			;;
-		lcl-utils)
+		lcl-utils|\
+		lcl)
 			# WORKSAROUND #696075: lcl-utils: directory vs. symlink mess after squeeze => wheezy upgrade: /etc/lazarus
 			# the renaming was performed in the postinst of lcl-utils-0.9.30.4,
 			# which was not the owner of the old /etc/lazarus,
