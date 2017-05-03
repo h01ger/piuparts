@@ -40,11 +40,15 @@ skip_distupgrade()
 #   *not a bug* in the package.
 
 case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
+	acgvision-agent@squeeze)
+		# removed after squeeze
+		skip_distupgrade "#688231: modifies conffiles: /etc/acgvision/agent.ini"
+		;;
 	blootbot@lenny)
 		skip_distupgrade "#502753: fails to install: prompts without using debconf"
 		;;
 	bugzilla3@lenny)
-		# removed after squeeze
+		# fixed in squeeze, removed after squeeze, excluded from squeeze-lts
 		skip_distupgrade "was excluded from squeeze-lts"
 		;;
 	chef-solr@wheezy|\
@@ -52,12 +56,24 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	chef-server-api@wheezy)
 		skip_distupgrade "#681573: chef-solr: fails to install if policy-rc.d forbids to start services"
 		;;
+	cpushare@wheezy)
+		# removed after wheezy
+		skip_distupgrade "#689885: Ships a folder in /var/run or /var/lock"
+		;;
+	dict-stardic@lenny)
+		# removed after lenny
+		skip_distupgrade "#523770: must use invoke-rc.d"
+		;;
 	distributed-net@lenny|\
 	distributed-net@squeeze)
 		skip_distupgrade "#655922: noninteractive install: postinst loops infinitely"
 		;;
 	dnscache-run@lenny)
 		skip_distupgrade "#664848: breaks dns resolution in chroot"
+		;;
+	drupal6-trans-ru@squeeze)
+		# removed after squeeze
+		skip_distupgrade "#689252: installs files in /usr/share/drupal6/profiles which is a symlink in the drupal package"
 		;;
 	dynare-matlab@squeeze)
 		skip_distupgrade "requires a matlab installation"
@@ -67,6 +83,10 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	matlab-support@*)
 		skip_always "requires a matlab installation"
 		;;
+	firebird2.0-classic@lenny)
+		# removed after lenny
+		skip_distupgrade "#574220: package purge (after dependencies removal) fails"
+		;;
 	fossology@squeeze|\
 	fossology-agents@squeeze|\
 	fossology-agents-single@squeeze|\
@@ -75,8 +95,20 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	fossology-web-single@squeeze)
 		skip_distupgrade "#595593: fails to install"
 		;;
+	gclcvs@squeeze)
+		# removed after squeeze
+		skip_distupgrade "modifies conffiles: /etc/default/gclcvs"
+		;;
+	geordi@lenny)
+		# removed after lenny
+		skip_distupgrade "modifies conffiles: /etc/geordi/irc-config"
+		;;
 	ldap2dns@lenny)
 		skip_distupgrade "#671671: fails to install"
+		;;
+	libpam-rsa@lenny)
+		# removed after lenny
+		skip_distupgrade "modifies conffiles: /etc/security/pam_rsa.conf"
 		;;
 	libpils0@lenny|\
 	libpils-dev@lenny|\
@@ -87,6 +119,14 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	localepurge@*)
 		skip_distupgrade "requires a full --reinstall to restore disappeared files"
 		;;
+	mailreader@lenny)
+		# removed after lenny
+		skip_distupgrade "modifies conffiles: /var/lib/mailreader/ads/debian/ad.cfg, /etc/mailreader/{main,server}.cfg"
+		;;
+	mediamate@lenny)
+		# removed after lenny
+		skip_distupgrade "#574228: package purge (after dependencies removal) fails"
+		;;
 	mhc@lenny)
 		skip_distupgrade "#696231: fails to install: emacs-package-install failure"
 		;;
@@ -96,9 +136,40 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	nautilus-dropbox@wheezy)
 		skip_distupgrade "#770402: downloads awfully slow, hangs during installation"
 		;;
+	nessusd@lenny|\
+	harden-remoteaudit@lenny)
+		# removed after lenny
+		skip_distupgrade "nessusd: modifies conffiles: /etc/nessus/nessusd.conf"
+		;;
+	openvas-server@squeeze|\
+	harden-remoteaudit@squeeze|\
+	openvas-server-dev@squeeze)
+		# removed after squeeze
+		skip_distupgrade "#688379: openvas-server: modifies conffiles: /etc/openvas/openvasd.conf"
+		;;
+	pdbv@lenny)
+		# removed after lenny
+		skip_distupgrade "modifies conffiles: /etc/pdbv/pdbvrc"
+		;;
+	poker-web@squeeze)
+		# removed after squeeze
+		skip_distupgrade "#698533: modifies a shipped file: /usr/share/poker-web/currency_one.php"
+		;;
 	python-milter@lenny|\
 	spf-milter-python@lenny)
 		skip_always "virus signatures in python-milter may trigger the firewall"
+		;;
+	python-poker-stats@squeeze)
+		# removed after squeeze
+		skip_distupgrade "#608646: cronjob exits with error after package removal"
+		;;
+	rt3.6-rtfm@lenny)
+		# removed after lenny
+		skip_distupgrade "fails to purge: rt3.6-rtfm.postrm: ucf: not found"
+		;;
+	rt3.8-rtfm@squeeze)
+		# removed after squeeze
+		skip_distupgrade "fails to purge: rt3.8-rtfm.postrm: ucf: not found"
 		;;
 	runit-run@lenny)
 		skip_distupgrade "#542157: fails to install"

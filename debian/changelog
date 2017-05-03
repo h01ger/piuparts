@@ -44,6 +44,9 @@ piuparts (0.77) UNRELEASED; urgency=medium
       once per month.
   * custom-scripts: Check for dummy package "TARBALL" to detect tarball
     creation phase.
+  * scripts/is_testable_uninstallable:
+    - Add exceptions to skip distupgrades of many buggy ancient packages.
+      (Closes: #688250, #696081)
   * scripts/post_setup_dummy_users: Skip regular users when testing dpsyco*.
   * scripts/post_distupgrade_base_cleanup: Remove (transitional) sysvinit from
     stretch.  (Closes: #860819)
