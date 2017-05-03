@@ -70,12 +70,12 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Recognize more failures when connecting to databases.
 
   [ Holger Levsen ]
-  * update TODO. Work on buster has begun. \o/ 
+  * update TODO. Work on buster has begun. \o/
   * piuparts-report.py:
     - update navigation to point to piuparts.conf-template.pejacevic.
   * generate_daily_report.in: only add runtime to external script output if
     not already included.
-  * master-bin/report_untestable_packages.in: 
+  * master-bin/report_untestable_packages.in:
     - also report runtime.
     - only act on sections with precedence < 100.
   * master-bin/detect_network_issues.in:
@@ -83,7 +83,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - move check for outdated reference chroot to detect_piuparts_issues.
   * master-bin/detect_piuparts_issues.in:
     - dynamically report detected issues.
-  * instances/piuparts.conf-template.pejacevic: 
+  * instances/piuparts.conf-template.pejacevic:
     - Add new suite to be tested:
       - stable22sid, upgrading jessie -> stretch -> sid
       - oldstable222sid, upgrading from wheezy -> jessie -> stretch -> sid

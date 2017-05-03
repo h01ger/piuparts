@@ -37,7 +37,7 @@ It may break in subtle ways and dpkg cannot detect this as a problem.
 
 Please move the files shipped in your package to the "real" location.
 
-From the attached log (usually somewhere in the middle...):
+From the attached log (scroll to the bottom...):
 
 
 

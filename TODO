@@ -114,7 +114,7 @@ for 0.8x and later:
     generate _issues.tpl (pass/) and/or _error.tpl (fail/ bugged/ affected/)
   - rework known problems to a python-friendlier format
 
-- the templates used by piuparts-report.py should all be taken from 
+- the templates used by piuparts-report.py should all be taken from
   /etc/piuparts/templates/ and not be included in the python source
 
 - a redirect of http://piuparts.d.o/foo to http://p.d.o/source/f/foo.html would

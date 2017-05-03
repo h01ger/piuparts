@@ -40,7 +40,7 @@ Do not forget to add 'Pre-Depends: ${misc:Pre-Depends}' in d/control.
 See dpkg-maintscript-helper(1) and dh_installdeb(1) for details.
 
 
-From the attached log (usually somewhere in the middle...):
+From the attached log (scroll to the bottom...):
 
 
 

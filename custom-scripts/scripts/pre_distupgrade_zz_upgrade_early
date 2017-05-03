@@ -37,7 +37,7 @@ fi
 
 if [ -n "$EARLY" ]; then
 	log_debug
-	echo "Upgrading early: $EARLY"
+	echo "Upgrading early: ${EARLY# }"
 	apt-get update
 	apt-get -y install $EARLY
 fi
