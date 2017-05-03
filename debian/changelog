@@ -66,7 +66,6 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Detect alternate wording of gpg verification error.
   * master-bin/detect_piuparts_issues:
     - Report the issues found in each logfile.
-    - Detect outdated reference chroot meta data.
     - Recognize more problems caused by a full filesystem.
     - Recognize more failures when connecting to databases.
 
@@ -81,6 +80,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - only act on sections with precedence < 100.
   * master-bin/detect_network_issues.in:
     - dynamically report detected issues.
+    - move check for outdated reference chroot to detect_piuparts_issues.
   * master-bin/detect_piuparts_issues.in:
     - dynamically report detected issues.
   * instances/piuparts.conf-template.pejacevic: 
