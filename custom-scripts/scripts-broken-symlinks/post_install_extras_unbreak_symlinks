@@ -184,12 +184,22 @@ install_extra_package quassel-data		inxi
 # quilt: Suggests: default-mta | mail-transport-agent
 install_extra_package quilt			nullmailer
 
+# /usr/share/tuxpaint/fonts/locale/zh_TW.ttf -> ../../../fonts/truetype/arphic/uming.ttc
+# /usr/share/tuxpaint/fonts/locale/zh_CN.ttf -> ../../../fonts/truetype/arphic-gbsn00lp/gbsn00lp.ttf
+# /usr/share/tuxpaint/fonts/locale/th.ttf -> ../../../fonts/opentype/tlwg/Garuda-Bold.otf
+# /usr/share/tuxpaint/fonts/locale/te.ttf -> ../../../fonts/truetype/fonts-telu-extra/Pothana2000.ttf
+# /usr/share/tuxpaint/fonts/locale/ko.ttf -> ../../../fonts/truetype/nanum/NanumGothic.ttf
+# /usr/share/tuxpaint/fonts/locale/gu.ttf -> ../../../fonts/truetype/lohit-gujarati/Lohit-Gujarati.ttf
+# /usr/share/tuxpaint/fonts/locale/ar.ttf -> ../../../fonts/truetype/fonts-arabeyes/ae_Nice.ttf
+# tuxpaint-data: Suggests: fonts-arabeyes, fonts-arphic-gbsn00lp, fonts-arphic-uming, fonts-nanum, fonts-gujr, fonts-taml, fonts-telu, fonts-tlwg-garuda-otf
+install_extra_package tuxpaint-data		fonts-arabeyes fonts-arphic-gbsn00lp fonts-arphic-uming fonts-nanum fonts-gujr fonts-taml fonts-telu fonts-tlwg-garuda-otf
+
 # /usr/share/uim/loader.scm -> /var/lib/uim/loader.scm
 # /usr/share/uim/installed-modules.scm -> /var/lib/uim/installed-modules.scm
 install_extra_package libuim-data		uim-utils
 
 # /var/lib/gridengine/lib/lx-* -> /usr/lib/gridengine
-install_extra_package gridengine-common		gridengine-client db-util
+install_extra_package gridengine-common		gridengine-client db-util db5.3-sql-util
 
 if [ -n "$EXTRA" ]; then
 	log_debug
@@ -197,12 +207,32 @@ if [ -n "$EXTRA" ]; then
 	apt-get -y install $EXTRA
 fi
 
+# if package $1 is installed, $2... should exist
+create_extra_file()
+{
+	local p f
+	p=$1
+	shift
+	if is_installed "$p" ; then
+		for f in "$@"
+		do
+			if [ ! -e $f ]; then
+				echo "Creating empty target $f"
+				touch $f
+			fi
+		done
+	fi
+}
+
+# /etc/openvswitch/.conf.db.~lock~ -> /var/lib/openvswitch/.conf.db.~lock~
+# /etc/openvswitch/conf.db -> /var/lib/openvswitch/conf.db
+create_extra_file openvswitch-switch		/var/lib/openvswitch/.conf.db.~lock~ /var/lib/openvswitch/conf.db
+
 # /etc/vdr/remote.conf -> /var/lib/vdr/remote.conf
 # /etc/vdr/setup.conf -> /var/lib/vdr/setup.conf
 # /var/lib/vdr/commands.conf -> ../../cache/vdr/commands.conf
 # /var/lib/vdr/reccmds.conf -> ../../cache/vdr/reccmds.conf
-if is_installed vdr ; then
-	for f in /var/lib/vdr/remote.conf /var/lib/vdr/setup.conf /var/cache/vdr/reccmds.conf /var/cache/vdr/commands.conf ; do
-		test -e $f || touch $f
-	done
-fi
+create_extra_file vdr				/var/cache/vdr/commands.conf /var/cache/vdr/reccmds.conf /var/lib/vdr/remote.conf /var/lib/vdr/setup.conf
+
+# /etc/vdr/plugins/xineliboutput/config -> /var/lib/vdr/plugins/xineliboutput/config
+create_extra_file vdr-plugin-xineliboutput	/var/lib/vdr/plugins/xineliboutput/config

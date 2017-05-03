@@ -659,9 +659,11 @@ piuparts-flags =
 	-i :/usr/lib/libcxx/test/std/experimental/filesystem/Inputs/static_test_env/bad_symlink
 # civicrm-common, #857601, /usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf -> ../../../../local/open-flash-chart.swf
 	-i :/usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf
+	-i :/usr/share/gocode/src/github.com/hashicorp/atlas-go/archive/test-fixtures/archive-symlink/link/link
 	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26231/exe
 	-i :/usr/share/qt4/plugins
 # ignore broken symlinks (patterns)
+	-I :/etc/.*/supervise
 	-I /usr/include/python2\.7_d/.*\.h
 	-I /usr/include/python3\..dm/.*\.h
 	-I :/usr/lib/jvm/java-.*-openjdk-.*/src\.zip
