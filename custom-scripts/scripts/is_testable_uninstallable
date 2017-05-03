@@ -40,9 +40,17 @@ skip_distupgrade()
 #   *not a bug* in the package.
 
 case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
+	blootbot@lenny)
+		skip_distupgrade "#502753: fails to install: prompts without using debconf"
+		;;
 	bugzilla3@lenny)
 		# removed after squeeze
 		skip_distupgrade "was excluded from squeeze-lts"
+		;;
+	chef-solr@wheezy|\
+	chef-expander@wheezy|\
+	chef-server-api@wheezy)
+		skip_distupgrade "#681573: chef-solr: fails to install if policy-rc.d forbids to start services"
 		;;
 	distributed-net@lenny|\
 	distributed-net@squeeze)
@@ -59,8 +67,31 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	matlab-support@*)
 		skip_always "requires a matlab installation"
 		;;
+	fossology@squeeze|\
+	fossology-agents@squeeze|\
+	fossology-agents-single@squeeze|\
+	fossology-scheduler@squeeze|\
+	fossology-web@squeeze|\
+	fossology-web-single@squeeze)
+		skip_distupgrade "#595593: fails to install"
+		;;
+	ldap2dns@lenny)
+		skip_distupgrade "#671671: fails to install"
+		;;
+	libpils0@lenny|\
+	libpils-dev@lenny|\
+	libstonith0@lenny|\
+	libstonith-dev@lenny)
+		skip_distupgrade "#702055: transitional packages uninstallable in lenny"
+		;;
 	localepurge@*)
 		skip_distupgrade "requires a full --reinstall to restore disappeared files"
+		;;
+	mhc@lenny)
+		skip_distupgrade "#696231: fails to install: emacs-package-install failure"
+		;;
+	multex-bin@lenny)
+		skip_distupgrade "#668791: fails to install: The format file of 'multex' is NOT built successfully."
 		;;
 	nautilus-dropbox@wheezy)
 		skip_distupgrade "#770402: downloads awfully slow, hangs during installation"
@@ -81,8 +112,15 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	steam@jessie)
 		skip_distupgrade "#772598: cannot preseed licence acceptance"
 		;;
+	sun-java5-doc@lenny|\
+	sun-java6-doc@lenny)
+		skip_distupgrade "#709967: fails to install: download location no longer available"
+		;;
+	trn@lenny)
+		skip_distupgrade "fails to install: prompts without using debconf"
+		;;
 	ttf-root-installer@lenny)
-		skip_always "download location disappeared"
+		skip_always "fails to install: download location disappeared"
 		;;
 	usrmerge@*)
 		skip_always "performs piuparts-unfriendy filesystem layout changes"
