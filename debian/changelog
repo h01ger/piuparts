@@ -18,6 +18,9 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Arguments to the --ignore/--ignore-regexp options (and internal
       ignored_files/ignored_patterns settings) that are prefixed with a ':'
       will verbosely log the ignored files if matched.
+  * piuparts.conf: Use more aliases for mapping between releases and codenames
+    to reduce the amount of changes needed on "moving targets" (like
+    stable22sid) after a stable Debian release.
   * distros.conf:
     - Add aliases for oldstable and oldoldstable.
   * piupartslib/packagesdb.py:
@@ -87,13 +90,16 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * master-bin/detect_piuparts_issues.in:
     - dynamically report detected issues.
   * instances/piuparts.conf-template.pejacevic:
-    - Add new suite to be tested:
+    - Add new suites to be tested:
+      - stable2sid, upgrading jessie -> sid (skipping testing/stretch) to find
+        possible upgrade problems before a package migrates to testing
       - stable22sid, upgrading jessie -> stretch -> sid
       - oldstable222sid, upgrading from wheezy -> jessie -> stretch -> sid
         (Closes: #859620)
+    - Rename wheezy222testing to oldstable22testing.
     - Adjust precedences for most of the tested suites, set precedence to 100
       for suites which don't change anymore.
-      TODO: once oldstable22sid has been fully tested, change precedence to 5 or 6.
+      TODO: once oldstable222sid has been fully tested, change precedence to 5 or 6.
     - Set idle-sleep to 3600 seconds, the results pages are only updated twice
       a day anyway.
   * Update README_server.txt.
