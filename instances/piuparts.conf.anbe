@@ -299,6 +299,7 @@ reschedule-old-count = 250
 expire-fail-days = 8
 reschedule-fail-days = 5
 reschedule-fail-count = 100
+slave-count = 12
 
 
 ############################################################################
@@ -1445,7 +1446,7 @@ area = non-free
 
 
 [squeeze/main]
-precedence = 10
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1457,7 +1458,7 @@ components = main
 reschedule-old-count = 0
 
 [squeeze/contrib]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1469,7 +1470,7 @@ area = contrib
 reschedule-old-count = 0
 
 [squeeze/non-free]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1482,7 +1483,7 @@ reschedule-old-count = 0
 
 
 [squeeze-lts/main]
-precedence = 20
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1495,7 +1496,7 @@ components = main
 reschedule-old-count = 0
 
 [squeeze-lts/contrib]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1507,7 +1508,7 @@ area = contrib
 reschedule-old-count = 0
 
 [squeeze-lts/non-free]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1520,7 +1521,7 @@ reschedule-old-count = 0
 
 
 [squeeze-backports/main]
-precedence = 40
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1533,7 +1534,7 @@ components = main
 reschedule-old-count = 0
 
 [squeeze-backports/contrib]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1545,7 +1546,7 @@ area = contrib
 reschedule-old-count = 0
 
 [squeeze-backports/non-free]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1558,7 +1559,7 @@ reschedule-old-count = 0
 
 
 [squeeze-backports-sloppy/main]
-precedence = 40
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1571,7 +1572,7 @@ components = main
 reschedule-old-count = 0
 
 [squeeze-backports-sloppy/contrib]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1583,7 +1584,7 @@ area = contrib
 reschedule-old-count = 0
 
 [squeeze-backports-sloppy/non-free]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -1596,7 +1597,7 @@ reschedule-old-count = 0
 
 
 [lenny/main]
-precedence = 110
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
@@ -1608,7 +1609,7 @@ components = main
 reschedule-old-count = 0
 
 [lenny/contrib]
-precedence = 110
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
@@ -1620,7 +1621,7 @@ area = contrib
 reschedule-old-count = 0
 
 [lenny/non-free]
-precedence = 110
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
@@ -1684,7 +1685,7 @@ area = non-free
 
 
 [lenny2squeeze/main]
-precedence = 110
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
@@ -1701,7 +1702,7 @@ upgrade-test-distros = lenny squeeze
 reschedule-old-count = 0
 
 [lenny2squeeze/contrib]
-precedence = 110
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
@@ -1714,7 +1715,7 @@ upgrade-test-distros = lenny squeeze
 reschedule-old-count = 0
 
 [lenny2squeeze/non-free]
-precedence = 110
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
@@ -1728,7 +1729,7 @@ reschedule-old-count = 0
 
 
 [lenny222testing/main]
-precedence = 120
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
@@ -1743,7 +1744,7 @@ expire-fail-days = 20
 reschedule-fail-days = 12
 
 [lenny222testing/contrib]
-precedence = 120
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
@@ -1756,7 +1757,7 @@ upgrade-test-distros = lenny squeeze wheezy jessie testing
 reschedule-old-count = 100
 
 [lenny222testing/non-free]
-precedence = 120
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
@@ -2106,7 +2107,7 @@ upgrade-test-distros = squeeze squeeze-backports wheezy
 
 
 [squeeze222testing/main]
-precedence = 80
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2119,7 +2120,7 @@ upgrade-test-distros = squeeze wheezy jessie testing
 reschedule-old-count = 100
 
 [squeeze222testing/contrib]
-precedence = 95
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2132,7 +2133,7 @@ upgrade-test-distros = squeeze wheezy jessie testing
 reschedule-old-count = 100
 
 [squeeze222testing/non-free]
-precedence = 95
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2672,6 +2673,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -2686,6 +2688,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch-iri/main jessie2stretch-iri/non-free
 arch = amd64
 area = contrib
@@ -2700,6 +2703,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch-iri/main jessie2stretch-iri/contrib
 arch = amd64
 area = non-free
@@ -2750,6 +2754,7 @@ precedence = 70
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stable)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -2761,6 +2766,7 @@ precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stable)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = stable2sid/main stable2sid/non-free
 arch = amd64
 area = contrib
@@ -2772,6 +2778,7 @@ precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stable)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = stable2sid/main stable2sid/contrib
 arch = amd64
 area = non-free
