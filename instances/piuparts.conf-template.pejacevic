@@ -489,7 +489,7 @@ upgrade-test-distros = stable testing sid
 
 
 [oldstable222sid]
-precedence = 10
+precedence = 5
 json-sections = none
 piuparts-flags =
 	%(flags-default)s

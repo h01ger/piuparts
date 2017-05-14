@@ -99,7 +99,6 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Rename wheezy222testing to oldstable22testing.
     - Adjust precedences for most of the tested suites, set precedence to 100
       for suites which don't change anymore.
-      TODO: once oldstable222sid has been fully tested, change precedence to 5 or 6.
     - Set idle-sleep to 3600 seconds, the results pages are only updated twice
       a day anyway.
   * Update README_server.txt.
