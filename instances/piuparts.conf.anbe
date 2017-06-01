@@ -109,6 +109,7 @@ sections =
 	jessie2proposed/main
 	jessie2stretch/main
 	jessie2stretch_i386/main
+	jessie2stretch-rcmd/main
 	jessie2stretch-rcmd_i386/main
 	jessie2stretch-iri/main
 	jessie2bpo2stretch/main
@@ -158,6 +159,7 @@ sections =
 	jessie2proposed/contrib
 	jessie2stretch/contrib
 	jessie2stretch_i386/contrib
+	jessie2stretch-rcmd/contrib
 	jessie2stretch-rcmd_i386/contrib
 	jessie2stretch-iri/contrib
 	jessie2bpo2stretch/contrib
@@ -207,6 +209,7 @@ sections =
 	jessie2proposed/non-free
 	jessie2stretch/non-free
 	jessie2stretch_i386/non-free
+	jessie2stretch-rcmd/non-free
 	jessie2stretch-rcmd_i386/non-free
 	jessie2stretch-iri/non-free
 	jessie2bpo2stretch/non-free
@@ -2657,6 +2660,52 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch_i386/main jessie2stretch_i386/contrib
 arch = i386
+area = non-free
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+
+[jessie2stretch-rcmd/main]
+precedence = 80
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = amd64
+area = main
+components = main
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+[jessie2stretch-rcmd/contrib]
+precedence = 95
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = jessie2stretch-rcmd/main jessie2stretch-rcmd/non-free
+arch = amd64
+area = contrib
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+[jessie2stretch-rcmd/non-free]
+precedence = 95
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = jessie2stretch-rcmd/main jessie2stretch-rcmd/contrib
+arch = amd64
 area = non-free
 distro = jessie
 upgrade-test-distros = jessie stretch
