@@ -279,6 +279,7 @@ class Settings:
             "/var/cache/debconf/templates.dat",
             "/var/cache/debconf/templates.dat.old",
             "/var/cache/debconf/templates.dat-old",
+            "/var/lib/apt/daily_lock",
             "/var/lib/apt/extended_states",
             "/var/lib/cdebconf/",
             "/var/lib/cdebconf/passwords.dat",

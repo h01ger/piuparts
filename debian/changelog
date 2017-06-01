@@ -5,6 +5,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
     - Add to ignored_files:
       + /etc/rc.local
       + /etc/X11/Xwrapper.config  (Closes: #859929)
+      + /var/lib/apt/daily_lock
     - Refactor internal handling of reference chroot state.
     - Do not run custom scripts before/after installing fake essential
       packages.
