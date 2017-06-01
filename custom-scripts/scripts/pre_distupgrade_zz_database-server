@@ -26,6 +26,7 @@ retry_configure_pending()
 
 CANDIDATES=
 CANDIDATES="$CANDIDATES default-mysql-server"
+CANDIDATES="$CANDIDATES mysql-server"
 CANDIDATES="$CANDIDATES postgresql"
 CANDIDATES="$CANDIDATES postgresql-8.3"
 CANDIDATES="$CANDIDATES postgresql-8.4"
@@ -39,17 +40,7 @@ case "$PIUPARTS_DISTRIBUTION_NEXT" in
 		;;
 esac
 
-case "$PIUPARTS_DISTRIBUTION_NEXT" in
-	stretch)
-		: # no mysql-server
-		;;
-	*)
-		CANDIDATES="$CANDIDATES mysql-server"
-		;;
-esac
-
 PACKAGES=
-SWITCH_TO_MARIADB=
 RETRY="false"
 
 # early upgrade runs into even more trouble for some packages ...
@@ -62,50 +53,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		;;
 esac
 
-if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ]; then
-	# recommended/suggested/related package mysql-server gets removed during dist-upgrade
-	case ${PIUPARTS_OBJECTS%%=*} in
-		bacula-director-mysql|\
-		bacula-director-mysql-dbg)
-			SWITCH_TO_MARIADB=yes
-			# (new) transitively recommended package mariadb-server-x.y gets
-			# configured (and the server started) too late (after ourselves)
-			RETRY="retry_configure_pending"
-			;;
-		bareos-database-mysql)
-			SWITCH_TO_MARIADB=yes
-			;;
-		icinga2-ido-mysql)
-			SWITCH_TO_MARIADB=yes
-			;;
-		openstack-cloud-services|\
-		openstack-cloud-identity)
-			SWITCH_TO_MARIADB=yes
-			;;
-		pdns-backend-mysql)
-			SWITCH_TO_MARIADB=yes
-			;;
-		phpmyadmin)
-			SWITCH_TO_MARIADB=yes
-			;;
-		pnopaste)
-			SWITCH_TO_MARIADB=yes
-			;;
-		redmine-mysql)
-			SWITCH_TO_MARIADB=yes
-			;;
-		tango-db|\
-		tango-db-dbg|\
-		tango-accesscontrol|\
-		tango-accesscontrol-dbg)
-			SWITCH_TO_MARIADB=yes
-			;;
-		yubikey-val)
-			SWITCH_TO_MARIADB=yes
-			;;
-	esac
-fi
-
 for pkg in $CANDIDATES
 do
 	if is_installed "$pkg"
@@ -113,13 +60,6 @@ do
 		PACKAGES="$PACKAGES $pkg"
 	fi
 done
-
-if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ] && [ "$SWITCH_TO_MARIADB" = "yes" ]; then
-	if is_installed "mysql-server"
-	then
-		PACKAGES="$PACKAGES default-mysql-server mysql-server-"
-	fi
-fi
 
 test ! -x /usr/bin/pg_lsclusters || pg_lsclusters
 
