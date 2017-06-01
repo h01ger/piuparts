@@ -51,6 +51,7 @@ build: build-stamp
 build-stamp: $(SCRIPTS_GENERATED) $(DOCS_GENERATED) Makefile
 	$(MAKE) -C instances
 	$(MAKE) python-syntax-check
+	(cd debiman-piuparts-distill && go build)
 	touch $@
 
 build-doc: $(DOCS_GENERATED)
@@ -110,6 +111,7 @@ install-conf-4-running-from-git: build-stamp
 install: build-stamp
 	install -d $(DESTDIR)$(sbindir)
 	install -m 0755 piuparts $(DESTDIR)$(sbindir)/
+	install -m 0755 debiman-piuparts-distill/debiman-piuparts-distill $(DESTDIR)$(sbindir)/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts
 	install -m 0755 piuparts-slave piuparts-master piuparts-master-backend piuparts-report piuparts-analyze $(DESTDIR)$(sharedir)/piuparts/

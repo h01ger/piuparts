@@ -16,7 +16,8 @@ Build-Depends:
  python-debianbts,
  python-yaml,
  python-mox3,
- python-lzma
+ python-lzma,
+ golang-any
 Build-Depends-Indep:
  asciidoc,
  git,
@@ -55,7 +56,7 @@ Description: .deb package installation, upgrading, and removal testing tool
  packages to test them before they upload them to the Debian package archive.
 
 Package: piuparts-master
-Architecture: all
+Architecture: any
 Depends:
  piuparts-common (= ${binary:Version}),
  adduser,
