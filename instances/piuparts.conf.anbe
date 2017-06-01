@@ -108,6 +108,7 @@ sections =
 	stable2testing2sid/main
 	jessie2proposed/main
 	jessie2stretch/main
+	jessie2stretch_i386/main
 	jessie2stretch-rcmd_i386/main
 	jessie2stretch-iri/main
 	jessie2bpo2stretch/main
@@ -156,6 +157,7 @@ sections =
 	stable2testing2sid/contrib
 	jessie2proposed/contrib
 	jessie2stretch/contrib
+	jessie2stretch_i386/contrib
 	jessie2stretch-rcmd_i386/contrib
 	jessie2stretch-iri/contrib
 	jessie2bpo2stretch/contrib
@@ -204,6 +206,7 @@ sections =
 	stable2testing2sid/non-free
 	jessie2proposed/non-free
 	jessie2stretch/non-free
+	jessie2stretch_i386/non-free
 	jessie2stretch-rcmd_i386/non-free
 	jessie2stretch-iri/non-free
 	jessie2bpo2stretch/non-free
@@ -2614,6 +2617,46 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch/main jessie2stretch/contrib
 arch = amd64
+area = non-free
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+
+[jessie2stretch_i386/main]
+precedence = 80
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = i386
+area = main
+components = main
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+[jessie2stretch_i386/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = jessie2stretch_i386/main jessie2stretch_i386/non-free
+arch = i386
+area = contrib
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+[jessie2stretch_i386/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = jessie2stretch_i386/main jessie2stretch_i386/contrib
+arch = i386
 area = non-free
 distro = jessie
 upgrade-test-distros = jessie stretch
