@@ -60,6 +60,9 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * scripts/post_{setup,distupgrade}_zz_backports: Avoid downgrading
     systemd/udev from jessie-backports to jessie during removal phase.
     (Closes: #856845)
+  * scripts/pre_distupgrade_zz_database-server: Do not migrate manually from
+    mysql-server to default-mysql-server (aka mariadb-server), there is now a
+    transitional mysql-server package in stretch.
   * scripts-broken-symlinks/post_install_extras_unbreak_symlinks: New script
     for "fixing" some broken symlinks (e.g. by installing selected suggested
     packages) in tests using --fail-on-broken-symlinks.
