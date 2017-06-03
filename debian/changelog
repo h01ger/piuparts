@@ -1,4 +1,4 @@
-piuparts (0.77) UNRELEASED; urgency=medium
+piuparts (0.77) unstable; urgency=medium
 
   [ Andreas Beckmann ]
   * distros.conf:
@@ -21,7 +21,7 @@ piuparts (0.77) UNRELEASED; urgency=medium
   * piuparts-report.py:
     - update navigation to point to piuparts.conf-template.pejacevic.
 
- -- Holger Levsen <holger@debian.org>  Sat, 03 Jun 2017 18:28:36 +0200
+ -- Holger Levsen <holger@debian.org>  Sat, 03 Jun 2017 23:08:19 +0200
 
 piuparts (0.76) unstable; urgency=medium
 
