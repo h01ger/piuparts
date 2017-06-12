@@ -115,6 +115,7 @@ sections =
 	jessie2bpo2stretch/main
 	wheezy2proposed/main
 	wheezy2jessie/main
+	wheezy2jessie_i386/main
 	wheezy2jessie-rcmd/main
 	wheezy2jessie-rcmd_i386/main
 	wheezy2jessie-sysv/main
@@ -165,6 +166,7 @@ sections =
 	jessie2bpo2stretch/contrib
 	wheezy2proposed/contrib
 	wheezy2jessie/contrib
+	wheezy2jessie_i386/contrib
 	wheezy2jessie-rcmd/contrib
 	wheezy2jessie-rcmd_i386/contrib
 	wheezy2jessie-sysv/contrib
@@ -215,6 +217,7 @@ sections =
 	jessie2bpo2stretch/non-free
 	wheezy2proposed/non-free
 	wheezy2jessie/non-free
+	wheezy2jessie_i386/non-free
 	wheezy2jessie-rcmd/non-free
 	wheezy2jessie-rcmd_i386/non-free
 	wheezy2jessie-sysv/non-free
@@ -2225,6 +2228,46 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = wheezy2jessie/main wheezy2jessie/contrib
 arch = amd64
+area = non-free
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+
+[wheezy2jessie_i386/main]
+precedence = 80
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = i386
+area = main
+components = main
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie_i386/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = wheezy2jessie_i386/main wheezy2jessie_i386/non-free
+arch = i386
+area = contrib
+distro = wheezy
+upgrade-test-distros = wheezy jessie
+
+[wheezy2jessie_i386/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = wheezy2jessie_i386/main wheezy2jessie_i386/contrib
+arch = i386
 area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy jessie

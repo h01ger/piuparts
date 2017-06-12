@@ -22,6 +22,7 @@ piuparts (0.78) UNRELEASED; urgency=medium
   * piuparts.conf: Use more aliases for mapping between releases and codenames
     to reduce the amount of changes needed on "moving targets" (like
     stable22sid) after a stable Debian release.
+  * piuparts.conf.anbe: Add some more example sections.
   * distros.conf:
     - Add aliases for oldstable and oldoldstable.
   * piupartslib/packagesdb.py:
