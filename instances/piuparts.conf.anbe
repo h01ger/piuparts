@@ -125,6 +125,7 @@ sections =
 	wheezy222testing/main
 	wheezy222testing_i386/main
 	squeeze222testing/main
+	squeeze222testing_i386/main
 	lenny222testing/main
 #
 	experimental/contrib
@@ -177,6 +178,7 @@ sections =
 	wheezy222testing/contrib
 	wheezy222testing_i386/contrib
 	squeeze222testing/contrib
+	squeeze222testing_i386/contrib
 	lenny222testing/contrib
 #
 	experimental/non-free
@@ -229,6 +231,7 @@ sections =
 	wheezy222testing/non-free
 	wheezy222testing_i386/non-free
 	squeeze222testing/non-free
+	squeeze222testing_i386/non-free
 	lenny222testing/non-free
 #
 	squeeze/main
@@ -2152,6 +2155,46 @@ piuparts-flags =
 	%(flags-end-testing)s
 depends-sections = squeeze222testing/main squeeze222testing/contrib
 arch = amd64
+area = non-free
+distro = squeeze
+upgrade-test-distros = squeeze wheezy jessie testing
+reschedule-old-count = 100
+
+
+[squeeze222testing_i386/main]
+precedence = 150
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-testing)s
+arch = i386
+area = main
+components = main
+distro = squeeze
+upgrade-test-distros = squeeze wheezy jessie testing
+reschedule-old-count = 100
+
+[squeeze222testing_i386/contrib]
+precedence = 150
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-testing)s
+depends-sections = squeeze222testing_i386/main squeeze222testing_i386/non-free
+arch = i386
+area = contrib
+distro = squeeze
+upgrade-test-distros = squeeze wheezy jessie testing
+reschedule-old-count = 100
+
+[squeeze222testing_i386/non-free]
+precedence = 150
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-testing)s
+depends-sections = squeeze222testing_i386/main squeeze222testing_i386/contrib
+arch = i386
 area = non-free
 distro = squeeze
 upgrade-test-distros = squeeze wheezy jessie testing
