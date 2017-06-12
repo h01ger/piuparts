@@ -127,6 +127,7 @@ sections =
 	squeeze222testing/main
 	squeeze222testing_i386/main
 	lenny222testing/main
+	lenny222testing_i386/main
 #
 	experimental/contrib
 	experimental_i386/contrib
@@ -180,6 +181,7 @@ sections =
 	squeeze222testing/contrib
 	squeeze222testing_i386/contrib
 	lenny222testing/contrib
+	lenny222testing_i386/contrib
 #
 	experimental/non-free
 	experimental_i386/non-free
@@ -233,6 +235,7 @@ sections =
 	squeeze222testing/non-free
 	squeeze222testing_i386/non-free
 	lenny222testing/non-free
+	lenny222testing_i386/non-free
 #
 	squeeze/main
 	squeeze-lts/main
@@ -1779,6 +1782,48 @@ piuparts-flags =
 	%(flags-end-testing)s
 depends-sections = lenny222testing/main lenny222testing/contrib
 arch = amd64
+area = non-free
+distro = lenny
+upgrade-test-distros = lenny squeeze wheezy jessie testing
+reschedule-old-count = 100
+
+
+[lenny222testing_i386/main]
+precedence = 150
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-testing)s
+arch = i386
+area = main
+components = main
+distro = lenny
+upgrade-test-distros = lenny squeeze wheezy jessie testing
+reschedule-old-count = 100
+expire-fail-days = 20
+reschedule-fail-days = 12
+
+[lenny222testing_i386/contrib]
+precedence = 150
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-testing)s
+depends-sections = lenny222testing_i386/main lenny222testing_i386/non-free
+arch = i386
+area = contrib
+distro = lenny
+upgrade-test-distros = lenny squeeze wheezy jessie testing
+reschedule-old-count = 100
+
+[lenny222testing_i386/non-free]
+precedence = 150
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-testing)s
+depends-sections = lenny222testing_i386/main lenny222testing_i386/contrib
+arch = i386
 area = non-free
 distro = lenny
 upgrade-test-distros = lenny squeeze wheezy jessie testing
