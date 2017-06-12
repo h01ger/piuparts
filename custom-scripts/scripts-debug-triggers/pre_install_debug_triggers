@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+test "$PIUPARTS_TEST" = "install" || exit 0
+
+if [ ! -f /etc/dpkg/dpkg.cfg.d/piuparts-debug-triggers ]
+then
+	echo "Enabling dpkg trigger debugging"
+	echo 'debug=70000' > /etc/dpkg/dpkg.cfg.d/piuparts-debug-triggers
+fi

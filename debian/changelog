@@ -67,6 +67,7 @@ piuparts (0.78) UNRELEASED; urgency=medium
   * scripts-broken-symlinks/post_install_extras_unbreak_symlinks: New script
     for "fixing" some broken symlinks (e.g. by installing selected suggested
     packages) in tests using --fail-on-broken-symlinks.
+  * scripts-debug-triggers/: New scripts for enabling dpkg trigger debugging.
   * conf/crontab-*: Set PATH and run scripts without absolute path.
   * master-bin/detect_archive_issues:
     - Look at failed logs older than 24 hours (48 hours previously).
