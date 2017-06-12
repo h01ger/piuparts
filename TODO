@@ -94,6 +94,9 @@ for 0.7x, during the buster development cycle:
 
 - p-s: report age of the basetgz being used
 
+- solve the discrepancies between "dist-upgrade" (apt) and "distupgrade"
+  (piuparts), adopting apt's naming
+
 
 for 0.8x and later:
 

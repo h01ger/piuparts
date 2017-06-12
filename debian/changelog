@@ -15,7 +15,7 @@ piuparts (0.78) UNRELEASED; urgency=medium
     - Arguments to the --ignore/--ignore-regexp options (and internal
       ignored_files/ignored_patterns settings) that are prefixed with a ':'
       will verbosely log the ignored files if matched.
-    - New option --upgrade-before-distupgrade for 2-stage upgrades:
+    - New option --upgrade-before-dist-upgrade for 2-stage upgrades:
       'apt-get upgrade && apt-get dist-upgrade'.
   * piuparts.conf:
     - Use more aliases for mapping between releases and codenames to reduce

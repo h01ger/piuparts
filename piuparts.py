@@ -195,7 +195,7 @@ class Settings:
         # tests and checks
         self.no_install_purge_test = False
         self.no_upgrade_test = False
-        self.upgrade_before_distupgrade = False
+        self.upgrade_before_dist_upgrade = False
         self.distupgrade_to_testdebs = False
         self.install_remove_install = False
         self.install_purge_install = False
@@ -2754,12 +2754,12 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     os.environ["PIUPARTS_PHASE"] = "distupgrade"
 
-    chroot.upgrade_to_distros(settings.debian_distros[1:-1], distupgrade_packages, settings.upgrade_before_distupgrade)
+    chroot.upgrade_to_distros(settings.debian_distros[1:-1], distupgrade_packages, settings.upgrade_before_dist_upgrade)
 
     if settings.distupgrade_to_testdebs:
         chroot.enable_testdebs_repo(update=False)
 
-    chroot.upgrade_to_distros(settings.debian_distros[-1:], distupgrade_packages, settings.upgrade_before_distupgrade)
+    chroot.upgrade_to_distros(settings.debian_distros[-1:], distupgrade_packages, settings.upgrade_before_dist_upgrade)
 
     chroot.check_for_no_processes()
 
@@ -2999,7 +2999,7 @@ def parse_command_line():
                       default=False,
                       help="Don't check for broken symlinks.")
 
-    parser.add_option("--upgrade-before-distupgrade",
+    parser.add_option("--upgrade-before-dist-upgrade",
                       action="store_true", default=False,
                       help="Perform two-stage upgrades: 'apt-get upgrade && apt-get dist-upgrade'")
 
@@ -3192,7 +3192,7 @@ def parse_command_line():
     # tests and checks
     settings.no_install_purge_test = opts.no_install_purge_test
     settings.no_upgrade_test = opts.no_upgrade_test
-    settings.upgrade_before_distupgrade = opts.upgrade_before_distupgrade
+    settings.upgrade_before_dist_upgrade = opts.upgrade_before_dist_upgrade
     settings.distupgrade_to_testdebs = opts.distupgrade_to_testdebs
     settings.install_purge_install = opts.install_purge_install
     settings.install_remove_install = opts.install_remove_install
