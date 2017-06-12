@@ -281,6 +281,9 @@ Note that file: addresses works if the directories are made accessible from with
 +
 Note: the temporary directory must *not* be mounted with the _nodev_ or _nosuid_ mount option.
 
+*--upgrade-before-distupgrade*::
+  Perform two-stage upgrades: 'apt-get upgrade && apt-get dist-upgrade'.
+
 *-v*, *--verbose*::
   This option no longer has any meaning, but it is still accepted for backwards compatibility.
 

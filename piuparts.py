@@ -195,6 +195,7 @@ class Settings:
         # tests and checks
         self.no_install_purge_test = False
         self.no_upgrade_test = False
+        self.upgrade_before_distupgrade = False
         self.distupgrade_to_testdebs = False
         self.install_remove_install = False
         self.install_purge_install = False
@@ -1098,7 +1099,7 @@ class Chroot:
         errorcode, avail_md5 = self.run(["sh", "-c", "apt-cache dumpavail | md5sum"])
         self.avail_md5_history.append(avail_md5.split()[0])
 
-    def upgrade_to_distros(self, distros, packages):
+    def upgrade_to_distros(self, distros, packages, apt_get_upgrade=False):
         """Upgrade a chroot installation to each successive distro."""
         for distro in distros:
             logging.debug("Upgrading %s to %s" % (self.name, distro))
@@ -1107,6 +1108,8 @@ class Chroot:
             # Run custom scripts before upgrade
             self.run_scripts("pre_distupgrade")
             self.run(["apt-get", "update"])
+            if apt_get_upgrade:
+                self.run(["apt-get", "-y", "upgrade"])
             self.run(["apt-get", "-yf", "dist-upgrade"])
             self.remember_available_md5()
             os.environ["PIUPARTS_DISTRIBUTION_PREV"] = os.environ["PIUPARTS_DISTRIBUTION"]
@@ -2751,12 +2754,12 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     os.environ["PIUPARTS_PHASE"] = "distupgrade"
 
-    chroot.upgrade_to_distros(settings.debian_distros[1:-1], distupgrade_packages)
+    chroot.upgrade_to_distros(settings.debian_distros[1:-1], distupgrade_packages, settings.upgrade_before_distupgrade)
 
     if settings.distupgrade_to_testdebs:
         chroot.enable_testdebs_repo(update=False)
 
-    chroot.upgrade_to_distros(settings.debian_distros[-1:], distupgrade_packages)
+    chroot.upgrade_to_distros(settings.debian_distros[-1:], distupgrade_packages, settings.upgrade_before_distupgrade)
 
     chroot.check_for_no_processes()
 
@@ -2996,6 +2999,10 @@ def parse_command_line():
                       default=False,
                       help="Don't check for broken symlinks.")
 
+    parser.add_option("--upgrade-before-distupgrade",
+                      action="store_true", default=False,
+                      help="Perform two-stage upgrades: 'apt-get upgrade && apt-get dist-upgrade'")
+
     parser.add_option("--no-upgrade-test",
                       action="store_true", default=False,
                       help="Skip testing the upgrade from an existing version " +
@@ -3185,6 +3192,7 @@ def parse_command_line():
     # tests and checks
     settings.no_install_purge_test = opts.no_install_purge_test
     settings.no_upgrade_test = opts.no_upgrade_test
+    settings.upgrade_before_distupgrade = opts.upgrade_before_distupgrade
     settings.distupgrade_to_testdebs = opts.distupgrade_to_testdebs
     settings.install_purge_install = opts.install_purge_install
     settings.install_remove_install = opts.install_remove_install
