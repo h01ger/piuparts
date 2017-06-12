@@ -93,7 +93,9 @@ piuparts (0.78) UNRELEASED; urgency=medium
       - stable22sid, upgrading jessie -> stretch -> sid
       - oldstable222sid, upgrading from wheezy -> jessie -> stretch -> sid
         (Closes: #859620)
-    - Rename wheezy222testing to oldstable22testing.
+      - jessie2Xstretch-rcmd, doing two-stage upgrades (apt-get update &&
+        apt-get dist-upgrade) from jessie to stretch (with
+        --install-recommends)
     - Adjust precedences for most of the tested suites, set precedence to 100
       for suites which don't change anymore.
     - Set idle-sleep to 3600 seconds, the results pages are only updated twice

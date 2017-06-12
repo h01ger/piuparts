@@ -115,6 +115,7 @@ sections =
 	stable22sid
 	jessie2stretch
 	jessie2stretch-rcmd
+	jessie2Xstretch-rcmd
 	jessie2bpo2stretch
 	jessie2bpo
 	jessie
@@ -385,6 +386,20 @@ json-sections = none
 description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+
+[jessie2Xstretch-rcmd]
+precedence = 6
+json-sections = none
+description = + Testing two-stage upgrades with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	--upgrade-before-dist-upgrade
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
