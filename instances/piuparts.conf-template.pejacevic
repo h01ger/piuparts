@@ -122,6 +122,7 @@ sections =
 	buster-rcmd
 	stretch2buster
 	stretch2buster-rcmd
+	stretch2bpo
 	stretch
 	stretch-rcmd
 	stretch-security
@@ -405,6 +406,18 @@ piuparts-flags =
 	%(flags-end-buster)s
 distro = stretch
 upgrade-test-distros = stretch buster
+
+
+[stretch2bpo]
+precedence = 5
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+depends-sections = stretch
+distro = stretch-backports
+upgrade-test-distros = stretch stretch-backports
 
 
 [stretch]
