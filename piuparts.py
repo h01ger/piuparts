@@ -1682,6 +1682,14 @@ class Chroot:
         self.mount("devpts", "/dev/pts", fstype="devpts", opts="newinstance,noexec,nosuid,gid=5,mode=0620,ptmxmode=0666")
         if not os.path.islink(self.relative("dev/ptmx")):
             self.mount(self.relative("dev/pts/ptmx"), "/dev/ptmx", opts="bind", no_mkdir=True)
+        p = subprocess.Popen(["tty"], stdout=subprocess.PIPE)
+        stdout, _ = p.communicate()
+        current_tty = stdout.strip()
+        if p.returncode == 0 and os.path.exists(current_tty):
+            dev_console = self.relative("/dev/console")
+            if not os.path.exists(dev_console):
+                os.mknod(dev_console, 0600, os.makedev(5, 1))
+            self.mount(current_tty, "/dev/console", opts="bind", no_mkdir=True)
         self.mount("tmpfs", "/dev/shm", fstype="tmpfs", opts="size=65536k")
         if selinux_enabled():
             self.mount("/sys/fs/selinux", self.selinuxfs_path(), opts="bind,ro")

@@ -11,7 +11,8 @@ piuparts (0.78) UNRELEASED; urgency=medium
       to recognize mirror pushes during distupgrade tests and outdated
       --end-meta meta-data.
     - Mount a new devpts instance on /dev/pts and /dev/ptmx inside the chroot
-      for better pty separation from the host. Inspired by pbuilder.
+      for better pty separation from the host. Mount the current tty onto
+      /dev/console in the chroot. Inspired by pbuilder.
     - Arguments to the --ignore/--ignore-regexp options (and internal
       ignored_files/ignored_patterns settings) that are prefixed with a ':'
       will verbosely log the ignored files if matched.
