@@ -119,6 +119,7 @@ sections =
 	stable2sid
 	stable22sid
 	buster
+	buster-rcmd
 	stretch
 	stretch-rcmd
 	stretch-security
@@ -330,6 +331,18 @@ upgrade-test-distros = sid experimental
 precedence = 4
 piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-log-alternatives
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+distro = buster
+
+
+[buster-rcmd]
+precedence = 4
+json-sections = none
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
 	%(flags-default)s
 	%(flags-start-buster)s
 	%(flags-end-buster)s
