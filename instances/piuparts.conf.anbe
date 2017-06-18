@@ -89,6 +89,7 @@ sections =
 	stretch/main
 	stretch-rcmd/main
 	stretch-proposed/main
+	stretch-security/main
 	stretch-pu/main
 	stretch-debug/main
 	jessie/main
@@ -145,6 +146,7 @@ sections =
 	stretch/contrib
 	stretch-rcmd/contrib
 	stretch-proposed/contrib
+	stretch-security/contrib
 	stretch-pu/contrib
 	stretch-debug/contrib
 	jessie/contrib
@@ -201,6 +203,7 @@ sections =
 	stretch/non-free
 	stretch-rcmd/non-free
 	stretch-proposed/non-free
+	stretch-security/non-free
 	stretch-pu/non-free
 	stretch-debug/non-free
 	jessie/non-free
@@ -931,6 +934,41 @@ piuparts-flags =
 depends-sections = stretch-rcmd/main stretch-rcmd/contrib
 distro = stretch
 arch = i386
+area = non-free
+
+
+[stretch-security/main]
+precedence = 20
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main
+distro = stretch/updates
+arch = amd64
+area = main
+components = main
+
+[stretch-security/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main
+distro = stretch/updates
+arch = amd64
+area = contrib
+
+[stretch-security/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main
+distro = stretch/updates
+arch = amd64
 area = non-free
 
 
