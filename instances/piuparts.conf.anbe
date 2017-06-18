@@ -138,6 +138,7 @@ sections =
 	wheezy2jessie-iri/main
 	wheezy2bpo2jessie/main
 	jessie222testing/main
+	jessie222testing_i386/main
 	wheezy222testing/main
 	wheezy222testing_i386/main
 	squeeze222testing/main
@@ -202,6 +203,7 @@ sections =
 	wheezy2jessie-iri/contrib
 	wheezy2bpo2jessie/contrib
 	jessie222testing/contrib
+	jessie222testing_i386/contrib
 	wheezy222testing/contrib
 	wheezy222testing_i386/contrib
 	squeeze222testing/contrib
@@ -266,6 +268,7 @@ sections =
 	wheezy2jessie-iri/non-free
 	wheezy2bpo2jessie/non-free
 	jessie222testing/non-free
+	jessie222testing_i386/non-free
 	wheezy222testing/non-free
 	wheezy222testing_i386/non-free
 	squeeze222testing/non-free
@@ -3412,6 +3415,46 @@ piuparts-flags =
 	%(flags-end-testing)s
 depends-sections = jessie222testing/main jessie222testing/contrib
 arch = amd64
+area = non-free
+distro = jessie
+upgrade-test-distros = jessie stretch testing
+reschedule-old-count = 100
+
+
+[jessie222testing_i386/main]
+precedence = 80
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-testing)s
+arch = i386
+area = main
+components = main
+distro = jessie
+upgrade-test-distros = jessie stretch testing
+reschedule-old-count = 100
+
+[jessie222testing_i386/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-testing)s
+depends-sections = jessie222testing_i386/main jessie222testing_i386/non-free
+arch = i386
+area = contrib
+distro = jessie
+upgrade-test-distros = jessie stretch testing
+reschedule-old-count = 100
+
+[jessie222testing_i386/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-testing)s
+depends-sections = jessie222testing_i386/main jessie222testing_i386/contrib
+arch = i386
 area = non-free
 distro = jessie
 upgrade-test-distros = jessie stretch testing
