@@ -30,7 +30,8 @@ piuparts (0.78) UNRELEASED; urgency=medium
     - Use --warn-on-debsums-errors for tests ending in stretch.
     - Rotate aliases for testing=buster and stable=stretch.
     - Add new suites: buster, buster-rcmd, stretch2buster, stretch2buster-rcmd
-    - Add new suites: stretch2bpo for testing stretch-backports.
+    - Add new suites: stretch2bpo, stretch2bpo2buster for testing
+      stretch-backports.
   * piuparts.conf.anbe: Add some more example sections.
   * piupartslib/packagesdb.py:
     - Add new state "outdated" to ignore packages if a dependency distro
