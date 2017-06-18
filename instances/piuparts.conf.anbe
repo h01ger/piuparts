@@ -123,6 +123,7 @@ sections =
 	stretch2proposed/main
 	stretch2buster/main
 	stretch2buster-rcmd_i386/main
+	stretch2bpo2buster/main
 	jessie2proposed/main
 	jessie2stretch/main
 	jessie2stretch_i386/main
@@ -190,6 +191,7 @@ sections =
 	stretch2proposed/contrib
 	stretch2buster/contrib
 	stretch2buster-rcmd_i386/contrib
+	stretch2bpo2buster/contrib
 	jessie2proposed/contrib
 	jessie2stretch/contrib
 	jessie2stretch_i386/contrib
@@ -257,6 +259,7 @@ sections =
 	stretch2proposed/non-free
 	stretch2buster/non-free
 	stretch2buster-rcmd_i386/non-free
+	stretch2bpo2buster/non-free
 	jessie2proposed/non-free
 	jessie2stretch/non-free
 	jessie2stretch_i386/non-free
@@ -3589,6 +3592,44 @@ arch = i386
 area = non-free
 distro = stretch
 upgrade-test-distros = stretch buster
+
+
+[stretch2bpo2buster/main]
+precedence = 80
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+depends-sections = stretch/main
+distro = stretch-backports
+arch = amd64
+area = main
+components = main
+upgrade-test-distros = stretch stretch-backports buster
+
+[stretch2bpo2buster/contrib]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+depends-sections = stretch/main stretch/contrib stretch/non-free stretch2bpo2buster/main stretch2bpo2buster/non-free
+distro = stretch-backports
+arch = amd64
+area = contrib
+upgrade-test-distros = stretch stretch-backports buster
+
+[stretch2bpo2buster/non-free]
+precedence = 95
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+depends-sections = stretch/main stretch/contrib stretch/non-free stretch2bpo2buster/main stretch2bpo2buster/contrib
+distro = stretch-backports
+arch = amd64
+area = non-free
+upgrade-test-distros = stretch stretch-backports buster
 
 
 [stable2sid/main]
