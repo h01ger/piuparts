@@ -91,6 +91,9 @@ sections =
 	sid-debug/main
 	testing-rcmd/main
 	testing-nodocs/main
+	buster/main
+	buster-pu/main
+	buster-debug/main
 	stretch/main
 	stretch-rcmd/main
 	stretch-proposed/main
@@ -151,6 +154,9 @@ sections =
 	sid-debug/contrib
 	testing-rcmd/contrib
 	testing-nodocs/contrib
+	buster/contrib
+	buster-pu/contrib
+	buster-debug/contrib
 	stretch/contrib
 	stretch-rcmd/contrib
 	stretch-proposed/contrib
@@ -211,6 +217,9 @@ sections =
 	sid-debug/non-free
 	testing-rcmd/non-free
 	testing-nodocs/non-free
+	buster/non-free
+	buster-pu/non-free
+	buster-debug/non-free
 	stretch/non-free
 	stretch-rcmd/non-free
 	stretch-proposed/non-free
@@ -894,6 +903,119 @@ depends-sections = testing-nodocs/main testing-nodocs/contrib
 distro = testing
 arch = i386
 area = non-free
+
+
+[buster/main]
+precedence = 10
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+distro = buster
+arch = amd64
+area = main
+components = main
+reschedule-old-days = 60
+expire-old-days = 75
+
+[buster/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+depends-sections = buster/main buster/non-free
+distro = buster
+arch = amd64
+area = contrib
+reschedule-old-days = 60
+expire-old-days = 75
+
+[buster/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+depends-sections = buster/main buster/contrib
+distro = buster
+arch = amd64
+area = non-free
+reschedule-old-days = 60
+expire-old-days = 75
+
+
+[buster-pu/main]
+precedence = 20
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+depends-sections = buster/main
+distro = buster-proposed-updates
+arch = amd64
+area = main
+components = main
+
+[buster-pu/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+depends-sections = buster/main buster/non-free
+distro = buster-proposed-updates
+arch = amd64
+area = contrib
+
+[buster-pu/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+depends-sections = buster/main buster/contrib
+distro = buster-proposed-updates
+arch = amd64
+area = non-free
+
+
+[buster-debug/main]
+precedence = 40
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+depends-sections = buster/main
+distro = buster-debug
+arch = amd64
+area = main
+components = main
+reschedule-old-count = 0
+
+[buster-debug/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+depends-sections = buster/main buster/contrib buster/non-free
+distro = buster-debug
+arch = amd64
+area = contrib
+reschedule-old-count = 0
+
+[buster-debug/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+depends-sections = buster/main buster/contrib buster/non-free
+distro = buster-debug
+arch = amd64
+area = non-free
+reschedule-old-count = 0
 
 
 [stretch/main]
