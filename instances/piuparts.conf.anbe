@@ -88,6 +88,7 @@ sections =
 	testing-nodocs/main
 	stretch/main
 	stretch-rcmd/main
+	stretch-proposed/main
 	stretch-pu/main
 	stretch-debug/main
 	jessie/main
@@ -143,6 +144,7 @@ sections =
 	testing-nodocs/contrib
 	stretch/contrib
 	stretch-rcmd/contrib
+	stretch-proposed/contrib
 	stretch-pu/contrib
 	stretch-debug/contrib
 	jessie/contrib
@@ -198,6 +200,7 @@ sections =
 	testing-nodocs/non-free
 	stretch/non-free
 	stretch-rcmd/non-free
+	stretch-proposed/non-free
 	stretch-pu/non-free
 	stretch-debug/non-free
 	jessie/non-free
@@ -964,6 +967,44 @@ depends-sections = stretch/main stretch/contrib
 distro = stretch-proposed-updates
 arch = amd64
 area = non-free
+
+
+[stretch-proposed/main]
+precedence = 20
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+distro = stretch-proposed
+arch = amd64
+area = main
+components = main
+reschedule-old-count = 500
+reschedule-old-days = 25
+
+[stretch-proposed/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch-proposed/main stretch-proposed/non-free
+distro = stretch-proposed
+arch = amd64
+area = contrib
+reschedule-old-days = 25
+
+[stretch-proposed/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch-proposed/main stretch-proposed/contrib
+distro = stretch-proposed
+arch = amd64
+area = non-free
+reschedule-old-days = 25
 
 
 [stretch-debug/main]
