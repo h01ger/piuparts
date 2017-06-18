@@ -23,6 +23,9 @@ piuparts (0.78) UNRELEASED; urgency=medium
       the amount of changes needed on "moving targets" (like stable22sid)
       after a stable Debian release.
     - Set keyring for archived distros to debian-archive-removed-keys.gpg.
+    - Add new suites: jessie2Xstretch, jessie2Xstretch-rcmd, doing two-stage
+      upgrades (apt-get update && apt-get dist-upgrade) from jessie to stretch
+      (without and with --install-recommends).
     - Enable stretch2proposed.  (Closes: #864933)
     - Use --warn-on-debsums-errors for tests ending in stretch.
     - Rotate aliases for testing=buster and stable=stretch.
@@ -98,9 +101,6 @@ piuparts (0.78) UNRELEASED; urgency=medium
       - stable22sid, upgrading stretch -> buster -> sid
       - oldstable222sid, upgrading from jessie -> stretch -> buster -> sid
         (Closes: #859620)
-      - jessie2Xstretch-rcmd, doing two-stage upgrades (apt-get update &&
-        apt-get dist-upgrade) from jessie to stretch (with
-        --install-recommends)
     - Adjust precedences for most of the tested suites, set precedence to 100
       for suites which don't change anymore.
     - Set idle-sleep to 3600 seconds, the results pages are only updated twice

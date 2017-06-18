@@ -131,6 +131,7 @@ sections =
 	oldstable222sid
 	oldstable22testing
 	jessie2stretch
+	jessie2Xstretch
 	jessie2stretch-rcmd
 	jessie2Xstretch-rcmd
 	jessie2bpo2stretch
@@ -444,6 +445,19 @@ upgrade-test-distros = stretch stretch-proposed
 precedence = 4
 json-sections = none
 piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+distro = jessie
+upgrade-test-distros = jessie stretch
+
+
+[jessie2Xstretch]
+precedence = 4
+json-sections = none
+description = + Testing two-stage upgrades.
+piuparts-flags =
+	--upgrade-before-dist-upgrade
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
