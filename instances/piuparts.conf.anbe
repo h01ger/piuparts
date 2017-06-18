@@ -122,6 +122,7 @@ sections =
 	stable2testing2sid/main
 	stretch2proposed/main
 	stretch2buster/main
+	stretch2buster-rcmd_i386/main
 	jessie2proposed/main
 	jessie2stretch/main
 	jessie2stretch_i386/main
@@ -188,6 +189,7 @@ sections =
 	stable2testing2sid/contrib
 	stretch2proposed/contrib
 	stretch2buster/contrib
+	stretch2buster-rcmd_i386/contrib
 	jessie2proposed/contrib
 	jessie2stretch/contrib
 	jessie2stretch_i386/contrib
@@ -254,6 +256,7 @@ sections =
 	stable2testing2sid/non-free
 	stretch2proposed/non-free
 	stretch2buster/non-free
+	stretch2buster-rcmd_i386/non-free
 	jessie2proposed/non-free
 	jessie2stretch/non-free
 	jessie2stretch_i386/non-free
@@ -3537,6 +3540,52 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = stretch2buster/main stretch2buster/contrib
 arch = amd64
+area = non-free
+distro = stretch
+upgrade-test-distros = stretch buster
+
+
+[stretch2buster-rcmd_i386/main]
+precedence = 80
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = i386
+area = main
+components = main
+distro = stretch
+upgrade-test-distros = stretch buster
+
+[stretch2buster-rcmd_i386/contrib]
+precedence = 95
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = stretch2buster-rcmd_i386/main stretch2buster-rcmd_i386/non-free
+arch = i386
+area = contrib
+distro = stretch
+upgrade-test-distros = stretch buster
+
+[stretch2buster-rcmd_i386/non-free]
+precedence = 95
+description = + Testing with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = stretch2buster-rcmd_i386/main stretch2buster-rcmd_i386/contrib
+arch = i386
 area = non-free
 distro = stretch
 upgrade-test-distros = stretch buster
