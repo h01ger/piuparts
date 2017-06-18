@@ -120,6 +120,7 @@ sections =
 	stable22sid
 	buster
 	buster-rcmd
+	stretch2buster
 	stretch
 	stretch-rcmd
 	stretch-security
@@ -347,6 +348,17 @@ piuparts-flags =
 	%(flags-start-buster)s
 	%(flags-end-buster)s
 distro = buster
+
+
+[stretch2buster]
+precedence = 4
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+distro = stretch
+upgrade-test-distros = stretch buster
 
 
 [stretch]
