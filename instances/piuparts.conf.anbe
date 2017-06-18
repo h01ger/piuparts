@@ -93,6 +93,7 @@ sections =
 	stretch-updates/main
 	stretch-pu/main
 	stretch-debug/main
+	stretch-backports/main
 	jessie/main
 	jessie-rcmd/main
 	jessie-proposed/main
@@ -151,6 +152,7 @@ sections =
 	stretch-updates/contrib
 	stretch-pu/contrib
 	stretch-debug/contrib
+	stretch-backports/contrib
 	jessie/contrib
 	jessie-rcmd/contrib
 	jessie-proposed/contrib
@@ -209,6 +211,7 @@ sections =
 	stretch-updates/non-free
 	stretch-pu/non-free
 	stretch-debug/non-free
+	stretch-backports/non-free
 	jessie/non-free
 	jessie-rcmd/non-free
 	jessie-proposed/non-free
@@ -1119,6 +1122,41 @@ distro = stretch-debug
 arch = amd64
 area = non-free
 reschedule-old-count = 0
+
+
+[stretch-backports/main]
+precedence = 40
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main
+distro = stretch-backports
+arch = amd64
+area = main
+components = main
+
+[stretch-backports/contrib]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main stretch/contrib stretch/non-free stretch-backports/main stretch-backports/non-free
+distro = stretch-backports
+arch = amd64
+area = contrib
+
+[stretch-backports/non-free]
+precedence = 45
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-stretch)s
+depends-sections = stretch/main stretch/contrib stretch/non-free stretch-backports/main stretch-backports/contrib
+distro = stretch-backports
+arch = amd64
+area = non-free
 
 
 [jessie/main]
