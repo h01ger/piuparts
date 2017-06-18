@@ -272,6 +272,15 @@ distro = experimental
 depends-sections = sid
 
 
+[sid2experimental]
+precedence = 3
+piuparts-flags =
+	%(flags-default)s
+depends-sections = sid
+distro = experimental
+upgrade-test-distros = sid experimental
+
+
 [sid]
 precedence = 1
 piuparts-flags =
@@ -321,13 +330,35 @@ distro = stable
 upgrade-test-distros = stable sid
 
 
-[sid2experimental]
-precedence = 3
+[stable22sid]
+precedence = 4
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
-depends-sections = sid
-distro = experimental
-upgrade-test-distros = sid experimental
+	%(flags-start-stable)s
+distro = stable
+upgrade-test-distros = stable testing sid
+
+
+[oldstable222sid]
+precedence = 5
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-oldstable)s
+distro = oldstable
+upgrade-test-distros = oldstable stable testing sid
+
+
+[oldstable22testing]
+precedence = 6
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-oldstable)s
+	%(flags-end-testing)s
+distro = oldstable
+upgrade-test-distros = oldstable stable testing
 
 
 [buster]
@@ -578,37 +609,6 @@ piuparts-flags =
 	%(flags-end-jessie)s
 distro = jessie
 upgrade-test-distros = jessie jessie-proposed
-
-
-[stable22sid]
-precedence = 4
-json-sections = none
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-stable)s
-distro = stable
-upgrade-test-distros = stable testing sid
-
-
-[oldstable222sid]
-precedence = 5
-json-sections = none
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-oldstable)s
-distro = oldstable
-upgrade-test-distros = oldstable stable testing sid
-
-
-[oldstable22testing]
-precedence = 6
-json-sections = none
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-oldstable)s
-	%(flags-end-testing)s
-distro = oldstable
-upgrade-test-distros = oldstable stable testing
 
 
 [wheezy2jessie]
