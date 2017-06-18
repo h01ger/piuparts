@@ -118,6 +118,7 @@ sections =
 	testing2sid
 	stable2sid
 	stable22sid
+	buster
 	stretch
 	stretch-rcmd
 	stretch-security
@@ -323,6 +324,16 @@ piuparts-flags =
 depends-sections = sid
 distro = experimental
 upgrade-test-distros = sid experimental
+
+
+[buster]
+precedence = 4
+piuparts-flags =
+	--scriptsdir /etc/piuparts/scripts-log-alternatives
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+distro = buster
 
 
 [stretch]
