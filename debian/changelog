@@ -22,6 +22,7 @@ piuparts (0.78) UNRELEASED; urgency=medium
       the amount of changes needed on "moving targets" (like stable22sid)
       after a stable Debian release.
     - Set keyring for archived distros to debian-archive-removed-keys.gpg.
+    - Enable stretch2proposed.  (Closes: #864933)
   * piuparts.conf.anbe: Add some more example sections.
   * piupartslib/packagesdb.py:
     - Add new state "outdated" to ignore packages if a dependency distro

@@ -111,7 +111,7 @@ sections =
 	stretch-security
 	stretch-pu
 #	stretch-proposed
-#	stretch2proposed
+	stretch2proposed
 	stable22sid
 	jessie2stretch
 	jessie2stretch-rcmd
