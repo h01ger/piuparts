@@ -84,6 +84,8 @@ piuparts (0.78) UNRELEASED; urgency=medium
     - Report the issues found in each logfile.
     - Recognize more problems caused by a full filesystem.
     - Recognize more failures when connecting to databases.
+  * Add known_problems/trigger_cycle_error.conf to report trigger cycles and
+    other trigger problems.
   * Add bug templates for failing to upgrade from stretch to buster.
 
   [ Holger Levsen ]
