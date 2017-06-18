@@ -24,12 +24,20 @@ flags-leftovers =
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
 # aliases for the definitions below
-flags-start-testing = %(flags-start-stretch)s
-flags-end-testing = %(flags-end-stretch)s
-flags-start-stable = %(flags-start-jessie)s
-flags-end-stable = %(flags-end-jessie)s
-flags-start-oldstable = %(flags-start-wheezy)s
-flags-end-oldstable = %(flags-end-wheezy)s
+flags-start-testing = %(flags-start-buster)s
+flags-end-testing = %(flags-end-buster)s
+flags-start-stable = %(flags-start-stretch)s
+flags-end-stable = %(flags-end-stretch)s
+flags-start-oldstable = %(flags-start-jessie)s
+flags-end-oldstable = %(flags-end-jessie)s
+
+# common flags for tests starting in buster
+flags-start-buster =
+# no flags needed
+
+# common flags for tests ending in buster
+flags-end-buster =
+# no flags needed
 
 # common flags for tests starting in stretch
 flags-start-stretch =
@@ -95,6 +103,7 @@ flags-start-lenny =
 [global]
 basetgz-sections =
 	tarball/sid
+	tarball/buster
 	tarball/stretch
 	tarball/jessie
 	tarball/wheezy
@@ -108,13 +117,15 @@ sections =
 	sid-nodoc
 	testing2sid
 	stable2sid
+	stable22sid
 	stretch
 	stretch-rcmd
 	stretch-security
 	stretch-pu
 #	stretch-proposed
 	stretch2proposed
-	stable22sid
+	oldstable222sid
+	oldstable22testing
 	jessie2stretch
 	jessie2stretch-rcmd
 	jessie2Xstretch-rcmd
@@ -126,8 +137,6 @@ sections =
 	jessie-pu
 #	jessie-proposed
 	jessie2proposed
-	oldstable222sid
-	oldstable22testing
 	wheezy2jessie
 	wheezy2jessie-rcmd
 	wheezy2bpo2jessie
@@ -190,14 +199,24 @@ upgrade-test-distros = sid
 max-tgz-age = 259200
 
 
+[tarball/buster]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+distro = None
+upgrade-test-distros = buster
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
+
+
 [tarball/stretch]
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 distro = None
 upgrade-test-distros = stretch
-# 1 week (60*60*24*7)
-max-tgz-age = 604800
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
 
 
 [tarball/jessie]

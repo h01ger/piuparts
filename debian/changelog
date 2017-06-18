@@ -25,6 +25,7 @@ piuparts (0.78) UNRELEASED; urgency=medium
     - Set keyring for archived distros to debian-archive-removed-keys.gpg.
     - Enable stretch2proposed.  (Closes: #864933)
     - Use --warn-on-debsums-errors for tests ending in stretch.
+    - Rotate aliases for testing=buster and stable=stretch.
   * piuparts.conf.anbe: Add some more example sections.
   * piupartslib/packagesdb.py:
     - Add new state "outdated" to ignore packages if a dependency distro
@@ -91,10 +92,10 @@ piuparts (0.78) UNRELEASED; urgency=medium
     - dynamically report detected issues.
   * instances/piuparts.conf-template.pejacevic:
     - Add new suites to be tested:
-      - stable2sid, upgrading jessie -> sid (skipping testing/stretch) to find
+      - stable2sid, upgrading stretch -> sid (skipping testing/buster) to find
         possible upgrade problems before a package migrates to testing
-      - stable22sid, upgrading jessie -> stretch -> sid
-      - oldstable222sid, upgrading from wheezy -> jessie -> stretch -> sid
+      - stable22sid, upgrading stretch -> buster -> sid
+      - oldstable222sid, upgrading from jessie -> stretch -> buster -> sid
         (Closes: #859620)
       - jessie2Xstretch-rcmd, doing two-stage upgrades (apt-get update &&
         apt-get dist-upgrade) from jessie to stretch (with
