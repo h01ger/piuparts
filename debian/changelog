@@ -24,6 +24,7 @@ piuparts (0.78) UNRELEASED; urgency=medium
       after a stable Debian release.
     - Set keyring for archived distros to debian-archive-removed-keys.gpg.
     - Enable stretch2proposed.  (Closes: #864933)
+    - Use --warn-on-debsums-errors for tests ending in stretch.
   * piuparts.conf.anbe: Add some more example sections.
   * piupartslib/packagesdb.py:
     - Add new state "outdated" to ignore packages if a dependency distro

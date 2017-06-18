@@ -27,6 +27,7 @@ flags-start-stable =
 
 flags-start-stretch =
 flags-end-stretch =
+	--warn-on-debsums-errors
 
 flags-start-jessie =
 flags-end-jessie =

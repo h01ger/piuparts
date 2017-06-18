@@ -37,7 +37,9 @@ flags-start-stretch =
 
 # common flags for tests ending in stretch
 flags-end-stretch =
-# no flags needed
+# debsums failures won't be fixed in stretch, mostly related to
+# oldstyle packaging of aspell dictionaries
+	--warn-on-debsums-errors
 
 # common flags for tests starting in jessie
 flags-start-jessie =
