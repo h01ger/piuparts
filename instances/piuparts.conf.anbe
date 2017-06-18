@@ -18,12 +18,15 @@ flags-leftovers =
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
 flags-start-testing =
-	%(flags-start-stretch)s
+	%(flags-start-buster)s
 flags-end-testing =
-	%(flags-end-stretch)s
+	%(flags-end-buster)s
 
 flags-start-stable =
-	%(flags-start-jessie)s
+	%(flags-start-stretch)s
+
+flags-start-buster =
+flags-end-buster =
 
 flags-start-stretch =
 flags-end-stretch =
@@ -65,6 +68,8 @@ flags-end-lenny =
 basetgz-sections =
 	tarball/sid/amd64
 	tarball/sid/i386
+	tarball/buster/amd64
+	tarball/buster/i386
 	tarball/stretch/amd64
 	tarball/stretch/i386
 	tarball/jessie/amd64
@@ -368,6 +373,32 @@ components = main
 max-tgz-age = 172800
 
 
+[tarball/buster/amd64]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+distro = None
+upgrade-test-distros = buster
+arch = amd64
+area = main
+components = main
+# 60*60*24*7
+max-tgz-age = 604800
+
+
+[tarball/buster/i386]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+distro = None
+upgrade-test-distros = buster
+arch = i386
+area = main
+components = main
+# 60*60*24*7
+max-tgz-age = 604800
+
+
 [tarball/stretch/amd64]
 piuparts-flags =
 	%(flags-default)s
@@ -377,8 +408,8 @@ upgrade-test-distros = stretch
 arch = amd64
 area = main
 components = main
-# 60*60*24*7
-max-tgz-age = 604800
+# 60*60*24*30
+max-tgz-age = 2592000
 
 
 [tarball/stretch/i386]
@@ -390,8 +421,8 @@ upgrade-test-distros = stretch
 arch = i386
 area = main
 components = main
-# 60*60*24*7
-max-tgz-age = 604800
+# 60*60*24*30
+max-tgz-age = 2592000
 
 
 [tarball/jessie/amd64]
@@ -1963,7 +1994,7 @@ arch = amd64
 area = main
 components = main
 distro = lenny
-upgrade-test-distros = lenny squeeze wheezy jessie testing
+upgrade-test-distros = lenny squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 expire-fail-days = 20
 reschedule-fail-days = 12
@@ -1978,7 +2009,7 @@ depends-sections = lenny222testing/main lenny222testing/non-free
 arch = amd64
 area = contrib
 distro = lenny
-upgrade-test-distros = lenny squeeze wheezy jessie testing
+upgrade-test-distros = lenny squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 
 [lenny222testing/non-free]
@@ -1991,7 +2022,7 @@ depends-sections = lenny222testing/main lenny222testing/contrib
 arch = amd64
 area = non-free
 distro = lenny
-upgrade-test-distros = lenny squeeze wheezy jessie testing
+upgrade-test-distros = lenny squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 
 
@@ -2005,7 +2036,7 @@ arch = i386
 area = main
 components = main
 distro = lenny
-upgrade-test-distros = lenny squeeze wheezy jessie testing
+upgrade-test-distros = lenny squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 expire-fail-days = 20
 reschedule-fail-days = 12
@@ -2020,7 +2051,7 @@ depends-sections = lenny222testing_i386/main lenny222testing_i386/non-free
 arch = i386
 area = contrib
 distro = lenny
-upgrade-test-distros = lenny squeeze wheezy jessie testing
+upgrade-test-distros = lenny squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 
 [lenny222testing_i386/non-free]
@@ -2033,7 +2064,7 @@ depends-sections = lenny222testing_i386/main lenny222testing_i386/contrib
 arch = i386
 area = non-free
 distro = lenny
-upgrade-test-distros = lenny squeeze wheezy jessie testing
+upgrade-test-distros = lenny squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 
 
@@ -2383,7 +2414,7 @@ arch = amd64
 area = main
 components = main
 distro = squeeze
-upgrade-test-distros = squeeze wheezy jessie testing
+upgrade-test-distros = squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 
 [squeeze222testing/contrib]
@@ -2396,7 +2427,7 @@ depends-sections = squeeze222testing/main squeeze222testing/non-free
 arch = amd64
 area = contrib
 distro = squeeze
-upgrade-test-distros = squeeze wheezy jessie testing
+upgrade-test-distros = squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 
 [squeeze222testing/non-free]
@@ -2409,7 +2440,7 @@ depends-sections = squeeze222testing/main squeeze222testing/contrib
 arch = amd64
 area = non-free
 distro = squeeze
-upgrade-test-distros = squeeze wheezy jessie testing
+upgrade-test-distros = squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 
 
@@ -2423,7 +2454,7 @@ arch = i386
 area = main
 components = main
 distro = squeeze
-upgrade-test-distros = squeeze wheezy jessie testing
+upgrade-test-distros = squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 
 [squeeze222testing_i386/contrib]
@@ -2436,7 +2467,7 @@ depends-sections = squeeze222testing_i386/main squeeze222testing_i386/non-free
 arch = i386
 area = contrib
 distro = squeeze
-upgrade-test-distros = squeeze wheezy jessie testing
+upgrade-test-distros = squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 
 [squeeze222testing_i386/non-free]
@@ -2449,7 +2480,7 @@ depends-sections = squeeze222testing_i386/main squeeze222testing_i386/contrib
 arch = i386
 area = non-free
 distro = squeeze
-upgrade-test-distros = squeeze wheezy jessie testing
+upgrade-test-distros = squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 
 
@@ -2858,7 +2889,7 @@ arch = amd64
 area = main
 components = main
 distro = wheezy
-upgrade-test-distros = wheezy jessie testing
+upgrade-test-distros = wheezy jessie stretch testing
 reschedule-old-count = 100
 
 [wheezy222testing/contrib]
@@ -2871,7 +2902,7 @@ depends-sections = wheezy222testing/main wheezy222testing/non-free
 arch = amd64
 area = contrib
 distro = wheezy
-upgrade-test-distros = wheezy jessie testing
+upgrade-test-distros = wheezy jessie stretch testing
 reschedule-old-count = 100
 
 [wheezy222testing/non-free]
@@ -2884,7 +2915,7 @@ depends-sections = wheezy222testing/main wheezy222testing/contrib
 arch = amd64
 area = non-free
 distro = wheezy
-upgrade-test-distros = wheezy jessie testing
+upgrade-test-distros = wheezy jessie stretch testing
 reschedule-old-count = 100
 
 
@@ -2898,7 +2929,7 @@ arch = i386
 area = main
 components = main
 distro = wheezy
-upgrade-test-distros = wheezy jessie testing
+upgrade-test-distros = wheezy jessie stretch testing
 reschedule-old-count = 100
 
 [wheezy222testing_i386/contrib]
@@ -2911,7 +2942,7 @@ depends-sections = wheezy222testing_i386/main wheezy222testing_i386/non-free
 arch = i386
 area = contrib
 distro = wheezy
-upgrade-test-distros = wheezy jessie testing
+upgrade-test-distros = wheezy jessie stretch testing
 reschedule-old-count = 100
 
 [wheezy222testing_i386/non-free]
@@ -2924,7 +2955,7 @@ depends-sections = wheezy222testing_i386/main wheezy222testing_i386/contrib
 arch = i386
 area = non-free
 distro = wheezy
-upgrade-test-distros = wheezy jessie testing
+upgrade-test-distros = wheezy jessie stretch testing
 reschedule-old-count = 100
 
 
