@@ -556,6 +556,11 @@ section, too, and will serve as defaults for all other sections
  is "none", the summary will not be created. The "json-sections"
  name "overall" is reserved.
 
+* "exclude-known-problems" (global, section) can be set to a list
+ of known_problems conffile names (including the .conf suffix) that
+ should not be used for this section. Useful if a known problem
+ triggers on (nearly) all logfiles.
+
 Some of the configuration items are not required, but it is best
 to set them all to be sure what the configuration actually is.
 

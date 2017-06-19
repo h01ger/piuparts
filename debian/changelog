@@ -32,6 +32,9 @@ piuparts (0.78) UNRELEASED; urgency=medium
     - Add new suites: buster, buster-rcmd, stretch2buster, stretch2buster-rcmd
     - Add new suites: stretch2bpo, stretch2bpo2buster for testing
       stretch-backports.
+    - New (per-section) conffile setting: 'exclude-known-problems' can be set
+      to a list of known problem iconffile names that should *not* be used for
+      this section.
   * piuparts.conf.anbe: Add some more example sections.
   * distros.conf: Add support for buster-debug, buster-proposed-updates.
   * piupartslib/packagesdb.py:
@@ -84,6 +87,8 @@ piuparts (0.78) UNRELEASED; urgency=medium
     - Report the issues found in each logfile.
     - Recognize more problems caused by a full filesystem.
     - Recognize more failures when connecting to databases.
+  * master-bin/detect_well_known_errors: Ignore known_problems conffiles
+    listed in 'exclude-known-problems' in piuparts.conf.
   * Add known_problems/trigger_cycle_error.conf to report trigger cycles and
     other trigger problems.
   * Add bug templates for failing to upgrade from stretch to buster.

@@ -40,15 +40,16 @@ class WKE_Config(piupartslib.conf.Config):
 
     """Configuration parameters for Well Known Errors"""
 
-    def __init__(self):
-        self.section = 'global'
-
-        piupartslib.conf.Config.__init__(self, self.section,
+    def __init__(self, section="global", defaults_section=None):
+        self.section = section
+        piupartslib.conf.Config.__init__(self, section,
                                          {
                                          "sections": "report",
                                          "master-directory": ".",
                                          "known-problem-directory": "@sharedir@/piuparts/known_problems",
-                                         }, "")
+                                         "exclude-known-problems": None,
+                                         },
+                                         defaults_section=defaults_section)
 
 
 def setup_logging(log_level):
@@ -141,6 +142,12 @@ def process_section(section, config, problem_list,
     clean_cache_files(logdict, bugdict, skipnewer=True)
 
     kprdict = get_file_dict(workdirs, KPR_EXT)
+
+    section_config = WKE_Config(section=section, defaults_section="global")
+    section_config.read(CONFIG_FILE)
+    if section_config['exclude-known-problems']:
+        excluded = section_config['exclude-known-problems'].split()
+        problem_list = [p for p in problem_list if p.name not in excluded]
 
     add_cnt = make_kprs(logdict, kprdict, problem_list)
 
