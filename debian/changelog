@@ -105,6 +105,31 @@ piuparts (0.78) UNRELEASED; urgency=medium
 
  -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
 
+piuparts (0.77) unstable; urgency=medium
+
+  [ Andreas Beckmann ]
+  * distros.conf:
+    - Add aliases for oldstable and oldoldstable.
+    - Update aliases for stretch being released as stable.
+  * piuparts.py:
+    - Add to ignored_files:
+      + /etc/rc.local
+      + /etc/X11/Xwrapper.config  (Closes: #859929)
+      + /var/lib/apt/daily_lock
+  * piuparts-analyze.py:
+    - Do not ignore Ctrl-C.
+  * scripts/post_distupgrade_base_cleanup: Remove (transitional) sysvinit from
+    stretch.  (Closes: #860819)
+  * scripts/pre_distupgrade_zz_database-server: Do not migrate manually from
+    mysql-server to default-mysql-server (aka mariadb-server), there is now a
+    transitional mysql-server package in stretch.
+
+  [ Holger Levsen ]
+  * piuparts-report.py:
+    - update navigation to point to piuparts.conf-template.pejacevic.
+
+ -- Holger Levsen <holger@debian.org>  Sat, 03 Jun 2017 23:08:19 +0200
+
 piuparts (0.76) unstable; urgency=medium
 
   [ Andreas Beckmann ]
