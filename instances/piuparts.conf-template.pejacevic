@@ -520,6 +520,7 @@ piuparts-flags =
 	%(flags-end-stretch)s
 distro = jessie
 upgrade-test-distros = jessie stretch
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
 [jessie2stretch-rcmd]
@@ -547,6 +548,7 @@ piuparts-flags =
 	%(flags-end-stretch)s
 distro = jessie
 upgrade-test-distros = jessie stretch
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
 [jessie2bpo2stretch]
