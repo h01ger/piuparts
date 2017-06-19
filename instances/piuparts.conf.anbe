@@ -129,6 +129,7 @@ sections =
 	jessie2stretch_i386/main
 	jessie2stretch-rcmd/main
 	jessie2stretch-rcmd_i386/main
+	jessie3stretch-rcmd_i386/main
 	jessie2stretch-iri/main
 	jessie2bpo2stretch/main
 	wheezy2proposed/main
@@ -197,6 +198,7 @@ sections =
 	jessie2stretch_i386/contrib
 	jessie2stretch-rcmd/contrib
 	jessie2stretch-rcmd_i386/contrib
+	jessie3stretch-rcmd_i386/contrib
 	jessie2stretch-iri/contrib
 	jessie2bpo2stretch/contrib
 	wheezy2proposed/contrib
@@ -265,6 +267,7 @@ sections =
 	jessie2stretch_i386/non-free
 	jessie2stretch-rcmd/non-free
 	jessie2stretch-rcmd_i386/non-free
+	jessie3stretch-rcmd_i386/non-free
 	jessie2stretch-iri/non-free
 	jessie2bpo2stretch/non-free
 	wheezy2proposed/non-free
@@ -3304,6 +3307,58 @@ arch = i386
 area = non-free
 distro = jessie
 upgrade-test-distros = jessie stretch
+
+
+[jessie3stretch-rcmd_i386/main]
+precedence = 80
+description = + Testing two-stage upgrades with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	--upgrade-before-dist-upgrade
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = i386
+area = main
+components = main
+distro = jessie
+upgrade-test-distros = jessie stretch
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
+
+[jessie3stretch-rcmd_i386/contrib]
+precedence = 95
+description = + Testing two-stage upgrades with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	--upgrade-before-dist-upgrade
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = jessie3stretch-rcmd_i386/main jessie3stretch-rcmd_i386/non-free
+arch = i386
+area = contrib
+distro = jessie
+upgrade-test-distros = jessie stretch
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
+
+[jessie3stretch-rcmd_i386/non-free]
+precedence = 95
+description = + Testing two-stage upgrades with --install-recommends.
+piuparts-flags =
+	--install-recommends
+	--upgrade-before-dist-upgrade
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = jessie3stretch-rcmd_i386/main jessie3stretch-rcmd_i386/contrib
+arch = i386
+area = non-free
+distro = jessie
+upgrade-test-distros = jessie stretch
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
 [jessie2stretch-iri/main]
