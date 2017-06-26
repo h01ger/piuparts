@@ -53,6 +53,17 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		;;
 esac
 
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ]; then
+	case ${PIUPARTS_OBJECTS%%=*} in
+		bacula-director-mysql|\
+		bacula-director-mysql-dbg)
+			# (new) transitively recommended package mariadb-server-x.y gets
+			# configured (and the server started) too late (after ourselves)
+			RETRY="retry_configure_pending"
+			;;
+	esac
+fi
+
 for pkg in $CANDIDATES
 do
 	if is_installed "$pkg"
