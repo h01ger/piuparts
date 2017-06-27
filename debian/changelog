@@ -33,6 +33,7 @@ piuparts (0.78) UNRELEASED; urgency=medium
     - Add new suites: stretch2bpo, stretch2bpo2buster for testing
       stretch-backports.
   * piuparts.conf.anbe: Add some more example sections.
+  * distros.conf: Add support for buster-debug, buster-proposed-updates.
   * piupartslib/packagesdb.py:
     - Add new state "outdated" to ignore packages if a dependency distro
       already has a newer version.  (Closes: #856846)
