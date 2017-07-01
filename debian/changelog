@@ -84,6 +84,7 @@ piuparts (0.78) UNRELEASED; urgency=medium
     - Report the issues found in each logfile.
     - Recognize more problems caused by a full filesystem.
     - Recognize more failures when connecting to databases.
+  * Add bug templates for failing to upgrade from stretch to buster.
 
   [ Holger Levsen ]
   * update TODO. Work on buster has begun. \o/
