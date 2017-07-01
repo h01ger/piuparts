@@ -312,7 +312,7 @@ class Master(Protocol):
         if self._binary_db._recycle_mode:
             stats += "(recycle) "
         total = 0
-        for state in self._binary_db.get_states():
+        for state in self._binary_db.get_active_states():
             count = len(self._binary_db.get_pkg_names_in_state(state))
             total += count
             stats += "%s=%d " % (state, count)
