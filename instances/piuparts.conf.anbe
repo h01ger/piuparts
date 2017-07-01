@@ -129,6 +129,7 @@ sections =
 	jessie2stretch/main
 	jessie3stretch/main
 	jessie2stretch_i386/main
+	jessie3stretch_i386/main
 	jessie2stretch-rcmd/main
 	jessie3stretch-rcmd/main
 	jessie2stretch-rcmd_i386/main
@@ -201,6 +202,7 @@ sections =
 	jessie2stretch/contrib
 	jessie3stretch/contrib
 	jessie2stretch_i386/contrib
+	jessie3stretch_i386/contrib
 	jessie2stretch-rcmd/contrib
 	jessie3stretch-rcmd/contrib
 	jessie2stretch-rcmd_i386/contrib
@@ -273,6 +275,7 @@ sections =
 	jessie2stretch/non-free
 	jessie3stretch/non-free
 	jessie2stretch_i386/non-free
+	jessie3stretch_i386/non-free
 	jessie2stretch-rcmd/non-free
 	jessie3stretch-rcmd/non-free
 	jessie2stretch-rcmd_i386/non-free
@@ -3273,6 +3276,55 @@ arch = i386
 area = non-free
 distro = jessie
 upgrade-test-distros = jessie stretch
+
+
+[jessie3stretch_i386/main]
+precedence = 80
+description = + Testing two-stage upgrades.
+piuparts-flags =
+	--upgrade-before-dist-upgrade
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = i386
+area = main
+components = main
+distro = jessie
+upgrade-test-distros = jessie stretch
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
+
+[jessie3stretch_i386/contrib]
+precedence = 95
+description = + Testing two-stage upgrades.
+piuparts-flags =
+	--upgrade-before-dist-upgrade
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = jessie3stretch_i386/main jessie3stretch_i386/non-free
+arch = i386
+area = contrib
+distro = jessie
+upgrade-test-distros = jessie stretch
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
+
+[jessie3stretch_i386/non-free]
+precedence = 95
+description = + Testing two-stage upgrades.
+piuparts-flags =
+	--upgrade-before-dist-upgrade
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = jessie3stretch_i386/main jessie3stretch_i386/contrib
+arch = i386
+area = non-free
+distro = jessie
+upgrade-test-distros = jessie stretch
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
 [jessie2stretch-rcmd/main]
