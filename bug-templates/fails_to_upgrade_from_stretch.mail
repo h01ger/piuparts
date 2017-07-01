@@ -1,0 +1,19 @@
+To: submit@bugs.debian.org
+Subject: fails to upgrade from 'stretch':
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package fails to upgrade from
+'stretch'.
+It installed fine in 'stretch', then the upgrade to 'buster' fails.
+
+From the attached log (scroll to the bottom...):
+
+
+cheers,
