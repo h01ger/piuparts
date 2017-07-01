@@ -56,7 +56,8 @@ case ${PIUPARTS_OBJECTS%%=*} in
 esac
 
 case "$PIUPARTS_DISTRIBUTION" in
-	stretch*|sid)
+
+	stretch*|buster*|sid)
 		case ${PIUPARTS_OBJECTS%%=*} in
 			init|\
 			education-thin-client|\
