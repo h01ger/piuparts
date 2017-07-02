@@ -81,3 +81,16 @@ if [ "$PIUPARTS_DISTRIBUTION" = "stretch" ]; then
 	done
 
 fi
+
+if [ "$PIUPARTS_DISTRIBUTION" = "buster" ]; then
+
+	# dpkg does not properly clean up directories getting empty and no longer shipped
+	for dir in /etc/dbus-1/system.d /etc/dbus-1
+	do
+		if [ -d "$dir" ]; then
+			rmdir --ignore-fail-on-non-empty "$dir"
+			test -d "$dir" || echo "removed empty directory '$dir'"
+		fi
+	done
+
+fi

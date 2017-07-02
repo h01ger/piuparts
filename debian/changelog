@@ -71,6 +71,8 @@ piuparts (0.78) UNRELEASED; urgency=medium
   * scripts/post_{setup,distupgrade}_zz_backports: Avoid downgrading
     systemd/udev from jessie-backports to jessie during removal phase.
     (Closes: #856845)
+  * scripts/post_distupgrade_exceptions: Remove empty unowned /etc/dbus-1/,
+    /etc/dbus-1/system.d/ after upgrading to buster.
   * scripts-broken-symlinks/post_install_extras_unbreak_symlinks: New script
     for "fixing" some broken symlinks (e.g. by installing selected suggested
     packages) in tests using --fail-on-broken-symlinks.
