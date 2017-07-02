@@ -85,6 +85,8 @@ piuparts (0.78) UNRELEASED; urgency=medium
   * master-bin/detect_network_issues:
     - Report the issues found in each logfile.
     - Detect alternate wording of gpg verification error.
+    - Detect master and slave disagreement on the "current" version of a
+      package due to using different mirrors and ongoing mirror push.
   * master-bin/detect_piuparts_issues:
     - Report the issues found in each logfile.
     - Recognize more problems caused by a full filesystem.
