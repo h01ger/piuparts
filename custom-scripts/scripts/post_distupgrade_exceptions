@@ -93,4 +93,9 @@ if [ "$PIUPARTS_DISTRIBUTION" = "buster" ]; then
 		fi
 	done
 
+	# policykit-1 in buster changes the permissions 0755 -> 0700
+	if [ -d /var/lib/polkit-1 ]; then
+		chmod -c go-rx /var/lib/polkit-1
+	fi
+
 fi
