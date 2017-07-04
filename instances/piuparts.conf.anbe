@@ -114,7 +114,6 @@ sections =
 	wheezy-rcmd/main
 	wheezy-proposed/main
 	wheezy-security/main
-	wheezy-updates/main
 	wheezy-backports/main
 	sid2experimental/main
 	testing2sid/main
@@ -187,7 +186,6 @@ sections =
 	wheezy-rcmd/contrib
 	wheezy-proposed/contrib
 #	wheezy-security/contrib
-#	wheezy-updates/contrib
 	wheezy-backports/contrib
 	sid2experimental/contrib
 	testing2sid/contrib
@@ -260,7 +258,6 @@ sections =
 	wheezy-rcmd/non-free
 	wheezy-proposed/non-free
 #	wheezy-security/non-free
-#	wheezy-updates/non-free
 	wheezy-backports/non-free
 	sid2experimental/non-free
 	testing2sid/non-free
@@ -1775,41 +1772,6 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = wheezy/main
 distro = wheezy/updates
-arch = amd64
-area = non-free
-
-
-[wheezy-updates/main]
-precedence = 20
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-wheezy)s
-	%(flags-end-wheezy)s
-depends-sections = wheezy/main
-distro = wheezy-updates
-arch = amd64
-area = main
-components = main
-
-[wheezy-updates/contrib]
-precedence = 45
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-wheezy)s
-	%(flags-end-wheezy)s
-depends-sections = wheezy/main
-distro = wheezy-updates
-arch = amd64
-area = contrib
-
-[wheezy-updates/non-free]
-precedence = 45
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-wheezy)s
-	%(flags-end-wheezy)s
-depends-sections = wheezy/main
-distro = wheezy-updates
 arch = amd64
 area = non-free
 
