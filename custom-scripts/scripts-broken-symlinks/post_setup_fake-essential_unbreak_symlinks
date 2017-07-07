@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	TARBALL)
+		# skip while creating the tarball
+		exit 0
+		;;
+	stone)
+		# openssl may be used during purge to compute the hash for a
+		# certificate, otherwise files in /etc/ssl/certs can't be removed.
+		echo "*** Adding fake essential packages ***"
+		apt-get install -yf openssl
+		;;
+esac

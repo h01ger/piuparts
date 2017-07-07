@@ -49,6 +49,11 @@ install_extra_package python-kde4-dev		python3-pykde4
 # libreoffice-dev: Suggests: libreoffice-dev-doc
 install_extra_package libreoffice-dev-common	libreoffice-dev libreoffice-dev-doc
 
+# /usr/lib/android-sdk/tools/proguard/lib/proguardgui.jar -> ../../../../../share/java/proguardgui.jar
+# /usr/lib/android-sdk/tools/proguard/bin/proguardgui -> ../../../../../bin/proguardgui
+# #856410
+install_extra_package android-sdk		proguard-gui
+
 # /usr/lib/codeaster/outils/xmgrace -> ../../../bin/xmgrace
 # /usr/lib/codeaster/outils/eficasQt -> ../../../bin/eficasQt
 # /usr/lib/codeaster/outils/eficas -> ../../../bin/eficas
@@ -59,6 +64,9 @@ install_extra_package code-aster-gui		eficas gmsh grace
 # /usr/lib/doublecmd/doc -> ../../share/doublecmd/doc
 # doublecmd-common: Suggests: doublecmd-help-en | doublecmd-help
 install_extra_package doublecmd-common		doublecmd-help-en
+
+# /usr/lib/firefox/dictionaries -> ../../share/hunspell
+install_extra_package firefox			hunspell-en-us
 
 # /usr/lib/python2.7/dist-packages/wx.pth -> ../../wx/python/wx.pth
 # python-wxversion, alternative set up by python-wxgtk3.0, #857757
@@ -71,6 +79,11 @@ install_extra_package wml			freetable weblint-perl
 
 # /usr/lib/x86_64-linux-gnu/dbus-1.0/debug-build/share/dbus-1/system.d -> ../../../../../../share/dbus-1/system.d
 install_extra_package dbus-1-dbg		systemd
+
+# /usr/lib/x86_64-linux-gnu/firebird/3.0/fbtrace.conf -> /etc/firebird/3.0/fbtrace.conf
+# /usr/lib/x86_64-linux-gnu/firebird/3.0/databases.conf -> /etc/firebird/3.0/databases.conf
+# firebird3.0-server-core: Suggests: firebird3.0-server
+install_extra_package firebird3.0-server-core	firebird3.0-server
 
 # /usr/lib/x86_64-linux-gnu/qt-default/qtchooser/default.conf -> ../../../../share/qtchooser/qt4-x86_64-linux-gnu.conf
 install_extra_package libqtcore4		qtchooser
@@ -146,6 +159,11 @@ install_extra_package python3-ly		python-ly-doc
 # python-statsmodels-doc: Suggests: python-statsmodels
 install_extra_package python-statsmodels-doc	python-statsmodels
 
+# /usr/share/doc/scribus/COPYING -> copyright
+# /usr/share/scribus/dicts -> ../hyphen
+# scribus-data: Recommends: scribus (= ${binary:Version})
+install_extra_package scribus-data		scribus hyphen-en-us
+
 # /usr/share/eclipse/dropins/eclox/eclipse/plugins/org.gna.eclox.help_0.10.1/html/doxygen-doc -> ../../../../../../../doc/doxygen/html
 # doxygen: Suggests: doxygen-doc
 install_extra_package eclipse-eclox		doxygen-doc
@@ -160,6 +178,9 @@ install_extra_package libmorph			gtkmorph xmorph
 
 # /usr/share/icons/default.kde4 -> oxygen
 install_extra_package kde-runtime-data		oxygen-icon-theme
+
+# /usr/share/lyx/thes -> ../mythes
+install_extra_package lyx-common		mythes-en-us
 
 # /usr/share/man/man3/libwildmagic-common.3.gz -> libwildmagic.3.gz
 # libwildmagic-common: Suggests: libwildmagic5
@@ -224,6 +245,26 @@ create_extra_file()
 	fi
 }
 
+# if package $1 is installed, $2... should exist
+create_extra_dir()
+{
+	local p d
+	p=$1
+	shift
+	if is_installed "$p" ; then
+		for d in "$@"
+		do
+			if [ ! -e $d ]; then
+				echo "Creating empty directory $d"
+				mkdir -p $d
+			fi
+		done
+	fi
+}
+
+# /etc/lprng/printcap -> ../printcap
+create_extra_file lprng				/etc/printcap
+
 # /etc/openvswitch/.conf.db.~lock~ -> /var/lib/openvswitch/.conf.db.~lock~
 # /etc/openvswitch/conf.db -> /var/lib/openvswitch/conf.db
 create_extra_file openvswitch-switch		/var/lib/openvswitch/.conf.db.~lock~ /var/lib/openvswitch/conf.db
@@ -236,3 +277,19 @@ create_extra_file vdr				/var/cache/vdr/commands.conf /var/cache/vdr/reccmds.con
 
 # /etc/vdr/plugins/xineliboutput/config -> /var/lib/vdr/plugins/xineliboutput/config
 create_extra_file vdr-plugin-xineliboutput	/var/lib/vdr/plugins/xineliboutput/config
+
+# /usr/sbin/ganeti-masterd -> ../share/ganeti/default/ganeti-masterd
+# #857289
+create_extra_file ganeti			/usr/share/ganeti/default/ganeti-masterd
+
+# /usr/share/man/man1/rust-gdb.1.gz -> gdb.1.gz
+# gdb-doc is in non-free
+create_extra_file rust-gdb			/usr/share/man/man1/gdb.1.gz
+
+# /usr/share/otrs/Kernel/Config/GenericAgent.pm -> /etc/otrs/Kernel/Config/GenericAgent.pm
+# /var/lib/otrs/run -> /run/otrs
+create_extra_file otrs2				/etc/otrs/Kernel/Config/GenericAgent.pm
+create_extra_dir otrs2				/run/otrs
+
+# /var/cache/vdr/dvd -> /dev/dvd
+create_extra_file vdr-plugin-dvd		/dev/dvd
