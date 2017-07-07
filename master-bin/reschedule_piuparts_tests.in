@@ -24,7 +24,7 @@ get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
 
 
-TESTING="stretch"
+TESTING="buster"
 
 dryrun=""
 current=""
