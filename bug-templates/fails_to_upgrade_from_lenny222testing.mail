@@ -1,0 +1,24 @@
+To: submit@bugs.debian.org
+Subject: fails to upgrade lenny -> squeeze -> wheezy -> jessie -> stretch -> buster
+
+Package:
+Version:
+Severity: serious
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package fails to upgrade from
+'lenny' to 'squeeze' to 'wheezy' to 'jessie' to 'stretch' to 'buster'.
+It installed fine in 'lenny', and upgraded to 'squeeze', 'wheezy',
+'jessie', and 'stretch' successfully,
+but then the upgrade to 'buster' failed.
+
+In case the package was not part of an intermediate stable release,
+the version from the preceding stable release was kept installed.
+
+From the attached log (scroll to the bottom...):
+
+
+cheers,

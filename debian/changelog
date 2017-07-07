@@ -97,6 +97,7 @@ piuparts (0.78) UNRELEASED; urgency=medium
   * Add known_problems/trigger_cycle_error.conf to report trigger cycles and
     other trigger problems.
   * Add bug templates for failing to upgrade from stretch to buster.
+  * Update bug templates for long grown upgrades ending in buster.
 
   [ Holger Levsen ]
   * update TODO. Work on buster has begun. \o/
