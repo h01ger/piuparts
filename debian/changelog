@@ -18,6 +18,7 @@ piuparts (0.78) UNRELEASED; urgency=medium
       will verbosely log the ignored files if matched.
     - New option --upgrade-before-dist-upgrade for 2-stage upgrades:
       'apt-get upgrade && apt-get dist-upgrade'.
+    - Do not ignore errors while removing packages.
   * piuparts.conf:
     - Use more aliases for mapping between releases and codenames to reduce
       the amount of changes needed on "moving targets" (like stable22sid)

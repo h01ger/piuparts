@@ -1428,10 +1428,10 @@ class Chroot:
             if not settings.warn_on_install_over_symlink:
                 panic()
 
-    def remove_packages(self, packages):
+    def remove_packages(self, packages, ignore_errors=False):
         """Remove packages in a chroot."""
         if packages:
-            self.run(["apt-get", "remove"] + unqualify(packages), ignore_errors=True)
+            self.run(["apt-get", "remove"] + unqualify(packages), ignore_errors=ignore_errors)
 
     def purge_packages(self, packages):
         """Purge packages in a chroot."""
@@ -2588,7 +2588,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
         chroot.install_packages(package_files, packages, with_scripts=True)
 
     if settings.install_remove_install:
-        chroot.remove_packages(packages)
+        chroot.remove_packages(packages, ignore_errors=True)
         logging.info("Reinstalling after remove")
         chroot.install_packages(package_files, packages, with_scripts=True)
         chroot.install_packages(package_files, packages, with_scripts=True, reinstall=True)
@@ -2625,7 +2625,7 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
     chroot.check_for_broken_symlinks()
 
     if settings.install_remove_install:
-        chroot.remove_packages(packages)
+        chroot.remove_packages(packages, ignore_errors=True)
 
     # Then from the package files.
     os.environ["PIUPARTS_PHASE"] = "upgrade"
@@ -2755,7 +2755,7 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     chroot.install_packages_by_name(known_packages)
 
     if settings.install_remove_install:
-        chroot.remove_packages(packages)
+        chroot.remove_packages(packages, ignore_errors=True)
         distupgrade_packages = []
 
     chroot.check_for_no_processes()
