@@ -61,6 +61,30 @@ flags-end-lenny =
 	-i /etc/udev/
 	-i /etc/udev/rules.d/
 
+flags-broken-symlinks =
+	%(flags-default)s
+	--fail-on-broken-symlinks
+	--install-recommends
+	--scriptsdir /etc/piuparts/scripts-broken-symlinks
+	--fake-essential-packages libjs-sphinxdoc
+# ignore intentionally broken symlinks
+	-i :/usr/lib/libcxx/test/std/experimental/filesystem/Inputs/static_test_env/bad_symlink
+	-i :/usr/share/gocode/src/github.com/Masterminds/glide/testdata/path/x/vendor
+	-i :/usr/share/gocode/src/github.com/constabulary/gb/internal/fileutils/_testdata/copyfile/a/rick
+	-i :/usr/share/gocode/src/github.com/hashicorp/atlas-go/archive/test-fixtures/archive-symlink/link/link
+	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26231/exe
+# ignore broken symlinks
+	-i :/etc/systemd/system/display-manager.service
+# civicrm-common, #857601, /usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf -> ../../../../local/open-flash-chart.swf
+	-i :/usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf
+	-i :/usr/share/qt4/plugins
+# ignore broken symlinks (patterns)
+	-I :/etc/.*/supervise
+	-I /usr/include/python2\.7_d/.*\.h
+	-I /usr/include/python3\..dm/.*\.h
+	-I :/usr/lib/jvm/java-.*-openjdk-.*/src\.zip
+	-I :/usr/share/doc/kde/HTML/.*/common
+	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
 
 [global]
 # sections may be wrapped with continuation lines being indented
@@ -755,26 +779,7 @@ expire-old-days = 75
 precedence = 130
 description = + Failing on broken symlinks.
 piuparts-flags =
-	%(flags-default)s
-	--fail-on-broken-symlinks
-	--install-recommends
-	--scriptsdir /etc/piuparts/scripts-broken-symlinks
-	--fake-essential-packages libjs-sphinxdoc
-# ignore broken symlinks
-	-i :/etc/systemd/system/display-manager.service
-	-i :/usr/lib/libcxx/test/std/experimental/filesystem/Inputs/static_test_env/bad_symlink
-# civicrm-common, #857601, /usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf -> ../../../../local/open-flash-chart.swf
-	-i :/usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf
-	-i :/usr/share/gocode/src/github.com/hashicorp/atlas-go/archive/test-fixtures/archive-symlink/link/link
-	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26231/exe
-	-i :/usr/share/qt4/plugins
-# ignore broken symlinks (patterns)
-	-I :/etc/.*/supervise
-	-I /usr/include/python2\.7_d/.*\.h
-	-I /usr/include/python3\..dm/.*\.h
-	-I :/usr/lib/jvm/java-.*-openjdk-.*/src\.zip
-	-I :/usr/share/doc/kde/HTML/.*/common
-	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
+	%(flags-broken-symlinks)s
 distro = sid
 arch = amd64
 area = main
@@ -784,15 +789,7 @@ components = main
 precedence = 130
 description = + Failing on broken symlinks.
 piuparts-flags =
-	%(flags-default)s
-	--fail-on-broken-symlinks
-	--install-recommends
-	--scriptsdir /etc/piuparts/scripts-broken-symlinks
-# ignore broken symlinks (patterns)
-	-I /usr/include/python2\.7_d/.*\.h
-	-I /usr/include/python3\..dm/.*\.h
-	-I :/usr/lib/jvm/java-.*-openjdk-.*/src\.zip
-	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
+	%(flags-broken-symlinks)s
 depends-sections = sid-bl/main sid-bl/non-free
 distro = sid
 arch = amd64
@@ -802,15 +799,7 @@ area = contrib
 precedence = 130
 description = + Failing on broken symlinks.
 piuparts-flags =
-	%(flags-default)s
-	--fail-on-broken-symlinks
-	--install-recommends
-	--scriptsdir /etc/piuparts/scripts-broken-symlinks
-# ignore broken symlinks (patterns)
-	-I /usr/include/python2\.7_d/.*\.h
-	-I /usr/include/python3\..dm/.*\.h
-	-I :/usr/lib/jvm/java-.*-openjdk-.*/src\.zip
-	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
+	%(flags-broken-symlinks)s
 depends-sections = sid-bl/main sid-bl/contrib
 distro = sid
 arch = amd64
@@ -821,25 +810,7 @@ area = non-free
 precedence = 130
 description = + Failing on broken symlinks.
 piuparts-flags =
-	%(flags-default)s
-	--fail-on-broken-symlinks
-	--install-recommends
-	--scriptsdir /etc/piuparts/scripts-broken-symlinks
-	--fake-essential-packages libjs-sphinxdoc
-# ignore broken symlinks
-	-i :/etc/systemd/system/display-manager.service
-	-i :/usr/lib/libcxx/test/std/experimental/filesystem/Inputs/static_test_env/bad_symlink
-# civicrm-common, #857601, /usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf -> ../../../../local/open-flash-chart.swf
-	-i :/usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf
-	-i :/usr/share/gocode/src/github.com/hashicorp/atlas-go/archive/test-fixtures/archive-symlink/link/link
-	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26231/exe
-# ignore broken symlinks (patterns)
-	-I :/etc/.*/supervise
-	-I /usr/include/python2\.7_d/.*\.h
-	-I /usr/include/python3\..dm/.*\.h
-	-I :/usr/lib/jvm/java-.*-openjdk-.*/src\.zip
-	-I :/usr/share/doc/kde/HTML/.*/common
-	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
+	%(flags-broken-symlinks)s
 distro = sid
 arch = i386
 area = main
@@ -849,17 +820,7 @@ components = main
 precedence = 130
 description = + Failing on broken symlinks.
 piuparts-flags =
-	%(flags-default)s
-	--fail-on-broken-symlinks
-	--install-recommends
-	--scriptsdir /etc/piuparts/scripts-broken-symlinks
-# ignore broken symlinks (patterns)
-	-I /usr/include/python2\.7_d/.*\.h
-	-I /usr/include/python3\..dm/.*\.h
-	-I :/usr/lib/jvm/java-.*-openjdk-.*/src\.zip
-	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
-# libpentaho-reporting-flow-engine-java, #702858
-	-i :/usr/share/java/jfreereport.jar
+	%(flags-broken-symlinks)s
 depends-sections = sid-bl_i386/main sid-bl_i386/non-free
 distro = sid
 arch = i386
@@ -869,17 +830,7 @@ area = contrib
 precedence = 130
 description = + Failing on broken symlinks.
 piuparts-flags =
-	%(flags-default)s
-	--fail-on-broken-symlinks
-	--install-recommends
-	--scriptsdir /etc/piuparts/scripts-broken-symlinks
-# ignore broken symlinks (patterns)
-	-I /usr/include/python2\.7_d/.*\.h
-	-I /usr/include/python3\..dm/.*\.h
-	-I :/usr/lib/jvm/java-.*-openjdk-.*/src\.zip
-	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
-# libpentaho-reporting-flow-engine-java, #702858
-	-i :/usr/share/java/jfreereport.jar
+	%(flags-broken-symlinks)s
 depends-sections = sid-bl_i386/main sid-bl_i386/contrib
 distro = sid
 arch = i386
