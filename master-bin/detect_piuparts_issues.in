@@ -76,8 +76,9 @@ add_pattern 'Firebird .* server already running.'
 # scripts etc. would be indented by 2 spaces, so don't match here.
 add_pattern "^RuntimeError: maximum recursion depth exceeded while calling a Python object"
 add_pattern "^Traceback"
-add_pattern "^OSError:"
 add_pattern "^IndentationError:"
+add_pattern "^NameError:"
+add_pattern "^OSError:"
 add_pattern "^SyntaxError:"
 
 FILE=`mktemp`

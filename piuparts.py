@@ -50,6 +50,7 @@ import stat
 import re
 import pickle
 import subprocess
+import traceback
 import urllib
 import uuid
 import apt_pkg
@@ -3425,5 +3426,15 @@ if __name__ == "__main__":
         print 'Piuparts interrupted by the user, exiting...'
         panic(1)
         sys.exit(1)
+    except SystemExit:
+        raise
+    except:
+        print ''
+        print 'Piuparts caught exception, exiting...'
+        print '-'*60
+        traceback.print_exc(file=sys.stdout)
+        print '-'*60
+        panic(1)
+        raise
 
 # vi:set et ts=4 sw=4 :
