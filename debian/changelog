@@ -1,4 +1,4 @@
-piuparts (0.78) UNRELEASED; urgency=medium
+piuparts (0.78) unstable; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -127,7 +127,7 @@ piuparts (0.78) UNRELEASED; urgency=medium
   * Update README_server.txt.
   * htdocs/index.tpl: announce new suites.
 
- -- Andreas Beckmann <anbe@debian.org>  Sun, 12 Mar 2017 23:30:21 +0100
+ -- Holger Levsen <holger@debian.org>  Mon, 31 Jul 2017 13:32:50 -0400
 
 piuparts (0.77) unstable; urgency=medium
 
