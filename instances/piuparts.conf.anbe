@@ -322,6 +322,7 @@ sections =
 	lenny222testing_i386/non-free
 #
 	squeeze/main
+	squeeze_i386/main
 	squeeze-lts/main
 	squeeze-backports/main
 	squeeze-backports-sloppy/main
@@ -337,6 +338,7 @@ sections =
 	lenny2squeeze/main
 #
 	squeeze/contrib
+	squeeze_i386/contrib
 	squeeze-lts/contrib
 	squeeze-backports/contrib
 	squeeze-backports-sloppy/contrib
@@ -352,6 +354,7 @@ sections =
 	lenny2squeeze/contrib
 #
 	squeeze/non-free
+	squeeze_i386/non-free
 	squeeze-lts/non-free
 	squeeze-backports/non-free
 	squeeze-backports-sloppy/non-free
@@ -1833,6 +1836,43 @@ piuparts-flags =
 depends-sections = squeeze/main squeeze/contrib
 distro = squeeze
 arch = amd64
+area = non-free
+reschedule-old-count = 0
+
+
+[squeeze_i386/main]
+precedence = 1000
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+distro = squeeze
+arch = i386
+area = main
+components = main
+reschedule-old-count = 0
+
+[squeeze_i386/contrib]
+precedence = 1000
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze_i386/main squeeze_i386/non-free
+distro = squeeze
+arch = i386
+area = contrib
+reschedule-old-count = 0
+
+[squeeze_i386/non-free]
+precedence = 1000
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-squeeze)s
+	%(flags-end-squeeze)s
+depends-sections = squeeze_i386/main squeeze_i386/contrib
+distro = squeeze
+arch = i386
 area = non-free
 reschedule-old-count = 0
 
