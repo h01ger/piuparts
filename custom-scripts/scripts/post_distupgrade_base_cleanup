@@ -68,6 +68,12 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "stretch" ] || \
 	mark_for_purge libprocps3
 	mark_for_purge sysvinit
 
+	# pulled in during dist-upgrade of the reference chroot with --install-recommends
+	# can cause problems if the tested upgrade path installs a different pinentry-*
+	# because apt may fail to properly switch during removal (seen on e.g.
+	# plasma-desktop, plasma-netbook, kdeutils, print-manager, science-chemistry)
+	mark_for_purge pinentry-curses
+
 fi
 
 if [ -n "$PURGE" ]; then
