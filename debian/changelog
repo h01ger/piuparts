@@ -5,6 +5,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Do not ignore errors while purging packages.
     - Add post_test_* custom scripts. These are run exactly once at the end
       of each test (before comparing with the reference chroot state).
   * Move some exceptions to {pre,post}_test_exceptions.

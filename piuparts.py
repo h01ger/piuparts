@@ -1434,10 +1434,10 @@ class Chroot:
         if packages:
             self.run(["apt-get", "remove"] + unqualify(packages), ignore_errors=ignore_errors)
 
-    def purge_packages(self, packages):
+    def purge_packages(self, packages, ignore_errors=False):
         """Purge packages in a chroot."""
         if packages:
-            self.run(["dpkg", "--purge"] + unqualify(packages), ignore_errors=True)
+            self.run(["dpkg", "--purge"] + unqualify(packages), ignore_errors=ignore_errors)
 
     def restore_selections(self, reference_chroot_state, packages_qualified):
         """Restore package selections in a chroot to the state in
