@@ -31,14 +31,15 @@ piuparts (0.78) unstable; urgency=medium
       the amount of changes needed on "moving targets" (like stable22sid)
       after a stable Debian release.
     - Set keyring for archived distros to debian-archive-removed-keys.gpg.
-    - Add new suites: jessie2Xstretch, jessie2Xstretch-rcmd, doing two-stage
-      upgrades (apt-get update && apt-get dist-upgrade) from jessie to stretch
-      (without and with --install-recommends).
-    - Enable stretch2proposed.  (Closes: #864933)
+    - Add new suites: [jessie2Xstretch], [jessie2Xstretch-rcmd] for testing
+      two-stage upgrades (apt-get update && apt-get dist-upgrade) from jessie
+      to stretch (without and with --install-recommends).
+    - Enable [stretch2proposed].  (Closes: #864933)
     - Use --warn-on-debsums-errors for tests ending in stretch.
     - Rotate aliases for testing=buster and stable=stretch.
-    - Add new suites: buster, buster-rcmd, stretch2buster, stretch2buster-rcmd
-    - Add new suites: stretch2bpo, stretch2bpo2buster for testing
+    - Add new suites: [buster], [buster-rcmd], [stretch2buster],
+      [stretch2buster-rcmd] for testing buster.
+    - Add new suites: [stretch2bpo], [stretch2bpo2buster] for testing
       stretch-backports.
     - New (per-section) conffile setting: 'exclude-known-problems' can be set
       to a list of known problem iconffile names that should *not* be used for
