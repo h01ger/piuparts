@@ -44,7 +44,7 @@ get_config_value SLAVEROOT global slave-directory
 get_config_value IDLE_SLEEP global idle-sleep 1800
 
 
-SCREENLOG=$SLAVEROOT/screenlog.0
+SCREENLOG=$SLAVEROOT/screenlog.1
 STATEFILE=$SLAVEROOT/slave-problems
 
 # clear the statefile daily and whine again

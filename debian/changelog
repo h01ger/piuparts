@@ -1,6 +1,6 @@
 piuparts (0.79) UNRELEASED; urgency=medium
 
-  * … 
+  * slave-run: properly delete all screenlogs from previous runs.
 
  -- Holger Levsen <holger@debian.org>  Mon, 31 Jul 2017 13:35:18 -0400
 

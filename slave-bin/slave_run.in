@@ -35,7 +35,7 @@ get_config_value SLAVECOUNT global slave-count 1
 export PYTHONPATH
 
 SESSIONNAME=piuparts_slave_screen
-SCREENLOG=$SLAVEROOT/screenlog.0
+SCREENLOG=$SLAVEROOT/screenlog
 
 if ! screen -ls $SESSIONNAME | grep -q "No Sockets found" ; then
 	echo "piuparts-slave is already running!"
@@ -46,7 +46,7 @@ fi
 
 # cleanup cruft from previous runs
 @sharedir@/piuparts/slave/slave_cleanup
-rm -f $SCREENLOG
+rm -f $SCREENLOG.*
 
 # ensure the temporary directory exists
 mkdir -p $PIUPARTS_TMPDIR
