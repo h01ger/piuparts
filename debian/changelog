@@ -1,6 +1,12 @@
 piuparts (0.79) UNRELEASED; urgency=medium
 
+  [ Holger Levsen ]
   * slave-run: properly delete all screenlogs from previous runs.
+
+  [ Andreas Beckmann ]
+  * piuparts.py:
+    - Add post_test_* custom scripts. These are run exactly once at the end
+      of each test (before comparing with the reference chroot state).
 
  -- Holger Levsen <holger@debian.org>  Mon, 31 Jul 2017 13:35:18 -0400
 

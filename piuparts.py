@@ -2604,6 +2604,8 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state, packages)
 
+    chroot.run_scripts("post_test")
+
     chroot.check_for_no_processes(fail=True)
     chroot.check_for_broken_symlinks()
 
@@ -2644,6 +2646,8 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
 
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state, packages)
+
+    chroot.run_scripts("post_test")
 
     chroot.check_for_no_processes(fail=True)
     chroot.check_for_broken_symlinks()
@@ -2787,6 +2791,8 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     # Remove all packages from the chroot that weren't in the reference chroot.
     chroot.restore_selections(chroot_state, packages_qualified)
+
+    chroot.run_scripts("post_test")
 
     chroot.check_for_no_processes(fail=True)
 

@@ -240,11 +240,17 @@ times. The PIUPARTS_TEST and PIUPARTS_PHASE variables can be used
 to distinguish the cases.
 
 'pre_remove_' - before *removing* your package.
+Depending on the test, this may be run multiple times.
 
 'post_remove_' - after *removing* your package.
+Depending on the test, this may be run multiple times.
 
-'post_purge_' - after *purging* your package. Right before
-comparing the chroot with the initially recorded metadata.
+'post_purge_' - after *purging* your package.
+Depending on the test, this may be run multiple times.
+
+'post_test_' - at the end of each test. Right before performing
+final checks and comparing the chroot with the reference chroot
+metadata.
 
 'pre_distupgrade_' - before *upgrading* the chroot to the *next
 distribution*. The next distribution is available in the variable
