@@ -7,6 +7,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
   * piuparts.py:
     - Add post_test_* custom scripts. These are run exactly once at the end
       of each test (before comparing with the reference chroot state).
+  * Move some exceptions to {pre,post}_test_exceptions.
 
  -- Holger Levsen <holger@debian.org>  Mon, 31 Jul 2017 13:35:18 -0400
 

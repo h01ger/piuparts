@@ -28,31 +28,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		rm -f /usr/sbin/apt-listbugs
 		dpkg-divert --remove --rename /usr/sbin/apt-listbugs
 		;;
-	ffgtk|\
-	roger-router|\
-	roger-router-cli)
-		# cleanup from pre_install_exceptions
-		log_debug
-		dpkg-divert --remove --rename /usr/sbin/lpadmin
-		;;
-	freedombox-setup)
-		log_debug
-		# cleanup from pre_install_exceptions
-		if [ -e /etc/motd.orig ]; then
-			if [ -L /etc/motd ]; then
-				rm -v /etc/motd
-			fi
-			if [ ! -e /etc/motd ]; then
-				mv -v /etc/motd.orig /etc/motd
-			fi
-		fi
-		;;
-	reseed)
-		log_debug
-		# cleanup from pre_install_exceptions
-		test ! -L /usr/sbin/reseed || rm /usr/sbin/reseed
-		dpkg-divert --remove --rename /usr/sbin/reseed
-		;;
 esac
 
 case "$PIUPARTS_DISTRIBUTION" in

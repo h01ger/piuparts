@@ -1,0 +1,42 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+# clean up from pre_test_exceptions
+case ${PIUPARTS_OBJECTS%%=*} in
+	fai-nfsroot)
+		log_debug
+		rm -fv /.THIS_IS_THE_FAI_NFSROOT
+		;;
+	freedombox-setup)
+		log_debug
+		if [ -e /etc/motd.orig ]; then
+			if [ -L /etc/motd ]; then
+				rm -v /etc/motd
+			fi
+			if [ ! -e /etc/motd ]; then
+				mv -v /etc/motd.orig /etc/motd
+			fi
+		fi
+		;;
+	ltsp-client-core|\
+	education-thin-client|\
+	ltsp-client)
+		log_debug
+		rm -fv /etc/ltsp_chroot
+		;;
+	reseed)
+		log_debug
+		test ! -L /usr/sbin/reseed || rm /usr/sbin/reseed
+		dpkg-divert --remove --rename /usr/sbin/reseed
+		;;
+	roger-router-cli|\
+	ffgtk|\
+	roger-router)
+		log_debug
+		dpkg-divert --remove --rename /usr/sbin/lpadmin
+		;;
+esac

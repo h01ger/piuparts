@@ -1,0 +1,43 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+case ${PIUPARTS_OBJECTS%%=*} in
+	fai-nfsroot)
+		# fai-nfsroot refuses installation unless this file exists
+		log_debug
+		echo "Touching /.THIS_IS_THE_FAI_NFSROOT"
+		touch /.THIS_IS_THE_FAI_NFSROOT
+		;;
+	freedombox-setup)
+		# replaces /etc/motd by a symlink
+		log_debug
+		if [ -e /etc/motd ] && [ ! -L /etc/motd ] && [ ! -e /etc/motd.orig ]; then
+			mv -v /etc/motd /etc/motd.orig
+		fi
+		;;
+	ltsp-client-core|\
+	education-thin-client|\
+	ltsp-client)
+		# ltsp-client-core refuses installation unless this file exists
+		log_debug
+		echo "Touching /etc/ltsp_chroot"
+		touch /etc/ltsp_chroot
+		;;
+	reseed)
+		# postinst runs reseed which accesses the net
+		log_debug
+		dpkg-divert --rename /usr/sbin/reseed
+		ln -s /bin/true /usr/sbin/reseed
+		;;
+	roger-router-cli|\
+	ffgtk|\
+	roger-router)
+		# roger-router-cli.postinst tries to add a printer with lpadmin
+		log_debug
+		dpkg-divert --rename /usr/sbin/lpadmin
+		;;
+esac

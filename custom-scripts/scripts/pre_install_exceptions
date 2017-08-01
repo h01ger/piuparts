@@ -72,38 +72,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			mkdir -p /var/state/samhain/
 			touch /var/state/samhain/samhain_file
 			;;
-	fai-nfsroot)
-			# fai-nfsroot refuses installation unless this file exist
-			log_debug
-			touch /.THIS_IS_THE_FAI_NFSROOT
-			;;
-	education-thin-client|\
-	ltsp-client|\
-	ltsp-client-core)
-			# ltsp-client-core refuses installation unless this file exist
-			log_debug
-			touch /etc/ltsp_chroot
-			;;
-	ffgtk|\
-	roger-router|\
-	roger-router-cli)
-			# postinst tries to add a printer with lpadmin
-			log_debug
-			dpkg-divert --rename /usr/sbin/lpadmin
-			;;
-	freedombox-setup)
-			log_debug
-			# replaces /etc/motd by a symlink
-			if [ -e /etc/motd ] && [ ! -L /etc/motd ] && [ ! -e /etc/motd.orig ]; then
-				mv -v /etc/motd /etc/motd.orig
-			fi
-			;;
-	reseed)
-			log_debug
-			# postinst runs reseed which accesses the net
-			dpkg-divert --rename /usr/sbin/reseed
-			ln -s /bin/true /usr/sbin/reseed
-			;;
 	bugzilla3)
 			# checksetup.pl goes into infinite loop asking for them
 			log_debug

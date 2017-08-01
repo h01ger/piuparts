@@ -6,13 +6,6 @@ log_debug() {
 }
 
 case ${PIUPARTS_OBJECTS%%=*} in
-	fai-nfsroot)		log_debug
-				rm -f /.THIS_IS_THE_FAI_NFSROOT
-				;;
-	ltsp-client|\
-	ltsp-client-core)	log_debug
-				rm -f /etc/ltsp_chroot
-				;;
 	amd64-libs|amd64-libs-dev)
 		# leaves a superfluous empty line after purge
 		log_debug
