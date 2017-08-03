@@ -188,12 +188,12 @@ idle-sleep = 3600
 max-tgz-age = 0
 max-reserved = 100
 # rescheduling settings
-expire-old-days = 120
-reschedule-old-days = 90
 reschedule-old-count = 250
-expire-fail-days = 15
-reschedule-fail-days = 10
+reschedule-old-days = 90
+expire-old-days = +30
 reschedule-fail-count = 50
+reschedule-fail-days = 10
+expire-fail-days = +5
 reschedule-untestable-days = 1
 
 
