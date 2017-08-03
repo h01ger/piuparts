@@ -665,6 +665,7 @@ reschedule-old-days = 30
 precedence = 10
 piuparts-flags =
 	%(flags-default)s
+	--scriptsdir /etc/piuparts/scripts-log-alternatives
 distro = sid
 arch = amd64
 area = main
@@ -675,6 +676,7 @@ reschedule-old-days = 30
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
+	--scriptsdir /etc/piuparts/scripts-log-alternatives
 depends-sections = sid/main sid/non-free
 distro = sid
 arch = amd64
@@ -685,6 +687,7 @@ reschedule-old-days = 30
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
+	--scriptsdir /etc/piuparts/scripts-log-alternatives
 depends-sections = sid/main sid/contrib
 distro = sid
 arch = amd64
