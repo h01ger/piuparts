@@ -8,6 +8,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
     - Do not ignore errors while purging packages.
     - Add post_test_* custom scripts. These are run exactly once at the end
       of each test (before comparing with the reference chroot state).
+    - Silence diff_meta_data() for "others" for --warn-on-others.
   * piuparts.conf:
     - Use relative expiration ages.
   * reschedule_oldest_logs: Expiration age values starting with "+" are

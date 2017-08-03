@@ -2196,7 +2196,7 @@ def format_object_attributes(obj):
     return res
 
 
-def diff_meta_data(tree1, tree2):
+def diff_meta_data(tree1, tree2, quiet=False):
     """Compare two dir trees and return list of new files (only in 'tree2'),
        removed files (only in 'tree1'), and modified files."""
 
@@ -2205,7 +2205,7 @@ def diff_meta_data(tree1, tree2):
 
     for name in settings.ignored_files:
         if name[0] == ':':
-            verbose = True
+            verbose = not quiet
             name = name[1:]
         else:
             verbose = False
@@ -2220,7 +2220,7 @@ def diff_meta_data(tree1, tree2):
 
     for pattern in settings.ignored_patterns:
         if pattern[0] == ':':
-            verbose = True
+            verbose = not quiet
             pattern = pattern[1:]
         else:
             verbose = False
@@ -2242,8 +2242,9 @@ def diff_meta_data(tree1, tree2):
     for name in tree1.keys()[:]:
         if name in tree2:
             if objects_are_different(tree1[name], tree2[name]):
-                logging.debug("Modified(user, group, mode, size, target): %s expected%s != found%s" %
-                              (name, format_object_attributes(tree1[name]), format_object_attributes(tree2[name])))
+                if not quiet:
+                    logging.debug("Modified(user, group, mode, size, target): %s expected%s != found%s" %
+                                  (name, format_object_attributes(tree1[name]), format_object_attributes(tree2[name])))
                 modified.append((name, tree1[name]))
             del tree1[name]
             del tree2[name]
@@ -2423,7 +2424,7 @@ def check_results(chroot, chroot_state, file_owners, deps_info=None):
     if settings.warn_on_others and deps_info is not None:
         (new, removed, modified) = diff_meta_data(reference_info, current_info)
         (depsnew, depsremoved, depsmodified) = diff_meta_data(reference_info,
-                                                              deps_info)
+                                                              deps_info, quiet=True)
 
         warnnew = prune_files_list(new, depsnew)
         warnremoved = prune_files_list(removed, depsremoved)
