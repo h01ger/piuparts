@@ -22,6 +22,18 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				;;
 		esac
 		;;
+	sasl2-bin|\
+	libapache2-mod-authn-sasl)
+		case "$PIUPARTS_DISTRIBUTION" in
+			stretch)
+				# unowned directory in jessie may disappear after removal of owning packages in stretch
+				if [ ! -d /usr/lib/sasl2 ]; then
+					log_debug
+					mkdir -v -p /usr/lib/sasl2
+				fi
+				;;
+		esac
+		;;
 	virtualbox-ext-pack)
 		#802143: virtualbox-ext-pack leaves VBoxSVC processes running
 		# these should terminate within 5 seconds if not used
