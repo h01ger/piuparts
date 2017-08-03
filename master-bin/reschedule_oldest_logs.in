@@ -119,11 +119,17 @@ for SECTION in $SECTIONS ; do
 		get_config_value _FAIL_COUNT $SECTION reschedule-fail-count $FAIL_COUNT
 		# FIXME: we ignore bugged here - ptyhon-bts is really the way to go
 		>$UNSORTED
+		case $_EXPIRE_AGE in
+			+*) _EXPIRE_AGE=$(($_AGE$_EXPIRE_AGE)) ;;
+		esac
 		if [ "$_EXPIRE_AGE" -gt "$_AGE" ]; then
 		    if [ -n "$recycle_was_idle" ]; then
 			list_logs $_EXPIRE_AGE      $_COUNT      pass fail affected >> $UNSORTED
 		    fi
 		fi
+		case $_EXPIRE_FAIL_AGE in
+			+*) _EXPIRE_FAIL_AGE=$(($_FAIL_AGE$_EXPIRE_FAIL_AGE)) ;;
+		esac
 		if [ "$_EXPIRE_FAIL_AGE" -gt "$_FAIL_AGE" ]; then
 			list_logs $_EXPIRE_FAIL_AGE $_FAIL_COUNT      fail affected >> $UNSORTED
 		fi

@@ -516,7 +516,7 @@ section, too, and will serve as defaults for all other sections
  that are actually testable will be reissued by piuparts-master (and
  the "old" log will be deleted at that time).  Logs that are marked
  for recycling but have not been rechecked due to missing/failing
- dependecies will be deleted anyway if they are older than
+ dependencies will be deleted anyway if they are older than
  expire-(old|fail)-days.
 
 * "reschedule-old-count" (global, section) is the maximum number of
@@ -526,7 +526,8 @@ section, too, and will serve as defaults for all other sections
 * "expire-old-days" (global, section) can be set to a value larger
  than 'reschedule-old-days' to delete logs older than the setting
  that are marked for recycling but haven't been rechecked due to
- failing or missing dependecies. Disabled by default ("0").
+ failing or missing dependencies. A value starting with "+" is
+ relative to 'reschedule-old-days'. Disabled by default ("0").
 
 * "reschedule-fail-days" (global, section) sets the minimum age of
  failing logs (fail/*.log or affected/*.log) before they will be
@@ -539,7 +540,8 @@ section, too, and will serve as defaults for all other sections
 * "expire-fail-days" (global, section) can be set to a value larger
  than 'reschedule-fail-days' to delete logs older than the setting
  that are marked for recycling but haven't been rechecked due to
- failing or missing dependecies. Disabled by default ("0").
+ failing or missing dependencies. A value starting with "+" is
+ relative to 'reschedule-fail-days'. Disabled by default ("0").
 
 * "auto-reschedule" (section) can be set to "no" to disable
  rescheduling of passed and failed packages. To disable only
