@@ -55,7 +55,7 @@ mkdir -p $SLAVEROOT
 cd $SLAVEROOT
 
 # Ensure the screen session exists, run normal shell in screen 0
-screen -S $SESSIONNAME -d -m
+SHELL=/bin/bash screen -S $SESSIONNAME -d -m
 echo "Started screen session '$SESSIONNAME'."
 
 # run this on a single slave or a sequence of slaves
@@ -76,8 +76,7 @@ do
 
 	# Launch the slave.
 	screen -S $SESSIONNAME -p $SLAVENUM -X stuff "
-cd $SLAVEDIR
-@sharedir@/piuparts/piuparts-slave
+cd $SLAVEDIR && @sharedir@/piuparts/piuparts-slave
 "
 
 	echo "piuparts-slave $SLAVENUM has been started."

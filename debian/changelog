@@ -11,6 +11,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
   * Move some exceptions to {pre,post}_test_exceptions.
   * scripts/post_distupgrade_base_cleanup: Remove pinentry-curses from the
     stretch (--install-recommends) reference chroot.
+  * slave_run: Ensure screen is run with SHELL=/bin/bash.
 
  -- Holger Levsen <holger@debian.org>  Mon, 31 Jul 2017 13:35:18 -0400
 
