@@ -397,13 +397,13 @@ slave-load-max = 20.5
 idle-sleep = 1800
 max-tgz-age = -1
 max-reserved = 50
-reschedule-untestable-days = 3
-expire-old-days = 135
+reschedule-old-count = 200
 reschedule-old-days = 120
-reschedule-old-count = 250
-expire-fail-days = 8
-reschedule-fail-days = 5
+expire-old-days = +15
 reschedule-fail-count = 100
+reschedule-fail-days = 5
+expire-fail-days = +3
+reschedule-untestable-days = 2
 slave-count = 12
 
 
@@ -607,7 +607,6 @@ arch = amd64
 area = main
 components = main
 reschedule-old-days = 30
-expire-old-days = 45
 
 [experimental/contrib]
 precedence = 45
@@ -618,7 +617,6 @@ distro = experimental
 arch = amd64
 area = contrib
 reschedule-old-days = 30
-expire-old-days = 45
 
 [experimental/non-free]
 precedence = 45
@@ -629,7 +627,6 @@ distro = experimental
 arch = amd64
 area = non-free
 reschedule-old-days = 30
-expire-old-days = 45
 
 
 [experimental_i386/main]
@@ -642,7 +639,6 @@ arch = i386
 area = main
 components = main
 reschedule-old-days = 30
-expire-old-days = 45
 
 [experimental_i386/contrib]
 precedence = 45
@@ -653,7 +649,6 @@ distro = experimental
 arch = i386
 area = contrib
 reschedule-old-days = 30
-expire-old-days = 45
 
 [experimental_i386/non-free]
 precedence = 45
@@ -664,7 +659,6 @@ distro = experimental
 arch = i386
 area = non-free
 reschedule-old-days = 30
-expire-old-days = 45
 
 
 [sid/main]
@@ -676,7 +670,6 @@ arch = amd64
 area = main
 components = main
 reschedule-old-days = 30
-expire-old-days = 45
 
 [sid/contrib]
 precedence = 45
@@ -687,7 +680,6 @@ distro = sid
 arch = amd64
 area = contrib
 reschedule-old-days = 30
-expire-old-days = 45
 
 [sid/non-free]
 precedence = 45
@@ -698,7 +690,6 @@ distro = sid
 arch = amd64
 area = non-free
 reschedule-old-days = 30
-expire-old-days = 45
 
 
 [sid-plus/main]
@@ -712,7 +703,6 @@ arch = amd64
 area = main
 components = main
 reschedule-old-days = 60
-expire-old-days = 75
 
 [sid-plus/contrib]
 precedence = 45
@@ -725,7 +715,6 @@ distro = sid
 arch = amd64
 area = contrib
 reschedule-old-days = 60
-expire-old-days = 75
 
 [sid-plus/non-free]
 precedence = 45
@@ -738,7 +727,6 @@ distro = sid
 arch = amd64
 area = non-free
 reschedule-old-days = 60
-expire-old-days = 75
 
 
 [sid-rcmd/main]
@@ -752,7 +740,6 @@ arch = i386
 area = main
 components = main
 reschedule-old-days = 60
-expire-old-days = 75
 
 [sid-rcmd/contrib]
 precedence = 45
@@ -765,7 +752,6 @@ distro = sid
 arch = i386
 area = contrib
 reschedule-old-days = 60
-expire-old-days = 75
 
 [sid-rcmd/non-free]
 precedence = 45
@@ -778,7 +764,6 @@ distro = sid
 arch = i386
 area = non-free
 reschedule-old-days = 60
-expire-old-days = 75
 
 
 [sid-bl/main]
@@ -966,7 +951,6 @@ arch = amd64
 area = main
 components = main
 reschedule-old-days = 60
-expire-old-days = 75
 
 [buster/contrib]
 precedence = 45
@@ -979,7 +963,6 @@ distro = buster
 arch = amd64
 area = contrib
 reschedule-old-days = 60
-expire-old-days = 75
 
 [buster/non-free]
 precedence = 45
@@ -992,7 +975,6 @@ distro = buster
 arch = amd64
 area = non-free
 reschedule-old-days = 60
-expire-old-days = 75
 
 
 [buster-pu/main]
@@ -1079,7 +1061,6 @@ arch = amd64
 area = main
 components = main
 reschedule-old-days = 60
-expire-old-days = 75
 
 [stretch/contrib]
 precedence = 45
@@ -1092,7 +1073,6 @@ distro = stretch
 arch = amd64
 area = contrib
 reschedule-old-days = 60
-expire-old-days = 75
 
 [stretch/non-free]
 precedence = 45
@@ -1105,7 +1085,6 @@ distro = stretch
 arch = amd64
 area = non-free
 reschedule-old-days = 60
-expire-old-days = 75
 
 
 [stretch-rcmd/main]
@@ -2172,8 +2151,8 @@ components = main
 distro = lenny
 upgrade-test-distros = lenny squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
-expire-fail-days = 20
 reschedule-fail-days = 12
+expire-fail-days = +8
 
 [lenny222testing/contrib]
 precedence = 150
@@ -2214,8 +2193,8 @@ components = main
 distro = lenny
 upgrade-test-distros = lenny squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
-expire-fail-days = 20
 reschedule-fail-days = 12
+expire-fail-days = +8
 
 [lenny222testing_i386/contrib]
 precedence = 150
