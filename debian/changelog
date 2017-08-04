@@ -11,6 +11,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
     - Silence diff_meta_data() for "others" for --warn-on-others.
   * piuparts.conf:
     - Use relative expiration ages.
+  * piuparts.conf.anbe: Add some more example sections.
   * reschedule_oldest_logs: Expiration age values starting with "+" are
     relative to the rescheduling age.
   * Move some exceptions to {pre,post}_test_exceptions.
