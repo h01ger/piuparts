@@ -136,7 +136,7 @@ sections =
 	jessie-backports/main
 	wheezy/main
 	wheezy-rcmd/main
-	wheezy-proposed/main
+	wheezy-lts/main
 	wheezy-security/main
 	wheezy-backports/main
 	sid2experimental/main
@@ -159,7 +159,7 @@ sections =
 	jessie3stretch-rcmd_i386/main
 	jessie2stretch-iri/main
 	jessie2bpo2stretch/main
-	wheezy2proposed/main
+	wheezy2lts/main
 	wheezy2jessie/main
 	wheezy2jessie_i386/main
 	wheezy2jessie-rcmd/main
@@ -208,7 +208,7 @@ sections =
 	jessie-backports/contrib
 	wheezy/contrib
 	wheezy-rcmd/contrib
-	wheezy-proposed/contrib
+	wheezy-lts/contrib
 #	wheezy-security/contrib
 	wheezy-backports/contrib
 	sid2experimental/contrib
@@ -231,7 +231,7 @@ sections =
 	jessie3stretch-rcmd_i386/contrib
 	jessie2stretch-iri/contrib
 	jessie2bpo2stretch/contrib
-	wheezy2proposed/contrib
+	wheezy2lts/contrib
 	wheezy2jessie/contrib
 	wheezy2jessie_i386/contrib
 	wheezy2jessie-rcmd/contrib
@@ -280,7 +280,7 @@ sections =
 	jessie-backports/non-free
 	wheezy/non-free
 	wheezy-rcmd/non-free
-	wheezy-proposed/non-free
+	wheezy-lts/non-free
 #	wheezy-security/non-free
 	wheezy-backports/non-free
 	sid2experimental/non-free
@@ -303,7 +303,7 @@ sections =
 	jessie3stretch-rcmd_i386/non-free
 	jessie2stretch-iri/non-free
 	jessie2bpo2stretch/non-free
-	wheezy2proposed/non-free
+	wheezy2lts/non-free
 	wheezy2jessie/non-free
 	wheezy2jessie_i386/non-free
 	wheezy2jessie-rcmd/non-free
@@ -331,7 +331,7 @@ sections =
 	squeeze2wheezy_i386/main
 	squeeze2wheezy-rcmd/main
 	squeeze2wheezy-rcmd_i386/main
-	squeeze2wheezy-proposed/main
+	squeeze2wheezy-lts/main
 	squeeze2bpo2wheezy/main
 	lenny/main
 	lenny_i386/main
@@ -347,7 +347,7 @@ sections =
 	squeeze2wheezy_i386/contrib
 	squeeze2wheezy-rcmd/contrib
 	squeeze2wheezy-rcmd_i386/contrib
-	squeeze2wheezy-proposed/contrib
+	squeeze2wheezy-lts/contrib
 	squeeze2bpo2wheezy/contrib
 	lenny/contrib
 	lenny_i386/contrib
@@ -363,7 +363,7 @@ sections =
 	squeeze2wheezy_i386/non-free
 	squeeze2wheezy-rcmd/non-free
 	squeeze2wheezy-rcmd_i386/non-free
-	squeeze2wheezy-proposed/non-free
+	squeeze2wheezy-lts/non-free
 	squeeze2bpo2wheezy/non-free
 	lenny/non-free
 	lenny_i386/non-free
@@ -1712,39 +1712,39 @@ arch = amd64
 area = non-free
 
 
-[wheezy-proposed/main]
+[wheezy-lts/main]
 precedence = 20
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-distro = wheezy-proposed
+distro = wheezy-lts
 arch = amd64
 area = main
 components = main
 reschedule-old-count = 333
 reschedule-old-days = 25
 
-[wheezy-proposed/contrib]
+[wheezy-lts/contrib]
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-depends-sections = wheezy-proposed/main wheezy-proposed/non-free
-distro = wheezy-proposed
+depends-sections = wheezy-lts/main wheezy-lts/non-free
+distro = wheezy-lts
 arch = amd64
 area = contrib
 reschedule-old-days = 25
 
-[wheezy-proposed/non-free]
+[wheezy-lts/non-free]
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-depends-sections = wheezy-proposed/main wheezy-proposed/contrib
-distro = wheezy-proposed
+depends-sections = wheezy-lts/main wheezy-lts/contrib
+distro = wheezy-lts
 arch = amd64
 area = non-free
 reschedule-old-days = 25
@@ -2309,7 +2309,7 @@ distro = squeeze
 upgrade-test-distros = squeeze wheezy
 
 
-[squeeze2wheezy-proposed/main]
+[squeeze2wheezy-lts/main]
 precedence = 60
 piuparts-flags =
 	%(flags-default)s
@@ -2320,32 +2320,32 @@ arch = amd64
 area = main
 components = main
 distro = squeeze
-upgrade-test-distros = squeeze wheezy-proposed
+upgrade-test-distros = squeeze wheezy-lts
 reschedule-old-count = 100
 
-[squeeze2wheezy-proposed/contrib]
+[squeeze2wheezy-lts/contrib]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-depends-sections = squeeze2wheezy-proposed/main squeeze2wheezy-proposed/non-free
+depends-sections = squeeze2wheezy-lts/main squeeze2wheezy-lts/non-free
 arch = amd64
 area = contrib
 distro = squeeze
-upgrade-test-distros = squeeze wheezy-proposed
+upgrade-test-distros = squeeze wheezy-lts
 
-[squeeze2wheezy-proposed/non-free]
+[squeeze2wheezy-lts/non-free]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-depends-sections = squeeze2wheezy-proposed/main squeeze2wheezy-proposed/contrib
+depends-sections = squeeze2wheezy-lts/main squeeze2wheezy-lts/contrib
 arch = amd64
 area = non-free
 distro = squeeze
-upgrade-test-distros = squeeze wheezy-proposed
+upgrade-test-distros = squeeze wheezy-lts
 
 
 [squeeze2wheezy_i386/main]
@@ -2492,7 +2492,7 @@ distro = squeeze-backports
 arch = amd64
 area = main
 components = main
-upgrade-test-distros = squeeze squeeze-backports wheezy
+upgrade-test-distros = squeeze squeeze-backports wheezy-lts
 
 [squeeze2bpo2wheezy/contrib]
 precedence = 95
@@ -2505,7 +2505,7 @@ depends-sections = squeeze/main squeeze2bpo2wheezy/main squeeze2bpo2wheezy/non-f
 distro = squeeze-backports
 arch = amd64
 area = contrib
-upgrade-test-distros = squeeze squeeze-backports wheezy
+upgrade-test-distros = squeeze squeeze-backports wheezy-lts
 
 [squeeze2bpo2wheezy/non-free]
 precedence = 95
@@ -2518,7 +2518,7 @@ depends-sections = squeeze/main squeeze2bpo2wheezy/main squeeze2bpo2wheezy/contr
 distro = squeeze-backports
 arch = amd64
 area = non-free
-upgrade-test-distros = squeeze squeeze-backports wheezy
+upgrade-test-distros = squeeze squeeze-backports wheezy-lts
 
 
 [squeeze222testing/main]
@@ -2601,7 +2601,7 @@ upgrade-test-distros = squeeze wheezy jessie stretch testing
 reschedule-old-count = 100
 
 
-[wheezy2proposed/main]
+[wheezy2lts/main]
 precedence = 60
 piuparts-flags =
 	%(flags-default)s
@@ -2612,31 +2612,31 @@ arch = amd64
 area = main
 components = main
 distro = wheezy
-upgrade-test-distros = wheezy wheezy-proposed
+upgrade-test-distros = wheezy wheezy-lts
 
-[wheezy2proposed/contrib]
+[wheezy2lts/contrib]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-depends-sections = wheezy2proposed/main wheezy2proposed/non-free
+depends-sections = wheezy2lts/main wheezy2lts/non-free
 arch = amd64
 area = contrib
 distro = wheezy
-upgrade-test-distros = wheezy wheezy-proposed
+upgrade-test-distros = wheezy wheezy-lts
 
-[wheezy2proposed/non-free]
+[wheezy2lts/non-free]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-depends-sections = wheezy2proposed/main wheezy2proposed/contrib
+depends-sections = wheezy2lts/main wheezy2lts/contrib
 arch = amd64
 area = non-free
 distro = wheezy
-upgrade-test-distros = wheezy wheezy-proposed
+upgrade-test-distros = wheezy wheezy-lts
 
 
 [wheezy2jessie/main]
