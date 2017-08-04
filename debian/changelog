@@ -19,6 +19,8 @@ piuparts (0.79) UNRELEASED; urgency=medium
     stretch (--install-recommends) reference chroot.
   * scripts/post_purge_exceptions:
     - Restore /usr/lib/sasl2/ disappearing on some jessie->stretch upgrades.
+  * master-bin/detect_network_issues:
+    - Detect appstream metadata errors.
   * slave_run: Ensure screen is run with SHELL=/bin/bash.
 
  -- Holger Levsen <holger@debian.org>  Mon, 31 Jul 2017 13:35:18 -0400

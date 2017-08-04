@@ -60,6 +60,7 @@ add_pattern "E: Sub-process rred received a segmentation fault."
 add_pattern "ERROR: Command failed \(status=-7\):.*'apt-get', 'update'"
 add_pattern 'WARNING: The following packages cannot be authenticated!'
 add_pattern 'Package .* .* not found in .*, .* is available'
+add_pattern "AppStream system cache was updated, but problems were found: Metadata files have errors"
 
 FILE=`mktemp`
 for SECTION in $SECTIONS ; do
