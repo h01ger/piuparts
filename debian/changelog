@@ -20,6 +20,8 @@ piuparts (0.79) UNRELEASED; urgency=medium
       e.g. due to different fake-essential package sets.
     - Let debsums always ignore obsolete conffiles.
     - Run debootstrap with --no-merged-usr.
+  * distros.conf:
+    - Add wheezy-lts as a full distro.
   * piuparts.conf:
     - Use relative expiration ages.
   * piuparts.conf.anbe: Add some more example sections.
