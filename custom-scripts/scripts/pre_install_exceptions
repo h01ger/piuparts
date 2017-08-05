@@ -163,12 +163,6 @@ if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
 				apt-get -y install bootcd-i386
 			fi
 			;;
-		mini-buildd-bld|mini-buildd-rep)
-			#632955, #656746 - time limit exceeded during install
-			log_debug
-			echo "*** ABORT - Installation would deadlock ***"
-			exit 1
-			;;
 	esac
 
 fi

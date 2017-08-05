@@ -21,6 +21,8 @@ piuparts (0.79) UNRELEASED; urgency=medium
   * Move some exceptions to {pre,post}_test_exceptions.
   * scripts/post_distupgrade_base_cleanup: Remove pinentry-curses from the
     stretch (--install-recommends) reference chroot.
+  * scripts/is_testable_uninstallable:
+    - Skip and fail install of mini-buildd-{bld,rep} in squeeze.
   * scripts/post_purge_exceptions:
     - Restore /usr/lib/sasl2/ disappearing on some jessie->stretch upgrades.
   * scripts/is_testable_uninstallable:

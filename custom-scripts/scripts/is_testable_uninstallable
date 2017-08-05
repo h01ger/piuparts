@@ -141,6 +141,11 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	mhc@lenny)
 		skip_distupgrade "#696231: fails to install: emacs-package-install failure"
 		;;
+	mini-buildd-bld@squeeze|\
+	mini-buildd-rep@squeeze)
+		skip_distupgrade "#632955, #656746: time limit exceeded during install"
+		fail_test "#632955, #656746: time limit exceeded during install"
+		;;
 	multex-bin@lenny)
 		skip_distupgrade "#668791: fails to install: The format file of 'multex' is NOT built successfully."
 		;;
