@@ -26,7 +26,7 @@ retry_configure_pending()
 
 CANDIDATES=
 CANDIDATES="$CANDIDATES default-mysql-server"
-CANDIDATES="$CANDIDATES mysql-server"
+#CANDIDATES="$CANDIDATES mysql-server"
 CANDIDATES="$CANDIDATES postgresql"
 CANDIDATES="$CANDIDATES postgresql-8.3"
 CANDIDATES="$CANDIDATES postgresql-8.4"
@@ -37,6 +37,15 @@ CANDIDATES="$CANDIDATES postgresql-9.6"
 case "$PIUPARTS_DISTRIBUTION_NEXT" in
 	jessie)
 		CANDIDATES="$CANDIDATES mysql-server-5.5"
+		;;
+esac
+
+case "$PIUPARTS_DISTRIBUTION_NEXT" in
+	buster)
+		: # no mysql-server in buster
+		;;
+	*)
+		CANDIDATES="$CANDIDATES mysql-server"
 		;;
 esac
 

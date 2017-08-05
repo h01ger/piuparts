@@ -23,6 +23,8 @@ piuparts (0.79) UNRELEASED; urgency=medium
     stretch (--install-recommends) reference chroot.
   * scripts/is_testable_uninstallable:
     - Skip and fail install of mini-buildd-{bld,rep} in squeeze.
+  * scripts/pre_distupgrade_zz_database-server: There is no 'mysql-server' in
+    buster.
   * scripts/post_purge_exceptions:
     - Restore /usr/lib/sasl2/ disappearing on some jessie->stretch upgrades.
   * scripts/is_testable_uninstallable:
