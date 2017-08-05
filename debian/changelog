@@ -8,6 +8,10 @@ piuparts (0.79) UNRELEASED; urgency=medium
     - Do not ignore errors while purging packages.
     - Add post_test_* custom scripts. These are run exactly once at the end
       of each test (before comparing with the reference chroot state).
+    - is_testable_* custom scripts can use return value '2' to make a test
+      fail without actually installing the package. Use for (unfixable)
+      packages that would fail anyway, but are resource hogs or otherwise
+      break piuparts.
     - Silence diff_meta_data() for "others" for --warn-on-others.
   * piuparts.conf:
     - Use relative expiration ages.
@@ -330,7 +334,7 @@ piuparts (0.74) unstable; urgency=medium
   * piuparts.py:
     - Add to ignored_files:
       + /etc/modprobe.d/
-    - Add new class of is_testable_* custom scripts: A non-zero return value
+    - Add new class of is_testable_* custom scripts: A return value of '1'
       makes the test succeed without actually installing the package. Use for
       packages that cannot be tested with piuparts by design or are broken in
       an unfixable way.  (Closes: #682739)

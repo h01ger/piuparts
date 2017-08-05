@@ -2744,10 +2744,17 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     chroot.check_for_no_processes(fail=True)
 
-    if chroot.run_scripts("is_testable", ignore_errors=True) != 0:
-        logging.info("SKIP: All tests. Package cannot be tested with piuparts: %s.", " ".join(packages))
+    cannot_test = chroot.run_scripts("is_testable", ignore_errors=True)
+    if cannot_test != 0:
+        if cannot_test & 2:
+            logging.info("FAIL: All tests. Package cannot be tested with piuparts: %s.", " ".join(packages))
+            retval = False
+        else:
+            logging.info("SKIP: All tests. Package cannot be tested with piuparts: %s.", " ".join(packages))
+            retval = True
+        testable = False
         chroot.remove()
-        return True
+        return retval
 
     if settings.shell_on_error:
         panic_handler_id = do_on_panic(lambda: chroot.interactive_shell())
@@ -3324,9 +3331,14 @@ def process_packages(package_list):
         chroot_state = chroot.get_state_meta_data()
 
         testable = True
-        if chroot.run_scripts("is_testable", ignore_errors=True) != 0:
-            logging.info("SKIP: All tests. Package cannot be tested with piuparts: %s.", " ".join(packages))
+        cannot_test = chroot.run_scripts("is_testable", ignore_errors=True)
+        if cannot_test != 0:
             testable = False
+            if cannot_test & 2:
+                logging.info("FAIL: All tests. Package cannot be tested with piuparts: %s.", " ".join(packages))
+                panic()
+            else:
+                logging.info("SKIP: All tests. Package cannot be tested with piuparts: %s.", " ".join(packages))
 
         if testable and not settings.no_install_purge_test:
             extra_packages = chroot.get_known_packages(settings.extra_old_packages)

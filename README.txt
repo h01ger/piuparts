@@ -224,11 +224,14 @@ the chroot was recorded for later comparison.
 
 'is_testable_' - before *installing* your package. If this script
 returns a non-zero return value, the installation of the package
-will be skipped, but the test will be reported as successful.
+will be skipped. With a return value of 1 the test will be reported
+as successful, but with a return value if 2 it will be reported as
+failed.
 Use this to flag packages that cannot be be tested with piuparts
 by design (e.g. usrmerge), require not publicly available external
 ressources (e.g. some downloader packages) or are broken beyond
-repair (e.g. buggy packages in archived releases).
+repair (e.g. buggy packages in archived releases). Use the return
+value of 2 for seriously broken packages that can break piuparts.
 
 'pre_install_' - before *installing* your package. Depending on
 the test, this may be run multiple times. The PIUPARTS_TEST and

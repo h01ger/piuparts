@@ -16,6 +16,12 @@ skip_test()
 	exit 1
 }
 
+fail_test()
+{
+	echo "Failing piuparts test: $*"
+	exit 2
+}
+
 skip_always()
 {
 	skip_test "$@"
