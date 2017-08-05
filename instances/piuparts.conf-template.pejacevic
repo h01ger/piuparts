@@ -96,8 +96,11 @@ flags-end-squeeze =
 flags-start-lenny =
 # dpkg --force-unsafe-io was added in squeeze
 	--dpkg-noforce-unsafe-io
-# same flags needed as in squeeze
-	%(flags-start-squeeze)s
+# up to squeeze a non-empty /etc/shells was shipped, actually installing
+# and removing a shell would remove its entry from /etc/shells
+	-i /etc/shells
+# lenny has been archived
+	--no-check-valid-until
 
 
 [global]

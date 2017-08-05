@@ -45,8 +45,8 @@ flags-end-wheezy =
 	--scriptsdir /etc/piuparts/scripts-wheezy
 
 flags-start-squeeze =
-	-i /etc/shells
 	--no-check-valid-until
+	-i /etc/shells
 flags-end-squeeze =
 	--warn-on-debsums-errors
 	--warn-on-install-over-symlink
@@ -54,10 +54,13 @@ flags-end-squeeze =
 
 flags-start-lenny =
 	--dpkg-noforce-unsafe-io
-	%(flags-start-squeeze)s
+	--no-check-valid-until
+	-i /etc/shells
 flags-end-lenny =
 	--skip-cronfiles-test
-	%(flags-end-squeeze)s
+	--warn-on-debsums-errors
+	--warn-on-install-over-symlink
+	--scriptsdir /etc/piuparts/scripts-squeeze
 	-i /etc/udev/
 	-i /etc/udev/rules.d/
 
