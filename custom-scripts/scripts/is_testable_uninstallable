@@ -212,4 +212,9 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	usrmerge@*)
 		skip_always "performs piuparts-unfriendy filesystem layout changes"
 		;;
+	xul-ext-compactheader@jessie)
+		if [ "$(apt-cache show xul-ext-compactheader | sed -n '/^Version:/s/^Version: //p')" = "2.0.8-1" ]; then
+			skip_distupgrade "#837387: uninstallable in jessie with icedove (>= 1:45)"
+		fi
+		;;
 esac
