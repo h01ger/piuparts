@@ -1,23 +1,24 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 . @sharedir@/piuparts/lib/read_config.sh
+
 get_config_value HTDOCS global output-directory
 
 mkdir -p ${HTDOCS}/for-manpages.d.o
 
-debiman-piuparts-distill \
+@libdir@/debiman-piuparts-distill \
   -logs_dir=${HTDOCS}/experimental \
   -output=${HTDOCS}/for-manpages.d.o/experimental.json.gz
 
-debiman-piuparts-distill \
+@libdir@/debiman-piuparts-distill \
   -logs_dir=${HTDOCS}/sid \
   -output=${HTDOCS}/for-manpages.d.o/unstable.json.gz
 
-debiman-piuparts-distill \
+@libdir@/debiman-piuparts-distill \
   -logs_dir=${HTDOCS}/stretch \
   -output=${HTDOCS}/for-manpages.d.o/testing.json.gz
 
-debiman-piuparts-distill \
+@libdir@/debiman-piuparts-distill \
   -logs_dir=${HTDOCS}/jessie \
   -output=${HTDOCS}/for-manpages.d.o/stable.json.gz

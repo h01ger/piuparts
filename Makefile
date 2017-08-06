@@ -29,6 +29,7 @@ define placeholder_substitution
 	sed -r \
 	-e 's/__PIUPARTS_VERSION__/$(version)/g' \
 	-e 's%@sharedir@%$(sharedir)%g' \
+	-e 's%@libdir@%$(libdir)%g' \
 	$< > $@
 endef
 
@@ -122,8 +123,8 @@ install-common: build-stamp
 	install -m 0644 lib/*.sh $(DESTDIR)$(sharedir)/piuparts/lib/
 
 install-master: build-master-stamp install-common
-	install -d $(DESTDIR)$(sbindir)/
-	install -m 0755 debiman-piuparts-distill/debiman-piuparts-distill $(DESTDIR)$(sbindir)/
+	install -d $(DESTDIR)$(libdir)/piuparts/
+	install -m 0755 debiman-piuparts-distill/debiman-piuparts-distill $(DESTDIR)$(libdir)/piuparts/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts
 	install -m 0755 piuparts-master piuparts-master-backend piuparts-report piuparts-analyze $(DESTDIR)$(sharedir)/piuparts/
@@ -177,6 +178,7 @@ clean:
 	rm -f piuparts.1.xml README.xml README_server.xml docbook-xsl.css piuparts.html
 	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc tests/*.pyc
 	rm -f $(SCRIPTS_GENERATED)
+	$(RM) debiman-piuparts-distill/debiman-piuparts-distill
 	$(MAKE) -C instances clean
 
 

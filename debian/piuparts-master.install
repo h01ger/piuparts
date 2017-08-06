@@ -7,4 +7,4 @@ usr/share/piuparts/piuparts-analyze
 usr/share/piuparts/piuparts-master
 usr/share/piuparts/piuparts-master-backend
 usr/share/piuparts/piuparts-report
-usr/sbin/debiman-piuparts-distill
+usr/lib/piuparts/debiman-piuparts-distill
