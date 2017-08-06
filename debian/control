@@ -3,7 +3,7 @@ Maintainer: piuparts developers team <piuparts-devel@lists.alioth.debian.org>
 Uploaders:
  Holger Levsen <holger@debian.org>
 Section: devel
-Priority: extra
+Priority: optional
 Standards-Version: 4.0.1
 Build-Depends:
  debhelper (>= 9.20120909~),
