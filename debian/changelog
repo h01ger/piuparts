@@ -2,6 +2,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
 
   [ Holger Levsen ]
   * slave-run: properly delete all screenlogs from previous runs.
+  * Bump standards version to 4.0.1, no changes needed.
 
   [ Andreas Beckmann ]
   * piuparts.py:
