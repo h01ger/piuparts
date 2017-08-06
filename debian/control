@@ -6,7 +6,7 @@ Section: devel
 Priority: optional
 Standards-Version: 4.0.1
 Build-Depends:
- debhelper (>= 9.20120909~),
+ debhelper (>= 10.2.5~),
  dh-python,
  python (>= 2.7),
  python-debian,
