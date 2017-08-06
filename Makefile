@@ -46,11 +46,16 @@ python-syntax-check:
 	@set -e -x; $(foreach py,$(python_scripts),python -m py_compile $(py);)
 	$(RM) $(python_scripts:=c)
 
-build: build-stamp
+build: build-stamp build-master-stamp
+build-slave: build-stamp
+build-master: build-stamp build-master-stamp
 
 build-stamp: $(SCRIPTS_GENERATED) $(DOCS_GENERATED) Makefile
 	$(MAKE) -C instances
 	$(MAKE) python-syntax-check
+	touch $@
+
+build-master-stamp:
 	(cd debiman-piuparts-distill && go build)
 	touch $@
 
@@ -76,6 +81,7 @@ piuparts_slave_stop.8: piuparts_slave_stop.8.txt
 
 piuparts.1.html: piuparts.1.txt
 	a2x --copy -f xhtml piuparts.1.txt
+
 
 install-doc: build-stamp
 	install -d $(DESTDIR)$(docdir)/
@@ -108,19 +114,19 @@ install-conf-4-running-from-git: build-stamp
 	install -d $(DESTDIR)$(sharedir)/piuparts/master
 	install -m 0755 update-piuparts-master-setup $(DESTDIR)$(sharedir)/piuparts/master/
 
-install: build-stamp
-	install -d $(DESTDIR)$(sbindir)
-	install -m 0755 piuparts $(DESTDIR)$(sbindir)/
-	install -m 0755 debiman-piuparts-distill/debiman-piuparts-distill $(DESTDIR)$(sbindir)/
-
-	install -d $(DESTDIR)$(sharedir)/piuparts
-	install -m 0755 piuparts-slave piuparts-master piuparts-master-backend piuparts-report piuparts-analyze $(DESTDIR)$(sharedir)/piuparts/
-
+install-common: build-stamp
 	install -d $(DESTDIR)$(site27)/piupartslib
 	install -m 0644 piupartslib/*.py $(DESTDIR)$(site27)/piupartslib/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts/lib
 	install -m 0644 lib/*.sh $(DESTDIR)$(sharedir)/piuparts/lib/
+
+install-master: build-master-stamp install-common
+	install -d $(DESTDIR)$(sbindir)/
+	install -m 0755 debiman-piuparts-distill/debiman-piuparts-distill $(DESTDIR)$(sbindir)/
+
+	install -d $(DESTDIR)$(sharedir)/piuparts
+	install -m 0755 piuparts-master piuparts-master-backend piuparts-report piuparts-analyze $(DESTDIR)$(sharedir)/piuparts/
 
 	# do not install the templates (*.in, *.py)
 	install -d $(DESTDIR)$(sharedir)/piuparts/master
@@ -128,10 +134,6 @@ install: build-stamp
 
 	install -d $(DESTDIR)$(sharedir)/piuparts/known_problems
 	install -m 0644 known_problems/*.conf $(DESTDIR)$(sharedir)/piuparts/known_problems/
-
-	# do not install the templates (*.in, *.py)
-	install -d $(DESTDIR)$(sharedir)/piuparts/slave
-	install -m 0755 $(filter-out %.in %.py,$(wildcard slave-bin/*)) $(DESTDIR)$(sharedir)/piuparts/slave/
 
 	install -d $(DESTDIR)$(htdocsdir)
 	install -m 0644 htdocs/*.* $(DESTDIR)$(htdocsdir)/
@@ -142,14 +144,27 @@ install: build-stamp
 	install -d $(DESTDIR)$(htdocsdir)/templates/mail
 	install -m 0644 bug-templates/*.mail $(DESTDIR)$(htdocsdir)/templates/mail/
 
+	#install -d $(DESTDIR)$(etcdir)/piuparts/known_problems
+	#install -m 0644 known_problems/*.conf $(DESTDIR)$(etcdir)/piuparts/known_problems/
+
+install-slave: install-common
+	install -d $(DESTDIR)$(sbindir)
+	install -m 0755 piuparts $(DESTDIR)$(sbindir)/
+
+	install -d $(DESTDIR)$(sharedir)/piuparts
+	install -m 0755 piuparts-slave $(DESTDIR)$(sharedir)/piuparts/
+
+	# do not install the templates (*.in, *.py)
+	install -d $(DESTDIR)$(sharedir)/piuparts/slave
+	install -m 0755 $(filter-out %.in %.py,$(wildcard slave-bin/*)) $(DESTDIR)$(sharedir)/piuparts/slave/
+
 	install -d $(DESTDIR)$(etcdir)/piuparts
 	@set -e -x ; \
 	for d in $$(ls custom-scripts) ; do \
 		install -d $(DESTDIR)$(etcdir)/piuparts/$$d ; \
 		install -m 0755 custom-scripts/$$d/* $(DESTDIR)$(etcdir)/piuparts/$$d/ ; done
 
-	#install -d $(DESTDIR)$(etcdir)/piuparts/known_problems
-	#install -m 0644 known_problems/*.conf $(DESTDIR)$(etcdir)/piuparts/known_problems/
+install: install-master install-slave
 
 
 check:
@@ -157,6 +172,7 @@ check:
 
 clean:
 	rm -f build-stamp
+	rm -f build-master-stamp
 	rm -f $(DOCS_GENERATED)
 	rm -f piuparts.1.xml README.xml README_server.xml docbook-xsl.css piuparts.html
 	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc tests/*.pyc

@@ -32,6 +32,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
   * master-bin/detect_network_issues:
     - Detect appstream metadata errors.
   * slave_run: Ensure screen is run with SHELL=/bin/bash.
+  * Makefile: Split build and install targets between master and slave.
 
  -- Holger Levsen <holger@debian.org>  Mon, 31 Jul 2017 13:35:18 -0400
 

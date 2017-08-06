@@ -68,11 +68,11 @@ fi
 #
 make clean
 make		prefix=$PIUPARTS_PREFIX \
-		build build-doc
-make	prefix=$PIUPARTS_PREFIX \
+		build-master build-doc
+make		prefix=$PIUPARTS_PREFIX \
 		docdir=$PIUPARTS_HTDOCS/doc \
 		htdocsdir=$PIUPARTS_HTDOCS \
-		install install-doc install-conf-4-running-from-git
+		install-master install-doc install-conf-4-running-from-git
 make clean
 
 #
