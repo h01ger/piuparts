@@ -132,7 +132,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   This option can be used as many times as necessary.
 
 *--install-purge-install*::
-  Purge package after installation and reinstall. All depedencies are installed during purge.
+  Purge package after installation and reinstall. All dependencies are available during purge.
 
 *--install-recommends*::
   Enable installation of Recommends.

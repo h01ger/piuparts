@@ -35,14 +35,14 @@ License: GPL-2+
  License version 2 can be found in the file
  '/usr/share/common-licenses/GPL-2'.
 
-Files: */debian.png */openlogo-ng-50.png
+Files: htdocs/images/debian.png htdocs/images/openlogo-nd-50.png
 Copyright: 1999 Software in the Public Interest
 License: Free
  This logo or a modified version may be used by anyone to refer to the Debian project, but does not indicate endorsement by the project.
  .
  Note: we would appreciate that you make the image a link to https://www.debian.org/ if you use it on a web page.
 
-Files: */valid-html401.png */w3c-valid-css.png
+Files: htdocs/images/valid-html401.png htdocs/images/w3c-valid-css.png
 Copyright: 2009 W3C
 License: FreeUse
  In most cases, W3C logos and icons may be used without requesting permission

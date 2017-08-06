@@ -17,11 +17,11 @@ Build-Depends:
  python-yaml,
  python-mox3,
  python-lzma,
- golang-any
+ golang-any,
 Build-Depends-Indep:
  asciidoc,
  git,
- xmlto
+ xmlto,
 Homepage: https://piuparts.debian.org
 Vcs-Git: https://anonscm.debian.org/git/piuparts/piuparts.git
 Vcs-Browser: https://anonscm.debian.org/git/piuparts/piuparts.git
@@ -38,8 +38,8 @@ Depends:
  lsb-release,
  lsof,
  python-debian,
+ ${python:Depends},
  ${misc:Depends},
- ${python:Depends}
 Recommends:
  adequate
 Suggests:
@@ -58,16 +58,18 @@ Description: .deb package installation, upgrading, and removal testing tool
 Package: piuparts-master
 Architecture: any
 Depends:
- piuparts-common (= ${binary:Version}),
+ piuparts-common (>= ${source:Version}),
+ piuparts-common (<< ${source:Version}+),
  adduser,
  openssh-server,
  python-debianbts,
  tango-icon-theme,
  xz-utils,
  python-yaml,
- ${misc:Depends},
  python (>= 2.7),
- ${python:Depends}
+ ${python:Depends},
+ ${shlibs:Depends},
+ ${misc:Depends},
 Recommends:
  apache2 | httpd,
  ghostscript,
@@ -99,9 +101,9 @@ Depends:
  openssh-client,
  screen,
  sudo,
- ${misc:Depends},
  python (>= 2.7),
- ${python:Depends}
+ ${python:Depends},
+ ${misc:Depends},
 Suggests:
  schroot
 Breaks:
@@ -123,8 +125,8 @@ Depends:
  python-apt,
  python-distro-info,
  python-lzma,
+ ${python:Depends},
  ${misc:Depends},
- ${python:Depends}
 Breaks:
  piuparts (<= 0.44)
 Replaces:
