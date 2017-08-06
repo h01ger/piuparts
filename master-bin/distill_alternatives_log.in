@@ -7,18 +7,18 @@ get_config_value HTDOCS global output-directory
 
 mkdir -p ${HTDOCS}/for-manpages.d.o
 
-@libdir@/debiman-piuparts-distill \
+@libdir@/piuparts/debiman-piuparts-distill \
   -logs_dir=${HTDOCS}/experimental \
   -output=${HTDOCS}/for-manpages.d.o/experimental.json.gz
 
-@libdir@/debiman-piuparts-distill \
+@libdir@/piuparts/debiman-piuparts-distill \
   -logs_dir=${HTDOCS}/sid \
   -output=${HTDOCS}/for-manpages.d.o/unstable.json.gz
 
-@libdir@/debiman-piuparts-distill \
+@libdir@/piuparts/debiman-piuparts-distill \
   -logs_dir=${HTDOCS}/stretch \
   -output=${HTDOCS}/for-manpages.d.o/testing.json.gz
 
-@libdir@/debiman-piuparts-distill \
+@libdir@/piuparts/debiman-piuparts-distill \
   -logs_dir=${HTDOCS}/jessie \
   -output=${HTDOCS}/for-manpages.d.o/stable.json.gz
