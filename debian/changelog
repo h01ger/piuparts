@@ -15,6 +15,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
       packages that would fail anyway, but are resource hogs or otherwise
       break piuparts.
     - Silence diff_meta_data() for "others" for --warn-on-others.
+    - Let debsums always ignore obsolete conffiles.
   * piuparts.conf:
     - Use relative expiration ages.
   * piuparts.conf.anbe: Add some more example sections.
@@ -35,6 +36,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
     - Detect appstream metadata errors.
   * slave_run: Ensure screen is run with SHELL=/bin/bash.
   * Makefile: Split build and install targets between master and slave.
+  * Bump debsums dependency to (>= 2.2.2~) for --ignore-obsolete.
 
  -- Holger Levsen <holger@debian.org>  Mon, 31 Jul 2017 13:35:18 -0400
 

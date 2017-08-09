@@ -34,7 +34,7 @@ Pre-Depends:
 Depends:
  piuparts-common (= ${binary:Version}),
  debootstrap,
- debsums,
+ debsums (>= 2.2.2~),
  lsb-release,
  lsof,
  python-debian,

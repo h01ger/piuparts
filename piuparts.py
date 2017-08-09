@@ -1335,7 +1335,7 @@ class Chroot:
         return (removed, added)
 
     def check_debsums(self):
-        (status, output) = run(["debsums", "--root", self.name, "-ac"], ignore_errors=True)
+        (status, output) = run(["debsums", "--root", self.name, "-ac", "--ignore-obsolete"], ignore_errors=True)
         if status != 0:
             logging.error("FAIL: debsums reports modifications inside the chroot:\n%s" %
                           indent_string(output.replace(self.name, "")))
