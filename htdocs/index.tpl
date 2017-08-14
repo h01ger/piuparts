@@ -74,6 +74,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2017-08-14</b> Improve testing coverage of Wheezy LTS: <a href="https://piuparts.debian.org/wheezy2lts">wheezy2lts</a>, <a href="https://piuparts.debian.org/squeeze2wheezy-lts">squeeze2wheezy-lts</a> and <a href="https://piuparts.debian.org/squeeze2bpo2wheezy">squeeze2bpo2wheezy</a> now test upgrades up to wheezy-lts.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2017-04-28</b> Another suite added: <a href="https://piuparts.debian.org/stable2sid">stable2sid</a>, to test package installation in stable (currently jessie), then upgrade directly to sid (always unstable), then removal and purge... This is useful to detect bugs before they reach testing.
      </td>
     </tr>
