@@ -187,7 +187,7 @@ piuparts:
 - #665016 - new test: more checks on alternatives
 - #810323 - new test: deconfiguring and configuring a package again
 - #658731 - add pattern for owned files that are always an error
-- #682741 - add a second set of ignoreed files and patterns for "partial purge" tests
+- #682741 - add a second set of ignored files and patterns for "partial purge" tests
 
 piuparts-report:
 - #685813 - add a single report of all failures (from all sections) ordered by age

@@ -23,20 +23,18 @@ piuparts (0.79) UNRELEASED; urgency=medium
   * piuparts.conf:
     - Use relative expiration ages.
   * piuparts.conf.anbe: Add some more example sections.
-  * reschedule_oldest_logs: Expiration age values starting with "+" are
-    relative to the rescheduling age.
-  * Move some exceptions to {pre,post}_test_exceptions.
+  * Move some exceptions to scripts/{pre,post}_test_exceptions.
   * scripts/post_distupgrade_base_cleanup: Remove pinentry-curses from the
     stretch (--install-recommends) reference chroot.
   * scripts/is_testable_uninstallable:
-    - Skip and fail install of mini-buildd-{bld,rep} in squeeze.
+    - squeeze: Skip and fail install of mini-buildd-{bld,rep}.
+    - jessie->stretch: Skip distupgrade of arden:i386.
   * scripts/pre_distupgrade_zz_database-server: Improve some upgrade paths.
   * scripts/post_purge_exceptions:
     - Restore /usr/lib/sasl2/ disappearing on some jessie->stretch upgrades.
-  * scripts/is_testable_uninstallable:
-    - Add exception to skip distupgrade of arden:i386.
-  * master-bin/detect_network_issues:
-    - Detect appstream metadata errors.
+  * master-bin/reschedule_oldest_logs: Expiration age values starting with "+"
+    are relative to the rescheduling age.
+  * master-bin/detect_network_issues: Detect appstream metadata errors.
   * slave_run: Ensure screen is run with SHELL=/bin/bash.
   * Makefile: Split build and install targets between master and slave.
   * Bump debsums dependency to (>= 2.2.2~) for --ignore-obsolete.
@@ -128,7 +126,7 @@ piuparts (0.78) unstable; urgency=medium
     (Closes: #856845)
   * scripts/post_distupgrade_exceptions: Add stretch->buster workarounds:
     - Remove empty unowned /etc/dbus-1/, /etc/dbus-1/system.d/.
-    - Change permissions from 0755 to 0700 on /var/lib/polkit-1.
+    - Change permissions from 0755 to 0700 on /var/lib/polkit-1/.
   * scripts-broken-symlinks/post_install_extras_unbreak_symlinks: New script
     for "fixing" some broken symlinks (e.g. by installing selected suggested
     packages) in tests using --fail-on-broken-symlinks.
