@@ -24,6 +24,10 @@ piuparts (0.79) UNRELEASED; urgency=medium
     - Add wheezy-lts as a full distro.
   * piuparts.conf:
     - Use relative expiration ages.
+    - Use wheezy-lts as upgrade target and rename sections:
+      + [wheezy2proposed] => [wheezy2lts]
+      + [squeeze2wheezy-proposed] => [squeeze2wheezy-lts]
+    - [squeeze2bpo2wheezy]: Use wheezy-lts as final upgrade target.
   * piuparts.conf.anbe: Add some more example sections.
   * Move some exceptions to scripts/{pre,post}_test_exceptions.
   * scripts/post_distupgrade_base_cleanup: Remove pinentry-curses from the

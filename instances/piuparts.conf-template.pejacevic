@@ -150,12 +150,12 @@ sections =
 	wheezy2jessie
 	wheezy2jessie-rcmd
 	wheezy2bpo2jessie
-#	wheezy-proposed
-	wheezy2proposed
+#	wheezy-lts
+	wheezy2lts
 	wheezy
 	wheezy-security
 	wheezy-pu
-	squeeze2wheezy-proposed
+	squeeze2wheezy-lts
 	squeeze2wheezy
 	squeeze2bpo-sloppy
 	squeeze2bpo2wheezy
@@ -689,18 +689,18 @@ piuparts-flags =
 distro = wheezy
 
 
-[wheezy-proposed]
-precedence = 100
+[wheezy-lts]
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-distro = wheezy-proposed
+distro = wheezy-lts
 
 
 [wheezy-security]
-precedence = 100
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -721,26 +721,26 @@ depends-sections = wheezy
 distro = wheezy-proposed-updates
 
 
-[wheezy2proposed]
-precedence = 100
+[wheezy2lts]
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
 distro = wheezy
-upgrade-test-distros = wheezy wheezy-proposed
+upgrade-test-distros = wheezy wheezy-lts
 
 
-[squeeze2wheezy-proposed]
-precedence = 100
+[squeeze2wheezy-lts]
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
 distro = squeeze
-upgrade-test-distros = squeeze wheezy-proposed
+upgrade-test-distros = squeeze wheezy-lts
 
 
 [squeeze2wheezy]
@@ -755,7 +755,7 @@ upgrade-test-distros = squeeze wheezy
 
 
 [squeeze2bpo2wheezy]
-precedence = 100
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -763,7 +763,7 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = squeeze
 distro = squeeze-backports
-upgrade-test-distros = squeeze squeeze-backports wheezy
+upgrade-test-distros = squeeze squeeze-backports wheezy-lts
 
 
 [squeeze2bpo-sloppy]
