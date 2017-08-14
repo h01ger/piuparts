@@ -66,6 +66,11 @@ if [ "$PIUPARTS_PHASE" != "install" ]; then
 fi
 
 case ${PIUPARTS_OBJECTS%%=*} in
+	auctex)
+			# do not run the (long) latex macro indexing task in the background (#867020)
+			log_debug
+			echo "auctex auctex/doauto select Foreground" | debconf-set-selections
+			;;
 	samhain)
 			# work around #749602
 			log_debug
