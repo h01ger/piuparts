@@ -37,6 +37,7 @@ Depends:
  debsums (>= 2.2.2~),
  lsb-release,
  lsof,
+ mount,
  python-debian,
  ${python:Depends},
  ${misc:Depends},

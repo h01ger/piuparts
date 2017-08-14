@@ -41,6 +41,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
   * slave_run: Ensure screen is run with SHELL=/bin/bash.
   * Makefile: Split build and install targets between master and slave.
   * Bump debsums dependency to (>= 2.2.2~) for --ignore-obsolete.
+  * Depend on mount, no longer essential.
 
   [ Michael Stapelberg ]
   * helpers/debiman-piuparts-distill: New helper for parsing the output
