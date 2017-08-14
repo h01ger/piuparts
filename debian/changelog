@@ -32,6 +32,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
   * scripts/pre_distupgrade_zz_database-server: Improve some upgrade paths.
   * scripts/post_purge_exceptions:
     - Restore /usr/lib/sasl2/ disappearing on some jessie->stretch upgrades.
+  * Add/update exceptions for some ancient packages.
   * master-bin/reschedule_oldest_logs: Expiration age values starting with "+"
     are relative to the rescheduling age.
   * master-bin/detect_network_issues: Detect appstream metadata errors.

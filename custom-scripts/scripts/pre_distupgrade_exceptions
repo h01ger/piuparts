@@ -56,6 +56,12 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
 		touch /etc/udev/rules.d/.piuparts.dummy
 	fi
 
+	# isc-dhcp-server.postinst unconditionally overwrites conffile /etc/dhcp/dhcpd.conf
+	if is_installed dhcp3-server; then
+		log_debug
+		rm -fv /etc/dhcp3/dhcpd.conf
+	fi
+
 fi
 
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
