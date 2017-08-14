@@ -38,6 +38,12 @@ piuparts (0.79) UNRELEASED; urgency=medium
   * Makefile: Split build and install targets between master and slave.
   * Bump debsums dependency to (>= 2.2.2~) for --ignore-obsolete.
 
+  [ Michael Stapelberg ]
+  * helpers/debiman-piuparts-distill: New helper for parsing the output
+    generated from scripts-log-alternatives.  (Closes: #863089)
+  * master-bin/distill_alternatives_log: Run debiman-piuparts-distill on the
+    sections that use scripts-log-alternatives. Runs as a daily cronjob.
+
  -- Holger Levsen <holger@debian.org>  Mon, 31 Jul 2017 13:35:18 -0400
 
 piuparts (0.78) unstable; urgency=medium

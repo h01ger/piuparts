@@ -57,7 +57,7 @@ build-stamp: $(SCRIPTS_GENERATED) $(DOCS_GENERATED) Makefile
 	touch $@
 
 build-master-stamp:
-	(cd debiman-piuparts-distill && go build)
+	(cd helpers/debiman-piuparts-distill && go build)
 	touch $@
 
 build-doc: $(DOCS_GENERATED)
@@ -124,7 +124,7 @@ install-common: build-stamp
 
 install-master: build-master-stamp install-common
 	install -d $(DESTDIR)$(libdir)/piuparts/
-	install -m 0755 debiman-piuparts-distill/debiman-piuparts-distill $(DESTDIR)$(libdir)/piuparts/
+	install -m 0755 helpers/debiman-piuparts-distill/debiman-piuparts-distill $(DESTDIR)$(libdir)/piuparts/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts
 	install -m 0755 piuparts-master piuparts-master-backend piuparts-report piuparts-analyze $(DESTDIR)$(sharedir)/piuparts/
@@ -178,7 +178,7 @@ clean:
 	rm -f piuparts.1.xml README.xml README_server.xml docbook-xsl.css piuparts.html
 	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc tests/*.pyc
 	rm -f $(SCRIPTS_GENERATED)
-	$(RM) debiman-piuparts-distill/debiman-piuparts-distill
+	$(RM) helpers/debiman-piuparts-distill/debiman-piuparts-distill
 	$(MAKE) -C instances clean
 
 
