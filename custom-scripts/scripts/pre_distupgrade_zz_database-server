@@ -28,17 +28,6 @@ CANDIDATES=
 CANDIDATES="$CANDIDATES default-mysql-server"
 #CANDIDATES="$CANDIDATES mysql-server"
 CANDIDATES="$CANDIDATES postgresql"
-CANDIDATES="$CANDIDATES postgresql-8.3"
-CANDIDATES="$CANDIDATES postgresql-8.4"
-CANDIDATES="$CANDIDATES postgresql-9.1"
-CANDIDATES="$CANDIDATES postgresql-9.4"
-CANDIDATES="$CANDIDATES postgresql-9.6"
-
-case "$PIUPARTS_DISTRIBUTION_NEXT" in
-	jessie)
-		CANDIDATES="$CANDIDATES mysql-server-5.5"
-		;;
-esac
 
 case "$PIUPARTS_DISTRIBUTION_NEXT" in
 	buster)
@@ -83,10 +72,20 @@ done
 
 test ! -x /usr/bin/pg_lsclusters || pg_lsclusters
 
+did_apt_get_update=
+apt_get_update()
+{
+	if [ -z "$did_apt_get_update" ]
+	then
+		apt-get update
+		did_apt_get_update=true
+	fi
+}
+
 if [ -n "$PACKAGES" ]
 then
 	echo "Upgrading early: ${PACKAGES# }"
-	apt-get update
+	apt_get_update
 	apt-get -y install $PACKAGES || $RETRY
 fi
 
@@ -104,6 +103,7 @@ upgrade_pg_cluster()
 	then
 		echo ""
 		echo "Installing: postgresql-${to}"
+		apt_get_update
 		apt-get -y install postgresql-${to}
 	fi
 

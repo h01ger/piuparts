@@ -8,6 +8,7 @@ log_debug() {
 dbconfig_enable_purge()
 {
 	log_debug
+	echo "Enabling dbconfig purge for $1."
 	echo "$1 $1${2+/$2}/dbconfig-remove boolean true" | debconf-set-selections
 	echo "$1 $1${2+/$2}/purge boolean true" | debconf-set-selections
 }

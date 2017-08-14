@@ -61,8 +61,8 @@ add_pattern "passwd: Authentication token manipulation error"
 add_pattern "(chfn|groupadd|useradd): (cannot lock|failure while writing changes to) /etc/(group|gshadow|passwd|shadow|subuid)"
 add_pattern "(groupadd|useradd): (unable to lock|cannot rewrite) (group|password) file"
 # Database server issues.
-add_pattern 'invoke-rc.d: initscript mysql, action "(start|restart)" failed.'
-add_pattern 'invoke-rc.d: initscript postgresql, action "start" failed.'
+add_pattern 'INVOKE-RC.D: INITSCRIPT (MYSQL|POSTGRESQL|POSTGRESQL-8.3), ACTION "(RE)?START" FAILED.'
+add_pattern 'invoke-rc.d: initscript (mysql|postgresql|postgresql-8.3), action "(re)?start" failed.'
 add_pattern 'The PostgreSQL server failed to start.'
 add_pattern 'No database found online on port 5432'
 add_pattern 'unable to connect to postgresql server'
