@@ -13,12 +13,12 @@ mkdir -p ${HTDOCS}/for-manpages.d.o
 
 @libdir@/piuparts/debiman-piuparts-distill \
   -logs_dir=${HTDOCS}/sid \
-  -output=${HTDOCS}/for-manpages.d.o/unstable.json.gz
+  -output=${HTDOCS}/for-manpages.d.o/sid.json.gz
 
 @libdir@/piuparts/debiman-piuparts-distill \
   -logs_dir=${HTDOCS}/stretch \
-  -output=${HTDOCS}/for-manpages.d.o/testing.json.gz
+  -output=${HTDOCS}/for-manpages.d.o/stretch.json.gz
 
 @libdir@/piuparts/debiman-piuparts-distill \
   -logs_dir=${HTDOCS}/jessie \
-  -output=${HTDOCS}/for-manpages.d.o/stable.json.gz
+  -output=${HTDOCS}/for-manpages.d.o/jessie.json.gz
