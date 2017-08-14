@@ -16,6 +16,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
       break piuparts.
     - Silence diff_meta_data() for "others" for --warn-on-others.
     - Let debsums always ignore obsolete conffiles.
+    - Run debootstrap with --no-merged-usr.
   * piuparts.conf:
     - Use relative expiration ages.
   * piuparts.conf.anbe: Add some more example sections.

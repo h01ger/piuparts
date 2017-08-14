@@ -1061,6 +1061,7 @@ class Chroot:
             options.append("--keyring=%s" % settings.keyring)
         if settings.eatmydata:
             options.append('--include=eatmydata')
+        options.append('--no-merged-usr')
         options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
         if settings.arch:
             options.append('--arch=%s' % settings.arch)
