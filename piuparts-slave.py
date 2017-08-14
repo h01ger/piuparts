@@ -781,11 +781,14 @@ class Section:
             elif not "piuparts run ends" in lastline:
                 ret += 1024
                 output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n")
-            elif distupgrade and self._config["chroot-meta-auto"] and \
-                    "History of available packages does not match - reference chroot may be outdated" in f:
+            elif distupgrade and self._config["chroot-meta-auto"]:
                 try:
-                    os.unlink(self._config["chroot-meta-auto"])
-                    logging.info("Deleting outdated %s" % self._config["chroot-meta-auto"])
+                    if "History of available packages does not match - reference chroot may be outdated" in f:
+                        os.unlink(self._config["chroot-meta-auto"])
+                        logging.info("Deleting outdated %s" % self._config["chroot-meta-auto"])
+                    elif "Initial package selections do not match - ignoring loaded reference chroot state" in f:
+                        os.unlink(self._config["chroot-meta-auto"])
+                        logging.info("Deleting mismatching %s" % self._config["chroot-meta-auto"])
                 except OSError:
                     pass
 

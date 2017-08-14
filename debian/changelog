@@ -15,6 +15,9 @@ piuparts (0.79) UNRELEASED; urgency=medium
       packages that would fail anyway, but are resource hogs or otherwise
       break piuparts.
     - Silence diff_meta_data() for "others" for --warn-on-others.
+    - Store the initial package selections in the --save-end-meta meta-data
+      and ignore meta-data from --end-meta if these selections don't match,
+      e.g. due to different fake-essential package sets.
     - Let debsums always ignore obsolete conffiles.
     - Run debootstrap with --no-merged-usr.
   * piuparts.conf:

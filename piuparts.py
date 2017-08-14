@@ -753,6 +753,7 @@ class Chroot:
         self.name = None
         self.bootstrapped = False
         self.mounts = []
+        self.initial_selections = None
         self.avail_md5_history = []
 
     def create_temp_dir(self):
@@ -1100,6 +1101,10 @@ class Chroot:
            chroot metadata"""
         errorcode, avail_md5 = self.run(["sh", "-c", "apt-cache dumpavail | md5sum"])
         self.avail_md5_history.append(avail_md5.split()[0])
+
+    def remember_initial_selections(self):
+        """Remember initial selections to easily recognize mismatching chroot metadata"""
+        self.initial_selections = self.get_selections()
 
     def upgrade_to_distros(self, distros, packages, apt_get_upgrade=False):
         """Upgrade a chroot installation to each successive distro."""
@@ -1571,6 +1576,7 @@ class Chroot:
 
     def get_state_meta_data(self):
         chroot_state = {}
+        chroot_state["initial_selections"] = self.initial_selections
         chroot_state["avail_md5"] = self.avail_md5_history
         chroot_state["tree"] = self.get_tree_meta_data()
         chroot_state["selections"] = self.get_selections()
@@ -2705,6 +2711,7 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     chroot = get_chroot()
     chroot.create()
+    chroot.remember_initial_selections()
 
     chroot_state = None
     if settings.end_meta:
@@ -2712,6 +2719,17 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
             chroot_state = load_meta_data(settings.end_meta)
         else:
             logging.info("Cannot load chroot state from %s - generating it on-the-fly." % settings.end_meta)
+
+    if chroot_state is not None:
+        if chroot.initial_selections != chroot_state["initial_selections"]:
+            logging.warn("Initial package selections do not match - ignoring loaded reference chroot state")
+            refsel = [(s, p, v) for p, (s, v) in chroot_state["initial_selections"].iteritems()]
+            cursel = [(s, p, v) for p, (s, v) in chroot.initial_selections.iteritems()]
+            rsel = [x for x in refsel if not x in cursel]
+            csel = [x for x in cursel if not x in refsel]
+            [logging.debug("  -%s" % " ".join(x)) for x in rsel]
+            [logging.debug("  +%s" % " ".join(x)) for x in csel]
+            chroot_state = None
 
     if chroot_state is None:
         temp_tgz = None
