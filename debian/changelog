@@ -42,6 +42,8 @@ piuparts (0.79) UNRELEASED; urgency=medium
   * master-bin/reschedule_oldest_logs: Expiration age values starting with "+"
     are relative to the rescheduling age.
   * master-bin/detect_network_issues: Detect appstream metadata errors.
+  * master-bin/rotate_master_logs: New daily cronjob to rotate and compress
+    (with one day of delay) master logfiles larger than 1 MB.
   * slave_run: Ensure screen is run with SHELL=/bin/bash.
   * Makefile: Split build and install targets between master and slave.
   * Bump debsums dependency to (>= 2.2.2~) for --ignore-obsolete.

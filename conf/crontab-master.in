@@ -35,6 +35,7 @@ PATH=@sharedir@/piuparts/master:/usr/bin:/bin
 #
 0  2  * * * prepare_backup
 55 23 * * * gather_bts_stats
+42 23 * * * rotate_master_logs
 
 #
 # data export for manpages.d.o

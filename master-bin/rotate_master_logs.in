@@ -1,0 +1,50 @@
+#!/bin/sh
+set -e
+
+# Copyright © 2017 Andreas Beckmann (anbe@debian.org)
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>
+
+#
+# * rotate master logfiles greater than 1 MB
+# * (delayed) compress rotated master logs
+#
+
+
+. @sharedir@/piuparts/lib/read_config.sh
+
+get_config_value SECTIONS global sections
+get_config_value MASTER global master-directory
+
+
+today=$(date +%Y%m%d)
+
+cd $MASTER
+for SECTION in $SECTIONS ; do
+	mlog=$SECTION/master.log
+	rlog=$SECTION/master.$today.log
+
+	# rotate master.log larger than 1 MB
+	if [ -f $mlog ] && [ ! -L $mlog ] && [ $(stat -c %s $mlog) -gt 1048576 ] && [ ! -e $rlog ]; then
+		mv -v $mlog $rlog
+	fi
+
+	# delayed compression of old master.log
+	for log in $SECTION/master.*.log
+	do
+		if [ -f "$log" ] && [ "$log" != "$rlog" ]; then
+			xz -v9 $log
+		fi
+	done
+done
