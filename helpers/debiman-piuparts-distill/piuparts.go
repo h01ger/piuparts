@@ -109,10 +109,13 @@ func main() {
 	}
 	// Collect results from all workers into linksMap
 	linksMap := make(map[link]bool)
+	// Channel for signaling that all results were collected
+	collected := make(chan bool)
 	go func() {
 		for l := range linksChan {
 			linksMap[l] = true
 		}
+		collected <- true
 	}()
 	// Walk through *logsDir, enqueue all .log files onto the work channel
 	if err := filepath.Walk(*logsDir, func(path string, info os.FileInfo, err error) error {
@@ -128,6 +131,7 @@ func main() {
 	// Wait for the worker goroutines to terminate
 	wg.Wait()
 	close(linksChan)
+	<-collected
 	// Convert the unsorted linksMap into a slice for sorting
 	links := make([]link, 0, len(linksMap))
 	for l := range linksMap {
