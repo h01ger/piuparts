@@ -1,6 +1,10 @@
 piuparts (0.80) UNRELEASED; urgency=medium
 
-  * … 
+  [ Michael Stapelberg ]
+  * debiman-piuparts-distill:
+    - increase maximum token size.
+    - bugfix: wait until all results are collected.
+    - don’t print all results.
 
  -- Holger Levsen <holger@debian.org>  Wed, 30 Aug 2017 16:54:00 +0200
 
