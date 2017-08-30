@@ -53,6 +53,10 @@ func process(path string, links chan<- link) error {
 	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
+	// Increase the maximum token size to 5 MB to handle logs such as
+	// apprecommender_0.7.5-2.log, which has a very long line of interactive
+	// xapian progress output.
+	scanner.Buffer(nil, 5*1024*1024)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
 		if !strings.HasPrefix(line, "LOG-ALTERNATIVES: ") {
