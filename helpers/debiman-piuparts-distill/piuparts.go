@@ -131,7 +131,6 @@ func main() {
 	// Convert the unsorted linksMap into a slice for sorting
 	links := make([]link, 0, len(linksMap))
 	for l := range linksMap {
-		log.Printf("l = %+v", l)
 		links = append(links, l)
 	}
 	// for easier debugging of the resulting file:
