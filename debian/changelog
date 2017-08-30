@@ -1,4 +1,4 @@
-piuparts (0.79) UNRELEASED; urgency=medium
+piuparts (0.79) unstable; urgency=medium
 
   [ Holger Levsen ]
   * slave-run: properly delete all screenlogs from previous runs.
@@ -55,7 +55,7 @@ piuparts (0.79) UNRELEASED; urgency=medium
   * master-bin/distill_alternatives_log: Run debiman-piuparts-distill on the
     sections that use scripts-log-alternatives. Runs as a daily cronjob.
 
- -- Holger Levsen <holger@debian.org>  Mon, 31 Jul 2017 13:35:18 -0400
+ -- Holger Levsen <holger@debian.org>  Wed, 30 Aug 2017 15:31:34 +0200
 
 piuparts (0.78) unstable; urgency=medium
 
