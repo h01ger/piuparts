@@ -6,6 +6,7 @@ Section: devel
 Priority: optional
 Standards-Version: 4.1.0
 Build-Depends:
+ asciidoc,
  debhelper (>= 10.2.5~),
  dh-python,
  python (>= 2.7),

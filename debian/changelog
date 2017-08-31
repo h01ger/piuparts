@@ -7,6 +7,10 @@ piuparts (0.80) UNRELEASED; urgency=medium
     - don’t print all results.
   * distill_alternatives_log: also process buster.
 
+  [ Holger Levsen ]
+  * Add asciidoc to Build-Depends. (Newly needed because d697f2991 changed
+    piuparts-master to an arch:any package.) Thanks to Adrian Bunk. (Closes: #873825)
+
  -- Holger Levsen <holger@debian.org>  Wed, 30 Aug 2017 16:54:00 +0200
 
 piuparts (0.79) unstable; urgency=medium
