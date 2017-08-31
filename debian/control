@@ -20,7 +20,6 @@ Build-Depends:
  python-lzma,
  golang-any,
 Build-Depends-Indep:
- asciidoc,
  git,
  xmlto,
 Homepage: https://piuparts.debian.org
