@@ -1,6 +1,8 @@
 piuparts (0.81) UNRELEASED; urgency=medium
 
-  * … 
+  [ Andreas Beckmann ]
+  * master-bin/distill_alternatives_log: Parse piuparts.conf to find the
+    sections that use scripts-log-alternatives.
 
  -- Holger Levsen <holger@debian.org>  Thu, 31 Aug 2017 17:41:08 +0200
 

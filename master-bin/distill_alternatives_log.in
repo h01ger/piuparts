@@ -3,26 +3,19 @@ set -e
 
 . @sharedir@/piuparts/lib/read_config.sh
 
+get_config_value SECTIONS global sections
 get_config_value HTDOCS global output-directory
+
 
 mkdir -p ${HTDOCS}/for-manpages.d.o
 
-@libdir@/piuparts/debiman-piuparts-distill \
-  -logs_dir=${HTDOCS}/experimental \
-  -output=${HTDOCS}/for-manpages.d.o/experimental.json.gz
-
-@libdir@/piuparts/debiman-piuparts-distill \
-  -logs_dir=${HTDOCS}/sid \
-  -output=${HTDOCS}/for-manpages.d.o/sid.json.gz
-
-@libdir@/piuparts/debiman-piuparts-distill \
-  -logs_dir=${HTDOCS}/stretch \
-  -output=${HTDOCS}/for-manpages.d.o/stretch.json.gz
-
-@libdir@/piuparts/debiman-piuparts-distill \
-  -logs_dir=${HTDOCS}/jessie \
-  -output=${HTDOCS}/for-manpages.d.o/jessie.json.gz
-
-@libdir@/piuparts/debiman-piuparts-distill \
-  -logs_dir=${HTDOCS}/buster \
-  -output=${HTDOCS}/for-manpages.d.o/buster.json.gz
+for SECTION in $SECTIONS ; do
+	test -d $HTDOCS/$SECTION || continue
+	get_config_value FLAGS $SECTION piuparts-flags ""
+	if echo "$FLAGS" | grep -q scripts-log-alternatives ; then
+		mkdir -p $(dirname ${HTDOCS}/for-manpages.d.o/${SECTION})
+		@libdir@/piuparts/debiman-piuparts-distill \
+			-logs_dir=${HTDOCS}/${SECTION} \
+			-output=${HTDOCS}/for-manpages.d.o/${SECTION}.json.gz
+	fi
+done

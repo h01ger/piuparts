@@ -163,9 +163,6 @@ for 0.8x and later:
   - create emacspeak-broken-dpkg-preconfigure package for broken repo. (then later
     put more broken packages in there and use that for testing piuparts)
 
-- master-bin/distill_alternatives_log: parse the config to find sections
-  with scripts-log-alternatives enabled
-
 
 
 (Closed) wishlist bugs are listed here so it's easier to find information
