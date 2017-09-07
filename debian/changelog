@@ -5,6 +5,13 @@ piuparts (0.81) UNRELEASED; urgency=medium
     sections that use scripts-log-alternatives.
   * Use copyright notices without FSF street address.
 
+  [ Simon McVittie ]
+  * Consider the /usr merge to be acceptable variation. Files that the
+    dpkg database considers to be in /bin, /sbin, /lib/**, /lib*/**
+    are now allowed to be physically in /usr/bin, etc. due to symlinks in
+    the root directory, as created by usrmerge or debootstrap --merged-usr.
+    (Closes: #860433)
+
  -- Holger Levsen <holger@debian.org>  Thu, 31 Aug 2017 17:41:08 +0200
 
 piuparts (0.80) unstable; urgency=medium

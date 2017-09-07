@@ -1410,10 +1410,26 @@ class Chroot:
         file_owners = self.get_files_owned_by_packages()
         bad = []
         overwrites = False
+        usrmerge = set()
         for f in sorted(file_owners.keys()):
             dn, fn = os.path.split(f)
             dc = canonicalize_path(self.name, dn)
             if dn != dc:
+                # Allow the /usr merge to have taken place. For example, if
+                # f (the file recorded in the dpkg database) is /bin/cat,
+                # then dn is /bin, and it's OK for /bin to have become a
+                # symlink to /usr/bin. Similarly /sbin, /lib, /libQUAL
+                # (/lib32 etc.) or any subdirectory of /lib or /libQUAL
+                # can be /usr-merged.
+                if dc == '/usr' + dn and (dn in ('/bin', '/sbin') or
+                                          dn.startswith('/lib')):
+                    # Only report each directory once
+                    if dn not in usrmerge:
+                        usrmerge.add(dn)
+                        logging.info('%s converted to %s by /usr merge', dn, dc)
+
+                    continue
+
                 fc = os.path.join(dc, fn)
                 of = ", ".join(file_owners[f])
                 if fc in file_owners:
