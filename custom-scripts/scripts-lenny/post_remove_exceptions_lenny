@@ -12,9 +12,9 @@ esac
 
 case ${PIUPARTS_OBJECTS%%=*} in
 	postgis)
-		#WORKSAROUND #560409: postgis can't be purged if postgresql
-		# is not installed due to missing directory
+		#560409: postgis can't be purged if postgresql is no longer installed
+	        # (fails due to a missing directory)
 		log_debug
-		mkdir -p /usr/lib/postgresql/8.3/lib
+		mkdir -p -v /usr/lib/postgresql/8.3/lib
 		;;
 esac

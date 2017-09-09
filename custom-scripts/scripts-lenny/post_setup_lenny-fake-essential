@@ -1,13 +1,11 @@
 #!/bin/sh
 set -e
 
-# The following issues won't be fixed in squeeze:
+# The following issues won't be fixed in lenny:
 #   - unconditional use of deluser during postrm purge
 #   - unconditional use of ucf during postrm purge
 # so add these packages to the "fake" essential set.
 USED_DURING_PURGE="adduser ucf"
-
-FAILS_TO_REMOVE=
 
 
 case ${PIUPARTS_OBJECTS%%=*} in
@@ -19,22 +17,24 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		# allow testing of the fake essential packages
 		exit 0
 		;;
-	gosa-desktop|kde-core|kde-full|kde-plasma-desktop|kde-standard|kdebase-apps|konqueror|konq-plugins|mozart-doc|texlive-full)
-		# work around #601961: apt: wrongly thinks install-info is essential
-		case ${PIUPARTS_DISTRIBUTION} in
-			squeeze|squeeze-lts)
-				FAILS_TO_REMOVE="$FAILS_TO_REMOVE install-info"
-				;;
-		esac
-		;;
-	phpbb3)
-		USED_DURING_PURGE="$USED_DURING_PURGE dbconfig-common"
+	docbookwiki)
+		USED_DURING_PURGE="$USED_DURING_PURGE mysql-client"
 		;;
 	prelude-manager)
 		#660455
 		USED_DURING_PURGE="$USED_DURING_PURGE dbconfig-common"
 		;;
+	drupal6|moodle|moodle-book|moodle-debian-edu-theme|scuttle)
+		USED_DURING_PURGE="$USED_DURING_PURGE wwwconfig-common"
+		;;
+	octave-audio|octave-symbolic|octave-vrml)
+		USED_DURING_PURGE="$USED_DURING_PURGE octave3.0"
+		;;
+	ttf-beteckna)
+		#502707
+		USED_DURING_PURGE="$USED_DURING_PURGE defoma"
+		;;
 esac
 
 echo "*** Adding fake essential packages ***"
-apt-get install -yf $USED_DURING_PURGE $FAILS_TO_REMOVE
+apt-get install -yf $USED_DURING_PURGE

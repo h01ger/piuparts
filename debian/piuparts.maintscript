@@ -6,3 +6,4 @@ rm_conffile /etc/piuparts/scripts/post_distupgrade_experimental 0.74~
 rm_conffile /etc/piuparts/scripts-debug-prerm/pre_remove_prerm_set-x 0.74~
 rm_conffile /etc/piuparts/scripts/post_distupgrade_hack_debsums 0.75~
 rm_conffile /etc/piuparts/scripts/post_setup_experimental 0.76~
+rm_conffile /etc/piuparts/scripts-squeeze/post_remove_exceptions_lenny 0.81~

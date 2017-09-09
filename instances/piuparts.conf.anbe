@@ -60,7 +60,7 @@ flags-end-lenny =
 	--skip-cronfiles-test
 	--warn-on-debsums-errors
 	--warn-on-install-over-symlink
-	--scriptsdir /etc/piuparts/scripts-squeeze
+	--scriptsdir /etc/piuparts/scripts-lenny
 	-i /etc/udev/
 	-i /etc/udev/rules.d/
 

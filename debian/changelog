@@ -1,6 +1,7 @@
 piuparts (0.81) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
+  * Separate scripts-lenny/ from scripts-squeeze/.
   * master-bin/distill_alternatives_log: Parse piuparts.conf to find the
     sections that use scripts-log-alternatives.
   * Use copyright notices without FSF street address.
