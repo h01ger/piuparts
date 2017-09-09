@@ -22,6 +22,17 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				;;
 		esac
 		;;
+	logcheck|\
+	checksecurity)
+		case "$PIUPARTS_DISTRIBUTION" in
+			stretch)
+				if [ -f /etc/logcheck/ignore.d.server/libsasl2-modules ]; then
+					# logcheck chowns/chmods the /etc/logcheck tree
+					log_debug
+					chgrp -v root /etc/logcheck /etc/logcheck/ignore.d.server /etc/logcheck/ignore.d.server/libsasl2-modules
+					chmod -v g-s,o+rx /etc/logcheck/ignore.d.server/
+				fi
+				;;
 	sasl2-bin|\
 	libapache2-mod-authn-sasl)
 		case "$PIUPARTS_DISTRIBUTION" in
