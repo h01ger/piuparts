@@ -19,20 +19,20 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		# allow testing of the fake essential packages
 		exit 0
 		;;
-	gosa-desktop|kde-core|kde-full|kde-plasma-desktop|kde-standard|kdebase-apps|konqueror|konq-plugins|mozart-doc|texlive-full)
-		# work around #601961: apt: wrongly thinks install-info is essential
-		case ${PIUPARTS_DISTRIBUTION} in
-			squeeze|squeeze-lts)
-				FAILS_TO_REMOVE="$FAILS_TO_REMOVE install-info"
-				;;
-		esac
-		;;
 	phpbb3)
 		USED_DURING_PURGE="$USED_DURING_PURGE dbconfig-common"
 		;;
 	prelude-manager)
 		#660455
 		USED_DURING_PURGE="$USED_DURING_PURGE dbconfig-common"
+		;;
+esac
+
+# work around #601961: apt: wrongly thinks install-info is essential
+case ${PIUPARTS_DISTRIBUTION} in
+	squeeze|squeeze-lts)
+		# there is no install-info in lenny
+		FAILS_TO_REMOVE="$FAILS_TO_REMOVE install-info"
 		;;
 esac
 

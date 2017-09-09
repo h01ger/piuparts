@@ -3,9 +3,5 @@ set -e
 
 test "$PIUPARTS_DISTRIBUTION" = "squeeze" || exit 0
 
-case ${PIUPARTS_OBJECTS%%=*} in
-	kmplayer-plugin|kde-core|konqueror|konq-plugins|kwin-baghira|mozart-doc|smb4k|strigi-applet|texlive-full)
-		# work around #601961: apt: wrongly thinks install-info is essential
-		apt-get -y install install-info
-		;;
-esac
+# work around #601961: apt: wrongly thinks install-info is essential
+apt-get -y install install-info
