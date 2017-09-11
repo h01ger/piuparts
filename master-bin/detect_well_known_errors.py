@@ -59,69 +59,6 @@ def setup_logging(log_level):
     logger.addHandler(handler)
 
 
-def write_file(filename, contents):
-    with file(filename, "w") as f:
-        f.write(contents)
-
-
-def mtime(path):
-    return os.path.getmtime(path)
-
-
-def clean_cache_files(logdict, cachedict, recheck=False, recheck_failed=False,
-                      skipnewer=False):
-    """Delete files in cachedict if the corresponding logdict file is missing
-       or newer"""
-
-    count = 0
-    for pkgspec in cachedict:
-        try:
-            if pkgspec not in logdict \
-                or (mtime(logdict[pkgspec]) > mtime(cachedict[pkgspec]) and not skipnewer)\
-                or get_where(logdict[pkgspec]) != get_where(cachedict[pkgspec])\
-                or recheck\
-                    or (recheck_failed and not get_where(cachedict[pkgspec]) in ['pass']):
-                os.remove(cachedict[pkgspec])
-                count = count + 1
-        except (IOError, OSError):
-            # logfile may have disappeared
-            pass
-
-    return count
-
-
-def make_kprs(logdict, kprdict, problem_list):
-    """Create kpr files, as necessary, so every log file has one
-       kpr entries are e.g.
-           fail/xorg-docs_1:1.6-1.log broken_symlinks_error.conf"""
-
-    needs_kpr = set(logdict.keys()).difference(set(kprdict.keys()))
-
-    for pkg_spec in needs_kpr:
-        logpath = logdict[pkg_spec]
-
-        try:
-            lb = open(logpath, 'r')
-            logbody = lb.read()
-            lb.close()
-
-            where = get_where(logpath)
-
-            kprs = ""
-            for problem in problem_list:
-                if problem.has_problem(logbody, where):
-                    kprs += "%s/%s.log %s\n" % (where, pkg_spec, problem.name)
-
-            if not where in ['pass'] and not len(kprs):
-                kprs += "%s/%s.log %s\n" % (where, pkg_spec, "unclassified_failures.conf")
-
-            write_file(get_kpr_path(logpath), kprs)
-        except IOError:
-            logging.error("File error processing %s" % logpath)
-
-    return len(needs_kpr)
-
-
 def process_section(section, config, problem_list,
                     recheck=False, recheck_failed=False, pkgsdb=None):
     """ Update .bug and .kpr files for logs in this section """
