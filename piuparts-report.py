@@ -1048,7 +1048,7 @@ class Section:
         return total
 
     def create_maintainer_summaries(self, maintainers, source_data):
-        logging.debug("Writing %d maintainer summaries in %s" % (len(maintainers), self._output_directory))
+        logging.debug("Writing %d maintainer summaries in %s" % (len(maintainers), self._config.section))
         maintainer_dir = os.path.join(self._output_directory, "maintainer")
         if not os.path.exists(maintainer_dir):
             os.mkdir(maintainer_dir)
@@ -1237,13 +1237,14 @@ class Section:
         return sourcerows, binaryrows, source_state, maintainer, uploaders
 
     def create_package_summaries(self, logs_by_dir):
-        logging.debug("Writing source summaries in %s" % self._config.section)
+        src_names = sorted(self._source_db.get_all_package_names())
+        logging.debug("Writing %d source summaries in %s" % (len(src_names), self._config.section))
 
         maintainers = {}
         source_binary_rows = {}
         sources = ""
         sources_data = []
-        for source in sorted(self._source_db.get_all_package_names()):
+        for source in src_names:
             (sourcerows, binaryrows, source_state, maintainer, uploaders) = \
                                self.create_source_summary(source, logs_by_dir)
 
@@ -1319,7 +1320,8 @@ class Section:
                 substats = ""
 
                 tpl = os.path.join(self._output_directory, template)
-                try:
+                if (os.path.exists(tpl)):
+                    logging.debug("Writing analysis page for %s" % template)
                     rows = read_file(tpl)
                     os.unlink(tpl)
 
@@ -1353,8 +1355,6 @@ class Section:
                                  linktarget,
                                  substats,
                              )
-                except:
-                    logging.debug("analysis template %s does not exist." % template)
 
         link += "</ul>"
         if link == "<ul>\n</ul>":
@@ -1497,7 +1497,7 @@ class Section:
                 if log.endswith(".log"):
                     package, version = log[:-len(".log")].split("_")
                     if not self._binary_db.has_package(package):
-                        logging.debug("Package %s was removed, archiving %s/%s" % (package, vdir, log))
+                        logging.debug("Archiving %s/%s, package was removed" % (vdir, log))
                         self.archive_logfile(vdir, log)
                         logs_by_dir[vdir].remove(log)
                     else:
