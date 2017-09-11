@@ -52,6 +52,7 @@ add_pattern "W: GPG error: .* Release: The following signatures were invalid: BA
 add_pattern "W: GPG error: .* InRelease: The following signatures were invalid: NODATA"
 add_pattern "W: GPG error: .* InRelease: Clearsigned file isn't valid, got 'NODATA'"
 add_pattern "E: The repository '.*' does no longer have a Release file."
+add_pattern "E: The repository '.*' no longer has a Release file."
 add_pattern "E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing"
 add_pattern "E: Version '.*' for '.*' was not found"
 add_pattern 'E: Method file has died unexpectedly!'
