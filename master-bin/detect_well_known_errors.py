@@ -69,28 +69,29 @@ def process_section(section, config, problem_list,
     if not os.access(sectiondir, os.F_OK):
         raise MissingSection("", section)
 
-    [os.mkdir(x) for x in workdirs if not os.path.exists(x)]
+    if True:
+        [os.mkdir(x) for x in workdirs if not os.path.exists(x)]
 
-    logdict = get_file_dict(workdirs, LOG_EXT)
-    kprdict = get_file_dict(workdirs, KPR_EXT)
-    bugdict = get_file_dict(workdirs, BUG_EXT)
+        logdict = get_file_dict(workdirs, LOG_EXT)
+        kprdict = get_file_dict(workdirs, KPR_EXT)
+        bugdict = get_file_dict(workdirs, BUG_EXT)
 
-    del_cnt = clean_cache_files(logdict, kprdict, recheck, recheck_failed)
-    clean_cache_files(logdict, bugdict, skipnewer=True)
+        del_cnt = clean_cache_files(logdict, kprdict, recheck, recheck_failed)
+        clean_cache_files(logdict, bugdict, skipnewer=True)
 
-    kprdict = get_file_dict(workdirs, KPR_EXT)
+        kprdict = get_file_dict(workdirs, KPR_EXT)
 
-    section_config = WKE_Config(section=section, defaults_section="global")
-    section_config.read(CONFIG_FILE)
-    if section_config['exclude-known-problems']:
-        excluded = section_config['exclude-known-problems'].split()
-        problem_list = [p for p in problem_list if p.name not in excluded]
+        section_config = WKE_Config(section=section, defaults_section="global")
+        section_config.read(CONFIG_FILE)
+        if section_config['exclude-known-problems']:
+            excluded = section_config['exclude-known-problems'].split()
+            problem_list = [p for p in problem_list if p.name not in excluded]
 
-    add_cnt = make_kprs(logdict, kprdict, problem_list)
+        add_cnt = make_kprs(logdict, kprdict, problem_list)
 
-    failures = FailureManager(logdict)
+        failures = FailureManager(logdict)
 
-    return (del_cnt, add_cnt, failures)
+        return (del_cnt, add_cnt, failures)
 
 
 def detect_well_known_errors(sections, config, problem_list, recheck, recheck_failed):
@@ -141,13 +142,14 @@ caching the problems found, by package, into ".kpr" files.
     conf = WKE_Config()
     conf.read(CONFIG_FILE)
 
-    sections = args.sections
-    if not sections:
-        sections = conf['sections'].split()
+    if True:
+        sections = args.sections
+        if not sections:
+            sections = conf['sections'].split()
 
-    problem_list = create_problem_list(conf['known-problem-directory'])
+        problem_list = create_problem_list(conf['known-problem-directory'])
 
-    detect_well_known_errors(sections, conf, problem_list, args.recheck,
-                             args.recheck_failed)
+        detect_well_known_errors(sections, conf, problem_list, args.recheck,
+                                 args.recheck_failed)
 
 # vi:set et ts=4 sw=4 :
