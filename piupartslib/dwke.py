@@ -70,9 +70,8 @@ class Problem():
     def init_problem(self):
         """Load problem file parameters (HELPTEXT="foo" -> self.HELPTEXT)"""
 
-        pb = open(self.probpath, 'r')
-        probbody = pb.read()
-        pb.close()
+        with open(self.probpath, 'r') as pb:
+            probbody = pb.read()
 
         tagged = re.sub("^([A-Z_]+=)", "<hdr>\g<0>", probbody, 0, re.MULTILINE)
 
@@ -136,14 +135,10 @@ class FailureManager():
         for pkgspec in self.logdict:
             logpath = self.logdict[pkgspec]
             try:
-                kp = open(get_kpr_path(logpath), 'r')
-
-                for line in kp.readlines():
-                    (where, problem) = self.parse_kpr_line(line)
-
-                    self.failures.append(make_failure(where, problem, pkgspec))
-
-                kp.close()
+                with open(get_kpr_path(logpath), 'r') as kp:
+                    for line in kp:
+                        (where, problem) = self.parse_kpr_line(line)
+                        self.failures.append(make_failure(where, problem, pkgspec))
             except IOError:
                 logging.error("Error processing %s" % get_kpr_path(logpath))
 
@@ -258,9 +253,8 @@ def make_kprs(logdict, kprdict, problem_list):
         logpath = logdict[pkg_spec]
 
         try:
-            lb = open(logpath, 'r')
-            logbody = lb.read()
-            lb.close()
+            with open(logpath, 'r') as lb:
+                logbody = lb.read()
 
             where = get_where(logpath)
 

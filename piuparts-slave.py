@@ -260,12 +260,11 @@ class Slave:
         package, rest = basename.split("_", 1)
         version = rest[:-len(".log")]
         self._writeline(pass_or_fail, package, version)
-        f = file(filename, "r")
-        for line in f:
-            if line.endswith("\n"):
-                line = line[:-1]
-            self._writeline(" " + line)
-        f.close()
+        with open(filename, "r") as f:
+            for line in f:
+                if line.endswith("\n"):
+                    line = line[:-1]
+                self._writeline(" " + line)
         self._writeline(".")
         line = self._readline()
         if line != "ok\n":
@@ -671,7 +670,7 @@ class Section:
         output_name = log_name(pname, pvers)
         logging.debug("Opening log file %s" % output_name)
         new_name = os.path.join("new", output_name)
-        output = file(new_name, "we")
+        output = open(new_name, "we")
         output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n",
                                    time.gmtime()))
 
@@ -926,9 +925,8 @@ def create_chroot(config, tarball, distro):
 
 
 def create_file(filename, contents):
-    f = file(filename, "w")
-    f.write(contents)
-    f.close()
+    with open(filename, "w") as f:
+        f.write(contents)
 
 
 def main():

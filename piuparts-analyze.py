@@ -80,9 +80,8 @@ def package_source_version(log):
 def extract_errors(log):
     """This pretty stupid implementation is basically just 'grep -i error', and then
     removing the timestamps and the name of the chroot and the package version itself."""
-    f = open(log)
-    data = f.read()
-    f.close()
+    with open(log, "r") as f:
+        data = f.read()
     whole = ''
     pversion = package_version(log)
     for match in error_pattern.finditer(data):
@@ -100,9 +99,8 @@ def extract_errors(log):
 
 
 def extract_headers(log):
-    f = open(log)
-    data = f.read()
-    f.close()
+    with open(log, "r") as f:
+        data = f.read()
     headers = []
     headers = data.partition("\nExecuting:")[0]
     if headers and not headers.endswith("\n"):
@@ -111,13 +109,11 @@ def extract_headers(log):
 
 
 def prepend_to_file(filename, data):
-    f = file(filename, "r")
-    old_data = f.read()
-    f.close()
-    f = file(filename + ".tmp", "w")
-    f.write(data)
-    f.write(old_data)
-    f.close()
+    with open(filename, "r") as f:
+        old_data = f.read()
+    with open(filename + ".tmp", "w") as f:
+        f.write(data)
+        f.write(old_data)
 
     shutil.copymode(filename, filename + ".tmp")
 
@@ -143,10 +139,9 @@ def get_bug_versions(bug):
 
 def write_bug_file(failed_log, bugs):
     if bugs:
-        f = file(os.path.splitext(failed_log)[0] + '.bug', "w")
-        for bug in bugs:
-            f.write('<a href="https://bugs.debian.org/%s" target="_blank">#%s</a>\n' % (bug, bug))
-        f.close()
+        with open(os.path.splitext(failed_log)[0] + '.bug', "w") as f:
+            for bug in bugs:
+                f.write('<a href="https://bugs.debian.org/%s" target="_blank">#%s</a>\n' % (bug, bug))
 
 
 def move_to_bugged(failed_log, bugged="bugged", bug=None):

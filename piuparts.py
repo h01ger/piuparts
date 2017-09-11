@@ -602,16 +602,15 @@ def create_temp_file():
 def create_file(filename, contents):
     """Create a new file with the desired name and contents."""
     try:
-        f = file(filename, "w")
-        f.write(contents)
-        f.close()
+        with open(filename, "w") as f:
+            f.write(contents)
     except IOError as detail:
         logging.error("Couldn't create file %s: %s" % (filename, detail))
         panic()
 
 
 def readlines_file(filename):
-    with file(filename, "r") as f:
+    with open(filename, "r") as f:
         return f.readlines()
 
 
@@ -1925,9 +1924,8 @@ class VirtServ(Chroot):
         try:
             (_, tf) = create_temp_file()
             self._command(['copyup', (filename,), (tf,)])
-            f = file(tf)
-            d = f.read()
-            f.close()
+            with open(tf, 'r') as f:
+                d = f.read()
         finally:
             os.remove(tf)
         return d
@@ -2058,9 +2056,8 @@ class VirtServ(Chroot):
         path = self._tbpath(path)
         try:
             (_, tf) = create_temp_file()
-            f = file(tf, 'w')
-            f.write(tf)
-            f.close()
+            with open(tf, 'w') as f:
+                f.write(data)
             self._command(['copydown', (tf,), (path,)])
         finally:
             os.remove(tf)
@@ -2399,9 +2396,8 @@ def process_changes(changes):
         \n([^ ]|$)              # Start of a new field or EOF
         ''',
         re.MULTILINE | re.DOTALL | re.VERBOSE)
-    f = open(changes_path)
-    file_text = f.read()
-    f.close()
+    with open(changes_path, "r") as f:
+        file_text = f.read()
     matches = pattern.split(file_text)
 
     # Append all the packages found in the changes file to a package list.
@@ -2680,18 +2676,15 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
 def save_meta_data(filename, chroot_state):
     """Save directory tree meta data into a file for fast access later."""
     logging.debug("Saving chroot meta data to %s" % filename)
-    f = file(filename, "w")
-    pickle.dump(chroot_state, f)
-    f.close()
+    with open(filename, "w") as f:
+        pickle.dump(chroot_state, f)
 
 
 def load_meta_data(filename):
     """Load meta data saved by 'save_meta_data'."""
     logging.debug("Loading chroot meta data from %s" % filename)
-    f = file(filename, "r")
-    chroot_state = pickle.load(f)
-    f.close()
-    return chroot_state
+    with open(filename, "r") as f:
+        return pickle.load(f)
 
 
 def install_and_upgrade_between_distros(package_files, packages_qualified):

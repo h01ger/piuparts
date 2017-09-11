@@ -663,15 +663,13 @@ def remove_old_logs(logs_by_dir, output_dir):
 
 
 def create_file(filename, contents):
-    f = file(filename, "w")
-    f.write(contents)
-    f.close()
+    with open(filename, "w") as f:
+        f.write(contents)
 
 
 def append_file(filename, contents):
-    f = file(filename, "a")
-    f.write(contents)
-    f.close()
+    with open(filename, "a") as f:
+        f.write(contents)
 
 
 def read_file(filename):
@@ -680,10 +678,8 @@ def read_file(filename):
 
 
 def readlines_file(filename):
-    f = file(filename, "r")
-    l = f.readlines()
-    f.close()
-    return l
+    with open(filename, "r") as f:
+        return f.readlines()
 
 
 def fileage(filename):
