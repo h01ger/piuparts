@@ -599,15 +599,20 @@ def create_temp_file():
     return (fd, path)
 
 
-def create_file(name, contents):
+def create_file(filename, contents):
     """Create a new file with the desired name and contents."""
     try:
-        f = file(name, "w")
+        f = file(filename, "w")
         f.write(contents)
         f.close()
     except IOError as detail:
-        logging.error("Couldn't create file %s: %s" % (name, detail))
+        logging.error("Couldn't create file %s: %s" % (filename, detail))
         panic()
+
+
+def readlines_file(filename):
+    with file(filename, "r") as f:
+        return f.readlines()
 
 
 def remove_files(filenames):
@@ -1610,14 +1615,12 @@ class Chroot:
         for basename in os.listdir(vdir):
             if basename.endswith(".list"):
                 pkg = basename[:-len(".list")]
-                f = file(os.path.join(vdir, basename), "r")
-                for line in f:
+                for line in readlines_file(os.path.join(vdir, basename)):
                     pathname = line.strip()
                     if pathname in vdict:
                         vdict[pathname].append(pkg)
                     else:
                         vdict[pathname] = [pkg]
-                f.close()
         return vdict
 
     def check_for_no_processes(self, fail=None):
@@ -1780,8 +1783,7 @@ class Chroot:
             if not os.path.exists(os.path.join(vdir, basename)):
                 continue
 
-            f = file(os.path.join(vdir, basename), "r")
-            for line in f:
+            for line in readlines_file(os.path.join(vdir, basename)):
                 pathname = line.strip()
                 if pathname.startswith("/etc/cron."):
                     if os.path.isfile(self.relative(pathname.strip("/"))):
@@ -1793,7 +1795,6 @@ class Chroot:
                                 has_cronfiles = True
                             vlist.append(pathname)
                             logging.info("Package " + p + " contains cron file: " + pathname)
-            f.close()
 
         return has_cronfiles, vlist
 
@@ -1827,8 +1828,7 @@ class Chroot:
             if not os.path.exists(os.path.join(vdir, basename)):
                 continue
 
-            f = file(os.path.join(vdir, basename), "r")
-            for line in f:
+            for line in readlines_file(os.path.join(vdir, basename)):
                 pathname = line.strip()
                 if pathname.startswith("/etc/logrotate.d/"):
                     if os.path.isfile(self.relative(pathname.strip("/"))):
@@ -1836,7 +1836,6 @@ class Chroot:
                             has_logrotatefiles = True
                         vlist.append(pathname)
                         logging.info("Package " + p + " contains logrotate file: " + pathname)
-            f.close()
 
         return has_logrotatefiles, vlist
 
@@ -2861,14 +2860,12 @@ def find_default_debian_mirrors():
     """Find the default Debian mirrors."""
     mirrors = []
     try:
-        f = file("/etc/apt/sources.list", "r")
-        for line in f:
+        for line in readlines_file("/etc/apt/sources.list"):
             line = re.sub('\[arch=.*\]', '', line)
             parts = line.split()
             if len(parts) > 2 and parts[0] == "deb":
                 mirrors.append((parts[1], parts[3:]))
                 break  # Only use the first one, at least for now.
-        f.close()
     except IOError:
         return None
     return mirrors

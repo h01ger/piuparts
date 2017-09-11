@@ -193,9 +193,6 @@ class LogDB:
             if basename.endswith(".log"):
                 cache[os.path.join(dirname, basename)] = True
 
-    def open_file(self, pathname, mode):
-        return file(pathname, mode)
-
     def remove_file(self, pathname):
         os.remove(pathname)
 

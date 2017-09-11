@@ -662,7 +662,7 @@ def remove_old_logs(logs_by_dir, output_dir):
                     os.remove(os.path.join(fulldir, basename))
 
 
-def write_file(filename, contents):
+def create_file(filename, contents):
     f = file(filename, "w")
     f.write(contents)
     f.close()
@@ -675,6 +675,11 @@ def append_file(filename, contents):
 
 
 def read_file(filename):
+    with open(filename, "r") as f:
+        return f.read()
+
+
+def readlines_file(filename):
     f = file(filename, "r")
     l = f.readlines()
     f.close()
@@ -735,7 +740,7 @@ def write_template_html(filename, body, mapping={}, defer_if_unmodified=False, m
         "piuparts_version": PIUPARTS_VERSION,
         "time": time.strftime("%Y-%m-%d %H:%M %Z"),
     })
-    write_file(filename, htmlpage.safe_substitute(mapping))
+    create_file(filename, htmlpage.safe_substitute(mapping))
     if md5cache is not None:
         md5cache['written'] += 1
 
@@ -1034,10 +1039,10 @@ class Section:
         countsfile = os.path.join(self._section_directory, "counts.txt")
         if not os.path.isfile(countsfile):
             logging.debug("writing new file: %s" % countsfile)
-            write_file(countsfile, header)
+            create_file(countsfile, header)
             last_line = ""
         else:
-            last_line = read_file(countsfile)[-1]
+            last_line = readlines_file(countsfile)[-1]
         if not current_day in last_line:
             append_file(countsfile, counts)
             logging.debug("appending line: %s" % counts.strip())
@@ -1264,8 +1269,8 @@ class Section:
                                 maintainers[email] = []
                             maintainers[email].append(source)
 
-        write_file(os.path.join(self._output_directory, "sources.txt"), sources)
-        write_file(os.path.join(self._output_directory, "sources.yaml"),
+        create_file(os.path.join(self._output_directory, "sources.txt"), sources)
+        create_file(os.path.join(self._output_directory, "sources.yaml"),
             yaml.dump(sources_data, default_flow_style=False))
 
         self.create_maintainer_summaries(maintainers, source_binary_rows)
@@ -1319,9 +1324,7 @@ class Section:
 
                 tpl = os.path.join(self._output_directory, template)
                 try:
-                    f = file(tpl, "r")
-                    rows = file.read(f)
-                    f.close()
+                    rows = read_file(tpl)
                     os.unlink(tpl)
 
                     self._write_template_html(
@@ -1652,13 +1655,9 @@ def generate_global_summary(dir, sections):
 def get_bug_text(logpath):
     bugpath = replace_ext(logpath, BUG_EXT)
 
-    txt = ""
     if os.path.exists(bugpath):
-        bf = open(bugpath, 'r')
-        txt = bf.read()
-        bf.close()
-
-    return txt
+        return read_file(bugpath)
+    return ""
 
 
 def populate_tpl(tmpl, vals):
@@ -1773,7 +1772,7 @@ def main():
 
     if os.path.exists(master_directory):
         packagedb_cache = {}
-        write_file(os.path.join(output_directory, "sections.yaml"),
+        create_file(os.path.join(output_directory, "sections.yaml"),
             yaml.dump(section_names, default_flow_style=False))
         for section_name in process_section_names:
             try:
@@ -1788,7 +1787,7 @@ def main():
         logging.debug("Writing static pages")
         for page in ("index", "bug_howto"):
             tpl = os.path.join(output_directory, page + ".tpl")
-            INDEX_BODY = "".join(read_file(tpl))
+            INDEX_BODY = read_file(tpl)
             write_template_html(
                     os.path.join(output_directory, page + ".html"),
                     INDEX_BODY,
