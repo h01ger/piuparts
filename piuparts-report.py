@@ -1766,7 +1766,12 @@ def main():
         doc_root = doc_root[:-1]
     problem_list = create_problem_list(global_config['known-problem-directory'])
 
-    if os.path.exists(master_directory):
+    if not os.path.exists(master_directory):
+        logging.debug("Warning: %s does not exist!?! Creating it for you now." % master_directory)
+        os.makedirs(master_directory)
+        return
+
+    if True:
         packagedb_cache = {}
         create_file(os.path.join(output_directory, "sections.yaml"),
             yaml.dump(section_names, default_flow_style=False))
@@ -1801,9 +1806,6 @@ def main():
         generate_global_summary(output_directory, section_names)
 
         logging.debug("Done")
-    else:
-        logging.debug("Warning: %s does not exist!?! Creating it for you now." % master_directory)
-        os.makedirs(master_directory)
 
 
 if __name__ == "__main__":
