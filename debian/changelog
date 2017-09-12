@@ -15,6 +15,10 @@ piuparts (0.81) UNRELEASED; urgency=medium
     the root directory, as created by usrmerge or debootstrap --merged-usr.
     (Closes: #860433)
 
+  [ Holger Levsen ]
+  * Fix syntax error in custom-scripts/scripts/post_purge_exceptions, thanks
+    Boud Roukema for the report. (Closes: #875605)
+
  -- Holger Levsen <holger@debian.org>  Thu, 31 Aug 2017 17:41:08 +0200
 
 piuparts (0.80) unstable; urgency=medium

@@ -33,6 +33,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 					chmod -v g-s,o+rx /etc/logcheck/ignore.d.server/
 				fi
 				;;
+		esac
 	sasl2-bin|\
 	libapache2-mod-authn-sasl)
 		case "$PIUPARTS_DISTRIBUTION" in
