@@ -34,6 +34,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				fi
 				;;
 		esac
+		;;
 	sasl2-bin|\
 	libapache2-mod-authn-sasl)
 		case "$PIUPARTS_DISTRIBUTION" in
