@@ -38,7 +38,7 @@ for 0.7x, during the buster development cycle:
     - graph about piuparts stati for all sections combined? (possible ignore
       successful)
 
-- master should create the master and backup directories, if they dont exit.
+- master should create the master and backup directories, if they don't exist.
   If master does that remove that sentence from README_server.txt again,
   same with slave and tmp.
 
@@ -82,11 +82,6 @@ for 0.7x, during the buster development cycle:
   subsets are configured
   (wheezy2jessie-rcmd is *not* the solution for this)
 
-- record file ownership by user/group name, not id
-  new dynamic system users added to the base system may have a lower id in the
-  reference system than after actually testing some packages
-  e.g. group of /usr/lib/dbus-1.0/dbus-daemon-launch-helper (wheezy2jessie-pu)
-
 - report actually ignored files/patterns ROT13 encoded to be able to spot and
   reschedule such tests
 
@@ -111,9 +106,9 @@ for 0.8x and later:
 - rework known_problems:
   - use a number prefix for sorting
   - add title information
-  - piuparts-report: "discover" the available known_problems, dont hardcode the
+  - piuparts-report: "discover" the available known_problems, don't hardcode the
     list
-  - drop _issue/_error duplication, have flags inside to indicate thether to
+  - drop _issue/_error duplication, have flags inside to indicate whether to
     generate _issues.tpl (pass/) and/or _error.tpl (fail/ bugged/ affected/)
   - rework known problems to a python-friendlier format
 
