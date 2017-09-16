@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright © 2011-2015 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2011-2017 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -68,6 +68,17 @@ class Package(UserDict.UserDict):
         self.block_cnt = None
         self.waiting_cnt = None
         self.rdep_chain_len = None
+
+    def name(self):
+        return self["Package"]
+
+    def version(self):
+        return self["Version"]
+
+    def test_versions(self):
+        """ToDo: for distupgrade tests test_versions() should return a list
+           of versions in all distros in the upgrade path"""
+        return self.version()
 
     def _parse_dependencies(self, header_name):
         if header_name in self._parsed_deps:
@@ -657,7 +668,13 @@ class PackagesDB:
     def get_version(self, name):
         self._find_all_packages()
         if name in self._packages:
-            return self._packages[name]["Version"]
+            return self._packages[name].version()
+        return None
+
+    def get_test_versions(self, name):
+        self._find_all_packages()
+        if name in self._packages:
+            return self._packages[name].test_versions()
         return None
 
     def get_source(self, name):

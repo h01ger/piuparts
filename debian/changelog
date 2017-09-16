@@ -2,6 +2,8 @@ piuparts (0.83) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.conf.anbe: Add some more example sections.
+  * piupartslib/packagesdb.py:
+    - Add new package data accessors name(), version(), test_versions().
 
  -- Holger Levsen <holger@debian.org>  Sat, 07 Oct 2017 17:42:12 +0200
 
