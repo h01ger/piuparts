@@ -52,10 +52,12 @@ add_pattern "ERROR: Command failed \(status=-7\): .* 'apt-cache'"
 add_pattern 'update-binfmts: warning: unable to close /proc/sys/fs/binfmt_misc/register: Invalid argument'
 add_pattern 'userdel: user .* is currently logged in'
 # Disk space issues.
+add_pattern "NO SPACE LEFT ON DEVICE"
 add_pattern "No space left on device"
 add_pattern "E: You don't have enough free space in /var/cache/apt/archives/"
 add_pattern "E: Failed to write temporary StateFile /var/lib/apt/extended_states.tmp"
 add_pattern "tar: .*: Wrote only .* of .* bytes"
+add_pattern "sh: echo: I/O error"
 add_pattern "passwd: Authentication token manipulation error"
 add_pattern "(chfn|groupadd|useradd): (cannot lock|failure while writing changes to) /etc/(group|gshadow|passwd|shadow|subuid)"
 add_pattern "(groupadd|useradd): (unable to lock|cannot rewrite) (group|password) file"
