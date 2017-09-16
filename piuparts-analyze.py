@@ -39,12 +39,92 @@ import subprocess
 
 import debianbts
 import apt_pkg
+from signal import alarm, signal, SIGALRM
 
 apt_pkg.init_system()
 
 error_pattern = re.compile(r"(?<=\n).*error.*\n?", flags=re.IGNORECASE)
 chroot_pattern = re.compile(r"tmp/tmp.*?'")
 
+############################################################################
+
+class BTS_Timeout(Exception):
+    pass
+
+
+def alarm_handler(signum, frame):
+    raise BTS_Timeout
+
+
+class PiupartsBTS():
+
+    def __init__(self):
+        self._bugs_usertagged_piuparts = None
+        self._bugs_in_package = dict()
+        self._bugs_affecting_package = dict()
+        self._bug_versions = dict()
+
+        self._queries = 0
+        self._misses = 0
+
+    def all_piuparts_bugs(self):
+        if self._bugs_usertagged_piuparts is None:
+            self._bugs_usertagged_piuparts = debianbts.get_usertag("debian-qa@lists.debian.org", 'piuparts')['piuparts']
+        return self._bugs_usertagged_piuparts
+
+    def bugs_in(self, package):
+        if not package in self._bugs_in_package:
+            self._misses += 1
+            signal(SIGALRM, alarm_handler)
+            alarm(120)
+            bugs = debianbts.get_bugs('package', package, 'bugs', self.all_piuparts_bugs(), 'archive', 'both')
+            bugs += debianbts.get_bugs('package', 'src:' + package, 'bugs', self.all_piuparts_bugs(), 'archive', 'both')
+            alarm(0)
+            self._bugs_in_package[package] = sorted(set(bugs), reverse=True)
+        self._queries += 1
+        return self._bugs_in_package[package]
+
+    def bugs_affecting(self, package):
+        if not package in self._bugs_affecting_package:
+            self._misses += 1
+            signal(SIGALRM, alarm_handler)
+            alarm(120)
+            bugs = debianbts.get_bugs('affects', package, 'bugs', self.all_piuparts_bugs(), 'archive', 'both')
+            bugs += debianbts.get_bugs('affects', 'src:' + package, 'bugs', self.all_piuparts_bugs(), 'archive', 'both')
+            alarm(0)
+            self._bugs_affecting_package[package] = sorted(set(bugs), reverse=True)
+        self._queries += 1
+        return self._bugs_affecting_package[package]
+
+    def bug_versions(self, bug):
+        """Gets a list of only the version numbers for which the bug is found.
+        Newest versions are returned first."""
+        # debianbts returns it in the format package/1.2.3 or 1.2.3 which will become 1.2.3
+        if not bug in self._bug_versions:
+            self._misses += 1
+            signal(SIGALRM, alarm_handler)
+            alarm(60)
+            found_versions = debianbts.get_status(bug)[0].found_versions
+            alarm(0)
+            versions = []
+            for found_version in found_versions:
+                v = found_version.rsplit('/', 1)[-1]
+                if v == "None":
+                    # ignore $DISTRO/None versions
+                    pass
+                else:
+                    versions.append(v)
+            self._bug_versions[bug] =  list(reversed(sorted(versions, cmp=apt_pkg.version_compare))) or ['~']
+        self._queries += 1
+        return self._bug_versions[bug]
+
+    def print_stats(self):
+        print("PiupartsBTS: %d queries, %d forwarded to debianbts" % (self._queries, self._misses))
+
+
+piupartsbts = PiupartsBTS()
+
+############################################################################
 
 def find_logs(directory):
     """Returns list of logfiles sorted by age, newest first."""
@@ -122,21 +202,6 @@ def prepend_to_file(filename, data):
     os.remove(filename + "~")
 
 
-def get_bug_versions(bug):
-    """Gets a list of only the version numbers for which the bug is found.
-    Newest versions are returned first."""
-    # debianbts returns it in the format package/1.2.3 or 1.2.3 which will become 1.2.3
-    versions = []
-    for found_version in debianbts.get_status(bug)[0].found_versions:
-        v = found_version.rsplit('/', 1)[-1]
-        if v == "None":
-            # ignore $DISTRO/None versions
-            pass
-        else:
-            versions.append(v)
-    return list(reversed(sorted(versions, cmp=apt_pkg.version_compare))) or ['~']
-
-
 def write_bug_file(failed_log, bugs):
     if bugs:
         with open(os.path.splitext(failed_log)[0] + '.bug', "w") as f:
@@ -178,8 +243,8 @@ def mark_logs_with_reported_bugs():
                 print('IOError while processing %s' % failed_log)
                 continue
             moved = False
-            abugs = piuparts_bugs_affecting(pname)
-            bugs = piuparts_bugs_in(pname)
+            abugs = piupartsbts.bugs_affecting(pname)
+            bugs = piupartsbts.bugs_in(pname)
             for bug in abugs + bugs:
                 if moved:
                     break
@@ -187,7 +252,7 @@ def mark_logs_with_reported_bugs():
                     bugged = "affected"
                 else:
                     bugged = "bugged"
-                found_versions = get_bug_versions(bug)
+                found_versions = piupartsbts.bug_versions(bug)
                 if pversion in found_versions:
                     move_to_bugged(failed_log, bugged, bug)
                     moved = True
@@ -221,32 +286,13 @@ def mark_logs_with_reported_bugs():
         except:
             print('ERROR processing %s' % failed_log)
             print sys.exc_info()[0]
-
-
-piuparts_usertags_cache = None
-
-
-def all_piuparts_bugs():
-    global piuparts_usertags_cache
-    if piuparts_usertags_cache is None:
-        piuparts_usertags_cache = debianbts.get_usertag("debian-qa@lists.debian.org", 'piuparts')['piuparts']
-    return piuparts_usertags_cache
-
-
-def piuparts_bugs_in(package):
-    bugs = debianbts.get_bugs('package', package, 'bugs', all_piuparts_bugs(), 'archive', 'both')
-    bugs += debianbts.get_bugs('package', 'src:' + package, 'bugs', all_piuparts_bugs(), 'archive', 'both')
-    return sorted(set(bugs), reverse=True)
-
-
-def piuparts_bugs_affecting(package):
-    bugs = debianbts.get_bugs('affects', package, 'bugs', all_piuparts_bugs(), 'archive', 'both')
-    bugs += debianbts.get_bugs('affects', 'src:' + package, 'bugs', all_piuparts_bugs(), 'archive', 'both')
-    return sorted(set(bugs), reverse=True)
+        alarm(0)
 
 
 def main():
     mark_logs_with_reported_bugs()
+
+    piupartsbts.print_stats()
 
 
 if __name__ == "__main__":
