@@ -211,7 +211,7 @@ class LogDB:
         return "%s_%s.log" % (package, version)
 
     def log_exists(self, package, subdirs):
-        log_name = self._log_name(package["Package"], package["Version"])
+        log_name = self._log_name(package.name(), package.test_versions())
         for subdir in subdirs:
             if self.exists(os.path.join(subdir, log_name)):
                 return True
@@ -780,7 +780,7 @@ class PackagesDB:
             )
 
         try:
-            statobj = self._logdb.stat(self._recycle, p["Package"], p["Version"])
+            statobj = self._logdb.stat(self._recycle, p.name(), p.test_versions())
             ctime = statobj[stat.ST_CTIME]  # last inode modification = time of linking into recycle/
             mtime = statobj[stat.ST_MTIME]
         except OSError:
@@ -818,14 +818,14 @@ class PackagesDB:
             if self._recycle_mode and self._logdb.log_exists(p, [self._recycle]):
                 for vdir in all_but_recycle:
                     if self._logdb.log_exists(p, [vdir]):
-                        self._logdb.remove(vdir, p["Package"], p["Version"])
-                        logging.info("Recycled %s %s %s" % (vdir, p["Package"], p["Version"]))
+                        self._logdb.remove(vdir, p.name(), p.test_versions())
+                        logging.info("Recycled %s %s %s" % (vdir, p.name(), p.test_versions()))
             if self._logdb.log_exists(p, all_but_recycle):
                 self._remove_unavailable_candidate(p)
                 continue
             if self._logdb.log_exists(p, [self._recycle]):
-                self._logdb.remove(self._recycle, p["Package"], p["Version"])
-            if self._logdb.create(self._reserved, p["Package"], p["Version"], ""):
+                self._logdb.remove(self._recycle, p.name(), p.test_versions())
+            if self._logdb.create(self._reserved, p.name(), p.test_versions(), ""):
                 return p
         return None
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright © 2011-2015 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2011-2017 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -327,8 +327,8 @@ class Master(Protocol):
         else:
             self._clear_idle()
             self._short_response("ok",
-                                 package["Package"],
-                                 package["Version"])
+                                 package.name(),
+                                 package.test_versions())
 
     def _unreserve(self, command, args):
         self._check_args(2, command, args)
@@ -369,7 +369,7 @@ class Master(Protocol):
     def _state(self, command, args):
         self._check_args(1, command, args)
         self._short_response("ok", self._binary_db.get_package_state(args[0]),
-                             self._binary_db.get_package(args[0])["Version"])
+                             self._binary_db.get_test_versions(args[0]))
 
     # debug command
     def _depends(self, command, args):

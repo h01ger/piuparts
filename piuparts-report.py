@@ -1115,7 +1115,7 @@ class Section:
                     defer_if_unmodified=True)
 
     def create_source_summary(self, source, logs_by_dir):
-        source_version = self._source_db.get_control_header(source, "Version")
+        source_version = self._source_db.get_test_versions(source)
         binaries = self._source_db.get_control_header(source, "Binary")
         maintainer = self._source_db.get_control_header(source, "Maintainer")
         uploaders = self._source_db.get_control_header(source, "Uploaders")
@@ -1144,7 +1144,7 @@ class Section:
             else:
                 state_style = "labelcell"
 
-            binary_version = self._binary_db.get_control_header(binary, "Version")
+            binary_version = self._binary_db.get_test_versions(binary)
             binary_arch = self._binary_db.get_control_header(binary, "Architecture")
             archsuffix = ""
             if binary_arch == "all":
@@ -1248,7 +1248,7 @@ class Section:
                                self.create_source_summary(source, logs_by_dir)
 
             if source_state != "udeb":
-                source_version = self._source_db.get_control_header(source, "Version")
+                source_version = self._source_db.get_test_versions(source)
                 source_data = {};
                 source_data["source"] = source
                 source_data["state"] = source_state
@@ -1503,7 +1503,7 @@ class Section:
                         self.archive_logfile(vdir, log)
                         logs_by_dir[vdir].remove(log)
                     else:
-                        current = self._binary_db.get_version(package)
+                        current = self._binary_db.get_test_versions(package)
                         state = self._binary_db.get_package_state(package, resolve_virtual=False, recurse=False)
                         if version != current:
                             logging.debug("Archiving %s/%s, package is outdated (%s)" %
