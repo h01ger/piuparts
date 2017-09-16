@@ -89,9 +89,7 @@ def process_section(section, config, problem_list,
 
         add_cnt = make_kprs(logdict, kprdict, problem_list)
 
-        failures = FailureManager(logdict)
-
-        return (del_cnt, add_cnt, failures)
+        return (del_cnt, add_cnt)
 
 
 def detect_well_known_errors(sections, config, problem_list, recheck, recheck_failed):
@@ -101,16 +99,11 @@ def detect_well_known_errors(sections, config, problem_list, recheck, recheck_fa
             logging.info(time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime()))
             logging.info("%s:" % section)
 
-            (del_cnt, add_cnt, failures) = \
+            (del_cnt, add_cnt) = \
                 process_section(section, config, problem_list,
                                 recheck, recheck_failed)
 
             logging.info("parsed logfiles: %d removed, %d added" % (del_cnt, add_cnt))
-
-            for prob in problem_list:
-                pcount = len(failures.filtered(prob.name))
-                if pcount:
-                    logging.info("%7d %s" % (pcount, prob.name))
         except MissingSection:
             pass
 

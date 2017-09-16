@@ -1722,6 +1722,11 @@ def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
     failures = FailureManager(logdict)
     failures.sort_by_bugged_and_rdeps(pkgsdb)
 
+    for prob in problem_list:
+        pcount = len(failures.filtered(prob.name))
+        if pcount:
+            logging.info("%7d %s" % (pcount, prob.name))
+
     update_html(section, htmldir, logdict, problem_list, failures, pkgsdb)
 
 # END detect_well_known_errors
