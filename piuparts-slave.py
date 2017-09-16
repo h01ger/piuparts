@@ -33,7 +33,6 @@ from signal import alarm, signal, SIGALRM, SIGINT, SIGKILL, SIGHUP
 import subprocess
 import fcntl
 import random
-import ConfigParser
 import apt_pkg
 import pipes
 

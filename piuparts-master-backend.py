@@ -26,7 +26,6 @@ Lars Wirzenius <liw@iki.fi>
 
 import sys
 import logging
-import ConfigParser
 import os
 import fcntl
 import time

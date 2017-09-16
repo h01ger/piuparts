@@ -30,7 +30,6 @@ import os
 import sys
 import time
 import logging
-import ConfigParser
 import shutil
 import re
 import string
