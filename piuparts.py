@@ -3038,8 +3038,6 @@ def get_chroot():
         return Chroot()
 
 # Process the packages given in a list
-
-
 def process_packages(package_list):
     # Find the names of packages.
     if settings.args_are_package_files:
