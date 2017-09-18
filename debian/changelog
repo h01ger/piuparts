@@ -20,6 +20,9 @@ piuparts (0.81) UNRELEASED; urgency=medium
   * Fix syntax errors in git snapshot running on piuparts.debian.org, thanks
     to Boud Roukema and Philipp Huebner for the reports.
     (Closes: #875605, #875664)
+  * Drop code to support using autopkgtest as a test backend. This code was
+    merged in 2008 from Ubuntu, but it's unclear (and unlikely) that it still
+    works. Also it never has really been supported. (See #815084) 
 
  -- Holger Levsen <holger@debian.org>  Thu, 31 Aug 2017 17:41:08 +0200
 
