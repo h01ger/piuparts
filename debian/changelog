@@ -24,6 +24,9 @@ piuparts (0.81) UNRELEASED; urgency=medium
     merged in 2008 from Ubuntu, but it's unclear (and unlikely) that it still
     works. Also it never has really been supported. (See #815084) 
 
+  [ Michael Stapelberg ]
+  *  piuparts-distill: correctly handle errors.
+
  -- Holger Levsen <holger@debian.org>  Thu, 31 Aug 2017 17:41:08 +0200
 
 piuparts (0.80) unstable; urgency=medium
