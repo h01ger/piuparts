@@ -1486,7 +1486,10 @@ class Section:
         archivedir = os.path.join("archive", vdir)
         if not os.path.exists(archivedir):
             os.makedirs(archivedir)
-        os.rename(os.path.join(vdir, log), os.path.join("archive", vdir, log))
+        try:
+            os.rename(os.path.join(vdir, log), os.path.join("archive", vdir, log))
+        except OSError:
+            logging.debug("OSError while archiving %s/%s" % (vdir, log))
 
     def cleanup_removed_packages(self, logs_by_dir):
         vdirs = logs_by_dir.keys()
