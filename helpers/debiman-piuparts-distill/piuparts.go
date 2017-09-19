@@ -123,7 +123,10 @@ func main() {
 	}()
 	// Walk through *logsDir, enqueue all .log files onto the work channel
 	if err := filepath.Walk(*logsDir, func(path string, info os.FileInfo, err error) error {
-		if strings.HasSuffix(path, ".log") && info.Mode().IsRegular() {
+		if err != nil {
+			return err
+		}
+		if strings.HasSuffix(path, ".log") && info != nil && info.Mode().IsRegular() {
 			work <- path
 		}
 		return nil
