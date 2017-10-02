@@ -324,6 +324,7 @@ class Settings:
             "/var/log/news/news.notice",
             "/var/log/secure",
             "/var/log/syslog",
+            "/var/log/tallylog",
             "/var/log/user.log",
             # application logfiles
             # actually, only modification should be permitted here, but not creation/removal
