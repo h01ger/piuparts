@@ -3,7 +3,7 @@ piuparts (0.81) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * piuparts.py:
     - Add to ignored_files:
-      + /var/log/tallylog
+      + /var/log/tallylog (Closes: #877592)
   * Separate scripts-lenny/ from scripts-squeeze/.
   * scripts-squeeze/post_{setup,distupgrade}_squeeze-fake-essential:
     - Treat install-info as fake-essential for all tests ending in squeeze.
