@@ -7,6 +7,12 @@ log_debug() {
 
 # clean up from pre_test_exceptions
 case ${PIUPARTS_OBJECTS%%=*} in
+	corekeeper)
+		log_debug
+		rm -fv /etc/sysctl.d/corekeeper.conf /etc/sysctl.d/corekeeper.conf.distrib
+		dpkg-divert --remove --rename /etc/sysctl.d/corekeeper.conf
+		rmdir /etc/sysctl.d 2>/dev/null || true
+		;;
 	fai-nfsroot)
 		log_debug
 		rm -fv /.THIS_IS_THE_FAI_NFSROOT

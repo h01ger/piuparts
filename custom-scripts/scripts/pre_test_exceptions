@@ -6,6 +6,14 @@ log_debug() {
 }
 
 case ${PIUPARTS_OBJECTS%%=*} in
+	corekeeper)
+		# installing corekeeper reconfigures /proc/sys/kernel/core_pattern
+		log_debug
+		echo "Disabling /etc/sysctl.d/corekeeper.conf"
+		dpkg-divert --rename /etc/sysctl.d/corekeeper.conf
+		mkdir -p /etc/sysctl.d
+		echo "# disabled" > /etc/sysctl.d/corekeeper.conf
+		;;
 	fai-nfsroot)
 		# fai-nfsroot refuses installation unless this file exists
 		log_debug
