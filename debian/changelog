@@ -9,6 +9,8 @@ piuparts (0.81) UNRELEASED; urgency=medium
     - Treat install-info as fake-essential for all tests ending in squeeze.
   * scripts/{pre,post}_test_exceptions: Add exception to prevent testing
     corekeeper from changing the core file settings in the running kernel.
+  * scripts-broken-symlinks/post_install_extras_unbreak_symlinks: Unbreak more
+    symlinks.  (Closes: #857151)
   * master-bin/detect_piuparts_issues: Detect another way of 'apt-cache show'
     failing.  (Closes: #877417)
   * master-bin/distill_alternatives_log: Parse piuparts.conf to find the

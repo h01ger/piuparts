@@ -123,10 +123,6 @@ install_extra_package exim4-dev			exim4-base
 # /usr/share/doc/gimp-help-common/html -> ../../gimp/2.0/help
 install_extra_package gimp-help-common		gimp-help-en
 
-# /usr/share/gnome/help/gnumeric/C/images -> ../../../../xml/docbook/stylesheet/nwalsh/images
-# gnumeric-doc: Suggests: docbook-xsl
-install_extra_package gnumeric-doc		docbook-xsl
-
 # /usr/share/doc/keyboard-configuration/xorg.lst -> ../../X11/xkb/rules/xorg.lst
 install_extra_package keyboard-configuration	xkb-data
 
@@ -172,12 +168,24 @@ install_extra_package eclipse-eclox		doxygen-doc
 # neverball-common: Suggests: fonts-wqy-microhei
 install_extra_package neverball-common		fonts-wqy-microhei
 
+# /usr/share/gnome/help/gnumeric/C/images -> ../../../../xml/docbook/stylesheet/nwalsh/images
+# gnumeric-doc: Suggests: docbook-xsl
+install_extra_package gnumeric-doc		docbook-xsl
+
 # /usr/share/gtkmorph/pixmaps -> ../xmorph/pixmaps
 # /usr/share/man/man1/morph.1.gz -> xmorph.1.gz
 install_extra_package libmorph			gtkmorph xmorph
 
 # /usr/share/icons/default.kde4 -> oxygen
 install_extra_package kde-runtime-data		oxygen-icon-theme
+
+# /usr/share/live/build/bootloaders/???linux/*.c32 -> /usr/lib/syslinux/modules/bios/*.c32
+# /usr/share/live/build/bootloaders/pxelinux/pxelinux.0 -> /usr/lib/PXELINUX/pxelinux.0
+# /usr/share/live/build/bootloaders/isolinux/isolinux.bin -> /usr/lib/ISOLINUX/isolinux.bin
+# live-build: the required packages will be installed in the live image (#857151)
+# open-infrastructure-system-build: alternate implementation of live-build
+install_extra_package live-build			syslinux-common pxelinux isolinux
+install_extra_package open-infrastructure-system-build	syslinux-common pxelinux isolinux
 
 # /usr/share/lyx/thes -> ../mythes
 install_extra_package lyx-common		mythes-en-us
@@ -214,10 +222,6 @@ install_extra_package quilt			nullmailer
 # /usr/share/tuxpaint/fonts/locale/ar.ttf -> ../../../fonts/truetype/fonts-arabeyes/ae_Nice.ttf
 # tuxpaint-data: Suggests: fonts-arabeyes, fonts-arphic-gbsn00lp, fonts-arphic-uming, fonts-nanum, fonts-gujr, fonts-taml, fonts-telu, fonts-tlwg-garuda-otf
 install_extra_package tuxpaint-data		fonts-arabeyes fonts-arphic-gbsn00lp fonts-arphic-uming fonts-nanum fonts-gujr fonts-taml fonts-telu fonts-tlwg-garuda-otf
-
-# /usr/share/uim/loader.scm -> /var/lib/uim/loader.scm
-# /usr/share/uim/installed-modules.scm -> /var/lib/uim/installed-modules.scm
-install_extra_package libuim-data		uim-utils
 
 # /var/lib/gridengine/lib/lx-* -> /usr/lib/gridengine
 install_extra_package gridengine-common		gridengine-client db-util db5.3-sql-util
@@ -290,6 +294,10 @@ create_extra_file rust-gdb			/usr/share/man/man1/gdb.1.gz
 # /var/lib/otrs/run -> /run/otrs
 create_extra_file otrs2				/etc/otrs/Kernel/Config/GenericAgent.pm
 create_extra_dir otrs2				/run/otrs
+
+# /usr/share/uim/loader.scm -> /var/lib/uim/loader.scm
+# /usr/share/uim/installed-modules.scm -> /var/lib/uim/installed-modules.scm
+create_extra_file libuim-data			/var/lib/uim/loader.scm /var/lib/uim/installed-modules.scm
 
 # /var/cache/vdr/dvd -> /dev/dvd
 create_extra_file vdr-plugin-dvd		/dev/dvd

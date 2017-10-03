@@ -78,9 +78,8 @@ flags-broken-symlinks =
 	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26231/exe
 # ignore broken symlinks
 	-i :/etc/systemd/system/display-manager.service
-# civicrm-common, #857601, /usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf -> ../../../../local/open-flash-chart.swf
+#   civicrm-common, #857601, /usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf -> ../../../../local/open-flash-chart.swf
 	-i :/usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf
-	-i :/usr/share/qt4/plugins
 # ignore broken symlinks (patterns)
 	-I :/etc/.*/supervise
 	-I /usr/include/python2\.7_d/.*\.h
