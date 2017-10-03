@@ -806,6 +806,7 @@ class Chroot:
         # Useful for adjusting apt configuration e.g. for internal mirror usage
         self.run_scripts("post_chroot_unpack")
 
+        self.run(["apt-get", "update"])
         if settings.basetgz or settings.schroot or settings.existing_chroot:
             self.run(["apt-get", "-yf", "dist-upgrade"])
         self.minimize()
@@ -1096,7 +1097,6 @@ class Chroot:
         self.create_resolv_conf()
         for bindmount in settings.bindmounts:
             self.mount(bindmount, bindmount, opts="bind")
-        self.run(["apt-get", "update"])
 
     def remember_available_md5(self):
         """Keep a history of 'apt-cache dumpavail | md5sum' after initial
