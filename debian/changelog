@@ -7,6 +7,8 @@ piuparts (0.81) UNRELEASED; urgency=medium
   * Separate scripts-lenny/ from scripts-squeeze/.
   * scripts-squeeze/post_{setup,distupgrade}_squeeze-fake-essential:
     - Treat install-info as fake-essential for all tests ending in squeeze.
+  * master-bin/detect_piuparts_issues: Detect another way of 'apt-cache show'
+    failing.  (Closes: #877417)
   * master-bin/distill_alternatives_log: Parse piuparts.conf to find the
     sections that use scripts-log-alternatives.
   * Add bug template for stable -> sid file overwrite errors.

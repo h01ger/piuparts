@@ -48,7 +48,7 @@ add_pattern "gzip: stdin: invalid compressed data--crc error"
 add_pattern "ERROR:.*:Temporary directory is not a directory"
 add_pattern "E: Sub-process Popen returned an error code \(2\)"
 add_pattern "chroot: failed to run command '.*': Permission denied"
-add_pattern "ERROR: Command failed \(status=-7\): .* 'apt-cache'"
+add_pattern "ERROR: Command failed \(status=(-7|100)\): .* 'apt-cache'"
 add_pattern 'update-binfmts: warning: unable to close /proc/sys/fs/binfmt_misc/register: Invalid argument'
 add_pattern 'userdel: user .* is currently logged in'
 # Disk space issues.
