@@ -1790,8 +1790,14 @@ def main():
             yaml.dump(section_names, default_flow_style=False))
         for section_name in process_section_names:
             try:
-                section = Section(section_name, master_directory, doc_root, packagedb_cache=packagedb_cache)
-                section.generate_output(output_directory, section_names, problem_list, web_host)
+                section_directory = os.path.join(master_directory, section_name)
+                if not os.path.exists(section_directory):
+                    raise MissingSection("", section_name)
+                with open(os.path.join(section_directory, "master.lock"), "we") as lock:
+                    fcntl.flock(lock, fcntl.LOCK_EX)
+
+                    section = Section(section_name, master_directory, doc_root, packagedb_cache=packagedb_cache)
+                    section.generate_output(output_directory, section_names, problem_list, web_host)
             except MissingSection as e:
                 logging.error("Configuration Error in section '%s': %s" % (section_name, e))
             except (HTTPError, URLError) as e:
