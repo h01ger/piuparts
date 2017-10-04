@@ -13,6 +13,15 @@ piuparts (0.83) UNRELEASED; urgency=medium
     - Use global locks to allow only one running instance of each script.
     - Acquire section locks to prevent concurrent processing of a section,
       including piuparts-master access.
+    - Run as three separate cronjobs.
+  * conf/crontab-master:
+    - Run detect_well_known_errors every three hours to avoid accumulating a
+      large backlog of new logfiles.
+    - Run piuparts-analyze twice per day.
+    - Try piuparts-report every three hours s.t. we start 2-3 runs per day
+      even with running times above 8-12 hours.
+    - Run detect_{piuparts,network}_issues a short time before trying
+      piuparts-report to exclude (most of) these logfiles from the report.
 
  -- Holger Levsen <holger@debian.org>  Sat, 07 Oct 2017 17:42:12 +0200
 
@@ -45,6 +54,7 @@ piuparts (0.81) unstable; urgency=medium
     failing.  (Closes: #877417)
   * master-bin/distill_alternatives_log: Parse piuparts.conf to find the
     sections that use scripts-log-alternatives.
+  * master-bin/generate_daily_report: Most parts are now separate cronjobs.
   * Add bug template for stable -> sid file overwrite errors.
   * Use copyright notices without FSF street address.
 

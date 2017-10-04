@@ -1,7 +1,8 @@
 # m h dom mon dow (0|7=sun,1=mon)    command
 
 # set PATH, variable substitution is not supported (PATH=$PATH:/my/bin)
-PATH=@sharedir@/piuparts/master:/usr/bin:/bin
+PATH=@sharedir@/piuparts/master:@sharedir@/piuparts:/usr/bin:/bin
+PYTHONPATH=@libdir@/python2.7/dist-packages
 
 #
 # cleanup $HTDOCS/daily.lock
@@ -12,7 +13,10 @@ PATH=@sharedir@/piuparts/master:/usr/bin:/bin
 # generate reports twice a day
 #  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
 #
-0  0,12 * * * generate_daily_report
+0  4-23/12 * * * piuparts-analyze
+0  2-23/3 * * * detect_well_known_errors
+0  0-23/3 * * * piuparts-report
+15 23 * * * generate_daily_report
 
 #
 # reschedule old logs twice a day
@@ -24,8 +28,8 @@ PATH=@sharedir@/piuparts/master:/usr/bin:/bin
 # - these may result in packages being retested
 # - if that's not the case, run them from within generate_daily_report
 #
-30 3-21/6 * * * detect_network_issues
-45 3-21/6 * * * detect_piuparts_issues
+30 2-23/3 * * * detect_network_issues
+45 2-23/3 * * * detect_piuparts_issues
 0  10,22 * * * detect_archive_issues
 30 22 * * * report_untestable_packages
 0  23 * * * report_stale_reserved_packages

@@ -41,7 +41,7 @@ R_STARTDATE=$(date -u +%s)
 # various scripts to detect issues and cleanup
 #
 OUTPUT=$(mktemp)
-for SCRIPT in detect_network_issues detect_piuparts_issues archive_old_logs report_newly_bugged_packages ; do
+for SCRIPT in archive_old_logs ; do
   STARTDATE=$(date -u +%s)
   @sharedir@/piuparts/master/$SCRIPT 2>&1 > $OUTPUT
   FINALDATE=$(date -u +%s)
@@ -79,17 +79,6 @@ done | sed s#^$MASTER#$URLBASE# >> $DAILYREPORT
 
 echo "" >> $DAILYREPORT
 date >> $DAILYREPORT
-@sharedir@/piuparts/master/detect_well_known_errors 2>&1 >> $DAILYREPORT
-
-echo "" >> $DAILYREPORT
-date >> $DAILYREPORT
-nice \
-	@sharedir@/piuparts/piuparts-report \
-	>> $DAILYREPORT 2>&1
-date >> $DAILYREPORT
-
-echo "" >> $DAILYREPORT
-date >> $DAILYREPORT
 echo "Expiring old .html files:" >> $DAILYREPORT
 find $HTDOCS -name '* *.html' -mtime +30 -ls -delete >> $DAILYREPORT
 expire=$(mktemp)
@@ -103,7 +92,7 @@ rm $expire
 FINALDATE=$(date -u +%s)
 RUNTIME=$(date -u -d "0 $FINALDATE seconds - $R_STARTDATE seconds" +%T)
 
-( echo "Runtime: $RUNTIME" ; echo ; cat $DAILYREPORT ) | mail -s piuparts-report $LOGNAME
+( echo "Runtime: $RUNTIME" ; echo ; cat $DAILYREPORT ) | mail -s generate_daily_report $LOGNAME
 
 mv $FAILURESTAMP.new $FAILURESTAMP
 rm -f $LOCKFILE
