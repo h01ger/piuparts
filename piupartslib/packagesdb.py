@@ -75,9 +75,14 @@ class Package(UserDict.UserDict):
     def version(self):
         return self["Version"]
 
+    def set_test_versions(self, tv):
+        self["TestVersions"] = tv
+
     def test_versions(self):
         """ToDo: for distupgrade tests test_versions() should return a list
            of versions in all distros in the upgrade path"""
+        if "TestVersions" in self:
+            return self["TestVersions"]
         return self.version()
 
     def _parse_dependencies(self, header_name):
@@ -390,10 +395,10 @@ class PackagesDB:
         pf2 = PackagesFile()
         pf2.load_packages_urls(urls)
         for package in self.get_all_packages():
-            if package["Package"] in pf2:
-                package["Version"] = pf2[package["Package"]]["Version"]
+            if package.name() in pf2:
+                package.set_test_versions(pf2[package.name()].version())
             else:
-                package["Version"] = "None"
+                package.set_test_versions("None")
 
     def get_urls(self):
         urls = []
