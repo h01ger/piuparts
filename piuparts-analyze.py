@@ -33,6 +33,7 @@ move the failed log to ./bugged as well.
 
 import os
 import sys
+import time
 import re
 import shutil
 import subprocess
@@ -41,6 +42,12 @@ import fcntl
 import debianbts
 import apt_pkg
 from signal import alarm, signal, SIGALRM
+
+import piupartslib.conf
+from piupartslib.conf import MissingSection
+
+
+CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 
 apt_pkg.init_system()
 
@@ -126,6 +133,17 @@ class PiupartsBTS():
 piupartsbts = PiupartsBTS()
 
 ############################################################################
+
+class Config(piupartslib.conf.Config):
+    def __init__(self, section="global", defaults_section=None):
+        self.section = section
+        piupartslib.conf.Config.__init__(self, section,
+                                         {
+                                         "sections": "report",
+                                         "master-directory": ".",
+                                         },
+                                         defaults_section=defaults_section)
+
 
 def find_logs(directory):
     """Returns list of logfiles sorted by age, newest first."""
@@ -291,12 +309,41 @@ def mark_logs_with_reported_bugs():
 
 
 def main():
-    with open("master.lock", "we") as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
+    conf = Config()
+    conf.read(CONFIG_FILE)
 
-        mark_logs_with_reported_bugs()
+    master_directory = conf["master-directory"]
+    if len(sys.argv) > 1:
+        sections = sys.argv[1:]
+    else:
+        sections = conf['sections'].split()
 
-    piupartsbts.print_stats()
+    with open(os.path.join(master_directory, "analyze.lock"), "we") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            sys.exit("another piuparts-analyze process is already running")
+
+        for section_name in sections:
+            print(time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime()))
+            print("%s:" % section_name)
+            try:
+                section_directory = os.path.join(master_directory, section_name)
+                if not os.path.exists(section_directory):
+                    raise MissingSection("", section_name)
+                with open(os.path.join(section_directory, "master.lock"), "we") as lock:
+                    fcntl.flock(lock, fcntl.LOCK_EX)
+
+                    oldcwd = os.getcwd()
+                    os.chdir(section_directory)
+                    mark_logs_with_reported_bugs()
+                    os.chdir(oldcwd)
+            except MissingSection as e:
+                print("Configuration Error in section '%s': %s" % (section_name, e))
+            print("")
+
+        print(time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime()))
+        piupartsbts.print_stats()
 
 
 if __name__ == "__main__":

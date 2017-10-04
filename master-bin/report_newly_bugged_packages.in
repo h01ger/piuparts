@@ -24,6 +24,9 @@ get_config_value PYTHONPATH global PYTHONPATH ''
 get_config_value DEBEMAIL global bts-from ''
 
 
+@sharedir@/piuparts/piuparts-analyze 2>&1
+exit 0
+
 export PYTHONPATH
 
 OLDPWD=$(pwd)
