@@ -25,6 +25,7 @@ import sys
 import time
 import logging
 import argparse
+import fcntl
 
 import piupartslib
 from piupartslib.conf import MissingSection
@@ -140,7 +141,12 @@ caching the problems found, by package, into ".kpr" files.
     conf = WKE_Config()
     conf.read(CONFIG_FILE)
 
-    if True:
+    with open(os.path.join(conf['master-directory'], "dwke.lock"), "we") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            sys.exit("another detect_well_known_errors process is already running")
+
         sections = args.sections
         if not sections:
             sections = conf['sections'].split()
