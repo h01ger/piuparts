@@ -7,6 +7,8 @@ piuparts (0.83) UNRELEASED; urgency=medium
     - Use test_versions() in all places referring to a piuparts test.
     - Set test_versions while loading versions from the final target distro.
     - Use the actual package versions for resolving the "outdated" state.
+  * piuparts-report.py:
+    - Use global locks to allow only one running instance of each script.
 
  -- Holger Levsen <holger@debian.org>  Sat, 07 Oct 2017 17:42:12 +0200
 

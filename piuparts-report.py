@@ -37,6 +37,7 @@ import yaml
 import hashlib
 import pickle
 import random
+import fcntl
 from urllib2 import HTTPError, URLError
 
 # if python-rpy2 ain't installed, we don't draw fancy graphs
@@ -1778,7 +1779,12 @@ def main():
         os.makedirs(master_directory)
         return
 
-    if True:
+    with open(os.path.join(master_directory, "report.lock"), "we") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            sys.exit("another piuparts-report process is already running")
+
         packagedb_cache = {}
         create_file(os.path.join(output_directory, "sections.yaml"),
             yaml.dump(section_names, default_flow_style=False))
