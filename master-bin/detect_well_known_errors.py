@@ -69,7 +69,9 @@ def process_section(section, config, problem_list,
     if not os.access(sectiondir, os.F_OK):
         raise MissingSection("", section)
 
-    if True:
+    with open(os.path.join(sectiondir, "master.lock"), "we") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+
         [os.mkdir(x) for x in workdirs if not os.path.exists(x)]
 
         logdict = get_file_dict(workdirs, LOG_EXT)
