@@ -7,7 +7,7 @@ piuparts (0.83) UNRELEASED; urgency=medium
     - Use test_versions() in all places referring to a piuparts test.
     - Set test_versions while loading versions from the final target distro.
     - Use the actual package versions for resolving the "outdated" state.
-  * piuparts-report.py, detect_well_known_errors.py:
+  * piuparts-report.py, detect_well_known_errors.py, piuparts-analyze.py:
     - Use global locks to allow only one running instance of each script.
     - Acquire section locks to prevent concurrent processing of a section,
       including piuparts-master access.

@@ -36,6 +36,7 @@ import sys
 import re
 import shutil
 import subprocess
+import fcntl
 
 import debianbts
 import apt_pkg
@@ -290,7 +291,10 @@ def mark_logs_with_reported_bugs():
 
 
 def main():
-    mark_logs_with_reported_bugs()
+    with open("master.lock", "we") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+
+        mark_logs_with_reported_bugs()
 
     piupartsbts.print_stats()
 
