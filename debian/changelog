@@ -22,6 +22,8 @@ piuparts (0.83) UNRELEASED; urgency=medium
       even with running times above 8-12 hours.
     - Run detect_{piuparts,network}_issues a short time before trying
       piuparts-report to exclude (most of) these logfiles from the report.
+  * master-bin/report_newly_bugged_packages: Remove, merged into
+    piuparts-analyze.
 
  -- Holger Levsen <holger@debian.org>  Sat, 07 Oct 2017 17:42:12 +0200
 
