@@ -1,4 +1,4 @@
-piuparts (0.81) UNRELEASED; urgency=medium
+piuparts (0.81) unstable; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
@@ -44,7 +44,7 @@ piuparts (0.81) UNRELEASED; urgency=medium
   [ Michael Stapelberg ]
   * piuparts-distill: correctly handle errors.
 
- -- Holger Levsen <holger@debian.org>  Thu, 31 Aug 2017 17:41:08 +0200
+ -- Holger Levsen <holger@debian.org>  Thu, 05 Oct 2017 15:56:25 +0200
 
 piuparts (0.80) unstable; urgency=medium
 
