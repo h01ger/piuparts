@@ -3,14 +3,18 @@ piuparts (0.81) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * piuparts.py:
     - Add to ignored_files:
-      + /var/log/tallylog (Closes: #877592)
+      + /var/log/tallylog  (Closes: #877592)
     - Run post_chroot_unpack scripts before initial apt-get update.
+  * piuparts-analyze.py:
+    - Add PiupartsBTS, a caching wrapper around debianbts.
+  * General python code and style cleanup.
+    Consistently use 'with open(...) as ...:' for scoped open files.
+  * scripts/{pre,post}_test_exceptions: Add exception to prevent testing
+    corekeeper from changing the core file settings in the running kernel.
   * scripts/pre_distupgrade_zz_database-server: sid/buster has postgresql 10.
   * Separate scripts-lenny/ from scripts-squeeze/.
   * scripts-squeeze/post_{setup,distupgrade}_squeeze-fake-essential:
     - Treat install-info as fake-essential for all tests ending in squeeze.
-  * scripts/{pre,post}_test_exceptions: Add exception to prevent testing
-    corekeeper from changing the core file settings in the running kernel.
   * scripts-broken-symlinks/post_install_extras_unbreak_symlinks: Unbreak more
     symlinks.  (Closes: #857151)
   * master-bin/detect_piuparts_issues: Detect another way of 'apt-cache show'
@@ -33,7 +37,7 @@ piuparts (0.81) UNRELEASED; urgency=medium
     (Closes: #875605, #875664)
   * Drop code to support using autopkgtest as a test backend. This code was
     merged in 2008 from Ubuntu, but it's unclear (and unlikely) that it still
-    works. Also it never has really been supported. (See #815084) 
+    works. Also it never has really been supported. (See #815084)
   * Bump standards version to 4.1.1, no changes needed.
   * Update TODO.
 

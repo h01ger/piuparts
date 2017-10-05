@@ -3036,7 +3036,7 @@ def parse_command_line():
 
 
 def get_chroot():
-        return Chroot()
+    return Chroot()
 
 # Process the packages given in a list
 def process_packages(package_list):
