@@ -5,6 +5,7 @@ piuparts (0.81) UNRELEASED; urgency=medium
     - Add to ignored_files:
       + /var/log/tallylog (Closes: #877592)
     - Run post_chroot_unpack scripts before initial apt-get update.
+  * scripts/pre_distupgrade_zz_database-server: sid/buster has postgresql 10.
   * Separate scripts-lenny/ from scripts-squeeze/.
   * scripts-squeeze/post_{setup,distupgrade}_squeeze-fake-essential:
     - Treat install-info as fake-essential for all tests ending in squeeze.

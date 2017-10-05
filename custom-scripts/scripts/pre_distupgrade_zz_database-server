@@ -130,8 +130,11 @@ case "${PIUPARTS_DISTRIBUTION}:${PIUPARTS_DISTRIBUTION_NEXT}" in
 	jessie:stretch)
 		upgrade_pg_cluster 9.4 9.6
 		;;
-	jessie:sid)
-		upgrade_pg_cluster 9.4 9.6
+	stretch:buster)
+		upgrade_pg_cluster 9.6 10
+		;;
+	stretch:sid)
+		upgrade_pg_cluster 9.6 10
 		;;
 esac
 
