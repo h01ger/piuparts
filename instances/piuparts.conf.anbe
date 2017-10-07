@@ -109,6 +109,7 @@ basetgz-sections =
 sections =
 	experimental/main
 	experimental_i386/main
+	experimental-bl/main
 	sid/main
 	sid-plus/main
 	sid-rcmd/main
@@ -182,6 +183,7 @@ sections =
 #
 	experimental/contrib
 	experimental_i386/contrib
+	experimental-bl/contrib
 	sid/contrib
 	sid-plus/contrib
 	sid-rcmd/contrib
@@ -255,6 +257,7 @@ sections =
 #
 	experimental/non-free
 	experimental_i386/non-free
+	experimental-bl/non-free
 	sid/non-free
 	sid-plus/non-free
 	sid-rcmd/non-free
@@ -664,6 +667,38 @@ distro = experimental
 arch = i386
 area = non-free
 reschedule-old-days = 30
+
+
+[experimental-bl/main]
+precedence = 130
+description = + Failing on broken symlinks.
+piuparts-flags =
+	%(flags-broken-symlinks)s
+depends-sections = sid/main
+distro = experimental
+arch = amd64
+area = main
+components = main
+
+[experimental-bl/contrib]
+precedence = 130
+description = + Failing on broken symlinks.
+piuparts-flags =
+	%(flags-broken-symlinks)s
+depends-sections = experimental-bl/main sid/main sid/contrib sid/non-free
+distro = experimental
+arch = amd64
+area = contrib
+
+[experimental-bl/non-free]
+precedence = 130
+description = + Failing on broken symlinks.
+piuparts-flags =
+	%(flags-broken-symlinks)s
+depends-sections = experimental-bl/main sid/main sid/contrib sid/non-free
+distro = experimental
+arch = amd64
+area = non-free
 
 
 [sid/main]

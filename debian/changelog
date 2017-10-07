@@ -1,6 +1,7 @@
 piuparts (0.83) UNRELEASED; urgency=medium
 
-  * …
+  [ Andreas Beckmann ]
+  * piuparts.conf.anbe: Add some more example sections.
 
  -- Holger Levsen <holger@debian.org>  Sat, 07 Oct 2017 17:42:12 +0200
 
