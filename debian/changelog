@@ -1,3 +1,9 @@
+piuparts (0.83) UNRELEASED; urgency=medium
+
+  * …
+
+ -- Holger Levsen <holger@debian.org>  Sat, 07 Oct 2017 17:42:12 +0200
+
 piuparts (0.82) unstable; urgency=medium
 
   * Move xmlto from Build-Depends-Indep to Build-Depends.
