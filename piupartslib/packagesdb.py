@@ -462,9 +462,12 @@ class PackagesDB:
     def _lookup_package_state(self, package, use_cached_success, check_outdated):
         if check_outdated:
             # Check if dependency databases have a newer version of this package.
+            # Use the actual package versions, not the target versions.
+            curr_ver = package.version()
             for db in self._dependency_databases:
-                v = db.get_version(package["Package"])
-                if v is not None and apt_pkg.version_compare(package["Version"], v) < 0:
+                dep_ver = db.get_version(package.name())
+                if dep_ver is not None and apt_pkg.version_compare(curr_ver, dep_ver) < 0:
+                    #logging.info("[%s] outdated: %s %s < %s @[%s]" % (self.prefix, package.name(), curr_ver, dep_ver, db.prefix))
                     return "outdated";
         if self._recycle_mode and self._logdb.log_exists(package, [self._recycle]):
             return "unknown"
