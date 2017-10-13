@@ -1,3 +1,9 @@
+piuparts (0.82~bpo9+1) stretch-backports; urgency=medium
+
+  * Rebuild for stretch-backports.
+
+ -- Holger Levsen <holger@debian.org>  Fri, 13 Oct 2017 15:32:02 +0200
+
 piuparts (0.82) unstable; urgency=medium
 
   * Move xmlto from Build-Depends-Indep to Build-Depends.
