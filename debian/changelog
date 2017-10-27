@@ -25,6 +25,10 @@ piuparts (0.83) UNRELEASED; urgency=medium
   * master-bin/report_newly_bugged_packages: Remove, merged into
     piuparts-analyze.
 
+  [ Holger Levsen ]
+  * dwke.py/-analyze.py/-report.py: quietly exit if another process is still
+    running.
+
  -- Holger Levsen <holger@debian.org>  Sat, 07 Oct 2017 17:42:12 +0200
 
 piuparts (0.82) unstable; urgency=medium
