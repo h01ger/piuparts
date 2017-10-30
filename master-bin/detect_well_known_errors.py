@@ -100,20 +100,17 @@ def detect_well_known_errors(sections, config, problem_list, recheck, recheck_fa
     total_add = 0
     for section in sections:
         try:
-            logging.info(time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime()))
-            logging.info("%s:" % section)
-
             (del_cnt, add_cnt) = \
                 process_section(section, config, problem_list,
                                 recheck, recheck_failed)
             total_del += del_cnt
             total_add += add_cnt
-
-            logging.info("parsed logfiles: %d removed, %d added" % (del_cnt, add_cnt))
+            current_time=time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime())
+            logging.info("%s - %s: parsed logfiles: %d removed, %d added" % (current_time, section, del_cnt, add_cnt))
         except MissingSection:
             pass
-        logging.info("")
 
+    logging.info("")
     logging.info(time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime()))
     logging.info("total parsed logfiles: %d removed, %d added" % (total_del, total_add))
 
