@@ -32,7 +32,7 @@ do
 	# skip check if the package is not installed
 	is_installed "$pkg" || continue
 
-	docdir="/usr/share/doc/$pkg"
+	docdir="/usr/share/doc/${pkg%:*}"
 	copyright="$docdir/copyright"
 	if [ ! -f "$copyright" ]
 	then
