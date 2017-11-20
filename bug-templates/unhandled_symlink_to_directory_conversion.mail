@@ -24,14 +24,14 @@ packages are installed, ship byte-for-byte identical files and are
 upgraded in lockstep. But once one of the involved packages gets
 removed, the other one will lose its documentation files, too,
 including the copyright file, which is a violation of Policy 12.5:
-https://www.debian.org/doc/debian-policy/ch-docs.html#s-copyrightfile
+https://www.debian.org/doc/debian-policy/#copyright-information
 
 For other overwritten locations anything interesting may happen.
 
 Note that dpkg intentionally does not replace directories with symlinks
 and vice versa, you need the maintainer scripts to do this.
 See in particular the end of point 4 in
-https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#s-unpackphase
+https://www.debian.org/doc/debian-policy/#details-of-unpack-phase-of-installation-or-upgrade
 
 It is recommended to use the dpkg-maintscript-helper commands
 'dir_to_symlink' and 'symlink_to_dir' (available since dpkg 1.17.14)

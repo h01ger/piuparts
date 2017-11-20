@@ -13,7 +13,7 @@ a test with piuparts revealed that your package uses files from
 /usr/share/doc in its maintainer scripts which is a violation of
 Policy 12.3: "Packages must not require the existence of any files in
 /usr/share/doc/ in order to function."
-https://www.debian.org/doc/debian-policy/ch-docs.html#s12.3
+https://www.debian.org/doc/debian-policy/#additional-documentation
 
 These files must be moved to /usr/share/$PACKAGE and may be symlinked
 from /usr/share/doc/$PACKAGE.

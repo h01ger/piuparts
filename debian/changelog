@@ -24,6 +24,7 @@ piuparts (0.83) UNRELEASED; urgency=medium
       piuparts-report to exclude (most of) these logfiles from the report.
   * master-bin/report_newly_bugged_packages: Remove, merged into
     piuparts-analyze.
+  * Update policy references, the permalinks changed with the new toolchain.
 
   [ Holger Levsen ]
   * dwke.py/-analyze.py/-report.py: quietly exit if another process is still

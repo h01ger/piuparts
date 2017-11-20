@@ -17,11 +17,11 @@ they may have been shipped or created by a dependency.
 
 This could be a violation of policy 10.7.4 ("Sharing configuration
 files"), see
-https://www.debian.org/doc/debian-policy/ch-files.html#s10.7.4
+https://www.debian.org/doc/debian-policy/#sharing-configuration-files
 or policy chapter 6 ("Package maintainer scripts..."), see
-https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html
+https://www.debian.org/doc/debian-policy/#package-maintainer-scripts-and-installation-procedure
 or policy 7.6 ("Overwriting files..."), see
-https://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces
+https://www.debian.org/doc/debian-policy/#overwriting-files-and-replacing-packages-replaces
 
 If a directory is used by several packages, all should ship it as part
 of the package (possibly empty, using $package.dirs to create it), and

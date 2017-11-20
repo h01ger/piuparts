@@ -27,9 +27,10 @@ but the following files have disappeared:
 
 
 This is a serious bug violating policy 7.6, see
-https://www.debian.org/doc/debian-policy/ch-relationships.html#s-replaces
+https://www.debian.org/doc/debian-policy/#overwriting-files-and-replacing-packages-replaces
 and also see the footnote that describes this incorrect behavior
-https://www.debian.org/doc/debian-policy/footnotes.html#f53
+https://www.debian.org/doc/debian-policy/ (old: footnotes.html#f53)
+[footnote permalink broken (#879048), search for /To see why/]
 
 The $OFFENDER package has the following relationships with $VICTIM:
 

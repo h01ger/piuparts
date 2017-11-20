@@ -8,6 +8,8 @@ expressed…
 
 for 0.8x, during the buster development cycle:
 
+- fix policy reference for old footnote 53, blocked by #879048
+
 - README_server.txt: rewrite style a bit more. its super easy to setup now!
 
 - ==== piuparts.debian.org specific configuration
