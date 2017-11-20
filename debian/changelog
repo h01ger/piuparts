@@ -25,6 +25,7 @@ piuparts (0.83) UNRELEASED; urgency=medium
   * master-bin/report_newly_bugged_packages: Remove, merged into
     piuparts-analyze.
   * Update policy references, the permalinks changed with the new toolchain.
+  * Add bug template for failing to reinstall a package.
 
   [ Holger Levsen ]
   * dwke.py/-analyze.py/-report.py: quietly exit if another process is still
