@@ -65,6 +65,7 @@ add_pattern "(groupadd|useradd): (unable to lock|cannot rewrite) (group|password
 add_pattern 'INVOKE-RC.D: INITSCRIPT (MYSQL|POSTGRESQL|POSTGRESQL-8.3), ACTION "(RE)?START" FAILED.'
 add_pattern 'invoke-rc.d: initscript (mysql|postgresql|postgresql-8.3), action "(re)?start" failed.'
 add_pattern 'The PostgreSQL server failed to start.'
+add_pattern 'Is another postmaster already running on port 543.'
 add_pattern 'No database found online on port 5432'
 add_pattern 'unable to connect to postgresql server'
 add_pattern 'Failed to connect to postgres.'
