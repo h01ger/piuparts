@@ -322,7 +322,10 @@ def main():
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
-            sys.exit()
+            if sys.stdout.isatty():
+                sys.exit("another piuparts-analyze process is already running")
+            else:
+                sys.exit(0)
 
         for section_name in sections:
             print(time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime()))

@@ -1783,7 +1783,10 @@ def main():
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
-            sys.exit()
+            if sys.stdout.isatty():
+                sys.exit("another piuparts-report process is already running")
+            else:
+                sys.exit(0)
 
         packagedb_cache = {}
         create_file(os.path.join(output_directory, "sections.yaml"),

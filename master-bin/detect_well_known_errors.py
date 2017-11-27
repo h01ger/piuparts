@@ -144,7 +144,11 @@ caching the problems found, by package, into ".kpr" files.
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
-            sys.exit()
+            if sys.stdout.isatty():
+                sys.exit("another detect_well_known_errors process is already running")
+            else:
+                sys.exit(0)
+
         sections = args.sections
         if not sections:
             sections = conf['sections'].split()
