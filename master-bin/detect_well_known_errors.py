@@ -26,6 +26,7 @@ import time
 import logging
 import argparse
 import fcntl
+from collections import deque
 
 import piupartslib
 from piupartslib.conf import MissingSection
@@ -98,7 +99,9 @@ def detect_well_known_errors(sections, config, problem_list, recheck, recheck_fa
 
     total_del = 0
     total_add = 0
-    for section in sections:
+    todo = deque([(s, 0) for s in sections])
+    while len(todo):
+        (section, next_try) = todo.popleft()
         try:
             (del_cnt, add_cnt) = \
                 process_section(section, config, problem_list,
