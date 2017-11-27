@@ -39,6 +39,7 @@ import pickle
 import random
 import fcntl
 from urllib2 import HTTPError, URLError
+from collections import deque
 
 # if python-rpy2 ain't installed, we don't draw fancy graphs
 try:
@@ -1791,7 +1792,9 @@ def main():
         packagedb_cache = {}
         create_file(os.path.join(output_directory, "sections.yaml"),
             yaml.dump(section_names, default_flow_style=False))
-        for section_name in process_section_names:
+        todo = deque([(s, 0) for s in process_section_names])
+        while len(todo):
+            (section_name, next_try) = todo.popleft()
             try:
                 section_directory = os.path.join(master_directory, section_name)
                 if not os.path.exists(section_directory):
