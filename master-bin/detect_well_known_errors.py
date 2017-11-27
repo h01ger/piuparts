@@ -37,6 +37,12 @@ CONFIG_FILE = "/etc/piuparts/piuparts.conf"
 KPR_DIRS = ('pass', 'bugged', 'affected', 'fail')
 
 
+class Busy(Exception):
+
+    def __init__(self):
+        self.args = "section is locked by another process",
+
+
 class WKE_Config(piupartslib.conf.Config):
 
     """Configuration parameters for Well Known Errors"""
@@ -71,7 +77,10 @@ def process_section(section, config, problem_list,
         raise MissingSection("", section)
 
     with open(os.path.join(sectiondir, "master.lock"), "we") as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            raise Busy()
 
         [os.mkdir(x) for x in workdirs if not os.path.exists(x)]
 
@@ -102,6 +111,10 @@ def detect_well_known_errors(sections, config, problem_list, recheck, recheck_fa
     todo = deque([(s, 0) for s in sections])
     while len(todo):
         (section, next_try) = todo.popleft()
+        now = time.time()
+        if (now < next_try):
+            logging.info("Sleeping while sections are busy")
+            time.sleep(max(30, next_try - now) + 30)
         try:
             (del_cnt, add_cnt) = \
                 process_section(section, config, problem_list,
@@ -110,6 +123,9 @@ def detect_well_known_errors(sections, config, problem_list, recheck, recheck_fa
             total_add += add_cnt
             current_time=time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime())
             logging.info("%s - %s: parsed logfiles: %d removed, %d added" % (current_time, section, del_cnt, add_cnt))
+        except Busy:
+            logging.info("Section is busy")
+            todo.append((section, time.time() + 300))
         except MissingSection:
             pass
 
