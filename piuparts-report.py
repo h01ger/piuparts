@@ -781,6 +781,12 @@ def unique(stuff):
     return vlist
 
 
+class Busy(Exception):
+
+    def __init__(self):
+        self.args = "section is locked by another process",
+
+
 class Section:
 
     def __init__(self, section, master_directory, doc_root, packagedb_cache={}):
@@ -1795,15 +1801,25 @@ def main():
         todo = deque([(s, 0) for s in process_section_names])
         while len(todo):
             (section_name, next_try) = todo.popleft()
+            now = time.time()
+            if (now < next_try):
+                logging.info("Sleeping while section is busy")
+                time.sleep(max(30, next_try - now) + 30)
             try:
                 section_directory = os.path.join(master_directory, section_name)
                 if not os.path.exists(section_directory):
                     raise MissingSection("", section_name)
                 with open(os.path.join(section_directory, "master.lock"), "we") as lock:
-                    fcntl.flock(lock, fcntl.LOCK_EX)
+                    try:
+                        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    except IOError:
+                        raise Busy()
 
                     section = Section(section_name, master_directory, doc_root, packagedb_cache=packagedb_cache)
                     section.generate_output(output_directory, section_names, problem_list, web_host)
+            except Busy:
+                logging.info("Section is busy")
+                todo.append((section_name, time.time() + 300))
             except MissingSection as e:
                 logging.error("Configuration Error in section '%s': %s" % (section_name, e))
             except (HTTPError, URLError) as e:

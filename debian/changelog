@@ -15,6 +15,7 @@ piuparts (0.83) UNRELEASED; urgency=medium
     - Use global locks to allow only one running instance of each script.
     - Acquire section locks to prevent concurrent processing of a section,
       including piuparts-master access.
+    - Postpone busy sections and retry them later.
     - Run as three separate cronjobs.
   * conf/crontab-master:
     - Run detect_well_known_errors every three hours to avoid accumulating a
