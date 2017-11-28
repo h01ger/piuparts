@@ -28,6 +28,7 @@ piuparts (0.83) UNRELEASED; urgency=medium
     piuparts-analyze.
   * Update policy references, the permalinks changed with the new toolchain.
   * Add bug template for failing to reinstall a package.
+  * Adjust known_problems patterns for dpkg 1.19 message changes.
 
   [ Holger Levsen ]
   * dwke.py/-analyze.py/-report.py: quietly exit if another process is still
