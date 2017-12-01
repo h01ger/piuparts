@@ -4,7 +4,7 @@ Uploaders:
  Holger Levsen <holger@debian.org>
 Section: devel
 Priority: optional
-Standards-Version: 4.1.1
+Standards-Version: 4.1.2
 Build-Depends:
  asciidoc,
  debhelper (>= 10.2.5~),

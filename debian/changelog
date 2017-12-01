@@ -34,6 +34,7 @@ piuparts (0.83) UNRELEASED; urgency=medium
   * dwke.py/-analyze.py/-report.py: quietly exit if another process is still
     running.
   * master-bin/detect_well_known_errors.py: compress output.
+  * Bump standards version to 4.1.2, no changes needed.
 
  -- Holger Levsen <holger@debian.org>  Sat, 07 Oct 2017 17:42:12 +0200
 
