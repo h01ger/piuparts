@@ -109,6 +109,11 @@ upgrade_pg_cluster()
 
 	if is_installed postgresql-${from} && is_installed postgresql-${to}
 	then
+		if [ "$3" = "--restart-first" ]; then
+			echo ""
+			echo "Restarting PostgreSQL (#882409)..."
+			invoke-rc.d postgresql restart
+		fi
 		echo ""
 		echo "Upgrading PostgreSQL Cluster from ${from} to ${to}"
 		pg_dropcluster ${to} main --stop
@@ -125,7 +130,7 @@ case "${PIUPARTS_DISTRIBUTION}:${PIUPARTS_DISTRIBUTION_NEXT}" in
 		upgrade_pg_cluster 8.4 9.1
 		;;
 	wheezy:jessie)
-		upgrade_pg_cluster 9.1 9.4
+		upgrade_pg_cluster 9.1 9.4 --restart-first
 		;;
 	jessie:stretch)
 		upgrade_pg_cluster 9.4 9.6
