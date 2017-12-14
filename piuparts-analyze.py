@@ -135,6 +135,12 @@ piupartsbts = PiupartsBTS()
 
 ############################################################################
 
+class Busy(Exception):
+
+    def __init__(self):
+        self.args = "section is locked by another process",
+
+
 class Config(piupartslib.conf.Config):
     def __init__(self, section="global", defaults_section=None):
         self.section = section
@@ -331,6 +337,10 @@ def main():
         todo = deque([(s, 0) for s in sections])
         while len(todo):
             (section_name, next_try) = todo.popleft()
+            now = time.time()
+            if (now < next_try):
+                print("Sleeping while section is busy")
+                time.sleep(max(30, next_try - now) + 30)
             print(time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime()))
             print("%s:" % section_name)
             try:
@@ -338,12 +348,18 @@ def main():
                 if not os.path.exists(section_directory):
                     raise MissingSection("", section_name)
                 with open(os.path.join(section_directory, "master.lock"), "we") as lock:
-                    fcntl.flock(lock, fcntl.LOCK_EX)
+                    try:
+                        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    except IOError:
+                        raise Busy()
 
                     oldcwd = os.getcwd()
                     os.chdir(section_directory)
                     mark_logs_with_reported_bugs()
                     os.chdir(oldcwd)
+            except Busy:
+                print("Section is busy")
+                todo.append((section_name, time.time() + 300))
             except MissingSection as e:
                 print("Configuration Error in section '%s': %s" % (section_name, e))
             print("")
