@@ -42,6 +42,7 @@ import fcntl
 import debianbts
 import apt_pkg
 from signal import alarm, signal, SIGALRM
+from collections import deque
 
 import piupartslib.conf
 from piupartslib.conf import MissingSection
@@ -327,7 +328,9 @@ def main():
             else:
                 sys.exit(0)
 
-        for section_name in sections:
+        todo = deque([(s, 0) for s in sections])
+        while len(todo):
+            (section_name, next_try) = todo.popleft()
             print(time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime()))
             print("%s:" % section_name)
             try:
