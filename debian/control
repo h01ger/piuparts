@@ -5,6 +5,7 @@ Uploaders:
 Section: devel
 Priority: optional
 Standards-Version: 4.1.2
+Rules-Requires-Root: no
 Build-Depends:
  asciidoc,
  debhelper (>= 10.2.5~),
