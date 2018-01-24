@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright 2009-2014 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2018 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2011-2017 Andreas Beckmann (anbe@debian.org)
 # Copyright 2013 David Steele (dsteele@gmail.com)
 #
@@ -244,8 +244,10 @@ HTML_FOOTER = """
   <div>
    <a href="https://tracker.debian.org/pkg/piuparts" target="_blank">piuparts</a>
    is GPL2 <a href="https://packages.debian.org/changelogs/pool/main/p/piuparts/current/copyright" target="_blank">licenced</a>
-   and was written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by
+   and was originally written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by
+   <a href="mailto:anbe@debian.org">Andreas Beckmann</a> and
    <a href="mailto:holger@layer-acht.org">Holger Levsen</a> and
+
    <a href="mailto:piuparts-devel@lists.alioth.debian.org">others</a> using
    <a href="https://anonscm.debian.org/cgit/piuparts/piuparts.git/" target="_blank">piuparts.git</a>.
    Ditto for this website.
