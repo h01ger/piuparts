@@ -1,4 +1,4 @@
-piuparts (0.84-1) UNRELEASED; urgency=medium
+piuparts (0.84) unstable; urgency=medium
 
   * debian/control:
     - Add "Rules-Requires-Root: no" to support building as non-root.
@@ -8,7 +8,7 @@ piuparts (0.84-1) UNRELEASED; urgency=medium
   * piuparts-report.py: credit Andreas properly.
   * Bump debian/compat to 11 and build-depend on debhelper >= 11~.
 
- -- Holger Levsen <holger@debian.org>  Fri, 15 Dec 2017 11:13:52 +0000
+ -- Holger Levsen <holger@debian.org>  Fri, 16 Feb 2018 12:34:20 +0000
 
 piuparts (0.83) unstable; urgency=medium
 
