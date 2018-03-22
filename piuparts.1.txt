@@ -144,7 +144,10 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
   Remove package after installation and reinstall. For testing installation in config-files-remaining state.
 
 *-k*, *--keep-tmpdir*::
-  Don't remove the temporary directory for the chroot when the program ends.
+  Depending on which option is passed, it keeps the environment used for testing after the program ends::
+   * By default it doesn't remove the temporary directory for the chroot,
+   * or if --schroot is used, the schroot session is not terminated,
+   * or if --docker-image is used, the container created is not destroyed
 
 *-K*, *--keyring*='filename'::
  Use FILE as the keyring to use with debootstrap when creating chroots.
