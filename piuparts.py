@@ -2740,8 +2740,8 @@ def parse_command_line():
 
     parser.add_option("-k", "--keep-tmpdir",
                       action="store_true", default=False,
-                      help="Don't remove the temporary directory for the " +
-                           "chroot when the program ends.")
+                      help="Keep the environment used for testing after the "
+                      "program ends.")
 
     parser.add_option("-K", "--keyring", action="store", metavar="FILE",
                       help="Use FILE as the keyring to use with debootstrap when creating chroots.")
