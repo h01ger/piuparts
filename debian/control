@@ -45,7 +45,8 @@ Depends:
 Recommends:
  adequate
 Suggests:
- schroot
+ schroot,
+ docker.io,
 Description: .deb package installation, upgrading, and removal testing tool
  piuparts tests that .deb packages (as used by Debian) handle
  installation, upgrading, and removal correctly. It does this by
