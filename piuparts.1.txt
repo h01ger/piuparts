@@ -233,7 +233,7 @@ Note that file: addresses works if the directories are made accessible from with
   Directory where are custom scripts are placed. By default, this is not set. For more information about this, read README_server.txt
 
 *--schroot*='SCHROOT-NAME'::
-  Use schroot session named SCHROOT-NAME for the chroot, instead of building a new one with debootstrap.
+  Use schroot session named SCHROOT-NAME for the testing environment, instead of building a new one with debootstrap.
 
 *--docker-image*='DOCKER-IMAGE'::
   Use a container created from the docker image DOCKER-IMAGE for the testing environment, instead of building a new one with debootstrap.

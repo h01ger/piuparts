@@ -2768,8 +2768,9 @@ def parse_command_line():
                       "a new LVM snapshot (default: 1G)")
 
     parser.add_option("--schroot", metavar="SCHROOT-NAME", action="store",
-                      help="Use schroot session named SCHROOT-NAME for the chroot, instead of building " +
-                           "a new one with debootstrap.")
+                      help="Use schroot session named SCHROOT-NAME for the "
+                      "testing environment, instead of building a new one "
+                      "with debootstrap.")
 
     parser.add_option("--docker-image", metavar="DOCKER-IMAGE", action="store",
                       help="Use a container created from the docker image "
