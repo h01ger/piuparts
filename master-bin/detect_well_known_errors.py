@@ -122,7 +122,10 @@ def detect_well_known_errors(sections, config, problem_list, recheck, recheck_fa
             total_del += del_cnt
             total_add += add_cnt
             current_time=time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime())
-            logging.info("%s - %s: parsed logfiles: %d removed, %d added" % (current_time, section, del_cnt, add_cnt))
+            if del_cnt == 0 and add_cnt == 0:
+                logging.info("%s - %s: no new logfiles parsed" % (current_time, section))
+            else:
+                logging.info("%s - %s: parsed logfiles: %d removed, %d added" % (current_time, section, del_cnt, add_cnt))
         except Busy:
             logging.info("Section is busy")
             todo.append((section, time.time() + 300))
