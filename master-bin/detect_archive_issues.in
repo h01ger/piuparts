@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright © 2009-2017 Holger Levsen (holger@layer-acht.org)
+# Copyright © 2009-2018 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2011-2017 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -62,11 +62,6 @@ if [ -s $URLS ]; then
 	echo "Runtime: $RUNTIME"
 	echo
 	echo "Broken packages detected!"
-	echo "(By grep'ing for"
-	echo "        'E: Broken packages',"
-	echo "        'E: Unable to correct problems, you have held broken packages',"
-	echo "        'E: Error, pkgProblemResolver::Resolve generated breaks'"
-	echo "in failed logs.)"
 	echo
 	echo 'The following packages have been moved to $section/untestable and will be'
 	echo "tested again in $DAYS days."
@@ -79,5 +74,9 @@ if [ -s $URLS ]; then
 	echo
 	grep -f $URLS $ISSUE_LOG | sort | uniq -c | sort -rn
 	echo
+	echo "Those problems were found in failed logs by grep'ing for these patterns:"
+	echo "        'E: Broken packages'"
+	echo "        'E: Unable to correct problems, you have held broken packages'"
+	echo "        'E: Error, pkgProblemResolver::Resolve generated breaks'"
 fi
 rm $LOGS $URLS

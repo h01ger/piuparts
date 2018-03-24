@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright © 2009-2017 Holger Levsen (holger@layer-acht.org)
+# Copyright © 2009-2018 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2011-2017 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -98,17 +98,11 @@ if [ -s $FILE ] ; then
 	echo "Runtime: $RUNTIME"
 	echo
 	echo "piuparts problems detected!"
-	echo "(By grep'ing for"
-	echo "$DISPLAY_PATTERN"
-	echo "in failed logs.)"
 	echo
-	echo "Please review the following logfiles/packages."
-	echo "If it is always the same package failing, it's likely to be an issue in the"
-	echo "package."
+	echo "Please review the following logfiles/packages. If it is always the same"
+	echo "package failing, it's likely to be an issue in the package."
 	echo
 	echo "The following logfiles have been deleted:"
-	echo
-	echo "----------------------------------------------------------------------"
 	echo
 	for log in $(sort -u $FILE)
 	do
@@ -117,6 +111,9 @@ if [ -s $FILE ] ; then
 		grep -E "$PATTERN" "$log" | perl -e 'print grep !$seen{$_}++, <>;' | head -n 10 | sed "s/^/${tab}/"
 		rm -f "$log"
 	done
+	echo
+	echo "Those problems were found in failed logs by grep'ing for these patterns:"
+	echo "$DISPLAY_PATTERN"
 	echo
 fi
 rm $FILE
