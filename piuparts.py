@@ -47,6 +47,7 @@ import os
 import tarfile
 import stat
 import re
+import json
 import pickle
 import subprocess
 import traceback
@@ -191,6 +192,7 @@ class Settings:
         self.skip_minimize = True
         self.minimize = False
         self.debfoster_options = None
+        self.docker_image = None
         # tests and checks
         self.no_install_purge_test = False
         self.no_upgrade_test = False
@@ -769,7 +771,7 @@ class Chroot:
     def create(self, temp_tgz=None):
         """Create a chroot according to user's wishes."""
         self.panic_handler_id = do_on_panic(self.remove)
-        if not settings.schroot:
+        if not settings.schroot and not settings.docker_image:
             self.create_temp_dir()
 
         if temp_tgz:
@@ -782,10 +784,12 @@ class Chroot:
             self.setup_from_dir(settings.existing_chroot)
         elif settings.schroot:
             self.setup_from_schroot(settings.schroot)
+        elif settings.docker_image:
+            self.setup_from_docker(settings.docker_image)
         else:
             self.setup_minimal_chroot()
 
-        if not settings.schroot:
+        if not settings.schroot and not settings.docker_image:
             self.mount_proc()
         self.configure_chroot()
 
@@ -807,7 +811,7 @@ class Chroot:
         self.run_scripts("post_chroot_unpack")
 
         self.run(["apt-get", "update"])
-        if settings.basetgz or settings.schroot or settings.existing_chroot:
+        if settings.basetgz or settings.docker_image or settings.schroot or settings.existing_chroot:
             self.run(["apt-get", "-yf", "dist-upgrade"])
         self.minimize()
         self.remember_available_md5()
@@ -823,7 +827,8 @@ class Chroot:
     def remove(self):
         """Remove a chroot and all its contents."""
         if not settings.keep_tmpdir and os.path.exists(self.name):
-            self.terminate_running_processes()
+            if not settings.docker_image:
+                self.terminate_running_processes()
             self.unmount_all()
             if settings.lvm_volume:
                 logging.debug('Unmounting and removing LVM snapshot %s' % self.lvm_snapshot_name)
@@ -832,7 +837,10 @@ class Chroot:
             if settings.schroot:
                 logging.debug("Terminate schroot session '%s'" % self.name)
                 run(['schroot', '--end-session', '--chroot', "session:" + self.schroot_session])
-            if not settings.schroot:
+            if settings.docker_image:
+                logging.debug("Destroy docker container '%s'" % self.docker_container)
+                run(['docker', 'rm', '-f', self.docker_container])
+            if not settings.schroot and not settings.docker_image:
                 run(['rm', '-rf', '--one-file-system', self.name])
                 if os.path.exists(self.name):
                     create_file(os.path.join(self.name, ".piuparts.tmpdir"), "removal failed")
@@ -840,6 +848,8 @@ class Chroot:
         elif settings.keep_tmpdir:
             if settings.schroot:
                 logging.debug("Keeping schroot session %s at %s" % (self.schroot_session, self.name))
+            elif settings.docker_image:
+                logging.debug("Keeping container %s" % self.docker_container)
             else:
                 logging.debug("Keeping directory tree at %s" % self.name)
         dont_do_on_panic(self.panic_handler_id)
@@ -892,6 +902,25 @@ class Chroot:
         self.name = output.strip()
         logging.info("New schroot session in '%s'" % self.name)
 
+    @staticmethod
+    def check_if_docker_storage_driver_is_supported():
+        ret_code, output = run(['docker', 'info'])
+        if 'overlay2' not in output:
+            logging.error('Only overlay2 storage driver is supported')
+            panic()
+
+    def setup_from_docker(self, docker_image):
+        self.check_if_docker_storage_driver_is_supported()
+        ret_code, output = run(['docker', 'run', '-d', '-it', docker_image, 'bash'])
+        if ret_code != 0:
+            logging.error("Couldn't start the container from '%s'" % docker_image)
+            panic()
+        self.docker_container = output.strip()
+        ret_code, output = run(['docker', 'inspect', self.docker_container])
+        container_data = json.loads(output)[0]
+        self.name = container_data['GraphDriver']['Data']['MergedDir']
+        logging.info("New container created '%s'" % self.docker_container)
+
     def setup_from_lvm(self, lvm_volume):
         """Create a chroot by creating an LVM snapshot."""
         self.lvm_base = os.path.dirname(lvm_volume)
@@ -938,6 +967,12 @@ class Chroot:
                 ["schroot", "--preserve-environment", "--run-session", "--chroot", "session:" +
                     self.schroot_session, "--directory", "/", "-u", "root", "--"] + prefix + command,
                    ignore_errors=ignore_errors, timeout=settings.max_command_runtime)
+        elif settings.docker_image:
+            return run(
+                ['docker', 'exec', self.docker_container,] + prefix + command,
+                ignore_errors=ignore_errors,
+                timeout=settings.max_command_runtime,
+            )
         else:
             return run(["chroot", self.name] + prefix + command,
                        ignore_errors=ignore_errors, timeout=settings.max_command_runtime)
@@ -1094,7 +1129,9 @@ class Chroot:
         self.create_apt_conf()
         self.create_dpkg_conf()
         self.create_policy_rc_d()
-        self.create_resolv_conf()
+        # Docker already takes care of this
+        if not settings.docker_image:
+            self.create_resolv_conf()
         for bindmount in settings.bindmounts:
             self.mount(bindmount, bindmount, opts="bind")
 
@@ -1379,6 +1416,9 @@ class Chroot:
                     'broken-symlink',
             ]
             ignored_tags = []
+            if not os.path.exists(self.name + '/dev/null'):
+                device = os.makedev(1, 3)
+                os.mknod(self.name + '/dev/null', 0o666, device)
             (status, output) = run(["adequate", "--root", self.name] + packages, ignore_errors=True)
             for tag in ignored_tags:
                 # ignore some tags
@@ -1624,15 +1664,20 @@ class Chroot:
 
     def check_for_no_processes(self, fail=None):
         """Check there are no processes running inside the chroot."""
-        (status, output) = run(["lsof", "-w", "+D", self.name], ignore_errors=True)
-        count = len(output.split("\n")) - 1
+        if settings.docker_image:
+            (status, output) = run(["docker", "top", self.docker_container])
+            count = len(output.strip().split("\n")) - 2 # header + bash launched on container creation
+        else:
+            (status, output) = run(["lsof", "-w", "+D", self.name], ignore_errors=True)
+            count = len(output.split("\n")) - 1
         if count > 0:
             if fail is None:
                 fail = not settings.allow_database
             logging.error("%s: Processes are running inside chroot:\n%s" %
                           ("FAIL" if fail else "WARN", indent_string(output)))
             if fail:
-                self.terminate_running_processes()
+                if not settings.docker_image:
+                    self.terminate_running_processes()
                 panic()
 
     def terminate_running_processes(self):
@@ -2693,8 +2738,8 @@ def parse_command_line():
 
     parser.add_option("-k", "--keep-tmpdir",
                       action="store_true", default=False,
-                      help="Don't remove the temporary directory for the " +
-                           "chroot when the program ends.")
+                      help="Keep the environment used for testing after the "
+                      "programm ends.")
 
     parser.add_option("-K", "--keyring", action="store", metavar="FILE",
                       help="Use FILE as the keyring to use with debootstrap when creating chroots.")
@@ -2723,8 +2768,14 @@ def parse_command_line():
                       "a new LVM snapshot (default: 1G)")
 
     parser.add_option("--schroot", metavar="SCHROOT-NAME", action="store",
-                      help="Use schroot session named SCHROOT-NAME for the chroot, instead of building " +
-                           "a new one with debootstrap.")
+                      help="Use schroot session named SCHROOT-NAME for the "
+                      "testing environment, instead of building a new one "
+                      "with debootstrap.")
+
+    parser.add_option("--docker-image", metavar="DOCKER-IMAGE", action="store",
+                      help="Use a container created from the docker image "
+                      "DOCKER-IMAGE for the testing environment, instead of "
+                      "building a new one with debootstrap.")
 
     parser.add_option("-m", "--mirror", action="append", metavar="URL",
                       default=[],
@@ -2948,6 +2999,7 @@ def parse_command_line():
     if settings.minimize:
         settings.skip_minimize = False
     settings.debfoster_options = opts.debfoster_options.split()
+    settings.docker_image = opts.docker_image
     # tests and checks
     settings.no_install_purge_test = opts.no_install_purge_test
     settings.no_upgrade_test = opts.no_upgrade_test

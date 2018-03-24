@@ -1,7 +1,14 @@
 piuparts (0.85) UNRELEASED; urgency=medium
 
+  [ Holger Levsen ]
   * dwke.py: change logging to make relevant information more visible.
   * detect_*_issues.in: improve output.
+
+  [ Agustin Henze ]
+  * Add docker support, new param is introduced `--docker-image`.
+    (Closes: #893731)
+  * Add `docker.io` as suggested package
+  * Reworded documentation for `--keep-tmpdir` and `--schroot` parameters
 
  -- Holger Levsen <holger@debian.org>  Fri, 16 Feb 2018 12:47:08 +0000
 
