@@ -75,10 +75,7 @@ if [ -s $FILE ] ; then
 	RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
 	echo "Runtime: $RUNTIME"
 	echo
-	echo "Network problems on detected!"
-	echo
-	echo "The following logfiles have been deleted:"
-	echo
+	echo "Network problems on detected! The following logfiles have been deleted:"
 	echo
 	for log in $(sort -u $FILE)
 	do

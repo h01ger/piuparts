@@ -97,10 +97,9 @@ if [ -s $FILE ] ; then
 	RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
 	echo "Runtime: $RUNTIME"
 	echo
-	echo "piuparts problems detected!"
-	echo
-	echo "Please review the following logfiles/packages. If it is always the same"
-	echo "package failing, it's likely to be an issue in the package."
+	echo "piuparts problems detected! Please review the following logfiles/packages."
+	echo "If it is always the same package failing, it's likely to be an issue in the"
+	echo "package."
 	echo
 	echo "The following logfiles have been deleted:"
 	echo
