@@ -1,9 +1,5 @@
 piuparts (0.85) UNRELEASED; urgency=medium
 
-  [ Holger Levsen ]
-  * dwke.py: change logging to make relevant information more visible.
-  * detect_*_issues.in: improve output.
-
   [ Agustin Henze ]
   * Add docker support, new param is introduced `--docker-image`.
     (Closes: #893731)
@@ -11,6 +7,8 @@ piuparts (0.85) UNRELEASED; urgency=medium
   * Reworded documentation for `--keep-tmpdir` and `--schroot` parameters.
 
   [ Holger Levsen ]
+  * dwke.py: change logging to make relevant information more visible.
+  * detect_*_issues.in: improve output.
   * piuparts.1.txt: improve wording for docker related changes and add
     explaination about the limitations of docker support.
 
