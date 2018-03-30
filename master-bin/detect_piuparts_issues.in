@@ -105,7 +105,7 @@ if [ -s $FILE ] ; then
 	echo
 	for log in $(sort -u $FILE)
 	do
-		echo "$log"
+		echo "$log" | cut -d "/" -f5-
 		test -s "$log" || echo "${tab}Empty logfile."
 		grep -E "$PATTERN" "$log" | perl -e 'print grep !$seen{$_}++, <>;' | head -n 10 | sed "s/^/${tab}/"
 		rm -f "$log"
