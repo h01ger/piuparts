@@ -9,6 +9,7 @@ piuparts (0.85) UNRELEASED; urgency=medium
   [ Holger Levsen ]
   * dwke.py: change logging to make relevant information more visible.
   * detect_*_issues.in: improve output.
+  * report_untestable_packages.in: improve output.
   * piuparts.1.txt: improve wording for docker related changes and add
     explaination about the limitations of docker support.
   * Bump standards version to 4.1.4, no changes needed.

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright 2009, 2017 Holger Levsen (holger@layer-acht.org)
+# Copyright © 2009-2018 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2011-2012 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -47,7 +47,7 @@ if [ -s $LOGS ] ; then
 	echo "These packages have been rescheduled for piuparts testing."
 	echo
 	for package_log in $(cat $LOGS) ; do
-		rm -fv $package_log
+		rm -fv $package_log | sed "s#$MASTER/#...#g"
 	done
 fi
 rm $LOGS
