@@ -47,7 +47,7 @@ if [ -s $LOGS ] ; then
 	echo "These packages have been rescheduled for piuparts testing."
 	echo
 	for package_log in $(cat $LOGS) ; do
-		rm -fv $package_log | sed "s#$MASTER/#...#g"
+		rm -fv $package_log | sed "s#$MASTER/##g" | tr -d "'"
 	done
 fi
 rm $LOGS
