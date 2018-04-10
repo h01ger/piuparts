@@ -143,7 +143,7 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *--install-remove-install*::
   Remove package after installation and reinstall. For testing installation in config-files-remaining state.
 
-*-k*, *--keep-tmpdir*::
+*-k*, *--keep-env*::
   Depending on which option is passed, keep the environment used for testing after the program ends::
    * By default it doesn't remove the temporary directory for the chroot,
    * or if --schroot is used, the schroot session is not terminated,

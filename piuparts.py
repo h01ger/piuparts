@@ -153,7 +153,7 @@ class Settings:
     def __init__(self):
         self.defaults = None
         self.tmpdir = None
-        self.keep_tmpdir = False
+        self.keep_env = False
         self.shell_on_error = False
         self.max_command_output_size = 8 * 1024 * 1024  # 8 MB (google-android-ndk-installer on install) (daptup on dist-upgrade)
         self.max_command_runtime = 60 * 60  # 60 minutes (texlive-full and blends metapackages on dist-upgrade)
@@ -826,7 +826,7 @@ class Chroot:
 
     def remove(self):
         """Remove a chroot and all its contents."""
-        if not settings.keep_tmpdir and os.path.exists(self.name):
+        if not settings.keep_env and os.path.exists(self.name):
             self.terminate_running_processes()
             self.unmount_all()
             if settings.lvm_volume:
@@ -844,7 +844,7 @@ class Chroot:
                 if os.path.exists(self.name):
                     create_file(os.path.join(self.name, ".piuparts.tmpdir"), "removal failed")
                 logging.debug("Removed directory tree at %s" % self.name)
-        elif settings.keep_tmpdir:
+        elif settings.keep_env:
             if settings.schroot:
                 logging.debug("Keeping schroot session %s at %s" % (self.schroot_session, self.name))
             elif settings.docker_image:
@@ -2741,10 +2741,16 @@ def parse_command_line():
                       action="store_true", default=False,
                       help="Enable the installation of Suggests.")
 
-    parser.add_option("-k", "--keep-tmpdir",
-                      action="store_true", default=False,
-                      help="Keep the environment used for testing after the "
-                      "program ends.")
+    def keep_env_parser(option, opt_str, value, parser):
+        setattr(parser.values, option.dest, True)
+        if "--keep-tmpdir" == opt_str:
+            print('WARNING `--keep-tmpdir` is deprecated, use `--keep-env` '
+                  'instead')
+
+    parser.add_option("-k", "--keep-env", "--keep-tmpdir", action="callback",
+                      callback=keep_env_parser, default=False, dest='keep_env',
+                      help="Keep the environment used for testing after "
+                      "the program ends.")
 
     parser.add_option("-K", "--keyring", action="store", metavar="FILE",
                       help="Use FILE as the keyring to use with debootstrap when creating chroots.")
@@ -2955,7 +2961,7 @@ def parse_command_line():
     defaults = DefaultsFactory().new_defaults()
 
     settings.tmpdir = opts.tmpdir
-    settings.keep_tmpdir = opts.keep_tmpdir
+    settings.keep_env = opts.keep_env
     settings.shell_on_error = opts.shell_on_error
     settings.single_changes_list = opts.single_changes_list
     settings.single_packages = opts.single_packages
