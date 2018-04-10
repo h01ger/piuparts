@@ -1134,6 +1134,8 @@ class Chroot:
         self.create_resolv_conf()
         for bindmount in settings.bindmounts:
             self.mount(bindmount, bindmount, opts="bind")
+        if not os.path.exists(self.name + '/dev/null'):
+            run(['mknod', '-m' ,'666', self.name + '/dev/null', 'c', '1', '3'])
 
     def remember_available_md5(self):
         """Keep a history of 'apt-cache dumpavail | md5sum' after initial
@@ -1416,9 +1418,6 @@ class Chroot:
                     'broken-symlink',
             ]
             ignored_tags = []
-            if not os.path.exists(self.name + '/dev/null'):
-                device = os.makedev(1, 3)
-                os.mknod(self.name + '/dev/null', 0o666, device)
             (status, output) = run(["adequate", "--root", self.name] + packages, ignore_errors=True)
             for tag in ignored_tags:
                 # ignore some tags
