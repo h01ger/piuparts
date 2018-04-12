@@ -1,8 +1,10 @@
 piuparts (0.85) UNRELEASED; urgency=medium
 
   [ Agustin Henze ]
-  * Add docker support, new param is introduced `--docker-image`.
-    (Closes: #893731)
+  * piuparts.py:
+    - Add docker support, new param is introduced `--docker-image`.
+      (Closes: #893731)
+    - Create ${ENV}/dev/ptmx path if it doesn't exist
   * Add `docker.io` as suggested package.
   * Reworded documentation for `--keep-tmpdir` and `--schroot` parameters.
 
