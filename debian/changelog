@@ -5,6 +5,7 @@ piuparts (0.85) UNRELEASED; urgency=medium
     - Add docker support, new param is introduced `--docker-image`.
       (Closes: #893731)
     - Create ${ENV}/dev/ptmx path if it doesn't exist
+    - Create ${ENV}/dev/null if it doesn't exist ASAP
   * Add `docker.io` as suggested package.
   * Reworded documentation for `--keep-tmpdir` and `--schroot` parameters.
 
