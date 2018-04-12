@@ -4,10 +4,11 @@ piuparts (0.85) UNRELEASED; urgency=medium
   * piuparts.py:
     - Add docker support, new param is introduced `--docker-image`.
       (Closes: #893731)
+    - Deprecate --keep-tmpdir in favor of --keep-env (Closes: #894232)
     - Create ${ENV}/dev/ptmx path if it doesn't exist
     - Create ${ENV}/dev/null if it doesn't exist ASAP
   * Add `docker.io` as suggested package.
-  * Reworded documentation for `--keep-tmpdir` and `--schroot` parameters.
+  * Reworded documentation for `--keep-env` and `--schroot` parameters.
 
   [ Holger Levsen ]
   * dwke.py: change logging to make relevant information more visible.
