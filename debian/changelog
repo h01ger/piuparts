@@ -1,4 +1,4 @@
-piuparts (0.85) UNRELEASED; urgency=medium
+piuparts (0.85) unstable; urgency=medium
 
   [ Agustin Henze ]
   * piuparts.py:
@@ -18,7 +18,7 @@ piuparts (0.85) UNRELEASED; urgency=medium
     explaination about the limitations of docker support.
   * Bump standards version to 4.1.4, no changes needed.
 
- -- Holger Levsen <holger@debian.org>  Fri, 16 Feb 2018 12:47:08 +0000
+ -- Holger Levsen <holger@debian.org>  Sat, 14 Apr 2018 17:39:13 -0300
 
 piuparts (0.84) unstable; urgency=medium
 
