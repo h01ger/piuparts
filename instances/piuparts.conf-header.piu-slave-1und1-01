@@ -7,5 +7,5 @@
 # NOTE: However this slave does exist yet, as piuparts-master does not yet
 #	support multiple architectures…
 #
-# For more information on this setup see https://anonscm.debian.org/cgit/piuparts/piuparts.git/tree/README_pejacevic.txt
+# For more information on this setup see https://salsa.debian.org/debian/piuparts/blob/develop/README_pejacevic.txt
 #

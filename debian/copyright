@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: piuparts
 Upstream-Contact: Holger Levsen <holger@debian.org>
-Source: https://anonscm.debian.org/cgit/piuparts/piuparts.git
+Source: https://salsa.debian.org/debian/piuparts.git
 Copyright: 2005-2008 Lars Wirzenius
            2008-2017 Holger Levsen
            © 2011-2017 Andreas Beckmann

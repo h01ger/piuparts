@@ -583,7 +583,7 @@ If you want to run piuparts-report (which is only+very useful if
 you run piuparts in master-slave mode), you need to 'apt-get
 install python-rpy r-recommended r-base-dev'. For more
 information see
-link:https://anonscm.debian.org/cgit/piuparts/piuparts.git/tree/README_pejacevic.txt[https://anonscm.debian.org/cgit/piuparts/piuparts.git/tree/README_pejacevic.txt].
+link:https://salsa.debian.org/debian/piuparts/blob/develop/README_pejacevic.txt[https://salsa.debian.org/debian/piuparts/blob/develop/README_pejacevic.txt].
 
 To generate the report on the master host run:
 

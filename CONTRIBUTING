@@ -15,7 +15,7 @@ You can send patches or requests to the development list,
 or to the tracking bug: <bugnumber>@bugs.debian.org.
 
 One possible workflow:
-  git clone git://anonscm.debian.org/piuparts/piuparts.git
+  git clone https://salsa.debian.org/debian/piuparts.git
   git checkout origin/develop -b <topicname>
   <edits>
   git commit -a

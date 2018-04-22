@@ -54,7 +54,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      You can talk to us on #debian-qa on irc.debian.org (OFTC) or send an email on the <a href="https://lists.alioth.debian.org/mailman/listinfo/piuparts-devel" target="_blank">piuparts development mailinglist</a>. The best ways to <a href="https://anonscm.debian.org/git/piuparts/piuparts.git/tree/CONTRIBUTING">contribute</a> are to provide patches via GIT pull requests and/or to file bugs based on piuparts runs.
+      You can talk to us on #debian-qa on irc.debian.org (OFTC) or send an email on the <a href="https://lists.alioth.debian.org/mailman/listinfo/piuparts-devel" target="_blank">piuparts development mailinglist</a>. The best ways to <a href="https://salsa.debian.org/debian/piuparts/blob/develop/CONTRIBUTING">contribute</a> are to provide patches via GIT pull requests and/or to file bugs based on piuparts runs.
      </td>
     </tr>
     <tr class="normalrow">
@@ -70,6 +70,11 @@
     <tr class="titlerow">
      <td class="titlecell">
       News
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2018-04-22</b> Move git repo to <a href="https://salsa.debian.org/debian/piuparts.git">salsa.debian.org</a>. Many thanks to the alioth.debian.org admins for providing such nice services so long!
      </td>
     </tr>
     <tr class="normalrow">
@@ -230,7 +235,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2013-03-02</b> While the <a href="https://anonscm.debian.org/cgit/piuparts/piuparts.git">piuparts.git repo on Alioth</a> will continue to be the main repo, there is also a <a href="https://github.com/h01ger/piuparts">piuparts clone on github</a>, for those who prefer to send pull requests that way.
+      <b>2013-03-02</b> While the <a href="https://anonscm.debian.org/cgit/piuparts/piuparts.git">piuparts.git repo on Alioth</a> (update 2018-04-23: moved to <a href="https://salsa.debian.org/debian/piuparts.git">salsa</a>) will continue to be the main repo, there is also a <a href="https://github.com/h01ger/piuparts">piuparts clone on github</a>, for those who prefer to send pull requests that way.
      </td>
     </tr>
     <tr class="normalrow">

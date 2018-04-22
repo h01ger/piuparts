@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# Copyright 2009-2013 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2018 Holger Levsen (holger@layer-acht.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -46,7 +46,7 @@ if [ ! -d $PIUPARTS_PREFIX/src ] ; then
 	mkdir -p $PIUPARTS_PREFIX/src
 	chmod 0755 $PIUPARTS_PREFIX/src
 	cd $PIUPARTS_PREFIX/src
-	git clone git://git.debian.org/git/piuparts/piuparts.git
+	git clone https://salsa.debian.org/debian/piuparts.git
 	cd piuparts
 	git checkout develop
 fi

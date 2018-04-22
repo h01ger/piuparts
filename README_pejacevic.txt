@@ -23,8 +23,8 @@ piuparts.debian.org is a setup running on three systems:
 * basically, apt-get build-dep piuparts - in reality both systems get their
   package configuration from git.debian.org/git/mirror/debian.org.git
 * pejacevic runs a webserver as well (see below for apache configuration)
-* Copy 'https://anonscm.debian.org/cgit/piuparts/piuparts.git/tree/update-piuparts-master-setup?h=develop'
-  and 'https://anonscm.debian.org/cgit/piuparts/piuparts.git/tree/update-piuparts-slave-setup?h=develop'
+* Copy 'https://salsa.debian.org/debian/piuparts/blob/develop/update-piuparts-master-setup'
+  and 'https://salsa.debian.org/debian/piuparts/blob/develop/update-piuparts-slave-setup'
   to the hosts which should be master and slave. (It's possible and has been
   done for a long time to run them on the same host.(
   Run the scripts as the piupartsm and piupartss users and clone that git
