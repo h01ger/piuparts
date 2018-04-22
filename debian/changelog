@@ -5,6 +5,7 @@ piuparts (0.86) UNRELEASED; urgency=medium
   * Update several occurances of anonscm.debian.org and git.debian.org with
     salsa.debian.org URLs.
   * index.tpl: add news entry about the salsa migration.
+  * debian/copyright: update years of my contributions.
 
  -- Holger Levsen <holger@debian.org>  Sat, 21 Apr 2018 22:13:13 -0300
 
