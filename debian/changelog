@@ -1,3 +1,10 @@
+piuparts (0.86) UNRELEASED; urgency=medium
+
+  * debian/control: switch packaging to salsa.debian.org. Thanks to the alioth
+    admins for providing such a nice service so long!
+
+ -- Holger Levsen <holger@debian.org>  Sat, 21 Apr 2018 22:13:13 -0300
+
 piuparts (0.85) unstable; urgency=medium
 
   [ Agustin Henze ]
