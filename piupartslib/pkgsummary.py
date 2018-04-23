@@ -151,7 +151,8 @@ def new_summary():
                "_version": SUMMVER,
                "_date": utcdate,
                "_comment": "Debian Piuparts Package Results - "
-                            "https://piuparts.debian.org/",
+                            "https://salsa.debian.org/debian/piuparts/raw/"
+                            "develop/piupartslib/pkgsummary.py",
                "_type": "source",
                "packages": pkgstruct,
     })
