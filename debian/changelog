@@ -1,3 +1,9 @@
+piuparts (0.86~bpo9+1) stretch-backports; urgency=medium
+
+  * Rebuild for stretch-backports.
+
+ -- Holger Levsen <holger@debian.org>  Thu, 10 May 2018 11:40:53 +0000
+
 piuparts (0.86) unstable; urgency=medium
 
   * debian/control: switch packaging to salsa.debian.org. Thanks to the alioth
