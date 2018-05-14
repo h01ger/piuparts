@@ -1,3 +1,12 @@
+piuparts (0.87) UNRELEASED; urgency=medium
+
+  [ Philipp Hahn ]
+  * piuparts.py: use `apt-cache show --no-all-versions` to prevent generating
+    a "piuparts-depends-dummy" package with multiple dependencies on the same
+    package with different versions. (Closes: #898606)
+
+ -- Holger Levsen <holger@debian.org>  Mon, 14 May 2018 12:03:45 +0000
+
 piuparts (0.86) unstable; urgency=medium
 
   * debian/control: switch packaging to salsa.debian.org. Thanks to the alioth
