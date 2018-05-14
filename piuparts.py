@@ -1180,7 +1180,7 @@ class Chroot:
         known_packages = []
         new_packages = []
         for name in packages:
-            (status, output) = self.run(["apt-cache", "show", name],
+            (status, output) = self.run(["apt-cache", "show", "--no-all-versions", name],
                                         ignore_errors=True)
             # apt-cache reports status for some virtual packages and packages
             # in status config-files-remaining state without installation
@@ -2292,7 +2292,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
         else:
             # We have package names.  Use apt to get all their control
             # information.
-            apt_cache_args = ["apt-cache", "show"]
+            apt_cache_args = ["apt-cache", "show", "--no-all-versions"]
             if os.environ["PIUPARTS_DISTRIBUTION"] in ["lenny"]:
                 # apt-cache in lenny does not accept version-qualified packages
                 apt_cache_args.extend(unqualify(packages))
