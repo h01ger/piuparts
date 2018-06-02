@@ -26,7 +26,6 @@ Build-Depends-Indep:
 Homepage: https://piuparts.debian.org
 Vcs-Git: https://salsa.debian.org/debian/piuparts.git
 Vcs-Browser: https://salsa.debian.org/debian/piuparts.git
-X-Python-Version: >= 2.7
 
 Package: piuparts
 Architecture: all

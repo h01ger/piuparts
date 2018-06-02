@@ -8,6 +8,7 @@ piuparts (0.87) UNRELEASED; urgency=medium
   [ Holger Levsen ]
   * Update all occurrences of piuparts-devel@lists.alioth.debian.org with
     piuparts-devel@alioth-lists.debian.net.
+  * Drop X-Python-Version header from debian/control.
 
  -- Holger Levsen <holger@debian.org>  Mon, 14 May 2018 12:03:45 +0000
 
