@@ -77,7 +77,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	Please take care when filing bugs to file meaningful bugs and to not annoy maintainers. Don't nitpick or insist on severities, the important thing is to get the bug fixed, not the right severity. Optionally you can also send copies to the piuparts-devel mailinglist by adding <i>X-debbugs-cc: piuparts-devel@lists.alioth.debian.org</i> pseudo-headers.
+	Please take care when filing bugs to file meaningful bugs and to not annoy maintainers. Don't nitpick or insist on severities, the important thing is to get the bug fixed, not the right severity. Optionally you can also send copies to the piuparts-devel mailinglist by adding <i>X-debbugs-cc: piuparts-devel@alioth-lists.debian.net</i> pseudo-headers.
      </td>
     </tr>
     <tr class="normalrow">

@@ -127,7 +127,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="mailto:piuparts-devel@lists.alioth.debian.org" target="_blank">Contact us</a>
+      <a href="mailto:piuparts-devel@alioth-lists.debian.net" target="_blank">Contact us</a>
      </td>
     </tr>
     <tr class="titlerow">
@@ -248,7 +248,7 @@ HTML_FOOTER = """
    <a href="mailto:anbe@debian.org">Andreas Beckmann</a> and
    <a href="mailto:holger@layer-acht.org">Holger Levsen</a> and
 
-   <a href="mailto:piuparts-devel@lists.alioth.debian.org">others</a> using
+   <a href="mailto:piuparts-devel@alioth-lists.debian.net">others</a> using
    <a href="https://salsa.debian.org/debian/piuparts.git" target="_blank">piuparts.git</a>.
    Ditto for this website.
    Weather icons are from the <a href="http://tango.freedesktop.org/Tango_Icon_Library" target="_blank">Tango Icon Library</a>.

@@ -165,7 +165,7 @@ sections =
 mirror = @MIRROR@
 master-host = pejacevic.debian.org
 master-user = piupartsm
-bts-from = piuparts-devel@lists.alioth.debian.org
+bts-from = piuparts-devel@alioth-lists.debian.net
 master-command = /srv/piuparts.debian.org/share/piuparts/piuparts-master
 piuparts-command =
 	sudo

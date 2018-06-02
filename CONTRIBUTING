@@ -4,7 +4,7 @@ Contributing code to this project
 It's helpful to track fixes or new features via wishlist bugs against the
 'piuparts' package, eg with the 'reportbug' tool ('devscripts' package).
 The BTS will ensure the developers' mailing list
-   piuparts-devel@lists.alioth.debian.org
+   piuparts-devel@alioth-lists.debian.net
 is notified.
 
 Patches can be submitted by mail (git format-patch, see below)
