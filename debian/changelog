@@ -1,4 +1,4 @@
-piuparts (0.87) UNRELEASED; urgency=medium
+piuparts (0.87) unstable; urgency=medium
 
   [ Philipp Hahn ]
   * piuparts.py: use `apt-cache show --no-all-versions` to prevent generating
@@ -10,7 +10,7 @@ piuparts (0.87) UNRELEASED; urgency=medium
     piuparts-devel@alioth-lists.debian.net.
   * Drop X-Python-Version header from debian/control.
 
- -- Holger Levsen <holger@debian.org>  Mon, 14 May 2018 12:03:45 +0000
+ -- Holger Levsen <holger@debian.org>  Sat, 02 Jun 2018 11:36:36 +0000
 
 piuparts (0.86) unstable; urgency=medium
 
