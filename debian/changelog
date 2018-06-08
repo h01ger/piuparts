@@ -37,8 +37,8 @@ piuparts (0.85) unstable; urgency=medium
     - Add docker support, new param is introduced `--docker-image`.
       (Closes: #893731)
     - Deprecate --keep-tmpdir in favor of --keep-env (Closes: #894232)
-    - Create ${ENV}/dev/ptmx path if it doesn't exist
-    - Create ${ENV}/dev/null if it doesn't exist ASAP
+    - Create ${ENV}/dev/ptmx path if it doesn't exist (Closes: #895380)
+    - Create ${ENV}/dev/null if it doesn't exist ASAP (Closes: #895379)
   * Add `docker.io` as suggested package.
   * Reworded documentation for `--keep-env` and `--schroot` parameters.
 
