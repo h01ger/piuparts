@@ -78,10 +78,6 @@ Recommends:
  r-recommended,
  devscripts,
  libsoap-lite-perl,
-Breaks:
- piuparts (<= 0.44)
-Replaces:
- piuparts (<= 0.44)
 Description: piuparts master components
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.
@@ -106,10 +102,6 @@ Depends:
  ${misc:Depends},
 Suggests:
  schroot
-Breaks:
- piuparts (<= 0.44)
-Replaces:
- piuparts (<= 0.44)
 Description: piuparts slave components
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.
@@ -127,10 +119,6 @@ Depends:
  python-lzma,
  ${python:Depends},
  ${misc:Depends},
-Breaks:
- piuparts (<= 0.44)
-Replaces:
- piuparts (<= 0.44)
 Description: common piuparts components
  piupartslib, common library used by piuparts-master, -report, -analyze and
  -slave.
