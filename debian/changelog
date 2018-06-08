@@ -1,4 +1,4 @@
-piuparts (0.88) UNRELEASED; urgency=medium
+piuparts (0.88) unstable; urgency=medium
 
   * Recycle failed packages in sid after 2 days and force rescheduling them
     2 days later.
@@ -11,7 +11,7 @@ piuparts (0.88) UNRELEASED; urgency=medium
     - add "Built-Using: ${misc:Built-Using}" which is needed because we ship
       golang binaries, thanks lintian.
 
- -- Holger Levsen <holger@debian.org>  Sat, 02 Jun 2018 12:15:01 +0000
+ -- Holger Levsen <holger@debian.org>  Fri, 08 Jun 2018 13:17:44 +0000
 
 piuparts (0.87) unstable; urgency=medium
 
