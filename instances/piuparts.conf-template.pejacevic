@@ -292,7 +292,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-log-alternatives
 	%(flags-default)s
 distro = sid
-reschedule-fail-days = 4
+reschedule-fail-days = 2
 expire-fail-days = +2
 
 
