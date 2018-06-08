@@ -23,7 +23,6 @@ Build-Depends:
  xmlto,
 Build-Depends-Indep:
  git,
-Built-Using: ${misc:Built-Using}
 Homepage: https://piuparts.debian.org
 Vcs-Git: https://salsa.debian.org/debian/piuparts
 Vcs-Browser: https://salsa.debian.org/debian/piuparts
@@ -58,6 +57,7 @@ Description: .deb package installation, upgrading, and removal testing tool
 
 Package: piuparts-master
 Architecture: any
+Built-Using: ${misc:Built-Using}
 Depends:
  piuparts-common (>= ${source:Version}),
  piuparts-common (<< ${source:Version}+),
