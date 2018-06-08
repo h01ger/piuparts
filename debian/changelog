@@ -2,7 +2,10 @@ piuparts (0.88) UNRELEASED; urgency=medium
 
   * Recycle failed packages in sid after 2 days and force rescheduling them
     2 days later.
-  * d/control: shorten Vcs: headers.
+  * d/control:
+    - shorten Vcs: headers.
+    - drop versioned Pre-Depends on dpkg which is even satisfied in
+      oldoldstable.
 
  -- Holger Levsen <holger@debian.org>  Sat, 02 Jun 2018 12:15:01 +0000
 

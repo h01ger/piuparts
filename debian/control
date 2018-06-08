@@ -29,8 +29,6 @@ Vcs-Browser: https://salsa.debian.org/debian/piuparts
 
 Package: piuparts
 Architecture: all
-Pre-Depends:
- dpkg (>= 1.15.7.2~),
 Depends:
  piuparts-common (= ${binary:Version}),
  debootstrap (>= 1.0.89~),
