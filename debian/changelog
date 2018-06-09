@@ -3,6 +3,8 @@ piuparts (0.89) UNRELEASED; urgency=medium
   * d/control:
     - move Built-Using: to piuparts-master binary package.
     - add Xs-Go-Import-Path: header.
+  * scripts/pre_install_exceptions: force cleanup of sympa's spool
+    directories. (Closes: #673972)
 
  -- Holger Levsen <holger@debian.org>  Fri, 08 Jun 2018 13:22:21 +0000
 
