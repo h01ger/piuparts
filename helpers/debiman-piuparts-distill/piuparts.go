@@ -34,7 +34,7 @@ var (
 
 var (
 	logAlternativesRe = regexp.MustCompile(`LOG-ALTERNATIVES: dpkg=([^:]+): piuparts=(?:[^:]+): (.*)`)
-	slaveParamsRe     = regexp.MustCompile(`--slave ([^ ]+) (?:[^ ]+) ([^ ]+)`)
+	slaveParamsRe     = regexp.MustCompile(`--(?:install|slave) ([^ ]+) (?:[^ ]+) ([^ ]+)`)
 )
 
 type link struct {
