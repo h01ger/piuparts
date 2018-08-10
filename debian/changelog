@@ -1,5 +1,10 @@
 piuparts (0.90) UNRELEASED; urgency=medium
 
+  [ Michael Stapelberg ]
+  * debiman-piuparts-distill: also consider --install, fixes
+    https://github.com/Debian/debiman/issues/106
+
+  [ Holger Levsen ]
   * Bump standards version to 4.2.0, no changes needed.
 
  -- Holger Levsen <holger@debian.org>  Tue, 12 Jun 2018 15:00:24 +0000
