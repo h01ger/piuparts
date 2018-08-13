@@ -1,4 +1,4 @@
-piuparts (0.90) UNRELEASED; urgency=medium
+piuparts (0.90) unstable; urgency=medium
 
   [ Michael Stapelberg ]
   * debiman-piuparts-distill: also consider --install, fixes
@@ -7,7 +7,7 @@ piuparts (0.90) UNRELEASED; urgency=medium
   [ Holger Levsen ]
   * Bump standards version to 4.2.0, no changes needed.
 
- -- Holger Levsen <holger@debian.org>  Tue, 12 Jun 2018 15:00:24 +0000
+ -- Holger Levsen <holger@debian.org>  Mon, 13 Aug 2018 13:37:03 +0200
 
 piuparts (0.89) unstable; urgency=medium
 
