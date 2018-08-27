@@ -1,6 +1,7 @@
 piuparts (0.91) UNRELEASED; urgency=medium
 
   * continue development...
+  * Bump standards version to 4.2.1, no changes needed.
 
  -- Holger Levsen <holger@debian.org>  Mon, 13 Aug 2018 19:09:30 +0200
 
