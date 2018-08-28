@@ -74,6 +74,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2018-08-28</b>: Enable the logrotate test (temporarily) again, to check whether <a href="https://bugs.debian.org/582630" target="_blank">#582630</a> really has been fixed...
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2018-04-22</b> Move git repo to <a href="https://salsa.debian.org/debian/piuparts.git">salsa.debian.org</a>. Many thanks to the alioth.debian.org admins for providing such nice services so long!
      </td>
     </tr>
