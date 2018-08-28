@@ -39,7 +39,8 @@ flags-end-buster =
 
 # common flags for tests starting in stretch
 flags-start-stretch =
-# no flags needed
+# see #604807:
+	--skip-logrotatefiles-test
 
 # common flags for tests ending in stretch
 flags-end-stretch =
@@ -49,7 +50,8 @@ flags-end-stretch =
 
 # common flags for tests starting in jessie
 flags-start-jessie =
-# no flags needed
+# see #604807:
+	--skip-logrotatefiles-test
 
 # common flags for tests ending in jessie
 flags-end-jessie =
@@ -63,7 +65,8 @@ flags-end-jessie =
 
 # common flags for tests starting in wheezy
 flags-start-wheezy =
-# no flags needed
+# see #604807:
+	--skip-logrotatefiles-test
 
 # common flags for tests ending in wheezy
 flags-end-wheezy =
@@ -79,6 +82,8 @@ flags-start-squeeze =
 # up to squeeze a non-empty /etc/shells was shipped, actually installing
 # and removing a shell would remove its entry from /etc/shells
 	-i /etc/shells
+# see #604807:
+	--skip-logrotatefiles-test
 # squeeze has been archived
 	--no-check-valid-until
 
@@ -86,6 +91,8 @@ flags-start-squeeze =
 flags-end-squeeze =
 # extra fake-essential packages for successfully purging in squeeze
 	--scriptsdir /etc/piuparts/scripts-squeeze
+# see #604807:
+	--skip-logrotatefiles-test
 # squeeze has been archived
 	--warn-on-debsums-errors
 	--warn-on-install-over-symlink
@@ -97,6 +104,8 @@ flags-start-lenny =
 # up to squeeze a non-empty /etc/shells was shipped, actually installing
 # and removing a shell would remove its entry from /etc/shells
 	-i /etc/shells
+# see #604807:
+	--skip-logrotatefiles-test
 # lenny has been archived
 	--no-check-valid-until
 
