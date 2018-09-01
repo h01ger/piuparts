@@ -4,6 +4,9 @@ piuparts (0.91) UNRELEASED; urgency=medium
   * Don't use --skip-logrotatefiles-test when testing sid and buster,
     see #582630. (Closes: #604807)
     Keep it for stretch, jessie, wheezy, squeeze and lenny based tests.
+  * piuparts.py:
+    - Add to ignored_files:
+      + /var/lib/sreview (Closes: #905500)
 
  -- Holger Levsen <holger@debian.org>  Mon, 13 Aug 2018 19:09:30 +0200
 

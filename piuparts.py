@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright © 2007-2017 Holger Levsen (holger@layer-acht.org)
+# Copyright © 2007-2018 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2010-2017 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -337,6 +337,7 @@ class Settings:
             "/var/lib/onioncat/",       # onioncat
             "/var/lib/pkcs11proxyd/",   # caml-crush-server (#810703)
             "/var/lib/rbldns/",
+            "/var/lib/sreview/",        # sreview (#905500)
             "/var/spool/powerdns/",     # pdns-server (#531134), pdns-recursor (#531135)
             # work around broken symlinks
             "/etc/modules-load.d/modules.conf",  # -> ../modules (target obsoleted by modules-load.d)
