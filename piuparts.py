@@ -2727,7 +2727,7 @@ def parse_command_line():
                            "ignored when comparing changes to chroot."
                            "FILENAMES prefixed with ':' will be reported verbosely.")
 
-    parser.add_option("-I", "--ignore-regex", action="append",
+    parser.add_option("-I", "--ignore-regex", "--ignore-regexp", action="append",
                       metavar="REGEX", default=[],
                       help="Add REGEX to list of Perl compatible regular " +
                            "expressions for filenames to be " +
