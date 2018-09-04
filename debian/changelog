@@ -7,9 +7,6 @@ piuparts (0.91) UNRELEASED; urgency=medium
   * piuparts.py:
     - Add to ignored_files:
       + /var/lib/sreview (Closes: #905500)
-    - Add alias '--ignore-regexp' for '--ignore-regex' as the former was
-      documented since 2005 while the latter was working since then...
-      Thanks to Nicolas Braud-Santoni for reporting. (Closes: #906683)
 
  -- Holger Levsen <holger@debian.org>  Mon, 13 Aug 2018 19:09:30 +0200
 
