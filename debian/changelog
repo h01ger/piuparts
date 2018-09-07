@@ -1,6 +1,5 @@
-piuparts (0.91) UNRELEASED; urgency=medium
+piuparts (0.91) unstable; urgency=medium
 
-  * Bump standards version to 4.2.1, no changes needed.
   * Don't use --skip-logrotatefiles-test when testing sid and buster,
     see #582630. (Closes: #604807)
     Keep it for stretch, jessie, wheezy, squeeze and lenny based tests.
@@ -8,10 +7,11 @@ piuparts (0.91) UNRELEASED; urgency=medium
     - Add to ignored_files:
       + /var/lib/sreview (Closes: #905500)
     - Add alias '--ignore-regexp' for '--ignore-regex' as the former was
-      documented since 2005 while the latter was working since then...
+      documented since 2005 while the latter was working since then.
       Thanks to Nicolas Braud-Santoni for reporting. (Closes: #906683)
+  * Bump standards version to 4.2.1, no changes needed.
 
- -- Holger Levsen <holger@debian.org>  Mon, 13 Aug 2018 19:09:30 +0200
+ -- Holger Levsen <holger@debian.org>  Fri, 07 Sep 2018 19:35:35 +0200
 
 piuparts (0.90) unstable; urgency=medium
 
