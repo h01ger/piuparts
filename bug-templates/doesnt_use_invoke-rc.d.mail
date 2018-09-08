@@ -13,7 +13,7 @@ during a test with piuparts I noticed your package starts processes
 where it shouldn't. This is very probably due to not using invoke-rc.d
 as mandated by policy 9.3.3.2. This is seriously disturbing! ;-)
 
-See https://www.debian.org/doc/debian-policy/#interfacing-with-init-systems
+See https://www.debian.org/doc/debian-policy/ch-opersys.html#interfacing-with-init-systems
 and /usr/share/doc/sysv-rc/README.invoke-rc.d.gz as well
 as /usr/share/doc/sysv-rc/README.policy-rc.d.gz
 
