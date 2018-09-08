@@ -6,7 +6,9 @@ wishlist! And see the bottom of this file for wishlist bugs someone once
 expressed…
 
 
-for 0.9x, during the buster development cycle:
+Some stuff we might tackle for 0.9x, during the buster development cycle:
+
+- do an 1.0.0 release, it's about time since 10 years :)
 
 - README_server.txt: rewrite style a bit more. its super easy to setup now!
 
@@ -85,7 +87,7 @@ for 0.9x, during the buster development cycle:
   (piuparts), adopting apt's naming
 
 
-for 1.0.x and later:
+Ideas for 1.0.x and later:
 
 - piuparts.conf.pejacevic: maybe use mirror via nfs (faster)
 
@@ -117,7 +119,7 @@ for 1.0.x and later:
   be nice
 
 
-for even later:
+More ideas for even later:
 
 - find_default_debian_mirrors:
   - check whether find_default_debian_mirrors produces something useful if
