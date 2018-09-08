@@ -14,7 +14,7 @@ unowned files on the system after purge, which is a violation of
 policy 6.8 and 10.7.3:
 
 https://www.debian.org/doc/debian-policy/#details-of-removal-and-or-configuration-purging
-https://www.debian.org/doc/debian-policy/#behavior
+https://www.debian.org/doc/debian-policy/ch-files.html#behavior
 
 From the attached log (scroll to the bottom...):
 

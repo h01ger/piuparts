@@ -17,7 +17,7 @@ shows up in the first place, as there was nobody modifying this conffile
 at all, the package has just been installed and upgraded...
 
 This is a violation of policy 10.7.3, see
-https://www.debian.org/doc/debian-policy/#behavior,
+https://www.debian.org/doc/debian-policy/ch-files.html#behavior,
 which says "[These scripts handling conffiles] must not ask unnecessary
 questions (particularly during upgrades), and must otherwise be good
 citizens."
