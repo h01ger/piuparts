@@ -121,16 +121,8 @@ Ideas for 1.0.x and later:
 
 More ideas for even later:
 
-- find_default_debian_mirrors:
-  - check whether find_default_debian_mirrors produces something useful if
-    sources.list does not exist (and sources.list.d/*.list is there instead)
-  - maybe just copy sources.list(.d/*) instead?
-
 - make it possible to call aptitude (or similar) instead of apt-get and allow to
   override the commandline arguments.
-
-- mount perhaps others (usbfs, sysfs, etc.) in the chroot
-  might be a good idea because some packages might need this.
 
 - rewrite piuparts-analyze to run over all sections and cache BTS responses
 
