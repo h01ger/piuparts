@@ -19,7 +19,7 @@ From the attached log (scroll to the bottom...):
 
 Leaving directories in /usr/local after purge is also a violation of a
 should-directive in
-https://www.debian.org/doc/debian-policy/#site-specific-programs
+https://www.debian.org/doc/debian-policy/ch-opersys.html#site-specific-programs
 
 
 cheers,

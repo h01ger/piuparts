@@ -18,7 +18,7 @@ From the attached log (scroll to the bottom...):
 
 
 As putting files into /usr/local is also a violation of
-https://www.debian.org/doc/debian-policy/#site-specific-programs
+https://www.debian.org/doc/debian-policy/ch-opersys.html#site-specific-programs
 I'm setting the severity to serious.
 
 

@@ -14,7 +14,7 @@ the system after purge, which is a violation of policy 6.8:
 https://www.debian.org/doc/debian-policy/#details-of-removal-and-or-configuration-purging
 
 As putting files into /usr/local is also a violation of
-https://www.debian.org/doc/debian-policy/#site-specific-programs
+https://www.debian.org/doc/debian-policy/ch-opersys.html#site-specific-programs
 I'm setting the severity to serious.
 
 From the attached log (scroll to the bottom...):
