@@ -24,7 +24,7 @@ packages are installed, ship byte-for-byte identical files and are
 upgraded in lockstep. But once one of the involved packages gets
 removed, the other one will lose its documentation files, too,
 including the copyright file, which is a violation of Policy 12.5:
-https://www.debian.org/doc/debian-policy/#copyright-information
+https://www.debian.org/doc/debian-policy/ch-docs.html#copyright-information
 
 For other overwritten locations anything interesting may happen.
 

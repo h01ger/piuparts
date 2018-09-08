@@ -11,7 +11,7 @@ Hi,
 
 a test with piuparts revealed that your package misses the copyright
 file after an upgrade, which is a violation of Policy 12.5:
-https://www.debian.org/doc/debian-policy/#copyright-information
+https://www.debian.org/doc/debian-policy/ch-docs.html#copyright-information
 
 After the upgrade /usr/share/doc/$PACKAGE/ is just an empty directory.
 
