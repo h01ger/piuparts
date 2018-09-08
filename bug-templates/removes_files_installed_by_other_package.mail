@@ -21,7 +21,7 @@ https://www.debian.org/doc/debian-policy/#sharing-configuration-files
 or policy chapter 6 ("Package maintainer scripts..."), see
 https://www.debian.org/doc/debian-policy/#package-maintainer-scripts-and-installation-procedure
 or policy 7.6 ("Overwriting files..."), see
-https://www.debian.org/doc/debian-policy/#overwriting-files-and-replacing-packages-replaces
+https://www.debian.org/doc/debian-policy/ch-relationships.html#overwriting-files-and-replacing-packages-replaces
 
 If a directory is used by several packages, all should ship it as part
 of the package (possibly empty, using $package.dirs to create it), and

@@ -62,7 +62,7 @@
  declaring a replaces relation.
 
  See policy 7.6 at
- https://www.debian.org/doc/debian-policy/#overwriting-files-and-replacing-packages-replaces
+ https://www.debian.org/doc/debian-policy/ch-relationships.html#overwriting-files-and-replacing-packages-replaces
 
  From the attached log (scroll to the bottom...):
 
