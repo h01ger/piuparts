@@ -19,7 +19,7 @@ This could be a violation of policy 10.7.4 ("Sharing configuration
 files"), see
 https://www.debian.org/doc/debian-policy/ch-files.html#sharing-configuration-files
 or policy chapter 6 ("Package maintainer scripts..."), see
-https://www.debian.org/doc/debian-policy/#package-maintainer-scripts-and-installation-procedure
+https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html
 or policy 7.6 ("Overwriting files..."), see
 https://www.debian.org/doc/debian-policy/ch-relationships.html#overwriting-files-and-replacing-packages-replaces
 
