@@ -17,7 +17,7 @@ they may have been shipped or created by a dependency.
 
 This could be a violation of policy 10.7.4 ("Sharing configuration
 files"), see
-https://www.debian.org/doc/debian-policy/#sharing-configuration-files
+https://www.debian.org/doc/debian-policy/ch-files.html#sharing-configuration-files
 or policy chapter 6 ("Package maintainer scripts..."), see
 https://www.debian.org/doc/debian-policy/#package-maintainer-scripts-and-installation-procedure
 or policy 7.6 ("Overwriting files..."), see
