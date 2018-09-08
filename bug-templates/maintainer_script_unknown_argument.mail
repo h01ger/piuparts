@@ -13,7 +13,7 @@ during a test with piuparts I noticed the maintainer scripts of your
 package don't support all the ways they are going to be called.
 
 See policy 6.5 at
-https://www.debian.org/doc/debian-policy/#summary-of-ways-maintainer-scripts-are-called
+https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#summary-of-ways-maintainer-scripts-are-called
 
 From the attached log (scroll to the bottom...):
 
