@@ -6,7 +6,7 @@ wishlist! And see the bottom of this file for wishlist bugs someone once
 expressed…
 
 
-for 0.8x, during the buster development cycle:
+for 0.9x, during the buster development cycle:
 
 - fix policy reference for old footnote 53, blocked by #879048
 
@@ -95,7 +95,7 @@ for 0.8x, during the buster development cycle:
   (piuparts), adopting apt's naming
 
 
-for 0.9x and later:
+for 1.0.x and later:
 
 - install from git/Makefile: remove the need for /etc/piuparts
 
@@ -121,7 +121,7 @@ for 0.9x and later:
   be nice
 
 
-for 1.xx and later:
+for even later:
 
 - find_default_debian_mirrors:
   - check whether find_default_debian_mirrors produces something useful if
