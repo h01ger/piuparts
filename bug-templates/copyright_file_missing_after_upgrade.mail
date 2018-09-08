@@ -28,7 +28,7 @@ https://wiki.debian.org/MissingCopyrightFile
 Note that dpkg intentionally does not replace directories with symlinks
 and vice versa, you need the maintainer scripts to do this.
 See in particular the end of point 4 in
-https://www.debian.org/doc/debian-policy/#details-of-unpack-phase-of-installation-or-upgrade
+https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#details-of-unpack-phase-of-installation-or-upgrade
 
 It is recommended to use the dpkg-maintscript-helper commands
 'dir_to_symlink' and 'symlink_to_dir' (available since dpkg 1.17.14)

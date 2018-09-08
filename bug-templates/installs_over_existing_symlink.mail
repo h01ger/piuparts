@@ -32,7 +32,7 @@ It may break in subtle ways and dpkg cannot detect this as a problem.
   "win" and all others have "lost".
   Note that dpkg intentionally does not replace directories with
   symlinks and vice versa, see in particular the end of point 4 in
-  https://www.debian.org/doc/debian-policy/#details-of-unpack-phase-of-installation-or-upgrade
+  https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#details-of-unpack-phase-of-installation-or-upgrade
   (Note: Adding Pre-Depends is *not* a solution.)
 
 Please move the files shipped in your package to the "real" location.
