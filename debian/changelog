@@ -1,3 +1,9 @@
+piuparts (0.91~bpo9+1) stretch-backports; urgency=medium
+
+  * Rebuild for stretch-backports.
+
+ -- Holger Levsen <holger@debian.org>  Thu, 13 Sep 2018 10:49:00 +0200
+
 piuparts (0.91) unstable; urgency=medium
 
   * Don't use --skip-logrotatefiles-test when testing sid and buster,
