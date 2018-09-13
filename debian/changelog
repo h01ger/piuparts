@@ -3,6 +3,9 @@ piuparts (0.92) UNRELEASED; urgency=medium
   * Update TODO.
   * Update several URLs pointing to https://www.debian.org/doc/debian-policy
     to match the new URLs since debian-policy 4.1.0.
+  * instances/piuparts.conf-template.pejacevic: reschedule already tested
+    packages in sid more often: set reschedule-old-count = 666 and
+    reschedule-old-days = 66.
 
  -- Holger Levsen <holger@debian.org>  Fri, 07 Sep 2018 19:55:01 +0200
 

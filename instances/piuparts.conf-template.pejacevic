@@ -301,6 +301,9 @@ piuparts-flags =
 distro = sid
 reschedule-fail-days = 2
 expire-fail-days = +2
+# we want packages in sid being retested sooner
+reschedule-old-count = 666
+reschedule-old-days = 66
 
 
 [sid-strict]
