@@ -295,6 +295,7 @@ class Settings:
             "/var/lib/dpkg/diversions",
             "/var/lib/dpkg/diversions-old",
             "/var/lib/dpkg/lock",
+            "/var/lib/dpkg/lock-frontend",
             "/var/lib/dpkg/status",
             "/var/lib/dpkg/status-old",
             "/var/lib/dpkg/statoverride",
