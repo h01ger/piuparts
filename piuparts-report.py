@@ -516,6 +516,7 @@ class Config(piupartslib.conf.Config):
                 "max-reserved": 1,
                 "doc-root": "/",
                 "known-problem-directory": "@sharedir@/piuparts/known_problems",
+                "exclude-known-problems": None,
                 "json-sections": "default",
                 "precedence": 1,
                 "web-host": "piuparts.debian.org",
@@ -1620,6 +1621,9 @@ class Section:
         if not os.path.exists(self._output_directory):
             os.makedirs(self._output_directory)
         self._problem_list = problem_list
+        if self._config['exclude-known-problems']:
+            excluded = self._config['exclude-known-problems'].split()
+            self._problem_list = [p for p in problem_list if p.name not in excluded]
 
         oldcwd = os.getcwd()
         os.chdir(self._section_directory)
