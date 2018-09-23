@@ -75,6 +75,16 @@ class Package(UserDict.UserDict):
     def version(self):
         return self["Version"]
 
+    def source(self):
+        # Binary packages built from the source package with the same name
+        # and version don't have a Source header.
+        if "Source" in self:
+            # If source and binary version differ (e.g. for binNMUs), the
+            # source version is given as the second element in the "Source"
+            # entry. Strip off the optional source version.
+            return self["Source"].split(" ")[0]
+        return self["Package"]
+
     def set_test_versions(self, tv):
         self["TestVersions"] = tv
 
@@ -712,19 +722,7 @@ class PackagesDB:
     def get_control_header(self, package_name, header):
         self._find_all_packages()
         if header == "Source":
-            # binary packages build from the source package with the same name
-            # don't have a Source header, so let's try:
-            try:
-                _source = self._packages[package_name][header]
-                # for binNMU the Source header in Packages files holds the version
-                # too, so we need to chop it of:
-                if " " in _source:
-                    source, version = _source.split(" ")
-                else:
-                    source = _source
-            except:
-                source = self._packages[package_name]["Package"]
-            return source
+            return self._packages[package_name].source()
         elif header == "Uploaders":
             # not all (source) packages have an Uploaders header
             uploaders = ""
