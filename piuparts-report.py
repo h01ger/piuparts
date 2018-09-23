@@ -1321,6 +1321,15 @@ class Section:
 
         return stats_html
 
+    def prepare_known_problem_reports(self, failures):
+        self._problem_reports = {}
+        for problem in self._problem_list:
+            tpl_text = dwke_update_tpl(self._config.section, problem,
+                                       failures.filtered(problem.name),
+                                       PKG_ERROR_TPL, PROB_TPL, self._binary_db)
+            if len(tpl_text):
+                self._problem_reports[problem.name[:-5] + TPL_EXT] = tpl_text
+
     def create_and_link_to_analysises(self, state):
         link = "<ul>\n"
         for template, linktarget in linktarget_by_template:
@@ -1329,11 +1338,9 @@ class Section:
                     or (state == "successfully-tested" and template[-9:] == "issue.tpl"):
                 substats = ""
 
-                tpl = os.path.join(self._output_directory, template)
-                if (os.path.exists(tpl)):
+                if template in self._problem_reports:
                     logging.debug("Writing analysis page for %s" % template)
-                    rows = read_file(tpl)
-                    os.unlink(tpl)
+                    rows = self._problem_reports[template]
 
                     self._write_template_html(
                             os.path.join(self._output_directory, template[:-len(".tpl")] + ".html"),
@@ -1554,8 +1561,9 @@ class Section:
 
         self.create_package_summaries(logs_by_dir)
 
-        logging.debug("generate known problem *.tpl")
-        dwke_process_section(self._config.section, '.', self._output_directory, self._problem_list, self._binary_db)
+        logging.debug("Preparing known problem reports")
+        failures = dwke_get_failures(self._binary_db, self._problem_list)
+        self.prepare_known_problem_reports(failures)
 
         logging.debug("Writing section index page")
         self.write_section_index_page(dirs, total_packages)
@@ -1680,7 +1688,7 @@ def populate_tpl(tmpl, vals):
     return tmpl
 
 
-def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb):
+def dwke_update_tpl(section, problem, failures, ftpl, ptpl, pkgsdb):
 
     pkg_text = ""
     bugged_section = False
@@ -1719,17 +1727,6 @@ def update_tpl(basedir, section, problem, failures, logdict, ftpl, ptpl, pkgsdb)
     return ""
 
 
-def update_html(section, html_dir, logdict, problem_list, failures, pkgsdb):
-    for problem in problem_list:
-        tpl_text = update_tpl(html_dir, section, problem,
-                   failures.filtered(problem.name),
-                   logdict,
-                   PKG_ERROR_TPL, PROB_TPL, pkgsdb)
-        if len(tpl_text):
-            with open(os.path.join(html_dir, problem.name[:-5] + TPL_EXT), 'w') as pf:
-                pf.write(tpl_text)
-
-
 def dwke_get_failures(pkgsdb, problem_list):
     logdict = get_file_dict(KPR_DIRS, LOG_EXT)
     kprdict = get_file_dict(KPR_DIRS, KPR_EXT)
@@ -1747,12 +1744,6 @@ def dwke_get_failures(pkgsdb, problem_list):
             logging.info("%7d %s" % (pcount, prob.name))
 
     return failures
-
-
-def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
-    failures = dwke_get_failures(pkgsdb, problem_list)
-    logdict = None
-    update_html(section, htmldir, logdict, problem_list, failures, pkgsdb)
 
 # END detect_well_known_errors
 

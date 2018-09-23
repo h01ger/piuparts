@@ -5,6 +5,7 @@ piuparts (0.93) UNRELEASED; urgency=medium
     - Postpone deletion of old logs after the html pages possibly referencing
       them have been updated, avoiding error 404 while processing a section.
     - Generate missing/outdated .kpr files.
+    - Simplify known problem report generation.
 
  -- Holger Levsen <holger@debian.org>  Sat, 22 Sep 2018 15:32:55 +0200
 
