@@ -85,6 +85,17 @@ class Package(UserDict.UserDict):
             return self["Source"].split(" ")[0]
         return self["Package"]
 
+    def source_version(self):
+        # Binary packages built from the source package with the same name
+        # and version don't have a Source header.
+        if "Source" in self:
+            # If source and binary version differ (e.g. for binNMUs), the
+            # source version is given as the second element in the "Source"
+            # entry. Strip off the parentheses around the source version.
+            if " " in self["Source"]:
+                return self["Source"].split(" ")[1][1:-1]
+        return self["Version"]
+
     def set_test_versions(self, tv):
         self["TestVersions"] = tv
 
