@@ -31,7 +31,7 @@ do
 
 	f2=/var/run/f2.$$
 	>$f2
-	dpkg -L "$pkg" | sed 's,\\,\\\\,' | sort | \
+	dpkg -L "$pkg" | sed 's,\\,\\\\,g' | sort | \
 	while read f ; do
 		if [ "$f" != "${f#package diverts others to: }" ]; then
 			: # skip diversion information
