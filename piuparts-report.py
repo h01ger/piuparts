@@ -1730,19 +1730,28 @@ def update_html(section, html_dir, logdict, problem_list, failures, pkgsdb):
                 pf.write(tpl_text)
 
 
-def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
-    workdirs = [os.path.join(sectiondir, x) for x in KPR_DIRS]
-
-    logdict = get_file_dict(workdirs, LOG_EXT)
+def dwke_get_failures(pkgsdb, problem_list):
+    logdict = get_file_dict(KPR_DIRS, LOG_EXT)
+    kprdict = get_file_dict(KPR_DIRS, KPR_EXT)
+    del_cnt = clean_cache_files(logdict, kprdict)
+    kprdict = get_file_dict(KPR_DIRS, KPR_EXT)
+    add_cnt = make_kprs(logdict, kprdict, problem_list)
 
     failures = FailureManager(logdict)
     failures.sort_by_bugged_and_rdeps(pkgsdb)
 
+    logging.info("parsed logfiles: %d removed, %d added" % (del_cnt, add_cnt))
     for prob in problem_list:
         pcount = len(failures.filtered(prob.name))
         if pcount:
             logging.info("%7d %s" % (pcount, prob.name))
 
+    return failures
+
+
+def dwke_process_section(section, sectiondir, htmldir, problem_list, pkgsdb):
+    failures = dwke_get_failures(pkgsdb, problem_list)
+    logdict = None
     update_html(section, htmldir, logdict, problem_list, failures, pkgsdb)
 
 # END detect_well_known_errors
