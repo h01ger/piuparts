@@ -1,6 +1,9 @@
 piuparts (0.93) UNRELEASED; urgency=medium
 
-  * continue development...
+  [ Andreas Beckmann ]
+  * piuparts-report.py:
+    - Postpone deletion of old logs after the html pages possibly referencing
+      them have been updated, avoiding error 404 while processing a section.
 
  -- Holger Levsen <holger@debian.org>  Sat, 22 Sep 2018 15:32:55 +0200
 

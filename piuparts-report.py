@@ -1546,9 +1546,6 @@ class Section:
         logging.debug("Copying log files")
         copy_logs(logs_by_dir, self._output_directory)
 
-        logging.debug("Removing old log files")
-        remove_old_logs(logs_by_dir, self._output_directory)
-
         logging.debug("Writing per-dir HTML pages")
         self.print_by_dir(self._output_directory, logs_by_dir)
 
@@ -1570,6 +1567,9 @@ class Section:
                 self._md5cache['refreshed'], self._md5cache['unmodified']))
         with open(md5cachefile, "w") as f:
             pickle.dump(self._md5cache['new'], f)
+
+        logging.debug("Removing old log files")
+        remove_old_logs(logs_by_dir, self._output_directory)
 
 
     def generate_summary(self, web_host):
