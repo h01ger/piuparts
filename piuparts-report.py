@@ -278,7 +278,7 @@ LOG_LIST_BODY_TEMPLATE = """
       The list has $count packages, with $versioncount total versions.
      </td>
     </tr>
-    $logrows
+$logrows
    </table>
 """
 
@@ -293,7 +293,7 @@ STATE_BODY_TEMPLATE = """
     <tr class="normalrow">
      <td class="contentcell2">
       <ul>
-       $list
+$list
       </ul>
      </td>
     </tr>
@@ -318,7 +318,7 @@ SECTION_INDEX_BODY_TEMPLATE = """
       Binary packages per state
      </td>
     </tr>
-    $tablerows
+$tablerows
     <tr class="titlerow">
      <td class="titlecell" colspan="3">
       URL to Packages file
@@ -339,21 +339,21 @@ MAINTAINER_BODY_TEMPLATE = """
       $maintainer
      </td>
     </tr>
-    $distrolinks
-    $rows
+$distrolinks
+$rows
    </table>
 """
 
 
 SOURCE_PACKAGE_BODY_TEMPLATE = """
    <table class="righttable">
-    $rows
+$rows
    </table>
 """
 
 ANALYSIS_BODY_TEMPLATE = """
    <table class="righttable">
-    $rows
+$rows
    </table>
 """
 
