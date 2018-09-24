@@ -1156,6 +1156,8 @@ class Section:
                 state_style = "labelcell"
 
             binary_version = self._binary_db.get_test_versions(binary)
+            if self._binary_db.get_package(binary).source_version() != source_version:
+                binary_version += " [cruft]"
             binary_arch = self._binary_db.get_control_header(binary, "Architecture")
             archsuffix = ""
             if binary_arch == "all":
@@ -1326,7 +1328,8 @@ class Section:
         for problem in self._problem_list:
             tpl_text = dwke_update_tpl(self._config.section, problem,
                                        failures.filtered(problem.name),
-                                       PKG_ERROR_TPL, PROB_TPL, self._binary_db)
+                                       PKG_ERROR_TPL, PROB_TPL,
+                                       self._binary_db, self._source_db)
             if len(tpl_text):
                 self._problem_reports[problem.name[:-5] + TPL_EXT] = tpl_text
 
@@ -1464,6 +1467,8 @@ class Section:
                                          self.link_to_source_summary(package["Package"]))
                 if package["Architecture"] == "all":
                     vlist += ":all"
+                if package.source_version() != self._source_db.get_version(package.source()):
+                    vlist += " [cruft]"
                 if with_counts:
                     vlist += " (%d, %d)" % (self._binary_db.rrdep_count(package["Package"]),
                                             self._binary_db.block_count(package["Package"]))
@@ -1688,7 +1693,7 @@ def populate_tpl(tmpl, vals):
     return tmpl
 
 
-def dwke_update_tpl(section, problem, failures, ftpl, ptpl, pkgsdb):
+def dwke_update_tpl(section, problem, failures, ftpl, ptpl, pkgsdb, srcdb):
 
     pkg_text = ""
     bugged_section = False
@@ -1699,6 +1704,8 @@ def dwke_update_tpl(section, problem, failures, ftpl, ptpl, pkgsdb):
         bin_arch = ""
         if pkgsdb.get_control_header(bin_pkg, "Architecture") == "all":
             bin_arch = " [all]"
+        if pkgsdb.get_package(bin_pkg).source_version() != srcdb.get_version(src_pkg):
+            bin_arch += " [cruft]"
 
         if bugged_section is False and failure.where != 'fail':
             bugged_section = True
