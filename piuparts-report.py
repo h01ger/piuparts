@@ -3,7 +3,7 @@
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
 # Copyright 2009-2018 Holger Levsen (holger@layer-acht.org)
-# Copyright © 2011-2017 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2011-2018 Andreas Beckmann (anbe@debian.org)
 # Copyright 2013 David Steele (dsteele@gmail.com)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -1058,7 +1058,7 @@ class Section:
         return total
 
     def create_maintainer_summaries(self, maintainers, source_data):
-        logging.debug("Writing %d maintainer summaries in %s" % (len(maintainers), self._config.section))
+        logging.debug("Writing %d maintainer summaries" % len(maintainers))
         maintainer_dir = os.path.join(self._output_directory, "maintainer")
         if not os.path.exists(maintainer_dir):
             os.mkdir(maintainer_dir)
@@ -1250,7 +1250,7 @@ class Section:
 
     def create_package_summaries(self, logs_by_dir):
         src_names = sorted(self._source_db.get_all_package_names())
-        logging.debug("Writing %d source summaries in %s" % (len(src_names), self._config.section))
+        logging.debug("Writing %d source summaries" % len(src_names))
 
         maintainers = {}
         source_binary_rows = {}
@@ -1573,7 +1573,7 @@ class Section:
         logging.debug("Writing section index page")
         self.write_section_index_page(dirs, total_packages)
 
-        logging.debug("Writing stats pages for %s" % self._config.section)
+        logging.debug("Writing state pages")
         self.write_state_pages()
 
         logging.debug("Wrote %d out of %d html files, refreshed %d out of %d unmodified files" % ( \

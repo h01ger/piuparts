@@ -4,7 +4,7 @@ Upstream-Contact: Holger Levsen <holger@debian.org>
 Source: https://salsa.debian.org/debian/piuparts.git
 Copyright: 2005-2008 Lars Wirzenius
            2008-2018 Holger Levsen
-           © 2011-2017 Andreas Beckmann
+           © 2011-2018 Andreas Beckmann
 Comment: Original author is also Lars Wirzenius <liw@iki.fi>
  Upstream is bunch of lunatics who don't make release tarballs publicly
  available. The Debian .orig.tar.gz is what would be released, though.
@@ -12,7 +12,7 @@ Comment: Original author is also Lars Wirzenius <liw@iki.fi>
 Files: *
 Copyright: 2005-2008 Lars Wirzenius <liw@iki.fi>
            2008-2018 Holger Levsen <holger@debian.org>
-           © 2011-2017 Andreas Beckmann <anbe@debian.org>
+           © 2011-2018 Andreas Beckmann <anbe@debian.org>
 License: GPL-2+
  This program is free software; you can redistribute it
  and/or modify it under the terms of the GNU General Public
