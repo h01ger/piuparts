@@ -1,0 +1,29 @@
+#!/bin/sh
+set -e
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
+	rm -fv /etc/apt/apt.conf.d/unauthenticated-lenny
+fi
+
+if [ -e /etc/apt/apt.conf.d/unauthenticated-lenny ]; then
+	echo "FAIL: /etc/apt/apt.conf.d/unauthenticated-lenny exists"
+	exit 1
+fi
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
+	rm -fv /etc/apt/apt.conf.d/unauthenticated-squeeze
+fi
+
+if [ -e /etc/apt/apt.conf.d/unauthenticated-squeeze ]; then
+	echo "FAIL: /etc/apt/apt.conf.d/unauthenticated-squeeze exists"
+	exit 1
+fi
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze" ]; then
+	echo "Creating /etc/apt/apt.conf.d/unauthenticated-squeeze ..."
+	# apt/lenny does not like comments ...
+	tee /etc/apt/apt.conf.d/unauthenticated-squeeze <<EOF
+APT::Get::AllowUnauthenticated "true";
+Acquire::Check-Valid-Until "false";
+EOF
+fi

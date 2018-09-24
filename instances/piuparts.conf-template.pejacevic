@@ -84,8 +84,6 @@ flags-start-squeeze =
 	-i /etc/shells
 # see #604807:
 	--skip-logrotatefiles-test
-# squeeze has been archived
-	--no-check-valid-until
 
 # common flags for tests ending in squeeze
 flags-end-squeeze =
@@ -106,8 +104,6 @@ flags-start-lenny =
 	-i /etc/shells
 # see #604807:
 	--skip-logrotatefiles-test
-# lenny has been archived
-	--no-check-valid-until
 
 
 [global]

@@ -10,6 +10,11 @@ piuparts (0.93) UNRELEASED; urgency=medium
     - Generate missing/outdated .kpr files.
     - Simplify known problem report generation.
     - Mark logs of packages built from an outdated source version as [cruft].
+  * scripts/{post_chroot_unpack,pre_distupgrade}_allow_unauthenticated: New
+    scripts to handle installation from archived releases with expired signing
+    keys (lenny, squeeze). Drop the --no-check-valid-until from *.conf since
+    that is active for all steps in a distupgrade test while the new scripts
+    only enable it for the distros that actually need it.
   * Overhaul some exceptions.
 
  -- Holger Levsen <holger@debian.org>  Sat, 22 Sep 2018 15:32:55 +0200

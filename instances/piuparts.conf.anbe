@@ -45,7 +45,6 @@ flags-end-wheezy =
 	--scriptsdir /etc/piuparts/scripts-wheezy
 
 flags-start-squeeze =
-	--no-check-valid-until
 	-i /etc/shells
 flags-end-squeeze =
 	--warn-on-debsums-errors
@@ -54,7 +53,6 @@ flags-end-squeeze =
 
 flags-start-lenny =
 	--dpkg-noforce-unsafe-io
-	--no-check-valid-until
 	-i /etc/shells
 flags-end-lenny =
 	--skip-cronfiles-test

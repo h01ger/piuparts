@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
+	echo "Creating /etc/apt/apt.conf.d/unauthenticated-lenny ..."
+	# apt/lenny does not like comments ...
+	tee /etc/apt/apt.conf.d/unauthenticated-lenny <<EOF
+APT::Get::AllowUnauthenticated "true";
+Acquire::Check-Valid-Until "false";
+EOF
+fi
+
+if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
+	echo "Creating /etc/apt/apt.conf.d/unauthenticated-squeeze ..."
+	tee /etc/apt/apt.conf.d/unauthenticated-squeeze <<EOF
+# The squeeze signing key has expired.
+APT::Get::AllowUnauthenticated "true";
+# The Release file is not getting updated.
+Acquire::Check-Valid-Until "false";
+EOF
+fi
