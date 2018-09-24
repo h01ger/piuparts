@@ -706,12 +706,6 @@ class PackagesDB:
             return self._packages[name].test_versions()
         return None
 
-    def get_source(self, name):
-        self._find_all_packages()
-        if name in self._packages:
-            return self.get_control_header(name, "Source")
-        return None
-
     def get_providers(self, name, recurse=True):
         self._find_all_packages()
         providers = []
@@ -732,9 +726,7 @@ class PackagesDB:
 
     def get_control_header(self, package_name, header):
         self._find_all_packages()
-        if header == "Source":
-            return self._packages[package_name].source()
-        elif header == "Uploaders":
+        if header == "Uploaders":
             # not all (source) packages have an Uploaders header
             uploaders = ""
             try:

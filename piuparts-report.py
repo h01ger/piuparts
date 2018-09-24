@@ -979,7 +979,7 @@ class Section:
         return link[:-2]
 
     def link_to_source_summary(self, package_name):
-        source_name = self._binary_db.get_source(package_name)
+        source_name = self._binary_db.get_package(package_name).source()
         link = "<a href=\"%s/%s/source/%s\">%s</a>" % (
             self._doc_root,
                 self._config.section,
@@ -1606,7 +1606,7 @@ class Section:
                     block_cnt = 0
                     if flag == 'F':
                         block_cnt = self._binary_db.block_count(pkgname)
-                    srcpkg = self._binary_db.get_source(pkgname)
+                    srcpkg = self._binary_db.get_package(pkgname).source()
                     url = source_summary_url(
                               web_host, self._doc_root,
                               self._config.section, srcpkg)
@@ -1694,7 +1694,7 @@ def dwke_update_tpl(section, problem, failures, ftpl, ptpl, pkgsdb):
     bugged_section = False
     for failure in failures:
         bin_pkg = get_pkg(failure.pkgspec)
-        src_pkg = pkgsdb.get_source(bin_pkg)
+        src_pkg = pkgsdb.get_package(bin_pkg).source()
         rdep_cnt = pkgsdb.rrdep_count(bin_pkg)
         bin_arch = ""
         if pkgsdb.get_control_header(bin_pkg, "Architecture") == "all":
