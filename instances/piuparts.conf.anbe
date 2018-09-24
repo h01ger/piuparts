@@ -149,6 +149,7 @@ sections =
 	stretch2buster/main
 	stretch3buster/main
 	stretch2buster_i386/main
+	stretch3buster_i386/main
 	stretch2buster-rcmd/main
 	stretch3buster-rcmd/main
 	stretch2buster-rcmd_i386/main
@@ -228,6 +229,7 @@ sections =
 	stretch2buster/contrib
 	stretch3buster/contrib
 	stretch2buster_i386/contrib
+	stretch3buster_i386/contrib
 	stretch2buster-rcmd/contrib
 	stretch3buster-rcmd/contrib
 	stretch2buster-rcmd_i386/contrib
@@ -307,6 +309,7 @@ sections =
 	stretch2buster/non-free
 	stretch3buster/non-free
 	stretch2buster_i386/non-free
+	stretch3buster_i386/non-free
 	stretch2buster-rcmd/non-free
 	stretch3buster-rcmd/non-free
 	stretch2buster-rcmd_i386/non-free
@@ -3902,6 +3905,55 @@ arch = i386
 area = non-free
 distro = stretch
 upgrade-test-distros = stretch buster
+
+
+[stretch3buster_i386/main]
+precedence = 80
+description = + Testing two-stage upgrades.
+piuparts-flags =
+	--upgrade-before-dist-upgrade
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = i386
+area = main
+components = main
+distro = stretch
+upgrade-test-distros = stretch buster
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
+
+[stretch3buster_i386/contrib]
+precedence = 95
+description = + Testing two-stage upgrades.
+piuparts-flags =
+	--upgrade-before-dist-upgrade
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = stretch3buster_i386/main stretch3buster_i386/non-free
+arch = i386
+area = contrib
+distro = stretch
+upgrade-test-distros = stretch buster
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
+
+[stretch3buster_i386/non-free]
+precedence = 95
+description = + Testing two-stage upgrades.
+piuparts-flags =
+	--upgrade-before-dist-upgrade
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = stretch3buster_i386/main stretch3buster_i386/contrib
+arch = i386
+area = non-free
+distro = stretch
+upgrade-test-distros = stretch buster
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
 [stretch2buster-rcmd/main]
