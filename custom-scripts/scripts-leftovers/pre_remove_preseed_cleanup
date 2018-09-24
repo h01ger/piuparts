@@ -33,7 +33,8 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		log_debug
 		echo "ifetch-tools ifetch-tools/purge boolean true" | debconf-set-selections
 		;;
-	mlmmj)  #668752
+	mlmmj)
+		#668752
 		log_debug
 		echo "mlmmj mlmmj/remove-on-purge boolean true" | debconf-set-selections
 		;;
@@ -46,6 +47,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		log_debug
 		echo "sympa sympa/remove_spool boolean true" | debconf-set-selections
 		;;
+	####################################################################
 	ironic-common)
 		dbconfig_enable_purge ironic-common
 		;;

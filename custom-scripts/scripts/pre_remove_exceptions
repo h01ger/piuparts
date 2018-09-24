@@ -6,6 +6,12 @@ log_debug() {
 }
 
 case ${PIUPARTS_OBJECTS%%=*} in
+	apt-listbugs)
+		# cleanup from post_install_exceptions
+		log_debug
+		rm -f /usr/sbin/apt-listbugs
+		dpkg-divert --remove --rename /usr/sbin/apt-listbugs
+		;;
 	file-rc)
 		# removal won't work if sysv-rc isn't reinstalled
 		case "$PIUPARTS_DISTRIBUTION" in
@@ -25,12 +31,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			log_debug
 			rm -fv /etc/isdn/*
 		fi
-		;;
-	apt-listbugs)
-		# cleanup from post_install_exceptions
-		log_debug
-		rm -f /usr/sbin/apt-listbugs
-		dpkg-divert --remove --rename /usr/sbin/apt-listbugs
 		;;
 esac
 

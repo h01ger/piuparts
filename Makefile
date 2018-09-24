@@ -28,8 +28,8 @@ DOCS_GENERATED		 = piuparts.1 piuparts.1.html piuparts_slave_run.8 piuparts_slav
 define placeholder_substitution
 	sed -r \
 	-e 's/__PIUPARTS_VERSION__/$(version)/g' \
-	-e 's%@sharedir@%$(sharedir)%g' \
 	-e 's%@libdir@%$(libdir)%g' \
+	-e 's%@sharedir@%$(sharedir)%g' \
 	$< > $@
 endef
 

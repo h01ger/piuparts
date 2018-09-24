@@ -108,6 +108,7 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	fossology-scheduler@squeeze|\
 	fossology-web@squeeze|\
 	fossology-web-single@squeeze)
+		# removed after squeeze
 		skip_distupgrade "#595593: fails to install"
 		;;
 	gclcvs@squeeze)

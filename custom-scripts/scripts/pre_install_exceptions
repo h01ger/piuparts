@@ -76,18 +76,18 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			log_debug
 			echo "auctex auctex/doauto select Foreground" | debconf-set-selections
 			;;
-	samhain)
-			# work around #749602
-			log_debug
-			mkdir -p /var/state/samhain/
-			touch /var/state/samhain/samhain_file
-			;;
 	bugzilla3)
 			# checksetup.pl goes into infinite loop asking for them
 			log_debug
 			echo "bugzilla3 bugzilla3/bugzilla_admin_name string bz@local.host" | debconf-set-selections
 			echo "bugzilla3 bugzilla3/bugzilla_admin_real_name string Bz" | debconf-set-selections
 			echo "bugzilla3 bugzilla3/bugzilla_admin_pwd password bzbzbzbz" | debconf-set-selections
+			;;
+	samhain)
+			# work around #749602
+			log_debug
+			mkdir -p /var/state/samhain/
+			touch /var/state/samhain/samhain_file
 			;;
 esac
 
