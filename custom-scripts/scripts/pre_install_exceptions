@@ -36,10 +36,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		# switch init to upstart before installation
 		apt-get install upstart
 		;;
-	sympa)
-		# force removal of spool directories
-		echo "sympa sympa/remove_spool boolean true" | debconf-set-selections
-		;;
 	systemd-sysv)
 		case "$PIUPARTS_DISTRIBUTION" in
 			wheezy*)
