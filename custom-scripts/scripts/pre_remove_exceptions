@@ -32,12 +32,16 @@ esac
 
 case "$PIUPARTS_DISTRIBUTION" in
 
-	stretch*|buster*|sid)
+	lenny*|squeeze*|wheezy*|jessie*)
+		# --allow-remove-essential was added in apt 1.1 (stretch)
+		;;
+	*)
 		case ${PIUPARTS_OBJECTS%%=*} in
 			init|\
 			education-thin-client|\
 			ltsp-client|\
-			ltsp-client-core)
+			ltsp-client-core|\
+			ltsp-client-core-dbgsym)
 				log_debug
 				# requires removal of essential packages
 				if [ ! -f /etc/apt/apt.conf.d/piuparts-allow-remove-essential ]
