@@ -1,6 +1,7 @@
 piuparts (0.93) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
+  * piuparts.conf.anbe: Add some more example sections.
   * piupartslib/packagesdb.py:
     - Add methods Package.source(), Package.source_version().
     - Remove method PackagesDB.get_source().
