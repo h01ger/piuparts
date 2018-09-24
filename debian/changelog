@@ -10,6 +10,7 @@ piuparts (0.93) UNRELEASED; urgency=medium
     - Generate missing/outdated .kpr files.
     - Simplify known problem report generation.
     - Mark logs of packages built from an outdated source version as [cruft].
+  * Overhaul some exceptions.
 
  -- Holger Levsen <holger@debian.org>  Sat, 22 Sep 2018 15:32:55 +0200
 
