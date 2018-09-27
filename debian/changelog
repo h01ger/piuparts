@@ -1,3 +1,9 @@
+piuparts (0.92~bpo9+1) stretch-backports; urgency=medium
+
+  * Rebuild for stretch-backports.
+
+ -- Holger Levsen <holger@debian.org>  Thu, 27 Sep 2018 11:53:41 +0200
+
 piuparts (0.92) unstable; urgency=medium
 
   [ Simon McVittie ]
