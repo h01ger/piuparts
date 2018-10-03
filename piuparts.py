@@ -2381,12 +2381,12 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
         chroot.install_packages(package_files, packages, with_scripts=True)
         chroot.install_packages(package_files, packages, with_scripts=True, reinstall=True)
 
-    chroot.check_for_no_processes()
-    chroot.check_for_broken_symlinks()
+    chroot.disable_testdebs_repo()
 
     file_owners = chroot.get_files_owned_by_packages()
 
-    chroot.disable_testdebs_repo()
+    chroot.check_for_no_processes()
+    chroot.check_for_broken_symlinks()
 
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state, packages)
@@ -2424,12 +2424,12 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
 
     chroot.install_packages(package_files, packages)
 
-    chroot.check_for_no_processes()
-    chroot.check_for_broken_symlinks()
+    chroot.disable_testdebs_repo()
 
     file_owners = chroot.get_files_owned_by_packages()
 
-    chroot.disable_testdebs_repo()
+    chroot.check_for_no_processes()
+    chroot.check_for_broken_symlinks()
 
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state, packages)
@@ -2588,9 +2588,9 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     chroot.disable_testdebs_repo()
 
-    chroot.check_for_no_processes()
-
     file_owners = chroot.get_files_owned_by_packages()
+
+    chroot.check_for_no_processes()
 
     # Remove all packages from the chroot that weren't in the reference chroot.
     chroot.restore_selections(chroot_state, packages_qualified)
