@@ -248,8 +248,7 @@ piuparts-flags =
 	%(flags-start-wheezy)s
 distro = None
 upgrade-test-distros = wheezy
-# 1 month (60*60*24*30)
-max-tgz-age = 2592000
+max-tgz-age = 0
 
 
 [tarball/squeeze]
@@ -695,20 +694,22 @@ piuparts-flags =
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
 distro = wheezy
+reschedule-old-count = 0
 
 
 [wheezy-lts]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
 distro = wheezy-lts
+reschedule-old-count = 0
 
 
 [wheezy-security]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -716,6 +717,7 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = wheezy
 distro = wheezy/updates
+reschedule-old-count = 0
 
 
 [wheezy-pu]
@@ -727,10 +729,11 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = wheezy
 distro = wheezy-proposed-updates
+reschedule-old-count = 0
 
 
 [wheezy2lts]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -738,10 +741,11 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 distro = wheezy
 upgrade-test-distros = wheezy wheezy-lts
+reschedule-old-count = 0
 
 
 [squeeze2wheezy-lts]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -749,6 +753,7 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 distro = squeeze
 upgrade-test-distros = squeeze wheezy-lts
+reschedule-old-count = 0
 
 
 [squeeze2wheezy]
@@ -760,10 +765,11 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
+reschedule-old-count = 0
 
 
 [squeeze2bpo2wheezy]
-precedence = 10
+precedence = 100
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -772,6 +778,7 @@ piuparts-flags =
 depends-sections = squeeze
 distro = squeeze-backports
 upgrade-test-distros = squeeze squeeze-backports wheezy-lts
+reschedule-old-count = 0
 
 
 [squeeze2bpo-sloppy]
