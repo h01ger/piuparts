@@ -547,8 +547,7 @@ upgrade-test-distros = wheezy
 arch = amd64
 area = main
 components = main
-# 60*60*24*30
-max-tgz-age = 2592000
+max-tgz-age = 0
 
 
 [tarball/wheezy/i386]
@@ -560,8 +559,7 @@ upgrade-test-distros = wheezy
 arch = i386
 area = main
 components = main
-# 60*60*24*30
-max-tgz-age = 2592000
+max-tgz-age = 0
 
 
 [tarball/squeeze/amd64]
@@ -1690,7 +1688,7 @@ area = non-free
 
 
 [wheezy/main]
-precedence = 10
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1699,10 +1697,10 @@ distro = wheezy
 arch = amd64
 area = main
 components = main
-reschedule-old-count = 100
+reschedule-old-count = 0
 
 [wheezy/contrib]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1711,9 +1709,10 @@ depends-sections = wheezy/main wheezy/non-free
 distro = wheezy
 arch = amd64
 area = contrib
+reschedule-old-count = 0
 
 [wheezy/non-free]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1722,10 +1721,11 @@ depends-sections = wheezy/main wheezy/contrib
 distro = wheezy
 arch = amd64
 area = non-free
+reschedule-old-count = 0
 
 
 [wheezy-rcmd/main]
-precedence = 40
+precedence = 1000
 description = + With recommended packages.
 piuparts-flags =
 	--install-recommends
@@ -1736,10 +1736,10 @@ distro = wheezy
 arch = i386
 area = main
 components = main
-reschedule-old-count = 100
+reschedule-old-count = 0
 
 [wheezy-rcmd/contrib]
-precedence = 45
+precedence = 1000
 description = + With recommended packages.
 piuparts-flags =
 	--install-recommends
@@ -1750,9 +1750,10 @@ depends-sections = wheezy-rcmd/main wheezy-rcmd/non-free
 distro = wheezy
 arch = i386
 area = contrib
+reschedule-old-count = 0
 
 [wheezy-rcmd/non-free]
-precedence = 45
+precedence = 1000
 description = + With recommended packages.
 piuparts-flags =
 	--install-recommends
@@ -1763,10 +1764,11 @@ depends-sections = wheezy-rcmd/main wheezy-rcmd/contrib
 distro = wheezy
 arch = i386
 area = non-free
+reschedule-old-count = 0
 
 
 [wheezy-security/main]
-precedence = 20
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1776,9 +1778,10 @@ distro = wheezy/updates
 arch = amd64
 area = main
 components = main
+reschedule-old-count = 0
 
 [wheezy-security/contrib]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1789,7 +1792,7 @@ arch = amd64
 area = contrib
 
 [wheezy-security/non-free]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1798,10 +1801,11 @@ depends-sections = wheezy/main
 distro = wheezy/updates
 arch = amd64
 area = non-free
+reschedule-old-count = 0
 
 
 [wheezy-lts/main]
-precedence = 20
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1810,11 +1814,10 @@ distro = wheezy-lts
 arch = amd64
 area = main
 components = main
-reschedule-old-count = 333
-reschedule-old-days = 25
+reschedule-old-count = 0
 
 [wheezy-lts/contrib]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1823,10 +1826,10 @@ depends-sections = wheezy-lts/main wheezy-lts/non-free
 distro = wheezy-lts
 arch = amd64
 area = contrib
-reschedule-old-days = 25
+reschedule-old-count = 0
 
 [wheezy-lts/non-free]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1835,11 +1838,11 @@ depends-sections = wheezy-lts/main wheezy-lts/contrib
 distro = wheezy-lts
 arch = amd64
 area = non-free
-reschedule-old-days = 25
+reschedule-old-count = 0
 
 
 [wheezy-backports/main]
-precedence = 40
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1849,9 +1852,10 @@ distro = wheezy-backports
 arch = amd64
 area = main
 components = main
+reschedule-old-count = 0
 
 [wheezy-backports/contrib]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1860,9 +1864,10 @@ depends-sections = wheezy/main wheezy/non-free wheezy-backports/main wheezy-back
 distro = wheezy-backports
 arch = amd64
 area = contrib
+reschedule-old-count = 0
 
 [wheezy-backports/non-free]
-precedence = 45
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -1871,6 +1876,7 @@ depends-sections = wheezy/main wheezy-backports/main wheezy-backports/contrib
 distro = wheezy-backports
 arch = amd64
 area = non-free
+reschedule-old-count = 0
 
 
 [squeeze/main]
@@ -2315,7 +2321,7 @@ reschedule-old-count = 100
 
 
 [squeeze2lts2wheezy/main]
-precedence = 60
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2330,7 +2336,7 @@ upgrade-test-distros = squeeze squeeze-lts wheezy
 reschedule-old-count = 0
 
 [squeeze2lts2wheezy/contrib]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2344,7 +2350,7 @@ upgrade-test-distros = squeeze squeeze-lts wheezy
 reschedule-old-count = 0
 
 [squeeze2lts2wheezy/non-free]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2359,7 +2365,7 @@ reschedule-old-count = 0
 
 
 [squeeze2wheezy/main]
-precedence = 60
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2370,10 +2376,10 @@ area = main
 components = main
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
-reschedule-old-count = 100
+reschedule-old-count = 0
 
 [squeeze2wheezy/contrib]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2383,9 +2389,10 @@ arch = amd64
 area = contrib
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
+reschedule-old-count = 0
 
 [squeeze2wheezy/non-free]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2395,10 +2402,11 @@ arch = amd64
 area = non-free
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
+reschedule-old-count = 0
 
 
 [squeeze2wheezy-lts/main]
-precedence = 60
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2409,10 +2417,10 @@ area = main
 components = main
 distro = squeeze
 upgrade-test-distros = squeeze wheezy-lts
-reschedule-old-count = 100
+reschedule-old-count = 0
 
 [squeeze2wheezy-lts/contrib]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2422,9 +2430,10 @@ arch = amd64
 area = contrib
 distro = squeeze
 upgrade-test-distros = squeeze wheezy-lts
+reschedule-old-count = 0
 
 [squeeze2wheezy-lts/non-free]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2434,10 +2443,11 @@ arch = amd64
 area = non-free
 distro = squeeze
 upgrade-test-distros = squeeze wheezy-lts
+reschedule-old-count = 0
 
 
 [squeeze2wheezy_i386/main]
-precedence = 60
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2451,7 +2461,7 @@ upgrade-test-distros = squeeze wheezy
 reschedule-old-count = 0
 
 [squeeze2wheezy_i386/contrib]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2464,7 +2474,7 @@ upgrade-test-distros = squeeze wheezy
 reschedule-old-count = 0
 
 [squeeze2wheezy_i386/non-free]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2478,7 +2488,7 @@ reschedule-old-count = 0
 
 
 [squeeze2wheezy-rcmd/main]
-precedence = 70
+precedence = 1000
 description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
@@ -2494,7 +2504,7 @@ upgrade-test-distros = squeeze wheezy
 reschedule-old-count = 0
 
 [squeeze2wheezy-rcmd/contrib]
-precedence = 95
+precedence = 1000
 description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
@@ -2509,7 +2519,7 @@ upgrade-test-distros = squeeze wheezy
 reschedule-old-count = 0
 
 [squeeze2wheezy-rcmd/non-free]
-precedence = 95
+precedence = 1000
 description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
@@ -2525,7 +2535,7 @@ reschedule-old-count = 0
 
 
 [squeeze2wheezy-rcmd_i386/main]
-precedence = 70
+precedence = 1000
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
@@ -2540,7 +2550,7 @@ upgrade-test-distros = squeeze wheezy
 reschedule-old-count = 0
 
 [squeeze2wheezy-rcmd_i386/contrib]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
@@ -2554,7 +2564,7 @@ upgrade-test-distros = squeeze wheezy
 reschedule-old-count = 0
 
 [squeeze2wheezy-rcmd_i386/non-free]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
@@ -2569,7 +2579,7 @@ reschedule-old-count = 0
 
 
 [squeeze2bpo2wheezy/main]
-precedence = 80
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2581,9 +2591,10 @@ arch = amd64
 area = main
 components = main
 upgrade-test-distros = squeeze squeeze-backports wheezy-lts
+reschedule-old-count = 0
 
 [squeeze2bpo2wheezy/contrib]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2594,9 +2605,10 @@ distro = squeeze-backports
 arch = amd64
 area = contrib
 upgrade-test-distros = squeeze squeeze-backports wheezy-lts
+reschedule-old-count = 0
 
 [squeeze2bpo2wheezy/non-free]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
@@ -2607,6 +2619,7 @@ distro = squeeze-backports
 arch = amd64
 area = non-free
 upgrade-test-distros = squeeze squeeze-backports wheezy-lts
+reschedule-old-count = 0
 
 
 [squeeze222testing/main]
@@ -2690,7 +2703,7 @@ reschedule-old-count = 100
 
 
 [wheezy2lts/main]
-precedence = 60
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -2701,9 +2714,10 @@ area = main
 components = main
 distro = wheezy
 upgrade-test-distros = wheezy wheezy-lts
+reschedule-old-count = 0
 
 [wheezy2lts/contrib]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -2713,9 +2727,10 @@ arch = amd64
 area = contrib
 distro = wheezy
 upgrade-test-distros = wheezy wheezy-lts
+reschedule-old-count = 0
 
 [wheezy2lts/non-free]
-precedence = 95
+precedence = 1000
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -2725,6 +2740,7 @@ arch = amd64
 area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy wheezy-lts
+reschedule-old-count = 0
 
 
 [wheezy2jessie/main]
