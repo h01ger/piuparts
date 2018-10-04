@@ -76,6 +76,14 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "stretch" ] || \
 
 fi
 
+if	[ "$PIUPARTS_DISTRIBUTION" = "buster" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "buster-proposed" ] ; then
+
+	mark_for_purge libcryptsetup4
+	mark_for_purge libprocps6
+
+fi
+
 if [ -n "$PURGE" ]; then
 	echo "Removing packages from base system:$PURGE"
 	apt-get -y remove --purge $PURGE
