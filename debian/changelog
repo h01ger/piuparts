@@ -1,6 +1,8 @@
 piuparts (0.93) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
+  * piuparts.py:
+    - Report the package that owns a broken symlink.
   * piuparts.conf.anbe: Add some more example sections.
   * piupartslib/packagesdb.py:
     - Add methods Package.source(), Package.source_version().

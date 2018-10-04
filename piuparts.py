@@ -3,7 +3,7 @@
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
 # Copyright © 2007-2018 Holger Levsen (holger@layer-acht.org)
-# Copyright © 2010-2017 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2010-2018 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -1790,7 +1790,7 @@ class Chroot:
                 return True
         return False
 
-    def check_for_broken_symlinks(self, warn_only=None):
+    def check_for_broken_symlinks(self, warn_only=None, file_owners={}):
         """Check that all symlinks in chroot are non-broken."""
         if not settings.check_broken_symlinks:
             return
@@ -1809,7 +1809,10 @@ class Chroot:
                         target = os.readlink(full_name)
                     except os.error:
                         target = "<unknown>"
-                    broken.append("%s -> %s" % (name, target))
+                    entry = "%s -> %s" % (name, target)
+                    if name in file_owners:
+                        entry += " (%s)" % ", ".join(file_owners[name])
+                    broken.append(entry)
         if broken:
             if settings.warn_broken_symlinks or warn_only:
                 logging.error("WARN: Broken symlinks:\n%s" %
@@ -2369,7 +2372,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
         logging.info("Validating chroot after purge")
         chroot.check_debsums()
         chroot.check_for_no_processes()
-        chroot.check_for_broken_symlinks()
+        chroot.check_for_broken_symlinks(file_owners=file_owners)
         if not check_results(chroot, chroot_state_with_deps, file_owners, deps_info=deps_info):
             return False
         logging.info("Reinstalling after purge")
@@ -2386,7 +2389,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
     file_owners = chroot.get_files_owned_by_packages()
 
     chroot.check_for_no_processes()
-    chroot.check_for_broken_symlinks()
+    chroot.check_for_broken_symlinks(file_owners=file_owners)
 
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state, packages)
@@ -2394,7 +2397,7 @@ def install_purge_test(chroot, chroot_state, package_files, packages, extra_pack
     chroot.run_scripts("post_test")
 
     chroot.check_for_no_processes(fail=True)
-    chroot.check_for_broken_symlinks()
+    chroot.check_for_broken_symlinks(file_owners=file_owners)
 
     return check_results(chroot, chroot_state, file_owners, deps_info=deps_info)
 
@@ -2429,7 +2432,7 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
     file_owners = chroot.get_files_owned_by_packages()
 
     chroot.check_for_no_processes()
-    chroot.check_for_broken_symlinks()
+    chroot.check_for_broken_symlinks(file_owners=file_owners)
 
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state, packages)
@@ -2437,7 +2440,7 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
     chroot.run_scripts("post_test")
 
     chroot.check_for_no_processes(fail=True)
-    chroot.check_for_broken_symlinks()
+    chroot.check_for_broken_symlinks(file_owners=file_owners)
 
     return check_results(chroot, chroot_state, file_owners)
 
