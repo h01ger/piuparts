@@ -136,11 +136,6 @@ sections =
 	jessie-updates/main
 	jessie-pu/main
 	jessie-backports/main
-	wheezy/main
-	wheezy-rcmd/main
-	wheezy-lts/main
-	wheezy-security/main
-	wheezy-backports/main
 	sid2experimental/main
 	testing2sid/main
 	stable2sid/main
@@ -167,15 +162,6 @@ sections =
 	jessie3stretch-rcmd_i386/main
 	jessie2stretch-iri/main
 	jessie2bpo2stretch/main
-	wheezy2lts/main
-	wheezy2jessie/main
-	wheezy2jessie_i386/main
-	wheezy2jessie-rcmd/main
-	wheezy2jessie-rcmd_i386/main
-	wheezy2jessie-sysv/main
-	wheezy2jessie-apt1st/main
-	wheezy2jessie-iri/main
-	wheezy2bpo2jessie/main
 	jessie222testing/main
 	jessie222testing_i386/main
 	wheezy222testing/main
@@ -216,11 +202,6 @@ sections =
 	jessie-updates/contrib
 	jessie-pu/contrib
 	jessie-backports/contrib
-	wheezy/contrib
-	wheezy-rcmd/contrib
-	wheezy-lts/contrib
-#	wheezy-security/contrib
-	wheezy-backports/contrib
 	sid2experimental/contrib
 	testing2sid/contrib
 	stable2sid/contrib
@@ -247,15 +228,6 @@ sections =
 	jessie3stretch-rcmd_i386/contrib
 	jessie2stretch-iri/contrib
 	jessie2bpo2stretch/contrib
-	wheezy2lts/contrib
-	wheezy2jessie/contrib
-	wheezy2jessie_i386/contrib
-	wheezy2jessie-rcmd/contrib
-	wheezy2jessie-rcmd_i386/contrib
-	wheezy2jessie-sysv/contrib
-	wheezy2jessie-apt1st/contrib
-	wheezy2jessie-iri/contrib
-	wheezy2bpo2jessie/contrib
 	jessie222testing/contrib
 	jessie222testing_i386/contrib
 	wheezy222testing/contrib
@@ -296,11 +268,6 @@ sections =
 	jessie-updates/non-free
 	jessie-pu/non-free
 	jessie-backports/non-free
-	wheezy/non-free
-	wheezy-rcmd/non-free
-	wheezy-lts/non-free
-#	wheezy-security/non-free
-	wheezy-backports/non-free
 	sid2experimental/non-free
 	testing2sid/non-free
 	stable2sid/non-free
@@ -327,15 +294,6 @@ sections =
 	jessie3stretch-rcmd_i386/non-free
 	jessie2stretch-iri/non-free
 	jessie2bpo2stretch/non-free
-	wheezy2lts/non-free
-	wheezy2jessie/non-free
-	wheezy2jessie_i386/non-free
-	wheezy2jessie-rcmd/non-free
-	wheezy2jessie-rcmd_i386/non-free
-	wheezy2jessie-sysv/non-free
-	wheezy2jessie-apt1st/non-free
-	wheezy2jessie-iri/non-free
-	wheezy2bpo2jessie/non-free
 	jessie222testing/non-free
 	jessie222testing_i386/non-free
 	wheezy222testing/non-free
@@ -345,6 +303,20 @@ sections =
 	lenny222testing/non-free
 	lenny222testing_i386/non-free
 #
+	wheezy/main
+	wheezy-rcmd/main
+	wheezy-lts/main
+	wheezy-security/main
+	wheezy-backports/main
+	wheezy2lts/main
+	wheezy2jessie/main
+	wheezy2jessie_i386/main
+#	wheezy2jessie-rcmd/main
+#	wheezy2jessie-rcmd_i386/main
+#	wheezy2jessie-sysv/main
+#	wheezy2jessie-apt1st/main
+	wheezy2jessie-iri/main
+	wheezy2bpo2jessie/main
 	squeeze/main
 	squeeze_i386/main
 	squeeze-lts/main
@@ -353,14 +325,28 @@ sections =
 	squeeze2lts2wheezy/main
 	squeeze2wheezy/main
 	squeeze2wheezy_i386/main
-	squeeze2wheezy-rcmd/main
-	squeeze2wheezy-rcmd_i386/main
+#	squeeze2wheezy-rcmd/main
+#	squeeze2wheezy-rcmd_i386/main
 	squeeze2wheezy-lts/main
 	squeeze2bpo2wheezy/main
 	lenny/main
 	lenny_i386/main
 	lenny2squeeze/main
 #
+	wheezy/contrib
+	wheezy-rcmd/contrib
+	wheezy-lts/contrib
+#	wheezy-security/contrib
+	wheezy-backports/contrib
+	wheezy2lts/contrib
+	wheezy2jessie/contrib
+	wheezy2jessie_i386/contrib
+#	wheezy2jessie-rcmd/contrib
+#	wheezy2jessie-rcmd_i386/contrib
+#	wheezy2jessie-sysv/contrib
+#	wheezy2jessie-apt1st/contrib
+	wheezy2jessie-iri/contrib
+	wheezy2bpo2jessie/contrib
 	squeeze/contrib
 	squeeze_i386/contrib
 	squeeze-lts/contrib
@@ -369,14 +355,28 @@ sections =
 	squeeze2lts2wheezy/contrib
 	squeeze2wheezy/contrib
 	squeeze2wheezy_i386/contrib
-	squeeze2wheezy-rcmd/contrib
-	squeeze2wheezy-rcmd_i386/contrib
+#	squeeze2wheezy-rcmd/contrib
+#	squeeze2wheezy-rcmd_i386/contrib
 	squeeze2wheezy-lts/contrib
 	squeeze2bpo2wheezy/contrib
 	lenny/contrib
 	lenny_i386/contrib
 	lenny2squeeze/contrib
 #
+	wheezy/non-free
+	wheezy-rcmd/non-free
+	wheezy-lts/non-free
+#	wheezy-security/non-free
+	wheezy-backports/non-free
+	wheezy2lts/non-free
+	wheezy2jessie/non-free
+	wheezy2jessie_i386/non-free
+#	wheezy2jessie-rcmd/non-free
+#	wheezy2jessie-rcmd_i386/non-free
+#	wheezy2jessie-sysv/non-free
+#	wheezy2jessie-apt1st/non-free
+	wheezy2jessie-iri/non-free
+	wheezy2bpo2jessie/non-free
 	squeeze/non-free
 	squeeze_i386/non-free
 	squeeze-lts/non-free
@@ -385,8 +385,8 @@ sections =
 	squeeze2lts2wheezy/non-free
 	squeeze2wheezy/non-free
 	squeeze2wheezy_i386/non-free
-	squeeze2wheezy-rcmd/non-free
-	squeeze2wheezy-rcmd_i386/non-free
+#	squeeze2wheezy-rcmd/non-free
+#	squeeze2wheezy-rcmd_i386/non-free
 	squeeze2wheezy-lts/non-free
 	squeeze2bpo2wheezy/non-free
 	lenny/non-free
