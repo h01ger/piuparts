@@ -4,7 +4,6 @@
 
 [DEFAULT]
 flags-base =
-	--skip-logrotatefiles-test
 	--warn-on-others
 	--no-eatmydata
 	--scriptsdir /etc/piuparts/scripts
@@ -30,16 +29,19 @@ flags-end-buster =
 
 flags-start-stretch =
 flags-end-stretch =
+	--skip-logrotatefiles-test
 	--warn-on-debsums-errors
 
 flags-start-jessie =
 flags-end-jessie =
+	--skip-logrotatefiles-test
 	--warn-on-debsums-errors
 	--warn-on-install-over-symlink
 	--scriptsdir /etc/piuparts/scripts-jessie
 
 flags-start-wheezy =
 flags-end-wheezy =
+	--skip-logrotatefiles-test
 	--warn-on-debsums-errors
 	--warn-on-install-over-symlink
 	--scriptsdir /etc/piuparts/scripts-wheezy
@@ -47,6 +49,7 @@ flags-end-wheezy =
 flags-start-squeeze =
 	-i /etc/shells
 flags-end-squeeze =
+	--skip-logrotatefiles-test
 	--warn-on-debsums-errors
 	--warn-on-install-over-symlink
 	--scriptsdir /etc/piuparts/scripts-squeeze
@@ -56,6 +59,7 @@ flags-start-lenny =
 	-i /etc/shells
 flags-end-lenny =
 	--skip-cronfiles-test
+	--skip-logrotatefiles-test
 	--warn-on-debsums-errors
 	--warn-on-install-over-symlink
 	--scriptsdir /etc/piuparts/scripts-lenny
