@@ -39,24 +39,26 @@ flags-end-buster =
 
 # common flags for tests starting in stretch
 flags-start-stretch =
-# see #604807:
-	--skip-logrotatefiles-test
+# no flags needed
 
 # common flags for tests ending in stretch
 flags-end-stretch =
+# see #604807:
+	--skip-logrotatefiles-test
 # debsums failures won't be fixed in stretch, mostly related to
 # oldstyle packaging of aspell dictionaries
 	--warn-on-debsums-errors
 
 # common flags for tests starting in jessie
 flags-start-jessie =
-# see #604807:
-	--skip-logrotatefiles-test
+# no flags needed
 
 # common flags for tests ending in jessie
 flags-end-jessie =
 # extra fake-essential packages for successfully purging in jessie
 	--scriptsdir /etc/piuparts/scripts-jessie
+# see #604807:
+	--skip-logrotatefiles-test
 # debsums failures won't be fixed in jessie, mostly related to
 # obsolete/renamed conffiles that moved to different packages
 	--warn-on-debsums-errors
@@ -65,13 +67,14 @@ flags-end-jessie =
 
 # common flags for tests starting in wheezy
 flags-start-wheezy =
-# see #604807:
-	--skip-logrotatefiles-test
+# no flags needed
 
 # common flags for tests ending in wheezy
 flags-end-wheezy =
 # extra fake-essential packages for successfully purging in wheezy
 	--scriptsdir /etc/piuparts/scripts-wheezy
+# see #604807:
+	--skip-logrotatefiles-test
 # debsums failures won't be fixed in wheezy
 	--warn-on-debsums-errors
 # won't be fixed in wheezy
@@ -82,8 +85,6 @@ flags-start-squeeze =
 # up to squeeze a non-empty /etc/shells was shipped, actually installing
 # and removing a shell would remove its entry from /etc/shells
 	-i /etc/shells
-# see #604807:
-	--skip-logrotatefiles-test
 
 # common flags for tests ending in squeeze
 flags-end-squeeze =
@@ -102,8 +103,6 @@ flags-start-lenny =
 # up to squeeze a non-empty /etc/shells was shipped, actually installing
 # and removing a shell would remove its entry from /etc/shells
 	-i /etc/shells
-# see #604807:
-	--skip-logrotatefiles-test
 
 
 [global]
