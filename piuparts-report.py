@@ -344,14 +344,7 @@ $rows
    </table>
 """
 
-
-SOURCE_PACKAGE_BODY_TEMPLATE = """
-   <table class="righttable">
-$rows
-   </table>
-"""
-
-ANALYSIS_BODY_TEMPLATE = """
+BASIC_BODY_TEMPLATE = """
    <table class="righttable">
 $rows
    </table>
@@ -1230,7 +1223,7 @@ class Section:
 
             self._write_template_html(
                     os.path.join(source_summary_page_path, (source + ".html")),
-                    SOURCE_PACKAGE_BODY_TEMPLATE,
+                    BASIC_BODY_TEMPLATE,
                     {
                         "page_title": html_protect("Status of source package " + source + " in " + self._config.section),
                         "rows": sourcerows + binaryrows,
@@ -1347,7 +1340,7 @@ class Section:
 
                     self._write_template_html(
                             os.path.join(self._output_directory, template[:-len(".tpl")] + ".html"),
-                            ANALYSIS_BODY_TEMPLATE,
+                            BASIC_BODY_TEMPLATE,
                             {
                                 "page_title": html_protect("Packages in state " + state + " " + linktarget),
                                 "rows": rows,
