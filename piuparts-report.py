@@ -1836,11 +1836,15 @@ def main():
         for page in ("index", "bug_howto"):
             tpl = os.path.join(output_directory, page + ".tpl")
             INDEX_BODY = read_file(tpl)
+            if page == 'index':
+                page_title = "About piuparts.debian.org and News"
+            else:
+                page_title = "How to file bugs based on piuparts.d.o results"
             write_template_html(
                     os.path.join(output_directory, page + ".html"),
                     INDEX_BODY,
                     {
-                                   "page_title": "About piuparts.debian.org and News",
+                                   "page_title": page_title,
                                    "section_navigation": create_section_navigation(section_names, "sid", doc_root),
                                    "doc_root": doc_root,
                     })
