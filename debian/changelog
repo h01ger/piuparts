@@ -18,6 +18,10 @@ piuparts (0.93) UNRELEASED; urgency=medium
     only enable it for the distros that actually need it.
   * Overhaul some exceptions.
 
+  [ Holger Levsen ]
+  * piuparts-report.py:
+    - add new page: overview.html
+
  -- Holger Levsen <holger@debian.org>  Sat, 22 Sep 2018 15:32:55 +0200
 
 piuparts (0.92) unstable; urgency=medium

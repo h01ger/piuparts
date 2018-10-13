@@ -1848,6 +1848,25 @@ def main():
                                    "section_navigation": create_section_navigation(section_names, "sid", doc_root),
                                    "doc_root": doc_root,
                     })
+        # overview page
+        rows = "<tr>"
+        counter = 0
+        for section in section_names:
+            counter += 1
+            rows += ("<td><img src=\"/%s/states.png\" height=\"150\" width=\"266\" alt=\"Binary package states in %s\"></td>") % \
+                (section, section)
+            if counter % 4 == 0:
+                rows += "</tr><tr>"
+        rows += "</tr>"
+        write_template_html(
+                os.path.join(output_directory, "overview.html"),
+                BASIC_BODY_TEMPLATE,
+                {
+                               "page_title": "Overview of suites tested by piuparts.debian.org",
+                               "section_navigation": create_section_navigation(section_names, "sid", doc_root),
+                               "doc_root": doc_root,
+                               "rows": rows,
+                })
         # create graph about bugs filed
         try:
             make_bts_stats_graph(master_directory, output_directory);
