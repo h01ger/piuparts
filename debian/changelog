@@ -20,7 +20,8 @@ piuparts (0.93) UNRELEASED; urgency=medium
 
   [ Holger Levsen ]
   * piuparts-report.py:
-    - add new page: overview.html
+    - Add new page: overview.html
+    - Minor cleanups.
 
  -- Holger Levsen <holger@debian.org>  Sat, 22 Sep 2018 15:32:55 +0200
 
