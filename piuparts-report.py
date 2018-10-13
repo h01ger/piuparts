@@ -1833,6 +1833,7 @@ def main():
 
         # static pages
         logging.debug("Writing static pages")
+        section_navigation = create_section_navigation(section_names, "sid", doc_root)
         for page in ("index", "bug_howto"):
             tpl = os.path.join(output_directory, page + ".tpl")
             INDEX_BODY = read_file(tpl)
@@ -1845,7 +1846,7 @@ def main():
                     INDEX_BODY,
                     {
                                    "page_title": page_title,
-                                   "section_navigation": create_section_navigation(section_names, "sid", doc_root),
+                                   "section_navigation": section_navigation,
                                    "doc_root": doc_root,
                     })
         # overview page
@@ -1863,7 +1864,7 @@ def main():
                 BASIC_BODY_TEMPLATE,
                 {
                                "page_title": "Overview of suites tested by piuparts.debian.org",
-                               "section_navigation": create_section_navigation(section_names, "sid", doc_root),
+                               "section_navigation": section_navigation,
                                "doc_root": doc_root,
                                "rows": rows,
                 })
