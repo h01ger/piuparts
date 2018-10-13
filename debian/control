@@ -8,7 +8,7 @@ Standards-Version: 4.2.1
 Rules-Requires-Root: no
 Build-Depends:
  asciidoc,
- debhelper (>= 11~),
+ debhelper-compat (= 11),
  dh-python,
  python (>= 2.7),
  python-debian,

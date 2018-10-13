@@ -22,6 +22,7 @@ piuparts (0.93) UNRELEASED; urgency=medium
   * piuparts-report.py:
     - Add new page: overview.html
     - Minor cleanups.
+  * Use the new debhelper-compat(=11) notation and drop d/compat.
 
  -- Holger Levsen <holger@debian.org>  Sat, 22 Sep 2018 15:32:55 +0200
 
