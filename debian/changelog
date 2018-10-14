@@ -3,6 +3,7 @@ piuparts (0.93) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * piuparts.py:
     - Report the package that owns a broken symlink.
+    - --allow-database now also enables firebird3.0.
   * piuparts.conf: Disable rescheduling tests that end in wheezy.
   * piuparts.conf.anbe: Add some more example sections.
   * piupartslib/packagesdb.py:
