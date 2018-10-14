@@ -17,7 +17,11 @@ esac
 if [ -d /home ]; then
 	echo "Disabling /home"
 	mv /home /home.distrib
-	dpkg-divert /home
+	if dpkg-divert --help | grep -q -e --no-rename ; then
+		dpkg-divert --no-rename /home
+	else
+		dpkg-divert /home
+	fi
 	echo "This is a dummy file to prevent creating directories in /home" > /home
 	chmod 000 /home
 fi
