@@ -136,10 +136,10 @@ case "${PIUPARTS_DISTRIBUTION}:${PIUPARTS_DISTRIBUTION_NEXT}" in
 		upgrade_pg_cluster 9.4 9.6
 		;;
 	stretch:buster)
-		upgrade_pg_cluster 9.6 10
+		upgrade_pg_cluster 9.6 11
 		;;
 	stretch:sid)
-		upgrade_pg_cluster 9.6 10
+		upgrade_pg_cluster 9.6 11
 		;;
 esac
 

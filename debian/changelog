@@ -20,6 +20,7 @@ piuparts (0.93) UNRELEASED; urgency=medium
     keys (lenny, squeeze). Drop the --no-check-valid-until from *.conf since
     that is active for all steps in a distupgrade test while the new scripts
     only enable it for the distros that actually need it.
+  * scripts/pre_distupgrade_zz_database-server: sid/buster has postgresql 11.
   * scripts/post_distupgrade_base_cleanup: Remove libcryptsetup4, libprocps6
     from the buster reference chroot.
   * Overhaul some exceptions.
