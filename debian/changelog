@@ -25,6 +25,7 @@ piuparts (0.93) UNRELEASED; urgency=medium
   * scripts/post_distupgrade_base_cleanup: Remove libcryptsetup4, libprocps6
     from the buster reference chroot.
   * Overhaul some exceptions.
+  * Add bug template for logrotate errors after package removal.
 
   [ Holger Levsen ]
   * piuparts-report.py:
