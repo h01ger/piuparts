@@ -1837,7 +1837,7 @@ def main():
         for page in ("index", "bug_howto"):
             tpl = os.path.join(output_directory, page + ".tpl")
             INDEX_BODY = read_file(tpl)
-            if page == 'index':
+            if page == "index":
                 page_title = "About piuparts.debian.org and News"
             else:
                 page_title = "How to file bugs based on piuparts.d.o results"
