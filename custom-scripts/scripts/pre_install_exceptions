@@ -83,6 +83,12 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			echo "bugzilla3 bugzilla3/bugzilla_admin_real_name string Bz" | debconf-set-selections
 			echo "bugzilla3 bugzilla3/bugzilla_admin_pwd password bzbzbzbz" | debconf-set-selections
 			;;
+	msttcorefonts|\
+	ttf-mscorefonts-installer)
+			# Recommends: ca-certificates
+			log_debug
+			apt-get -y install ca-certificates
+			;;
 	samhain)
 			# work around #749602
 			log_debug
@@ -220,10 +226,6 @@ if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 			#502707
 			log_debug
 			apt-get -y install defoma
-			;;
-		ttf-mscorefonts-installer|msttcorefonts)
-			log_debug
-			apt-get -y install ca-certificates
 			;;
 	esac
 
