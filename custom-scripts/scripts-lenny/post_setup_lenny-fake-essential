@@ -17,6 +17,9 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		# allow testing of the fake essential packages
 		exit 0
 		;;
+	console-log|systraq)
+		USED_DURING_PURGE="$USED_DURING_PURGE perl-modules"
+		;;
 	docbookwiki)
 		USED_DURING_PURGE="$USED_DURING_PURGE mysql-client"
 		;;
