@@ -107,11 +107,6 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="https://wiki.debian.org/piuparts" target="_blank">Overview</a>
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell">
       <a href="https://wiki.debian.org/piuparts/FAQ" target="_blank">FAQ</a>
      </td>
     </tr>
@@ -181,6 +176,11 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     <tr>
      <td class="contentcell">
       <a href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?tag=piuparts;users=debian-qa@lists.debian.org&amp;archive=both" target="_blank">Bugs filed</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="https://piuparts.debian.org/overview.html" target="_blank">Suites overview</a>
      </td>
     </tr>
     $section_navigation
