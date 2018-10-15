@@ -32,7 +32,7 @@ piuparts (0.93) UNRELEASED; urgency=medium
     - Add new page: overview.html
     - Split index.html into about (index.html) and news.html.
     - Shuffle some entries on index.html, explain that piuparts.debian.org
-      exists since 2006 (even though that FQDN is younger).
+      exists since 2005 (even though that FQDN is younger).
     - Minor cleanups.
   * Use the new debhelper-compat(=11) notation and drop d/compat.
 
