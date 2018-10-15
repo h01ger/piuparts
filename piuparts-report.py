@@ -97,7 +97,12 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="$doc_root/">About + News</a>
+      <a href="$doc_root/">About</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="$doc_root/news.html">News</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -1834,11 +1839,13 @@ def main():
         # static pages
         logging.debug("Writing static pages")
         section_navigation = create_section_navigation(section_names, "sid", doc_root)
-        for page in ("index", "bug_howto"):
+        for page in ("index", "news", "bug_howto"):
             tpl = os.path.join(output_directory, page + ".tpl")
             INDEX_BODY = read_file(tpl)
             if page == "index":
-                page_title = "About piuparts.debian.org and News"
+                page_title = "About piuparts.debian.org"
+            elif page == "news":
+                page_title = "News about piuparts.debian.org"
             else:
                 page_title = "How to file bugs based on piuparts.d.o results"
             write_template_html(

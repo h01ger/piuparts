@@ -30,6 +30,7 @@ piuparts (0.93) UNRELEASED; urgency=medium
   [ Holger Levsen ]
   * piuparts-report.py:
     - Add new page: overview.html
+    - Split index.html into about (index.html) and news.html.
     - Minor cleanups.
   * Use the new debhelper-compat(=11) notation and drop d/compat.
 
