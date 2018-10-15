@@ -11,6 +11,11 @@ case "$PIUPARTS_DISTRIBUTION" in
 esac
 
 case ${PIUPARTS_OBJECTS%%=*} in
+	apt-xapian-index)
+		# wait for update-apt-xapian-index in the background to finish
+		log_debug
+		sleep 30
+		;;
 	postgis)
 		#560409: postgis can't be purged if postgresql is no longer installed
 	        # (fails due to a missing directory)
