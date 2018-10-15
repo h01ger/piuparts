@@ -31,7 +31,8 @@ piuparts (0.93) UNRELEASED; urgency=medium
   * piuparts-report.py:
     - Add new page: overview.html
     - Split index.html into about (index.html) and news.html.
-    - Shuffle some entries on index.html.
+    - Shuffle some entries on index.html, explain that piuparts.debian.org
+      exists since 2009.
     - Minor cleanups.
   * Use the new debhelper-compat(=11) notation and drop d/compat.
 
