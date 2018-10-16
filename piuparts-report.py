@@ -1313,7 +1313,7 @@ class Section:
                      + "<td class=\"contentcell2\" colspan=\"3\">" \
                      + "<a href=\"%s\">" \
                        % "states.png" \
-                     + "<img src=\"%s\" width=\"100%\" alt=\"Binary package states in %s\">" \
+                     + "<img src=\"%s\" width=\"100%%\" alt=\"Binary package states in %s\">" \
                        % ("states.png", self._config.section) \
                      + "</a>" \
                      + "<br>(<a href=\"counts.txt\">Source</a>)\n" \
