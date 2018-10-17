@@ -14,6 +14,10 @@ piuparts (0.94) UNRELEASED; urgency=medium
     - Handle /etc/nsswitch.conf stretch -> buster upgrade if modifications
       from libnss-myhostname and friends are present.
 
+  [ Mathieu Parent ]
+  * piuparts.py: Use mknod instead of touch to create missing /dev/ptmx
+    mountpoint, working around findutils bug #912180 (Closes: #911334)
+
  -- Holger Levsen <holger@debian.org>  Sun, 21 Oct 2018 14:03:22 +0200
 
 piuparts (0.93) unstable; urgency=medium

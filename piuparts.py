@@ -1755,8 +1755,7 @@ class Chroot:
         dev_ptmx_rel_path = self.relative("dev/ptmx")
         if not os.path.islink(dev_ptmx_rel_path):
             if not os.path.exists(dev_ptmx_rel_path):
-                with open(dev_ptmx_rel_path, 'w'):
-                    pass
+                os.mknod(dev_ptmx_rel_path, 0666 | stat.S_IFCHR, os.makedev(5, 2))
             self.mount(self.relative("dev/pts/ptmx"), "/dev/ptmx", opts="bind", no_mkdir=True)
         p = subprocess.Popen(["tty"], stdout=subprocess.PIPE)
         stdout, _ = p.communicate()
