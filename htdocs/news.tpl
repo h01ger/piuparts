@@ -6,6 +6,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2018-10-19</b>: Three and a half years after stopping linking to packages.qa.debian.org(which was called <em>PTS</em>) we finally drop all references to the PTS and use <em>tracker.d.o</em> instead.
+     </td>
+    </tr>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2018-08-28</b>: Enable the logrotate test (temporarily) again, to check whether <a href="https://bugs.debian.org/582630" target="_blank">#582630</a> really has been fixed...
      </td>
     </tr>

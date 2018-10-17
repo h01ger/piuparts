@@ -35,6 +35,7 @@ piuparts (0.93) UNRELEASED; urgency=medium
       exists since 2005 (even though that FQDN is younger).
     - Move suite "by uploaders" and "by source packages" links further up in
       navigation menu. Improve structure and headings in navigation menu.
+    - Drop references to "PTS" and use "tracker.d.o" instead.
     - Minor cleanups.
   * Use the new debhelper-compat(=11) notation and drop d/compat.
   * CONTRIBUTING: explain never to directly push to the develop nor master

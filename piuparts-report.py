@@ -206,7 +206,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="https://tracker.debian.org" target="_blank">Debian Package Tracker (former: PTS)</a>
+      <a href="https://tracker.debian.org" target="_blank">Debian Package Tracker</a>
      </td>
     <tr class="normalrow">
      <td class="contentcell">
@@ -371,7 +371,7 @@ $PACKAGE_LIST</ul>
 
 PKG_ERROR_TPL = \
     """<li>$RDEPS - <a href=\"$LOG\">$LOG</a>$ARCH
-    (<a href=\"https://tracker.debian.org/pkg/$SPKG\" target=\"_blank\">PTS</a>)
+    (<a href=\"https://tracker.debian.org/pkg/$SPKG\" target=\"_blank\">tracker.d.o</a>)
     (<a href=\"https://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)
 $BUG</li>
 """
