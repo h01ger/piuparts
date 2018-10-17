@@ -371,6 +371,7 @@ $PACKAGE_LIST</ul>
 
 PKG_ERROR_TPL = \
     """<li>$RDEPS - <a href=\"$LOG\">$LOG</a>$ARCH
+    (<a href=\"https://piuparts.debian.org/$SECTION/source/$SSUBDIR/$SPKG.html\" target=\"_blank\">piuparts.d.o</a>)
     (<a href=\"https://tracker.debian.org/pkg/$SPKG\" target=\"_blank\">tracker.d.o</a>)
     (<a href=\"https://bugs.debian.org/$PACKAGE?dist=unstable\" target=\"_blank\">BTS</a>)
 $BUG</li>
@@ -1720,7 +1721,9 @@ def dwke_update_tpl(section, problem, failures, ftpl, ptpl, pkgsdb, srcdb):
                                 'BUG': get_bug_text(log),
                                 'RDEPS': rdep_cnt,
                                 'SPKG': src_pkg,
-                                   })
+                                'SSUBDIR': source_subdir(src_pkg),
+                                'SECTION': section,
+        })
 
     if len(pkg_text):
         return populate_tpl(ptpl, {
