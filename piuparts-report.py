@@ -744,14 +744,14 @@ def write_template_html(filename, body, mapping={}, defer_if_unmodified=False, m
 
 
 def create_section_navigation(section_names, current_section, doc_root):
-    tablerows = ""
+    tablerows = "<tr><td class=\"contentcell\">%s <a href=\"%s/%s/maintainer/\">by maintainer / uploader</a></td></tr>\n" \
+                 % (current_section, doc_root, current_section)
+    tablerows += "<tr><td class=\"contentcell\">%s <a href=\"%s/%s/source/\">by source package</a></td></tr>\n" \
+                 % (current_section, doc_root, current_section)
+    tablerows += "<tr class=\"titlerow\"><td class=\"alerttitlecell\">Suites tested</td></tr>"
     for section in section_names:
         tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell\"><a href='%s/%s'>%s</a></td></tr>\n") % \
             (doc_root, html_protect(section), html_protect(section))
-    tablerows += "<tr><td class=\"contentcell\"><a href=\"%s/%s/maintainer/\">by maintainer / uploader</a></td></tr>\n" \
-                 % (doc_root, current_section)
-    tablerows += "<tr><td class=\"contentcell\"><a href=\"%s/%s/source/\">by source package</a></td></tr>\n" \
-                 % (doc_root, current_section)
     return tablerows;
 
 

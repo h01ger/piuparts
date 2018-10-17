@@ -33,6 +33,8 @@ piuparts (0.93) UNRELEASED; urgency=medium
     - Split index.html into about (index.html) and news.html.
     - Shuffle some entries on index.html, explain that piuparts.debian.org
       exists since 2005 (even though that FQDN is younger).
+    - Move suite "by uploaders" and "by source packages" links further up in
+      navigation menu.
     - Minor cleanups.
   * Use the new debhelper-compat(=11) notation and drop d/compat.
   * CONTRIBUTING: explain never to directly push to the develop nor master
