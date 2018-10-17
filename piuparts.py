@@ -1755,11 +1755,11 @@ class Chroot:
             os.symlink("../proc/mounts", etcmtab)
         self.mount("devpts", "/dev/pts", fstype="devpts", opts="newinstance,noexec,nosuid,gid=5,mode=0620,ptmxmode=0666")
         dev_ptmx_rel_path = self.relative("dev/ptmx")
-        if not os.path.exists(dev_ptmx_rel_path):
-            try:
-                os.mknod(dev_ptmx_rel_path, 0666, os.makedev(5, 2))
-            except:
-                os.symlink("pts/ptmx", dev_ptmx_rel_path)
+        if not os.path.islink(dev_ptmx_rel_path):
+            if not os.path.exists(dev_ptmx_rel_path):
+                with open(dev_ptmx_rel_path, 'w'):
+                    pass
+            self.mount(self.relative("dev/pts/ptmx"), "/dev/ptmx", opts="bind", no_mkdir=True)
         p = subprocess.Popen(["tty"], stdout=subprocess.PIPE)
         stdout, _ = p.communicate()
         current_tty = stdout.strip()
