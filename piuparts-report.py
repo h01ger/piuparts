@@ -137,7 +137,20 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="$doc_root/doc/piuparts.1.html" target="_blank">piuparts manpage</a>
+      <a href="$doc_root/bug_howto.html">How to file bugs</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="https://www.debian.org/doc/debian-policy/" target="_blank">Debian policy</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      piuparts.d.o configuration:<br>
+      <a href="https://salsa.debian.org/debian/piuparts/tree/develop/instances" target="_blank">piuparts.conf</a>,<br>
+      <a href="https://salsa.debian.org/debian/piuparts/blob/develop/conf/distros.conf" target="_blank">distros.conf</a><br> and
+      <a href="https://salsa.debian.org/debian/piuparts/tree/develop/custom-scripts" target="_blank">scripts</a>
      </td>
     </tr>
     <tr class="normalrow">
@@ -152,20 +165,7 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      piuparts.d.o configuration:<br>
-      <a href="https://salsa.debian.org/debian/piuparts/tree/develop/instances" target="_blank">piuparts.conf</a>,<br>
-      <a href="https://salsa.debian.org/debian/piuparts/blob/develop/conf/distros.conf" target="_blank">distros.conf</a><br> and
-      <a href="https://salsa.debian.org/debian/piuparts/tree/develop/custom-scripts" target="_blank">scripts</a>
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell">
-      <a href="$doc_root/bug_howto.html">How to file bugs</a>
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell">
-      <a href="https://www.debian.org/doc/debian-policy/" target="_blank">Debian policy</a>
+      <a href="$doc_root/doc/piuparts.1.html" target="_blank">piuparts manpage</a>
      </td>
     </tr>
     <tr class="titlerow">
