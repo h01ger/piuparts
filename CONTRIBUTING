@@ -24,6 +24,18 @@ One possible workflow:
   reportbug piuparts
   <describe the issue, attach the patch>
 
+
+Does and don'ts
+---------------
+
+Please do *not* push to the develop or master branch directly, unless
+explicitly asked for!
+
+Please always *do* include a debian/changelog entry with your patches.
+
+Please always *do* test your patches and state that you tested them.
+
+
 Contributing bugs to other projects
 -----------------------------------
 Another very useful type of contributions are filing bug reports based
