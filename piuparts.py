@@ -1757,7 +1757,7 @@ class Chroot:
         dev_ptmx_rel_path = self.relative("dev/ptmx")
         if not os.path.exists(dev_ptmx_rel_path):
             try:
-                os.mknod(dev_ptmx_rel_path, 0666 | stat.S_IFCHR, os.makedev(5, 2))
+                os.mknod(dev_ptmx_rel_path, 0666, os.makedev(5, 2))
             except:
                 os.symlink("pts/ptmx", dev_ptmx_rel_path)
         p = subprocess.Popen(["tty"], stdout=subprocess.PIPE)
