@@ -35,6 +35,7 @@ piuparts (0.93) UNRELEASED; urgency=medium
       exists since 2005 (even though that FQDN is younger).
     - Move suite "by uploaders" and "by source packages" links further up in
       navigation menu. Improve structure and headings in navigation menu.
+    - Link mail templates for filings from navigation menu.
     - Drop references to "PTS" and use "tracker.d.o" instead.
     - Add link to piuparts source package pages from known problem pages.
     - Minor cleanups.

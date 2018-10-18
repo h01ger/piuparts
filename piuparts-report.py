@@ -137,7 +137,8 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="$doc_root/bug_howto.html">How to file bugs</a>
+      <a href="$doc_root/bug_howto.html">How to file bugs</a><br />
+      (using <a href="$doc_root/templates/mail/">templates</a>)
      </td>
     </tr>
     <tr class="normalrow">
