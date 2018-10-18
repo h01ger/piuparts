@@ -1867,7 +1867,7 @@ def main():
         counter = 0
         for section in section_names:
             counter += 1
-            rows += ("<td><a href=\"/%s/\"><img src=\"/%s/states.png\" height=\"150\" width=\"266\" alt=\"Binary package states in %s\"></a></td>") % \
+            rows += ("<td><a href=\"/%s/\"><img src=\"/%s/states.png\" width=\"24%%\" alt=\"Binary package states in %s\"></a></td>") % \
                 (section, section, section)
             if counter % 4 == 0:
                 rows += "</tr><tr>"
