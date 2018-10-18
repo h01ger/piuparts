@@ -38,7 +38,6 @@ piuparts (0.93) UNRELEASED; urgency=medium
     - Link mail templates for filings from navigation menu.
     - Drop references to "PTS" and use "tracker.d.o" instead.
     - Add link to piuparts source package pages from known problem pages.
-    - Make generated graphs 4K ready.
     - Minor cleanups.
   * Use the new debhelper-compat(=11) notation and drop d/compat.
   * CONTRIBUTING: explain never to directly push to the develop nor master

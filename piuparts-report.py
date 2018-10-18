@@ -1295,7 +1295,7 @@ class Section:
         countsfile = os.path.join(self._section_directory, "counts.txt")
         pngfile = os.path.join(self._output_directory, "states.png")
         grdevices = importr('grDevices')
-        grdevices.png(file=pngfile, width=3200, height=1800, pointsize=10, res=100, antialias="none")
+        grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100, antialias="none")
         r = robjects.r
         states = self._binary_db.get_states()
         active_states = self._binary_db.get_active_states()
@@ -1768,7 +1768,7 @@ def make_bts_stats_graph(master_dir, out_dir):
     countsfile = os.path.join(master_dir, "bts_stats.txt")
     pngfile = os.path.join(out_dir, "images", "bts_stats.png")
     grdevices = importr('grDevices')
-    grdevices.png(file=pngfile, width=3200, height=1800, pointsize=10, res=100)
+    grdevices.png(file=pngfile, width=1600, height=900, pointsize=10, res=100)
     r = robjects.r
     r('t <- (read.table("' + countsfile + '",sep=",",header=1,row.names=1))')
     # make graph since day 1
