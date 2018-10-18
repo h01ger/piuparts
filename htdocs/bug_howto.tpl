@@ -6,7 +6,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-	This page shall grow into a well written explaination how to file useful bugs fast. It assumes you are familar with <a href="https://www.debian.org/Bugs/Reporting" target="_blank">reporting bugs in Debian</a>.
+	This page aims to summarize how to file useful bugs fast. It assumes you are familar with <a href="https://www.debian.org/Bugs/Reporting" target="_blank">reporting bugs in Debian</a>.
      </td>
     </tr>
     <tr class="normalrow">

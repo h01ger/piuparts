@@ -43,6 +43,7 @@ piuparts (0.93) UNRELEASED; urgency=medium
   * CONTRIBUTING: explain never to directly push to the develop nor master
     branch. Explain to always include a debian/changelog entry with patches.
     Explain to always test patches and to explain that testing has happened.
+  * htdocs/bug_howto.tpl: some improvements, it's been some years.
 
  -- Holger Levsen <holger@debian.org>  Sat, 22 Sep 2018 15:32:55 +0200
 
