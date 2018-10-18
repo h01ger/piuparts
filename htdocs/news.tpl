@@ -12,7 +12,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2018-08-28</b>: Enable the logrotate test (temporarily) again, to check whether <a href="https://bugs.debian.org/582630" target="_blank">#582630</a> really has been fixed...
+      <b>2018-08-28</b>: Enable the logrotate test again to confirm <a href="https://bugs.debian.org/582630" target="_blank">#582630</a> has been fixed.
      </td>
     </tr>
     <tr class="normalrow">
