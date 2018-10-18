@@ -746,8 +746,8 @@ def write_template_html(filename, body, mapping={}, defer_if_unmodified=False, m
 
 
 def create_section_navigation(section_names, current_section, doc_root):
-    tablerows = "<tr class=\"titlerow\"><td class=\"alerttitlecell\">Suite: %s</td></tr>" \
-                 % (current_section)
+    tablerows = "<tr class=\"titlerow\"><td class=\"alerttitlecell\">Suite: <a href='%s/%s'>%s</a></td></tr>" \
+                 % (doc_root, current_section, current_section,)
     tablerows += "<tr><td class=\"contentcell\"><a href=\"%s/%s/maintainer/\">by maintainer / uploader</a></td></tr>\n" \
                  % (doc_root, current_section)
     tablerows += "<tr><td class=\"contentcell\"><a href=\"%s/%s/source/\">by source package</a></td></tr>\n" \
