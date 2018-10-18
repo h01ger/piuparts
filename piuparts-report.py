@@ -250,7 +250,7 @@ HTML_FOOTER = """
   <div>
    <a href="https://tracker.debian.org/pkg/piuparts" target="_blank">piuparts</a>
    is GPL2 <a href="https://packages.debian.org/changelogs/pool/main/p/piuparts/current/copyright" target="_blank">licenced</a>
-   and was originally written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and is now maintained by
+   and was originally written by <a href="mailto:liw@iki.fi">Lars Wirzenius</a> and today is maintained by
    <a href="mailto:anbe@debian.org">Andreas Beckmann</a> and
    <a href="mailto:holger@layer-acht.org">Holger Levsen</a> and
 

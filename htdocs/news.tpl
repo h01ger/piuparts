@@ -240,7 +240,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2011-10-23</b>: piuparts.debian.org is now maintained in git, using the piatti branch.
+      <b>2011-10-23</b>: Since today piuparts.debian.org is maintained in git, using the piatti branch.
      </td>
     </tr>
     <tr class="normalrow">
