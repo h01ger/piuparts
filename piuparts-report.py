@@ -112,21 +112,6 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     </tr>
     <tr class="normalrow">
      <td class="contentcell">
-      <a href="https://salsa.debian.org/debian/piuparts.git" target="_blank">Source</a>
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell">
-      piuparts.d.o <a href="https://bugs.debian.org/src:piuparts.debian.org" target="_blank">bugs</a>
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell">
-      piuparts <a href="https://bugs.debian.org/src:piuparts" target="_blank">bugs</a> / <a href="https://salsa.debian.org/debian/piuparts/blob/develop/TODO" target="_blank">ToDo</a>
-     </td>
-    </tr>
-    <tr class="normalrow">
-     <td class="contentcell">
       <a href="mailto:piuparts-devel@alioth-lists.debian.net" target="_blank">Contact us</a>
      </td>
     </tr>
@@ -185,6 +170,26 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
      </td>
     </tr>
     $section_navigation
+    <tr class="titlerow">
+     <td class="titlecell">
+      src: piuparts
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      <a href="https://salsa.debian.org/debian/piuparts.git" target="_blank">Source</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      piuparts.d.o <a href="https://bugs.debian.org/src:piuparts.debian.org" target="_blank">bugs</a>
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell">
+      piuparts <a href="https://bugs.debian.org/src:piuparts" target="_blank">bugs</a> / <a href="https://salsa.debian.org/debian/piuparts/blob/develop/TODO" target="_blank">ToDo</a>
+     </td>
+    </tr>
     <tr class="titlerow">
      <td class="titlecell">
       Other Debian QA efforts
