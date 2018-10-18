@@ -10,7 +10,7 @@ PYTHONPATH=@libdir@/python2.7/dist-packages
 @reboot master_cleanup
 
 #
-# generate reports twice a day
+# generate reports twice or three times a day
 #  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
 #
 0  4-23/12 * * * piuparts-analyze
@@ -24,7 +24,7 @@ PYTHONPATH=@libdir@/python2.7/dist-packages
 0  3,15 * * * reschedule_oldest_logs
 
 #
-# monitor for problems once a day
+# monitor for problems several times day
 # - these may result in packages being retested
 # - if that's not the case, run them from within generate_daily_report
 #

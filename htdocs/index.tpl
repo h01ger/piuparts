@@ -59,7 +59,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      These pages are updated twice a day.
+      These pages are updated two to three times a day.
      </td>
     </tr>
     <tr class="normalrow">
