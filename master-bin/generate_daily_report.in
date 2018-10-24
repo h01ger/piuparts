@@ -67,7 +67,7 @@ FAILURESTAMP=$HTDOCS/last-failure-report.stamp
 test -f $FAILURESTAMP || touch -d @0 $FAILURESTAMP  # start at the epoch
 touch $FAILURESTAMP.new  # for the next report
 
-echo "New failures:" >> $DAILYREPORT
+DAILYTMP=$(mktemp)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 	for DIRECTORY in fail bugged affected untestable ; do
@@ -75,7 +75,11 @@ for SECTION in $SECTIONS ; do
 	done
 	find $MASTER/$SECTION/fail $MASTER/$SECTION/bugged $MASTER/$SECTION/affected $MASTER/$SECTION/untestable \
 		-type f -name '*.log' -newer $FAILURESTAMP -exec ls -1 {} + 2>/dev/null
-done | sed s#^$MASTER#$URLBASE# >> $DAILYREPORT
+done | sed s#^$MASTER#$URLBASE# >> $DAILYTMP
+
+echo "$(cat $DAILYTMP | wc -l) new failures:" >> $DAILYREPORT
+cat $DAILYTMP >> $DAILYREPORT
+rm $DAILYTMP
 
 echo "" >> $DAILYREPORT
 date >> $DAILYREPORT
