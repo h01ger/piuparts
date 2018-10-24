@@ -13,7 +13,7 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				log_debug
 				echo 'Yes, do as I say!' | apt-get -y --force-yes install file-rc
 				;;
-			squeeze*|stretch*|sid)
+			squeeze*|stretch*)
 				# force installation and removal of essential package sysv-rc
 				log_debug
 				yes 'Yes, do as I say!' | apt-get -y --force-yes install file-rc
