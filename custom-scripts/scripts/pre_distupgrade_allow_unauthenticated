@@ -23,6 +23,8 @@ Acquire::Check-Valid-Until "false";
 EOF
 elif [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze-backports" ]; then
 	:
+elif [ "$PIUPARTS_DISTRIBUTION_NEXT" = "squeeze-lts" ]; then
+	:
 elif [ -e /etc/apt/apt.conf.d/unauthenticated-squeeze ]; then
 	echo "FAIL: /etc/apt/apt.conf.d/unauthenticated-squeeze exists"
 	exit 1

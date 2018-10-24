@@ -9,7 +9,10 @@ Acquire::Check-Valid-Until "false";
 EOF
 fi
 
-if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
+if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ] || \
+   [ "$PIUPARTS_DISTRIBUTION" = "squeeze-lts" ] || \
+   [ "$PIUPARTS_DISTRIBUTION" = "squeeze-backports" ] || \
+   [ "$PIUPARTS_DISTRIBUTION" = "squeeze-backports-sloppy" ]; then
 	echo "Creating /etc/apt/apt.conf.d/unauthenticated-squeeze ..."
 	tee /etc/apt/apt.conf.d/unauthenticated-squeeze <<EOF
 # The squeeze signing key has expired.
