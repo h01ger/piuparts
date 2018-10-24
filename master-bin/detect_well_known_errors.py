@@ -113,7 +113,7 @@ def detect_well_known_errors(sections, config, problem_list, recheck, recheck_fa
         (section, next_try) = todo.popleft()
         now = time.time()
         if (now < next_try):
-            logging.info("Sleeping while sections are busy")
+            # sleeping, section has been tried recently
             time.sleep(max(30, next_try - now) + 30)
         try:
             (del_cnt, add_cnt) = \
@@ -127,7 +127,7 @@ def detect_well_known_errors(sections, config, problem_list, recheck, recheck_fa
             else:
                 logging.info("%s - %s: parsed logfiles: %d removed, %d added" % (current_time, section, del_cnt, add_cnt))
         except Busy:
-            logging.info("Section is busy")
+            # section is busy
             todo.append((section, time.time() + 300))
         except MissingSection:
             pass
