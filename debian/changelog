@@ -1,6 +1,7 @@
 piuparts (0.94) UNRELEASED; urgency=medium
 
-  * ...
+  * master-bin/detect_well_known_errors.py: suppress output if nothing new is
+    found in a section.
 
  -- Holger Levsen <holger@debian.org>  Sun, 21 Oct 2018 14:03:22 +0200
 
