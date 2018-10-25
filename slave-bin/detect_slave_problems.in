@@ -49,7 +49,7 @@ STATEFILE=$SLAVEROOT/slave-problems
 # clear the statefile daily and whine again
 test $(file_age $STATEFILE) -lt 86000 || rm -f $STATEFILE
 
-# Only complain if screenlog is older than $IDLE_SPEEP + 1 minute (the slave
+# Only complain if screenlog is older than $IDLE_SLEEP + 1 minute (the slave
 # likes to sleep that long) and the problem is new or was not reported within
 # the previous 24 hours.
 if [ $(file_age $SCREENLOG) -le $(($IDLE_SLEEP + 60)) ]; then
