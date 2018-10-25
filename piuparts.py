@@ -1565,18 +1565,16 @@ class Chroot:
         self.run_scripts("post_remove")
 
         if not settings.skip_cronfiles_test:
-            cronfiles, cronfiles_list = self.check_if_cronfiles(packages)
-
-        if not settings.skip_cronfiles_test and cronfiles:
-            self.check_output_cronfiles(cronfiles_list)
+            cronfiles = self.check_if_cronfiles(packages)
+            if cronfiles:
+                self.check_output_cronfiles(cronfiles)
 
         if not settings.skip_logrotatefiles_test:
-            logrotatefiles, logrotatefiles_list = self.check_if_logrotatefiles(packages)
-
-        if not settings.skip_logrotatefiles_test and logrotatefiles:
-            installed = self.install_logrotate()
-            self.check_output_logrotatefiles(logrotatefiles_list)
-            self.purge_packages(installed)
+            logrotatefiles = self.check_if_logrotatefiles(packages)
+            if logrotatefiles:
+                installed = self.install_logrotate()
+                self.check_output_logrotatefiles(logrotatefiles)
+                self.purge_packages(installed)
 
         # Then purge all packages being depended on.
         self.purge_packages(deps_to_purge)
@@ -1829,9 +1827,9 @@ class Chroot:
         """Check if the packages have cron files under /etc/cron.d and in case positive,
         it returns the list of files. """
 
+        # FIXME! Does not work for M-A: same packages
         vdir = self.relative("var/lib/dpkg/info")
         vlist = []
-        has_cronfiles = False
         for p in packages:
             basename = p + ".list"
 
@@ -1846,12 +1844,10 @@ class Chroot:
                         mode = st[stat.ST_MODE]
                         # XXX /etc/cron.d/ files are NOT executables
                         if (mode & stat.S_IEXEC):
-                            if not has_cronfiles:
-                                has_cronfiles = True
                             vlist.append(pathname)
                             logging.info("Package " + p + " contains cron file: " + pathname)
 
-        return has_cronfiles, vlist
+        return vlist
 
     def check_output_cronfiles(self, list):
         """Check if a given list of cronfiles has any output. Executes
@@ -1874,9 +1870,9 @@ class Chroot:
         """Check if the packages have logrotate files under /etc/logrotate.d and in case positive,
         it returns the list of files. """
 
+        # FIXME! Does not work for M-A: same packages
         vdir = self.relative("var/lib/dpkg/info")
         vlist = []
-        has_logrotatefiles = False
         for p in packages:
             basename = p + ".list"
 
@@ -1887,12 +1883,10 @@ class Chroot:
                 pathname = line.strip()
                 if os.path.dirname(pathname) == "/etc/logrotate.d":
                     if os.path.isfile(self.relative(pathname.strip("/"))):
-                        if not has_logrotatefiles:
-                            has_logrotatefiles = True
                         vlist.append(pathname)
                         logging.info("Package " + p + " contains logrotate file: " + pathname)
 
-        return has_logrotatefiles, vlist
+        return vlist
 
     def install_logrotate(self):
         """Install logrotate for check_output_logrotatefiles, and return the
