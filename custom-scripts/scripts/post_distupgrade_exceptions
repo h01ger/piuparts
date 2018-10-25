@@ -84,6 +84,12 @@ fi
 
 if [ "$PIUPARTS_DISTRIBUTION" = "buster" ]; then
 
+	# libc-bin only upgrades pristine /etc/nsswitch.conf
+	if grep -q '^passwd:.*compat' /etc/nsswitch.conf ; then
+		echo "Switching from compat to files in /etc/nsswitch.conf"
+		sed -r -i '/^(passwd|group|shadow):/ s/compat/files/' /etc/nsswitch.conf
+	fi
+
 	# dpkg does not properly clean up directories getting empty and no longer shipped
 	for dir in /etc/dbus-1/system.d /etc/dbus-1
 	do
