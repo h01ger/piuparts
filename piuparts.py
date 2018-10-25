@@ -1885,7 +1885,7 @@ class Chroot:
 
             for line in readlines_file(os.path.join(vdir, basename)):
                 pathname = line.strip()
-                if pathname.startswith("/etc/logrotate.d/"):
+                if os.path.dirname(pathname) == "/etc/logrotate.d":
                     if os.path.isfile(self.relative(pathname.strip("/"))):
                         if not has_logrotatefiles:
                             has_logrotatefiles = True

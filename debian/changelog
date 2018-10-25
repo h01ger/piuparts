@@ -8,6 +8,8 @@ piuparts (0.94) UNRELEASED; urgency=medium
     a slave has to be inactive before complaining.
 
   [ Andreas Beckmann ]
+  * piuparts.py:
+    - Logrotate files can only be placed directly in /etc/logrotate.d/.
   * scripts/post_distupgrade_exceptions:
     - Handle /etc/nsswitch.conf stretch -> buster upgrade if modifications
       from libnss-myhostname and friends are present.
