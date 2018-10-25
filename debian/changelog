@@ -3,6 +3,8 @@ piuparts (0.94) UNRELEASED; urgency=medium
   * master-bin/detect_well_known_errors.py: suppress output if nothing new is
     found in a section, or section is busy or has been recently processed.
   * master-bin/generate_daily_report: include number of failures in daily mail.
+  * slave-bin/detect_slave_problems: increase amount of time (from 30 to 60m)
+    a slave has to be inactive before complaining.
 
  -- Holger Levsen <holger@debian.org>  Sun, 21 Oct 2018 14:03:22 +0200
 

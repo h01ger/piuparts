@@ -49,18 +49,15 @@ STATEFILE=$SLAVEROOT/slave-problems
 # clear the statefile daily and whine again
 test $(file_age $STATEFILE) -lt 86000 || rm -f $STATEFILE
 
-# Only complain if screenlog is older than $IDLE_SLEEP + 1 minute (the slave
-# likes to sleep that long) and the problem is new or was not reported within
-# the previous 24 hours.
-if [ $(file_age $SCREENLOG) -le $(($IDLE_SLEEP + 60)) ]; then
+# Only complain if screenlog is older than $IDLE_SLEEP + 30 minutes
+# and the problem is new or was not reported within the previous 24 hours.
+if [ $(file_age $SCREENLOG) -le $(($IDLE_SLEEP + 1800)) ]; then
 	rm -f $STATEFILE
 elif [ ! -f $STATEFILE ]; then
 	{
-		echo "Either a test is running for a very long time (but no test"
-		echo "should run longer than an hour), piuparts-slave hangs or is"
-		echo "not running at all or wasn't started with"
-		echo "~piupartss/bin/slave_run - please investigate and take"
-		echo "appropriate measures!"
+		echo "Either a test is running for a very long time (more than $(( ($IDLE_SLEEP + 1800)/60 )) minutes),"
+		echo "or piuparts-slave hangs or is not running at all or wasn't started with"
+		echo "~piupartss/bin/slave_run - please investigate and take appropriate measures!"
 		echo
 		tail $SCREENLOG
 	} | mail -s "problem with piuparts-slave detected" piupartss
