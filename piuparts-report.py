@@ -1611,6 +1611,8 @@ class Section:
             summary = pkgsummary.new_summary()
 
             for reporting_section in reporting_sections:
+                source_done = {}
+                source_todo = {}
                 for binpkg in self._binary_db.get_all_packages():
                     pkgname = binpkg["Package"]
                     state = self._binary_db.get_package_state(pkgname)
@@ -1619,13 +1621,30 @@ class Section:
                     if flag == 'F':
                         block_cnt = self._binary_db.block_count(pkgname)
                     srcpkg = self._binary_db.get_package(pkgname).source()
+                    srcver = self._binary_db.get_package(pkgname).source_version()
+                    latest_srcver = self._source_db.get_test_versions(srcpkg)
                     url = source_summary_url(
                               web_host, self._doc_root,
                               self._config.section, srcpkg)
 
-                    pkgsummary.add_summary(
-                                   summary, reporting_section, srcpkg,
-                                   flag, block_cnt, url)
+                    if (srcver != latest_srcver):
+                        # if the binary package is cruft, we don't add it to
+                        # the report, but we keep track to make sure the
+                        # source package is added
+                        source_todo[srcpkg] = url
+                    else:
+                        pkgsummary.add_summary(
+                                       summary, reporting_section, srcpkg,
+                                       flag, block_cnt, url)
+                        source_done[srcpkg] = 1
+                for srcpkg in source_todo:
+                    # source packages that only have outdated binaries are
+                    # waiting for the build, so we add them as 'W'
+                    # (waiting-to-be-tested)
+                    if srcpkg not in source_done:
+                        pkgsummary.add_summary(
+                                       summary, reporting_section, srcpkg,
+                                       'W', 0, source_todo[srcpkg])
 
             pkgsummary.write_summary(summary, summary_path)
 
