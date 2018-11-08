@@ -1,4 +1,4 @@
-piuparts (0.94) UNRELEASED; urgency=medium
+piuparts (0.94) unstable; urgency=medium
 
   [ Holger Levsen ]
   * master-bin/detect_well_known_errors.py: suppress output if nothing new is
@@ -22,7 +22,7 @@ piuparts (0.94) UNRELEASED; urgency=medium
   * piuparts-reports.py: Don't add results from outdated binaries to
     summary.json.
 
- -- Holger Levsen <holger@debian.org>  Sun, 21 Oct 2018 14:03:22 +0200
+ -- Holger Levsen <holger@debian.org>  Thu, 08 Nov 2018 12:09:57 +0100
 
 piuparts (0.93) unstable; urgency=medium
 
