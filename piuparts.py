@@ -333,6 +333,7 @@ class Settings:
             # actually, only modification should be permitted here, but not creation/removal
             "/var/log/fontconfig.log",
             # home directories of system accounts
+            "/var/lib/debian-security-support/",    # #749317
             "/var/lib/gozerbot/",
             "/var/lib/nagios/",         # nagios* (#668756)
             "/var/lib/onioncat/",       # onioncat
