@@ -84,7 +84,7 @@ if [ -s $FILE ] ; then
 		for log in $(sort -u $FILE)
 		do
 			echo "$log" | cut -d "/" -f5-
-			grep -E "$PATTERN" "$log" | perl -e 'print grep !$seen{$_}++, <>;' | head -n 10 | sed "s/^/${tab}/"
+			grep -E "$PATTERN" "$log" 2>/dev/null | perl -e 'print grep !$seen{$_}++, <>;' | head -n 10 | sed "s/^/${tab}/"
 			rm -f "$log"
 		done
 		echo
