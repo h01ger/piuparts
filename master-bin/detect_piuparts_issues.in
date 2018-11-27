@@ -22,9 +22,10 @@
 
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
+get_config_value HTDOCS global output-directory
 
 STARTDATE=$(date -u +%s)
-TEMPORARY_OUTPUT=`mktemp`
+TEMPORARY_OUTPUT=$(mktemp)
 
 #
 # detect piuparts problems
