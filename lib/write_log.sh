@@ -22,7 +22,7 @@ publish_logs() {
 	local HTDOCS="$2"
 	local LOG=$3
 	local YEAR=$(date -u +%Y)
-	local MONTH=$(date -u +%M)
+	local MONTH=$(date -u +%m)
 	local DAY=$(date -u +%d)
 	local DIR="$HTDOCS/logs/$YEAR/$MONTH/$DAY"
 	mkdir -p "$DIR"
