@@ -18,11 +18,13 @@
 
 
 . @sharedir@/piuparts/lib/read_config.sh
+. @sharedir@/piuparts/lib/write_log.sh
 
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
 
 STARTDATE=$(date -u +%s)
+TEMPORARY_OUTPUT=`mktemp`
 
 #
 # detect piuparts problems
@@ -95,24 +97,28 @@ done
 if [ -s $FILE ] ; then
 	FINALDATE=$(date -u +%s)
 	RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
-	echo "Runtime: $RUNTIME"
-	echo
-	echo "piuparts problems detected! Please review the following logfiles/packages."
-	echo "If it is always the same package failing, it's likely to be an issue in the"
-	echo "package."
-	echo
-	echo "The following logfiles have been deleted:"
-	echo
-	for log in $(sort -u $FILE)
-	do
-		echo "$log" | cut -d "/" -f5-
-		test -s "$log" || echo "${tab}Empty logfile."
-		grep -E "$PATTERN" "$log" | perl -e 'print grep !$seen{$_}++, <>;' | head -n 10 | sed "s/^/${tab}/"
-		rm -f "$log"
-	done
-	echo
-	echo "Those problems were found in failed logs by grep'ing for these patterns:"
-	echo "$DISPLAY_PATTERN"
-	echo
+	(
+		echo "$(date -u)"
+		echo "Runtime: $RUNTIME"
+		echo
+		echo "piuparts problems detected! Please review the following logfiles/packages."
+		echo "If it is always the same package failing, it's likely to be an issue in the"
+		echo "package."
+		echo
+		echo "The following logfiles have been deleted:"
+		echo
+		for log in $(sort -u $FILE)
+		do
+			echo "$log" | cut -d "/" -f5-
+			test -s "$log" || echo "${tab}Empty logfile."
+			grep -E "$PATTERN" "$log" | perl -e 'print grep !$seen{$_}++, <>;' | head -n 10 | sed "s/^/${tab}/"
+			rm -f "$log"
+		done
+		echo
+		echo "Those problems were found in failed logs by grep'ing for these patterns:"
+		echo "$DISPLAY_PATTERN"
+		echo
+	) > $TEMPORARY_OUTPUT
+	publish_logs $TEMPORARY_OUTPUT $HTDOCS piuparts_issues
 fi
 rm $FILE
