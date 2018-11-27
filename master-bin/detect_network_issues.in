@@ -79,7 +79,7 @@ if [ -s $FILE ] ; then
 		echo "$(date -u)"
 		echo "Runtime: $RUNTIME"
 		echo
-		echo "Network problems on detected! The following logfiles have been deleted:"
+		echo "Network problems detected! The following logfiles have been deleted:"
 		echo
 		for log in $(sort -u $FILE)
 		do
