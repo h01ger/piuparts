@@ -135,8 +135,9 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
      <td class="contentcell">
       piuparts.d.o configuration:<br>
       <a href="https://salsa.debian.org/debian/piuparts/tree/develop/instances" target="_blank">piuparts.conf</a>,<br>
-      <a href="https://salsa.debian.org/debian/piuparts/blob/develop/conf/distros.conf" target="_blank">distros.conf</a><br> and
-      <a href="https://salsa.debian.org/debian/piuparts/tree/develop/custom-scripts" target="_blank">scripts</a>
+      <a href="https://salsa.debian.org/debian/piuparts/blob/develop/conf/distros.conf" target="_blank">distros.conf</a>,<br>
+      <a href="https://salsa.debian.org/debian/piuparts/tree/develop/custom-scripts" target="_blank">scripts</a> and
+      <a href="https://piuparts.debian.org/logs/" target="_blank">logs</a>
      </td>
     </tr>
     <tr class="normalrow">

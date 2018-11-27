@@ -10,6 +10,7 @@ piuparts (0.95) UNRELEASED; urgency=medium
     - master-bin/detect_network_issues: redirect logs to htdocs/logs to spare
       us six mails per day.
     - lib/write_log.sh: new helper to publish logs in htdocs/logs.
+    - piuparts-report.py: add navigation link to https://piuparts.d.o/logs/
 
  -- Holger Levsen <holger@debian.org>  Thu, 08 Nov 2018 12:12:21 +0100
 
