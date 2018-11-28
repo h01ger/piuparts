@@ -13,7 +13,7 @@ PYTHONPATH=@libdir@/python2.7/dist-packages
 # generate reports twice or three times a day
 #  (dinstall runs 1|7|13|19:52, so this is long after mirror pushes...)
 #
-0  4-23/12 * * * piuparts-analyze
+0  4-23/12 * * * master_shell_runner piuparts-analyze
 0  2-23/3 * * * master_shell_runner detect_well_known_errors
 0  0-23/3 * * * master_shell_runner piuparts-report
 15 23 * * * generate_daily_report
