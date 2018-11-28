@@ -23,4 +23,4 @@ get_config_value HTDOCS global output-directory
 LOG_OUTPUT=$(mktemp)
 
 $1 >$LOG_OUTPUT 2>&1
-publish_logs $LOG_OUTPUT $HTDOCS $1
+publish_logs $LOG_OUTPUT "" $HTDOCS $1

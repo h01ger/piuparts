@@ -19,13 +19,18 @@
 
 publish_logs() {
 	local LOG_OUTPUT=$1
-	local HTDOCS="$2"
-	local LOG=$3
+	local LOG_PREFIX=$2
+	local HTDOCS="$3"
+	local LOG=$4
 	local YEAR=$(date -u +%Y)
 	local MONTH=$(date -u +%m)
 	local DAY=$(date -u +%d)
 	local DIR="$HTDOCS/logs/$YEAR/$MONTH/$DAY"
 	mkdir -p "$DIR"
+	if [ -n "$LOG_PREFIX" ] && [ ! -s "$DIR/$LOG.txt" ] ; then
+		cat $LOG_PREFIX >> "$DIR/$LOG.txt"
+		rm -f $LOG_PREFIX >/dev/null
+	fi
 	cat $LOG_OUTPUT >> "$DIR/$LOG.txt"
 	rm -f $LOG_OUTPUT >/dev/null
 }

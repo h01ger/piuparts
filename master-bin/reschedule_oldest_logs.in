@@ -41,7 +41,6 @@ get_config_value COUNT      global reschedule-old-count 200
 get_config_value EXPIRE_FAIL_AGE global expire-fail-days 0
 get_config_value FAIL_AGE   global reschedule-fail-days 30
 get_config_value FAIL_COUNT global reschedule-fail-count 25
-
 get_config_value AUTO_RESCHEDULE	global auto-reschedule yes
 
 
@@ -208,7 +207,9 @@ RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
 	fi
 	echo
 	cat $OUTPUT
+	echo "##################################################################################################################" >> $OUTPUT
+	echo "##################################################################################################################" >> $OUTPUT
 	echo
 ) > $LOG_OUTPUT
-publish_logs $LOG_OUTPUT $HTDOCS reschedule_oldest_logs
+publish_logs $LOG_OUTPUT "" $HTDOCS reschedule_oldest_logs
 rm -f $OUTPUT

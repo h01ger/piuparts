@@ -26,6 +26,7 @@ get_config_value HTDOCS global output-directory
 
 STARTDATE=$(date -u +%s)
 LOG_OUTPUT=$(mktemp)
+LOG_PREFIX=$(mktemp)
 
 #
 # detect network/mirror problems
@@ -76,10 +77,15 @@ if [ -s $FILE ] ; then
 	FINALDATE=$(date -u +%s)
 	RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
 	(
+		echo "Network problems detected! The following logfiles have been deleted:"
+		echo
+		echo "Those problems were found in failed logs by grep'ing for these patterns:"
+		echo "$DISPLAY_PATTERN"
+		echo
+	) > $LOG_PREFIX
+	(
 		echo "$(date -u)"
 		echo "Runtime: $RUNTIME"
-		echo
-		echo "Network problems detected! The following logfiles have been deleted:"
 		echo
 		for log in $(sort -u $FILE)
 		do
@@ -88,9 +94,7 @@ if [ -s $FILE ] ; then
 			rm -f "$log"
 		done
 		echo
-		echo "Those problems were found in failed logs by grep'ing for these patterns:"
-		echo "$DISPLAY_PATTERN"
 	) > $LOG_OUTPUT
-	publish_logs $LOG_OUTPUT $HTDOCS network_issues
+	publish_logs $LOG_OUTPUT $LOG_PREFIX $HTDOCS network_issues
 fi
 rm $FILE

@@ -57,6 +57,6 @@ if [ -s $OUTPUT ] ; then
 	echo >> $LOG_OUTPUT
 	cat $OUTPUT >> $LOG_OUTPUT
 	echo >> $LOG_OUTPUT
-	publish_logs $LOG_OUTPUT $HTDOCS rotate_master_logs
+	publish_logs $LOG_OUTPUT "" $HTDOCS rotate_master_logs
 fi
 rm $OUTPUT

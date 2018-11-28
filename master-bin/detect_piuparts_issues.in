@@ -26,6 +26,7 @@ get_config_value HTDOCS global output-directory
 
 STARTDATE=$(date -u +%s)
 LOG_OUTPUT=$(mktemp)
+LOG_PREFIX=$(mktemp)
 
 #
 # detect piuparts problems
@@ -99,12 +100,17 @@ if [ -s $FILE ] ; then
 	FINALDATE=$(date -u +%s)
 	RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
 	(
-		echo "$(date -u)"
-		echo "Runtime: $RUNTIME"
-		echo
 		echo "piuparts problems detected! Please review the following logfiles/packages."
 		echo "If it is always the same package failing, it's likely to be an issue in the"
 		echo "package."
+		echo
+		echo "Problems were found in failed logs by grep'ing for these patterns:"
+		echo "$DISPLAY_PATTERN"
+		echo
+	) > $LOG_PREFIX
+	(
+		echo "$(date -u)"
+		echo "Runtime: $RUNTIME"
 		echo
 		echo "The following logfiles have been deleted:"
 		echo
@@ -116,10 +122,7 @@ if [ -s $FILE ] ; then
 			rm -f "$log"
 		done
 		echo
-		echo "Those problems were found in failed logs by grep'ing for these patterns:"
-		echo "$DISPLAY_PATTERN"
-		echo
 	) > $LOG_OUTPUT
-	publish_logs $LOG_OUTPUT $HTDOCS piuparts_issues
+	publish_logs $LOG_OUTPUT $LOG_PREFIX $HTDOCS piuparts_issues
 fi
 rm $FILE
