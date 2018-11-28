@@ -1,5 +1,6 @@
 piuparts (0.95) UNRELEASED; urgency=medium
 
+  [ Holger Levsen ]
   * piuparts.py: add /var/lib/debian-security-support/ to self.ignored_files.
     (Closes: #749317)
   * WIP: reduce number of mails per day, from 34 down to 18, see #912591.
@@ -11,6 +12,9 @@ piuparts (0.95) UNRELEASED; urgency=medium
       us six mails per day.
     - lib/write_log.sh: new helper to publish logs in htdocs/logs.
     - piuparts-report.py: add navigation link to https://piuparts.d.o/logs/
+
+  [ Andreas Beckmann ]
+  * Clarify errors from installing objects over existing symlinks.
 
  -- Holger Levsen <holger@debian.org>  Thu, 08 Nov 2018 12:12:21 +0100
 

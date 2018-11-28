@@ -1489,13 +1489,15 @@ class Chroot:
                     bad.append("  %s -> %s" % (link, target))
         if bad:
             if overwrites:
-                logging.error("FAIL: silently overwrites files via directory symlinks:\n" +
-                              indent_string("\n".join(bad)))
+                msg = "FAIL: silently overwrites files via directory symlinks:\n"
             else:
-                logging.info("dirname part contains a symlink:\n" +
-                             indent_string("\n".join(bad)))
+                msg = "installs objects over existing directory symlinks:\n"
+            msg += indent_string("\n".join(bad))
             if not settings.warn_on_install_over_symlink:
+                logging.error(msg)
                 panic()
+            else:
+                logging.info(msg)
 
     def remove_packages(self, packages, ignore_errors=False):
         """Remove packages in a chroot."""
