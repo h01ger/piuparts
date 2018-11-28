@@ -3,7 +3,7 @@ piuparts (0.95) UNRELEASED; urgency=medium
   [ Holger Levsen ]
   * piuparts.py: add /var/lib/debian-security-support/ to self.ignored_files.
     (Closes: #749317)
-  * WIP: reduce number of mails per day, from 34 down to 16, see #912591.
+  * WIP: reduce number of mails per day, from 34 down to 15, see #912591.
     - master-bin/detect_archive_issues: redirect logs to htdocs/logs to spare
       us two mails per day.
     - master-bin/detect_piuparts_issues: redirect logs to htdocs/logs to spare
@@ -12,6 +12,8 @@ piuparts (0.95) UNRELEASED; urgency=medium
       us six mails per day.
     - master-bin/reschedule_oldest_logs: redirect logs to htdocs/logs to spare
       us two mails per day.
+    - master-bin/rotate_master_logs: redirect logs to htdocs/logs to spare
+      us one mail per day.
     - lib/write_log.sh: new helper to publish logs in htdocs/logs.
     - piuparts-report.py: add navigation link to https://piuparts.d.o/logs/
 

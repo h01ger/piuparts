@@ -2,6 +2,7 @@
 set -e
 
 # Copyright © 2017 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2018 Holger Levsen (holger@layer-acht.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -21,14 +22,15 @@ set -e
 # * (delayed) compress rotated master logs
 #
 
-
 . @sharedir@/piuparts/lib/read_config.sh
+. @sharedir@/piuparts/lib/write_log.sh
 
 get_config_value SECTIONS global sections
 get_config_value MASTER global master-directory
-
+get_config_value HTDOCS global output-directory
 
 today=$(date +%Y%m%d)
+OUTPUT=$(mktemp)
 
 cd $MASTER
 for SECTION in $SECTIONS ; do
@@ -37,14 +39,24 @@ for SECTION in $SECTIONS ; do
 
 	# rotate master.log larger than 1 MB
 	if [ -f $mlog ] && [ ! -L $mlog ] && [ $(stat -c %s $mlog) -gt 1048576 ] && [ ! -e $rlog ]; then
-		mv -v $mlog $rlog
+		mv -v $mlog $rlog >> $OUTPUT
 	fi
 
 	# delayed compression of old master.log
 	for log in $SECTION/master.*.log
 	do
 		if [ -f "$log" ] && [ "$log" != "$rlog" ]; then
-			xz -v9 $log
+			xz -v9 $log >> $OUTPUT
 		fi
 	done
 done
+
+if [ -s $OUTPUT ] ; then
+	TEMPORARY_OUTPUT=$(mktemp)
+	echo "$(date -u)" > $TEMPORARY_OUTPUT
+	echo >> $TEMPORARY_OUTPUT
+	cat $OUTPUT >> $TEMPORARY_OUTPUT
+	echo >> $TEMPORARY_OUTPUT
+	publish_logs $TEMPORARY_OUTPUT $HTDOCS rotate_master_logs
+fi
+rm $OUTPUT
