@@ -26,7 +26,7 @@ get_config_value HTDOCS global output-directory
 
 STARTDATE=$(date -u +%s)
 OUTPUT=$(mktemp)
-TEMPORARY_OUTPUT=$(mktemp)
+LOG_OUTPUT=$(mktemp)
 
 #
 # reschedule 200 oldest log files, if they are older than 180 days
@@ -209,6 +209,6 @@ RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
 	echo
 	cat $OUTPUT
 	echo
-) > $TEMPORARY_OUTPUT
-publish_logs $TEMPORARY_OUTPUT $HTDOCS reschedule_oldest_logs
+) > $LOG_OUTPUT
+publish_logs $LOG_OUTPUT $HTDOCS reschedule_oldest_logs
 rm -f $OUTPUT

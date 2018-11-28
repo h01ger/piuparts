@@ -25,7 +25,7 @@ get_config_value SECTIONS global sections
 get_config_value HTDOCS global output-directory
 
 STARTDATE=$(date -u +%s)
-TEMPORARY_OUTPUT=$(mktemp)
+LOG_OUTPUT=$(mktemp)
 
 #
 # detect network/mirror problems
@@ -90,7 +90,7 @@ if [ -s $FILE ] ; then
 		echo
 		echo "Those problems were found in failed logs by grep'ing for these patterns:"
 		echo "$DISPLAY_PATTERN"
-	) > $TEMPORARY_OUTPUT
-	publish_logs $TEMPORARY_OUTPUT $HTDOCS network_issues
+	) > $LOG_OUTPUT
+	publish_logs $LOG_OUTPUT $HTDOCS network_issues
 fi
 rm $FILE

@@ -25,7 +25,7 @@ get_config_value SECTIONS global sections
 get_config_value HTDOCS global output-directory
 
 STARTDATE=$(date -u +%s)
-TEMPORARY_OUTPUT=$(mktemp)
+LOG_OUTPUT=$(mktemp)
 
 #
 # detect piuparts problems
@@ -119,7 +119,7 @@ if [ -s $FILE ] ; then
 		echo "Those problems were found in failed logs by grep'ing for these patterns:"
 		echo "$DISPLAY_PATTERN"
 		echo
-	) > $TEMPORARY_OUTPUT
-	publish_logs $TEMPORARY_OUTPUT $HTDOCS piuparts_issues
+	) > $LOG_OUTPUT
+	publish_logs $LOG_OUTPUT $HTDOCS piuparts_issues
 fi
 rm $FILE

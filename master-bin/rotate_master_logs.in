@@ -52,11 +52,11 @@ for SECTION in $SECTIONS ; do
 done
 
 if [ -s $OUTPUT ] ; then
-	TEMPORARY_OUTPUT=$(mktemp)
-	echo "$(date -u)" > $TEMPORARY_OUTPUT
-	echo >> $TEMPORARY_OUTPUT
-	cat $OUTPUT >> $TEMPORARY_OUTPUT
-	echo >> $TEMPORARY_OUTPUT
-	publish_logs $TEMPORARY_OUTPUT $HTDOCS rotate_master_logs
+	LOG_OUTPUT=$(mktemp)
+	echo "$(date -u)" > $LOG_OUTPUT
+	echo >> $LOG_OUTPUT
+	cat $OUTPUT >> $LOG_OUTPUT
+	echo >> $LOG_OUTPUT
+	publish_logs $LOG_OUTPUT $HTDOCS rotate_master_logs
 fi
 rm $OUTPUT

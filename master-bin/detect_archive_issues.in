@@ -27,7 +27,7 @@ get_config_value URLBASE global urlbase https://piuparts.debian.org
 get_config_value DAYS global reschedule-untestable-days 7
 
 ISSUE_LOG="$MASTER/archive_issues.txt"
-TEMPORARY_OUTPUT=`mktemp`
+LOG_OUTPUT=`mktemp`
 
 STARTDATE=$(date -u +%s)
 
@@ -81,7 +81,7 @@ if [ -s $URLS ]; then
 		echo "        'E: Unable to correct problems, you have held broken packages'"
 		echo "        'E: Error, pkgProblemResolver::Resolve generated breaks'"
 		echo
-	) > $TEMPORARY_OUTPUT
-	publish_logs $TEMPORARY_OUTPUT $HTDOCS archive_issues
+	) > $LOG_OUTPUT
+	publish_logs $LOG_OUTPUT $HTDOCS archive_issues
 fi
 rm $LOGS $URLS

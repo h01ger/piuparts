@@ -18,7 +18,7 @@
 #
 
 publish_logs() {
-	local TEMPORARY_OUTPUT=$1
+	local LOG_OUTPUT=$1
 	local HTDOCS="$2"
 	local LOG=$3
 	local YEAR=$(date -u +%Y)
@@ -26,6 +26,6 @@ publish_logs() {
 	local DAY=$(date -u +%d)
 	local DIR="$HTDOCS/logs/$YEAR/$MONTH/$DAY"
 	mkdir -p "$DIR"
-	cat $TEMPORARY_OUTPUT >> "$DIR/$LOG.txt"
-	rm -f $TEMPORARY_OUTPUT >/dev/null
+	cat $LOG_OUTPUT >> "$DIR/$LOG.txt"
+	rm -f $LOG_OUTPUT >/dev/null
 }

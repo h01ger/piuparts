@@ -20,7 +20,7 @@
 
 get_config_value HTDOCS global output-directory
 
-TEMPORARY_OUTPUT=$(mktemp)
+LOG_OUTPUT=$(mktemp)
 
-$1 >$TEMPORARY_OUTPUT 2>&1
-publish_logs $TEMPORARY_OUTPUT $HTDOCS $1
+$1 >$LOG_OUTPUT 2>&1
+publish_logs $LOG_OUTPUT $HTDOCS $1
