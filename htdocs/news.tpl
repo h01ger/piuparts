@@ -6,9 +6,13 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2018-10-19</b>: Three and a half years after stopping linking to packages.qa.debian.org(which was called <em>PTS</em>) we finally drop all references to the PTS and use <em>tracker.d.o</em> instead.
+      <b>2018-11-28</b>: The output of various maintenance scripts is now available at <a href="https://piuparts.debian.org/logs/" target="_blank">https://piuparts.debian.org/logs/</a> instead of sending it via mails to the piuparts.d.o maintainers only.
      </td>
     </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
+      <b>2018-10-19</b>: Three and a half years after stopping linking to packages.qa.debian.org (which was called <em>PTS</em>) we finally drop all references to the PTS and use <em>tracker.d.o</em> instead.
+     </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">

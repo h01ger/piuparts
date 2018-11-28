@@ -13,6 +13,7 @@ piuparts (0.95) UNRELEASED; urgency=medium
     - conf/crontab-master.in: run detect_well_known_errors, piuparts-report
       and piuparts-analyze through the new master_shell_runner script.
     - piuparts-report.py: add navigation link to https://piuparts.d.o/logs/
+    - htdocs/news.tpl: explain the result of these changes.
 
   [ Andreas Beckmann ]
   * Clarify errors from installing objects over existing symlinks.
