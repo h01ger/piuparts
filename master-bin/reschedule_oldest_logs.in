@@ -18,12 +18,15 @@
 
 
 . @sharedir@/piuparts/lib/read_config.sh
+. @sharedir@/piuparts/lib/write_log.sh
 
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
+get_config_value HTDOCS global output-directory
 
 STARTDATE=$(date -u +%s)
 OUTPUT=$(mktemp)
+TEMPORARY_OUTPUT=$(mktemp)
 
 #
 # reschedule 200 oldest log files, if they are older than 180 days
@@ -187,22 +190,25 @@ rm $QUEUED
 
 FINALDATE=$(date -u +%s)
 RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
-echo "Runtime: $RUNTIME"
-echo
-
-if [ "$TOTAL" -gt "0" ]; then
-	echo "Rescheduled $TOTAL logs."
-fi
-if [ "$TOTAL_EXPIRED" -gt "0" ]; then
-	echo "Deleted $TOTAL_EXPIRED expired logs."
-fi
-if [ "$UNSCHEDULE" -gt "0" ]; then
-	echo "Cancelled $UNSCHEDULE outdated rescheduling requests."
-fi
-if [ "$TOTAL_QUEUED" -gt "0" ]; then
-	echo "Queued logs: $TOTAL_QUEUED"
-fi
-echo
-
-cat $OUTPUT
+(
+	echo "$(date -u)"
+	echo "Runtime: $RUNTIME"
+	echo
+	if [ "$TOTAL" -gt "0" ]; then
+		echo "Rescheduled $TOTAL logs."
+	fi
+	if [ "$TOTAL_EXPIRED" -gt "0" ]; then
+		echo "Deleted $TOTAL_EXPIRED expired logs."
+	fi
+	if [ "$UNSCHEDULE" -gt "0" ]; then
+		echo "Cancelled $UNSCHEDULE outdated rescheduling requests."
+	fi
+	if [ "$TOTAL_QUEUED" -gt "0" ]; then
+		echo "Queued logs: $TOTAL_QUEUED"
+	fi
+	echo
+	cat $OUTPUT
+	echo
+) > $TEMPORARY_OUTPUT
+publish_logs $TEMPORARY_OUTPUT $HTDOCS reschedule_oldest_logs
 rm -f $OUTPUT
