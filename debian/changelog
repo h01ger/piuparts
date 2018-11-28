@@ -3,7 +3,7 @@ piuparts (0.95) UNRELEASED; urgency=medium
   [ Holger Levsen ]
   * piuparts.py: add /var/lib/debian-security-support/ to self.ignored_files.
     (Closes: #749317)
-  * WIP: reduce number of mails per day, from 34 down to 2, see #912591.
+  * Reduce number of mails per day, from 34 down to 1. (Closes: #912591)
     - lib/write_log.sh: new helper to publish logs in htdocs/logs.
     - master-bin/master_shell_runner: new script to run python scripts to
       redirect logs to htdocs/logs.
