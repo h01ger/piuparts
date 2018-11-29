@@ -3,6 +3,7 @@
 
 # Copyright 2013 David Steele (dsteele@gmail.com)
 # Copyright © 2014 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2017-2018 Holger Levsen (holger@layer-acht.org)
 #
 # This file is part of Piuparts
 #
@@ -132,9 +133,9 @@ def detect_well_known_errors(sections, config, problem_list, recheck, recheck_fa
         except MissingSection:
             pass
 
+    current_time=time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime())
+    logging.info("%s - total parsed logfiles: %d removed, %d added" % (current_time, total_del, total_add))
     logging.info("")
-    logging.info(time.strftime("%a %b %2d %H:%M:%S %Z %Y", time.localtime()))
-    logging.info("total parsed logfiles: %d removed, %d added" % (total_del, total_add))
 
 
 if __name__ == '__main__':
