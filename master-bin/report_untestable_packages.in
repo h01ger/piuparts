@@ -18,12 +18,16 @@
 
 
 . @sharedir@/piuparts/lib/read_config.sh
+. @sharedir@/piuparts/lib/write_log.sh
 
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
+get_config_value HTDOCS global output-directory
 get_config_value DAYS global reschedule-untestable-days 7
 
 STARTDATE=$(date -u +%s)
+LOG_OUTPUT=$(mktemp)
+LOG_PREFIX=$(mktemp)
 
 #
 # find packages which have been in untestable for more than $DAYS days and reschedule them for testing
@@ -41,13 +45,20 @@ done
 if [ -s $LOGS ] ; then
 	FINALDATE=$(date -u +%s)
 	RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
-	echo "Runtime: $RUNTIME"
-	echo
-	echo "Untestable packages detected, which have been tested more than $DAYS days ago!"
-	echo "These packages have been rescheduled for piuparts testing."
-	echo
-	for package_log in $(cat $LOGS) ; do
-		rm -fv $package_log | sed "s#$MASTER/##g" | tr -d "'"
-	done
+	(
+		echo "Untestable packages detected, which have been tested more than $DAYS days ago!"
+		echo "These packages have been rescheduled for piuparts testing."
+		echo
+	) > $LOG_PREFIX
+	(
+		echo "$(date -u)"
+		echo "Runtime: $RUNTIME"
+		echo
+		for package_log in $(cat $LOGS) ; do
+			rm -fv $package_log | sed "s#$MASTER/##g" | tr -d "'"
+		done
+		echo
+	) > $LOG_OUTPUT
+	publish_logs $LOG_OUTPUT $LOG_PREFIX $HTDOCS report_untestable_packages
 fi
 rm $LOGS

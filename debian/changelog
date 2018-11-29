@@ -8,8 +8,8 @@ piuparts (0.95) UNRELEASED; urgency=medium
     - master-bin/master_shell_runner: new script to run python scripts to
       redirect logs to htdocs/logs.
     - master-bin/detect_archive_issues, detect_piuparts_issues,
-      detect_network_issues, reschedule_oldest_logs and rotate_master_logs:
-      redirect logs to htdocs/logs.
+      detect_network_issues, reschedule_oldest_logs, rotate_master_logs and
+      report_untestable_packages: redirect logs to htdocs/logs.
     - conf/crontab-master.in: run detect_well_known_errors, piuparts-report
       and piuparts-analyze through the new master_shell_runner script.
     - piuparts-report.py: add navigation link to https://piuparts.d.o/logs/
