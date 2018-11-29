@@ -7,6 +7,10 @@ piuparts (0.95) UNRELEASED; urgency=medium
     - lib/write_log.sh: new helper to publish logs in htdocs/logs.
     - master-bin/master_shell_runner: new script to run python scripts to
       redirect logs to htdocs/logs.
+    - master-bin/generate_daily_report:
+      - redirect logs of called scripts to htdocs/logs.
+      - include listing of htdocs/logs/$TODAY into daily report.
+      - publish dailyreport.txt in htdocs/logs/$TODAY instead of htdocs/.
     - master-bin/detect_archive_issues, detect_piuparts_issues,
       detect_network_issues, reschedule_oldest_logs, rotate_master_logs and
       report_untestable_packages: redirect logs to htdocs/logs.

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Copyright © 2011-2013 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2018 Holger Levsen (holger@layer-acht.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -15,15 +16,14 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>
 
-
 . @sharedir@/piuparts/lib/read_config.sh
+. @sharedir@/piuparts/lib/write_log.sh
 
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
 get_config_value HTDOCS global output-directory
 get_config_value URLBASE global urlbase https://piuparts.debian.org
 get_config_value PYTHONPATH global PYTHONPATH ''
-
 
 export PYTHONPATH
 
@@ -36,22 +36,26 @@ fi
 date > $LOCKFILE
 
 R_STARTDATE=$(date -u +%s)
+R_LOGDATEDIR="$HTDOCS/logs/$(date -u '+%Y/%m/%d')"
 
 #
-# various scripts to detect issues and cleanup
+# various scripts to detect issues and cleanup to be run right before we generate the daily report
+# (this code block contains cruft and could be refactored)
 #
 OUTPUT=$(mktemp)
+LOG_OUTPUT=$(mktemp)
 for SCRIPT in archive_old_logs ; do
   STARTDATE=$(date -u +%s)
   @sharedir@/piuparts/master/$SCRIPT 2>&1 > $OUTPUT
   FINALDATE=$(date -u +%s)
   if [ -s $OUTPUT ] ; then
 	if grep -q "Runtime: " $OUTPUT ; then
-		cat $OUTPUT | mail -s $SCRIPT $LOGNAME
+		cat $OUTPUT > $LOG_OUTPUT
 	else
 		RUNTIME=$(date -u -d "0 $FINALDATE seconds - $STARTDATE seconds" +%T)
-		( echo "Runtime: $RUNTIME" ; echo ; cat $OUTPUT ) | mail -s $SCRIPT $LOGNAME
+		( echo "Runtime: $RUNTIME" ; echo ; cat $OUTPUT ) > $LOG_OUTPUT
 	fi
+	publish_logs $LOG_OUTPUT "" $HTDOCS $SCRIPT
   fi
 done
 rm $OUTPUT
@@ -96,7 +100,14 @@ rm $expire
 FINALDATE=$(date -u +%s)
 RUNTIME=$(date -u -d "0 $FINALDATE seconds - $R_STARTDATE seconds" +%T)
 
-( echo "Runtime: $RUNTIME" ; echo ; cat $DAILYREPORT ) | mail -s generate_daily_report $LOGNAME
+(
+	echo "Runtime: $RUNTIME"
+	echo
+	ls -lart $R_LOGDATEDIR
+	echo
+	cat $DAILYREPORT
+) | mail -s generate_daily_report $LOGNAME
+mv $DAILYREPORT $R_LOGDATEDIR
 
 mv $FAILURESTAMP.new $FAILURESTAMP
 rm -f $LOCKFILE
