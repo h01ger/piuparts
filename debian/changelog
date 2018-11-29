@@ -18,6 +18,7 @@ piuparts (0.95) UNRELEASED; urgency=medium
       and piuparts-analyze through the new master_shell_runner script.
     - piuparts-report.py: add navigation link to https://piuparts.d.o/logs/
     - htdocs/news.tpl: explain the result of these changes.
+  * d/control: use canonical URL for Vcs-Git, thanks lintian.
 
   [ Andreas Beckmann ]
   * Clarify errors from installing objects over existing symlinks.
