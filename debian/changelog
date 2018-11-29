@@ -16,6 +16,7 @@ piuparts (0.95) UNRELEASED; urgency=medium
       report_untestable_packages: redirect logs to htdocs/logs.
     - conf/crontab-master.in: run detect_well_known_errors, piuparts-report
       and piuparts-analyze through the new master_shell_runner script.
+    - master-bin/rotate_master_logs: compress htdocs/logs older than a week.
     - piuparts-report.py: add navigation link to https://piuparts.d.o/logs/
     - htdocs/news.tpl: explain the result of these changes.
   * d/control: use canonical URL for Vcs-Git, thanks lintian.

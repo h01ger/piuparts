@@ -51,6 +51,14 @@ for SECTION in $SECTIONS ; do
 	done
 done
 
+LOGDATEDIR="$HTDOCS/logs/$(date -u '+%Y/%m/%d' -d '7 days ago')"
+if [ -d $LOGDATEDIR ] && [ -n "$(find $LOGDATEDIR -type f ! -name '*.xz')" ] ; then
+	echo >> $OUTPUT
+	echo "Compressing old piuparts.d.o logfiles." >> $OUTPUT
+	echo >> $OUTPUT
+	find $LOGDATEDIR -type f ! -name '*.xz' -exec xz -v9 {} \; >> $OUTPUT
+fi
+
 if [ -s $OUTPUT ] ; then
 	LOG_OUTPUT=$(mktemp)
 	echo "$(date -u)" > $LOG_OUTPUT
