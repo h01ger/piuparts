@@ -103,7 +103,8 @@ RUNTIME=$(date -u -d "0 $FINALDATE seconds - $R_STARTDATE seconds" +%T)
 (
 	echo "Runtime: $RUNTIME"
 	echo
-	ls -lart $R_LOGDATEDIR
+	echo $R_LOGDATEDIR
+	ls -lt $R_LOGDATEDIR
 	echo
 	cat $DAILYREPORT
 ) | mail -s generate_daily_report $LOGNAME
