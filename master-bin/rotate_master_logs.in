@@ -1,6 +1,5 @@
 #!/bin/sh
-set -e
-
+#
 # Copyright © 2017 Andreas Beckmann (anbe@debian.org)
 # Copyright © 2018 Holger Levsen (holger@layer-acht.org)
 #
