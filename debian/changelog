@@ -12,8 +12,9 @@ piuparts (0.95) UNRELEASED; urgency=medium
       - include listing of htdocs/logs/$TODAY into daily report.
       - publish dailyreport.txt in htdocs/logs/$TODAY instead of htdocs/.
     - master-bin/detect_archive_issues, detect_piuparts_issues,
-      detect_network_issues, reschedule_oldest_logs, rotate_master_logs and
-      report_untestable_packages: redirect logs to htdocs/logs.
+      detect_network_issues, reschedule_oldest_logs, rotate_master_logs,
+      report_untestable_packages and report_stale_reserved_packages: redirect
+      logs to htdocs/logs.
     - conf/crontab-master.in: run detect_well_known_errors, piuparts-report
       and piuparts-analyze through the new master_shell_runner script.
     - master-bin/rotate_master_logs: compress htdocs/logs older than a week.
