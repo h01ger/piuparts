@@ -36,7 +36,6 @@ https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html#details-of-un
 It is recommended to use the dpkg-maintscript-helper commands
 'dir_to_symlink' and 'symlink_to_dir' (available since dpkg 1.17.14)
 to perform the conversion, ideally using d/$PACKAGE.maintscript.
-Do not forget to add 'Pre-Depends: ${misc:Pre-Depends}' in d/control.
 See dpkg-maintscript-helper(1) and dh_installdeb(1) for details.
 
 
