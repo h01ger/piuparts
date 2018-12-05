@@ -29,6 +29,9 @@ piuparts (0.95) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
   * Clarify errors from installing objects over existing symlinks.
+  * bug-templates/copyright_file_missing_after_upgrade and
+    bug-templates/unhandled_symlink_to_directory_conversion: adjust advice as
+    symlink_to_dir/dir_to_symlink are supported by dpkg in oldstable.
 
  -- Holger Levsen <holger@debian.org>  Thu, 08 Nov 2018 12:12:21 +0100
 
