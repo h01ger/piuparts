@@ -25,7 +25,7 @@ piuparts (0.95) UNRELEASED; urgency=medium
     uses-dpkg-database-directly warnings, after confirming we are not doing
     that.
   * bug-templates/logrotate_exits_with_error_after_package_removal: clarify
-    the cause of this problem.
+    possibles causes of this problem as well as the solution.
 
   [ Andreas Beckmann ]
   * Clarify errors from installing objects over existing symlinks.

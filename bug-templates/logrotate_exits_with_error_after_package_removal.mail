@@ -10,8 +10,12 @@ Usertags: piuparts
 Hi,
 
 during a test with piuparts I noticed your package's logrotate configuration
-causes logrotate to exit with an error after the package has been removed.
-(logrotate configuration files remain installed and executed after a package
+causes logrotate to exit with an error after the package has been removed (*) or
+when logrote is run but no logfile exists.
+
+Usually the solution is to specify 'missingok' in the logrotate configuration.
+
+*) logrotate configuration files remain installed and executed after a package
 has been removed, they only get removed when the package is purged.
 
 From the attached log (scroll to the bottom...):
