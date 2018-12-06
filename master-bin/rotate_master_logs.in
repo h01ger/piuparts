@@ -45,7 +45,7 @@ for SECTION in $SECTIONS ; do
 	for log in $SECTION/master.*.log
 	do
 		if [ -f "$log" ] && [ "$log" != "$rlog" ]; then
-			xz -v9 $log 2>&1 >> $OUTPUT
+			xz -v9 $log >>$OUTPUT 2>&1
 		fi
 	done
 done
@@ -55,7 +55,7 @@ if [ -d $LOGDATEDIR ] && [ -n "$(find $LOGDATEDIR -type f ! -name '*.xz')" ] ; t
 	echo >> $OUTPUT
 	echo "Compressing old piuparts.d.o logfiles." >> $OUTPUT
 	echo >> $OUTPUT
-	find $LOGDATEDIR -type f ! -name '*.xz' -exec xz -v9 {} \; 2>&1 >> $OUTPUT
+	find $LOGDATEDIR -type f ! -name '*.xz' -exec xz -v9 {} \; >>$OUTPUT 2>&1
 fi
 
 if [ -s $OUTPUT ] ; then
