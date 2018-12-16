@@ -30,9 +30,9 @@ piuparts (0.95) unstable; urgency=medium
     - piuparts-report.py: add navigation link to https://piuparts.d.o/logs/
     - htdocs/news.tpl: explain the result of these changes.
   * d/control: use canonical URL for Vcs-Git, thanks lintian.
-  * Add d/piuparts.lintian-overrides to override the incorrect
-    uses-dpkg-database-directly warnings, after confirming we are not doing
-    that.
+  * Add d/piuparts.lintian-overrides to override uses-dpkg-database-directly
+    warnings, this cannot be avoided without breaking compatibility with
+    ancient releases.
   * bug-templates/logrotate_exits_with_error_after_package_removal: clarify
     possibles causes of this problem as well as the solution.
 

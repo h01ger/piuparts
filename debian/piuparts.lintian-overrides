@@ -1,5 +1,6 @@
-piuparts: uses-dpkg-database-directly etc/piuparts/scripts-debug-purge/post_remove_postrm_set-x
-piuparts: uses-dpkg-database-directly etc/piuparts/scripts-debug-remove/pre_remove_prerm_postrm_set-x
-piuparts: uses-dpkg-database-directly etc/piuparts/scripts/post_remove_exceptions
-piuparts: uses-dpkg-database-directly etc/piuparts/scripts/pre_remove_40_find_missing_md5sums
-piuparts: uses-dpkg-database-directly usr/sbin/piuparts
+# it is impossible not to do this without losing compatibility with ancient releases
+uses-dpkg-database-directly etc/piuparts/scripts-debug-purge/post_remove_postrm_set-x
+uses-dpkg-database-directly etc/piuparts/scripts-debug-remove/pre_remove_prerm_postrm_set-x
+uses-dpkg-database-directly etc/piuparts/scripts/post_remove_exceptions
+uses-dpkg-database-directly etc/piuparts/scripts/pre_remove_40_find_missing_md5sums
+uses-dpkg-database-directly usr/sbin/piuparts
