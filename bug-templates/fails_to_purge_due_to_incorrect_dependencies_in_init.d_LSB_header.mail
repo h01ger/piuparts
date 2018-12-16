@@ -3,7 +3,7 @@ Subject: fails to purge due to incorrect dependencies in init.d LSB header
 
 Package:
 Version:
-Severity: important
+Severity: serious
 User: debian-qa@lists.debian.org
 Usertags: piuparts
 User:     initscripts-ng-devel@lists.alioth.debian.org

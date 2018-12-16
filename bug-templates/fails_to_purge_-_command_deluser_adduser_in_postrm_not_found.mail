@@ -3,7 +3,7 @@ Subject: fails to purge - command (deluser|adduser) in postrm not found
 
 Package:
 Version:
-Severity: important
+Severity: serious
 User: debian-qa@lists.debian.org
 Usertags: piuparts
 
@@ -27,12 +27,6 @@ which could grant access to the wrong files) but to "lock" them (where
 been decided it should be sufficient to have the postrm script ignore
 any errors from deluser:
   deluser ... || true
-
-Filing this as important because a.) it's a clear policy violation (to
-not clean up at purge) b.) having a piuparts clean archive is a release
-goal since lenny and c.) this package being piuparts buggy blocks
-packages depending on it from being tested by piuparts (and thus
-possibly the detection of more severe problems).
 
 From the attached log (scroll to the bottom...):
 

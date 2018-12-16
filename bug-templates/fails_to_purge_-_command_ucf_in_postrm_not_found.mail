@@ -3,7 +3,7 @@ Subject: fails to purge - command ucf in postrm not found
 
 Package:
 Version:
-Severity: important
+Severity: serious
 User: debian-qa@lists.debian.org
 Usertags: piuparts
 
@@ -16,12 +16,6 @@ available for sure.
 
 Please see the manpages ucf(1), ucfr(1) and the example maintainer
 scripts under /usr/share/doc/ucf/examples/ for correct usage of ucf.
-
-Filing this as important because a.) it's a clear policy violation (to
-not clean up at purge) b.) having a piuparts clean archive is a release
-goal since lenny and c.) this package being piuparts buggy blocks
-packages depending on it from being tested by piuparts (and thus
-possibly the detection of more severe problems).
 
 From the attached log (scroll to the bottom...):
 
