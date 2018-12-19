@@ -135,7 +135,7 @@ sections =
 	stretch-backports/main
 	jessie/main
 	jessie-rcmd/main
-	jessie-proposed/main
+	jessie-lts/main
 	jessie-security/main
 	jessie-updates/main
 	jessie-pu/main
@@ -201,7 +201,7 @@ sections =
 	stretch-backports/contrib
 	jessie/contrib
 	jessie-rcmd/contrib
-	jessie-proposed/contrib
+	jessie-lts/contrib
 	jessie-security/contrib
 	jessie-updates/contrib
 	jessie-pu/contrib
@@ -267,7 +267,7 @@ sections =
 	stretch-backports/non-free
 	jessie/non-free
 	jessie-rcmd/non-free
-	jessie-proposed/non-free
+	jessie-lts/non-free
 	jessie-security/non-free
 	jessie-updates/non-free
 	jessie-pu/non-free
@@ -1618,39 +1618,39 @@ arch = amd64
 area = non-free
 
 
-[jessie-proposed/main]
+[jessie-lts/main]
 precedence = 20
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
-distro = jessie-proposed
+distro = jessie-lts
 arch = amd64
 area = main
 components = main
 reschedule-old-count = 500
 reschedule-old-days = 25
 
-[jessie-proposed/contrib]
+[jessie-lts/contrib]
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
-depends-sections = jessie-proposed/main jessie-proposed/non-free
-distro = jessie-proposed
+depends-sections = jessie-lts/main jessie-lts/non-free
+distro = jessie-lts
 arch = amd64
 area = contrib
 reschedule-old-days = 25
 
-[jessie-proposed/non-free]
+[jessie-lts/non-free]
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
-depends-sections = jessie-proposed/main jessie-proposed/contrib
-distro = jessie-proposed
+depends-sections = jessie-lts/main jessie-lts/contrib
+distro = jessie-lts
 arch = amd64
 area = non-free
 reschedule-old-days = 25
