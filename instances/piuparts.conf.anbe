@@ -137,7 +137,6 @@ sections =
 	jessie-rcmd/main
 	jessie-lts/main
 	jessie-security/main
-	jessie-updates/main
 	jessie-backports/main
 	sid2experimental/main
 	testing2sid/main
@@ -202,7 +201,6 @@ sections =
 	jessie-rcmd/contrib
 	jessie-lts/contrib
 	jessie-security/contrib
-	jessie-updates/contrib
 	jessie-backports/contrib
 	sid2experimental/contrib
 	testing2sid/contrib
@@ -267,7 +265,6 @@ sections =
 	jessie-rcmd/non-free
 	jessie-lts/non-free
 	jessie-security/non-free
-	jessie-updates/non-free
 	jessie-backports/non-free
 	sid2experimental/non-free
 	testing2sid/non-free
@@ -1541,41 +1538,6 @@ piuparts-flags =
 	%(flags-end-jessie)s
 depends-sections = jessie/main
 distro = jessie/updates
-arch = amd64
-area = non-free
-
-
-[jessie-updates/main]
-precedence = 20
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
-depends-sections = jessie/main
-distro = jessie-updates
-arch = amd64
-area = main
-components = main
-
-[jessie-updates/contrib]
-precedence = 45
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
-depends-sections = jessie/main
-distro = jessie-updates
-arch = amd64
-area = contrib
-
-[jessie-updates/non-free]
-precedence = 45
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-jessie)s
-	%(flags-end-jessie)s
-depends-sections = jessie/main
-distro = jessie-updates
 arch = amd64
 area = non-free
 
