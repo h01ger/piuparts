@@ -141,6 +141,7 @@ sections =
 	jessie2Xstretch
 	jessie2stretch-rcmd
 	jessie2Xstretch-rcmd
+	jessie-lts2stretch
 	jessie2bpo2stretch
 	jessie2bpo
 #	jessie-lts
@@ -559,6 +560,17 @@ piuparts-flags =
 distro = jessie
 upgrade-test-distros = jessie stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
+
+
+[jessie-lts2stretch]
+precedence = 7
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-jessie)s
+	%(flags-end-stretch)s
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 
 [jessie2bpo2stretch]
