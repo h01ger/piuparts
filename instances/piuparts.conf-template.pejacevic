@@ -149,7 +149,7 @@ sections =
 	jessie
 	jessie-rcmd
 	jessie-security
-	jessie-pu
+#	jessie-pu
 	wheezy2jessie-lts
 	wheezy2jessie
 	wheezy2jessie-rcmd
@@ -158,7 +158,7 @@ sections =
 	wheezy2lts
 	wheezy
 	wheezy-security
-	wheezy-pu
+#	wheezy-pu
 	squeeze2wheezy-lts
 	squeeze2wheezy
 	squeeze2bpo-sloppy
