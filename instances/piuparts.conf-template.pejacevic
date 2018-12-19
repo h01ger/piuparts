@@ -144,11 +144,11 @@ sections =
 	jessie2bpo2stretch
 	jessie2bpo
 #	jessie-lts
+	jessie2lts
 	jessie
 	jessie-rcmd
 	jessie-security
 	jessie-pu
-	jessie2proposed
 	wheezy2jessie
 	wheezy2jessie-rcmd
 	wheezy2bpo2jessie
@@ -637,7 +637,7 @@ piuparts-flags =
 distro = jessie-lts
 
 
-[jessie2proposed]
+[jessie2lts]
 precedence = 4
 json-sections = none
 piuparts-flags =
@@ -645,7 +645,7 @@ piuparts-flags =
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
 distro = jessie
-upgrade-test-distros = jessie jessie-proposed
+upgrade-test-distros = jessie jessie-lts
 
 
 [wheezy2jessie]
