@@ -90,6 +90,18 @@ if [ "$PIUPARTS_DISTRIBUTION" = "buster" ]; then
 		sed -r -i '/^(passwd|group|shadow):/ s/compat/files/' /etc/nsswitch.conf
 	fi
 
+	# upgrading ca-certificates disables obsolete certificates and appends new certificates
+	# normalize and sort the list to match fresh installations
+	if [ -f "/etc/ca-certificates.conf" ]; then
+		sed -rn '/^#/p' /etc/ca-certificates.conf > /etc/ca-certificates.conf.normalized
+		sed -r '/^[#!]/d' /etc/ca-certificates.conf | sort >> /etc/ca-certificates.conf.normalized
+		if ! cmp -s /etc/ca-certificates.conf.normalized /etc/ca-certificates.conf ; then
+			echo "Normalized /etc/ca-certificates.conf"
+			cp /etc/ca-certificates.conf.normalized /etc/ca-certificates.conf
+		fi
+		rm -f /etc/ca-certificates.conf.normalized
+	fi
+
 	# dpkg does not properly clean up directories getting empty and no longer shipped
 	for dir in /etc/dbus-1/system.d /etc/dbus-1
 	do
