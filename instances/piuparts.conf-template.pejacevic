@@ -143,11 +143,11 @@ sections =
 	jessie2Xstretch-rcmd
 	jessie2bpo2stretch
 	jessie2bpo
+#	jessie-lts
 	jessie
 	jessie-rcmd
 	jessie-security
 	jessie-pu
-#	jessie-proposed
 	jessie2proposed
 	wheezy2jessie
 	wheezy2jessie-rcmd
@@ -627,14 +627,14 @@ depends-sections = jessie
 distro = jessie-proposed-updates
 
 
-[jessie-proposed]
+[jessie-lts]
 precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
-distro = jessie-proposed
+distro = jessie-lts
 
 
 [jessie2proposed]
