@@ -1,6 +1,6 @@
 piuparts (0.96) UNRELEASED; urgency=medium
 
-  * ... 
+  * master-bin/detect_piuparts_issues: ignore files which vanish during run.
 
  -- Holger Levsen <holger@debian.org>  Sun, 09 Dec 2018 22:29:43 +0100
 

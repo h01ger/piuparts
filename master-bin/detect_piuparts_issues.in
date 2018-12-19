@@ -92,7 +92,7 @@ for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 	for subdir in fail bugged affected ; do
 		test -d $MASTER/$SECTION/$subdir || continue
-		grep -r -l -E --include '*.log' "$PATTERN" $MASTER/$SECTION/$subdir >> $FILE
+		grep -r -l -E --include '*.log' "$PATTERN" $MASTER/$SECTION/$subdir >> $FILE 2>/dev/null
 		find $MASTER/$SECTION/$subdir -name '*.log' -size 0 >> $FILE
 	done
 done
