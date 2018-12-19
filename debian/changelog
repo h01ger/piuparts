@@ -5,8 +5,9 @@ piuparts (0.96) UNRELEASED; urgency=medium
   [ Andreas Beckmann ]
   * distros.conf: Add jessie-lts as a full distro.
   * piuparts.conf:
-    - Use jessie-lts as upgrade target and rename sections:
-      + [jessie2proposed] => [jessie2lts]
+    - Use jessie-lts as upgrade target and rename section
+      [jessie2proposed] => [jessie2lts]
+    - Add section [wheezy2jessie-lts].
     - [wheezy2bpo2jessie]: Use jessie-lts as final upgrade target.
   * scripts/post_distupgrade_exceptions:
     - Handle /etc/ca-certificates.conf stretch -> buster upgrade by

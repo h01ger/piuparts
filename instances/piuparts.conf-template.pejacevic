@@ -149,6 +149,7 @@ sections =
 	jessie-rcmd
 	jessie-security
 	jessie-pu
+	wheezy2jessie-lts
 	wheezy2jessie
 	wheezy2jessie-rcmd
 	wheezy2bpo2jessie
@@ -646,6 +647,17 @@ piuparts-flags =
 	%(flags-end-jessie)s
 distro = jessie
 upgrade-test-distros = jessie jessie-lts
+
+
+[wheezy2jessie-lts]
+precedence = 7
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-wheezy)s
+	%(flags-end-jessie)s
+distro = wheezy
+upgrade-test-distros = wheezy jessie-lts
 
 
 [wheezy2jessie]
