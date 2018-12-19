@@ -13,6 +13,7 @@ piuparts (0.96) UNRELEASED; urgency=medium
   * scripts/post_distupgrade_exceptions:
     - Handle /etc/ca-certificates.conf stretch -> buster upgrade by
       normalizing the file to match fresh installations.  (Closes: #889852)
+  * scripts-broken-symlinks: Unbreak more symlinks.
 
  -- Holger Levsen <holger@debian.org>  Sun, 09 Dec 2018 22:29:43 +0100
 

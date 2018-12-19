@@ -72,6 +72,22 @@ install_extra_package firefox			hunspell-en-us
 # python-wxversion, alternative set up by python-wxgtk3.0, #857757
 install_extra_package python-wxversion		python-wxgtk3.0
 
+# /usr/lib/qflow/bin/netgen -> ../../../bin/netgen-lvs
+# qflow: Suggests: netgen-lvs
+install_extra_package qflow			netgen-lvs
+
+# /usr/lib/ruby/vendor_ruby/psych.jar -> ../../../share/java/psych.jar
+# ruby-psych: Suggests: libpsych-java
+install_extra_package ruby-psych		libpsych-java
+
+# /usr/lib/slepcdir/slepc3.9/x86_64-linux-gnu-complex/share/slepc/datafiles -> ../../../../../../share/doc/libslepc3.9-dev-examples/datafiles
+# libslepc-complex3.9-dev: Suggests: libslepc3.9-dev-examples, slepc3.9-doc
+install_extra_package libslepc-complex3.9-dev	libslepc3.9-dev-examples slepc3.9-doc
+
+# /usr/lib/slepcdir/slepc3.9/x86_64-linux-gnu-real/share/slepc/datafiles -> ../../../../../../share/doc/libslepc3.9-dev-examples/datafiles
+# libslepc-real3.9-dev: Suggests: libslepc3.9-dev-examples, slepc3.9-doc
+install_extra_package libslepc-real3.9-dev	libslepc3.9-dev-examples slepc3.9-doc
+
 # /usr/lib/wml/exec/wml_aux_weblint -> ../../../bin/weblint
 # /usr/lib/wml/exec/wml_aux_freetable -> ../../../bin/freetable
 # wml: Suggests: freetable, weblint-perl
@@ -87,10 +103,6 @@ install_extra_package firebird3.0-server-core	firebird3.0-server
 
 # /usr/lib/x86_64-linux-gnu/qt-default/qtchooser/default.conf -> ../../../../share/qtchooser/qt4-x86_64-linux-gnu.conf
 install_extra_package libqtcore4		qtchooser
-
-# /usr/share/GNUstep/Libraries/gnustep-base/Versions/1.24/Resources/NSTimeZones/zones -> ../../../../../../../zoneinfo
-# gnustep-base-common, #857153
-install_extra_package gnustep-base-common	tzdata
 
 # /usr/share/bacula-common/dbc_database.conf -> /etc/dbconfig-common/bacula-director-pgsql.conf
 install_extra_package bacula-common-pgsql	bacula-director-pgsql
@@ -127,7 +139,7 @@ install_extra_package gimp-help-common		gimp-help-en
 install_extra_package keyboard-configuration	xkb-data
 
 # /usr/share/doc/libboost1.62-doc/HTML/boost -> ../../../../include/boost
-# libboost1.62-doc: libboost1.62-dev
+# libboost1.XX-doc: Suggests: libboost1.XX-dev
 install_extra_package libboost1.61-doc		libboost1.61-dev
 install_extra_package libboost1.62-doc		libboost1.62-dev
 install_extra_package libboost1.63-doc		libboost1.63-dev
@@ -139,6 +151,19 @@ install_extra_package libembperl-perl		libjs-prototype
 # /usr/share/doc/libgraphicsmagick1-dev/images -> ../graphicsmagick/www/images
 # libgraphicsmagick1-dev: Suggests: graphicsmagick
 install_extra_package libgraphicsmagick1-dev	graphicsmagick
+
+# /usr/share/doc/libjs-sprintf-js/examples/angular.min.js -> ../../../javascript/angular.js/angular.min.js
+# libjs-sprintf-js: Suggests: libjs-angularjs
+install_extra_package libjs-sprintf-js		libjs-angularjs
+
+# /usr/share/doc/libpetsc3.9-dev-examples/include -> ../petsc3.9-doc/include
+# /usr/share/doc/libpetsc3.9-dev-examples/docs -> ../petsc3.9-doc/docs
+# libpetsc3.9-dev-examples: Suggests: petsc3.9-doc
+install_extra_package libpetsc3.9-dev-examples	petsc3.9-doc
+
+# /usr/share/doc/libslepc3.9-dev-examples/examples/docs -> ../../slepc3.9-doc/docs
+# libslepc3.9-dev-examples: Suggests: slepc3.9-doc
+install_extra_package libslepc3.9-dev-examples	slepc3.9-doc
 
 # /usr/share/doc/libvirt-doc/changelog.gz -> ../libvirt0/changelog.gz
 install_extra_package libvirt-doc		libvirt0
@@ -197,9 +222,17 @@ install_extra_package libwildmagic-common	libwildmagic5
 # /usr/share/nginx/modules -> ../../lib/nginx/modules
 install_extra_package nginx-common		libnginx-mod-http-echo
 
+# /usr/bin/vmware-user -> vmware-user-suid-wrapper
+# open-vm-tools Suggests: open-vm-tools-desktop
+install_extra_package open-vm-tools		open-vm-tools-desktop
+
 # /usr/share/org-mode/scripts/ditaa.jar -> ../../ditaa/ditaa.jar
 # org-mode: Suggests: ditaa
 install_extra_package org-mode			ditaa
+
+# /usr/lib/python2.7/dist-packages/Bio/Entrez/DTDs/mathml2.dtd -> ../../../../../../share/xml/schema/w3c/mathml/dtd/mathml2.dtd
+# python-biopython: Suggests: w3-dtd-mathml
+install_extra_package python-biopython		w3-dtd-mathml
 
 # /usr/share/pyshared/MoinMoin/words -> /etc/moin/words
 # /etc/moin/words -> /usr/share/dict/words
@@ -212,6 +245,9 @@ install_extra_package quassel-data		inxi
 # /usr/share/quilt/compat/sendmail -> ../../../sbin/sendmail
 # quilt: Suggests: default-mta | mail-transport-agent
 install_extra_package quilt			nullmailer
+
+# /usr/share/syslinux/themes/debian-wheezy/???linux/*.c32
+install_extra_package syslinux-themes-debian-wheezy	syslinux-common
 
 # /usr/share/tuxpaint/fonts/locale/zh_TW.ttf -> ../../../fonts/truetype/arphic/uming.ttc
 # /usr/share/tuxpaint/fonts/locale/zh_CN.ttf -> ../../../fonts/truetype/arphic-gbsn00lp/gbsn00lp.ttf
@@ -266,6 +302,11 @@ create_extra_dir()
 	fi
 }
 
+# /etc/motd.d/cockpit -> /run/cockpit/motd
+# /etc/issue.d/cockpit.issue -> /run/cockpit/motd
+create_extra_dir cockpit-ws			/run/cockpit
+create_extra_file cockpit-ws			/run/cockpit/motd
+
 # /etc/lprng/printcap -> ../printcap
 create_extra_file lprng				/etc/printcap
 
@@ -294,6 +335,10 @@ create_extra_file rust-gdb			/usr/share/man/man1/gdb.1.gz
 # /var/lib/otrs/run -> /run/otrs
 create_extra_file otrs2				/etc/otrs/Kernel/Config/GenericAgent.pm
 create_extra_dir otrs2				/run/otrs
+
+# /usr/share/texlive/texmf-dist/tex/latex/pdfx/sRGB_IEC61966-2-1_black_scaled.icc -> ../../../../../color/icc/sRGB_IEC61966-2-1_black_scaled.icc
+# sRGB_IEC61966-2-1_black_scaled.icc is provided by icc-profiles in non-free (#880363)
+create_extra_file texlive-latex-extra		/usr/share/color/icc/sRGB_IEC61966-2-1_black_scaled.icc
 
 # /usr/share/uim/loader.scm -> /var/lib/uim/loader.scm
 # /usr/share/uim/installed-modules.scm -> /var/lib/uim/installed-modules.scm
