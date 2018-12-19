@@ -155,7 +155,7 @@ sections =
 	stretch3buster-rcmd_i386/main
 	stretch2buster-iri/main
 	stretch2bpo2buster/main
-	jessie2proposed/main
+	jessie2lts/main
 	jessie2stretch/main
 	jessie3stretch/main
 	jessie2stretch_i386/main
@@ -221,7 +221,7 @@ sections =
 	stretch3buster-rcmd_i386/contrib
 	stretch2buster-iri/contrib
 	stretch2bpo2buster/contrib
-	jessie2proposed/contrib
+	jessie2lts/contrib
 	jessie2stretch/contrib
 	jessie3stretch/contrib
 	jessie2stretch_i386/contrib
@@ -287,7 +287,7 @@ sections =
 	stretch3buster-rcmd_i386/non-free
 	stretch2buster-iri/non-free
 	stretch2bpo2buster/non-free
-	jessie2proposed/non-free
+	jessie2lts/non-free
 	jessie2stretch/non-free
 	jessie3stretch/non-free
 	jessie2stretch_i386/non-free
@@ -3184,7 +3184,7 @@ upgrade-test-distros = wheezy jessie stretch testing
 reschedule-old-count = 100
 
 
-[jessie2proposed/main]
+[jessie2lts/main]
 precedence = 60
 piuparts-flags =
 	%(flags-default)s
@@ -3195,31 +3195,31 @@ arch = amd64
 area = main
 components = main
 distro = jessie
-upgrade-test-distros = jessie jessie-proposed
+upgrade-test-distros = jessie jessie-lts
 
-[jessie2proposed/contrib]
+[jessie2lts/contrib]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
-depends-sections = jessie2proposed/main jessie2proposed/non-free
+depends-sections = jessie2lts/main jessie2lts/non-free
 arch = amd64
 area = contrib
 distro = jessie
-upgrade-test-distros = jessie jessie-proposed
+upgrade-test-distros = jessie jessie-lts
 
-[jessie2proposed/non-free]
+[jessie2lts/non-free]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
-depends-sections = jessie2proposed/main jessie2proposed/contrib
+depends-sections = jessie2lts/main jessie2lts/contrib
 arch = amd64
 area = non-free
 distro = jessie
-upgrade-test-distros = jessie jessie-proposed
+upgrade-test-distros = jessie jessie-lts
 
 
 [jessie2stretch/main]
