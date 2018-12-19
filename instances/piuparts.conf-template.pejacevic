@@ -682,7 +682,7 @@ piuparts-flags =
 	%(flags-end-jessie)s
 depends-sections = wheezy
 distro = wheezy-backports
-upgrade-test-distros = wheezy wheezy-backports jessie
+upgrade-test-distros = wheezy wheezy-backports jessie-lts
 
 
 [wheezy]
