@@ -15,6 +15,9 @@ piuparts (0.96) UNRELEASED; urgency=medium
       normalizing the file to match fresh installations.  (Closes: #889852)
   * scripts-broken-symlinks: Unbreak more symlinks.
 
+  [ Holger Levsen ]
+  * Bump standards version to 4.3.0, no changes needed.
+
  -- Holger Levsen <holger@debian.org>  Sun, 09 Dec 2018 22:29:43 +0100
 
 piuparts (0.95) unstable; urgency=medium

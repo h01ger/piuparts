@@ -4,7 +4,7 @@ Uploaders:
  Holger Levsen <holger@debian.org>
 Section: devel
 Priority: optional
-Standards-Version: 4.2.1
+Standards-Version: 4.3.0
 Rules-Requires-Root: no
 Build-Depends:
  asciidoc,
