@@ -18,6 +18,7 @@ piuparts (0.96) UNRELEASED; urgency=medium
   [ Holger Levsen ]
   * master-bin/detect_piuparts_issues: ignore files which vanish during run.
   * Bump standards version to 4.3.0, no changes needed.
+  * d/copyright: update years.
 
  -- Holger Levsen <holger@debian.org>  Sun, 09 Dec 2018 22:29:43 +0100
 
