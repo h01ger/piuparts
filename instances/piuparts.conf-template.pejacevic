@@ -304,7 +304,6 @@ reschedule-old-days = 66
 
 [sid-strict]
 precedence = 5
-json-sections = none
 description = + Fails if there are leftover files after purge.
 piuparts-flags =
 	--install-remove-install
