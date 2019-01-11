@@ -38,7 +38,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      You can talk to us on #debian-qa on irc.debian.org (OFTC) or send an email on the <a href="https://lists.alioth.debian.org/mailman/listinfo/piuparts-devel" target="_blank">piuparts development mailinglist</a>. The best ways to <a href="https://salsa.debian.org/debian/piuparts/blob/develop/CONTRIBUTING">contribute</a> are to provide patches via GIT pull requests and/or to file bugs based on piuparts runs.
+      The preferred method to reach us is via an email to the <a href="https://lists.alioth.debian.org/mailman/listinfo/piuparts-devel" target="_blank">piuparts development mailinglist</a>. Good ways to <a href="https://salsa.debian.org/debian/piuparts/blob/develop/CONTRIBUTING">contribute</a> are to provide patches via GIT pull requests and/or to file bugs based on piuparts runs.
      </td>
     </tr>
     <tr class="normalrow">
