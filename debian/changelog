@@ -22,7 +22,7 @@ piuparts (0.96) UNRELEASED; urgency=medium
   * Bump standards version to 4.3.0, no changes needed.
   * d/copyright: update years.
   * htdocs/index.tpl: stop referring people to the #debian-qa IRC channel, we
-    really prefer mails nowadays.
+    really prefer mail nowadays.
 
  -- Holger Levsen <holger@debian.org>  Sun, 09 Dec 2018 22:29:43 +0100
 
