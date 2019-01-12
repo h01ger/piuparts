@@ -16,8 +16,9 @@ piuparts (0.96) UNRELEASED; urgency=medium
    (see #918379)
 
   [ Holger Levsen ]
-  * instances/piuparts.conf-template.pejacevic: include sid-strict into json
-    outputs.
+  * instances/piuparts.conf-template.pejacevic:
+    - include sid-strict into json outputs.
+    - improve sid-strict description. Closes: #918379
   * master-bin/detect_piuparts_issues: ignore files which vanish during run.
   * Bump standards version to 4.3.0, no changes needed.
   * d/copyright: update years.

@@ -304,7 +304,7 @@ reschedule-old-days = 66
 
 [sid-strict]
 precedence = 5
-description = + Fails if there are leftover files after purge.
+description = + Followed by another installation test. Also fails if there are leftover files after purge.
 piuparts-flags =
 	--install-remove-install
 	%(flags-leftovers)s
