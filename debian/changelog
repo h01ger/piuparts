@@ -1,6 +1,8 @@
-piuparts (0.96) UNRELEASED; urgency=medium
+piuparts (0.96) unstable; urgency=medium
 
   [ Andreas Beckmann ]
+  * bug-templates: Raise severity of "fails to purge" errors to serious.
+   (see #918379)
   * distros.conf: Add jessie-lts as a full distro.
   * piuparts.conf:
     - Use jessie-lts as upgrade target and rename section
@@ -12,20 +14,18 @@ piuparts (0.96) UNRELEASED; urgency=medium
     - Handle /etc/ca-certificates.conf stretch -> buster upgrade by
       normalizing the file to match fresh installations.  (Closes: #889852)
   * scripts-broken-symlinks: Unbreak more symlinks.
-  * bug-templates: Raise severity of "fails to purge" errors to serious.
-   (see #918379)
 
   [ Holger Levsen ]
+  * htdocs/index.tpl: stop referring people to the #debian-qa IRC channel, we
+    really prefer mail nowadays.
   * instances/piuparts.conf-template.pejacevic:
     - include sid-strict into json outputs.
     - improve sid-strict description. Closes: #918379
   * master-bin/detect_piuparts_issues: ignore files which vanish during run.
   * Bump standards version to 4.3.0, no changes needed.
   * d/copyright: update years.
-  * htdocs/index.tpl: stop referring people to the #debian-qa IRC channel, we
-    really prefer mail nowadays.
 
- -- Holger Levsen <holger@debian.org>  Sun, 09 Dec 2018 22:29:43 +0100
+ -- Holger Levsen <holger@debian.org>  Sun, 13 Jan 2019 16:56:06 +0100
 
 piuparts (0.95) unstable; urgency=medium
 
