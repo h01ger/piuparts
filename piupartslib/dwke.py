@@ -34,6 +34,8 @@ LOG_EXT = '.log'
 class Problem():
 
     """ Encapsulate a particular known problem """
+    required_tags = ["PATTERN", "WHERE", "ISSUE", "HEADER", "HELPTEXT"]
+    optional_tags = ["EXCLUDE_PATTERN", "EXPLAIN", "PRIORITY"]
 
     def __init__(self, probpath):
         """probpath is the path to the problem definition file"""
@@ -43,10 +45,6 @@ class Problem():
         self.short_name = os.path.splitext(self.name)[0]
 
         self.tags_are_valid = True
-
-        self.required_tags = ["PATTERN", "WHERE", "ISSUE",
-                              "HEADER", "HELPTEXT"]
-        self.optional_tags = ["EXCLUDE_PATTERN", "EXPLAIN", "PRIORITY"]
 
         self.init_problem()
 
@@ -194,22 +192,19 @@ def get_file_dict(workdirs, ext):
     """For files in [workdirs] with extension 'ext', create a dict of
        <pkgname>_<version>: <path>"""
 
-    filedict = {}
-
-    for dir in workdirs:
-        for fl in os.listdir(dir):
-            if os.path.splitext(fl)[1] == ext:
-                filedict[os.path.splitext(os.path.basename(fl))[0]] \
-                    = os.path.join(dir, fl)
-
-    return filedict
+    return {os.path.splitext(os.path.basename(fl))[0]: os.path.join(d, fl)
+            for d in workdirs
+            for fl in os.listdir(d)
+            if os.path.splitext(fl)[1] == ext}
 
 
 def create_problem_list(pdir):
 
     plist = []
+    pdir_list = os.listdir(pdir)
+    pdir_list.sort()
 
-    for pfile in [x for x in sorted(os.listdir(pdir)) if x.endswith(".conf")]:
+    for pfile in [x for x in pdir_list if x.endswith(".conf")]:
         prob = Problem(os.path.join(pdir, pfile))
 
         if prob.valid():
