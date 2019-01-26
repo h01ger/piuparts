@@ -22,7 +22,7 @@
 
 Lars Wirzenius <liw@iki.fi>
 """
-
+from __future__ import print_function  # Requires Py 2.6 or later
 
 import os
 import sys
@@ -115,15 +115,15 @@ def alarm_handler(signum, frame):
 def sigint_handler(signum, frame):
     global interrupted
     interrupted = True
-    print '\nSlave interrupted by the user, waiting for the current test to finish.'
-    print 'Press Ctrl-C again to abort now.'
+    print('\nSlave interrupted by the user, waiting for the current test to finish.')
+    print('Press Ctrl-C again to abort now.')
     signal(SIGINT, old_sigint_handler)
 
 
 def sighup_handler(signum, frame):
     global got_sighup
     got_sighup = True
-    print 'SIGHUP: Will flush finished logs.'
+    print('SIGHUP: Will flush finished logs.')
 
 
 class MasterIsBusy(Exception):
@@ -820,7 +820,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
             stdout, stderr = ps.communicate()
             pids.extend([int(pid) for pid in stdout.split()])
         if p.poll() is None:
-            print 'Sending SIGINT...'
+            print('Sending SIGINT...')
             try:
                 os.killpg(os.getpgid(p.pid), SIGINT)
             except OSError:
@@ -831,7 +831,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
                 if p.poll() is not None:
                     break
         if p.poll() is None:
-            print 'Sending SIGTERM...'
+            print('Sending SIGTERM...')
             p.terminate()
             # piuparts has 5 seconds to clean up after SIGTERM
             for i in range(10):
@@ -839,13 +839,13 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
                 if p.poll() is not None:
                     break
         if p.poll() is None:
-            print 'Sending SIGKILL...'
+            print('Sending SIGKILL...')
             p.kill()
         for pid in pids:
             if pid > 0:
                 try:
                     os.kill(pid, SIGKILL)
-                    print "Killed %d" % pid
+                    print("Killed %d" % pid)
                 except OSError:
                     pass
 
@@ -864,11 +864,11 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
         terminate_subprocess(p, kill_all)
         return -1, stdout
     except KeyboardInterrupt:
-        print '\nSlave interrupted by the user, cleaning up...'
+        print('\nSlave interrupted by the user, cleaning up...')
         try:
             terminate_subprocess(p, kill_all)
         except KeyboardInterrupt:
-            print '\nTerminating piuparts was interrupted... manual cleanup still neccessary.'
+            print('\nTerminating piuparts was interrupted... manual cleanup still neccessary.')
             raise
         raise
 
@@ -1002,8 +1002,8 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print ''
-        print 'Slave interrupted by the user, exiting...'
+        print('')
+        print('Slave interrupted by the user, exiting...')
         sys.exit(1)
 
 # vi:set et ts=4 sw=4 :

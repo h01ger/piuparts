@@ -29,7 +29,7 @@ headers of the log in ./fail to the one in ./bugged and vice versa. It will then
 move the failed log to ./bugged as well.
 
 """
-
+from __future__ import print_function  # Requires Py 2.6 or later
 
 import os
 import sys
@@ -311,7 +311,7 @@ def mark_logs_with_reported_bugs():
             raise
         except:
             print('ERROR processing %s' % failed_log)
-            print sys.exc_info()[0]
+            print(sys.exc_info()[0])
         alarm(0)
 
 

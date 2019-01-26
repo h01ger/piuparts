@@ -78,7 +78,7 @@
 #
 # The global file also includes an 'overall' json-section, which contains
 # the 'worst' result across the other json-sections.
-
+from __future__ import print_function  # Requires Py 2.6 or later
 
 import json
 import datetime
@@ -240,4 +240,4 @@ if __name__ == '__main__':
     for pkg in summary['packages']:
         flag, blocked, url = summary['packages'][pkg][DEFSEC]
 
-        print pkg, flag, url, tooltip(summary, pkg)
+        print(pkg, flag, url, tooltip(summary, pkg))

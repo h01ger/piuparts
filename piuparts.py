@@ -30,7 +30,7 @@ more usage information.
 
 Lars Wirzenius <liw@iki.fi>
 """
-
+from __future__ import print_function  # Requires Py 2.6 or later
 
 VERSION = "__PIUPARTS_VERSION__"
 
@@ -3175,7 +3175,7 @@ def main():
 
     # check if user has root privileges
     if os.getuid():
-        print 'You need to be root to use piuparts.'
+        print('You need to be root to use piuparts.')
         sys.exit(1)
 
     logging.info("-" * 78)
@@ -3230,18 +3230,18 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print ''
-        print 'Piuparts interrupted by the user, exiting...'
+        print('')
+        print('Piuparts interrupted by the user, exiting...')
         panic(1)
         sys.exit(1)
     except SystemExit:
         raise
     except:
-        print ''
-        print 'Piuparts caught exception, exiting...'
-        print '-'*60
+        print('')
+        print('Piuparts caught exception, exiting...')
+        print('-'*60)
         traceback.print_exc(file=sys.stdout)
-        print '-'*60
+        print('-'*60)
         panic(1)
         raise
 

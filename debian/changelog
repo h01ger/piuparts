@@ -1,6 +1,8 @@
 piuparts (0.97) UNRELEASED; urgency=medium
 
-  * ... 
+  [ Herbert Fortes ]
+  * piuparts.py, piuparts-slave.py, piupartslib/pkgsummary.py and
+    piuparts-analyze.py: add '()' to print. Py2 and Py3 compatible.
 
  -- Holger Levsen <holger@debian.org>  Sun, 13 Jan 2019 16:58:44 +0100
 
