@@ -22,7 +22,7 @@
 
 Lars Wirzenius <liw@iki.fi>
 """
-from __future__ import print_function  # Requires Py 2.6 or later
+from __future__ import print_function
 
 import os
 import sys

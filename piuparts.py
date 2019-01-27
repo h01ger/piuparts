@@ -30,7 +30,7 @@ more usage information.
 
 Lars Wirzenius <liw@iki.fi>
 """
-from __future__ import print_function  # Requires Py 2.6 or later
+from __future__ import print_function
 
 VERSION = "__PIUPARTS_VERSION__"
 

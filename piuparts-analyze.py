@@ -29,7 +29,7 @@ headers of the log in ./fail to the one in ./bugged and vice versa. It will then
 move the failed log to ./bugged as well.
 
 """
-from __future__ import print_function  # Requires Py 2.6 or later
+from __future__ import print_function
 
 import os
 import sys

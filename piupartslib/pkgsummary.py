@@ -78,7 +78,7 @@
 #
 # The global file also includes an 'overall' json-section, which contains
 # the 'worst' result across the other json-sections.
-from __future__ import print_function  # Requires Py 2.6 or later
+from __future__ import print_function
 
 import json
 import datetime
