@@ -253,13 +253,14 @@ def make_kprs(logdict, kprdict, problem_list):
 
             where = get_where(logpath)
 
-            kprs = ""
-            for problem in problem_list:
-                if problem.has_problem(logbody, where):
-                    kprs += "%s/%s.log %s\n" % (where, pkg_spec, problem.name)
+            kprs = ["%s/%s.log %s\n" % (where, pkg_spec, problem.name)
+                    for problem in problem_list
+                    if problem.has_problem(logbody, where)]
 
-            if not where in ['pass'] and not len(kprs):
-                kprs += "%s/%s.log %s\n" % (where, pkg_spec, "unclassified_failures.conf")
+            kprs = ''.join(kprs)
+
+            if where != 'pass' and not kprs:
+                kprs = "%s/%s.log %s\n" % (where, pkg_spec, "unclassified_failures.conf")
 
             with open(get_kpr_path(logpath), 'w') as f:
                 f.write(kprs)
