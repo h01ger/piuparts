@@ -21,6 +21,7 @@ piuparts (0.97) UNRELEASED; urgency=medium
   [ Holger Levsen ]
   * slave_bin: on stop, show what's keeping the slaves busy, to identify
     packages with a very long installation time.
+  * Makefile: include @sbindir@ in placeholder_substitution.
 
  -- Holger Levsen <holger@debian.org>  Sun, 13 Jan 2019 16:58:44 +0100
 

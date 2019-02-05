@@ -30,6 +30,7 @@ define placeholder_substitution
 	-e 's/__PIUPARTS_VERSION__/$(version)/g' \
 	-e 's%@libdir@%$(libdir)%g' \
 	-e 's%@sharedir@%$(sharedir)%g' \
+	-e 's%@sbindir@%$(sbindir)%g' \
 	$< > $@
 endef
 
