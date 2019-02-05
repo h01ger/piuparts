@@ -45,9 +45,12 @@ while pgrep --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave' > /dev/n
 	echo -n "$(date -u +%T) - "
 	pgrep --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave' | xargs -r echo -n "slaves running: "
 	SLEEP=$(( $i * $i ))
-	echo
-	echo "slaves are busy with:"
-	ps fax | grep -v grep | grep '/usr/bin/python @sbindir@/piuparts' | awk '{print $NF}'
+	if [ -n "$BUSY" ] ; then
+		# really/meaningful busy
+		echo
+		echo "slaves are busy with:"
+		BUSY=$(ps fax | grep -v grep | grep '/usr/bin/python @sbindir@/piuparts' | awk '{print $NF}')
+	fi
 	echo -n " sleeping ${SLEEP}sec now..."
 	for j in $(seq 1 $SLEEP) ; do
 		sleep 1
