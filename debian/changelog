@@ -18,6 +18,10 @@ piuparts (0.97) UNRELEASED; urgency=medium
               Save some memory
        - make_kprs function: do not concat str, simplify 'if' statement.
 
+  [ Holger Levsen ]
+  * slave_bin: on stop, show what's keeping the slaves busy, to identify
+    packages with a very long installation time.
+
  -- Holger Levsen <holger@debian.org>  Sun, 13 Jan 2019 16:58:44 +0100
 
 piuparts (0.96) unstable; urgency=medium

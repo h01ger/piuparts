@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# Copyright 2017 Holger Levsen (holger@layer-acht.org)
+# Copyright 2017-2019 Holger Levsen (holger@layer-acht.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -45,6 +45,8 @@ while pgrep --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave' > /dev/n
 	echo -n "$(date -u +%T) - "
 	pgrep --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave' | xargs -r echo -n "slaves running: "
 	SLEEP=$(( $i * $i ))
+	echo "slaves are busy with:"
+	ps fax | grep -v grep | grep '/usr/bin/python @sbindir@/piuparts' | awk '{print $NF}'
 	echo -n " sleeping ${SLEEP}sec now..."
 	for j in $(seq 1 $SLEEP) ; do
 		sleep 1
