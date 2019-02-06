@@ -23,6 +23,10 @@ piuparts (0.97) UNRELEASED; urgency=medium
     packages with a very long installation time.
   * Makefile: include @sbindir@ in placeholder_substitution.
 
+  [ David Steele ]
+  * instances/piuparts.conf-template.pejacevic: Report results of stable2sid
+    to DDPO.
+
  -- Holger Levsen <holger@debian.org>  Sun, 13 Jan 2019 16:58:44 +0100
 
 piuparts (0.96) unstable; urgency=medium
