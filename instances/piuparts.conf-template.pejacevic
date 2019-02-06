@@ -332,7 +332,7 @@ reschedule-old-count = 0
 
 
 [stable2sid]
-precedence = 10
+precedence = 4
 description = + Find possible issues before the package migrates to testing.
 piuparts-flags =
 	%(flags-default)s
@@ -342,7 +342,7 @@ upgrade-test-distros = stable sid
 
 
 [stable22sid]
-precedence = 4
+precedence = 10
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
