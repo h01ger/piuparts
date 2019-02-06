@@ -24,8 +24,10 @@ piuparts (0.97) UNRELEASED; urgency=medium
   * Makefile: include @sbindir@ in placeholder_substitution.
 
   [ David Steele ]
-  * instances/piuparts.conf-template.pejacevic: Report results of stable2sid
-    to DDPO.
+  * instances/piuparts.conf-template.pejacevic:
+    - report results of stable2sid to DDPO.
+    - swap stable2sid and stable22sid priorities, to promote the one reported
+      to DDPO.
 
  -- Holger Levsen <holger@debian.org>  Sun, 13 Jan 2019 16:58:44 +0100
 
