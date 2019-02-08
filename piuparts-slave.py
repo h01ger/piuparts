@@ -84,6 +84,7 @@ class Config(piupartslib.conf.Config):
                                          "master-command": None,
                                          "proxy": None,
                                          "mirror": None,
+                                         "setarch": None,
                                          "piuparts-command": "sudo piuparts",
                                          "piuparts-flags": "",
                                          "tmpdir": None,
@@ -675,7 +676,11 @@ class Section:
 
         distupgrade = len(self._config.get_distros()) > 1
 
-        command = self._config["piuparts-command"].split()
+        command = []
+        if self._config["setarch"]:
+            command.append("setarch")
+            command.extend(self._config["setarch"].split())
+        command.extend(self._config["piuparts-command"].split())
         if self._config["piuparts-flags"]:
             command.extend(self._config["piuparts-flags"].split())
         if "http_proxy" in os.environ:
@@ -880,7 +885,11 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
 
 
 def create_chroot(config, tarball, distro):
-    command = config["piuparts-command"].split()
+    command = []
+    if config["setarch"]:
+        command.append("setarch")
+        command.extend(config["setarch"].split())
+    command.extend(config["piuparts-command"].split())
     if config["piuparts-flags"]:
         command.extend(config["piuparts-flags"].split())
     if "http_proxy" in os.environ:

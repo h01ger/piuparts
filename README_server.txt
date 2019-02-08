@@ -375,6 +375,10 @@ section, too, and will serve as defaults for all other sections
  used for logging stderr output from piuparts-master. This logfile
  will be placed in the 'master-directory' and has the PID appended.
 
+* "setarch" contains arguments for an optional 'setarch' command
+ that can be prepended to the 'piuparts-command'. Recommended value
+ for running 'i386' tests on an 'amd64' host is 'linux32'.
+
 * "piuparts-command" is the command the slave uses to start
  piuparts. It should include 'sudo' if necessary so that piuparts
  runs with sufficient priviledges to do its testing (and that
