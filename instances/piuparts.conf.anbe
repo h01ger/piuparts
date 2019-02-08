@@ -460,6 +460,7 @@ piuparts-flags =
 distro = None
 upgrade-test-distros = sid
 arch = i386
+setarch = linux32
 area = main
 components = main
 # 60*60*24*2
@@ -486,6 +487,7 @@ piuparts-flags =
 distro = None
 upgrade-test-distros = buster
 arch = i386
+setarch = linux32
 area = main
 components = main
 # 60*60*24*7
@@ -512,6 +514,7 @@ piuparts-flags =
 distro = None
 upgrade-test-distros = stretch
 arch = i386
+setarch = linux32
 area = main
 components = main
 # 60*60*24*30
@@ -538,6 +541,7 @@ piuparts-flags =
 distro = None
 upgrade-test-distros = jessie
 arch = i386
+setarch = linux32
 area = main
 components = main
 # 60*60*24*30
@@ -563,6 +567,7 @@ piuparts-flags =
 distro = None
 upgrade-test-distros = wheezy
 arch = i386
+setarch = linux32
 area = main
 components = main
 max-tgz-age = 0
@@ -589,6 +594,7 @@ piuparts-flags =
 distro = None
 upgrade-test-distros = squeeze
 arch = i386
+setarch = linux32
 area = main
 components = main
 max-tgz-age = 0
@@ -615,6 +621,7 @@ piuparts-flags =
 distro = None
 upgrade-test-distros = lenny
 arch = i386
+setarch = linux32
 area = main
 components = main
 max-tgz-age = 0
@@ -664,6 +671,7 @@ piuparts-flags =
 depends-sections = sid-rcmd/main
 distro = experimental
 arch = i386
+setarch = linux32
 area = main
 components = main
 reschedule-old-days = 30
@@ -675,6 +683,7 @@ piuparts-flags =
 depends-sections = experimental_i386/main sid-rcmd/main sid-rcmd/contrib sid-rcmd/non-free
 distro = experimental
 arch = i386
+setarch = linux32
 area = contrib
 reschedule-old-days = 30
 
@@ -685,6 +694,7 @@ piuparts-flags =
 depends-sections = experimental_i386/main sid-rcmd/main sid-rcmd/contrib sid-rcmd/non-free
 distro = experimental
 arch = i386
+setarch = linux32
 area = non-free
 reschedule-old-days = 30
 
@@ -729,6 +739,7 @@ piuparts-flags =
 depends-sections = sid-rcmd/main
 distro = experimental
 arch = i386
+setarch = linux32
 area = main
 components = main
 
@@ -740,6 +751,7 @@ piuparts-flags =
 depends-sections = experimental-bl_i386/main sid-rcmd/main sid-rcmd/contrib sid-rcmd/non-free
 distro = experimental
 arch = i386
+setarch = linux32
 area = contrib
 
 [experimental-bl_i386/non-free]
@@ -750,6 +762,7 @@ piuparts-flags =
 depends-sections = experimental-bl_i386/main sid-rcmd/main sid-rcmd/contrib sid-rcmd/non-free
 distro = experimental
 arch = i386
+setarch = linux32
 area = non-free
 
 
@@ -832,6 +845,7 @@ piuparts-flags =
 	%(flags-default)s
 distro = sid
 arch = i386
+setarch = linux32
 area = main
 components = main
 reschedule-old-days = 60
@@ -845,6 +859,7 @@ piuparts-flags =
 depends-sections = sid-rcmd/main sid-rcmd/non-free
 distro = sid
 arch = i386
+setarch = linux32
 area = contrib
 reschedule-old-days = 60
 
@@ -857,6 +872,7 @@ piuparts-flags =
 depends-sections = sid-rcmd/main sid-rcmd/contrib
 distro = sid
 arch = i386
+setarch = linux32
 area = non-free
 reschedule-old-days = 60
 
@@ -899,6 +915,7 @@ piuparts-flags =
 	%(flags-broken-symlinks)s
 distro = sid
 arch = i386
+setarch = linux32
 area = main
 components = main
 
@@ -910,6 +927,7 @@ piuparts-flags =
 depends-sections = sid-bl_i386/main sid-bl_i386/non-free
 distro = sid
 arch = i386
+setarch = linux32
 area = contrib
 
 [sid-bl_i386/non-free]
@@ -920,6 +938,7 @@ piuparts-flags =
 depends-sections = sid-bl_i386/main sid-bl_i386/contrib
 distro = sid
 arch = i386
+setarch = linux32
 area = non-free
 
 
@@ -965,6 +984,7 @@ piuparts-flags =
 	%(flags-end-testing)s
 distro = testing
 arch = i386
+setarch = linux32
 area = main
 components = main
 
@@ -979,6 +999,7 @@ piuparts-flags =
 depends-sections = testing-rcmd/main testing-rcmd/non-free
 distro = testing
 arch = i386
+setarch = linux32
 area = contrib
 
 [testing-rcmd/non-free]
@@ -992,6 +1013,7 @@ piuparts-flags =
 depends-sections = testing-rcmd/main testing-rcmd/contrib
 distro = testing
 arch = i386
+setarch = linux32
 area = non-free
 
 
@@ -1005,6 +1027,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-no-usr-share-doc
 distro = testing
 arch = i386
+setarch = linux32
 area = main
 components = main
 
@@ -1019,6 +1042,7 @@ piuparts-flags =
 depends-sections = testing-nodocs/main testing-nodocs/non-free
 distro = testing
 arch = i386
+setarch = linux32
 area = contrib
 
 [testing-nodocs/non-free]
@@ -1032,6 +1056,7 @@ piuparts-flags =
 depends-sections = testing-nodocs/main testing-nodocs/contrib
 distro = testing
 arch = i386
+setarch = linux32
 area = non-free
 
 
@@ -1192,6 +1217,7 @@ piuparts-flags =
 	%(flags-end-stretch)s
 distro = stretch
 arch = i386
+setarch = linux32
 area = main
 components = main
 reschedule-old-count = 100
@@ -1207,6 +1233,7 @@ piuparts-flags =
 depends-sections = stretch-rcmd/main stretch-rcmd/non-free
 distro = stretch
 arch = i386
+setarch = linux32
 area = contrib
 
 [stretch-rcmd/non-free]
@@ -1220,6 +1247,7 @@ piuparts-flags =
 depends-sections = stretch-rcmd/main stretch-rcmd/contrib
 distro = stretch
 arch = i386
+setarch = linux32
 area = non-free
 
 
@@ -1484,6 +1512,7 @@ piuparts-flags =
 	%(flags-end-jessie)s
 distro = jessie
 arch = i386
+setarch = linux32
 area = main
 components = main
 reschedule-old-count = 100
@@ -1499,6 +1528,7 @@ piuparts-flags =
 depends-sections = jessie-rcmd/main jessie-rcmd/non-free
 distro = jessie
 arch = i386
+setarch = linux32
 area = contrib
 
 [jessie-rcmd/non-free]
@@ -1512,6 +1542,7 @@ piuparts-flags =
 depends-sections = jessie-rcmd/main jessie-rcmd/contrib
 distro = jessie
 arch = i386
+setarch = linux32
 area = non-free
 
 
@@ -1670,6 +1701,7 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 distro = wheezy
 arch = i386
+setarch = linux32
 area = main
 components = main
 reschedule-old-count = 0
@@ -1685,6 +1717,7 @@ piuparts-flags =
 depends-sections = wheezy-rcmd/main wheezy-rcmd/non-free
 distro = wheezy
 arch = i386
+setarch = linux32
 area = contrib
 reschedule-old-count = 0
 
@@ -1699,6 +1732,7 @@ piuparts-flags =
 depends-sections = wheezy-rcmd/main wheezy-rcmd/contrib
 distro = wheezy
 arch = i386
+setarch = linux32
 area = non-free
 reschedule-old-count = 0
 
@@ -1860,6 +1894,7 @@ piuparts-flags =
 	%(flags-end-squeeze)s
 distro = squeeze
 arch = i386
+setarch = linux32
 area = main
 components = main
 reschedule-old-count = 0
@@ -1873,6 +1908,7 @@ piuparts-flags =
 depends-sections = squeeze_i386/main squeeze_i386/non-free
 distro = squeeze
 arch = i386
+setarch = linux32
 area = contrib
 reschedule-old-count = 0
 
@@ -1885,6 +1921,7 @@ piuparts-flags =
 depends-sections = squeeze_i386/main squeeze_i386/contrib
 distro = squeeze
 arch = i386
+setarch = linux32
 area = non-free
 reschedule-old-count = 0
 
@@ -2048,6 +2085,7 @@ piuparts-flags =
 	%(flags-end-lenny)s
 distro = lenny
 arch = i386
+setarch = linux32
 area = main
 components = main
 reschedule-old-count = 0
@@ -2061,6 +2099,7 @@ piuparts-flags =
 depends-sections = lenny_i386/main lenny_i386/non-free
 distro = lenny
 arch = i386
+setarch = linux32
 area = contrib
 reschedule-old-count = 0
 
@@ -2073,6 +2112,7 @@ piuparts-flags =
 depends-sections = lenny_i386/main lenny_i386/contrib
 distro = lenny
 arch = i386
+setarch = linux32
 area = non-free
 reschedule-old-count = 0
 
@@ -2221,6 +2261,7 @@ piuparts-flags =
 	%(flags-start-lenny)s
 	%(flags-end-testing)s
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = lenny
@@ -2237,6 +2278,7 @@ piuparts-flags =
 	%(flags-end-testing)s
 depends-sections = lenny222testing_i386/main lenny222testing_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = lenny
 upgrade-test-distros = lenny squeeze wheezy jessie stretch testing
@@ -2250,6 +2292,7 @@ piuparts-flags =
 	%(flags-end-testing)s
 depends-sections = lenny222testing_i386/main lenny222testing_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = lenny
 upgrade-test-distros = lenny squeeze wheezy jessie stretch testing
@@ -2266,6 +2309,7 @@ piuparts-flags =
 depends-sections = squeeze/main
 distro = squeeze-lts
 arch = i386
+setarch = linux32
 area = main
 components = main
 upgrade-test-distros = squeeze squeeze-lts wheezy
@@ -2281,6 +2325,7 @@ piuparts-flags =
 depends-sections = squeeze/main squeeze2lts2wheezy/main squeeze2lts2wheezy/non-free
 distro = squeeze-lts
 arch = i386
+setarch = linux32
 area = contrib
 upgrade-test-distros = squeeze squeeze-lts wheezy
 reschedule-old-count = 0
@@ -2295,6 +2340,7 @@ piuparts-flags =
 depends-sections = squeeze/main squeeze2lts2wheezy/main squeeze2lts2wheezy/contrib
 distro = squeeze-lts
 arch = i386
+setarch = linux32
 area = non-free
 upgrade-test-distros = squeeze squeeze-lts wheezy
 reschedule-old-count = 0
@@ -2390,6 +2436,7 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = squeeze
@@ -2404,6 +2451,7 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = squeeze2wheezy_i386/main squeeze2wheezy_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
@@ -2417,6 +2465,7 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = squeeze2wheezy_i386/main squeeze2wheezy_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
@@ -2479,6 +2528,7 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = squeeze
@@ -2494,6 +2544,7 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = squeeze2wheezy-rcmd_i386/main squeeze2wheezy-rcmd_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
@@ -2508,6 +2559,7 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = squeeze2wheezy-rcmd_i386/main squeeze2wheezy-rcmd_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = squeeze
 upgrade-test-distros = squeeze wheezy
@@ -2605,6 +2657,7 @@ piuparts-flags =
 	%(flags-start-squeeze)s
 	%(flags-end-testing)s
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = squeeze
@@ -2619,6 +2672,7 @@ piuparts-flags =
 	%(flags-end-testing)s
 depends-sections = squeeze222testing_i386/main squeeze222testing_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = squeeze
 upgrade-test-distros = squeeze wheezy jessie stretch testing
@@ -2632,6 +2686,7 @@ piuparts-flags =
 	%(flags-end-testing)s
 depends-sections = squeeze222testing_i386/main squeeze222testing_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = squeeze
 upgrade-test-distros = squeeze wheezy jessie stretch testing
@@ -2727,6 +2782,7 @@ piuparts-flags =
 	%(flags-end-jessie)s
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = wheezy
@@ -2741,6 +2797,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = wheezy2jessie_i386/main wheezy2jessie_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = wheezy
 upgrade-test-distros = wheezy jessie
@@ -2754,6 +2811,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = wheezy2jessie_i386/main wheezy2jessie_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy jessie
@@ -2819,6 +2877,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = wheezy
@@ -2836,6 +2895,7 @@ piuparts-flags =
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd_i386/main wheezy2jessie-rcmd_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = wheezy
 upgrade-test-distros = wheezy jessie
@@ -2852,6 +2912,7 @@ piuparts-flags =
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd_i386/main wheezy2jessie-rcmd_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy jessie
@@ -3083,6 +3144,7 @@ piuparts-flags =
 	%(flags-start-wheezy)s
 	%(flags-end-testing)s
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = wheezy
@@ -3097,6 +3159,7 @@ piuparts-flags =
 	%(flags-end-testing)s
 depends-sections = wheezy222testing_i386/main wheezy222testing_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = wheezy
 upgrade-test-distros = wheezy jessie stretch testing
@@ -3110,6 +3173,7 @@ piuparts-flags =
 	%(flags-end-testing)s
 depends-sections = wheezy222testing_i386/main wheezy222testing_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = wheezy
 upgrade-test-distros = wheezy jessie stretch testing
@@ -3251,6 +3315,7 @@ piuparts-flags =
 	%(flags-end-stretch)s
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = jessie
@@ -3265,6 +3330,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch_i386/main jessie2stretch_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = jessie
 upgrade-test-distros = jessie stretch
@@ -3278,6 +3344,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch_i386/main jessie2stretch_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = jessie
 upgrade-test-distros = jessie stretch
@@ -3293,6 +3360,7 @@ piuparts-flags =
 	%(flags-end-stretch)s
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = jessie
@@ -3310,6 +3378,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch_i386/main jessie3stretch_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = jessie
 upgrade-test-distros = jessie stretch
@@ -3326,6 +3395,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch_i386/main jessie3stretch_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = jessie
 upgrade-test-distros = jessie stretch
@@ -3440,6 +3510,7 @@ piuparts-flags =
 	%(flags-end-stretch)s
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = jessie
@@ -3456,6 +3527,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch-rcmd_i386/main jessie2stretch-rcmd_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = jessie
 upgrade-test-distros = jessie stretch
@@ -3471,6 +3543,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch-rcmd_i386/main jessie2stretch-rcmd_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = jessie
 upgrade-test-distros = jessie stretch
@@ -3487,6 +3560,7 @@ piuparts-flags =
 	%(flags-end-stretch)s
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = jessie
@@ -3505,6 +3579,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch-rcmd_i386/main jessie3stretch-rcmd_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = jessie
 upgrade-test-distros = jessie stretch
@@ -3522,6 +3597,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch-rcmd_i386/main jessie3stretch-rcmd_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = jessie
 upgrade-test-distros = jessie stretch
@@ -3659,6 +3735,7 @@ piuparts-flags =
 	%(flags-start-jessie)s
 	%(flags-end-testing)s
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = jessie
@@ -3673,6 +3750,7 @@ piuparts-flags =
 	%(flags-end-testing)s
 depends-sections = jessie222testing_i386/main jessie222testing_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = jessie
 upgrade-test-distros = jessie stretch testing
@@ -3686,6 +3764,7 @@ piuparts-flags =
 	%(flags-end-testing)s
 depends-sections = jessie222testing_i386/main jessie222testing_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = jessie
 upgrade-test-distros = jessie stretch testing
@@ -3827,6 +3906,7 @@ piuparts-flags =
 	%(flags-end-buster)s
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = stretch
@@ -3841,6 +3921,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = stretch2buster_i386/main stretch2buster_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = stretch
 upgrade-test-distros = stretch buster
@@ -3854,6 +3935,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = stretch2buster_i386/main stretch2buster_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = stretch
 upgrade-test-distros = stretch buster
@@ -3869,6 +3951,7 @@ piuparts-flags =
 	%(flags-end-buster)s
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = stretch
@@ -3886,6 +3969,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = stretch3buster_i386/main stretch3buster_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = stretch
 upgrade-test-distros = stretch buster
@@ -3902,6 +3986,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = stretch3buster_i386/main stretch3buster_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = stretch
 upgrade-test-distros = stretch buster
@@ -4013,6 +4098,7 @@ piuparts-flags =
 	%(flags-end-buster)s
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = stretch
@@ -4029,6 +4115,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = stretch2buster-rcmd_i386/main stretch2buster-rcmd_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = stretch
 upgrade-test-distros = stretch buster
@@ -4044,6 +4131,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = stretch2buster-rcmd_i386/main stretch2buster-rcmd_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = stretch
 upgrade-test-distros = stretch buster
@@ -4061,6 +4149,7 @@ piuparts-flags =
 	%(flags-end-buster)s
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
+setarch = linux32
 area = main
 components = main
 distro = stretch
@@ -4080,6 +4169,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = stretch3buster-rcmd_i386/main stretch3buster-rcmd_i386/non-free
 arch = i386
+setarch = linux32
 area = contrib
 distro = stretch
 upgrade-test-distros = stretch buster
@@ -4098,6 +4188,7 @@ piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = stretch3buster-rcmd_i386/main stretch3buster-rcmd_i386/contrib
 arch = i386
+setarch = linux32
 area = non-free
 distro = stretch
 upgrade-test-distros = stretch buster
