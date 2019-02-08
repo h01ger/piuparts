@@ -27,7 +27,7 @@ get_config_value URLBASE global urlbase https://piuparts.debian.org
 get_config_value DAYS global reschedule-untestable-days 7
 
 ISSUE_LOG="$MASTER/archive_issues.txt"
-LOG_OUTPUT=`mktemp`
+LOG_OUTPUT=$(mktemp)
 LOG_PREFIX=$(mktemp)
 
 STARTDATE=$(date -u +%s)
@@ -36,8 +36,8 @@ STARTDATE=$(date -u +%s)
 # detect packages which are/were untestable due to archive issue and mark them as such
 #
 
-LOGS=`mktemp`
-URLS=`mktemp`
+LOGS=$(mktemp)
+URLS=$(mktemp)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 	URL_SED="s#$MASTER/$SECTION/fail#$URLBASE/$SECTION/untestable#"

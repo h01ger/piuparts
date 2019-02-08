@@ -65,7 +65,7 @@ add_pattern "ERROR: Command failed \(status=-7\):.*'apt-get', 'update'"
 add_pattern 'Package .* .* not found in .*, .* is available'
 add_pattern "AppStream system cache was updated, but problems were found: Metadata files have errors"
 
-FILE=`mktemp`
+FILE=$(mktemp)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 	for subdir in fail bugged affected untestable ; do

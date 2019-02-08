@@ -33,7 +33,7 @@ LOG_PREFIX=$(mktemp)
 # find packages which have been in untestable for more than $DAYS days and reschedule them for testing
 #
 
-LOGS=`mktemp`
+LOGS=$(mktemp)
 for SECTION in $SECTIONS ; do
 	# only act on sections with precedence < 100
 	get_config_value PRECEDENCE $SECTION precedence 1

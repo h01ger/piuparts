@@ -28,7 +28,7 @@ get_config_value HTDOCS global output-directory
 #
 
 DAYS=1
-LOGS=`mktemp`
+LOGS=$(mktemp)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION/reserved || continue
 	find $MASTER/$SECTION/reserved/ -mtime +$DAYS -name "*.log" 2>/dev/null >> $LOGS

@@ -87,7 +87,7 @@ add_pattern "^NameError:"
 add_pattern "^OSError:"
 add_pattern "^SyntaxError:"
 
-FILE=`mktemp`
+FILE=$(mktemp)
 for SECTION in $SECTIONS ; do
 	test -d $MASTER/$SECTION || continue
 	for subdir in fail bugged affected ; do
