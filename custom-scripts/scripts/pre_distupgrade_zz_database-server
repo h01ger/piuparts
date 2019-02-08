@@ -38,6 +38,28 @@ case "$PIUPARTS_DISTRIBUTION_NEXT" in
 		;;
 esac
 
+case "$PIUPARTS_DISTRIBUTION_NEXT" in
+	wheezy)
+		CANDIDATES="$CANDIDATES mysql-server-5.5"
+		CANDIDATES="$CANDIDATES postgresql-9.1"
+		;;
+	jessie)
+		CANDIDATES="$CANDIDATES mysql-server-5.5"
+		CANDIDATES="$CANDIDATES mariadb-server-10.0"
+		CANDIDATES="$CANDIDATES postgresql-9.4"
+		;;
+	stretch)
+		CANDIDATES="$CANDIDATES mariadb-server-10.1"
+		CANDIDATES="$CANDIDATES postgresql-9.6"
+		;;
+	buster)
+		CANDIDATES="$CANDIDATES mariadb-server-10.3"
+		CANDIDATES="$CANDIDATES postgresql-11"
+		;;
+esac
+
+
+
 PACKAGES=
 RETRY="false"
 
