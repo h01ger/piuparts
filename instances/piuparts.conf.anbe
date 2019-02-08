@@ -80,6 +80,8 @@ flags-broken-symlinks =
 	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26231/exe
 	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26231/ns/mnt
 	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26231/ns/net
+	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26232/cwd
+	-i :/usr/share/gocode/src/github.com/prometheus/procfs/fixtures/26232/root
 # ignore broken symlinks
 	-i :/etc/systemd/system/display-manager.service
 #   civicrm-common, #857601, wontfix, /usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf -> ../../../../local/open-flash-chart.swf
@@ -87,6 +89,10 @@ flags-broken-symlinks =
 #   musescore-common, #910145, wontfix, /usr/share/mscore-2.3/sound/{sf2,sfz} -> ../../sounds/{sf2,sfz}
 	-i :/usr/share/mscore-2.3/sound/sf2
 	-i :/usr/share/mscore-2.3/sound/sfz
+	-i :/usr/share/mscore-3.0/sound/sf2
+	-i :/usr/share/mscore-3.0/sound/sfz
+#   mender-client, #915680, /var/lib/mender -> /data/mender
+	-i :/var/lib/mender
 # ignore broken symlinks (patterns)
 	-I :/etc/.*/supervise
 	-I /usr/include/python2\.7_d/.*\.h
@@ -96,6 +102,7 @@ flags-broken-symlinks =
 	-I :/usr/share/doc/kde/HTML/.*/common
 	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
 # ignore broken symlinks (third party game data)
+	-I :/usr/lib/openjk/JediAcademy/base/assets.\.pk3
 	-I :/usr/lib/rtcw/main/.*\.(cfg|pk3)
 
 [global]

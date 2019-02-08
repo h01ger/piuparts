@@ -80,13 +80,13 @@ install_extra_package qflow			netgen-lvs
 # ruby-psych: Suggests: libpsych-java
 install_extra_package ruby-psych		libpsych-java
 
-# /usr/lib/slepcdir/slepc3.9/x86_64-linux-gnu-complex/share/slepc/datafiles -> ../../../../../../share/doc/libslepc3.9-dev-examples/datafiles
-# libslepc-complex3.9-dev: Suggests: libslepc3.9-dev-examples, slepc3.9-doc
-install_extra_package libslepc-complex3.9-dev	libslepc3.9-dev-examples slepc3.9-doc
+# /usr/lib/slepcdir/slepc3.10/x86_64-linux-gnu-complex/share/slepc/datafiles -> ../../../../../../share/doc/libslepc3.10-dev-examples/datafiles
+# libslepc-complex3.10-dev: Suggests: libslepc3.10-dev-examples
+install_extra_package libslepc-complex3.10-dev	libslepc3.10-dev-examples slepc3.10-doc
 
-# /usr/lib/slepcdir/slepc3.9/x86_64-linux-gnu-real/share/slepc/datafiles -> ../../../../../../share/doc/libslepc3.9-dev-examples/datafiles
-# libslepc-real3.9-dev: Suggests: libslepc3.9-dev-examples, slepc3.9-doc
-install_extra_package libslepc-real3.9-dev	libslepc3.9-dev-examples slepc3.9-doc
+# /usr/lib/slepcdir/slepc3.10/x86_64-linux-gnu-real/share/slepc/datafiles -> ../../../../../../share/doc/libslepc3.10-dev-examples/datafiles
+# libslepc-real3.10-dev: Suggests: libslepc3.10-dev-examples
+install_extra_package libslepc-real3.10-dev	libslepc3.10-dev-examples slepc3.10-doc
 
 # /usr/lib/wml/exec/wml_aux_weblint -> ../../../bin/weblint
 # /usr/lib/wml/exec/wml_aux_freetable -> ../../../bin/freetable
@@ -152,24 +152,34 @@ install_extra_package libembperl-perl		libjs-prototype
 # libgraphicsmagick1-dev: Suggests: graphicsmagick
 install_extra_package libgraphicsmagick1-dev	graphicsmagick
 
+# /usr/share/doc/libjs-mocha/example/chai.js -> ../../../javascript/chai/chai.js
+# libjs-mocha: Suggests: libjs-chai
+install_extra_package libjs-mocha		libjs-chai
+
 # /usr/share/doc/libjs-sprintf-js/examples/angular.min.js -> ../../../javascript/angular.js/angular.min.js
 # libjs-sprintf-js: Suggests: libjs-angularjs
 install_extra_package libjs-sprintf-js		libjs-angularjs
 
-# /usr/share/doc/libpetsc3.9-dev-examples/include -> ../petsc3.9-doc/include
-# /usr/share/doc/libpetsc3.9-dev-examples/docs -> ../petsc3.9-doc/docs
-# libpetsc3.9-dev-examples: Suggests: petsc3.9-doc
-install_extra_package libpetsc3.9-dev-examples	petsc3.9-doc
+# /usr/share/doc/libpetsc3.10-dev-examples/docs -> ../petsc3.10-doc/docs (libpetsc3.10-dev-examples)
+# /usr/share/doc/libpetsc3.10-dev-examples/include -> ../petsc3.10-doc/include (libpetsc3.10-dev-examples)
+# libpetsc3.10-dev-examples: Suggests: petsc3.10-doc
+install_extra_package libpetsc3.10-dev-examples	petsc3.10-doc
 
-# /usr/share/doc/libslepc3.9-dev-examples/examples/docs -> ../../slepc3.9-doc/docs
-# libslepc3.9-dev-examples: Suggests: slepc3.9-doc
-install_extra_package libslepc3.9-dev-examples	slepc3.9-doc
+# /usr/share/doc/libslepc3.10-dev-examples/examples/docs -> ../../slepc3.10-doc/docs
+# libslepc3.10-dev-examples: Suggests: slepc3.10-doc
+install_extra_package libslepc3.10-dev-examples	slepc3.10-doc
 
 # /usr/share/doc/libvirt-doc/changelog.gz -> ../libvirt0/changelog.gz
 install_extra_package libvirt-doc		libvirt0
 
 # /usr/share/doc/mkvtoolnix/README.source -> ../quilt/README.source
 install_extra_package mkvtoolnix		quilt nullmailer
+
+# /usr/share/doc/node-setimmediate/examples/chai.js -> ../../../javascript/chai/chai.js
+# /usr/share/doc/node-setimmediate/examples/mocha.css -> ../../../javascript/mocha/mocha.css
+# /usr/share/doc/node-setimmediate/examples/mocha.js -> ../../../javascript/mocha/mocha.js
+# node-setimmediate: Suggests: libjs-mocha, libjs-chai
+install_extra_package node-setimmediate		libjs-chai libjs-mocha
 
 # /usr/share/doc/python-ly/html -> ../python-ly-doc/html
 # python-ly: Suggests: python-ly-doc
@@ -233,6 +243,10 @@ install_extra_package org-mode			ditaa
 # /usr/lib/python2.7/dist-packages/Bio/Entrez/DTDs/mathml2.dtd -> ../../../../../../share/xml/schema/w3c/mathml/dtd/mathml2.dtd
 # python-biopython: Suggests: w3-dtd-mathml
 install_extra_package python-biopython		w3-dtd-mathml
+
+# /usr/lib/python2.7/dist-packages/sas/sasview/doc -> ../../../../../share/doc/sasview/html
+# python-sasview: Suggests: sasview-doc
+install_extra_package python-sasview		sasview-doc
 
 # /usr/share/pyshared/MoinMoin/words -> /etc/moin/words
 # /etc/moin/words -> /usr/share/dict/words
@@ -322,6 +336,11 @@ create_extra_file vdr				/var/cache/vdr/commands.conf /var/cache/vdr/reccmds.con
 
 # /etc/vdr/plugins/xineliboutput/config -> /var/lib/vdr/plugins/xineliboutput/config
 create_extra_file vdr-plugin-xineliboutput	/var/lib/vdr/plugins/xineliboutput/config
+
+# /usr/lib/mesa-diverted/i386-linux-gnu/libGLX_indirect.so.0 -> libGLX_mesa.so.0
+# /usr/lib/mesa-diverted/x86_64-linux-gnu/libGLX_indirect.so.0 -> libGLX_mesa.so.0
+create_extra_file glx-diversions		/usr/lib/mesa-diverted/i386-linux-gnu/libGLX_mesa.so.0
+create_extra_file glx-diversions		/usr/lib/mesa-diverted/x86_64-linux-gnu/libGLX_mesa.so.0
 
 # /usr/sbin/ganeti-masterd -> ../share/ganeti/default/ganeti-masterd
 # #857289
