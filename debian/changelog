@@ -30,6 +30,8 @@ piuparts (0.97) UNRELEASED; urgency=medium
       to DDPO.
 
   [ Andreas Beckmann ]
+  * piuparts-report.py:
+    - Report [cruft] in logfile lists.
   * scripts/pre_distupgrade_zz_database-server: Also act on dist-upgrades
     within a release, e.g. stable -> stable-proposed-updates.
 

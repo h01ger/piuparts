@@ -894,9 +894,15 @@ class Section:
         for package in names:
             versions = []
             for pathname, version in packages[package]:
-                versions.append("<a href=\"%s\">%s</a>" %
+                cruft = ""
+                bin_pkg = self._binary_db.get_package(package)
+                if self._source_db.has_package(bin_pkg.source()) and \
+                        bin_pkg.source_version() != self._source_db.get_version(bin_pkg.source()):
+                    cruft = " [cruft]"
+                versions.append("<a href=\"%s\">%s</a>%s" %
                                 (html_protect(pathname),
-                                 html_protect(version)))
+                                 html_protect(version),
+                                 cruft))
             line = "<tr class=\"normalrow\"><td class=\"contentcell2\">%s</td><td class=\"contentcell2\">%s</td></tr>" % \
                                 (html_protect(package),
                                  ", ".join(versions))
