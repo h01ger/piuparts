@@ -50,7 +50,7 @@ while pgrep --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave' > /dev/n
 		# really/meaningful busy
 		echo
 		echo "slaves are busy with:"
-		echo -e "$BUSY"
+		echo "$BUSY"
 	fi
 	echo -n " sleeping ${SLEEP}sec now..."
 	for j in $(seq 1 $SLEEP) ; do
