@@ -287,7 +287,7 @@ LOG_LIST_BODY_TEMPLATE = """
     <tr class="normalrow">
      <td class="contentcell2" colspan="2">
       $preface
-      The list has $count packages, with $versioncount total versions.
+      The list has $count packages.
      </td>
     </tr>
 $logrows
@@ -891,11 +891,9 @@ class Section:
 
         names = sorted(packages.keys())
         lines = []
-        version_count = 0
         for package in names:
             versions = []
             for pathname, version in packages[package]:
-                version_count += 1
                 versions.append("<a href=\"%s\">%s</a>" %
                                 (html_protect(pathname),
                                  html_protect(version)))
@@ -918,7 +916,6 @@ class Section:
                     "title_style": title_style,
                     "preface": preface,
                     "count": len(packages),
-                    "versioncount": version_count,
                     "logrows": "".join(lines),
                 })
 
