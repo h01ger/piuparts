@@ -1,4 +1,26 @@
-piuparts (0.97) UNRELEASED; urgency=medium
+piuparts (0.97) unstable; urgency=medium
+
+  [ Andreas Beckmann ]
+  * Ignore broken /var/lib/mender symlink.  (Closes: #915680)
+  * scripts/pre_distupgrade_zz_database-server: Also act on dist-upgrades
+    within a release, e.g. stable -> stable-proposed-updates.
+  * piuparts-slave.py:
+    - Support prepending a setarch command to the piuparts invocation.
+  * piuparts-report.py:
+    - Report [cruft] in logfile lists.
+
+  [ David Steele ]
+  * instances/piuparts.conf-template.pejacevic:
+    - report results of stable2sid to DDPO.
+    - swap stable2sid and stable22sid priorities, to promote the one reported
+      to DDPO.
+
+  [ Holger Levsen ]
+  * slave_bin: on stop, show what's keeping the slaves busy, to identify
+    packages with a very long installation time.
+  * Makefile: include @sbindir@ in placeholder_substitution.
+  * instances/piuparts.conf-template.pejacevic: lower priorities of oldstable
+    suites.
 
   [ Herbert Fortes ]
   * piuparts.py, piuparts-slave.py, piupartslib/pkgsummary.py and
@@ -18,29 +40,7 @@ piuparts (0.97) UNRELEASED; urgency=medium
               Save some memory
        - make_kprs function: do not concat str, simplify 'if' statement.
 
-  [ Holger Levsen ]
-  * slave_bin: on stop, show what's keeping the slaves busy, to identify
-    packages with a very long installation time.
-  * Makefile: include @sbindir@ in placeholder_substitution.
-  * instances/piuparts.conf-template.pejacevic: lower priorities of oldstable
-    suites.
-
-  [ David Steele ]
-  * instances/piuparts.conf-template.pejacevic:
-    - report results of stable2sid to DDPO.
-    - swap stable2sid and stable22sid priorities, to promote the one reported
-      to DDPO.
-
-  [ Andreas Beckmann ]
-  * piuparts-slave.py:
-    - Support prepending a setarch command to the piuparts invokation.
-  * piuparts-report.py:
-    - Report [cruft] in logfile lists.
-  * Ignore broken /var/lib/mender symlink.  (Closes: #915680)
-  * scripts/pre_distupgrade_zz_database-server: Also act on dist-upgrades
-    within a release, e.g. stable -> stable-proposed-updates.
-
- -- Holger Levsen <holger@debian.org>  Sun, 13 Jan 2019 16:58:44 +0100
+ -- Holger Levsen <holger@debian.org>  Mon, 11 Feb 2019 12:30:10 +0100
 
 piuparts (0.96) unstable; urgency=medium
 
