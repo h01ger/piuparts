@@ -342,7 +342,7 @@ upgrade-test-distros = stable sid
 
 
 [stable22sid]
-precedence = 10
+precedence = 5
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -352,7 +352,7 @@ upgrade-test-distros = stable testing sid
 
 
 [oldstable222sid]
-precedence = 5
+precedence = 6
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -362,7 +362,7 @@ upgrade-test-distros = oldstable stable testing sid
 
 
 [oldstable22testing]
-precedence = 6
+precedence = 7
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -406,7 +406,7 @@ upgrade-test-distros = stretch buster
 
 
 [stretch2buster-rcmd]
-precedence = 6
+precedence = 5
 json-sections = none
 description = + Testing with --install-recommends.
 piuparts-flags =
@@ -508,7 +508,7 @@ upgrade-test-distros = stretch stretch-proposed
 
 
 [jessie2stretch]
-precedence = 4
+precedence = 5
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -519,7 +519,7 @@ upgrade-test-distros = jessie stretch
 
 
 [jessie2Xstretch]
-precedence = 4
+precedence = 5
 json-sections = none
 description = + Testing two-stage upgrades.
 piuparts-flags =
@@ -584,7 +584,7 @@ upgrade-test-distros = jessie jessie-backports stretch
 
 
 [jessie2bpo]
-precedence = 5
+precedence = 6
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -596,7 +596,7 @@ upgrade-test-distros = jessie jessie-backports
 
 
 [jessie]
-precedence = 5
+precedence = 6
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
@@ -605,7 +605,7 @@ distro = jessie
 
 
 [jessie-rcmd]
-precedence = 5
+precedence = 6
 json-sections = none
 description = + With recommended packages.
 piuparts-flags =
@@ -617,7 +617,7 @@ distro = jessie
 
 
 [jessie-security]
-precedence = 2
+precedence = 3
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -628,7 +628,7 @@ distro = jessie/updates
 
 
 [jessie-pu]
-precedence = 4
+precedence = 5
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -639,7 +639,7 @@ distro = jessie-proposed-updates
 
 
 [jessie-lts]
-precedence = 4
+precedence = 5
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -649,7 +649,7 @@ distro = jessie-lts
 
 
 [jessie2lts]
-precedence = 4
+precedence = 5
 json-sections = none
 piuparts-flags =
 	%(flags-default)s

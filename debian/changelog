@@ -22,6 +22,8 @@ piuparts (0.97) UNRELEASED; urgency=medium
   * slave_bin: on stop, show what's keeping the slaves busy, to identify
     packages with a very long installation time.
   * Makefile: include @sbindir@ in placeholder_substitution.
+  * instances/piuparts.conf-template.pejacevic: lower priorities of oldstable
+    suites.
 
   [ David Steele ]
   * instances/piuparts.conf-template.pejacevic:
