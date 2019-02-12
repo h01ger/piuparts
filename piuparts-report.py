@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright 2009-2018 Holger Levsen (holger@layer-acht.org)
+# Copyright 2009-2019 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2011-2018 Andreas Beckmann (anbe@debian.org)
 # Copyright 2013 David Steele (dsteele@gmail.com)
 #
@@ -757,6 +757,8 @@ def create_section_navigation(section_names, current_section, doc_root):
     tablerows += "<tr><td class=\"contentcell\"><a href=\"%s/%s/maintainer/\">by maintainer / uploader</a></td></tr>\n" \
                  % (doc_root, current_section)
     tablerows += "<tr><td class=\"contentcell\"><a href=\"%s/%s/source/\">by source package</a></td></tr>\n" \
+                 % (doc_root, current_section)
+    tablerows += "<tr><td class=\"contentcell\">states <a href=\"%s/%s/states.png/\">graph</a></td></tr>\n" \
                  % (doc_root, current_section)
     tablerows += "<tr class=\"titlerow\"><td class=\"alerttitlecell\">all tested suites</td></tr>"
     for section in section_names:
