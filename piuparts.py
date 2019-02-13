@@ -672,7 +672,7 @@ def split_path(pathname):
     parts = []
     while pathname:
         (head, tail) = os.path.split(pathname)
-        # print "split '%s' => '%s' + '%s'" % (pathname, head, tail)
+        # print("split '%s' => '%s' + '%s'" % (pathname, head, tail))
         if tail:
             parts.append(tail)
         elif not head:
@@ -697,18 +697,18 @@ def canonicalize_path(root, pathname, report_links=False):
     one for each symlink encountered.
 
     """
-    # print "\nCANONICALIZE %s %s" % (root, pathname)
+    # print("\nCANONICALIZE %s %s" % (root, pathname))
     links = []
     seen = []
     parts = split_path(pathname)
-    # print "PARTS ", list(reversed(parts))
+    # print("PARTS ", list(reversed(parts)))
     path = "/"
     while parts:
         tag = "\n".join(parts + [path])
-        # print "TEST '%s' + " % path, list(reversed(parts))
+        # print("TEST '%s' + " % path, list(reversed(parts)))
         if tag in seen or len(seen) > 1024:
             fullpath = os.path.join(path, *reversed(parts))
-            # print "LOOP %s" % fullpath
+            # print("LOOP %s" % fullpath)
             path = fullpath
             logging.error("ELOOP: Too many symbolic links in '%s'" % path)
             break
@@ -724,14 +724,14 @@ def canonicalize_path(root, pathname, report_links=False):
             path = "/"
         elif os.path.islink(rootedpath):
             target = os.readlink(rootedpath)
-            # print "LINK to '%s'" % target
+            # print("LINK to '%s'" % target)
             links.append((newpath, target))
             if os.path.isabs(target):
                 path = "/"
             parts.extend(split_path(target))
         else:
             path = newpath
-    # print "FINAL '%s'" % path
+    # print("FINAL '%s'" % path)
     if report_links:
         return links
     return path
@@ -747,7 +747,7 @@ def is_broken_symlink(root, dirpath, filename):
 
     # The symlink chain, if any, has now been resolved. Does the target
     # exist?
-    # print "EXISTS ", pathname, os.path.exists(pathname)
+    # print("EXISTS ", pathname, os.path.exists(pathname))
     return not os.path.exists(pathname)
 
 
