@@ -12,6 +12,7 @@ piuparts (0.98) UNRELEASED; urgency=medium
       files in case of bad interactions of Breaks/Replaces with downgrading.
   * piuparts.conf:
     - Use --warn-on-others for [sid-strict] only.
+    - Add sections [buster-security], [buster-pu] and [buster2proposed].
   * piuparts-slave.py:
     - Catch IOError while creating tarballs, will be retried later.
   * scripts-multi-distro-upgrade/: New custom scripts for distupgrade tests
