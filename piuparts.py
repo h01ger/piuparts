@@ -3,7 +3,7 @@
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
 # Copyright © 2007-2018 Holger Levsen (holger@layer-acht.org)
-# Copyright © 2010-2018 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2010-2019 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -1561,6 +1561,10 @@ class Chroot:
             self.apt_get_install(to_remove=all_to_remove,
                                  to_install=version_qualified,
                                  flags=["--no-install-recommends", "--force-yes"])
+            # reinstall potentially downgraded packages, they may have
+            # missing files in case of unfortunate Breaks+Replaces timing
+            self.apt_get_install(to_install=version_qualified,
+                                 flags=["--no-install-recommends", "--reinstall"])
         else:
             self.remove_packages(all_to_remove)
 

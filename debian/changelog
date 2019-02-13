@@ -6,6 +6,10 @@ piuparts (0.98) UNRELEASED; urgency=medium
     precedence.
 
   [ Andreas Beckmann ]
+  * piuparts.py:
+    - If packages were downgraded to restore the reference chroot state
+      reinstall the downgraded-to version again to recover potentially lost
+      files in case of bad interactions of Breaks/Replaces with downgrading.
   * piuparts.conf:
     - Use --warn-on-others for [sid-strict] only.
   * piuparts-slave.py:
