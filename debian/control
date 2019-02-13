@@ -32,6 +32,7 @@ Package: piuparts
 Architecture: all
 Depends:
  piuparts-common (= ${binary:Version}),
+# keep this list in sync with piuparts-slave-from-git-deps
  debootstrap (>= 1.0.89~),
  debsums (>= 2.2.2~),
  lsb-release,
@@ -62,6 +63,7 @@ Built-Using: ${misc:Built-Using}
 Depends:
  piuparts-common (>= ${source:Version}),
  piuparts-common (<< ${source:Version}+),
+# keep this list in sync with piuparts-master-from-git-deps
  adduser,
  openssh-server,
  python-debianbts,
@@ -90,11 +92,41 @@ Description: piuparts master components
  operate. It also contains piuparts-report to generate web pages with the
  testing results as well as documentation.
 
+Package: piuparts-master-from-git-deps
+Architecture: all
+Depends:
+ git,
+# this list is synced from piuparts-master
+ adduser,
+ openssh-server,
+ python-debianbts,
+ tango-icon-theme,
+ xz-utils,
+ python-yaml,
+ python (>= 2.7),
+# selected packages from piuparts-master Recommends
+ apache2 | httpd,
+ python-rpy2,
+# this list is synced from piuparts-common
+ python-apt,
+ python-distro-info,
+ python-lzma,
+ ${misc:Depends},
+Description: dependencies for running piuparts master from git
+ piuparts is meant as a quality assurance tool for people who create .deb
+ packages to test them before they upload them to the Debian package archive.
+ A master/slave piuparts installation is used for testing complete archives
+ as it is done on https://piuparts.debian.org/.
+ .
+ This metapackage provides all the dependencies needed for running a
+ piuparts-master instance (including piuparts-report etc.) from git.
+
 Package: piuparts-slave
 Architecture: all
 Depends:
  piuparts (= ${binary:Version}),
  piuparts-common (= ${binary:Version}),
+# keep this list in sync with piuparts-slave-from-git-deps
  adduser,
  openssh-client,
  screen,
@@ -113,9 +145,41 @@ Description: piuparts slave components
  This package provides the piuparts slave components, which need a piuparts
  master to operate. See the documentation in the piuparts-master package.
 
+Package: piuparts-slave-from-git-deps
+Architecture: all
+Depends:
+ git,
+# this list is synced from piuparts-slave
+ adduser,
+ openssh-client,
+ screen,
+ sudo,
+ python (>= 2.7),
+# this list is synced from piuparts
+ debootstrap (>= 1.0.89~),
+ debsums (>= 2.2.2~),
+ lsb-release,
+ lsof,
+ mount,
+ python-debian,
+# this list is synced from piuparts-common
+ python-apt,
+ python-distro-info,
+ python-lzma,
+ ${misc:Depends},
+Description: dependencies for running piuparts slave from git
+ piuparts is meant as a quality assurance tool for people who create .deb
+ packages to test them before they upload them to the Debian package archive.
+ A master/slave piuparts installation is used for testing complete archives
+ as it is done on https://piuparts.debian.org/.
+ .
+ This metapackage provides all the dependencies needed for running a
+ piuparts-slave instance from git.
+
 Package: piuparts-common
 Architecture: all
 Depends:
+# keep this list in sync with piuparts-{master,slave}-from-git-deps
  python-apt,
  python-distro-info,
  python-lzma,

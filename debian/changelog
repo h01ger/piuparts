@@ -19,6 +19,8 @@ piuparts (0.98) UNRELEASED; urgency=medium
     - Catch IOError while creating tarballs, will be retried later.
   * scripts-multi-distro-upgrade/: New custom scripts for distupgrade tests
     spanning a series of distros.
+  * Add metapackages piuparts-{master,slave}-from-git-deps to ease running
+    piuparts-master and piuparts-slave instances from git.
 
  -- Holger Levsen <holger@debian.org>  Mon, 11 Feb 2019 12:55:50 +0100
 
