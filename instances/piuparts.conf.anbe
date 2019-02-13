@@ -2225,6 +2225,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 arch = amd64
 area = main
 components = main
@@ -2240,6 +2241,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = lenny222testing/main lenny222testing/non-free
 arch = amd64
 area = contrib
@@ -2253,6 +2255,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = lenny222testing/main lenny222testing/contrib
 arch = amd64
 area = non-free
@@ -2267,6 +2270,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 arch = i386
 setarch = linux32
 area = main
@@ -2283,6 +2287,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = lenny222testing_i386/main lenny222testing_i386/non-free
 arch = i386
 setarch = linux32
@@ -2297,6 +2302,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-lenny)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = lenny222testing_i386/main lenny222testing_i386/contrib
 arch = i386
 setarch = linux32
@@ -2623,6 +2629,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 arch = amd64
 area = main
 components = main
@@ -2636,6 +2643,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = squeeze222testing/main squeeze222testing/non-free
 arch = amd64
 area = contrib
@@ -2649,6 +2657,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = squeeze222testing/main squeeze222testing/contrib
 arch = amd64
 area = non-free
@@ -2663,6 +2672,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 arch = i386
 setarch = linux32
 area = main
@@ -2677,6 +2687,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = squeeze222testing_i386/main squeeze222testing_i386/non-free
 arch = i386
 setarch = linux32
@@ -2691,6 +2702,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = squeeze222testing_i386/main squeeze222testing_i386/contrib
 arch = i386
 setarch = linux32
@@ -3110,6 +3122,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 arch = amd64
 area = main
 components = main
@@ -3123,6 +3136,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = wheezy222testing/main wheezy222testing/non-free
 arch = amd64
 area = contrib
@@ -3136,6 +3150,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = wheezy222testing/main wheezy222testing/contrib
 arch = amd64
 area = non-free
@@ -3150,6 +3165,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 arch = i386
 setarch = linux32
 area = main
@@ -3164,6 +3180,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = wheezy222testing_i386/main wheezy222testing_i386/non-free
 arch = i386
 setarch = linux32
@@ -3178,6 +3195,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = wheezy222testing_i386/main wheezy222testing_i386/contrib
 arch = i386
 setarch = linux32
@@ -3701,6 +3719,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 arch = amd64
 area = main
 components = main
@@ -3714,6 +3733,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = jessie222testing/main jessie222testing/non-free
 arch = amd64
 area = contrib
@@ -3727,6 +3747,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = jessie222testing/main jessie222testing/contrib
 arch = amd64
 area = non-free
@@ -3741,6 +3762,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 arch = i386
 setarch = linux32
 area = main
@@ -3755,6 +3777,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = jessie222testing_i386/main jessie222testing_i386/non-free
 arch = i386
 setarch = linux32
@@ -3769,6 +3792,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-testing)s
+	--scriptsdir /etc/piuparts/scripts-multi-distro-upgrade
 depends-sections = jessie222testing_i386/main jessie222testing_i386/contrib
 arch = i386
 setarch = linux32
