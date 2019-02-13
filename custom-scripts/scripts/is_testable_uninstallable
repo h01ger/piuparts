@@ -91,6 +91,33 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "lenny" ]; then
 
 fi
 
+if [ "${PIUPARTS_DISTRIBUTION}" = "squeeze" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		distributed-net)
+			skip_distupgrade "#655922: noninteractive install: postinst loops infinitely"
+			;;
+		firmware-b43-lpphy-installer)
+			skip_distupgrade "#623703: download location no longer available"
+			;;
+		fossology|\
+		fossology-agents|\
+		fossology-agents-single|\
+		fossology-scheduler|\
+		fossology-web|\
+		fossology-web-single)
+			# removed after squeeze
+			skip_distupgrade "#595593: fails to install"
+			;;
+		mini-buildd-bld|\
+		mini-buildd-rep)
+			skip_distupgrade "#632955, #656746: time limit exceeded during install"
+			fail_test "#632955, #656746: time limit exceeded during install"
+			;;
+	esac
+
+fi
+
 case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	acgvision-agent@squeeze)
 		# removed after squeeze
@@ -118,9 +145,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		# removed after lenny
 		skip_distupgrade "#523770: must use invoke-rc.d"
 		;;
-	distributed-net@squeeze)
-		skip_distupgrade "#655922: noninteractive install: postinst loops infinitely"
-		;;
 	docbookwiki@lenny)
 		# removed after lenny
 		skip_distupgrade "unconditionally uses mysql-client during purge"
@@ -140,15 +164,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	firebird2.0-classic@lenny)
 		# removed after lenny
 		skip_distupgrade "#574220: package purge (after dependencies removal) fails"
-		;;
-	fossology@squeeze|\
-	fossology-agents@squeeze|\
-	fossology-agents-single@squeeze|\
-	fossology-scheduler@squeeze|\
-	fossology-web@squeeze|\
-	fossology-web-single@squeeze)
-		# removed after squeeze
-		skip_distupgrade "#595593: fails to install"
 		;;
 	gclcvs@squeeze)
 		# removed after squeeze
@@ -175,11 +190,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	mediamate@lenny)
 		# removed after lenny
 		skip_distupgrade "#574228: package purge (after dependencies removal) fails"
-		;;
-	mini-buildd-bld@squeeze|\
-	mini-buildd-rep@squeeze)
-		skip_distupgrade "#632955, #656746: time limit exceeded during install"
-		fail_test "#632955, #656746: time limit exceeded during install"
 		;;
 	nautilus-dropbox@wheezy)
 		skip_distupgrade "#770402: downloads awfully slow, hangs during installation"
