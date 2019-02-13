@@ -171,6 +171,7 @@ sections =
 #	buster-proposed
 	buster2proposed
 	stretch2buster
+	stretch2Xbuster
 	stretch2buster-rcmd
 	stretch2bpo2buster
 	stretch2bpo
@@ -500,6 +501,20 @@ piuparts-flags =
 	%(flags-end-buster)s
 distro = stretch
 upgrade-test-distros = stretch buster
+
+
+[stretch2Xbuster]
+precedence = 5
+json-sections = none
+description = + Testing two-stage upgrades.
+piuparts-flags =
+	--upgrade-before-dist-upgrade
+	%(flags-default)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+distro = stretch
+upgrade-test-distros = stretch buster
+exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
 [stretch2buster-rcmd]
