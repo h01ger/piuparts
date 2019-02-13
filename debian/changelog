@@ -1,8 +1,13 @@
 piuparts (0.98) UNRELEASED; urgency=medium
 
+  [ Holger Levsen ]
   * piuparts-reports.py: add link to states graph for each suite.
   * instances/piuparts.conf-template.pejacevic: increase sid-nodoc's
     precedence.
+
+  [ Andreas Beckmann ]
+  * piuparts-slave.py:
+    - Catch IOError while creating tarballs, will be retried later.
 
  -- Holger Levsen <holger@debian.org>  Mon, 11 Feb 2019 12:55:50 +0100
 

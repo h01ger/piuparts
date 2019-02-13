@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright © 2011-2017 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2011-2019 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -919,17 +919,22 @@ def create_chroot(config, tarball, distro):
                                        time.gmtime()))
             output.write("Executing: " + command2string(command) + "\n\n")
             logging.debug("Executing: " + command2string(command))
-            p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            for line in p.stdout:
-                output.write(line)
-                logging.debug(">> " + line.rstrip())
-            p.wait()
-            output.write(time.strftime("\nEnd: %Y-%m-%d %H:%M:%S %Z\n",
-                                       time.gmtime()))
-            if os.path.exists(tarball + ".new"):
-                os.rename(tarball + ".new", tarball)
-            else:
-                logging.error("Tarball creation failed, see %s" % output_name)
+            try:
+                p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                for line in p.stdout:
+                    output.write(line)
+                    logging.debug(">> " + line.rstrip())
+                p.wait()
+                output.write(time.strftime("\nEnd: %Y-%m-%d %H:%M:%S %Z\n",
+                                           time.gmtime()))
+                if os.path.exists(tarball + ".new"):
+                    os.rename(tarball + ".new", tarball)
+                else:
+                    logging.error("Tarball creation failed, see %s" % output_name)
+            except IOError:
+                output.write(time.strftime("\nFAIL: %Y-%m-%d %H:%M:%S %Z\n",
+                                           time.gmtime()))
+                logging.error("Tarball creation failed with IOError")
 
 
 def create_file(filename, contents):
