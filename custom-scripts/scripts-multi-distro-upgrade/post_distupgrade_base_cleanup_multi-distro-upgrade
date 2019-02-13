@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+# Only while creating the reference chroot.
+test "$PIUPARTS_PHASE" = "" || exit 0
+
+
+if	[ "$PIUPARTS_DISTRIBUTION" = "buster" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "buster-proposed" ] ; then
+
+	if [ -d /etc/init ]; then
+		rmdir --ignore-fail-on-non-empty -v /etc/init
+	fi
+
+fi
