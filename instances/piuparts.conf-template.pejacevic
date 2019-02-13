@@ -314,7 +314,7 @@ distro = sid
 
 
 [sid-nodoc]
-precedence = 9
+precedence = 7
 description = + Testing without files in /usr/share/doc.
 piuparts-flags =
 	%(flags-default)s

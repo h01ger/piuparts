@@ -1,6 +1,8 @@
 piuparts (0.98) UNRELEASED; urgency=medium
 
   * piuparts-reports.py: add link to states graph for each suite.
+  * instances/piuparts.conf-template.pejacevic: increase sid-nodoc's
+    precedence.
 
  -- Holger Levsen <holger@debian.org>  Mon, 11 Feb 2019 12:55:50 +0100
 
