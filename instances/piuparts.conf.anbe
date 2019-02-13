@@ -4,7 +4,6 @@
 
 [DEFAULT]
 flags-base =
-	--warn-on-others
 	--no-eatmydata
 	--scriptsdir /etc/piuparts/scripts
 	--allow-database
@@ -13,6 +12,7 @@ flags-default =
 	%(flags-base)s
 	--warn-on-leftovers-after-purge
 flags-leftovers =
+	--warn-on-others
 	%(flags-base)s
 	--scriptsdir /etc/piuparts/scripts-leftovers
 

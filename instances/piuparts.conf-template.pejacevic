@@ -1,8 +1,6 @@
 [DEFAULT]
 # these are needed always
 flags-base =
-# restrict to problems in the package being tested
-	--warn-on-others
 # default exceptions
 	--scriptsdir /etc/piuparts/scripts
 # pejacevic's slaves are doing everything relevant on a ramdisk anyway
@@ -18,6 +16,8 @@ flags-default =
 # like default flags, but failing on leftover files
 flags-leftovers =
 	%(flags-base)s
+# restrict to problems in the package being tested
+	--warn-on-others
 # perform some additional cleanup
 	--scriptsdir /etc/piuparts/scripts-leftovers
 

@@ -6,6 +6,8 @@ piuparts (0.98) UNRELEASED; urgency=medium
     precedence.
 
   [ Andreas Beckmann ]
+  * piuparts.conf:
+    - Use --warn-on-others for [sid-strict] only.
   * piuparts-slave.py:
     - Catch IOError while creating tarballs, will be retried later.
 
