@@ -131,6 +131,19 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "wheezy" ]; then
 
 fi
 
+if [ "${PIUPARTS_DISTRIBUTION}" = "jessie" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		steam)
+			skip_distupgrade "#772598: cannot preseed licence acceptance"
+			;;
+		susv4)
+			skip_distupgrade "#900882: download location no longer available"
+			;;
+	esac
+
+fi
+
 case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	acgvision-agent@squeeze)
 		# removed after squeeze
@@ -240,9 +253,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		;;
 	sdic-eijiro@*)
 		skip_always "requires a dictionary CD"
-		;;
-	steam@jessie)
-		skip_distupgrade "#772598: cannot preseed licence acceptance"
 		;;
 	usrmerge@*)
 		skip_always "performs piuparts-unfriendy filesystem layout changes"
