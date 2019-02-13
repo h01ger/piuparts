@@ -13,6 +13,7 @@ piuparts (0.98) UNRELEASED; urgency=medium
   * piuparts.conf:
     - Use --warn-on-others for [sid-strict] only.
     - Add sections [buster-security], [buster-pu] and [buster2proposed].
+    - Add sections [stretch2Xbuster] and [stretch2Xbuster-rcmd].
     - Add section [sid-broken-symlinks], failing on broken symlinks
   * piuparts-slave.py:
     - Catch IOError while creating tarballs, will be retried later.
