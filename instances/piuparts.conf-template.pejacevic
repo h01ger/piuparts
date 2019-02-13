@@ -127,6 +127,7 @@ sections =
 	buster-rcmd
 	buster-security
 	buster-pu
+#	buster-proposed
 	stretch2buster
 	stretch2buster-rcmd
 	stretch2bpo2buster
@@ -416,6 +417,16 @@ piuparts-flags =
 	%(flags-end-buster)s
 depends-sections = buster
 distro = buster-proposed-updates
+
+
+[buster-proposed]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-buster)s
+	%(flags-end-buster)s
+distro = buster-proposed
 
 
 [stretch2buster]
