@@ -17,6 +17,8 @@ piuparts (0.98) UNRELEASED; urgency=medium
     - Add section [sid-broken-symlinks], failing on broken symlinks
   * piuparts-slave.py:
     - Catch IOError while creating tarballs, will be retried later.
+  * scripts/is_testable_uninstallable:
+    - Refactor handling of known uninstallable packages.
   * scripts-multi-distro-upgrade/: New custom scripts for distupgrade tests
     spanning a series of distros.
   * Add metapackages piuparts-{master,slave}-from-git-deps to ease running

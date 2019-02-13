@@ -45,6 +45,52 @@ skip_distupgrade()
 #   we usually skip the failing initial install, too, since that is
 #   *not a bug* in the package.
 
+
+if [ "${PIUPARTS_DISTRIBUTION}" = "lenny" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		blootbot)
+			skip_distupgrade "#502753: fails to install: prompts without using debconf"
+			;;
+		distributed-net)
+			skip_distupgrade "#655922: noninteractive install: postinst loops infinitely"
+			;;
+		dnscache-run)
+			skip_distupgrade "#664848: breaks dns resolution in chroot"
+			;;
+		libpils0|\
+		libpils-dev|\
+		libstonith0|\
+		libstonith-dev)
+			skip_distupgrade "#702055: transitional packages uninstallable in lenny"
+			;;
+		mhc)
+			skip_distupgrade "#696231: fails to install: emacs-package-install failure"
+			;;
+		multex-bin)
+			skip_distupgrade "#668791: fails to install: The format file of 'multex' is NOT built successfully."
+			;;
+		python-milter|\
+		spf-milter-python)
+			skip_always "python-milter contains virus signatures that may get blocked by the firewall"
+			;;
+		runit-run)
+			skip_distupgrade "#542157: fails to install"
+			;;
+		sun-java5-doc|\
+		sun-java6-doc)
+			skip_distupgrade "#709967: fails to install: download location no longer available"
+			;;
+		trn)
+			skip_distupgrade "fails to install: prompts without using debconf"
+			;;
+		ttf-root-installer)
+			skip_distupgrade "#678807: fails to install: ftp:// download location disappeared"
+			;;
+	esac
+
+fi
+
 case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	acgvision-agent@squeeze)
 		# removed after squeeze
@@ -54,9 +100,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		if [ "$(dpkg --print-architecture)" = "i386" ]; then
 			skip_distupgrade "arch:all package no longer installable in stretch/i386"
 		fi
-		;;
-	blootbot@lenny)
-		skip_distupgrade "#502753: fails to install: prompts without using debconf"
 		;;
 	bugzilla3@lenny)
 		# fixed in squeeze, removed after squeeze, excluded from squeeze-lts
@@ -75,12 +118,8 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		# removed after lenny
 		skip_distupgrade "#523770: must use invoke-rc.d"
 		;;
-	distributed-net@lenny|\
 	distributed-net@squeeze)
 		skip_distupgrade "#655922: noninteractive install: postinst loops infinitely"
-		;;
-	dnscache-run@lenny)
-		skip_distupgrade "#664848: breaks dns resolution in chroot"
 		;;
 	docbookwiki@lenny)
 		# removed after lenny
@@ -126,12 +165,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		# removed after lenny
 		skip_distupgrade "modifies conffiles: /etc/security/pam_rsa.conf"
 		;;
-	libpils0@lenny|\
-	libpils-dev@lenny|\
-	libstonith0@lenny|\
-	libstonith-dev@lenny)
-		skip_distupgrade "#702055: transitional packages uninstallable in lenny"
-		;;
 	localepurge@*)
 		skip_distupgrade "requires a full --reinstall to restore disappeared files"
 		;;
@@ -143,16 +176,10 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		# removed after lenny
 		skip_distupgrade "#574228: package purge (after dependencies removal) fails"
 		;;
-	mhc@lenny)
-		skip_distupgrade "#696231: fails to install: emacs-package-install failure"
-		;;
 	mini-buildd-bld@squeeze|\
 	mini-buildd-rep@squeeze)
 		skip_distupgrade "#632955, #656746: time limit exceeded during install"
 		fail_test "#632955, #656746: time limit exceeded during install"
-		;;
-	multex-bin@lenny)
-		skip_distupgrade "#668791: fails to install: The format file of 'multex' is NOT built successfully."
 		;;
 	nautilus-dropbox@wheezy)
 		skip_distupgrade "#770402: downloads awfully slow, hangs during installation"
@@ -176,10 +203,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		# removed after squeeze
 		skip_distupgrade "#698533: modifies a shipped file: /usr/share/poker-web/currency_one.php"
 		;;
-	python-milter@lenny|\
-	spf-milter-python@lenny)
-		skip_always "virus signatures in python-milter may trigger the firewall"
-		;;
 	python-poker-stats@squeeze)
 		# removed after squeeze
 		skip_distupgrade "#608646: cronjob exits with error after package removal"
@@ -192,9 +215,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		# removed after squeeze
 		skip_distupgrade "fails to purge: rt3.8-rtfm.postrm: ucf: not found"
 		;;
-	runit-run@lenny)
-		skip_distupgrade "#542157: fails to install"
-		;;
 	sdic-eijiro@lenny)
 		skip_distupgrade "requires a dictionary CD"
 		;;
@@ -203,16 +223,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		;;
 	steam@jessie)
 		skip_distupgrade "#772598: cannot preseed licence acceptance"
-		;;
-	sun-java5-doc@lenny|\
-	sun-java6-doc@lenny)
-		skip_distupgrade "#709967: fails to install: download location no longer available"
-		;;
-	trn@lenny)
-		skip_distupgrade "fails to install: prompts without using debconf"
-		;;
-	ttf-root-installer@lenny)
-		skip_always "fails to install: download location disappeared"
 		;;
 	usrmerge@*)
 		skip_always "performs piuparts-unfriendy filesystem layout changes"
