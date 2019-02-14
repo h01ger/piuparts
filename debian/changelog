@@ -10,6 +10,7 @@ piuparts (0.98) UNRELEASED; urgency=medium
     - If packages were downgraded to restore the reference chroot state
       reinstall the downgraded-to version again to recover potentially lost
       files in case of bad interactions of Breaks/Replaces with downgrading.
+  * distros.conf: Add support for buster partial distros.
   * piuparts.conf:
     - Use --warn-on-others for [sid-strict] only.
     - Add sections [buster-security], [buster-pu] and [buster2proposed].
