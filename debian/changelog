@@ -4,6 +4,7 @@ piuparts (0.98) UNRELEASED; urgency=medium
   * piuparts-reports.py: add link to states graph for each suite.
   * instances/piuparts.conf-template.pejacevic: increase sid-nodoc's
     precedence.
+  * Update TODO for bullseye.
 
   [ Andreas Beckmann ]
   * piuparts.py:

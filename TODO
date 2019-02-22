@@ -6,7 +6,9 @@ wishlist! And see the bottom of this file for wishlist bugs someone once
 expressed…
 
 
-Some stuff we might tackle for 0.9x, during the buster development cycle:
+Some stuff we might tackle during the bullseye development cycle:
+
+- switch to python3 (that's actually a must)
 
 - do an 1.0.0 release, it's about time since 10 years :)
 
@@ -87,13 +89,9 @@ Some stuff we might tackle for 0.9x, during the buster development cycle:
   (piuparts), adopting apt's naming
 
 
-Ideas for 1.0.x and later:
-
-- piuparts.conf.pejacevic: maybe use mirror via nfs (faster)
+Ideas for later:
 
 - maybe compress all logfiles
-
-- piuparts-master: keep track of to whom a reservation was given
 
 - install from git/Makefile: remove the need for /etc/piuparts
 
@@ -138,10 +136,6 @@ More ideas for even later:
 - not sure if it's a sensible thing to to, but provide a way to turn off
   debugging output for piuparts.py - see
   http://docs.python.org/library/logging.html
-
-- commandline-switches for all programms
-
-- move shell cronjobs functionality into master, slave & report
 
 - automated testing of piuparts using an archive of known broken packages:
   - create archive of broken packages to provide test cases for piuparts testing.
