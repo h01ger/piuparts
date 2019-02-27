@@ -6,6 +6,8 @@ piuparts (0.98) UNRELEASED; urgency=medium
     precedence.
   * Refactor reschedule_piuparts_tests to use new global configuration
     variable 'testing-suite'.
+  * generate_daily_report: show failures in sid, $TESTING and testing2sid
+    at the top of the report.
   * Update TODO for bullseye.
 
   [ Andreas Beckmann ]

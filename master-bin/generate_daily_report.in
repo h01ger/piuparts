@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Copyright © 2011-2013 Andreas Beckmann (anbe@debian.org)
-# Copyright © 2018 Holger Levsen (holger@layer-acht.org)
+# Copyright © 2018-2019 Holger Levsen (holger@layer-acht.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -24,6 +24,7 @@ get_config_value SECTIONS global sections
 get_config_value HTDOCS global output-directory
 get_config_value URLBASE global urlbase https://piuparts.debian.org
 get_config_value PYTHONPATH global PYTHONPATH ''
+get_config_value TESTING global testing-suite
 
 export PYTHONPATH
 
@@ -82,7 +83,9 @@ for SECTION in $SECTIONS ; do
 done | sed s#^$MASTER#$URLBASE# >> $DAILYTMP
 
 echo "$(cat $DAILYTMP | wc -l) new failures:" >> $DAILYREPORT
-cat $DAILYTMP >> $DAILYREPORT
+# show failures (and show failures in sid, $TESTING and testing2sid first
+cat $DAILYTMP | (egrep "/(sid|$TESTING|testing2sid)/" 2>/dev/null || true) >> $DAILYREPORT
+cat $DAILYTMP | (egrep -v "/(sid|$TESTING|testing2sid)/" 2>/dev/null || true) >> $DAILYREPORT
 rm $DAILYTMP
 
 echo "" >> $DAILYREPORT
