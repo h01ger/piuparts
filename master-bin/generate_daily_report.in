@@ -85,6 +85,7 @@ done | sed s#^$MASTER#$URLBASE# >> $DAILYTMP
 echo "$(cat $DAILYTMP | wc -l) new failures:" >> $DAILYREPORT
 # show failures (and show failures in sid, $TESTING and testing2sid first
 cat $DAILYTMP | (egrep "/(sid|$TESTING|testing2sid)/" 2>/dev/null || true) >> $DAILYREPORT
+echo >> $DAILYREPORT
 cat $DAILYTMP | (egrep -v "/(sid|$TESTING|testing2sid)/" 2>/dev/null || true) >> $DAILYREPORT
 rm $DAILYTMP
 
