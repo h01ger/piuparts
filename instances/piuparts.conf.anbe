@@ -406,6 +406,8 @@ sections =
 	lenny_i386/non-free
 	lenny2squeeze/non-free
 #
+testing-suite = buster
+#
 json-sections = none
 #
 proxy = http://localhost:3128

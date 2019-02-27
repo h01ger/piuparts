@@ -2,6 +2,7 @@
 set -e
 
 # Copyright © 2013-2017 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2018 Holger Levsen (holger@layer-acht.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -21,9 +22,7 @@ set -e
 
 get_config_value MASTER global master-directory
 get_config_value SECTIONS global sections
-
-
-TESTING="buster"
+get_config_value TESTING global testing-suite
 
 dryrun=""
 current=""

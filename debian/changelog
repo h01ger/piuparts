@@ -4,6 +4,8 @@ piuparts (0.98) UNRELEASED; urgency=medium
   * piuparts-reports.py: add link to states graph for each suite.
   * instances/piuparts.conf-template.pejacevic: increase sid-nodoc's
     precedence.
+  * Refactor reschedule_piuparts_tests to use new global configuration
+    variable 'testing-suite'.
   * Update TODO for bullseye.
 
   [ Andreas Beckmann ]
