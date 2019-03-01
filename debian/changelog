@@ -8,6 +8,8 @@ piuparts (0.98) UNRELEASED; urgency=medium
     variable 'testing-suite'.
   * generate_daily_report: show failures in sid, $TESTING and testing2sid
     at the top of the report.
+  * master-bin/prepare_backup: ignore empty submissions.txt for $TESTING-pu
+    and $TESTING-security.
   * Update TODO for bullseye.
 
   [ Andreas Beckmann ]

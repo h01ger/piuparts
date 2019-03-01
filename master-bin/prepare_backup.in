@@ -32,11 +32,13 @@ get_config_value SECTIONS global sections
 get_config_value MASTER global master-directory
 get_config_value HTDOCS global output-directory
 get_config_value BACKUPDIR global backup-directory ''
-
+get_config_value TESTING global testing-suite
 
 copy_to_backupdir() {
 	if [ -f $MASTER/$1 ]; then
 		cp $MASTER/$1 $BACKUPDIR/$1
+	elif [ "$(basename $1)" = "submissions.txt" ] && ([ "$(dirname $1)" = "${TESTING}-pu" ] || [ "$(dirname $1)" = "${TESTING}-security" ]) ; then
+	       :	# during development these suites are created but stay empty
 	else
 		echo "Warning: $MASTER/$1 does not exist." # this produces a mail and that's a feature
 	fi
