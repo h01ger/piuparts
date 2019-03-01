@@ -1,4 +1,4 @@
-piuparts (0.98) UNRELEASED; urgency=medium
+piuparts (0.98) unstable; urgency=medium
 
   [ Holger Levsen ]
   * piuparts-reports.py: add link to states graph for each suite.
@@ -32,7 +32,7 @@ piuparts (0.98) UNRELEASED; urgency=medium
   * Add metapackages piuparts-{master,slave}-from-git-deps to ease running
     piuparts-master and piuparts-slave instances from git.
 
- -- Holger Levsen <holger@debian.org>  Mon, 11 Feb 2019 12:55:50 +0100
+ -- Holger Levsen <holger@debian.org>  Fri, 01 Mar 2019 11:27:47 +0100
 
 piuparts (0.97) unstable; urgency=medium
 
