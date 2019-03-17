@@ -1,6 +1,14 @@
 piuparts (0.99) UNRELEASED; urgency=medium
 
-  * ... 
+  [ David Steele ]
+  * piuparts-reports.py:
+    Revert "Don't add results from outdated binaries to summary.json" from
+    0.94. The reverted commit is 62a6b3c438f42480ce3a08996ed4994de1561591.
+    The patch was added to avoid incorporating summary.json reporting results
+    for binary packages which are no longer part of the source package. It
+    stopped Piuparts from blocking the source package from testing migration.
+    It has a bug related to "upgrade test" sections, which cause a large
+    number of packages to incorrectly be reported in the "waiting" state.
 
  -- Holger Levsen <holger@debian.org>  Fri, 01 Mar 2019 11:47:19 +0100
 
