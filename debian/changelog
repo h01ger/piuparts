@@ -15,6 +15,7 @@ piuparts (0.99) UNRELEASED; urgency=medium
     - wheezy* has been archived/removed.
     - jessie* has been partially archived/removed.
     - Add buster-backports.
+    - Add bullseye-proposed-updates.
 
  -- Holger Levsen <holger@debian.org>  Fri, 01 Mar 2019 11:47:19 +0100
 
