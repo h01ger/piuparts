@@ -82,7 +82,8 @@ if [ "$PIUPARTS_DISTRIBUTION" = "stretch" ]; then
 
 fi
 
-if [ "$PIUPARTS_DISTRIBUTION" = "buster" ]; then
+if [ "$PIUPARTS_DISTRIBUTION" = "buster" ] || \
+	[ "$PIUPARTS_DISTRIBUTION" = "sid" -a "$PIUPARTS_DISTRIBUTION_PREV" = "stretch" ]; then
 
 	# libc-bin only upgrades pristine /etc/nsswitch.conf
 	if grep -q '^passwd:.*compat' /etc/nsswitch.conf ; then
@@ -114,6 +115,12 @@ if [ "$PIUPARTS_DISTRIBUTION" = "buster" ]; then
 	# policykit-1 in buster changes the permissions 0755 -> 0700
 	if [ -d /var/lib/polkit-1 ]; then
 		chmod -c go-rx /var/lib/polkit-1
+	fi
+
+	#920760, wontfix, libpam-modules: does not ensure that pam-auth-update gets called after the package was configured
+	if ! grep -q mkhomedir /var/lib/pam/seen ; then
+		echo "Running pam-auth-update..."
+		pam-auth-update
 	fi
 
 fi

@@ -16,6 +16,9 @@ piuparts (0.99) UNRELEASED; urgency=medium
     - jessie* has been partially archived/removed.
     - Add buster-backports.
     - Add bullseye-proposed-updates.
+  * scripts/post_distupgrade_exceptions:
+    - Handle /var/lib/pam/seen stretch -> buster upgrade by running
+      pam-auth-update if needed. Workaround for #920760.
   * master-bin/reschedule_piuparts_tests: Do not act on 'bugged/*.log' and
     'affected/*.log' by default. Add --bugged, --affected flags.
 
