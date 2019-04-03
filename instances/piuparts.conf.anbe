@@ -157,7 +157,7 @@ sections =
 	testing2sid/main
 	stable2sid/main
 	stable2testing2sid/main
-	stretch2proposed/main
+	stretch2next/main
 	stretch2buster/main
 	stretch3buster/main
 	stretch2buster_i386/main
@@ -221,7 +221,7 @@ sections =
 	testing2sid/contrib
 	stable2sid/contrib
 	stable2testing2sid/contrib
-	stretch2proposed/contrib
+	stretch2next/contrib
 	stretch2buster/contrib
 	stretch3buster/contrib
 	stretch2buster_i386/contrib
@@ -285,7 +285,7 @@ sections =
 	testing2sid/non-free
 	stable2sid/non-free
 	stable2testing2sid/non-free
-	stretch2proposed/non-free
+	stretch2next/non-free
 	stretch2buster/non-free
 	stretch3buster/non-free
 	stretch2buster_i386/non-free
@@ -3804,7 +3804,7 @@ upgrade-test-distros = jessie stretch testing
 reschedule-old-count = 100
 
 
-[stretch2proposed/main]
+[stretch2next/main]
 precedence = 60
 piuparts-flags =
 	%(flags-default)s
@@ -3817,25 +3817,25 @@ components = main
 distro = stretch
 upgrade-test-distros = stretch stretch-proposed
 
-[stretch2proposed/contrib]
+[stretch2next/contrib]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-depends-sections = stretch2proposed/main stretch2proposed/non-free
+depends-sections = stretch2next/main stretch2next/non-free
 arch = amd64
 area = contrib
 distro = stretch
 upgrade-test-distros = stretch stretch-proposed
 
-[stretch2proposed/non-free]
+[stretch2next/non-free]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-depends-sections = stretch2proposed/main stretch2proposed/contrib
+depends-sections = stretch2next/main stretch2next/contrib
 arch = amd64
 area = non-free
 distro = stretch
