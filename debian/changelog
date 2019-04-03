@@ -16,6 +16,8 @@ piuparts (0.99) UNRELEASED; urgency=medium
     - jessie* has been partially archived/removed.
     - Add buster-backports.
     - Add bullseye-proposed-updates.
+  * master-bin/reschedule_piuparts_tests: Do not act on 'bugged/*.log' and
+    'affected/*.log' by default. Add --bugged, --affected flags.
 
  -- Holger Levsen <holger@debian.org>  Fri, 01 Mar 2019 11:47:19 +0100
 
