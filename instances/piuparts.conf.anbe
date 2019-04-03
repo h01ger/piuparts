@@ -142,7 +142,7 @@ sections =
 	buster-debug/main
 	stretch/main
 	stretch-rcmd/main
-	stretch-proposed/main
+	stretch-next/main
 	stretch-security/main
 	stretch-updates/main
 	stretch-pu/main
@@ -206,7 +206,7 @@ sections =
 	buster-debug/contrib
 	stretch/contrib
 	stretch-rcmd/contrib
-	stretch-proposed/contrib
+	stretch-next/contrib
 	stretch-security/contrib
 	stretch-updates/contrib
 	stretch-pu/contrib
@@ -270,7 +270,7 @@ sections =
 	buster-debug/non-free
 	stretch/non-free
 	stretch-rcmd/non-free
-	stretch-proposed/non-free
+	stretch-next/non-free
 	stretch-security/non-free
 	stretch-updates/non-free
 	stretch-pu/non-free
@@ -1365,7 +1365,7 @@ arch = amd64
 area = non-free
 
 
-[stretch-proposed/main]
+[stretch-next/main]
 precedence = 20
 piuparts-flags =
 	%(flags-default)s
@@ -1378,25 +1378,25 @@ components = main
 reschedule-old-count = 500
 reschedule-old-days = 25
 
-[stretch-proposed/contrib]
+[stretch-next/contrib]
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-depends-sections = stretch-proposed/main stretch-proposed/non-free
+depends-sections = stretch-next/main stretch-next/non-free
 distro = stretch-proposed
 arch = amd64
 area = contrib
 reschedule-old-days = 25
 
-[stretch-proposed/non-free]
+[stretch-next/non-free]
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-depends-sections = stretch-proposed/main stretch-proposed/contrib
+depends-sections = stretch-next/main stretch-next/contrib
 distro = stretch-proposed
 arch = amd64
 area = non-free
