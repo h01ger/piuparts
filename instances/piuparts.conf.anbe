@@ -2327,7 +2327,7 @@ arch = i386
 setarch = linux32
 area = main
 components = main
-upgrade-test-distros = squeeze squeeze-lts wheezy
+upgrade-test-distros = squeeze squeeze-lts wheezy-lts
 reschedule-old-count = 0
 
 [squeeze2lts2wheezy/contrib]
@@ -2342,7 +2342,7 @@ distro = squeeze-lts
 arch = i386
 setarch = linux32
 area = contrib
-upgrade-test-distros = squeeze squeeze-lts wheezy
+upgrade-test-distros = squeeze squeeze-lts wheezy-lts
 reschedule-old-count = 0
 
 [squeeze2lts2wheezy/non-free]
@@ -2357,7 +2357,7 @@ distro = squeeze-lts
 arch = i386
 setarch = linux32
 area = non-free
-upgrade-test-distros = squeeze squeeze-lts wheezy
+upgrade-test-distros = squeeze squeeze-lts wheezy-lts
 reschedule-old-count = 0
 
 
