@@ -2716,6 +2716,9 @@ def parse_command_line():
                       action='store_true',
                       help="Use the testdebs repository as distupgrade target.")
 
+    parser.add_option("--distupgrade-to-testdebs-from", metavar="DIR",
+                      help="Shorthand for --bindmount DIR --testdebs-repo DIR --distupgrade-to-testdebs.")
+
     parser.add_option("-e", "--existing-chroot", metavar="DIR",
                       help="Use DIR as the contents of the initial " +
                            "chroot, instead of building a new one with " +
@@ -2962,6 +2965,12 @@ def parse_command_line():
                       help="Displays messages from LEVEL level, possible values are: error, info, dump, debug. The default is dump.")
 
     (opts, args) = parser.parse_args()
+
+    # expand combined options
+    if opts.distupgrade_to_testdebs_from:
+        opts.bindmount.append(opts.distupgrade_to_testdebs_from)
+        opts.testdebs_repo = opts.distupgrade_to_testdebs_from
+        opts.distupgrade_to_testdebs = True
 
     settings.defaults = opts.defaults
     defaults = DefaultsFactory().new_defaults()
