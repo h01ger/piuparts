@@ -194,7 +194,7 @@ esac
 
 if [ "$FUSIONFORGE" = "yes" ]; then
 	case "$PIUPARTS_DISTRIBUTION" in
-		wheezy*|jessie|jessie/updates|jessie-updates|jessie-proposed-updates)
+		wheezy*|jessie|jessie/updates)
 			POSTGRESQL=yes
 			;;
 		*)

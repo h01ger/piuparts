@@ -54,8 +54,7 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] ; then
 
 fi
 
-if	[ "$PIUPARTS_DISTRIBUTION" = "jessie" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "jessie-proposed" ] ; then
+if	[ "$PIUPARTS_DISTRIBUTION" = "jessie" ] ; then
 
 	mark_for_purge libdb5.1
 
