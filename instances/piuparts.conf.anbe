@@ -3255,8 +3255,8 @@ piuparts-flags =
 arch = amd64
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 [jessie2stretch/contrib]
 precedence = 95
@@ -3268,8 +3268,8 @@ piuparts-flags =
 depends-sections = jessie2stretch/main jessie2stretch/non-free
 arch = amd64
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 [jessie2stretch/non-free]
 precedence = 95
@@ -3281,8 +3281,8 @@ piuparts-flags =
 depends-sections = jessie2stretch/main jessie2stretch/contrib
 arch = amd64
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 
 [jessie3stretch/main]
@@ -3297,8 +3297,8 @@ piuparts-flags =
 arch = amd64
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch/contrib]
@@ -3313,8 +3313,8 @@ piuparts-flags =
 depends-sections = jessie3stretch/main jessie3stretch/non-free
 arch = amd64
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch/non-free]
@@ -3329,8 +3329,8 @@ piuparts-flags =
 depends-sections = jessie3stretch/main jessie3stretch/contrib
 arch = amd64
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
@@ -3345,8 +3345,8 @@ arch = i386
 setarch = linux32
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 [jessie2stretch_i386/contrib]
 precedence = 95
@@ -3359,8 +3359,8 @@ depends-sections = jessie2stretch_i386/main jessie2stretch_i386/non-free
 arch = i386
 setarch = linux32
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 [jessie2stretch_i386/non-free]
 precedence = 95
@@ -3373,8 +3373,8 @@ depends-sections = jessie2stretch_i386/main jessie2stretch_i386/contrib
 arch = i386
 setarch = linux32
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 
 [jessie3stretch_i386/main]
@@ -3390,8 +3390,8 @@ arch = i386
 setarch = linux32
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch_i386/contrib]
@@ -3407,8 +3407,8 @@ depends-sections = jessie3stretch_i386/main jessie3stretch_i386/non-free
 arch = i386
 setarch = linux32
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch_i386/non-free]
@@ -3424,8 +3424,8 @@ depends-sections = jessie3stretch_i386/main jessie3stretch_i386/contrib
 arch = i386
 setarch = linux32
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
@@ -3441,8 +3441,8 @@ piuparts-flags =
 arch = amd64
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 [jessie2stretch-rcmd/contrib]
 precedence = 95
@@ -3456,8 +3456,8 @@ piuparts-flags =
 depends-sections = jessie2stretch-rcmd/main jessie2stretch-rcmd/non-free
 arch = amd64
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 [jessie2stretch-rcmd/non-free]
 precedence = 95
@@ -3471,8 +3471,8 @@ piuparts-flags =
 depends-sections = jessie2stretch-rcmd/main jessie2stretch-rcmd/contrib
 arch = amd64
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 
 [jessie3stretch-rcmd/main]
@@ -3488,8 +3488,8 @@ piuparts-flags =
 arch = amd64
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch-rcmd/contrib]
@@ -3505,8 +3505,8 @@ piuparts-flags =
 depends-sections = jessie3stretch-rcmd/main jessie3stretch-rcmd/non-free
 arch = amd64
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch-rcmd/non-free]
@@ -3522,8 +3522,8 @@ piuparts-flags =
 depends-sections = jessie3stretch-rcmd/main jessie3stretch-rcmd/contrib
 arch = amd64
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
@@ -3540,8 +3540,8 @@ arch = i386
 setarch = linux32
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 [jessie2stretch-rcmd_i386/contrib]
 precedence = 95
@@ -3556,8 +3556,8 @@ depends-sections = jessie2stretch-rcmd_i386/main jessie2stretch-rcmd_i386/non-fr
 arch = i386
 setarch = linux32
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 [jessie2stretch-rcmd_i386/non-free]
 precedence = 95
@@ -3572,8 +3572,8 @@ depends-sections = jessie2stretch-rcmd_i386/main jessie2stretch-rcmd_i386/contri
 arch = i386
 setarch = linux32
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 
 [jessie3stretch-rcmd_i386/main]
@@ -3590,8 +3590,8 @@ arch = i386
 setarch = linux32
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch-rcmd_i386/contrib]
@@ -3608,8 +3608,8 @@ depends-sections = jessie3stretch-rcmd_i386/main jessie3stretch-rcmd_i386/non-fr
 arch = i386
 setarch = linux32
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch-rcmd_i386/non-free]
@@ -3626,8 +3626,8 @@ depends-sections = jessie3stretch-rcmd_i386/main jessie3stretch-rcmd_i386/contri
 arch = i386
 setarch = linux32
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
@@ -3643,8 +3643,8 @@ piuparts-flags =
 arch = amd64
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 [jessie2stretch-iri/contrib]
 precedence = 95
@@ -3658,8 +3658,8 @@ piuparts-flags =
 depends-sections = jessie2stretch-iri/main jessie2stretch-iri/non-free
 arch = amd64
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 [jessie2stretch-iri/non-free]
 precedence = 95
@@ -3673,8 +3673,8 @@ piuparts-flags =
 depends-sections = jessie2stretch-iri/main jessie2stretch-iri/contrib
 arch = amd64
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie stretch
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch
 
 
 [jessie2bpo2stretch/main]
@@ -3688,7 +3688,7 @@ distro = jessie-backports
 arch = amd64
 area = main
 components = main
-upgrade-test-distros = jessie jessie-backports stretch
+upgrade-test-distros = jessie-lts jessie-backports stretch
 
 [jessie2bpo2stretch/contrib]
 precedence = 95
@@ -3700,7 +3700,7 @@ depends-sections = jessie/main jessie/contrib jessie/non-free jessie2bpo2stretch
 distro = jessie-backports
 arch = amd64
 area = contrib
-upgrade-test-distros = jessie jessie-backports stretch
+upgrade-test-distros = jessie-lts jessie-backports stretch
 
 [jessie2bpo2stretch/non-free]
 precedence = 95
@@ -3712,7 +3712,7 @@ depends-sections = jessie/main jessie/contrib jessie/non-free jessie2bpo2stretch
 distro = jessie-backports
 arch = amd64
 area = non-free
-upgrade-test-distros = jessie jessie-backports stretch
+upgrade-test-distros = jessie-lts jessie-backports stretch
 
 
 [jessie222testing/main]
