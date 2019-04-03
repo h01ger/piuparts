@@ -10,6 +10,10 @@ piuparts (0.99) UNRELEASED; urgency=medium
     It has a bug related to "upgrade test" sections, which cause a large
     number of packages to incorrectly be reported in the "waiting" state.
 
+  [ Andreas Beckmann ]
+  * distros.conf:
+    - wheezy* has been archived/removed.
+
  -- Holger Levsen <holger@debian.org>  Fri, 01 Mar 2019 11:47:19 +0100
 
 piuparts (0.98) unstable; urgency=medium

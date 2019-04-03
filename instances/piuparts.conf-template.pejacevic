@@ -205,7 +205,6 @@ sections =
 	wheezy2lts
 	wheezy
 	wheezy-security
-#	wheezy-pu
 	squeeze2wheezy-lts
 	squeeze2wheezy
 	squeeze2bpo-sloppy
@@ -867,18 +866,6 @@ piuparts-flags =
 	%(flags-end-wheezy)s
 depends-sections = wheezy
 distro = wheezy/updates
-reschedule-old-count = 0
-
-
-[wheezy-pu]
-precedence = 100
-json-sections = none
-piuparts-flags =
-	%(flags-default)s
-	%(flags-start-wheezy)s
-	%(flags-end-wheezy)s
-depends-sections = wheezy
-distro = wheezy-proposed-updates
 reschedule-old-count = 0
 
 

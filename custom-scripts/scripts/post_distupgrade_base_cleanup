@@ -44,8 +44,7 @@ mark_for_purge()
 }
 
 
-if	[ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "wheezy-proposed" ] ; then
+if	[ "$PIUPARTS_DISTRIBUTION" = "wheezy" ] ; then
 
 	mark_for_purge libdb4.8
 

@@ -10,8 +10,7 @@ log_debug() {
 
 FORCEREMOVE=
 
-if	[ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ] || \
-	[ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy-proposed" ]
+if	[ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]
 then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
