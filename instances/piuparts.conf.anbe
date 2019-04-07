@@ -435,10 +435,10 @@ slave-directory = /srv/piuparts/slave
 basetgz-directory = /srv/piuparts/slave/basetgz
 output-directory = /srv/piuparts/htdocs
 backup-directory = /srv/piuparts/backup
-tmpdir = /tmp/piupartss
+tmpdir = /srv/piuparts/tmp
 chroot-meta-auto = reference-chroot-metadata.dat
-slave-load-max = 20.5
-idle-sleep = 1800
+slave-load-max = 15.5
+idle-sleep = 3600
 max-tgz-age = -1
 max-reserved = 50
 reschedule-old-count = 200
@@ -447,7 +447,7 @@ expire-old-days = +15
 reschedule-fail-count = 100
 reschedule-fail-days = 5
 expire-fail-days = +3
-reschedule-untestable-days = 2
+reschedule-untestable-days = 1
 slave-count = 12
 
 
@@ -1349,7 +1349,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-depends-sections = stretch/main
+depends-sections = stretch/main stretch/contrib
 distro = stretch/updates
 arch = amd64
 area = contrib
@@ -1360,7 +1360,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-depends-sections = stretch/main
+depends-sections = stretch/main stretch/contrib
 distro = stretch/updates
 arch = amd64
 area = non-free
@@ -1655,7 +1655,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
-depends-sections = jessie/main
+depends-sections = jessie/main jessie/contrib
 distro = jessie/updates
 arch = amd64
 area = non-free
@@ -2391,7 +2391,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = squeeze/main
 distro = squeeze-lts
 arch = i386
@@ -2407,7 +2406,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = squeeze/main squeeze2lts2wheezy/main squeeze2lts2wheezy/non-free
 distro = squeeze-lts
 arch = i386
@@ -2422,7 +2420,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = squeeze/main squeeze2lts2wheezy/main squeeze2lts2wheezy/contrib
 distro = squeeze-lts
 arch = i386
@@ -2438,7 +2435,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -2479,7 +2475,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -2520,7 +2515,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
 setarch = linux32
 area = main
@@ -2566,7 +2560,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -2612,7 +2605,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
 setarch = linux32
 area = main
@@ -2658,7 +2650,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = squeeze/main
 distro = squeeze-backports
 arch = amd64
@@ -2673,7 +2664,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = squeeze/main squeeze2bpo2wheezy/main squeeze2bpo2wheezy/non-free
 distro = squeeze-backports
 arch = amd64
@@ -2687,7 +2677,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = squeeze/main squeeze2bpo2wheezy/main squeeze2bpo2wheezy/contrib
 distro = squeeze-backports
 arch = amd64
@@ -2791,7 +2780,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -2832,7 +2820,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -2845,7 +2832,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = wheezy2jessie/main wheezy2jessie/non-free
 arch = amd64
 area = contrib
@@ -2858,7 +2844,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = wheezy2jessie/main wheezy2jessie/contrib
 arch = amd64
 area = non-free
@@ -2872,7 +2857,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
 setarch = linux32
 area = main
@@ -2886,7 +2870,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = wheezy2jessie_i386/main wheezy2jessie_i386/non-free
 arch = i386
 setarch = linux32
@@ -2900,7 +2883,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = wheezy2jessie_i386/main wheezy2jessie_i386/contrib
 arch = i386
 setarch = linux32
@@ -2917,7 +2899,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 arch = amd64
 area = main
@@ -2933,7 +2914,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd/main wheezy2jessie-rcmd/non-free
 arch = amd64
@@ -2949,7 +2929,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd/main wheezy2jessie-rcmd/contrib
 arch = amd64
@@ -2966,7 +2945,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 arch = i386
 setarch = linux32
@@ -2983,7 +2961,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd_i386/main wheezy2jessie-rcmd_i386/non-free
 arch = i386
@@ -3000,7 +2977,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	-i /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 depends-sections = wheezy2jessie-rcmd_i386/main wheezy2jessie-rcmd_i386/contrib
 arch = i386
@@ -3017,7 +2993,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	--scriptsdir /etc/piuparts/scripts-sysvinit
 arch = amd64
 area = main
@@ -3033,7 +3008,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	--scriptsdir /etc/piuparts/scripts-sysvinit
 depends-sections = wheezy2jessie-sysv/main wheezy2jessie-sysv/non-free
 arch = amd64
@@ -3049,7 +3023,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	--scriptsdir /etc/piuparts/scripts-sysvinit
 depends-sections = wheezy2jessie-sysv/main wheezy2jessie-sysv/contrib
 arch = amd64
@@ -3066,7 +3039,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	--scriptsdir /etc/piuparts/scripts-apt-first
 arch = amd64
 area = main
@@ -3082,7 +3054,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	--scriptsdir /etc/piuparts/scripts-apt-first
 depends-sections = wheezy2jessie-apt1st/main wheezy2jessie-apt1st/non-free
 arch = amd64
@@ -3098,7 +3069,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 	--scriptsdir /etc/piuparts/scripts-apt-first
 depends-sections = wheezy2jessie-apt1st/main wheezy2jessie-apt1st/contrib
 arch = amd64
@@ -3284,7 +3254,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-jessie)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -3322,7 +3291,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -3335,7 +3303,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch/main jessie2stretch/non-free
 arch = amd64
 area = contrib
@@ -3348,7 +3315,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch/main jessie2stretch/contrib
 arch = amd64
 area = non-free
@@ -3364,7 +3330,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -3380,7 +3345,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch/main jessie3stretch/non-free
 arch = amd64
 area = contrib
@@ -3396,7 +3360,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch/main jessie3stretch/contrib
 arch = amd64
 area = non-free
@@ -3411,7 +3374,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
 setarch = linux32
 area = main
@@ -3425,7 +3387,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch_i386/main jessie2stretch_i386/non-free
 arch = i386
 setarch = linux32
@@ -3439,7 +3400,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch_i386/main jessie2stretch_i386/contrib
 arch = i386
 setarch = linux32
@@ -3456,7 +3416,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
 setarch = linux32
 area = main
@@ -3473,7 +3432,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch_i386/main jessie3stretch_i386/non-free
 arch = i386
 setarch = linux32
@@ -3490,7 +3448,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch_i386/main jessie3stretch_i386/contrib
 arch = i386
 setarch = linux32
@@ -3508,7 +3465,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -3523,7 +3479,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch-rcmd/main jessie2stretch-rcmd/non-free
 arch = amd64
 area = contrib
@@ -3538,7 +3493,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch-rcmd/main jessie2stretch-rcmd/contrib
 arch = amd64
 area = non-free
@@ -3555,7 +3509,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -3572,7 +3525,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch-rcmd/main jessie3stretch-rcmd/non-free
 arch = amd64
 area = contrib
@@ -3589,7 +3541,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch-rcmd/main jessie3stretch-rcmd/contrib
 arch = amd64
 area = non-free
@@ -3606,7 +3557,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
 setarch = linux32
 area = main
@@ -3622,7 +3572,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch-rcmd_i386/main jessie2stretch-rcmd_i386/non-free
 arch = i386
 setarch = linux32
@@ -3638,7 +3587,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch-rcmd_i386/main jessie2stretch-rcmd_i386/contrib
 arch = i386
 setarch = linux32
@@ -3656,7 +3604,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = i386
 setarch = linux32
 area = main
@@ -3674,7 +3621,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch-rcmd_i386/main jessie3stretch-rcmd_i386/non-free
 arch = i386
 setarch = linux32
@@ -3692,7 +3638,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie3stretch-rcmd_i386/main jessie3stretch-rcmd_i386/contrib
 arch = i386
 setarch = linux32
@@ -3710,7 +3655,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -3725,7 +3669,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch-iri/main jessie2stretch-iri/non-free
 arch = amd64
 area = contrib
@@ -3740,7 +3683,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 depends-sections = jessie2stretch-iri/main jessie2stretch-iri/contrib
 arch = amd64
 area = non-free
@@ -3881,7 +3823,6 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
 arch = amd64
 area = main
 components = main
@@ -4246,7 +4187,6 @@ precedence = 80
 description = + Testing two-stage upgrades with --install-recommends.
 piuparts-flags =
 	--install-recommends
-	--fake-essential-packages ca-certificates
 	--upgrade-before-dist-upgrade
 	%(flags-default)s
 	%(flags-start-stretch)s
@@ -4265,7 +4205,6 @@ precedence = 95
 description = + Testing two-stage upgrades with --install-recommends.
 piuparts-flags =
 	--install-recommends
-	--fake-essential-packages ca-certificates
 	--upgrade-before-dist-upgrade
 	%(flags-default)s
 	%(flags-start-stretch)s
@@ -4284,7 +4223,6 @@ precedence = 95
 description = + Testing two-stage upgrades with --install-recommends.
 piuparts-flags =
 	--install-recommends
-	--fake-essential-packages ca-certificates
 	--upgrade-before-dist-upgrade
 	%(flags-default)s
 	%(flags-start-stretch)s
