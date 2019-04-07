@@ -20,6 +20,8 @@ piuparts (0.99) UNRELEASED; urgency=medium
     - jessie* has been partially archived/removed.
     - Add buster-backports.
     - Add bullseye-proposed-updates.
+  * piuparts.conf:
+    - Add section [sid-merged-usr], using --merged-usr.  (Closes: #848968)
   * scripts/post_distupgrade_exceptions:
     - Handle /var/lib/pam/seen stretch -> buster upgrade by running
       pam-auth-update if needed. Workaround for #920760.

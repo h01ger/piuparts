@@ -148,6 +148,7 @@ flags-broken-symlinks =
 [global]
 basetgz-sections =
 	tarball/sid
+	tarball/sid-merged-usr
 	tarball/buster
 	tarball/stretch
 	tarball/jessie
@@ -160,6 +161,7 @@ sections =
 	sid
 	sid-strict
 	sid-nodoc
+	sid-merged-usr
 	sid-broken-symlinks
 	testing2sid
 	stable2sid
@@ -255,6 +257,17 @@ piuparts-flags =
 	%(flags-default)s
 distro = None
 upgrade-test-distros = sid
+# 3 days (60*60*24*3)
+max-tgz-age = 259200
+
+
+[tarball/sid-merged-usr]
+piuparts-flags =
+	--merged-usr
+	%(flags-default)s
+distro = None
+upgrade-test-distros = sid
+chroot-tgz = %(upgrade-test-distros)s-merged-usr_%(arch)s.tgz
 # 3 days (60*60*24*3)
 max-tgz-age = 259200
 
@@ -366,6 +379,17 @@ piuparts-flags =
 	%(flags-default)s
 	--scriptsdir /etc/piuparts/scripts-no-usr-share-doc
 distro = sid
+
+
+[sid-merged-usr]
+precedence = 5
+description = + In --merged-usr environment.
+json-sections = none
+piuparts-flags =
+	--merged-usr
+	%(flags-default)s
+distro = sid
+chroot-tgz = %(distro)s-merged-usr_%(arch)s.tgz
 
 
 [sid-broken-symlinks]
