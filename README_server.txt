@@ -305,6 +305,11 @@ used for all further sections.
 * "slave-count" is the number of concurrent slaves to start.
  Default: "1".
 
+* "slave-flush-interval" is an interval (in seconds) of processing a
+ section which has more queued work after that the slave will connect
+ to the master and flush pending logfiles before resuming the section.
+ Default: "0", i.e. disabled.
+
 * "output-directory" is the directory where piuparts-report places
  the logfiles, generated html files, charts, ... that can be
  served by a webserver.

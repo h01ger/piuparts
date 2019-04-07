@@ -101,6 +101,7 @@ class Config(piupartslib.conf.Config):
                                          "arch": None,
                                          "precedence": "1",
                                          "slave-load-max": None,
+                                         "slave-flush-interval": 0,
                                          },
                                          defaults_section=defaults_section)
 
@@ -359,15 +360,15 @@ class Section:
             self._logger = logging.getLogger()
             self._logger.setLevel(logging.DEBUG)
 
-        if int(self._config["max-reserved"]) > 0:
-            self._check_tarball()
+        self._slave = slave or Slave()
 
         for rdir in ["new", "pass", "fail", "untestable", "reserved"]:
             rdir = os.path.join(self._slave_directory, rdir)
             if not os.path.exists(rdir):
                 os.mkdir(rdir)
 
-        self._slave = slave or Slave()
+        if int(self._config["max-reserved"]) > 0:
+            self._check_tarball()
 
     def _throttle_if_overloaded(self):
         global interrupted
@@ -441,6 +442,7 @@ class Section:
                     needs_update = True
                     logging.info("%s too old.  Forcing re-creation" % tgz)
         if needs_update:
+            self._slave.close()
             create_chroot(self._config, tgz, self._config.get_start_distro())
             ttl = min_tgz_retry_delay
         self._tarball_wait_until = time.time() + ttl
@@ -614,7 +616,7 @@ class Section:
 
     def _process(self):
         global interrupted
-        self._slave.close()
+        last_flush = time.time()
 
         packagenames = set([x[0] for x in self._slave.get_reserved()])
         packages_files = {}
@@ -654,6 +656,11 @@ class Section:
             self._throttle_if_overloaded()
             if interrupted or got_sighup:
                 break
+            if int(self._config["slave-flush-interval"]):
+                if time.time() - last_flush > int(self._config["slave-flush-interval"]):
+                    last_flush += 300   # throttle retries
+                    if self._talk_to_master():
+                        last_flush = time.time()
             if not os.path.exists(self._get_tarball()):
                 logging.error("Missing chroot-tgz %s" % self._get_tarball())
                 break
@@ -666,6 +673,7 @@ class Section:
     def _test_package(self, pname, pvers, packages_files):
         global old_sigint_handler
         old_sigint_handler = signal(SIGINT, sigint_handler)
+        self._slave.close()
 
         logging.info("Testing package %s/%s %s" % (self._config.section, pname, pvers))
 

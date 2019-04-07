@@ -238,6 +238,7 @@ arch = @ARCH@
 area = main
 # the slave-count setting is for the slave(s)
 slave-count = 4
+slave-flush-interval = 1800
 # 3600s = 1h
 idle-sleep = 3600
 max-tgz-age = 0

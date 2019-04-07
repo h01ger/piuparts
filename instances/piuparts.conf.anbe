@@ -439,6 +439,7 @@ tmpdir = /srv/piuparts/tmp
 chroot-meta-auto = reference-chroot-metadata.dat
 slave-load-max = 15.5
 idle-sleep = 3600
+slave-flush-interval = 1800
 max-tgz-age = -1
 max-reserved = 50
 reschedule-old-count = 200

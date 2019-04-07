@@ -22,6 +22,9 @@ piuparts (0.99) UNRELEASED; urgency=medium
     - Add bullseye-proposed-updates.
   * piuparts.conf:
     - Add section [sid-merged-usr], using --merged-usr.  (Closes: #848968)
+  * piuparts-slave.py:
+    - New option "slave-flush-interval" to flush logs more frequently to the
+      master. Set to 30 minutes.
   * scripts/{post_chroot_unpack,pre_distupgrade}_allow_unauthenticated:
     - Disable Check-Valid-Until for jessie-backports.
   * scripts/post_distupgrade_exceptions:
