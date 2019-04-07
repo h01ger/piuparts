@@ -12,6 +12,7 @@ piuparts (0.99) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Add '--merged-usr' support when using debootstrap to create the chroot.
     - Add '--distupgrade-to-testdebs-from DIR' as a shorthand for
       '--bindmount DIR --testdebs-repo DIR --distupgrade-to-testdebs'.
   * distros.conf:

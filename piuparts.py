@@ -193,6 +193,7 @@ class Settings:
         self.minimize = False
         self.debfoster_options = None
         self.docker_image = None
+        self.merged_usr = False
         # tests and checks
         self.no_install_purge_test = False
         self.no_upgrade_test = False
@@ -1107,7 +1108,10 @@ class Chroot:
             options.append("--keyring=%s" % settings.keyring)
         if settings.eatmydata:
             options.append('--include=eatmydata')
-        options.append('--no-merged-usr')
+        if settings.merged_usr:
+            options.append('--merged-usr')
+        else:
+            options.append('--no-merged-usr')
         options.append('--components=%s' % ','.join(settings.debian_mirrors[0][1]))
         if settings.arch:
             options.append('--arch=%s' % settings.arch)
@@ -2797,6 +2801,11 @@ def parse_command_line():
                       "DOCKER-IMAGE for the testing environment, instead of "
                       "building a new one with debootstrap.")
 
+    parser.add_option("--merged-usr",
+                      default=False,
+                      action='store_true',
+                      help="Create a --merged-usr chroot (if using debootstrap).")
+
     parser.add_option("-m", "--mirror", action="append", metavar="URL",
                       default=[],
                       help="Which Debian mirror to use.")
@@ -3026,6 +3035,7 @@ def parse_command_line():
         settings.skip_minimize = False
     settings.debfoster_options = opts.debfoster_options.split()
     settings.docker_image = opts.docker_image
+    settings.merged_usr = opts.merged_usr
     # tests and checks
     settings.no_install_purge_test = opts.no_install_purge_test
     settings.no_upgrade_test = opts.no_upgrade_test

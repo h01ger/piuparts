@@ -173,6 +173,11 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *--log-level*='level'::
   Display messages from loglevel LEVEL, possible values are: error, info, dump, debug. The default is dump.
 
+*--merged-usr*::
+  When using debootstrap to create the chroot, use the '--merged-usr' option
+  to create a chroot with /bin, /lib, /sbin being symlinks to their /usr
+  counterparts.
+
 *-m* 'url', *--mirror*='url'::
   Which Debian mirror to use. The default is the first mirror named in _/etc/apt/sources.list_ or _http://deb.debian.org/debian_ if none is found. This option may be used multiple times to use multiple mirrors. Only the first mirror is used with *debootstrap*.
 +
