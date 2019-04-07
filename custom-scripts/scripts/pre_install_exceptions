@@ -97,6 +97,18 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			;;
 esac
 
+if [ "$PIUPARTS_DISTRIBUTION" = "jessie" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libjs-protoaculous)
+			#919917: yui-compressor: insufficient java dependency in jessie
+			log_debug
+			apt-get -y install default-jre-headless
+			;;
+	esac
+
+fi
+
 if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
