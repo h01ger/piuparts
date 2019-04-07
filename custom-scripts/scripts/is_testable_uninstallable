@@ -171,6 +171,13 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		# removed after lenny
 		skip_distupgrade "#523770: must use invoke-rc.d"
 		;;
+	dms-core@jessie|\
+	dms@jessie|\
+	dms-dr@jessie|\
+	dms-wsgi@jessie)
+		# fixed after jessie, not in stable after jessie
+		skip_distupgrade '#852519: fails to install: NZST FATAL: configuration file "/etc/postgresql/9.4/dms/postgresql.conf" contains errors'
+		;;
 	docbookwiki@lenny)
 		# removed after lenny
 		skip_distupgrade "unconditionally uses mysql-client during purge"
