@@ -29,3 +29,18 @@ elif [ -e /etc/apt/apt.conf.d/unauthenticated-squeeze ]; then
 	echo "FAIL: /etc/apt/apt.conf.d/unauthenticated-squeeze exists"
 	exit 1
 fi
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ]; then
+	rm -fv /etc/apt/apt.conf.d/unauthenticated-jessie
+fi
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie-backports" ]; then
+	echo "Creating /etc/apt/apt.conf.d/unauthenticated-jessie ..."
+	tee /etc/apt/apt.conf.d/unauthenticated-jessie <<EOF
+# The Release file is not getting updated.
+Acquire::Check-Valid-Until "false";
+EOF
+elif [ -e /etc/apt/apt.conf.d/unauthenticated-jessie ]; then
+	echo "FAIL: /etc/apt/apt.conf.d/unauthenticated-jessie exists"
+	exit 1
+fi
