@@ -111,6 +111,8 @@ flags-broken-symlinks =
 basetgz-sections =
 	tarball/sid/amd64
 	tarball/sid/i386
+	tarball/sid-merged-usr/amd64
+	tarball/sid-merged-usr/i386
 	tarball/buster/amd64
 	tarball/buster/i386
 	tarball/stretch/amd64
@@ -131,6 +133,7 @@ sections =
 	sid/main
 	sid-plus/main
 	sid-rcmd/main
+	sid-merged-usr/main
 	sid-bl/main
 	sid-bl_i386/main
 	sid-ipi/main
@@ -195,6 +198,7 @@ sections =
 	sid/contrib
 	sid-plus/contrib
 	sid-rcmd/contrib
+	sid-merged-usr/contrib
 	sid-bl/contrib
 	sid-bl_i386/contrib
 	sid-ipi/contrib
@@ -259,6 +263,7 @@ sections =
 	sid/non-free
 	sid-plus/non-free
 	sid-rcmd/non-free
+	sid-merged-usr/non-free
 	sid-bl/non-free
 	sid-bl_i386/non-free
 	sid-ipi/non-free
@@ -472,6 +477,35 @@ arch = i386
 setarch = linux32
 area = main
 components = main
+# 60*60*24*2
+max-tgz-age = 172800
+
+
+[tarball/sid-merged-usr/amd64]
+piuparts-flags =
+	--merged-usr
+	%(flags-default)s
+distro = None
+upgrade-test-distros = sid
+arch = amd64
+area = main
+components = main
+chroot-tgz = %(upgrade-test-distros)s-merged-usr_%(arch)s.tgz
+# 60*60*24*2
+max-tgz-age = 172800
+
+
+[tarball/sid-merged-usr/i386]
+piuparts-flags =
+	--merged-usr
+	%(flags-default)s
+distro = None
+upgrade-test-distros = sid
+arch = i386
+setarch = linux32
+area = main
+components = main
+chroot-tgz = %(upgrade-test-distros)s-merged-usr_%(arch)s.tgz
 # 60*60*24*2
 max-tgz-age = 172800
 
@@ -884,6 +918,43 @@ arch = i386
 setarch = linux32
 area = non-free
 reschedule-old-days = 60
+
+
+[sid-merged-usr/main]
+precedence = 30
+description = + In --merged-usr environment.
+piuparts-flags =
+	--merged-usr
+	%(flags-default)s
+distro = sid
+arch = amd64
+area = main
+components = main
+chroot-tgz = %(distro)s-merged-usr_%(arch)s.tgz
+
+[sid-merged-usr/contrib]
+precedence = 45
+description = + In --merged-usr environment.
+piuparts-flags =
+	--merged-usr
+	%(flags-default)s
+depends-sections = sid-merged-usr/main sid-merged-usr/non-free
+distro = sid
+arch = amd64
+area = contrib
+chroot-tgz = %(distro)s-merged-usr_%(arch)s.tgz
+
+[sid-merged-usr/non-free]
+precedence = 45
+description = + In --merged-usr environment.
+piuparts-flags =
+	--merged-usr
+	%(flags-default)s
+depends-sections = sid-merged-usr/main sid-merged-usr/contrib
+distro = sid
+arch = amd64
+area = non-free
+chroot-tgz = %(distro)s-merged-usr_%(arch)s.tgz
 
 
 [sid-bl/main]
