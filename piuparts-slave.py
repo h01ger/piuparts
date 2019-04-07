@@ -423,6 +423,8 @@ class Section:
         max_tgz_age = int(self._config["max-tgz-age"])
         min_tgz_retry_delay = int(self._config["min-tgz-retry-delay"])
         ttl = 0
+        if max_tgz_age == 0:
+            ttl = 86400
         needs_update = not os.path.exists(tgz)
         if not needs_update and max_tgz_age > 0:
             # tgz exists and age is limited, so check age
