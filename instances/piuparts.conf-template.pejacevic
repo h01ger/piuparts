@@ -268,7 +268,7 @@ piuparts-flags =
 	%(flags-default)s
 distro = None
 upgrade-test-distros = sid
-chroot-tgz = %(upgrade-test-distros)s-merged-usr_%(arch)s.tgz
+chroot-tgz = %(upgrade-test-distros)s-merged-usr_@ARCH@.tgz
 # 3 days (60*60*24*3)
 max-tgz-age = 259200
 
@@ -390,7 +390,7 @@ piuparts-flags =
 	--merged-usr
 	%(flags-default)s
 distro = sid
-chroot-tgz = %(distro)s-merged-usr_%(arch)s.tgz
+chroot-tgz = %(distro)s-merged-usr_@ARCH@.tgz
 
 
 [sid-broken-symlinks]
