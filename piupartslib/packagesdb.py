@@ -855,6 +855,14 @@ class PackagesDB:
         with open(self._submissions, "a") as submissions:
             submissions.write("%d %s %s %s\n" % (time.time(), category, package, version))
 
+    def _remove_logs_if_reserved(self, package, version):
+        if self._logdb.log_exists2(package, version, [self._reserved]):
+            for vdir in self._most:
+                if self._logdb.log_exists2(package, version, [vdir]):
+                    self._logdb.remove(vdir, package, version)
+                    logging.info("Recycled %s %s %s" % (vdir, package, version))
+            self._logdb.remove(self._reserved, package, version)
+
     def unreserve_package(self, package, version):
         self._check_for_acceptability_as_filename(package)
         self._check_for_acceptability_as_filename(version)
@@ -863,8 +871,8 @@ class PackagesDB:
     def pass_package(self, package, version, log):
         self._check_for_acceptability_as_filename(package)
         self._check_for_acceptability_as_filename(version)
+        self._remove_logs_if_reserved(package, version)
         if self._logdb.create(self._ok, package, version, log):
-            self._logdb.remove(self._reserved, package, version)
             self._record_submission("pass", package, version)
         else:
             raise LogfileExists(self._ok, package, version)
@@ -872,8 +880,8 @@ class PackagesDB:
     def fail_package(self, package, version, log):
         self._check_for_acceptability_as_filename(package)
         self._check_for_acceptability_as_filename(version)
+        self._remove_logs_if_reserved(package, version)
         if self._logdb.create(self._fail, package, version, log):
-            self._logdb.remove(self._reserved, package, version)
             self._record_submission("fail", package, version)
         else:
             raise LogfileExists(self._fail, package, version)
@@ -881,8 +889,8 @@ class PackagesDB:
     def make_package_untestable(self, package, version, log):
         self._check_for_acceptability_as_filename(package)
         self._check_for_acceptability_as_filename(version)
+        self._remove_logs_if_reserved(package, version)
         if self._logdb.create(self._evil, package, version, log):
-            self._logdb.remove(self._reserved, package, version)
             self._record_submission("untestable", package, version)
         else:
             raise LogfileExists(self._evil, package, version)
