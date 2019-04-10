@@ -30,6 +30,8 @@ piuparts (0.99) UNRELEASED; urgency=medium
   * scripts/post_distupgrade_exceptions:
     - Handle /var/lib/pam/seen stretch -> buster upgrade by running
       pam-auth-update if needed. Workaround for #920760.
+  * scripts/pre_remove_40_find_unowned_lib_links:
+    - Handle --merged-usr environments.
   * master-bin/reschedule_piuparts_tests: Do not act on 'bugged/*.log' and
     'affected/*.log' by default. Add --bugged, --affected flags.
 
