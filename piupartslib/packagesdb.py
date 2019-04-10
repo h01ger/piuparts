@@ -236,12 +236,15 @@ class LogDB:
     def _log_name(self, package, version):
         return "%s_%s.log" % (package, version)
 
-    def log_exists(self, package, subdirs):
-        log_name = self._log_name(package.name(), package.test_versions())
+    def log_exists2(self, package, version, subdirs):
+        log_name = self._log_name(package, version)
         for subdir in subdirs:
             if self.exists(os.path.join(subdir, log_name)):
                 return True
         return False
+
+    def log_exists(self, package, subdirs):
+        return self.log_exists2(package.name(), package.test_versions(), subdirs)
 
     def create(self, subdir, package, version, contents):
         (fd, temp_name) = tempfile.mkstemp(dir=subdir)
@@ -383,6 +386,7 @@ class PackagesDB:
         if recycle:
             self._recycle = pformat % recycle
             self._all.append(self._recycle)
+        self._most = [x for x in self._all if x not in [self._reserved, self._recycle]]
 
     def create_subdirs(self):
         for sdir in self._all:
