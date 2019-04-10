@@ -490,8 +490,11 @@ class PackagesDB:
                 if dep_ver is not None and apt_pkg.version_compare(curr_ver, dep_ver) < 0:
                     #logging.info("[%s] outdated: %s %s < %s @[%s]" % (self.prefix, package.name(), curr_ver, dep_ver, db.prefix))
                     return "outdated";
-        if self._recycle_mode and self._logdb.log_exists(package, [self._recycle]):
-            return "unknown"
+        if self._recycle_mode:
+            if self._logdb.log_exists(package, [self._reserved]):
+                return "waiting-to-be-tested"
+            if self._logdb.log_exists(package, [self._recycle]):
+                return "unknown"
         if self._logdb.log_exists(package, [self._ok]):
             success = True
             if not use_cached_success:
@@ -507,6 +510,8 @@ class PackagesDB:
             return "failed-testing"
         if self._logdb.log_exists(package, [self._evil]):
             return "cannot-be-tested"
+        if self._logdb.log_exists(package, [self._reserved]):
+            return "waiting-to-be-tested"
         return "unknown"
 
     def _compute_package_state(self, package):
