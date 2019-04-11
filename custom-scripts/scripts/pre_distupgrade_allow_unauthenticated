@@ -10,6 +10,8 @@ if [ -e /etc/apt/apt.conf.d/unauthenticated-lenny ]; then
 	exit 1
 fi
 
+############################################################################
+
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 	rm -fv /etc/apt/apt.conf.d/unauthenticated-squeeze
 fi
@@ -29,6 +31,25 @@ elif [ -e /etc/apt/apt.conf.d/unauthenticated-squeeze ]; then
 	echo "FAIL: /etc/apt/apt.conf.d/unauthenticated-squeeze exists"
 	exit 1
 fi
+
+############################################################################
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
+	rm -fv /etc/apt/apt.conf.d/unauthenticated-wheezy
+fi
+
+if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
+	echo "Creating /etc/apt/apt.conf.d/unauthenticated-wheezy ..."
+	tee /etc/apt/apt.conf.d/unauthenticated-wheezy <<EOF
+# The Release file is not getting updated.
+Acquire::Check-Valid-Until "false";
+EOF
+elif [ -e /etc/apt/apt.conf.d/unauthenticated-wheezy ]; then
+	echo "FAIL: /etc/apt/apt.conf.d/unauthenticated-wheezy exists"
+	exit 1
+fi
+
+############################################################################
 
 if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "stretch" ]; then
 	rm -fv /etc/apt/apt.conf.d/unauthenticated-jessie

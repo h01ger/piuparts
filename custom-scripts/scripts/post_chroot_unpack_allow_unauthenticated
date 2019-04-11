@@ -22,6 +22,14 @@ Acquire::Check-Valid-Until "false";
 EOF
 fi
 
+if [ "$PIUPARTS_DISTRIBUTION" = "wheezy" ]; then
+	echo "Creating /etc/apt/apt.conf.d/unauthenticated-wheezy ..."
+	tee /etc/apt/apt.conf.d/unauthenticated-wheezy <<EOF
+# The Release file is not getting updated.
+Acquire::Check-Valid-Until "false";
+EOF
+fi
+
 if [ "$PIUPARTS_DISTRIBUTION" = "jessie-backports" ]; then
 	echo "Creating /etc/apt/apt.conf.d/unauthenticated-jessie ..."
 	tee /etc/apt/apt.conf.d/unauthenticated-jessie <<EOF

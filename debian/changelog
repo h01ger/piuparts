@@ -29,7 +29,7 @@ piuparts (0.99) UNRELEASED; urgency=medium
     - New option "slave-flush-interval" to flush logs more frequently to the
       master. Set to 30 minutes.
   * scripts/{post_chroot_unpack,pre_distupgrade}_allow_unauthenticated:
-    - Disable Check-Valid-Until for jessie-backports.
+    - Disable Check-Valid-Until for wheezy/updates and jessie-backports.
   * scripts/post_distupgrade_exceptions:
     - Handle /var/lib/pam/seen stretch -> buster upgrade by running
       pam-auth-update if needed. Workaround for #920760.
