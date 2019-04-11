@@ -38,6 +38,9 @@ piuparts (0.99) UNRELEASED; urgency=medium
   * master-bin/reschedule_piuparts_tests: Do not act on 'bugged/*.log' and
     'affected/*.log' by default. Add --bugged, --affected flags.
 
+  [ Holger Levsen ]
+  * htdocs/news.tpl: add news about sid-merged-usr being tested.
+
  -- Holger Levsen <holger@debian.org>  Fri, 01 Mar 2019 11:47:19 +0100
 
 piuparts (0.98) unstable; urgency=medium

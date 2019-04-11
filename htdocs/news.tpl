@@ -6,6 +6,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2019-04-10</b> Another suite added: <a href="https://piuparts.debian.org/sid-merged-usr">sid-merged-usr</a>, to test package installation, removal and purge in sid in a --merged-usr environment.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2018-11-28</b>: The output of various maintenance scripts is now available at <a href="https://piuparts.debian.org/logs/" target="_blank">https://piuparts.debian.org/logs/</a> instead of sending it via mails to the piuparts.d.o maintainers only.
      </td>
     </tr>
