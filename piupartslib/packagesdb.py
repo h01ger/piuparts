@@ -831,14 +831,16 @@ class PackagesDB:
         self._candidates_for_testing.remove(p)
 
     def reserve_package(self):
-        all_but_recycle = [x for x in self._all if x != self._recycle]
         for p in self._find_packages_ready_for_testing():
+            if self._logdb.log_exists(p, [self._reserved]):
+                self._remove_unavailable_candidate(p)
+                continue
             if self._recycle_mode and self._logdb.log_exists(p, [self._recycle]):
-                for vdir in all_but_recycle:
+                for vdir in [x for x in self._most if x != self._ok]:
                     if self._logdb.log_exists(p, [vdir]):
                         self._logdb.remove(vdir, p.name(), p.test_versions())
                         logging.info("Recycled %s %s %s" % (vdir, p.name(), p.test_versions()))
-            if self._logdb.log_exists(p, all_but_recycle):
+            elif self._logdb.log_exists(p, self._most):
                 self._remove_unavailable_candidate(p)
                 continue
             if self._logdb.log_exists(p, [self._recycle]):
@@ -866,6 +868,11 @@ class PackagesDB:
     def unreserve_package(self, package, version):
         self._check_for_acceptability_as_filename(package)
         self._check_for_acceptability_as_filename(version)
+        if self._logdb.log_exists2(package, version, [self._reserved]):
+            if not self._logdb.log_exists2(package, version, [self._recycle]):
+                # restore possible recycle marker
+                if self._logdb.log_exists2(package, version, self._most):
+                    self._logdb.create(self._recycle, package, version, "")
         self._logdb.remove(self._reserved, package, version)
 
     def pass_package(self, package, version, log):
