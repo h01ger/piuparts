@@ -84,6 +84,9 @@ fi
 
 if [ "$PIUPARTS_DISTRIBUTION" = "stretch" ]; then
 
+	# debianutils in jessie shipped /usr/share/man/sl/*/ with mode 0775
+	find /usr/share/man/sl -type d -perm /020 -exec chmod -c g-w {} +
+
 	# fakeroot:i386 in jessie shipped these with permissions 0775 (#826318)
 	for dir in /usr/share/man/nl /usr/share/man/nl/man1
 	do
