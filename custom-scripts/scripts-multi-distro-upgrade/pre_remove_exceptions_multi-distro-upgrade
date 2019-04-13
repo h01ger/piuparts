@@ -1,0 +1,81 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+case ${PIUPARTS_OBJECTS} in
+	autotrust=None)
+		# removed after squeeze
+		# logrotate config references /var/log/autotrust/*.log
+		log_debug
+		touch /var/log/autotrust/dummy.log
+		;;
+	dancer-ircd=None)
+		# removed after wheezy
+		# logrotate config references /var/log/dancer-ircd/ircd.log
+		log_debug
+		touch /var/log/dancer-ircd/ircd.log
+		;;
+	dsyslog=None)
+		# removed after jessie
+		# logrotate config references /var/log/messages
+		log_debug
+		touch /var/log/messages
+		;;
+	fossology-scheduler-single=None)
+		# removed after squeeze
+		# logrotate config references /var/log/fossology/*.log
+		log_debug
+		chown root:root /var/log/fossology
+		touch /var/log/fossology/dummy.log
+		;;
+	fspd=None)
+		# removed after lenny
+		# logrotate config references /var/log/fspd/fspd.log, /var/log/fspd/xferlog
+		log_debug
+		touch /var/log/fspd/fspd.log
+		touch /var/log/fspd/xferlog
+		;;
+	gidentd=None)
+		# removed after lenny
+		# logrotate config references /var/log/gidentd.log
+		log_debug
+		touch /var/log/gidentd.log
+		;;
+	interchange=None)
+		# removed after wheezy
+		# logrotate config references /var/log/interchange/debug.log, /var/log/interchange/error.log, /var/log/interchange/makecat.log
+		log_debug
+		chown root:root /var/log/interchange
+		touch /var/log/interchange/debug.log
+		touch /var/log/interchange/error.log
+		touch /var/log/interchange/makecat.log
+		;;
+	mserv=None)
+		# removed after lenny
+		# logrotate config references /var/log/mserv/mserv.log
+		log_debug
+		touch /var/log/mserv/mserv.log
+		;;
+	nws=None)
+		# removed after lenny
+		# logrotate config references /var/log/nws/*.err, /var/log/nws/*.log
+		log_debug
+		touch /var/log/nws/dummy.err
+		touch /var/log/nws/dummy.log
+		;;
+	qwik=None)
+		# removed after lenny
+		# logrotate config references /var/log/qwik/*log
+		log_debug
+		touch /var/log/qwik/dummy.log
+		;;
+	smtpfeed=None)
+		# removed after lenny
+		# logrotate config references /var/log/smtpfeed.log
+		log_debug
+		touch /var/log/smtpfeed.log
+		;;
+esac
