@@ -95,6 +95,7 @@ class Config(piupartslib.conf.Config):
                                          "upgrade-test-distros": None,
                                          "basetgz-directory": ".",
                                          "chroot-meta-auto": None,
+                                         "chroot-meta-directory": None,
                                          "max-reserved": 1,
                                          "debug": "no",
                                          "keep-sources-list": "no",
@@ -449,6 +450,28 @@ class Section:
 
         os.chdir(oldcwd)
 
+    def _get_refchroot_metadata(self):
+        if self._config["chroot-meta-auto"]:
+            if self._config["chroot-meta-directory"]:
+                path = os.path.join(self._config["chroot-meta-directory"], self._config.section)
+                if not os.path.exists(path):
+                    os.makedirs(path)
+                return os.path.join(path, self._config["chroot-meta-auto"])
+            return self._config["chroot-meta-auto"]
+        return None
+
+    def _check_refchroot_metadata(self):
+        refchroot_metadata = self._get_refchroot_metadata()
+        if refchroot_metadata:
+            if os.path.exists(refchroot_metadata):
+                try:
+                    age = time.time() - os.path.getmtime(refchroot_metadata)
+                    if age > 6 * 3600:
+                        os.unlink(refchroot_metadata)
+                        logging.info("Deleting old %s" % refchroot_metadata)
+                except OSError:
+                    pass
+
     def _count_submittable_logs(self):
         files = 0
         subdirs = ["pass", "fail", "untestable"]
@@ -530,6 +553,8 @@ class Section:
                 logging.info("busy")
                 self._error_wait_until = time.time() + 900
             else:
+                if do_processing:
+                    self._check_refchroot_metadata()
                 if self._talk_to_master(fetch=do_processing, recycle=recycle, unreserve=interrupted):
                     if do_processing:
                         if not self._slave.get_reserved():
@@ -643,15 +668,7 @@ class Section:
         self._check_tarball()
         if not os.path.exists(self._get_tarball()):
             self._error_wait_until = time.time() + 300
-        if self._config["chroot-meta-auto"]:
-            if os.path.exists(self._config["chroot-meta-auto"]):
-                try:
-                    age = time.time() - os.path.getmtime(self._config["chroot-meta-auto"])
-                    if age > 6 * 3600:
-                        os.unlink(self._config["chroot-meta-auto"])
-                        logging.info("Deleting old %s" % self._config["chroot-meta-auto"])
-                except OSError:
-                    pass
+        self._check_refchroot_metadata()
         for package_name, version in self._slave.get_reserved():
             self._throttle_if_overloaded()
             if interrupted or got_sighup:
@@ -713,10 +730,11 @@ class Section:
         if self._config["keep-sources-list"] in ["yes", "true"]:
             command.append("--keep-sources-list")
         if distupgrade and self._config["chroot-meta-auto"]:
-            if not os.path.exists(self._config["chroot-meta-auto"]):
-                command.extend(["-S", self._config["chroot-meta-auto"]])
+            refchroot_metadata = self._get_refchroot_metadata()
+            if not os.path.exists(refchroot_metadata):
+                command.extend(["-S", refchroot_metadata])
             else:
-                command.extend(["-B", self._config["chroot-meta-auto"]])
+                command.extend(["-B", refchroot_metadata])
         command.extend(["--apt", "%s=%s" % (pname, pvers)])
 
         subdir = "fail"
@@ -795,12 +813,13 @@ class Section:
                 output.write(" *** PIUPARTS OUTPUT INCOMPLETE ***\n")
             elif distupgrade and self._config["chroot-meta-auto"]:
                 try:
+                    refchroot_metadata = self._get_refchroot_metadata()
                     if "History of available packages does not match - reference chroot may be outdated" in f:
-                        os.unlink(self._config["chroot-meta-auto"])
-                        logging.info("Deleting outdated %s" % self._config["chroot-meta-auto"])
+                        os.unlink(refchroot_metadata)
+                        logging.info("Deleting outdated %s" % refchroot_metadata)
                     elif "Initial package selections do not match - ignoring loaded reference chroot state" in f:
-                        os.unlink(self._config["chroot-meta-auto"])
-                        logging.info("Deleting mismatching %s" % self._config["chroot-meta-auto"])
+                        os.unlink(refchroot_metadata)
+                        logging.info("Deleting mismatching %s" % refchroot_metadata)
                 except OSError:
                     pass
 

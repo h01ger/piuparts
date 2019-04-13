@@ -452,14 +452,18 @@ section, too, and will serve as defaults for all other sections
  automatically selected default name) is located. The default is
  '.'.
 
-* "chroot-meta-auto" (global, section) is a file in the section
- directory where the slave will store cached chroot meta data for
+* "chroot-meta-auto" (global, section) is a file in
+ "chroot-meta-directory" (falling back to the section directory)
+ where the slave will store cached chroot meta data for
  the reference target chroot in distupgrade tests. This speeds up
  distupgrade tests since it avoids doing an empty upgrade test to
  generate this data on-the-fly as part of each test. Cached data
  will be valid for 6 hours unless a mismatch in the package
  versions available in the chroot is detected earlier.
  This is not set (and therefore not enabled) by default.
+
+* "chroot-meta-directory" is the directory where "chroot-meta-auto"
+ stores the reference target chroot metadata.
 
 * "upgrade-test-distros" is the space delimited list of
  distributions the slave should use for testing upgrades

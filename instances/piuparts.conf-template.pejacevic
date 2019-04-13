@@ -232,6 +232,7 @@ output-directory = /srv/piuparts.debian.org/htdocs
 backup-directory = /srv/piuparts.debian.org/backup
 tmpdir = /srv/piuparts.debian.org/tmp
 doc-root = /
+chroot-meta-directory = /srv/piuparts.debian.org/slave/refchroot
 chroot-meta-auto = reference-chroot-metadata.dat
 components = main
 arch = @ARCH@

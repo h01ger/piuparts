@@ -436,6 +436,7 @@ basetgz-directory = /srv/piuparts/slave/basetgz
 output-directory = /srv/piuparts/htdocs
 backup-directory = /srv/piuparts/backup
 tmpdir = /srv/piuparts/tmp
+chroot-meta-directory = /srv/piuparts/slave/refchroot
 chroot-meta-auto = reference-chroot-metadata.dat
 slave-load-max = 15.5
 idle-sleep = 3600
