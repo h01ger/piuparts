@@ -536,7 +536,7 @@ class Section:
                             self._idle_wait_until = time.time() + int(self._config["idle-sleep"])
                             if recycle:
                                 self._recycle_wait_until = self._idle_wait_until + 3600
-                        else:
+                if do_processing and self._slave.get_reserved():
                             processed = self._process()
                             if got_sighup and self._slave.get_reserved():
                                 # keep this section at the front of the round-robin runnable queue
