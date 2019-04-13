@@ -124,6 +124,9 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "wheezy" ]; then
 		firmware-b43-lpphy-installer)
 			skip_distupgrade "#623703: download location no longer available"
 			;;
+		geoip-database-contrib)
+			skip_distupgrade "#885441: download location no longer available"
+			;;
 		nautilus-dropbox)
 			skip_distupgrade "#770402: downloads awfully slow, hangs during installation"
 			;;
@@ -134,11 +137,24 @@ fi
 if [ "${PIUPARTS_DISTRIBUTION}" = "jessie" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
+		geoip-database-contrib)
+			skip_distupgrade "#885441: download location no longer available"
+			;;
 		steam)
 			skip_distupgrade "#772598: cannot preseed licence acceptance"
 			;;
 		susv4)
 			skip_distupgrade "#900882: download location no longer available"
+			;;
+	esac
+
+fi
+
+if [ "${PIUPARTS_DISTRIBUTION}" = "stretch" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		geoip-database-contrib)
+			skip_distupgrade "#885441: download location no longer available"
 			;;
 	esac
 
