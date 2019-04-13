@@ -56,6 +56,10 @@ case "$PIUPARTS_DISTRIBUTION_NEXT" in
 		CANDIDATES="$CANDIDATES mariadb-server-10.3"
 		CANDIDATES="$CANDIDATES postgresql-11"
 		;;
+	sid)
+		CANDIDATES="$CANDIDATES mariadb-server-10.3"
+		CANDIDATES="$CANDIDATES postgresql-11"
+		;;
 esac
 
 
