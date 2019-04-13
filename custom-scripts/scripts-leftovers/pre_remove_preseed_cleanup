@@ -29,6 +29,10 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		log_debug
 		echo "docbookwiki docbookwiki/purge_books boolean true" | debconf-set-selections
 		;;
+	grub-pc)
+		log_debug
+		echo "grub-pc grub-pc/postrm_purge_boot_grub boolean true" | debconf-set-selections
+		;;
 	ifetch-tools)
 		log_debug
 		echo "ifetch-tools ifetch-tools/purge boolean true" | debconf-set-selections
