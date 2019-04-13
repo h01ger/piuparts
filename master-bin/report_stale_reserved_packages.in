@@ -39,7 +39,7 @@ if [ -s $LOGS ] ; then
 	echo "These packages have been unscheduled." >> $LOG_OUTPUT
 	echo >> $LOG_OUTPUT
 	for package_log in $(cat $LOGS) ; do
-		rm -fv $package_log >> $LOG_OUTPUT
+		mv -fv $package_log $(dirname $package_log)/../recycle/ >> $LOG_OUTPUT
 	done
 	publish_logs $LOG_OUTPUT "" $HTDOCS report_stale_reserved_packages
 fi
