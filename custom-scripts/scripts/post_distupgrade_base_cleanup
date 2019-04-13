@@ -61,7 +61,7 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "jessie" ] ; then
 fi
 
 if	[ "$PIUPARTS_DISTRIBUTION" = "stretch" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "stretch-proposed" ] ; then
+	[ "$PIUPARTS_DISTRIBUTION" = "stretch-next" ] ; then
 
 	mark_for_purge libprocps3
 	mark_for_purge sysvinit

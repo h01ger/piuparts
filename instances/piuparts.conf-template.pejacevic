@@ -653,7 +653,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-distro = stretch-proposed
+distro = stretch-next
 
 
 [stretch2proposed]
@@ -664,7 +664,7 @@ piuparts-flags =
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
 distro = stretch
-upgrade-test-distros = stretch stretch-proposed
+upgrade-test-distros = stretch stretch-next
 
 
 [jessie2stretch]

@@ -1444,7 +1444,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-distro = stretch-proposed
+distro = stretch-next
 arch = amd64
 area = main
 components = main
@@ -1458,7 +1458,7 @@ piuparts-flags =
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
 depends-sections = stretch-next/main stretch-next/non-free
-distro = stretch-proposed
+distro = stretch-next
 arch = amd64
 area = contrib
 reschedule-old-days = 25
@@ -1470,7 +1470,7 @@ piuparts-flags =
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
 depends-sections = stretch-next/main stretch-next/contrib
-distro = stretch-proposed
+distro = stretch-next
 arch = amd64
 area = non-free
 reschedule-old-days = 25
@@ -3829,7 +3829,7 @@ arch = amd64
 area = main
 components = main
 distro = stretch
-upgrade-test-distros = stretch stretch-proposed
+upgrade-test-distros = stretch stretch-next
 
 [stretch2next/contrib]
 precedence = 95
@@ -3841,7 +3841,7 @@ depends-sections = stretch2next/main stretch2next/non-free
 arch = amd64
 area = contrib
 distro = stretch
-upgrade-test-distros = stretch stretch-proposed
+upgrade-test-distros = stretch stretch-next
 
 [stretch2next/non-free]
 precedence = 95
@@ -3853,7 +3853,7 @@ depends-sections = stretch2next/main stretch2next/contrib
 arch = amd64
 area = non-free
 distro = stretch
-upgrade-test-distros = stretch stretch-proposed
+upgrade-test-distros = stretch stretch-next
 
 
 [stretch2buster/main]
