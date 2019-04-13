@@ -220,10 +220,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		# removed after lenny
 		skip_distupgrade "modifies conffiles: /var/lib/mailreader/ads/debian/ad.cfg, /etc/mailreader/{main,server}.cfg"
 		;;
-	mediamate@lenny)
-		# removed after lenny
-		skip_distupgrade "#574228: package purge (after dependencies removal) fails"
-		;;
 	nessusd@lenny|\
 	harden-remoteaudit@lenny)
 		# removed after lenny
@@ -246,14 +242,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	python-poker-stats@squeeze)
 		# removed after squeeze
 		skip_distupgrade "#608646: cronjob exits with error after package removal"
-		;;
-	rt3.6-rtfm@lenny)
-		# removed after lenny
-		skip_distupgrade "fails to purge: rt3.6-rtfm.postrm: ucf: not found"
-		;;
-	rt3.8-rtfm@squeeze)
-		# removed after squeeze
-		skip_distupgrade "fails to purge: rt3.8-rtfm.postrm: ucf: not found"
 		;;
 	sdic-eijiro@lenny)
 		skip_distupgrade "requires a dictionary CD"

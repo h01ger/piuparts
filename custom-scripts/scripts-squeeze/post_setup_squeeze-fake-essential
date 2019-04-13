@@ -19,6 +19,11 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		# allow testing of the fake essential packages
 		exit 0
 		;;
+	mediamate)
+		# removed after lenny
+		#574228: mediamate: package purge (after dependencies removal) fails
+		USED_DURING_PURGE="$USED_DURING_PURGE wwwconfig-common"
+		;;
 	phpbb3)
 		USED_DURING_PURGE="$USED_DURING_PURGE dbconfig-common"
 		;;

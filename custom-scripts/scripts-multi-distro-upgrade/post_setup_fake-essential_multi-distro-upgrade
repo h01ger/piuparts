@@ -1,0 +1,41 @@
+#!/bin/sh
+set -e
+
+log_debug() {
+	echo "Debug: piuparts exception for package $PIUPARTS_OBJECTS"
+}
+
+case ${PIUPARTS_OBJECTS} in
+	mediamate=None)
+		# removed after lenny
+		#574228: mediamate: package purge (after dependencies removal) fails
+		log_debug
+		apt-get -y install wwwconfig-common
+		;;
+	moodle-book=None|\
+	moodle-debian-edu-theme=None|\
+	moodle=None)
+		# fixed after squeeze, not in stable after squeeze
+		#678027: moodle: fails to purge - command ucf in postrm not found
+		log_debug
+		apt-get -y install ucf
+		;;
+	rt3.6-rtfm=None)
+		# removed after lenny
+		# fails to purge: rt3.6-rtfm.postrm: ucf: not found
+		log_debug
+		apt-get -y install ucf
+		;;
+	rt3.8-rtfm=None)
+		# removed after squeeze
+		# fails to purge: rt3.8-rtfm.postrm: ucf: not found
+		log_debug
+		apt-get -y install ucf
+		;;
+	torrentflux=None)
+		# removed after wheezy
+		#677061: torrentflux: fails to purge - command ucf in postrm not found
+		log_debug
+		apt-get -y install ucf
+		;;
+esac
