@@ -511,7 +511,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-buster)s
 	%(flags-end-buster)s
-distro = buster-proposed
+distro = buster-next
 
 
 [buster2proposed]
@@ -522,7 +522,7 @@ piuparts-flags =
 	%(flags-start-buster)s
 	%(flags-end-buster)s
 distro = buster
-upgrade-test-distros = buster buster-proposed
+upgrade-test-distros = buster buster-next
 
 
 [stretch2buster]

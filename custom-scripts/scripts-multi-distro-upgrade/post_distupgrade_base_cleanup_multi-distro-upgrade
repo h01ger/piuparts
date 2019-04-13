@@ -6,7 +6,7 @@ test "$PIUPARTS_PHASE" = "" || exit 0
 
 
 if	[ "$PIUPARTS_DISTRIBUTION" = "buster" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "buster-proposed" ] ; then
+	[ "$PIUPARTS_DISTRIBUTION" = "buster-next" ] ; then
 
 	if [ -d /etc/init ]; then
 		rmdir --ignore-fail-on-non-empty -v /etc/init

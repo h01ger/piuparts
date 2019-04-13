@@ -75,7 +75,7 @@ if	[ "$PIUPARTS_DISTRIBUTION" = "stretch" ] || \
 fi
 
 if	[ "$PIUPARTS_DISTRIBUTION" = "buster" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "buster-proposed" ] ; then
+	[ "$PIUPARTS_DISTRIBUTION" = "buster-next" ] ; then
 
 	mark_for_purge libcryptsetup4
 	mark_for_purge libprocps6
