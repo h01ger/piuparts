@@ -1,7 +1,7 @@
 piuparts_slave_join(8)
 ======================
 :doctype: manpage
-:revdate: 2013-05-27
+:revdate: 2016-03-06
 
 NAME
 ----

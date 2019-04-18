@@ -40,6 +40,7 @@ piuparts (0.99) UNRELEASED; urgency=medium
 
   [ Holger Levsen ]
   * htdocs/news.tpl: add news about sid-merged-usr being tested.
+  * piuparts_slave_join.8.txt: update revdate to date of last change.
 
  -- Holger Levsen <holger@debian.org>  Fri, 01 Mar 2019 11:47:19 +0100
 
