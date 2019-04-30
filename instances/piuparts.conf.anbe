@@ -11,6 +11,11 @@ flags-base =
 flags-default =
 	%(flags-base)s
 	--warn-on-leftovers-after-purge
+flags-merged-usr =
+	--merged-usr
+	-i /usr/lib32/
+	-i /usr/libx32/
+	%(flags-default)s
 flags-leftovers =
 	--warn-on-others
 	%(flags-base)s
@@ -485,8 +490,7 @@ max-tgz-age = 172800
 
 [tarball/sid-merged-usr/amd64]
 piuparts-flags =
-	--merged-usr
-	%(flags-default)s
+	%(flags-merged-usr)s
 distro = None
 upgrade-test-distros = sid
 arch = amd64
@@ -499,8 +503,7 @@ max-tgz-age = 172800
 
 [tarball/sid-merged-usr/i386]
 piuparts-flags =
-	--merged-usr
-	%(flags-default)s
+	%(flags-merged-usr)s
 distro = None
 upgrade-test-distros = sid
 arch = i386
@@ -926,8 +929,7 @@ reschedule-old-days = 60
 precedence = 30
 description = + In --merged-usr environment.
 piuparts-flags =
-	--merged-usr
-	%(flags-default)s
+	%(flags-merged-usr)s
 distro = sid
 arch = amd64
 area = main
@@ -938,8 +940,7 @@ chroot-tgz = %(distro)s-merged-usr_%(arch)s.tgz
 precedence = 45
 description = + In --merged-usr environment.
 piuparts-flags =
-	--merged-usr
-	%(flags-default)s
+	%(flags-merged-usr)s
 depends-sections = sid-merged-usr/main sid-merged-usr/non-free
 distro = sid
 arch = amd64
@@ -950,8 +951,7 @@ chroot-tgz = %(distro)s-merged-usr_%(arch)s.tgz
 precedence = 45
 description = + In --merged-usr environment.
 piuparts-flags =
-	--merged-usr
-	%(flags-default)s
+	%(flags-merged-usr)s
 depends-sections = sid-merged-usr/main sid-merged-usr/contrib
 distro = sid
 arch = amd64

@@ -13,6 +13,15 @@ flags-default =
 	%(flags-base)s
 	--warn-on-leftovers-after-purge
 
+# default flags for --merged-usr tests
+flags-merged-usr =
+	%(flags-default)s
+# test in --merged-usr environment
+	--merged-usr
+# these exist unowned and empty in an initial --merged-usr environment
+	-i /usr/lib32/
+	-i /usr/libx32/
+
 # like default flags, but failing on leftover files
 flags-leftovers =
 	%(flags-base)s
@@ -265,8 +274,7 @@ max-tgz-age = 259200
 
 [tarball/sid-merged-usr]
 piuparts-flags =
-	--merged-usr
-	%(flags-default)s
+	%(flags-merged-usr)s
 distro = None
 upgrade-test-distros = sid
 chroot-tgz = %(upgrade-test-distros)s-merged-usr_@ARCH@.tgz
@@ -388,8 +396,7 @@ precedence = 5
 description = + In --merged-usr environment.
 json-sections = none
 piuparts-flags =
-	--merged-usr
-	%(flags-default)s
+	%(flags-merged-usr)s
 distro = sid
 chroot-tgz = %(distro)s-merged-usr_@ARCH@.tgz
 
