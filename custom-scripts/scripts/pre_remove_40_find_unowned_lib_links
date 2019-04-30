@@ -25,7 +25,8 @@ do
 		if [ "$owned" = "0" ]
 		then
 			case "$f" in
-				/lib/ld-lsb.so.?)
+				/lib/ld-lsb.so.?|\
+				/lib/ld-lsb-*.so.?)
 					# created by lsb-core
 					continue
 					;;
@@ -35,6 +36,7 @@ do
 					continue
 					;;
 				/usr/lib/libfmpich.so.12|\
+				/usr/lib/libmpi_cxx.so.20|\
 				/usr/lib/libmpich.so.12|\
 				/usr/lib/libmpichcxx.so.12|\
 				/usr/lib/libmpichf90.so.12|\
