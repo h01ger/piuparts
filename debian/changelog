@@ -25,6 +25,10 @@ piuparts (0.99) UNRELEASED; urgency=medium
   * piupartslib/packagesdb.py:
     - Keep recycled pass logs while waiting for new test results, continuing
       to show them as "successfully-tested" instead of "waiting-to-be-tested".
+    - Add (hardcoded) list of missing dependencies that resolve to
+      "ignore-does-not-exist".
+      Used for packages to be skipped via "is_installable_*" scripts to
+      exclude them from "dependency-does-not-exist" state.
   * piuparts-slave.py:
     - New option "slave-flush-interval" to flush logs more frequently to the
       master. Set to 30 minutes.

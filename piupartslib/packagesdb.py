@@ -296,6 +296,14 @@ class PackagesDB:
         "libnss-mdns-i386": "i386",
     }
 
+    # these packages are used as dependencies but are only available on
+    # some architectures or from third-party repositories
+    # HACK: this hardcoded list should be moved to some data file
+    _ignored_missing_dependencies = [
+        "kbdcontrol",
+        "vidcontrol",
+    ]
+
     # keep in sync with piuparts-report.py: emphasize_reason()
     # FIXME: can we reorder this list or remove entries without breaking the counts.txt for the plot?
     _states = [
@@ -315,11 +323,13 @@ class PackagesDB:
         "outdated",
         # "foreign:*",  # can only happen as query result for a dependency
         # "does-not-exist",  # can only happen as query result for a dependency
+        # "ignore-does-not-exist",  # can only happen as query result for a dependency
     ]
 
     _good_states = [
         "successfully-tested",
         "essential-required",
+        "ignore-does-not-exist",
     ] + ["foreign:%s" % arch for arch in set(_foreign_packages.values())]
 
     _obsolete_states = [
@@ -768,6 +778,8 @@ class PackagesDB:
                     return state
         if package_name in self._foreign_packages:
             return "foreign:%s" % self._foreign_packages[package_name]
+        if package_name in self._ignored_missing_dependencies:
+            return "ignore-does-not-exist"
         return "does-not-exist"
 
     def get_best_package_state(self, package_name, resolve_virtual=True, recurse=True):
