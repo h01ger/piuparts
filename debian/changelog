@@ -35,6 +35,8 @@ piuparts (0.99) UNRELEASED; urgency=medium
       master. Set to 30 minutes.
     - New option "chroot-meta-directory" to share reference target chroot
       metadata between slave instances.
+  * piuparts-report.py:
+    - Omit states with 0 packages from section summaries.
   * scripts/{post_chroot_unpack,pre_distupgrade}_allow_unauthenticated:
     - Disable Check-Valid-Until for wheezy/updates and jessie-backports.
   * scripts/post_distupgrade_exceptions:

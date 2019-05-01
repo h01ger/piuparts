@@ -1405,7 +1405,8 @@ class Section:
                     dir_link += "<a href='%s.html'>%s</a> logs<br>" % (vdir, html_protect(vdir))
             if state in ("successfully-tested", "failed-testing"):
                 analysis = self.create_and_link_to_analysises(state)
-            tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a>%s</td>" +
+            if analysis or len(self._binary_db.get_pkg_names_in_state(state)):
+                tablerows += ("<tr class=\"normalrow\"><td class=\"contentcell2\"><a href='state-%s.html'>%s</a>%s</td>" +
                           "<td class=\"contentcell2\">%d</td><td class=\"contentcell2\">%s</td></tr>\n") % \
                           (html_protect(state), html_protect(state), analysis, len(self._binary_db.get_pkg_names_in_state(state)),
                           dir_link)
