@@ -555,7 +555,7 @@ class PackagesDB:
                     prefer_alt_score = -1
                     prefer_alt = None
                     for alternative in alt_deps[d]:
-                        altdep_state = self.get_package_state(alternative)
+                        altdep_state = self.get_best_package_state(alternative)
                         if altdep_state != "does-not-exist":
                             alt_found += 1
                             if prefer_alt_score < 3 and altdep_state == "essential-required":
