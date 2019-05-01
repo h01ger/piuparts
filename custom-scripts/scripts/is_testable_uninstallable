@@ -179,6 +179,11 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	chef-server-api@wheezy)
 		skip_distupgrade "#681573: chef-solr: fails to install if policy-rc.d forbids to start services"
 		;;
+	console-setup-freebsd@*)
+		if [ "$(uname)" = "Linux" ]; then
+			skip_always "non-Linux package"
+		fi
+		;;
 	cpushare@wheezy)
 		# removed after wheezy
 		skip_distupgrade "#689885: Ships a folder in /var/run or /var/lock"
