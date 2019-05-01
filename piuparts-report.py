@@ -494,6 +494,7 @@ linktarget_by_template = [
     ("logrotate_error_after_removal_error.tpl", "due to errors from logrotate after removal"),
     ("installs_over_symlink_error.tpl", "...and package installs something over existing symlinks"),
     ("broken_symlinks_error.tpl", "...and logfile also contains 'broken symlinks'"),
+    ("module_build_error_error.tpl", "...and logfile contains dkms module build failures"),
     ("obsolete_conffiles_error.tpl", "...and logfile reports obsolete conffiles"),
     ("missing_md5sums_error.tpl", "...and logfile reports missing md5sums"),
     ("unowned_lib_symlink_error.tpl", "...and logfile reports unowned lib symlinks"),
