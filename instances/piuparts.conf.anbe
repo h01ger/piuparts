@@ -22,15 +22,19 @@ flags-leftovers =
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
 flags-start-testing =
-	%(flags-start-buster)s
+	%(flags-start-bullseye)s
 flags-end-testing =
-	%(flags-end-buster)s
+	%(flags-end-bullseye)s
 
 flags-start-stable =
 	%(flags-start-stretch)s
 
+flags-start-bullseye =
+flags-end-bullseye =
+
 flags-start-buster =
 flags-end-buster =
+	--warn-on-debsums-errors
 
 flags-start-stretch =
 flags-end-stretch =

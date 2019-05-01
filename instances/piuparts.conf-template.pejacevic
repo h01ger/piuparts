@@ -31,16 +31,26 @@ flags-leftovers =
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
 # aliases for the definitions below
-flags-start-testing = %(flags-start-buster)s
-flags-end-testing = %(flags-end-buster)s
+flags-start-testing = %(flags-start-bullseye)s
+flags-end-testing = %(flags-end-bullseye)s
 flags-start-stable = %(flags-start-stretch)s
 flags-end-stable = %(flags-end-stretch)s
 flags-start-oldstable = %(flags-start-jessie)s
 flags-end-oldstable = %(flags-end-jessie)s
 
+# common flags for tests starting in bullseye
+flags-start-bullseye =
+# no flags needed
+
+# common flags for tests ending in bullseye
+flags-end-bullseye =
+# no flags needed
+
 # common flags for tests starting in buster
 flags-start-buster =
-# no flags needed
+# debsums failures won't be fixed in buster, mostly related to
+# oldstyle packaging of aspell dictionaries
+	--warn-on-debsums-errors
 
 # common flags for tests ending in buster
 flags-end-buster =
