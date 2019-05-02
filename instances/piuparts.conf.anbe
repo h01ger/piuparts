@@ -3744,8 +3744,8 @@ piuparts-flags =
 arch = amd64
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie stretch testing
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch-next testing
 reschedule-old-count = 100
 
 [jessie222testing/contrib]
@@ -3758,8 +3758,8 @@ piuparts-flags =
 depends-sections = jessie222testing/main jessie222testing/non-free
 arch = amd64
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie stretch testing
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch-next testing
 reschedule-old-count = 100
 
 [jessie222testing/non-free]
@@ -3772,8 +3772,8 @@ piuparts-flags =
 depends-sections = jessie222testing/main jessie222testing/contrib
 arch = amd64
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie stretch testing
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch-next testing
 reschedule-old-count = 100
 
 
@@ -3788,8 +3788,8 @@ arch = i386
 setarch = linux32
 area = main
 components = main
-distro = jessie
-upgrade-test-distros = jessie stretch testing
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch-next testing
 reschedule-old-count = 100
 
 [jessie222testing_i386/contrib]
@@ -3803,8 +3803,8 @@ depends-sections = jessie222testing_i386/main jessie222testing_i386/non-free
 arch = i386
 setarch = linux32
 area = contrib
-distro = jessie
-upgrade-test-distros = jessie stretch testing
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch-next testing
 reschedule-old-count = 100
 
 [jessie222testing_i386/non-free]
@@ -3818,8 +3818,8 @@ depends-sections = jessie222testing_i386/main jessie222testing_i386/contrib
 arch = i386
 setarch = linux32
 area = non-free
-distro = jessie
-upgrade-test-distros = jessie stretch testing
+distro = jessie-lts
+upgrade-test-distros = jessie-lts stretch-next testing
 reschedule-old-count = 100
 
 
