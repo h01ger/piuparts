@@ -10,8 +10,6 @@ Some stuff we might tackle during the bullseye development cycle:
 
 - switch to python3 (that's actually a must)
 
-- do an 1.0.0 release, it's about time since 10 years :)
-
 - README_server.txt: rewrite style a bit more. its super easy to setup now!
 
 - ==== piuparts.debian.org specific configuration

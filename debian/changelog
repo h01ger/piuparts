@@ -1,4 +1,4 @@
-piuparts (0.99) UNRELEASED; urgency=medium
+piuparts (1.0.0) UNRELEASED; urgency=medium
 
   [ David Steele ]
   * piuparts-reports.py:
@@ -52,6 +52,7 @@ piuparts (0.99) UNRELEASED; urgency=medium
   [ Holger Levsen ]
   * htdocs/news.tpl: add news about sid-merged-usr being tested.
   * piuparts_slave_join.8.txt: update revdate to date of last change.
+  * Declare this release to be version 1.0.0, finally.
 
  -- Holger Levsen <holger@debian.org>  Fri, 01 Mar 2019 11:47:19 +0100
 
