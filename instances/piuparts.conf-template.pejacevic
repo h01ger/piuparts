@@ -189,7 +189,7 @@ sections =
 	buster-rcmd
 	buster-security
 	buster-pu
-#	buster-proposed
+#	buster-next
 	buster2proposed
 	stretch2buster
 	stretch2Xbuster
@@ -201,7 +201,7 @@ sections =
 	stretch-rcmd
 	stretch-security
 	stretch-pu
-#	stretch-proposed
+#	stretch-next
 	stretch2proposed
 	oldstable222sid
 	oldstable22testing
@@ -514,7 +514,7 @@ depends-sections = buster
 distro = buster-proposed-updates
 
 
-[buster-proposed]
+[buster-next]
 precedence = 3
 json-sections = none
 piuparts-flags =
@@ -656,7 +656,7 @@ depends-sections = stretch
 distro = stretch-proposed-updates
 
 
-[stretch-proposed]
+[stretch-next]
 precedence = 3
 json-sections = none
 piuparts-flags =
