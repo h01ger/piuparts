@@ -190,7 +190,7 @@ sections =
 	buster-security
 	buster-pu
 #	buster-next
-	buster2proposed
+	buster2next
 	stretch2buster
 	stretch2Xbuster
 	stretch2buster-rcmd
@@ -524,7 +524,7 @@ piuparts-flags =
 distro = buster-next
 
 
-[buster2proposed]
+[buster2next]
 precedence = 3
 json-sections = none
 piuparts-flags =
