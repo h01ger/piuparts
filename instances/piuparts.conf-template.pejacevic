@@ -202,7 +202,7 @@ sections =
 	stretch-security
 	stretch-pu
 #	stretch-next
-	stretch2proposed
+	stretch2next
 	oldstable222sid
 	oldstable22testing
 	jessie2stretch
@@ -666,7 +666,7 @@ piuparts-flags =
 distro = stretch-next
 
 
-[stretch2proposed]
+[stretch2next]
 precedence = 3
 json-sections = none
 piuparts-flags =
