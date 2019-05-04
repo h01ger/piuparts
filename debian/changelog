@@ -50,9 +50,12 @@ piuparts (1.0.0) UNRELEASED; urgency=medium
     'affected/*.log' by default. Add --bugged, --affected flags.
 
   [ Holger Levsen ]
-  * htdocs/news.tpl: add news about sid-merged-usr being tested.
+  * Declare this release to be version 1.0.0, finally. May the force be with
+    you. 
+  * htdocs/news.tpl:
+    - add news about sid-merged-usr being tested.
+    - add news about the 1.0.0 release.
   * piuparts_slave_join.8.txt: update revdate to date of last change.
-  * Declare this release to be version 1.0.0, finally.
 
  -- Holger Levsen <holger@debian.org>  Fri, 01 Mar 2019 11:47:19 +0100
 

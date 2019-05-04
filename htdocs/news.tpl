@@ -6,6 +6,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2019-05-04</b> Release of piuparts 1.0.0 - may the force be with you! If everything goes as planned, this is also the last Python 2 release.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2019-04-10</b> Another suite added: <a href="https://piuparts.debian.org/sid-merged-usr">sid-merged-usr</a>, to test package installation, removal and purge in sid in a --merged-usr environment.
      </td>
     </tr>
