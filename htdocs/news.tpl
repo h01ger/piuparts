@@ -6,7 +6,7 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      <b>2019-05-04</b> Release of piuparts 1.0.0 - may the force be with you! If everything goes as planned, this is also the last Python 2 release.
+      <b>2019-05-04</b> Release of piuparts 1.0.0 - may the force be with you! If everything goes as planned, this is also the last Python 2 release. Many thanks and kudos to Lars Wirzenius for starting to write piuparts 14 years ago.
      </td>
     </tr>
     <tr class="normalrow">
