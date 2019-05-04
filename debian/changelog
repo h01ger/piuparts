@@ -1,3 +1,9 @@
+piuparts (1.0.1) UNRELEASED; urgency=medium
+
+  * ...
+
+ -- Holger Levsen <holger@debian.org>  Sat, 04 May 2019 21:53:16 +0200
+
 piuparts (1.0.0) unstable; urgency=medium
 
   [ David Steele ]
