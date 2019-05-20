@@ -126,6 +126,8 @@ basetgz-sections =
 	tarball/buster/i386
 	tarball/stretch/amd64
 	tarball/stretch/i386
+	tarball/stretch-merged-usr/amd64
+	tarball/stretch-merged-usr/i386
 	tarball/jessie/amd64
 	tarball/jessie/i386
 	tarball/wheezy/amd64
@@ -563,6 +565,33 @@ max-tgz-age = 2592000
 [tarball/stretch/i386]
 piuparts-flags =
 	%(flags-default)s
+	%(flags-start-stretch)s
+distro = None
+upgrade-test-distros = stretch
+arch = i386
+setarch = linux32
+area = main
+components = main
+# 60*60*24*30
+max-tgz-age = 2592000
+
+
+[tarball/stretch-merged-usr/amd64]
+piuparts-flags =
+	%(flags-merged-usr)s
+	%(flags-start-stretch)s
+distro = None
+upgrade-test-distros = stretch
+arch = amd64
+area = main
+components = main
+# 60*60*24*30
+max-tgz-age = 2592000
+
+
+[tarball/stretch-merged-usr/i386]
+piuparts-flags =
+	%(flags-merged-usr)s
 	%(flags-start-stretch)s
 distro = None
 upgrade-test-distros = stretch
