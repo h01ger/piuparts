@@ -4,5 +4,5 @@ set -e
 if [ ! -f /etc/dpkg/dpkg.cfg.d/piuparts-debug-triggers ]
 then
 	echo "Enabling dpkg trigger debugging"
-	echo 'debug=70000' > /etc/dpkg/dpkg.cfg.d/piuparts-debug-triggers
+	echo 'debug=70441' > /etc/dpkg/dpkg.cfg.d/piuparts-debug-triggers
 fi
