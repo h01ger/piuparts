@@ -1,6 +1,8 @@
 piuparts (1.0.1) UNRELEASED; urgency=medium
 
-  * ...
+  [ Andreas Beckmann ]
+  * piuparts-slave.py:
+    - Generate separate tarball names for --merged-usr chroots.
 
  -- Holger Levsen <holger@debian.org>  Sat, 04 May 2019 21:53:16 +0200
 
