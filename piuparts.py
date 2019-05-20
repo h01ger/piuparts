@@ -1522,6 +1522,13 @@ class Chroot:
             logging.debug(" reference: %s" % " ".join(reference_chroot_state["avail_md5"]))
             logging.debug(" current  : %s" % " ".join(self.avail_md5_history))
 
+        self.list_paths_with_symlinks()
+        self.check_debsums()
+        self.check_adequate(packages_qualified)
+
+        # Run custom scripts before removing all packages.
+        self.run_scripts("pre_remove")
+
         selections = reference_chroot_state["selections"]
         packages = unqualify(packages_qualified)
 
@@ -1547,13 +1554,6 @@ class Chroot:
                           if state == "install"]
         all_to_install += [(name, version) for name, (state, version) in nondeps.iteritems()
                            if state == "install"]
-
-        self.list_paths_with_symlinks()
-        self.check_debsums()
-        self.check_adequate(packages_qualified)
-
-        # Run custom scripts before removing all packages.
-        self.run_scripts("pre_remove")
 
         # First remove all packages (and reinstall missing ones).
         self.remove_packages(deps_to_remove)
