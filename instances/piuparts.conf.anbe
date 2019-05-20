@@ -503,7 +503,6 @@ upgrade-test-distros = sid
 arch = amd64
 area = main
 components = main
-chroot-tgz = %(upgrade-test-distros)s-merged-usr_%(arch)s.tgz
 # 60*60*24*2
 max-tgz-age = 172800
 
@@ -517,7 +516,6 @@ arch = i386
 setarch = linux32
 area = main
 components = main
-chroot-tgz = %(upgrade-test-distros)s-merged-usr_%(arch)s.tgz
 # 60*60*24*2
 max-tgz-age = 172800
 
@@ -941,7 +939,6 @@ distro = sid
 arch = amd64
 area = main
 components = main
-chroot-tgz = %(distro)s-merged-usr_%(arch)s.tgz
 
 [sid-merged-usr/contrib]
 precedence = 45
@@ -952,7 +949,6 @@ depends-sections = sid-merged-usr/main sid-merged-usr/non-free
 distro = sid
 arch = amd64
 area = contrib
-chroot-tgz = %(distro)s-merged-usr_%(arch)s.tgz
 
 [sid-merged-usr/non-free]
 precedence = 45
@@ -963,7 +959,6 @@ depends-sections = sid-merged-usr/main sid-merged-usr/contrib
 distro = sid
 arch = amd64
 area = non-free
-chroot-tgz = %(distro)s-merged-usr_%(arch)s.tgz
 
 
 [sid-bl/main]
