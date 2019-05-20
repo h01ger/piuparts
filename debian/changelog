@@ -5,6 +5,9 @@ piuparts (1.0.0+deb10u1) UNRELEASED; urgency=medium
     - Run pre_remove scripts before computing packages to be removed.
   * piuparts-slave.py:
     - Generate separate tarball names for --merged-usr chroots.
+  * detect_well_known_errors.py:
+    - process untestable logs.
+  * Makefile: use gzip.
 
  -- Holger Levsen <holger@debian.org>  Fri, 16 Aug 2019 14:38:56 +0200
 
