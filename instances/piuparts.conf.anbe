@@ -180,6 +180,7 @@ sections =
 	stretch3buster-rcmd/main
 	stretch2buster-rcmd_i386/main
 	stretch3buster-rcmd_i386/main
+	stretch2buster-merged-usr/main
 	stretch2buster-iri/main
 	stretch2bpo2buster/main
 	jessie2lts/main
@@ -245,6 +246,7 @@ sections =
 	stretch3buster-rcmd/contrib
 	stretch2buster-rcmd_i386/contrib
 	stretch3buster-rcmd_i386/contrib
+	stretch2buster-merged-usr/contrib
 	stretch2buster-iri/contrib
 	stretch2bpo2buster/contrib
 	jessie2lts/contrib
@@ -310,6 +312,7 @@ sections =
 	stretch3buster-rcmd/non-free
 	stretch2buster-rcmd_i386/non-free
 	stretch3buster-rcmd_i386/non-free
+	stretch2buster-merged-usr/non-free
 	stretch2buster-iri/non-free
 	stretch2bpo2buster/non-free
 	jessie2lts/non-free
@@ -4309,6 +4312,49 @@ area = non-free
 distro = stretch
 upgrade-test-distros = stretch buster
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
+
+
+[stretch2buster-merged-usr/main]
+precedence = 90
+description = + In --merged-usr environment.
+piuparts-flags =
+	%(flags-merged-usr)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+arch = amd64
+area = main
+components = main
+distro = stretch
+upgrade-test-distros = stretch buster
+
+[stretch2buster-merged-usr/contrib]
+precedence = 95
+description = + In --merged-usr environment.
+piuparts-flags =
+	%(flags-merged-usr)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = stretch2buster-merged-usr/main stretch2buster-merged-usr/non-free
+arch = amd64
+area = contrib
+distro = stretch
+upgrade-test-distros = stretch buster
+
+[stretch2buster-merged-usr/non-free]
+precedence = 95
+description = + In --merged-usr environment.
+piuparts-flags =
+	%(flags-merged-usr)s
+	%(flags-start-stretch)s
+	%(flags-end-buster)s
+	--scriptsdir /etc/piuparts/scripts-debug-problemresolver
+depends-sections = stretch2buster-merged-usr/main stretch2buster-merged-usr/contrib
+arch = amd64
+area = non-free
+distro = stretch
+upgrade-test-distros = stretch buster
 
 
 [stretch2buster-iri/main]
