@@ -359,6 +359,7 @@ sections =
 	lenny/main
 	lenny_i386/main
 	lenny2squeeze/main
+	lenny2squeeze_i386/main
 #
 	wheezy/contrib
 	wheezy_i386/contrib
@@ -389,6 +390,7 @@ sections =
 	lenny/contrib
 	lenny_i386/contrib
 	lenny2squeeze/contrib
+	lenny2squeeze_i386/contrib
 #
 	wheezy/non-free
 	wheezy_i386/non-free
@@ -419,6 +421,7 @@ sections =
 	lenny/non-free
 	lenny_i386/non-free
 	lenny2squeeze/non-free
+	lenny2squeeze_i386/non-free
 #
 testing-suite = buster
 #
@@ -2286,6 +2289,53 @@ piuparts-flags =
 	%(flags-end-squeeze)s
 depends-sections = lenny2squeeze/main lenny2squeeze/contrib
 arch = amd64
+area = non-free
+distro = lenny
+upgrade-test-distros = lenny squeeze
+reschedule-old-count = 0
+
+
+[lenny2squeeze_i386/main]
+precedence = 1000
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-squeeze)s
+	-i /usr/local/share/octave/
+	-i /usr/local/share/octave/site-m/
+	-i /usr/share/octave/ls-R
+	-i /usr/share/octave/packages/
+arch = i386
+setarch = linux32
+area = main
+components = main
+distro = lenny
+upgrade-test-distros = lenny squeeze
+reschedule-old-count = 0
+
+[lenny2squeeze_i386/contrib]
+precedence = 1000
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-squeeze)s
+depends-sections = lenny2squeeze_i386/main lenny2squeeze_i386/non-free
+arch = i386
+setarch = linux32
+area = contrib
+distro = lenny
+upgrade-test-distros = lenny squeeze
+reschedule-old-count = 0
+
+[lenny2squeeze_i386/non-free]
+precedence = 1000
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-lenny)s
+	%(flags-end-squeeze)s
+depends-sections = lenny2squeeze_i386/main lenny2squeeze_i386/contrib
+arch = i386
+setarch = linux32
 area = non-free
 distro = lenny
 upgrade-test-distros = lenny squeeze
