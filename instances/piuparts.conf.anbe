@@ -2900,8 +2900,8 @@ piuparts-flags =
 arch = amd64
 area = main
 components = main
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 [wheezy2jessie/contrib]
 precedence = 95
@@ -2912,8 +2912,8 @@ piuparts-flags =
 depends-sections = wheezy2jessie/main wheezy2jessie/non-free
 arch = amd64
 area = contrib
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 [wheezy2jessie/non-free]
 precedence = 95
@@ -2924,8 +2924,8 @@ piuparts-flags =
 depends-sections = wheezy2jessie/main wheezy2jessie/contrib
 arch = amd64
 area = non-free
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 
 [wheezy2jessie_i386/main]
@@ -2938,8 +2938,8 @@ arch = i386
 setarch = linux32
 area = main
 components = main
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 [wheezy2jessie_i386/contrib]
 precedence = 95
@@ -2951,8 +2951,8 @@ depends-sections = wheezy2jessie_i386/main wheezy2jessie_i386/non-free
 arch = i386
 setarch = linux32
 area = contrib
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 [wheezy2jessie_i386/non-free]
 precedence = 95
@@ -2964,8 +2964,8 @@ depends-sections = wheezy2jessie_i386/main wheezy2jessie_i386/contrib
 arch = i386
 setarch = linux32
 area = non-free
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 
 [wheezy2jessie-rcmd/main]
@@ -2980,8 +2980,8 @@ piuparts-flags =
 arch = amd64
 area = main
 components = main
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 [wheezy2jessie-rcmd/contrib]
 precedence = 95
@@ -2995,8 +2995,8 @@ piuparts-flags =
 depends-sections = wheezy2jessie-rcmd/main wheezy2jessie-rcmd/non-free
 arch = amd64
 area = contrib
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 [wheezy2jessie-rcmd/non-free]
 precedence = 95
@@ -3010,8 +3010,8 @@ piuparts-flags =
 depends-sections = wheezy2jessie-rcmd/main wheezy2jessie-rcmd/contrib
 arch = amd64
 area = non-free
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 
 [wheezy2jessie-rcmd_i386/main]
@@ -3027,8 +3027,8 @@ arch = i386
 setarch = linux32
 area = main
 components = main
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 [wheezy2jessie-rcmd_i386/contrib]
 precedence = 95
@@ -3043,8 +3043,8 @@ depends-sections = wheezy2jessie-rcmd_i386/main wheezy2jessie-rcmd_i386/non-free
 arch = i386
 setarch = linux32
 area = contrib
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 [wheezy2jessie-rcmd_i386/non-free]
 precedence = 95
@@ -3059,8 +3059,8 @@ depends-sections = wheezy2jessie-rcmd_i386/main wheezy2jessie-rcmd_i386/contrib
 arch = i386
 setarch = linux32
 area = non-free
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 
 [wheezy2jessie-sysv/main]
@@ -3166,8 +3166,8 @@ piuparts-flags =
 arch = amd64
 area = main
 components = main
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 [wheezy2jessie-iri/contrib]
 precedence = 95
@@ -3180,8 +3180,8 @@ piuparts-flags =
 depends-sections = wheezy2jessie-iri/main wheezy2jessie-iri/non-free
 arch = amd64
 area = contrib
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 [wheezy2jessie-iri/non-free]
 precedence = 95
@@ -3194,8 +3194,8 @@ piuparts-flags =
 depends-sections = wheezy2jessie-iri/main wheezy2jessie-iri/contrib
 arch = amd64
 area = non-free
-distro = wheezy
-upgrade-test-distros = wheezy jessie
+distro = wheezy-lts
+upgrade-test-distros = wheezy-lts jessie-lts
 
 
 [wheezy2bpo2jessie/main]
@@ -3209,7 +3209,7 @@ distro = wheezy-backports
 arch = amd64
 area = main
 components = main
-upgrade-test-distros = wheezy wheezy-backports jessie
+upgrade-test-distros = wheezy-lts wheezy-backports jessie-lts
 
 [wheezy2bpo2jessie/contrib]
 precedence = 95
@@ -3221,7 +3221,7 @@ depends-sections = wheezy/main wheezy/non-free wheezy2bpo2jessie/main wheezy2bpo
 distro = wheezy-backports
 arch = amd64
 area = contrib
-upgrade-test-distros = wheezy wheezy-backports jessie
+upgrade-test-distros = wheezy-lts wheezy-backports jessie-lts
 
 [wheezy2bpo2jessie/non-free]
 precedence = 95
@@ -3233,7 +3233,7 @@ depends-sections = wheezy/main wheezy2bpo2jessie/main wheezy2bpo2jessie/contrib
 distro = wheezy-backports
 arch = amd64
 area = non-free
-upgrade-test-distros = wheezy wheezy-backports jessie
+upgrade-test-distros = wheezy-lts wheezy-backports jessie-lts
 
 
 [wheezy222testing/main]
