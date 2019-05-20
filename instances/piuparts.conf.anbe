@@ -331,7 +331,7 @@ sections =
 	lenny222testing_i386/non-free
 #
 	wheezy/main
-	wheezy-rcmd/main
+	wheezy_i386/main
 	wheezy-lts/main
 	wheezy-security/main
 	wheezy-backports/main
@@ -361,7 +361,7 @@ sections =
 	lenny2squeeze/main
 #
 	wheezy/contrib
-	wheezy-rcmd/contrib
+	wheezy_i386/contrib
 	wheezy-lts/contrib
 #	wheezy-security/contrib
 	wheezy-backports/contrib
@@ -391,7 +391,7 @@ sections =
 	lenny2squeeze/contrib
 #
 	wheezy/non-free
-	wheezy-rcmd/non-free
+	wheezy_i386/non-free
 	wheezy-lts/non-free
 #	wheezy-security/non-free
 	wheezy-backports/non-free
@@ -1777,11 +1777,9 @@ area = non-free
 reschedule-old-count = 0
 
 
-[wheezy-rcmd/main]
+[wheezy_i386/main]
 precedence = 1000
-description = + With recommended packages.
 piuparts-flags =
-	--install-recommends
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
@@ -1792,30 +1790,26 @@ area = main
 components = main
 reschedule-old-count = 0
 
-[wheezy-rcmd/contrib]
+[wheezy_i386/contrib]
 precedence = 1000
-description = + With recommended packages.
 piuparts-flags =
-	--install-recommends
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-depends-sections = wheezy-rcmd/main wheezy-rcmd/non-free
+depends-sections = wheezy_i386/main wheezy_i386/non-free
 distro = wheezy
 arch = i386
 setarch = linux32
 area = contrib
 reschedule-old-count = 0
 
-[wheezy-rcmd/non-free]
+[wheezy_i386/non-free]
 precedence = 1000
-description = + With recommended packages.
 piuparts-flags =
-	--install-recommends
 	%(flags-default)s
 	%(flags-start-wheezy)s
 	%(flags-end-wheezy)s
-depends-sections = wheezy-rcmd/main wheezy-rcmd/contrib
+depends-sections = wheezy_i386/main wheezy_i386/contrib
 distro = wheezy
 arch = i386
 setarch = linux32
