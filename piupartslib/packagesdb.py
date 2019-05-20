@@ -305,6 +305,8 @@ class PackagesDB:
         "oracle-instantclient-basic",
         "oracle-instantclient11.2-basic",
         "oracle-instantclient12.1-basic",
+        # jessie
+        "mediawiki",
     ]
 
     # keep in sync with piuparts-report.py: emphasize_reason()

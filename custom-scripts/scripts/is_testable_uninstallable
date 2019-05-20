@@ -149,6 +149,9 @@ fi
 if [ "${PIUPARTS_DISTRIBUTION}" = "jessie" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
+		fusionforge-plugin-mediawiki)
+			skip_distupgrade "#929139: fusionforge-plugin-mediawiki: uninstallable cruft package"
+			;;
 		geoip-database-contrib)
 			skip_distupgrade "#885441: download location no longer available"
 			;;
