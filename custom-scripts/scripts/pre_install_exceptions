@@ -259,8 +259,10 @@ if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 			;;
 		ipppd|ibod|isdnutils)
 			#542156
-			log_debug
-			test -e /dev/MAKEDEV || ln -sfv /sbin/MAKEDEV /dev/MAKEDEV
+			if [ ! -e /dev/MAKEDEV ]; then
+				log_debug
+				ln -sfv /sbin/MAKEDEV /dev/MAKEDEV
+			fi
 			;;
 	esac
 

@@ -25,13 +25,6 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				;;
 		esac
 		;;
-	isdnlog|isdnutils)
-		#WORKSAROUND #431855: fails with "There are still files in /etc/isdn/ that you may want to remove manually."
-		if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
-			log_debug
-			rm -fv /etc/isdn/*
-		fi
-		;;
 	original-awk)
 		case "$PIUPARTS_DISTRIBUTION" in
 			lenny)
