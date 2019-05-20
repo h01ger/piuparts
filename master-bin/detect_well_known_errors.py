@@ -35,7 +35,7 @@ from piupartslib.dwke import *
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
-KPR_DIRS = ('pass', 'bugged', 'affected', 'fail')
+KPR_DIRS = ('pass', 'bugged', 'affected', 'fail', 'untestable')
 
 
 class Busy(Exception):
