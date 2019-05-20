@@ -44,6 +44,8 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy" ]; then
 # The Release file is not getting updated.
 Acquire::Check-Valid-Until "false";
 EOF
+elif [ "$PIUPARTS_DISTRIBUTION_NEXT" = "wheezy-backports" ]; then
+	:
 elif [ -e /etc/apt/apt.conf.d/unauthenticated-wheezy ]; then
 	echo "FAIL: /etc/apt/apt.conf.d/unauthenticated-wheezy exists"
 	exit 1
