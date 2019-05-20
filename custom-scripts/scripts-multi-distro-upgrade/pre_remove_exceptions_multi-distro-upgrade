@@ -12,6 +12,12 @@ case ${PIUPARTS_OBJECTS} in
 		log_debug
 		touch /var/log/autotrust/dummy.log
 		;;
+	chef-solr=None)
+		# removed after wheezy
+		# logrotate config references /var/log/chef/solr.log
+		log_debug
+		touch /var/log/chef/solr.log
+		;;
 	dancer-ircd=None)
 		# removed after wheezy
 		# logrotate config references /var/log/dancer-ircd/ircd.log
