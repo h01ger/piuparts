@@ -2973,6 +2973,10 @@ def parse_command_line():
                       default="dump",
                       help="Displays messages from LEVEL level, possible values are: error, info, dump, debug. The default is dump.")
 
+    parser.add_option("--max-command-output-size", action="store", metavar='SIZE',
+                      default=0,
+                      help="Set maximum permitted command output to SIZE (in MB).")
+
     (opts, args) = parser.parse_args()
 
     # expand combined options
@@ -2987,6 +2991,8 @@ def parse_command_line():
     settings.tmpdir = opts.tmpdir
     settings.keep_env = opts.keep_env
     settings.shell_on_error = opts.shell_on_error
+    if opts.max_command_output_size:
+        settings.max_command_output_size = int(opts.max_command_output_size) * 1024 * 1024;
     settings.single_changes_list = opts.single_changes_list
     settings.single_packages = opts.single_packages
     settings.args_are_package_files = not opts.apt

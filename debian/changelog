@@ -2,6 +2,8 @@ piuparts (1.0.1) UNRELEASED; urgency=medium
 
   [ Andreas Beckmann ]
   * piuparts.py:
+    - Add '--max-command-output-size' option to allow overriding the default
+      of 8 MB for debugging runs.
     - Run pre_remove scripts before computing packages to be removed.
   * piuparts-slave.py:
     - Generate separate tarball names for --merged-usr chroots.
