@@ -58,6 +58,10 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "lenny" ]; then
 		dnscache-run)
 			skip_distupgrade "#664848: breaks dns resolution in chroot"
 			;;
+		libdbd-oracle-perl|\
+		ora2pg)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient-basic"
+			;;
 		libpils0|\
 		libpils-dev|\
 		libstonith0|\
@@ -109,6 +113,10 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "squeeze" ]; then
 			# removed after squeeze
 			skip_distupgrade "#595593: fails to install"
 			;;
+		libdbd-oracle-perl|\
+		ora2pg)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient11.2-basic"
+			;;
 		mini-buildd-bld|\
 		mini-buildd-rep)
 			skip_distupgrade "#632955, #656746: time limit exceeded during install"
@@ -126,6 +134,10 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "wheezy" ]; then
 			;;
 		geoip-database-contrib)
 			skip_distupgrade "#885441: download location no longer available"
+			;;
+		libdbd-oracle-perl|\
+		ora2pg)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient11.2-basic"
 			;;
 		nautilus-dropbox)
 			skip_distupgrade "#770402: downloads awfully slow, hangs during installation"
@@ -155,6 +167,33 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "stretch" ]; then
 	case ${PIUPARTS_OBJECTS%%=*} in
 		geoip-database-contrib)
 			skip_distupgrade "#885441: download location no longer available"
+			;;
+		libdbd-oracle-perl|\
+		libdbd-oracle-perl-dbgsym|\
+		ora2pg)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
+			;;
+	esac
+
+fi
+
+if [ "${PIUPARTS_DISTRIBUTION}" = "buster" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libdbd-oracle-perl|\
+		libdbd-oracle-perl-dbgsym)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
+			;;
+	esac
+
+fi
+
+if [ "${PIUPARTS_DISTRIBUTION}" = "sid" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libdbd-oracle-perl|\
+		libdbd-oracle-perl-dbgsym)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
 			;;
 	esac
 

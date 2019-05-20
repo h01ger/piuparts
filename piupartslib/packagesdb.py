@@ -302,6 +302,9 @@ class PackagesDB:
     _ignored_missing_dependencies = [
         "kbdcontrol",
         "vidcontrol",
+        "oracle-instantclient-basic",
+        "oracle-instantclient11.2-basic",
+        "oracle-instantclient12.1-basic",
     ]
 
     # keep in sync with piuparts-report.py: emphasize_reason()
