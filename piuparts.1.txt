@@ -173,6 +173,10 @@ The tarball can be created with the '-s' option, or you can use one that *pbuild
 *--log-level*='level'::
   Display messages from loglevel LEVEL, possible values are: error, info, dump, debug. The default is dump.
 
+*--max-command-output-size*='size'::
+  Set the maximum permitted command output to _size_ (in MB) for debugging
+  runs exceeding the default of 8 MB.
+
 *--merged-usr*::
   When using debootstrap to create the chroot, use the '--merged-usr' option
   to create a chroot with /bin, /lib, /sbin being symlinks to their /usr
