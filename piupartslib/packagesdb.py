@@ -307,6 +307,8 @@ class PackagesDB:
         "oracle-instantclient12.1-basic",
         # jessie
         "mediawiki",
+        # stretch
+        "llvm-3.7-dev",
     ]
 
     # keep in sync with piuparts-report.py: emphasize_reason()

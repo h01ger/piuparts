@@ -176,6 +176,9 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "stretch" ]; then
 		ora2pg)
 			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
 			;;
+		llvm-3.7-examples)
+			skip_distupgrade "#929138: uninstallable on !arm*"
+			;;
 	esac
 
 fi
