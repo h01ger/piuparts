@@ -82,7 +82,8 @@ for SECTION in $SECTIONS ; do
 		-type f -name '*.log' -newer $FAILURESTAMP -exec ls -1 {} + 2>/dev/null
 done | sed s#^$MASTER#$URLBASE# >> $DAILYTMP
 
-echo "$(cat $DAILYTMP | wc -l) new failures:" >> $DAILYREPORT
+echo -n "$(cat $DAILYTMP | wc -l) new failures in total, " >> $DAILYREPORT
+echo "$(cat $DAILYTMP | (egrep "/(sid|$TESTING|testing2sid)/" 2>/dev/null || true) | wc -l) new failures sid, $TESTING and testing2sid:" >> $DAILYREPORT
 # show failures (and show failures in sid, $TESTING and testing2sid first
 cat $DAILYTMP | (egrep "/(sid|$TESTING|testing2sid)/" 2>/dev/null || true) >> $DAILYREPORT
 echo >> $DAILYREPORT
