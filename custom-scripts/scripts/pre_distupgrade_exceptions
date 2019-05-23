@@ -188,3 +188,15 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
 	fi
 
 fi
+
+if [ "$PIUPARTS_DISTRIBUTION" = "stretch" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		design-desktop*)
+			#850948: needrestart/stretch may hang during upgrade
+			log_debug
+			dpkg-divert --rename /usr/lib/needrestart/apt-pinvoke
+			;;
+	esac
+
+fi
