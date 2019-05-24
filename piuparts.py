@@ -1506,7 +1506,7 @@ class Chroot:
     def remove_packages(self, packages, ignore_errors=False):
         """Remove packages in a chroot."""
         if packages:
-            self.run(["apt-get", "remove"] + unqualify(packages), ignore_errors=ignore_errors)
+            self.run(["apt-get", "remove"] + ["%s-" % x if x.endswith('+') else x for x in unqualify(packages)], ignore_errors=ignore_errors)
 
     def purge_packages(self, packages, ignore_errors=False):
         """Purge packages in a chroot."""
