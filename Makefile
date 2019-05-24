@@ -90,12 +90,12 @@ install-doc: build-stamp
 	install -m 0644 README.txt README.html README_server.txt README_server.html docbook-xsl.css $(DESTDIR)$(docdir)/
 	install -d $(DESTDIR)$(man1dir)
 	install -m 0644 piuparts.1 $(DESTDIR)$(man1dir)/
+	gzip -9fn $(DESTDIR)$(man1dir)/piuparts.1
 	install -d $(DESTDIR)$(man8dir)
 	install -m 0644 piuparts_slave_run.8 piuparts_slave_join.8 piuparts_slave_stop.8 $(DESTDIR)$(man8dir)/
-	gzip -9f $(DESTDIR)$(man1dir)/piuparts.1
-	gzip -9f $(DESTDIR)$(man8dir)/piuparts_slave_run.8
-	gzip -9f $(DESTDIR)$(man8dir)/piuparts_slave_join.8
-	gzip -9f $(DESTDIR)$(man8dir)/piuparts_slave_stop.8
+	gzip -9fn $(DESTDIR)$(man8dir)/piuparts_slave_run.8
+	gzip -9fn $(DESTDIR)$(man8dir)/piuparts_slave_join.8
+	gzip -9fn $(DESTDIR)$(man8dir)/piuparts_slave_stop.8
 	install -m 0644 piuparts.1.html $(DESTDIR)$(docdir)/
 
 install-conf: build-stamp
