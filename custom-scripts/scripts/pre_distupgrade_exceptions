@@ -143,6 +143,19 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
 				cyrus-makedirs --cleansquat
 			fi
 			;;
+		debian-edu-archive-keyring|\
+		debian-ports-archive-keyring|\
+		emdebian-archive-keyring|\
+		emdebian-grip-server)
+			# https://bugs.debian.org/687611
+			log_debug
+			for keyring in /etc/apt/trusted.gpg.d/*.gpg~
+			do
+				if [ -f "${keyring}" ]; then
+					mv -v "${keyring}" "${keyring%~}"
+				fi
+			done
+			;;
 		ekeyd-uds)
 			# ekeyd-uds was removed after squeeze, maintainer scripts are incompatible with udev/jessie
 			log_debug
