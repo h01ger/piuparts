@@ -152,16 +152,16 @@ case "${PIUPARTS_DISTRIBUTION}:${PIUPARTS_DISTRIBUTION_NEXT}" in
 	lenny:squeeze)
 		upgrade_pg_cluster 8.3 8.4
 		;;
-	squeeze:wheezy)
+	squeeze*:wheezy)
 		upgrade_pg_cluster 8.4 9.1
 		;;
-	wheezy:jessie)
+	wheezy*:jessie)
 		upgrade_pg_cluster 9.1 9.4 --restart-first
 		;;
-	jessie:stretch)
+	jessie*:stretch)
 		upgrade_pg_cluster 9.4 9.6
 		;;
-	stretch:buster)
+	stretch*:buster)
 		upgrade_pg_cluster 9.6 11
 		;;
 	stretch:sid)
