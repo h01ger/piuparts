@@ -117,10 +117,9 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "squeeze" ]; then
 		ora2pg)
 			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient11.2-basic"
 			;;
-		mini-buildd-bld|\
-		mini-buildd-rep)
-			skip_distupgrade "#632955, #656746: time limit exceeded during install"
-			fail_test "#632955, #656746: time limit exceeded during install"
+		mini-buildd-bld)
+			skip_distupgrade "#632955: time limit exceeded during install"
+			fail_test "#632955: time limit exceeded during install"
 			;;
 	esac
 

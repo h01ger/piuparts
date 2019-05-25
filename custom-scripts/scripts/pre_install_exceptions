@@ -191,6 +191,11 @@ if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
 				apt-get -y install bootcd-i386
 			fi
 			;;
+		mini-buildd-rep)
+			#656746: mini-buildd-rep: fails to install: missing dependency on lvm2
+			log_debug
+			apt-get -y install udev lvm2
+			;;
 	esac
 
 fi
