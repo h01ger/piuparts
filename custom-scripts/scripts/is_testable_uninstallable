@@ -74,6 +74,11 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "lenny" ]; then
 		multex-bin)
 			skip_distupgrade "#668791: multex-bin: fails to install: The format file of 'multex' is NOT built successfully."
 			;;
+		naist-jdic|\
+		naist-jdic-utf8|\
+		chasen)
+			skip_distupgrade "#929614: naist-jdic: 0.4.3-4 (lenny) was overwritten by 1:0.4.3-4 (jessie) on archive.debian.org"
+			;;
 		python-milter|\
 		spf-milter-python)
 			skip_always "python-milter contains virus samples that may get blocked by the firewall"
