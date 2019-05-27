@@ -131,7 +131,8 @@ class DefaultsFactory:
 
     def guess_flavor(self):
         p = subprocess.Popen(["lsb_release", "-i", "-s"],
-                             stdout=subprocess.PIPE)
+                             stdout=subprocess.PIPE,
+                             universal_newlines=True)
         stdout, stderr = p.communicate()
         return stdout.strip().lower()
 
@@ -553,7 +554,8 @@ def run(command, ignore_errors=False, timeout=0):
     env["PIUPARTS_OBJECTS"] = ' '.join(str(vobject) for vobject in settings.testobjects)
     devnull = open('/dev/null', 'r')
     p = subprocess.Popen(command, env=env, stdin=devnull,
-                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                         universal_newlines=True)
     output = ""
     excessive_output = False
     if timeout > 0:
@@ -1033,7 +1035,8 @@ class Chroot:
             proxy = None
             pat = re.compile(r"^Acquire::http::Proxy\s+\"([^\"]+)\"", re.I)
             p = subprocess.Popen(["apt-config", "dump"],
-                                 stdout=subprocess.PIPE)
+                                 stdout=subprocess.PIPE,
+                                 universal_newlines=True)
             stdout, _ = p.communicate()
             if stdout:
                 for line in stdout.split("\n"):
@@ -1697,7 +1700,8 @@ class Chroot:
         seen = []
         while True:
             p = subprocess.Popen(["lsof", "-t", "+D", self.name],
-                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                 universal_newlines=True)
             stdout, _ = p.communicate()
             if not stdout:
                 break
@@ -1767,7 +1771,8 @@ class Chroot:
             if not os.path.exists(dev_ptmx_rel_path):
                 os.mknod(dev_ptmx_rel_path, 0666 | stat.S_IFCHR, os.makedev(5, 2))
             self.mount(self.relative("dev/pts/ptmx"), "/dev/ptmx", opts="bind", no_mkdir=True)
-        p = subprocess.Popen(["tty"], stdout=subprocess.PIPE)
+        p = subprocess.Popen(["tty"], stdout=subprocess.PIPE,
+                             universal_newlines=True)
         stdout, _ = p.communicate()
         current_tty = stdout.strip()
         if p.returncode == 0 and os.path.exists(current_tty):
