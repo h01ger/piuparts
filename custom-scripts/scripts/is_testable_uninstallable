@@ -50,13 +50,13 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "lenny" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
 		blootbot)
-			skip_distupgrade "#502753: fails to install: prompts without using debconf"
+			skip_distupgrade "#502753: blootbot: fails to install: prompts without using debconf"
 			;;
 		distributed-net)
-			skip_distupgrade "#655922: noninteractive install: postinst loops infinitely"
+			skip_distupgrade "#655922: distributed-net: noninteractive install: postinst loops infinitely"
 			;;
 		dnscache-run)
-			skip_distupgrade "#664848: breaks dns resolution in chroot"
+			skip_distupgrade "#664848: dnscache-run: breaks dns resolution in chroot"
 			;;
 		libdbd-oracle-perl|\
 		ora2pg)
@@ -66,30 +66,30 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "lenny" ]; then
 		libpils-dev|\
 		libstonith0|\
 		libstonith-dev)
-			skip_distupgrade "#702055: transitional packages uninstallable in lenny"
+			skip_distupgrade "#702055: ${PIUPARTS_OBJECTS%%=*}: transitional package uninstallable in lenny"
 			;;
 		mhc)
-			skip_distupgrade "#696231: fails to install: emacs-package-install failure"
+			skip_distupgrade "#696231: mhc: fails to install: emacs-package-install failure"
 			;;
 		multex-bin)
-			skip_distupgrade "#668791: fails to install: The format file of 'multex' is NOT built successfully."
+			skip_distupgrade "#668791: multex-bin: fails to install: The format file of 'multex' is NOT built successfully."
 			;;
 		python-milter|\
 		spf-milter-python)
-			skip_always "python-milter contains virus signatures that may get blocked by the firewall"
+			skip_always "python-milter contains virus samples that may get blocked by the firewall"
 			;;
 		runit-run)
-			skip_distupgrade "#542157: fails to install"
+			skip_distupgrade "#542157: runit-run: fails to install"
 			;;
 		sun-java5-doc|\
 		sun-java6-doc)
-			skip_distupgrade "#709967: fails to install: download location no longer available"
+			skip_distupgrade "#709967: ${PIUPARTS_OBJECTS%%=*}: fails to install: download location no longer available"
 			;;
 		trn)
-			skip_distupgrade "fails to install: prompts without using debconf"
+			skip_distupgrade "#688563: trn: fails to install: prompts without using debconf"
 			;;
 		ttf-root-installer)
-			skip_distupgrade "#678807: fails to install: ftp:// download location disappeared"
+			skip_distupgrade "#678807: ttf-root-installer: fails to install: ftp:// download location disappeared"
 			;;
 	esac
 
@@ -99,10 +99,10 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "squeeze" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
 		distributed-net)
-			skip_distupgrade "#655922: noninteractive install: postinst loops infinitely"
+			skip_distupgrade "#655922: distributed-net: noninteractive install: postinst loops infinitely"
 			;;
 		firmware-b43-lpphy-installer)
-			skip_distupgrade "#623703: download location no longer available"
+			skip_distupgrade "#623703: firmware-b43-lpphy-installer: download location no longer available"
 			;;
 		fossology|\
 		fossology-agents|\
@@ -111,7 +111,7 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "squeeze" ]; then
 		fossology-web|\
 		fossology-web-single)
 			# removed after squeeze
-			skip_distupgrade "#595593: fails to install"
+			skip_distupgrade "#595593: fossology: fails to install"
 			;;
 		libdbd-oracle-perl|\
 		ora2pg)
@@ -129,17 +129,17 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "wheezy" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
 		firmware-b43-lpphy-installer)
-			skip_distupgrade "#623703: download location no longer available"
+			skip_distupgrade "#623703: firmware-b43-lpphy-installer: download location no longer available"
 			;;
 		geoip-database-contrib)
-			skip_distupgrade "#885441: download location no longer available"
+			skip_distupgrade "#885441: geoip-database-contrib: download location no longer available"
 			;;
 		libdbd-oracle-perl|\
 		ora2pg)
 			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient11.2-basic"
 			;;
 		nautilus-dropbox)
-			skip_distupgrade "#770402: downloads awfully slow, hangs during installation"
+			skip_distupgrade "#770402: nautilus-dropbox: downloads awfully slow, hangs during installation"
 			;;
 	esac
 
@@ -152,7 +152,7 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "jessie" ]; then
 			skip_distupgrade "#929139: fusionforge-plugin-mediawiki: uninstallable cruft package"
 			;;
 		geoip-database-contrib)
-			skip_distupgrade "#885441: download location no longer available"
+			skip_distupgrade "#885441: geoip-database-contrib: download location no longer available"
 			;;
 		steam)
 			skip_distupgrade "#772598: cannot preseed licence acceptance"
@@ -168,7 +168,7 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "stretch" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
 		geoip-database-contrib)
-			skip_distupgrade "#885441: download location no longer available"
+			skip_distupgrade "#885441: geoip-database-contrib: download location no longer available"
 			;;
 		libdbd-oracle-perl|\
 		libdbd-oracle-perl-dbgsym|\
@@ -176,7 +176,7 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "stretch" ]; then
 			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
 			;;
 		llvm-3.7-examples)
-			skip_distupgrade "#929138: uninstallable on !arm*"
+			skip_distupgrade "#929138: llvm-3.7-examples: uninstallable on !arm*"
 			;;
 	esac
 
@@ -241,7 +241,7 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	dms-dr@jessie|\
 	dms-wsgi@jessie)
 		# fixed after jessie, not in stable after jessie
-		skip_distupgrade '#852519: fails to install: NZST FATAL: configuration file "/etc/postgresql/9.4/dms/postgresql.conf" contains errors'
+		skip_distupgrade '#852519: dms-core: fails to install: NZST FATAL: configuration file "/etc/postgresql/9.4/dms/postgresql.conf" contains errors'
 		;;
 	docbookwiki@lenny)
 		# removed after lenny
