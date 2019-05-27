@@ -70,6 +70,24 @@ done
 
 test -n "$1" || exit 1
 
+TOTAL=0
+recycle_logfiles()
+{
+	local log recycle
+	for log in "$@"
+	do
+		recycle="$(dirname "$(dirname "$log")")/recycle"
+		if [ -f "$log" ] && [ ! -f "$recycle/$(basename $log)" ]; then
+			TOTAL=$(( $TOTAL + 1 ))
+			if [ -n "$dryrun" ]; then
+				echo "candidate: $log"
+			else
+				ln -fv "$log" $recycle/ || true
+			fi
+		fi
+	done
+}
+
 subdirs="$pass $fail $bugged $affected $untestable"
 pattern=' ('"$1"')\.conf$'
 
@@ -77,7 +95,6 @@ pattern=' ('"$1"')\.conf$'
 #
 # mark logs matching kpr tag $1 for recycling
 #
-TOTAL=0
 OLDPWD=$(pwd)
 LIST=$(mktemp)
 for SECTION in $SECTIONS ; do
@@ -112,17 +129,7 @@ for SECTION in $SECTIONS ; do
 	mkdir -p $searchdirs $SECTION/recycle
 
 	grep -rlE "$pattern" --include '*.kpr' $searchdirs | sed 's/\.kpr$/.log/' > $LIST
-	for log in $(cat $LIST)
-	do
-		if [ -f "$log" ] && [ ! -f "$SECTION/recycle/$(basename $log)" ]; then
-			TOTAL=$(( $TOTAL + 1 ))
-			if [ -n "$dryrun" ]; then
-				echo "candidate: $log"
-			else
-				ln -fv "$log" $SECTION/recycle/ || true
-			fi
-		fi
-	done
+	recycle_logfiles $(cat $LIST)
 	cd "$OLDPWD"
 done
 rm -f $LIST
