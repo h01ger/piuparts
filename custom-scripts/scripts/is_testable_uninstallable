@@ -176,7 +176,6 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "stretch" ]; then
 			skip_distupgrade "#885441: geoip-database-contrib: download location no longer available"
 			;;
 		libdbd-oracle-perl|\
-		libdbd-oracle-perl-dbgsym|\
 		ora2pg)
 			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
 			;;
@@ -187,10 +186,29 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "stretch" ]; then
 
 fi
 
+if [ "${PIUPARTS_DISTRIBUTION}" = "stretch-debug" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libdbd-oracle-perl-dbgsym)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
+			;;
+	esac
+
+fi
+
 if [ "${PIUPARTS_DISTRIBUTION}" = "buster" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
-		libdbd-oracle-perl|\
+		libdbd-oracle-perl)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
+			;;
+	esac
+
+fi
+
+if [ "${PIUPARTS_DISTRIBUTION}" = "buster-debug" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
 		libdbd-oracle-perl-dbgsym)
 			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
 			;;
@@ -201,7 +219,16 @@ fi
 if [ "${PIUPARTS_DISTRIBUTION}" = "sid" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
-		libdbd-oracle-perl|\
+		libdbd-oracle-perl)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
+			;;
+	esac
+
+fi
+
+if [ "${PIUPARTS_DISTRIBUTION}" = "sid-debug" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
 		libdbd-oracle-perl-dbgsym)
 			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
 			;;

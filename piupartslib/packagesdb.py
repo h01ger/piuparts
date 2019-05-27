@@ -300,15 +300,17 @@ class PackagesDB:
     # some architectures or from third-party repositories
     # HACK: this hardcoded list should be moved to some data file
     _ignored_missing_dependencies = [
+        # non-linux
         "kbdcontrol",
         "vidcontrol",
-        "oracle-instantclient-basic",
-        "oracle-instantclient11.2-basic",
-        "oracle-instantclient12.1-basic",
         # jessie
         "mediawiki",
         # stretch
         "llvm-3.7-dev",
+        # third-party
+        "oracle-instantclient-basic",
+        "oracle-instantclient11.2-basic",
+        "oracle-instantclient12.1-basic",
     ]
 
     # keep in sync with piuparts-report.py: emphasize_reason()
