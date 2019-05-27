@@ -25,6 +25,7 @@ get_config_value SECTIONS global sections
 get_config_value TESTING global testing-suite
 
 dryrun=""
+logfiles=""
 current=""
 longterm=""
 
@@ -62,6 +63,10 @@ do
 			shift
 			dryrun="yes"
 			;;
+		--logfiles)
+			shift
+			logfiles="yes"
+			;;
 		*)
 			break
 			;;
@@ -88,9 +93,16 @@ recycle_logfiles()
 	done
 }
 
+
+if [ -n "$logfiles" ]; then
+	recycle_logfiles "$@"
+fi
+
+
+if [ -z "$logfiles" ]; then
+
 subdirs="$pass $fail $bugged $affected $untestable"
 pattern=' ('"$1"')\.conf$'
-
 
 #
 # mark logs matching kpr tag $1 for recycling
@@ -133,6 +145,9 @@ for SECTION in $SECTIONS ; do
 	cd "$OLDPWD"
 done
 rm -f $LIST
+
+fi
+
 
 if [ "$TOTAL" -gt "0" ]; then
 	if [ -n "$dryrun" ]; then
