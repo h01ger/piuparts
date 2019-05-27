@@ -45,7 +45,22 @@ case ${PIUPARTS_OBJECTS%%=*} in
 esac
 
 case "$PIUPARTS_DISTRIBUTION" in
+	jessie*)
+		# prevent failure of 'apt-get --reinstall install systemd-sysv systemd'
+		# due to spurious dependency cycle (#237470)
+		case ${PIUPARTS_OBJECTS%%=*} in
+			file-rc|\
+			live-config|\
+			live-config-upstart|\
+			upstart)
+				log_debug
+				apt-get -y install systemd-sysv
+				;;
+		esac
+		;;
+esac
 
+case "$PIUPARTS_DISTRIBUTION" in
 	lenny*|squeeze*|wheezy*|jessie*)
 		# --allow-remove-essential was added in apt 1.1 (stretch)
 		;;
