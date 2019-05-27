@@ -1537,24 +1537,24 @@ class Chroot:
         changes = diff_selections(self, selections)
         deps = {}
         nondeps = {}
-        for name, state_version in changes.iteritems():
+        for name, state_version in iter(changes.items()):
             if name in packages:
                 nondeps[name] = state_version
             else:
                 deps[name] = state_version
 
-        deps_to_remove = [name for name, (state, version) in deps.iteritems()
+        deps_to_remove = [name for name, (state, version) in iter(deps.items())
                           if state == "remove"]
-        deps_to_purge = [name for name, (state, version) in deps.iteritems()
+        deps_to_purge = [name for name, (state, version) in iter(deps.items())
                          if state == "purge"]
-        nondeps_to_remove = [name for name, (state, version) in nondeps.iteritems()
+        nondeps_to_remove = [name for name, (state, version) in iter(nondeps.items())
                              if state == "remove"]
-        nondeps_to_purge = [name for name, (state, version) in nondeps.iteritems()
+        nondeps_to_purge = [name for name, (state, version) in iter(nondeps.items())
                             if state == "purge"]
         all_to_remove = deps_to_remove + deps_to_purge + nondeps_to_remove + nondeps_to_purge
-        all_to_install = [(name, version) for name, (state, version) in deps.iteritems()
+        all_to_install = [(name, version) for name, (state, version) in iter(deps.items())
                           if state == "install"]
-        all_to_install += [(name, version) for name, (state, version) in nondeps.iteritems()
+        all_to_install += [(name, version) for name, (state, version) in iter(nondeps.items())
                            if state == "install"]
 
         # First remove all packages (and reinstall missing ones).
@@ -1999,8 +1999,8 @@ def diff_meta_data(tree1, tree2, quiet=False):
     """Compare two dir trees and return list of new files (only in 'tree2'),
        removed files (only in 'tree1'), and modified files."""
 
-    tree1 = tree1.copy()
-    tree2 = tree2.copy()
+    tree1_c = tree1.copy()
+    tree2_c = tree2.copy()
 
     for name in settings.ignored_files:
         if name[0] == ':':
@@ -2011,11 +2011,11 @@ def diff_meta_data(tree1, tree2, quiet=False):
         if name in tree1:
             if verbose:
                 logging.info("IGNORED PATH@1: %s" % name)
-            del tree1[name]
+            del tree1_c[name]
         if name in tree2:
             if verbose:
                 logging.info("IGNORED PATH@2: %s" % name)
-            del tree2[name]
+            del tree2_c[name]
 
     for pattern in settings.ignored_patterns:
         if pattern[0] == ':':
@@ -2029,27 +2029,27 @@ def diff_meta_data(tree1, tree2, quiet=False):
             if m:
                 if verbose:
                     logging.info("IGNORED PATH@1: %s" % name)
-                del tree1[name]
+                del tree1_c[name]
         for name in tree2.keys():
             m = pat.search(name)
             if m:
                 if verbose:
                     logging.info("IGNORED PATH@2: %s" % name)
-                del tree2[name]
+                del tree2_c[name]
 
     modified = []
-    for name in tree1.keys()[:]:
-        if name in tree2:
+    for name in tree1.keys():
+        if name in tree2_c:
             if objects_are_different(tree1[name], tree2[name]):
                 if not quiet:
                     logging.debug("Modified(user, group, mode, size, target): %s expected%s != found%s" %
                                   (name, format_object_attributes(tree1[name]), format_object_attributes(tree2[name])))
                 modified.append((name, tree1[name]))
-            del tree1[name]
-            del tree2[name]
+            del tree1_c[name]
+            del tree2_c[name]
 
-    removed = [x for x in tree1.iteritems()]
-    new = [x for x in tree2.iteritems()]
+    removed = [x for x in iter(tree1_c.items())]
+    new = [x for x in iter(tree2_c.items())]
 
     # fix for #586793
     # prune rc?.d symlinks renamed by insserv
@@ -2120,13 +2120,13 @@ def diff_selections(chroot, selections):
        set to to restore original selections."""
     changes = {}
     current = chroot.get_selections()
-    for name, (value, version) in current.iteritems():
+    for name, (value, version) in iter(current.items()):
         if name not in selections:
             changes[name] = ("purge", None)
         elif selections[name][0] != value and \
                 selections[name][0] in ["purge", "install"]:
             changes[name] = selections[name]
-    for name, (value, version) in selections.iteritems():
+    for name, (value, version) in iter(selections.items()):
         if name not in current or \
             current[name][1] != version:
                 changes[name] = selections[name]
@@ -2511,8 +2511,8 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     if chroot_state is not None:
         if chroot.initial_selections != chroot_state["initial_selections"]:
             logging.warn("Initial package selections do not match - ignoring loaded reference chroot state")
-            refsel = [(s, p, v) for p, (s, v) in chroot_state["initial_selections"].iteritems()]
-            cursel = [(s, p, v) for p, (s, v) in chroot.initial_selections.iteritems()]
+            refsel = [(s, p, v) for p, (s, v) in iter(chroot_state["initial_selections"].items())]
+            cursel = [(s, p, v) for p, (s, v) in iter(chroot.initial_selections.items())]
             rsel = [x for x in refsel if not x in cursel]
             csel = [x for x in cursel if not x in refsel]
             [logging.debug("  -%s" % " ".join(x)) for x in rsel]
