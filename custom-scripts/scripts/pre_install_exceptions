@@ -52,6 +52,17 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		;;
 esac
 
+if [ "$PIUPARTS_DISTRIBUTION" = "jessie-backports" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libudev1)
+			log_debug
+			apt-get -y -t $PIUPARTS_DISTRIBUTION install udev systemd
+			;;
+	esac
+
+fi
+
 if [ "$PIUPARTS_DISTRIBUTION" = "wheezy-backports" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
