@@ -1,0 +1,66 @@
+To: submit@bugs.debian.org
+Subject: obsolete conffiles (policy 10.7.3):
+
+Package:
+Version:
+Severity: important
+User: debian-qa@lists.debian.org
+Usertags: piuparts
+
+Hi,
+
+during a test with piuparts I noticed your package has obsolete
+conffiles.
+
+To see the policy statement,
+https://www.debian.org/doc/debian-policy/ch-files.html#behavior
+
+10.7.3: "[...] Obsolete configuration files without local changes
+should be removed by the package during upgrade.[11]"
+
+[11] The dpkg-maintscript-helper tool, available from the dpkg
+package, can help for this task.
+
+Quotes from manpage:
+
+"
+[...]
+If the conffile has not been shipped for several versions, and you
+are now modifying the maintainer scripts to clean up the obsolete
+file, prior-version should be based on the version of the package
+that you are now preparing, not the first version of  the  package
+that lacked the conffile. This applies to all other actions in the
+same way.
+
+For example, for a conffile removed in version 2.0-1 of a package,
+prior-version should be set to 2.0-1~. This will cause the conffile
+to be removed even if the user rebuilt the previous version 1.0-1
+as 1.0-1local1. Or a package switching a path from a symlink (shipped
+in version 1.0-1) to a directory (shipped in version 2.0-1), but only
+performing the actual switch in the maintainer scripts in version
+3.0-1, should set prior-version to 3.0-1~.
+[...]
+"
+
+The debian/deb_package.maintscript file should look like this:
+
+rm_conffile /path/to/the/obsolete_conffile X.X-X~
+
+Please read the manpage for details.
+
+Attached you will find a compressed log file. To find the line 
+in the log file look for "OBSOLETE CONFFILE". Here are the line(s)
+in package_version_log_file:
+
+OBSOLETE CONFFILE /path/to/file REGISTERED BY srptools
+
+
+See also https://wiki.debian.org/DpkgConffileHandling
+
+There may be false positives, e.g. if a conffile was converted
+to a maintainer script managed configuration file.
+
+
+
+
+cheers,
