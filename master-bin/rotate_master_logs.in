@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright © 2017 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2017-2019 Andreas Beckmann (anbe@debian.org)
 # Copyright © 2018 Holger Levsen (holger@layer-acht.org)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -48,6 +48,12 @@ for SECTION in $SECTIONS ; do
 			xz -v9 $log >>$OUTPUT 2>&1
 		fi
 	done
+
+	# delete master logs older than 90 days, but keep at least five old logs
+	oldlogs=$(ls -t1 $SECTION/master.*.log.* 2>/dev/null | tail -n +5)
+	if [ -n "$oldlogs" ]; then
+		find $oldlogs -mtime +90 | xargs -r rm -fv >>$OUTPUT 2>&1
+	fi
 done
 
 LOGDATEDIR="$HTDOCS/logs/$(date -u '+%Y/%m/%d' -d '7 days ago')"

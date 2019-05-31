@@ -10,6 +10,7 @@ piuparts (1.0.1) UNRELEASED; urgency=medium
   * piuparts-slave.py:
     - Generate separate tarball names for --merged-usr chroots.
     - Re-exec on SIGUSR1, picking up updated code and new config sections.
+  * master-bin/rotate_master_logs: Delete master logs older than 90 days.
   * slave-bin/slave_reexec: New, send SIGUSR1 to all running slaves.
 
   [ Holger Levsen ]
@@ -162,7 +163,7 @@ piuparts (0.96) unstable; urgency=medium
 
   [ Andreas Beckmann ]
   * bug-templates: Raise severity of "fails to purge" errors to serious.
-   (see #918379)
+    (see #918379)
   * distros.conf: Add jessie-lts as a full distro.
   * piuparts.conf:
     - Use jessie-lts as upgrade target and rename section
