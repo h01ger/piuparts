@@ -647,6 +647,7 @@ distro = stretch/updates
 
 [stretch-pu]
 precedence = 3
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
