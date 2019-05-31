@@ -10,6 +10,7 @@ piuparts (1.0.1) UNRELEASED; urgency=medium
   * piuparts-slave.py:
     - Generate separate tarball names for --merged-usr chroots.
     - Re-exec on SIGUSR1, picking up updated code and new config sections.
+  * slave-bin/slave_reexec: New, send SIGUSR1 to all running slaves.
 
   [ Holger Levsen ]
   * generate_daily_report: improve statistics.
