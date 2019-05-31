@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Copyright © 2009-2018 Holger Levsen (holger@layer-acht.org)
-# Copyright © 2011-2017 Andreas Beckmann (anbe@debian.org)
+# Copyright © 2011-2019 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -96,6 +96,10 @@ for SECTION in $SECTIONS ; do
 	for subdir in fail bugged affected ; do
 		test -d $MASTER/$SECTION/$subdir || continue
 		grep -r -l -E --include '*.log' "$PATTERN" $MASTER/$SECTION/$subdir >> $FILE 2>/dev/null
+	done
+	for subdir in fail bugged affected untestable pass ; do
+		test -d $MASTER/$SECTION/$subdir || continue
+		find $MASTER/$SECTION/$subdir -name 'tmp??????' -mtime +1 -delete 2>/dev/null
 		find $MASTER/$SECTION/$subdir -name '*.log' -size 0 >> $FILE
 	done
 done

@@ -10,6 +10,8 @@ piuparts (1.0.1) UNRELEASED; urgency=medium
   * piuparts-slave.py:
     - Generate separate tarball names for --merged-usr chroots.
     - Re-exec on SIGUSR1, picking up updated code and new config sections.
+  * master-bin/detect_piuparts_issues:
+    - Clean up stale temporary and empty files.
   * master-bin/rotate_master_logs: Delete master logs older than 90 days.
   * slave-bin/slave_reexec: New, send SIGUSR1 to all running slaves.
 
