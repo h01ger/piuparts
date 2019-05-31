@@ -9,6 +9,7 @@ piuparts (1.0.1) UNRELEASED; urgency=medium
   * piuparts.conf.anbe: Add some more example sections.
   * piuparts-slave.py:
     - Generate separate tarball names for --merged-usr chroots.
+    - Re-exec on SIGUSR1, picking up updated code and new config sections.
 
   [ Holger Levsen ]
   * generate_daily_report: improve statistics.
