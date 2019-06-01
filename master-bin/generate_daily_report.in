@@ -90,7 +90,7 @@ echo "$new_release_failures new failures sid, $TESTING and testing2sid:" >> $DAI
 # show failures (and show failures in sid, $TESTING and testing2sid first
 cat $DAILYTMP | (egrep "/(sid|$TESTING|testing2sid)/" 2>/dev/null || true) >> $DAILYREPORT
 echo >> $DAILYREPORT
-echo -n "$new_failure_diff other new failures:" >> $DAILYREPORT
+echo "$new_failure_diff other new failures:" >> $DAILYREPORT
 cat $DAILYTMP | (egrep -v "/(sid|$TESTING|testing2sid)/" 2>/dev/null || true) >> $DAILYREPORT
 rm $DAILYTMP
 
