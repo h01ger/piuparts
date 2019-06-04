@@ -236,6 +236,18 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "sid-debug" ]; then
 
 fi
 
+
+if [ "$(uname)" = "Linux" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		console-setup-freebsd)
+			skip_always "non-Linux package"
+			;;
+	esac
+
+fi
+
+
 case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	acgvision-agent@squeeze)
 		# removed after squeeze
@@ -254,11 +266,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	chef-expander@wheezy|\
 	chef-server-api@wheezy)
 		skip_distupgrade "#681573: chef-solr: fails to install if policy-rc.d forbids to start services"
-		;;
-	console-setup-freebsd@*)
-		if [ "$(uname)" = "Linux" ]; then
-			skip_always "non-Linux package"
-		fi
 		;;
 	cpushare@wheezy)
 		# removed after wheezy
