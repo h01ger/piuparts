@@ -166,6 +166,9 @@ fi
 if [ "${PIUPARTS_DISTRIBUTION}" = "jessie" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
+		enigmail)
+			skip_distupgrade_from "2:1.9.9-1~deb8u1" "#909000: enigmail 2.0 needed after thunderbird 60 upload"
+			;;
 		fusionforge-plugin-mediawiki)
 			skip_distupgrade "#929139: fusionforge-plugin-mediawiki: uninstallable cruft package"
 			;;
