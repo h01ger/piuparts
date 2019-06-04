@@ -34,6 +34,19 @@ skip_distupgrade()
 	fi
 }
 
+# use where a later version might fix the bug and enable dist-upgrade testing
+skip_distupgrade_from()
+{
+	from_ver=$1
+	shift
+	pkg=${PIUPARTS_OBJECTS%%=*}
+	cand_ver=$(apt-cache policy "$pkg" | awk '{if ($1 == "Candidate:") {print $2}}')
+
+	if [ "$from_ver" = "$cand_ver" ]; then
+		skip_distupgrade "$@"
+	fi
+}
+
 
 # * For uninstallable *broken* packages we usually run the normal
 #   installation+purge tests (which will fail and get the package marked
@@ -160,10 +173,10 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "jessie" ]; then
 			skip_distupgrade "#885441: geoip-database-contrib: download location no longer available"
 			;;
 		steam)
-			skip_distupgrade "#772598: cannot preseed licence acceptance"
+			skip_distupgrade_from "1.0.0.49-1" "#772598: steam: cannot preseed licence acceptance"
 			;;
 		susv4)
-			skip_distupgrade "#900882: download location no longer available"
+			skip_distupgrade_from "7.20161013~deb8u1" "#900882: susv4: download location no longer available"
 			;;
 	esac
 
