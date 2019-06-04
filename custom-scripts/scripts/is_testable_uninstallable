@@ -181,6 +181,9 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "jessie" ]; then
 		susv4)
 			skip_distupgrade_from "7.20161013~deb8u1" "#900882: susv4: download location no longer available"
 			;;
+		xul-ext-sogo-connector)
+			skip_distupgrade_from "31.0.0-1" "#909313: xul-ext-sogo-connector: not compatible with thunderbird 60"
+			;;
 	esac
 
 fi
