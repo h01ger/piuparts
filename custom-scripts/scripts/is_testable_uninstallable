@@ -159,6 +159,9 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "wheezy" ]; then
 		nautilus-dropbox)
 			skip_distupgrade "#770402: nautilus-dropbox: downloads awfully slow, hangs during installation"
 			;;
+		xul-ext-compactheader)
+			skip_distupgrade "#837387: xul-ext-compactheader: uninstallable in wheezy with icedove (>= 1:45)"
+			;;
 	esac
 
 fi
@@ -180,6 +183,9 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "jessie" ]; then
 			;;
 		susv4)
 			skip_distupgrade_from "7.20161013~deb8u1" "#900882: susv4: download location no longer available"
+			;;
+		xul-ext-compactheader)
+			skip_distupgrade_from "2.0.8-1" "#837387: xul-ext-compactheader: uninstallable in jessie with icedove (>= 1:45)"
 			;;
 		xul-ext-sogo-connector)
 			skip_distupgrade_from "31.0.0-1" "#909313: xul-ext-sogo-connector: not compatible with thunderbird 60"
@@ -374,15 +380,5 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		;;
 	usrmerge@*)
 		skip_always "performs piuparts-unfriendy filesystem layout changes"
-		;;
-	xul-ext-compactheader@wheezy)
-		if [ "$(apt-cache show xul-ext-compactheader | sed -n '/^Version:/s/^Version: //p')" = "2.0.5-1" ]; then
-			skip_distupgrade "#837387: uninstallable in wheezy with icedove (>= 1:45)"
-		fi
-		;;
-	xul-ext-compactheader@jessie)
-		if [ "$(apt-cache show xul-ext-compactheader | sed -n '/^Version:/s/^Version: //p')" = "2.0.8-1" ]; then
-			skip_distupgrade "#837387: uninstallable in jessie with icedove (>= 1:45)"
-		fi
 		;;
 esac
