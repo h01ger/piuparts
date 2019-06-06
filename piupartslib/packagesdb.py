@@ -236,6 +236,9 @@ class LogDB:
     def _log_name(self, package, version):
         return "%s_%s.log" % (package, version)
 
+    def _kpr_name(self, package, version):
+        return "%s_%s.kpr" % (package, version)
+
     def log_exists2(self, package, version, subdirs):
         log_name = self._log_name(package, version)
         for subdir in subdirs:
@@ -273,6 +276,11 @@ class LogDB:
         if self.exists(full_name):
             self.remove_file(full_name)
         self._evict(full_name)
+
+    def remove_kpr(self, subdir, package, version):
+        full_name = os.path.join(subdir, self._kpr_name(package, version))
+        if os.path.exists(full_name):
+            self.remove_file(full_name)
 
     def stat(self, subdir, package, version):
         full_name = os.path.join(subdir, self._log_name(package, version))
@@ -902,6 +910,7 @@ class PackagesDB:
         self._remove_logs_if_reserved(package, version)
         if self._logdb.create(subdir, package, version, log):
             self._record_submission(result, package, version)
+            self._logdb.remove_kpr(subdir, package, version)
         else:
             raise LogfileExists(subdir, package, version)
 
