@@ -896,32 +896,23 @@ class PackagesDB:
                     self._logdb.create(self._recycle, package, version, "")
         self._logdb.remove(self._reserved, package, version)
 
-    def pass_package(self, package, version, log):
+    def _process_log(self, package, version, log, subdir, result):
         self._check_for_acceptability_as_filename(package)
         self._check_for_acceptability_as_filename(version)
         self._remove_logs_if_reserved(package, version)
-        if self._logdb.create(self._ok, package, version, log):
-            self._record_submission("pass", package, version)
+        if self._logdb.create(subdir, package, version, log):
+            self._record_submission(result, package, version)
         else:
-            raise LogfileExists(self._ok, package, version)
+            raise LogfileExists(subdir, package, version)
+
+    def pass_package(self, package, version, log):
+        self._process_log(package, version, log, self._ok, "pass")
 
     def fail_package(self, package, version, log):
-        self._check_for_acceptability_as_filename(package)
-        self._check_for_acceptability_as_filename(version)
-        self._remove_logs_if_reserved(package, version)
-        if self._logdb.create(self._fail, package, version, log):
-            self._record_submission("fail", package, version)
-        else:
-            raise LogfileExists(self._fail, package, version)
+        self._process_log(package, version, log, self._fail, "fail")
 
     def make_package_untestable(self, package, version, log):
-        self._check_for_acceptability_as_filename(package)
-        self._check_for_acceptability_as_filename(version)
-        self._remove_logs_if_reserved(package, version)
-        if self._logdb.create(self._evil, package, version, log):
-            self._record_submission("untestable", package, version)
-        else:
-            raise LogfileExists(self._evil, package, version)
+        self._process_log(package, version, log, self._evil, "untestable")
 
     def _get_rdep_dict(self):
         """Return dict of one-level reverse dependencies by package"""
