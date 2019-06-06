@@ -146,6 +146,27 @@ fi
 if [ "${PIUPARTS_DISTRIBUTION}" = "wheezy" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
+		firefox-esr-dev|\
+		iceowl-l10n-bn-bd|\
+		iceowl-l10n-pa-in|\
+		iceowl-l10n-ta-lk|\
+		iceweasel-l10n-ak|\
+		iceweasel-l10n-be|\
+		iceweasel-l10n-csb|\
+		iceweasel-l10n-ku|\
+		iceweasel-l10n-lg|\
+		iceweasel-l10n-nso|\
+		iceweasel-l10n-ta-lk|\
+		iceweasel-l10n-zu|\
+		lightning-l10n-bn-bd|\
+		lightning-l10n-pa-in|\
+		lightning-l10n-ta-lk|\
+		thunderbird-dev|\
+		thunderbird-l10n-bn-bd|\
+		thunderbird-l10n-pa-in|\
+		thunderbird-l10n-ta-lk)
+			skip_distupgrade "#928226: uninstallable cruft package"
+			;;
 		firmware-b43-lpphy-installer)
 			skip_distupgrade "#623703: firmware-b43-lpphy-installer: download location no longer available"
 			;;
@@ -171,6 +192,24 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "jessie" ]; then
 	case ${PIUPARTS_OBJECTS%%=*} in
 		enigmail)
 			skip_distupgrade_from "2:1.9.9-1~deb8u1" "#909000: enigmail 2.0 needed after thunderbird 60 upload"
+			;;
+		firefox-esr-dev|\
+		icedove-dev|\
+		icedove-l10n-bn-bd|\
+		icedove-l10n-pa-in|\
+		icedove-l10n-ta-lk|\
+		iceowl-l10n-bn-bd|\
+		iceowl-l10n-pa-in|\
+		iceowl-l10n-ta-lk|\
+		iceweasel-dev|\
+		lightning-l10n-bn-bd|\
+		lightning-l10n-pa-in|\
+		lightning-l10n-ta-lk|\
+		thunderbird-dev|\
+		thunderbird-l10n-bn-bd|\
+		thunderbird-l10n-pa-in|\
+		thunderbird-l10n-ta-lk)
+			skip_distupgrade "#928226: uninstallable cruft package"
 			;;
 		fusionforge-plugin-mediawiki)
 			skip_distupgrade "#929139: fusionforge-plugin-mediawiki: uninstallable cruft package"
