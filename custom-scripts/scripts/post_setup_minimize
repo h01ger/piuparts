@@ -8,7 +8,7 @@ then
 		jessie)
 			dpkg --purge gcc-4.8-base
 			;;
-		sid|stretch)
+		stretch)
 			dpkg --purge lsb-base tzdata
 			;;
 	esac

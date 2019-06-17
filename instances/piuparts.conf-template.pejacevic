@@ -232,7 +232,7 @@ sections =
 	squeeze2squeeze-lts
 	squeeze
 	lenny2squeeze
-testing-suite = buster
+testing-suite = bullseye
 mirror = @MIRROR@
 master-host = pejacevic.debian.org
 master-user = piupartsm

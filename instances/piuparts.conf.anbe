@@ -420,7 +420,7 @@ sections =
 	lenny_i386/non-free
 	lenny2squeeze/non-free
 #
-testing-suite = buster
+testing-suite = bullseye
 #
 json-sections = none
 #
