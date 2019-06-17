@@ -236,6 +236,9 @@ class LogDB:
     def _log_name(self, package, version):
         return "%s_%s.log" % (package, version)
 
+    def _kpr_name(self, package, version):
+        return "%s_%s.kpr" % (package, version)
+
     def log_exists2(self, package, version, subdirs):
         log_name = self._log_name(package, version)
         for subdir in subdirs:
@@ -274,6 +277,11 @@ class LogDB:
             self.remove_file(full_name)
         self._evict(full_name)
 
+    def remove_kpr(self, subdir, package, version):
+        full_name = os.path.join(subdir, self._kpr_name(package, version))
+        if os.path.exists(full_name):
+            self.remove_file(full_name)
+
     def stat(self, subdir, package, version):
         full_name = os.path.join(subdir, self._log_name(package, version))
         return os.stat(full_name)
@@ -300,8 +308,17 @@ class PackagesDB:
     # some architectures or from third-party repositories
     # HACK: this hardcoded list should be moved to some data file
     _ignored_missing_dependencies = [
+        # non-linux
         "kbdcontrol",
         "vidcontrol",
+        # jessie
+        "mediawiki",
+        # stretch
+        "llvm-3.7-dev",
+        # third-party
+        "oracle-instantclient-basic",
+        "oracle-instantclient11.2-basic",
+        "oracle-instantclient12.1-basic",
     ]
 
     # keep in sync with piuparts-report.py: emphasize_reason()
@@ -887,32 +904,24 @@ class PackagesDB:
                     self._logdb.create(self._recycle, package, version, "")
         self._logdb.remove(self._reserved, package, version)
 
-    def pass_package(self, package, version, log):
+    def _process_log(self, package, version, log, subdir, result):
         self._check_for_acceptability_as_filename(package)
         self._check_for_acceptability_as_filename(version)
         self._remove_logs_if_reserved(package, version)
-        if self._logdb.create(self._ok, package, version, log):
-            self._record_submission("pass", package, version)
+        if self._logdb.create(subdir, package, version, log):
+            self._record_submission(result, package, version)
+            self._logdb.remove_kpr(subdir, package, version)
         else:
-            raise LogfileExists(self._ok, package, version)
+            raise LogfileExists(subdir, package, version)
+
+    def pass_package(self, package, version, log):
+        self._process_log(package, version, log, self._ok, "pass")
 
     def fail_package(self, package, version, log):
-        self._check_for_acceptability_as_filename(package)
-        self._check_for_acceptability_as_filename(version)
-        self._remove_logs_if_reserved(package, version)
-        if self._logdb.create(self._fail, package, version, log):
-            self._record_submission("fail", package, version)
-        else:
-            raise LogfileExists(self._fail, package, version)
+        self._process_log(package, version, log, self._fail, "fail")
 
     def make_package_untestable(self, package, version, log):
-        self._check_for_acceptability_as_filename(package)
-        self._check_for_acceptability_as_filename(version)
-        self._remove_logs_if_reserved(package, version)
-        if self._logdb.create(self._evil, package, version, log):
-            self._record_submission("untestable", package, version)
-        else:
-            raise LogfileExists(self._evil, package, version)
+        self._process_log(package, version, log, self._evil, "untestable")
 
     def _get_rdep_dict(self):
         """Return dict of one-level reverse dependencies by package"""

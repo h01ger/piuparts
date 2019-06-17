@@ -25,25 +25,42 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				;;
 		esac
 		;;
-	isdnlog|isdnutils)
-		#WORKSAROUND #431855: fails with "There are still files in /etc/isdn/ that you may want to remove manually."
-		if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
-			log_debug
-			rm -fv /etc/isdn/*
-		fi
+	freebsd-buildutils)
+		case "$PIUPARTS_DISTRIBUTION" in
+			lenny|squeeze)
+				# apt considers original-awk as essential
+				log_debug
+				apt-get -y remove freebsd-buildutils
+				echo 'Yes, do as I say!' | apt-get -y --force-yes remove original-awk
+		esac
 		;;
 	original-awk)
 		case "$PIUPARTS_DISTRIBUTION" in
-			lenny)
+			lenny|squeeze)
+				# apt considers original-awk as essential
 				log_debug
-				# apt considers this as essential
 				echo 'Yes, do as I say!' | apt-get -y --force-yes remove original-awk
 		esac
 		;;
 esac
 
 case "$PIUPARTS_DISTRIBUTION" in
+	jessie*)
+		# prevent failure of 'apt-get --reinstall install systemd-sysv systemd'
+		# due to spurious dependency cycle (#237470)
+		case ${PIUPARTS_OBJECTS%%=*} in
+			file-rc|\
+			live-config|\
+			live-config-upstart|\
+			upstart)
+				log_debug
+				apt-get -y install systemd-sysv
+				;;
+		esac
+		;;
+esac
 
+case "$PIUPARTS_DISTRIBUTION" in
 	lenny*|squeeze*|wheezy*|jessie*)
 		# --allow-remove-essential was added in apt 1.1 (stretch)
 		;;

@@ -21,4 +21,20 @@ case ${PIUPARTS_OBJECTS%%=*} in
 				;;
 		esac
 		;;
+	ibod|\
+	isdnactivecards|\
+	isdneurofile|\
+	isdnlog|\
+	isdnutils|\
+	isdnutils-xtools|\
+	isdnvbox|\
+	isdnvboxserver|\
+	INVALID)
+		case "$PIUPARTS_DISTRIBUTION" in
+			lenny|squeeze)
+				#431855: isdnutils-base fails to purge with "There are still files in /etc/isdn/ that you may want to remove manually."
+				log_debug
+				rm -fv /etc/isdn/*
+		esac
+		;;
 esac

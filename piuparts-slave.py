@@ -29,7 +29,7 @@ import sys
 import stat
 import time
 import logging
-from signal import alarm, signal, SIGALRM, SIGINT, SIGKILL, SIGHUP
+from signal import alarm, signal, SIGALRM, SIGINT, SIGKILL, SIGHUP, SIGUSR1
 import subprocess
 import fcntl
 import random
@@ -50,6 +50,7 @@ MAX_WAIT_TEST_RUN = 90 * 60
 interrupted = False
 old_sigint_handler = None
 got_sighup = False
+got_sigusr1 = False
 
 
 def setup_logging(log_level, log_file_name):
@@ -127,6 +128,14 @@ def sighup_handler(signum, frame):
     global got_sighup
     got_sighup = True
     print('SIGHUP: Will flush finished logs.')
+
+
+def sigusr1_handler(signum, frame):
+    global got_sigusr1
+    global got_sighup
+    got_sigusr1 = True
+    got_sighup = True
+    print('SIGUSR1: Will restart.')
 
 
 class MasterIsBusy(Exception):
@@ -411,7 +420,8 @@ class Section:
     def _get_tarball(self):
         basetgz = self._config["chroot-tgz"] or \
             self._distro_config.get_basetgz(self._config.get_start_distro(),
-                                            self._config.get_arch())
+                                            self._config.get_arch(),
+                                            merged_usr="--merged-usr" in self._config["piuparts-flags"])
         return os.path.join(self._config["basetgz-directory"], basetgz)
 
     def _check_tarball(self):
@@ -974,6 +984,7 @@ def create_file(filename, contents):
 def main():
     setup_logging(logging.INFO, None)
     signal(SIGHUP, sighup_handler)
+    signal(SIGUSR1, sigusr1_handler)
 
     # For supporting multiple architectures and suites, we take command-line
     # argument(s) referring to section(s) in the configuration file.
@@ -1013,6 +1024,10 @@ def main():
 
         for section in sorted(sections, key=lambda section: (section.precedence(), section.sleep_until())):
             test_count += section.run(do_processing=(test_count == 0))
+
+        if got_sigusr1:
+            logging.info("Restarting...")
+            os.execv(__file__, sys.argv)
 
         if test_count == 0 and got_sighup:
             # clear SIGHUP state after flushing all sections

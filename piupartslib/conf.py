@@ -246,12 +246,14 @@ class DistroConfig(UserDict.UserDict):
                         c))
         return lines
 
-    def get_basetgz(self, distro, arch):
+    def get_basetgz(self, distro, arch, merged_usr=False):
         # look for the first base distribution
         for d in self._expand_depends(distro):
             if self.get(d, "depends"):
                 next  # skip partial distro
-            return "%s_%s.tar.gz" % (self.get_distribution(d), arch)
+            return "%s%s_%s.tar.gz" % (self.get_distribution(d),
+                                       "-merged-usr" if merged_usr else "",
+                                       arch)
         return None
 
 

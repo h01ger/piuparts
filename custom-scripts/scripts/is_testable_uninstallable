@@ -34,6 +34,19 @@ skip_distupgrade()
 	fi
 }
 
+# use where a later version might fix the bug and enable dist-upgrade testing
+skip_distupgrade_from()
+{
+	from_ver=$1
+	shift
+	pkg=${PIUPARTS_OBJECTS%%=*}
+	cand_ver=$(apt-cache policy "$pkg" | awk '{if ($1 == "Candidate:") {print $2}}')
+
+	if [ "$from_ver" = "$cand_ver" ]; then
+		skip_distupgrade "$@"
+	fi
+}
+
 
 # * For uninstallable *broken* packages we usually run the normal
 #   installation+purge tests (which will fail and get the package marked
@@ -50,42 +63,51 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "lenny" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
 		blootbot)
-			skip_distupgrade "#502753: fails to install: prompts without using debconf"
+			skip_distupgrade "#502753: blootbot: fails to install: prompts without using debconf"
 			;;
 		distributed-net)
-			skip_distupgrade "#655922: noninteractive install: postinst loops infinitely"
+			skip_distupgrade "#655922: distributed-net: noninteractive install: postinst loops infinitely"
 			;;
 		dnscache-run)
-			skip_distupgrade "#664848: breaks dns resolution in chroot"
+			skip_distupgrade "#664848: dnscache-run: breaks dns resolution in chroot"
+			;;
+		libdbd-oracle-perl|\
+		ora2pg)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient-basic"
 			;;
 		libpils0|\
 		libpils-dev|\
 		libstonith0|\
 		libstonith-dev)
-			skip_distupgrade "#702055: transitional packages uninstallable in lenny"
+			skip_distupgrade "#702055: ${PIUPARTS_OBJECTS%%=*}: transitional package uninstallable in lenny"
 			;;
 		mhc)
-			skip_distupgrade "#696231: fails to install: emacs-package-install failure"
+			skip_distupgrade "#696231: mhc: fails to install: emacs-package-install failure"
 			;;
 		multex-bin)
-			skip_distupgrade "#668791: fails to install: The format file of 'multex' is NOT built successfully."
+			skip_distupgrade "#668791: multex-bin: fails to install: The format file of 'multex' is NOT built successfully."
+			;;
+		naist-jdic|\
+		naist-jdic-utf8|\
+		chasen)
+			skip_distupgrade "#929614: naist-jdic: 0.4.3-4 (lenny) was overwritten by 1:0.4.3-4 (jessie) on archive.debian.org"
 			;;
 		python-milter|\
 		spf-milter-python)
-			skip_always "python-milter contains virus signatures that may get blocked by the firewall"
+			skip_always "python-milter contains virus samples that may get blocked by the firewall"
 			;;
 		runit-run)
-			skip_distupgrade "#542157: fails to install"
+			skip_distupgrade "#542157: runit-run: fails to install"
 			;;
 		sun-java5-doc|\
 		sun-java6-doc)
-			skip_distupgrade "#709967: fails to install: download location no longer available"
+			skip_distupgrade "#709967: ${PIUPARTS_OBJECTS%%=*}: fails to install: download location no longer available"
 			;;
 		trn)
-			skip_distupgrade "fails to install: prompts without using debconf"
+			skip_distupgrade "#688563: trn: fails to install: prompts without using debconf"
 			;;
 		ttf-root-installer)
-			skip_distupgrade "#678807: fails to install: ftp:// download location disappeared"
+			skip_distupgrade "#678807: ttf-root-installer: fails to install: ftp:// download location disappeared"
 			;;
 	esac
 
@@ -95,10 +117,10 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "squeeze" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
 		distributed-net)
-			skip_distupgrade "#655922: noninteractive install: postinst loops infinitely"
+			skip_distupgrade "#655922: distributed-net: noninteractive install: postinst loops infinitely"
 			;;
 		firmware-b43-lpphy-installer)
-			skip_distupgrade "#623703: download location no longer available"
+			skip_distupgrade "#623703: firmware-b43-lpphy-installer: download location no longer available"
 			;;
 		fossology|\
 		fossology-agents|\
@@ -107,12 +129,15 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "squeeze" ]; then
 		fossology-web|\
 		fossology-web-single)
 			# removed after squeeze
-			skip_distupgrade "#595593: fails to install"
+			skip_distupgrade "#595593: fossology: fails to install"
 			;;
-		mini-buildd-bld|\
-		mini-buildd-rep)
-			skip_distupgrade "#632955, #656746: time limit exceeded during install"
-			fail_test "#632955, #656746: time limit exceeded during install"
+		libdbd-oracle-perl|\
+		ora2pg)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient11.2-basic"
+			;;
+		mini-buildd-bld)
+			skip_distupgrade "#632955: time limit exceeded during install"
+			fail_test "#632955: time limit exceeded during install"
 			;;
 	esac
 
@@ -121,14 +146,42 @@ fi
 if [ "${PIUPARTS_DISTRIBUTION}" = "wheezy" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
+		firefox-esr-dev|\
+		iceowl-l10n-bn-bd|\
+		iceowl-l10n-pa-in|\
+		iceowl-l10n-ta-lk|\
+		iceweasel-l10n-ak|\
+		iceweasel-l10n-be|\
+		iceweasel-l10n-csb|\
+		iceweasel-l10n-ku|\
+		iceweasel-l10n-lg|\
+		iceweasel-l10n-nso|\
+		iceweasel-l10n-ta-lk|\
+		iceweasel-l10n-zu|\
+		lightning-l10n-bn-bd|\
+		lightning-l10n-pa-in|\
+		lightning-l10n-ta-lk|\
+		thunderbird-dev|\
+		thunderbird-l10n-bn-bd|\
+		thunderbird-l10n-pa-in|\
+		thunderbird-l10n-ta-lk)
+			skip_distupgrade "#928226: uninstallable cruft package"
+			;;
 		firmware-b43-lpphy-installer)
-			skip_distupgrade "#623703: download location no longer available"
+			skip_distupgrade "#623703: firmware-b43-lpphy-installer: download location no longer available"
 			;;
 		geoip-database-contrib)
-			skip_distupgrade "#885441: download location no longer available"
+			skip_distupgrade "#885441: geoip-database-contrib: download location no longer available"
+			;;
+		libdbd-oracle-perl|\
+		ora2pg)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient11.2-basic"
 			;;
 		nautilus-dropbox)
-			skip_distupgrade "#770402: downloads awfully slow, hangs during installation"
+			skip_distupgrade "#770402: nautilus-dropbox: downloads awfully slow, hangs during installation"
+			;;
+		xul-ext-compactheader)
+			skip_distupgrade "#837387: xul-ext-compactheader: uninstallable in wheezy with icedove (>= 1:45)"
 			;;
 	esac
 
@@ -137,14 +190,44 @@ fi
 if [ "${PIUPARTS_DISTRIBUTION}" = "jessie" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
+		enigmail)
+			skip_distupgrade_from "2:1.9.9-1~deb8u1" "#909000: enigmail 2.0 needed after thunderbird 60 upload"
+			;;
+		firefox-esr-dev|\
+		icedove-dev|\
+		icedove-l10n-bn-bd|\
+		icedove-l10n-pa-in|\
+		icedove-l10n-ta-lk|\
+		iceowl-l10n-bn-bd|\
+		iceowl-l10n-pa-in|\
+		iceowl-l10n-ta-lk|\
+		iceweasel-dev|\
+		lightning-l10n-bn-bd|\
+		lightning-l10n-pa-in|\
+		lightning-l10n-ta-lk|\
+		thunderbird-dev|\
+		thunderbird-l10n-bn-bd|\
+		thunderbird-l10n-pa-in|\
+		thunderbird-l10n-ta-lk)
+			skip_distupgrade "#928226: uninstallable cruft package"
+			;;
+		fusionforge-plugin-mediawiki)
+			skip_distupgrade "#929139: fusionforge-plugin-mediawiki: uninstallable cruft package"
+			;;
 		geoip-database-contrib)
-			skip_distupgrade "#885441: download location no longer available"
+			skip_distupgrade "#885441: geoip-database-contrib: download location no longer available"
 			;;
 		steam)
-			skip_distupgrade "#772598: cannot preseed licence acceptance"
+			skip_distupgrade_from "1.0.0.49-1" "#772598: steam: cannot preseed licence acceptance"
 			;;
 		susv4)
-			skip_distupgrade "#900882: download location no longer available"
+			skip_distupgrade_from "7.20161013~deb8u1" "#900882: susv4: download location no longer available"
+			;;
+		xul-ext-compactheader)
+			skip_distupgrade_from "2.0.8-1" "#837387: xul-ext-compactheader: uninstallable in jessie with icedove (>= 1:45)"
+			;;
+		xul-ext-sogo-connector)
+			skip_distupgrade_from "31.0.0-1" "#909313: xul-ext-sogo-connector: not compatible with thunderbird 60"
 			;;
 	esac
 
@@ -154,11 +237,80 @@ if [ "${PIUPARTS_DISTRIBUTION}" = "stretch" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
 		geoip-database-contrib)
-			skip_distupgrade "#885441: download location no longer available"
+			skip_distupgrade "#885441: geoip-database-contrib: download location no longer available"
+			;;
+		libdbd-oracle-perl|\
+		ora2pg)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
+			;;
+		llvm-3.7-examples)
+			skip_distupgrade "#929138: llvm-3.7-examples: uninstallable on !arm*"
 			;;
 	esac
 
 fi
+
+if [ "${PIUPARTS_DISTRIBUTION}" = "stretch-debug" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libdbd-oracle-perl-dbgsym)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
+			;;
+	esac
+
+fi
+
+if [ "${PIUPARTS_DISTRIBUTION}" = "buster" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libdbd-oracle-perl)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
+			;;
+	esac
+
+fi
+
+if [ "${PIUPARTS_DISTRIBUTION}" = "buster-debug" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libdbd-oracle-perl-dbgsym)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
+			;;
+	esac
+
+fi
+
+if [ "${PIUPARTS_DISTRIBUTION}" = "sid" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libdbd-oracle-perl)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
+			;;
+	esac
+
+fi
+
+if [ "${PIUPARTS_DISTRIBUTION}" = "sid-debug" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libdbd-oracle-perl-dbgsym)
+			skip_always "libdbd-oracle-perl/contrib depends on third-party oracle-instantclient12.1-basic"
+			;;
+	esac
+
+fi
+
+
+if [ "$(uname)" = "Linux" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		console-setup-freebsd)
+			skip_always "non-Linux package"
+			;;
+	esac
+
+fi
+
 
 case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	acgvision-agent@squeeze)
@@ -179,11 +331,6 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	chef-server-api@wheezy)
 		skip_distupgrade "#681573: chef-solr: fails to install if policy-rc.d forbids to start services"
 		;;
-	console-setup-freebsd@*)
-		if [ "$(uname)" = "Linux" ]; then
-			skip_always "non-Linux package"
-		fi
-		;;
 	cpushare@wheezy)
 		# removed after wheezy
 		skip_distupgrade "#689885: Ships a folder in /var/run or /var/lock"
@@ -197,7 +344,7 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 	dms-dr@jessie|\
 	dms-wsgi@jessie)
 		# fixed after jessie, not in stable after jessie
-		skip_distupgrade '#852519: fails to install: NZST FATAL: configuration file "/etc/postgresql/9.4/dms/postgresql.conf" contains errors'
+		skip_distupgrade '#852519: dms-core: fails to install: NZST FATAL: configuration file "/etc/postgresql/9.4/dms/postgresql.conf" contains errors'
 		;;
 	docbookwiki@lenny)
 		# removed after lenny
@@ -272,15 +419,5 @@ case ${PIUPARTS_OBJECTS%%=*}@${PIUPARTS_DISTRIBUTION} in
 		;;
 	usrmerge@*)
 		skip_always "performs piuparts-unfriendy filesystem layout changes"
-		;;
-	xul-ext-compactheader@wheezy)
-		if [ "$(apt-cache show xul-ext-compactheader | sed -n '/^Version:/s/^Version: //p')" = "2.0.5-1" ]; then
-			skip_distupgrade "#837387: uninstallable in wheezy with icedove (>= 1:45)"
-		fi
-		;;
-	xul-ext-compactheader@jessie)
-		if [ "$(apt-cache show xul-ext-compactheader | sed -n '/^Version:/s/^Version: //p')" = "2.0.8-1" ]; then
-			skip_distupgrade "#837387: uninstallable in jessie with icedove (>= 1:45)"
-		fi
 		;;
 esac

@@ -44,6 +44,15 @@ wheezy*)
 			test ! -f "$file" || chmod -c o-w "$file"
 		done
 		;;
+	ilisp)
+		#WORKSAROUND #682826: ilisp: creates world writable directory /usr/lib/ilisp
+		# package was not in wheezy
+		for dir in /usr/lib/ilisp
+		do
+			test ! -d "$dir" || chmod -c o-w "$dir"
+		done
+		;;
+
     esac
 
 ;;

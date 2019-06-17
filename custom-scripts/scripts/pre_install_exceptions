@@ -52,6 +52,17 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		;;
 esac
 
+if [ "$PIUPARTS_DISTRIBUTION" = "jessie-backports" ]; then
+
+	case ${PIUPARTS_OBJECTS%%=*} in
+		libudev1)
+			log_debug
+			apt-get -y -t $PIUPARTS_DISTRIBUTION install udev systemd
+			;;
+	esac
+
+fi
+
 if [ "$PIUPARTS_DISTRIBUTION" = "wheezy-backports" ]; then
 
 	case ${PIUPARTS_OBJECTS%%=*} in
@@ -191,6 +202,11 @@ if [ "$PIUPARTS_DISTRIBUTION" = "squeeze" ]; then
 				apt-get -y install bootcd-i386
 			fi
 			;;
+		mini-buildd-rep)
+			#656746: mini-buildd-rep: fails to install: missing dependency on lvm2
+			log_debug
+			apt-get -y install udev lvm2
+			;;
 	esac
 
 fi
@@ -259,8 +275,10 @@ if [ "$PIUPARTS_DISTRIBUTION" = "lenny" ]; then
 			;;
 		ipppd|ibod|isdnutils)
 			#542156
-			log_debug
-			test -e /dev/MAKEDEV || ln -sfv /sbin/MAKEDEV /dev/MAKEDEV
+			if [ ! -e /dev/MAKEDEV ]; then
+				log_debug
+				ln -sfv /sbin/MAKEDEV /dev/MAKEDEV
+			fi
 			;;
 	esac
 

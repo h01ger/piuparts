@@ -44,7 +44,11 @@ install_extra_package db-util			db5.3-sql-util
 # python-kde4-dev: Depends: python-kde4 | python3-pykde4
 install_extra_package python-kde4-dev		python3-pykde4
 
-# /usr/include/libreoffice/sal/typesizes.h -> ../../x86_64-linux-gnu/libreoffice/sal/typesizes.h
+# /usr/bin/vmware-user -> vmware-user-suid-wrapper
+# open-vm-tools Suggests: open-vm-tools-desktop
+install_extra_package open-vm-tools		open-vm-tools-desktop
+
+# /usr/include/libreoffice/sal/typesizes.h -> ../../<triplet>/libreoffice/sal/typesizes.h
 # /usr/lib/libreoffice/sdk/index.html -> ../../../share/doc/libreoffice/sdk/index.html
 # libreoffice-dev: Suggests: libreoffice-dev-doc
 install_extra_package libreoffice-dev-common	libreoffice-dev libreoffice-dev-doc
@@ -68,6 +72,14 @@ install_extra_package doublecmd-common		doublecmd-help-en
 # /usr/lib/firefox/dictionaries -> ../../share/hunspell
 install_extra_package firefox			hunspell-en-us
 
+# /usr/lib/python2.7/dist-packages/Bio/Entrez/DTDs/mathml2.dtd -> ../../../../../../share/xml/schema/w3c/mathml/dtd/mathml2.dtd
+# python-biopython: Suggests: w3-dtd-mathml
+install_extra_package python-biopython		w3-dtd-mathml
+
+# /usr/lib/python2.7/dist-packages/sas/sasview/doc -> ../../../../../share/doc/sasview/html
+# python-sasview: Suggests: sasview-doc
+install_extra_package python-sasview		sasview-doc
+
 # /usr/lib/python2.7/dist-packages/wx.pth -> ../../wx/python/wx.pth
 # python-wxversion, alternative set up by python-wxgtk3.0, #857757
 install_extra_package python-wxversion		python-wxgtk3.0
@@ -80,11 +92,11 @@ install_extra_package qflow			netgen-lvs
 # ruby-psych: Suggests: libpsych-java
 install_extra_package ruby-psych		libpsych-java
 
-# /usr/lib/slepcdir/slepc3.10/x86_64-linux-gnu-complex/share/slepc/datafiles -> ../../../../../../share/doc/libslepc3.10-dev-examples/datafiles
+# /usr/lib/slepcdir/slepc3.10/<triplet>-complex/share/slepc/datafiles -> ../../../../../../share/doc/libslepc3.10-dev-examples/datafiles
 # libslepc-complex3.10-dev: Suggests: libslepc3.10-dev-examples
 install_extra_package libslepc-complex3.10-dev	libslepc3.10-dev-examples slepc3.10-doc
 
-# /usr/lib/slepcdir/slepc3.10/x86_64-linux-gnu-real/share/slepc/datafiles -> ../../../../../../share/doc/libslepc3.10-dev-examples/datafiles
+# /usr/lib/slepcdir/slepc3.10/<triplet>-real/share/slepc/datafiles -> ../../../../../../share/doc/libslepc3.10-dev-examples/datafiles
 # libslepc-real3.10-dev: Suggests: libslepc3.10-dev-examples
 install_extra_package libslepc-real3.10-dev	libslepc3.10-dev-examples slepc3.10-doc
 
@@ -93,15 +105,15 @@ install_extra_package libslepc-real3.10-dev	libslepc3.10-dev-examples slepc3.10-
 # wml: Suggests: freetable, weblint-perl
 install_extra_package wml			freetable weblint-perl
 
-# /usr/lib/x86_64-linux-gnu/dbus-1.0/debug-build/share/dbus-1/system.d -> ../../../../../../share/dbus-1/system.d
+# /usr/lib/<triplet>/dbus-1.0/debug-build/share/dbus-1/system.d -> ../../../../../../share/dbus-1/system.d
 install_extra_package dbus-1-dbg		systemd
 
-# /usr/lib/x86_64-linux-gnu/firebird/3.0/fbtrace.conf -> /etc/firebird/3.0/fbtrace.conf
-# /usr/lib/x86_64-linux-gnu/firebird/3.0/databases.conf -> /etc/firebird/3.0/databases.conf
+# /usr/lib/<triplet>/firebird/3.0/fbtrace.conf -> /etc/firebird/3.0/fbtrace.conf
+# /usr/lib/<triplet>/firebird/3.0/databases.conf -> /etc/firebird/3.0/databases.conf
 # firebird3.0-server-core: Suggests: firebird3.0-server
 install_extra_package firebird3.0-server-core	firebird3.0-server
 
-# /usr/lib/x86_64-linux-gnu/qt-default/qtchooser/default.conf -> ../../../../share/qtchooser/qt4-x86_64-linux-gnu.conf
+# /usr/lib/<triplet>/qt-default/qtchooser/default.conf -> ../../../../share/qtchooser/qt4-<triplet>.conf
 install_extra_package libqtcore4		qtchooser
 
 # /usr/share/bacula-common/dbc_database.conf -> /etc/dbconfig-common/bacula-director-pgsql.conf
@@ -140,9 +152,7 @@ install_extra_package keyboard-configuration	xkb-data
 
 # /usr/share/doc/libboost1.62-doc/HTML/boost -> ../../../../include/boost
 # libboost1.XX-doc: Suggests: libboost1.XX-dev
-install_extra_package libboost1.61-doc		libboost1.61-dev
 install_extra_package libboost1.62-doc		libboost1.62-dev
-install_extra_package libboost1.63-doc		libboost1.63-dev
 
 # /usr/share/doc/libembperl-perl/examples/forms/js/prototype.js -> ../../../../../javascript/prototype/prototype.js
 # libembperl-perl: Suggests: libjs-prototype
@@ -181,6 +191,10 @@ install_extra_package mkvtoolnix		quilt nullmailer
 # node-setimmediate: Suggests: libjs-mocha, libjs-chai
 install_extra_package node-setimmediate		libjs-chai libjs-mocha
 
+# /usr/share/doc/node-yajsml/examples/public/javascripts/lib/underscore.js -> ../../../../../../javascript/underscore/underscrore.js
+# node-yajsml: Suggests: libjs-underscore
+install_extra_package node-yajsml		libjs-underscore
+
 # /usr/share/doc/python-ly/html -> ../python-ly-doc/html
 # python-ly: Suggests: python-ly-doc
 install_extra_package python-ly			python-ly-doc
@@ -194,6 +208,10 @@ install_extra_package python-statsmodels-doc	python-statsmodels
 # /usr/share/scribus/dicts -> ../hyphen
 # scribus-data: Recommends: scribus (= ${binary:Version})
 install_extra_package scribus-data		scribus hyphen-en-us
+
+# /usr/share/doc/xen-utils-common/html -> ../xen/html
+# xen-utils-common: Suggests: xen-doc
+install_extra_package xen-utils-common		xen-doc
 
 # /usr/share/eclipse/dropins/eclox/eclipse/plugins/org.gna.eclox.help_0.10.1/html/doxygen-doc -> ../../../../../../../doc/doxygen/html
 # doxygen: Suggests: doxygen-doc
@@ -214,6 +232,10 @@ install_extra_package libmorph			gtkmorph xmorph
 # /usr/share/icons/default.kde4 -> oxygen
 install_extra_package kde-runtime-data		oxygen-icon-theme
 
+# /usr/share/jcadencii/WineMinimum.bundle/Contents/SharedSupport/bin/wine -> ../../../../../../bin/wine
+# jcadencii: Suggests: wine
+install_extra_package jcadencii			wine
+
 # /usr/share/live/build/bootloaders/???linux/*.c32 -> /usr/lib/syslinux/modules/bios/*.c32
 # /usr/share/live/build/bootloaders/pxelinux/pxelinux.0 -> /usr/lib/PXELINUX/pxelinux.0
 # /usr/share/live/build/bootloaders/isolinux/isolinux.bin -> /usr/lib/ISOLINUX/isolinux.bin
@@ -232,21 +254,9 @@ install_extra_package libwildmagic-common	libwildmagic5
 # /usr/share/nginx/modules -> ../../lib/nginx/modules
 install_extra_package nginx-common		libnginx-mod-http-echo
 
-# /usr/bin/vmware-user -> vmware-user-suid-wrapper
-# open-vm-tools Suggests: open-vm-tools-desktop
-install_extra_package open-vm-tools		open-vm-tools-desktop
-
 # /usr/share/org-mode/scripts/ditaa.jar -> ../../ditaa/ditaa.jar
 # org-mode: Suggests: ditaa
 install_extra_package org-mode			ditaa
-
-# /usr/lib/python2.7/dist-packages/Bio/Entrez/DTDs/mathml2.dtd -> ../../../../../../share/xml/schema/w3c/mathml/dtd/mathml2.dtd
-# python-biopython: Suggests: w3-dtd-mathml
-install_extra_package python-biopython		w3-dtd-mathml
-
-# /usr/lib/python2.7/dist-packages/sas/sasview/doc -> ../../../../../share/doc/sasview/html
-# python-sasview: Suggests: sasview-doc
-install_extra_package python-sasview		sasview-doc
 
 # /usr/share/pyshared/MoinMoin/words -> /etc/moin/words
 # /etc/moin/words -> /usr/share/dict/words
@@ -316,10 +326,15 @@ create_extra_dir()
 	fi
 }
 
-# /etc/motd.d/cockpit -> /run/cockpit/motd
 # /etc/issue.d/cockpit.issue -> /run/cockpit/motd
+# /etc/motd.d/cockpit -> /run/cockpit/motd
 create_extra_dir cockpit-ws			/run/cockpit
 create_extra_file cockpit-ws			/run/cockpit/motd
+
+# /etc/issue.linuxlogo -> /var/run/linuxlogo/issue.linuxlogo
+# /etc/issue.linuxlogo.ascii -> /var/run/linuxlogo/issue.linuxlogo.ascii
+create_extra_dir linuxlogo			/var/run/linuxlogo
+create_extra_file linuxlogo			/var/run/linuxlogo/issue.linuxlogo /var/run/linuxlogo/issue.linuxlogo.ascii
 
 # /etc/lprng/printcap -> ../printcap
 create_extra_file lprng				/etc/printcap
@@ -328,32 +343,53 @@ create_extra_file lprng				/etc/printcap
 # /etc/openvswitch/conf.db -> /var/lib/openvswitch/conf.db
 create_extra_file openvswitch-switch		/var/lib/openvswitch/.conf.db.~lock~ /var/lib/openvswitch/conf.db
 
+# /etc/vdr/plugins/xineliboutput/config -> /var/lib/vdr/plugins/xineliboutput/config
+create_extra_file vdr-plugin-xineliboutput	/var/lib/vdr/plugins/xineliboutput/config
+
 # /etc/vdr/remote.conf -> /var/lib/vdr/remote.conf
 # /etc/vdr/setup.conf -> /var/lib/vdr/setup.conf
 # /var/lib/vdr/commands.conf -> ../../cache/vdr/commands.conf
 # /var/lib/vdr/reccmds.conf -> ../../cache/vdr/reccmds.conf
 create_extra_file vdr				/var/cache/vdr/commands.conf /var/cache/vdr/reccmds.conf /var/lib/vdr/remote.conf /var/lib/vdr/setup.conf
 
-# /etc/vdr/plugins/xineliboutput/config -> /var/lib/vdr/plugins/xineliboutput/config
-create_extra_file vdr-plugin-xineliboutput	/var/lib/vdr/plugins/xineliboutput/config
-
-# /usr/lib/mesa-diverted/i386-linux-gnu/libGLX_indirect.so.0 -> libGLX_mesa.so.0
-# /usr/lib/mesa-diverted/x86_64-linux-gnu/libGLX_indirect.so.0 -> libGLX_mesa.so.0
+# /usr/lib/mesa-diverted/<triplet>/libGLX_indirect.so.0 -> libGLX_mesa.so.0
 create_extra_file glx-diversions		/usr/lib/mesa-diverted/i386-linux-gnu/libGLX_mesa.so.0
 create_extra_file glx-diversions		/usr/lib/mesa-diverted/x86_64-linux-gnu/libGLX_mesa.so.0
+
+# /usr/lib/plan/holiday -> /etc/plan/holiday
+create_extra_file plan				/etc/plan/holiday
 
 # /usr/sbin/ganeti-masterd -> ../share/ganeti/default/ganeti-masterd
 # #857289
 create_extra_file ganeti			/usr/share/ganeti/default/ganeti-masterd
 
+# /usr/share/epiphany-browser/mime-types-permissions.xml -> /etc/gnome/epiphany/mime-types-permissions.xml
+create_extra_file epiphany-browser-data		/etc/gnome/epiphany/mime-types-permissions.xml
+
+# /usr/share/games/xwelltris/welltris.scores -> /var/games/xwelltris/welltris.scores
+create_extra_file xwelltris			/var/games/xwelltris/welltris.scores
+
+# /usr/share/gitlab-shell/config.yml -> /etc/gitlab-shell/config.yml
+create_extra_file gitlab-shell			/etc/gitlab-shell/config.yml
+
 # /usr/share/man/man1/rust-gdb.1.gz -> gdb.1.gz
+# /usr/share/man/man1/i686-w64-mingw32-gdb.1.gz -> gdb.1.gz
+# /usr/share/man/man1/x86_64-w64-mingw32-gdb.1.gz -> gdb.1.gz
 # gdb-doc is in non-free
 create_extra_file rust-gdb			/usr/share/man/man1/gdb.1.gz
+create_extra_file gdb-mingw-w64			/usr/share/man/man1/gdb.1.gz
+
+# /usr/share/notion/debian-menu.lua -> /var/lib/notion/debian-menu.lua
+# /usr/share/notion/debian-menu-i18n.lua -> /var/lib/notion/debian-menu-i18n.lua
+create_extra_file notion			/var/lib/notion/debian-menu.lua /var/lib/notion/debian-menu-i18n.lua
 
 # /usr/share/otrs/Kernel/Config/GenericAgent.pm -> /etc/otrs/Kernel/Config/GenericAgent.pm
 # /var/lib/otrs/run -> /run/otrs
 create_extra_file otrs2				/etc/otrs/Kernel/Config/GenericAgent.pm
 create_extra_dir otrs2				/run/otrs
+
+# /usr/share/slrn/newsgroups.dsc -> /var/lib/slrn/newsgroups.dsc
+create_extra_file slrn				/var/lib/slrn/newsgroups.dsc
 
 # /usr/share/texlive/texmf-dist/tex/latex/pdfx/sRGB_IEC61966-2-1_black_scaled.icc -> ../../../../../color/icc/sRGB_IEC61966-2-1_black_scaled.icc
 # sRGB_IEC61966-2-1_black_scaled.icc is provided by icc-profiles in non-free (#880363)
@@ -365,3 +401,6 @@ create_extra_file libuim-data			/var/lib/uim/loader.scm /var/lib/uim/installed-m
 
 # /var/cache/vdr/dvd -> /dev/dvd
 create_extra_file vdr-plugin-dvd		/dev/dvd
+
+# /usr/share/wordpress/wp-content/plugins/civicrm/civicrm/civicrm-wordpress.settings.php -> /etc/civicrm/civicrm-wordpress.settings.php
+create_extra_file wordpress-civicrm		/etc/civicrm/civicrm-wordpress.settings.php

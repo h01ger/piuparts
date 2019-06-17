@@ -143,6 +143,19 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
 				cyrus-makedirs --cleansquat
 			fi
 			;;
+		debian-edu-archive-keyring|\
+		debian-ports-archive-keyring|\
+		emdebian-archive-keyring|\
+		emdebian-grip-server)
+			# https://bugs.debian.org/687611
+			log_debug
+			for keyring in /etc/apt/trusted.gpg.d/*.gpg~
+			do
+				if [ -f "${keyring}" ]; then
+					mv -v "${keyring}" "${keyring%~}"
+				fi
+			done
+			;;
 		ekeyd-uds)
 			# ekeyd-uds was removed after squeeze, maintainer scripts are incompatible with udev/jessie
 			log_debug
@@ -176,14 +189,13 @@ if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "jessie" ]; then
 
 fi
 
-if [ "$PIUPARTS_DISTRIBUTION_NEXT" = "experimental" ]; then
+if [ "$PIUPARTS_DISTRIBUTION" = "stretch" ]; then
 
-	case ${PIUPARTS_OBJECTS} in
-		dnscache-run=1:1.05-9~exp2)
-			#664848: breaks dns resolution in chroot if installed in a chroot
+	case ${PIUPARTS_OBJECTS%%=*} in
+		design-desktop*)
+			#850948: needrestart/stretch may hang during upgrade
 			log_debug
-			echo "*** ABORT - Installation broke DNS in chroot ***"
-			exit 1
+			dpkg-divert --rename /usr/lib/needrestart/apt-pinvoke
 			;;
 	esac
 

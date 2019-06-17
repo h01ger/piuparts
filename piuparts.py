@@ -393,7 +393,6 @@ class Settings:
             "/var/mail/.*",
             "/var/run/.*",
             # package management
-            "/etc/apt/trusted.gpg.d/.*.gpg~",
             "/var/lib/apt/lists/.*",
             "/var/lib/dpkg/alternatives/.*",
             "/var/lib/dpkg/triggers/.*",
@@ -1506,7 +1505,7 @@ class Chroot:
     def remove_packages(self, packages, ignore_errors=False):
         """Remove packages in a chroot."""
         if packages:
-            self.run(["apt-get", "remove"] + unqualify(packages), ignore_errors=ignore_errors)
+            self.run(["apt-get", "remove"] + ["%s-" % x if x.endswith('+') else x for x in unqualify(packages)], ignore_errors=ignore_errors)
 
     def purge_packages(self, packages, ignore_errors=False):
         """Purge packages in a chroot."""
@@ -1521,6 +1520,13 @@ class Chroot:
             logging.warn("History of available packages does not match - reference chroot may be outdated")
             logging.debug(" reference: %s" % " ".join(reference_chroot_state["avail_md5"]))
             logging.debug(" current  : %s" % " ".join(self.avail_md5_history))
+
+        self.list_paths_with_symlinks()
+        self.check_debsums()
+        self.check_adequate(packages_qualified)
+
+        # Run custom scripts before removing all packages.
+        self.run_scripts("pre_remove")
 
         selections = reference_chroot_state["selections"]
         packages = unqualify(packages_qualified)
@@ -1547,13 +1553,6 @@ class Chroot:
                           if state == "install"]
         all_to_install += [(name, version) for name, (state, version) in nondeps.iteritems()
                            if state == "install"]
-
-        self.list_paths_with_symlinks()
-        self.check_debsums()
-        self.check_adequate(packages_qualified)
-
-        # Run custom scripts before removing all packages.
-        self.run_scripts("pre_remove")
 
         # First remove all packages (and reinstall missing ones).
         self.remove_packages(deps_to_remove)
@@ -2973,6 +2972,10 @@ def parse_command_line():
                       default="dump",
                       help="Displays messages from LEVEL level, possible values are: error, info, dump, debug. The default is dump.")
 
+    parser.add_option("--max-command-output-size", action="store", metavar='SIZE',
+                      default=0,
+                      help="Set maximum permitted command output to SIZE (in MB).")
+
     (opts, args) = parser.parse_args()
 
     # expand combined options
@@ -2987,6 +2990,8 @@ def parse_command_line():
     settings.tmpdir = opts.tmpdir
     settings.keep_env = opts.keep_env
     settings.shell_on_error = opts.shell_on_error
+    if opts.max_command_output_size:
+        settings.max_command_output_size = int(opts.max_command_output_size) * 1024 * 1024;
     settings.single_changes_list = opts.single_changes_list
     settings.single_packages = opts.single_packages
     settings.args_are_package_files = not opts.apt

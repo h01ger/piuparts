@@ -1,3 +1,27 @@
+piuparts (1.0.1) UNRELEASED; urgency=medium
+
+  [ Andreas Beckmann ]
+  * piuparts.py:
+    - Add '--max-command-output-size' option to allow overriding the default
+      of 8 MB for debugging runs.
+    - Run pre_remove scripts before computing packages to be removed.
+    - Fix spurious failure to remove packages with names ending with '+'.
+  * piuparts.conf.anbe: Add some more example sections.
+  * piupartslib/packagesdb.py:
+    - Remove stale .kpr files after receiving new logs.
+  * piuparts-slave.py:
+    - Generate separate tarball names for --merged-usr chroots.
+    - Re-exec on SIGUSR1, picking up updated code and new config sections.
+  * master-bin/detect_piuparts_issues:
+    - Clean up stale temporary and empty files.
+  * master-bin/rotate_master_logs: Delete master logs older than 90 days.
+  * slave-bin/slave_reexec: New, send SIGUSR1 to all running slaves.
+
+  [ Holger Levsen ]
+  * generate_daily_report: improve statistics.
+
+ -- Holger Levsen <holger@debian.org>  Sat, 04 May 2019 21:53:16 +0200
+
 piuparts (1.0.0) unstable; urgency=medium
 
   [ David Steele ]
@@ -143,7 +167,7 @@ piuparts (0.96) unstable; urgency=medium
 
   [ Andreas Beckmann ]
   * bug-templates: Raise severity of "fails to purge" errors to serious.
-   (see #918379)
+    (see #918379)
   * distros.conf: Add jessie-lts as a full distro.
   * piuparts.conf:
     - Use jessie-lts as upgrade target and rename section

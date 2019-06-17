@@ -25,6 +25,7 @@ get_config_value SECTIONS global sections
 get_config_value TESTING global testing-suite
 
 dryrun=""
+logfiles=""
 current=""
 longterm=""
 
@@ -62,6 +63,10 @@ do
 			shift
 			dryrun="yes"
 			;;
+		--logfiles)
+			shift
+			logfiles="yes"
+			;;
 		*)
 			break
 			;;
@@ -70,14 +75,38 @@ done
 
 test -n "$1" || exit 1
 
+TOTAL=0
+recycle_logfiles()
+{
+	local log recycle
+	for log in "$@"
+	do
+		recycle="$(dirname "$(dirname "$log")")/recycle"
+		if [ -f "$log" ] && [ ! -f "$recycle/$(basename $log)" ]; then
+			TOTAL=$(( $TOTAL + 1 ))
+			if [ -n "$dryrun" ]; then
+				echo "candidate: $log"
+			else
+				ln -fv "$log" $recycle/ || true
+			fi
+		fi
+	done
+}
+
+
+if [ -n "$logfiles" ]; then
+	recycle_logfiles "$@"
+fi
+
+
+if [ -z "$logfiles" ]; then
+
 subdirs="$pass $fail $bugged $affected $untestable"
 pattern=' ('"$1"')\.conf$'
-
 
 #
 # mark logs matching kpr tag $1 for recycling
 #
-TOTAL=0
 OLDPWD=$(pwd)
 LIST=$(mktemp)
 for SECTION in $SECTIONS ; do
@@ -112,20 +141,13 @@ for SECTION in $SECTIONS ; do
 	mkdir -p $searchdirs $SECTION/recycle
 
 	grep -rlE "$pattern" --include '*.kpr' $searchdirs | sed 's/\.kpr$/.log/' > $LIST
-	for log in $(cat $LIST)
-	do
-		if [ -f "$log" ] && [ ! -f "$SECTION/recycle/$(basename $log)" ]; then
-			TOTAL=$(( $TOTAL + 1 ))
-			if [ -n "$dryrun" ]; then
-				echo "candidate: $log"
-			else
-				ln -fv "$log" $SECTION/recycle/ || true
-			fi
-		fi
-	done
+	recycle_logfiles $(cat $LIST)
 	cd "$OLDPWD"
 done
 rm -f $LIST
+
+fi
+
 
 if [ "$TOTAL" -gt "0" ]; then
 	if [ -n "$dryrun" ]; then
