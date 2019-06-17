@@ -382,7 +382,7 @@ sections =
 	squeeze_i386/contrib
 	squeeze-lts/contrib
 	squeeze-backports/contrib
-	squeeze-backports-sloppy/contrib
+#	squeeze-backports-sloppy/contrib
 	squeeze2lts2wheezy/contrib
 	squeeze2wheezy/contrib
 	squeeze2wheezy_i386/contrib
@@ -398,7 +398,7 @@ sections =
 	wheezy/non-free
 	wheezy_i386/non-free
 	wheezy-lts/non-free
-#	wheezy-security/non-free
+	wheezy-security/non-free
 	wheezy-backports/non-free
 	wheezy2lts/non-free
 	wheezy2jessie/non-free
@@ -413,7 +413,7 @@ sections =
 	squeeze_i386/non-free
 	squeeze-lts/non-free
 	squeeze-backports/non-free
-	squeeze-backports-sloppy/non-free
+#	squeeze-backports-sloppy/non-free
 	squeeze2lts2wheezy/non-free
 	squeeze2wheezy/non-free
 	squeeze2wheezy_i386/non-free
@@ -2053,7 +2053,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
-depends-sections = squeeze/main squeeze/non-free
+depends-sections = squeeze/main squeeze-lts/main squeeze/contrib squeeze/non-free squeeze-lts/non-free
 distro = squeeze-lts
 arch = amd64
 area = contrib
@@ -2065,7 +2065,7 @@ piuparts-flags =
 	%(flags-default)s
 	%(flags-start-squeeze)s
 	%(flags-end-squeeze)s
-depends-sections = squeeze/main squeeze/contrib
+depends-sections = squeeze/main squeeze-lts/main squeeze/contrib squeeze-lts/contrib squeeze/non-free
 distro = squeeze-lts
 arch = amd64
 area = non-free
@@ -3247,7 +3247,7 @@ upgrade-test-distros = wheezy-lts wheezy-backports jessie-lts
 
 
 [wheezy222testing/main]
-precedence = 80
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -3262,7 +3262,7 @@ max-reserved = 25
 reschedule-old-count = 100
 
 [wheezy222testing/contrib]
-precedence = 95
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -3277,7 +3277,7 @@ max-reserved = 25
 reschedule-old-count = 100
 
 [wheezy222testing/non-free]
-precedence = 95
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -3293,7 +3293,7 @@ reschedule-old-count = 100
 
 
 [wheezy222testing_i386/main]
-precedence = 80
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -3309,7 +3309,7 @@ max-reserved = 25
 reschedule-old-count = 100
 
 [wheezy222testing_i386/contrib]
-precedence = 95
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -3325,7 +3325,7 @@ max-reserved = 25
 reschedule-old-count = 100
 
 [wheezy222testing_i386/non-free]
-precedence = 95
+precedence = 150
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-wheezy)s
@@ -3954,7 +3954,7 @@ upgrade-test-distros = stretch stretch-next
 
 
 [stretch2buster/main]
-precedence = 80
+precedence = 50
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
@@ -3994,7 +3994,7 @@ upgrade-test-distros = stretch buster
 
 
 [stretch3buster/main]
-precedence = 80
+precedence = 50
 description = + Testing two-stage upgrades.
 piuparts-flags =
 	--upgrade-before-dist-upgrade
@@ -4043,7 +4043,7 @@ exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_b
 
 
 [stretch2buster_i386/main]
-precedence = 80
+precedence = 50
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
@@ -4086,7 +4086,7 @@ upgrade-test-distros = stretch buster
 
 
 [stretch3buster_i386/main]
-precedence = 80
+precedence = 50
 description = + Testing two-stage upgrades.
 piuparts-flags =
 	--upgrade-before-dist-upgrade
@@ -4138,7 +4138,7 @@ exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_b
 
 
 [stretch2buster-rcmd/main]
-precedence = 80
+precedence = 50
 piuparts-flags =
 	--install-recommends
 	%(flags-default)s
@@ -4181,7 +4181,7 @@ upgrade-test-distros = stretch buster
 
 
 [stretch3buster-rcmd/main]
-precedence = 80
+precedence = 50
 description = + Testing two-stage upgrades with --install-recommends.
 piuparts-flags =
 	--install-recommends
@@ -4233,7 +4233,7 @@ exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_b
 
 
 [stretch2buster-rcmd_i386/main]
-precedence = 80
+precedence = 50
 description = + Testing with --install-recommends.
 piuparts-flags =
 	--install-recommends
@@ -4282,7 +4282,7 @@ upgrade-test-distros = stretch buster
 
 
 [stretch3buster-rcmd_i386/main]
-precedence = 80
+precedence = 50
 description = + Testing two-stage upgrades with --install-recommends.
 piuparts-flags =
 	--install-recommends
