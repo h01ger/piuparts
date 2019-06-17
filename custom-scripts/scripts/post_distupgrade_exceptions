@@ -111,8 +111,7 @@ if [ "$PIUPARTS_DISTRIBUTION_PREV" = "stretch" ]; then
 
 fi
 
-if [ "$PIUPARTS_DISTRIBUTION" = "buster" ] || \
-	[ "$PIUPARTS_DISTRIBUTION" = "sid" -a "$PIUPARTS_DISTRIBUTION_PREV" = "stretch" ]; then
+if [ "$PIUPARTS_DISTRIBUTION" = "buster" ]; then
 
 	# libc-bin only upgrades pristine /etc/nsswitch.conf
 	if grep -q '^passwd:.*compat' /etc/nsswitch.conf ; then

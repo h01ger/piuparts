@@ -6,6 +6,7 @@ piuparts (1.0.1) UNRELEASED; urgency=medium
       of 8 MB for debugging runs.
     - Run pre_remove scripts before computing packages to be removed.
     - Fix spurious failure to remove packages with names ending with '+'.
+  * piuparts.conf, distros.conf: Update for buster release.
   * piuparts.conf.anbe: Add some more example sections.
   * piupartslib/packagesdb.py:
     - Remove stale .kpr files after receiving new logs.
@@ -16,6 +17,7 @@ piuparts (1.0.1) UNRELEASED; urgency=medium
     - Clean up stale temporary and empty files.
   * master-bin/rotate_master_logs: Delete master logs older than 90 days.
   * slave-bin/slave_reexec: New, send SIGUSR1 to all running slaves.
+  * custom-scripts: Add and update several exceptions.
 
   [ Holger Levsen ]
   * generate_daily_report: improve statistics.
