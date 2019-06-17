@@ -145,22 +145,20 @@ flags-broken-symlinks =
 #   civicrm-common, #857601, wontfix, /usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf -> ../../../../local/open-flash-chart.swf
 	-i :/usr/share/civicrm/packages/OpenFlashChart/open-flash-chart.swf
 #   musescore-common, #910145, wontfix, /usr/share/mscore-2.3/sound/{sf2,sfz} -> ../../sounds/{sf2,sfz}
-	-i :/usr/share/mscore-2.3/sound/sf2
-	-i :/usr/share/mscore-2.3/sound/sfz
-	-i :/usr/share/mscore-3.0/sound/sf2
-	-i :/usr/share/mscore-3.0/sound/sfz
+	-I :/usr/share/mscore3?-.*/sound/sf[2z]
 #   mender-client, #915680, /var/lib/mender -> /data/mender
 	-i :/var/lib/mender
 # ignore broken symlinks (patterns)
 	-I :/etc/.*/supervise
 	-I /usr/include/python2\.7_d/.*\.h
 	-I /usr/include/python3\..dm/.*\.h
+	-I /usr/include/python3\..dm/cpython
 	-I /usr/include/python3\..dm/internal
 	-I :/usr/lib/jvm/java-.*-openjdk-.*/src\.zip
 	-I :/usr/share/doc/kde/HTML/.*/common
 	-I :/usr/share/man/man1/(.*-)?python.*-config\.1\.gz
 # ignore broken symlinks (third party game data)
-	-I :/usr/lib/openjk/JediAcademy/base/assets.\.pk3
+	-I :/usr/lib/openjk/Jedi(Academy|Outcast)/base/assets.\.pk3
 	-I :/usr/lib/rtcw/main/.*\.(cfg|pk3)
 
 
