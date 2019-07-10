@@ -1,5 +1,9 @@
 piuparts (1.0.2) UNRELEASED; urgency=medium
 
+  [ Herbert Parentes Fortes Neto ]
+  * piuparts.py: use Popen with universal_newlines=True. Py2, Py3 compatible.
+
+  [ Holger Levsen ]
   * Bump standards version to 4.4.0, no changes needed.
 
  -- Holger Levsen <holger@debian.org>  Sun, 07 Jul 2019 17:15:41 +0200
