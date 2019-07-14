@@ -120,6 +120,8 @@ basetgz-sections =
 	tarball/sid/i386
 	tarball/sid-merged-usr/amd64
 	tarball/sid-merged-usr/i386
+	tarball/bullseye/amd64
+	tarball/bullseye/i386
 	tarball/buster/amd64
 	tarball/buster/i386
 	tarball/stretch/amd64
@@ -523,6 +525,33 @@ components = main
 max-tgz-age = 172800
 
 
+[tarball/bullseye/amd64]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-bullseye)s
+distro = None
+upgrade-test-distros = bullseye
+arch = amd64
+area = main
+components = main
+# 60*60*24*7
+max-tgz-age = 604800
+
+
+[tarball/bullseye/i386]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-bullseye)s
+distro = None
+upgrade-test-distros = bullseye
+arch = i386
+setarch = linux32
+area = main
+components = main
+# 60*60*24*7
+max-tgz-age = 604800
+
+
 [tarball/buster/amd64]
 piuparts-flags =
 	%(flags-default)s
@@ -532,8 +561,8 @@ upgrade-test-distros = buster
 arch = amd64
 area = main
 components = main
-# 60*60*24*7
-max-tgz-age = 604800
+# 60*60*24*30
+max-tgz-age = 2592000
 
 
 [tarball/buster/i386]
@@ -546,8 +575,8 @@ arch = i386
 setarch = linux32
 area = main
 components = main
-# 60*60*24*7
-max-tgz-age = 604800
+# 60*60*24*30
+max-tgz-age = 2592000
 
 
 [tarball/stretch/amd64]

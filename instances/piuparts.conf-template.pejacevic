@@ -166,6 +166,7 @@ flags-broken-symlinks =
 basetgz-sections =
 	tarball/sid
 	tarball/sid-merged-usr
+	tarball/bullseye
 	tarball/buster
 	tarball/stretch
 	tarball/jessie
@@ -289,14 +290,24 @@ upgrade-test-distros = sid
 max-tgz-age = 259200
 
 
+[tarball/bullseye]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-bullseye)s
+distro = None
+upgrade-test-distros = bullseye
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
+
+
 [tarball/buster]
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-buster)s
 distro = None
 upgrade-test-distros = buster
-# 1 week (60*60*24*7)
-max-tgz-age = 604800
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
 
 
 [tarball/stretch]
