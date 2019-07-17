@@ -6,6 +6,9 @@ piuparts (1.0.2) UNRELEASED; urgency=medium
 
   [ Holger Levsen ]
   * Bump standards version to 4.4.0, no changes needed. 
+  
+  [ David Prévot ]
+  * Use the same favicon as the one from www.d.o. 
 
  -- Holger Levsen <holger@debian.org>  Sun, 07 Jul 2019 17:15:41 +0200
 
