@@ -1,0 +1,8 @@
+Manpage
+=======
+
+
+.. toctree::
+   :maxdepth: 1
+    
+   piuparts slave run <piuparts_slave_run.8>
