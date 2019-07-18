@@ -1,0 +1,376 @@
+.. only:: html
+
+ piuparts(1)
+ ===========
+ :doctype: manpage
+ :revdate: 2017-03-06
+
+
+
+SYNOPSIS
+--------
+*piuparts* ['-apvV'] ['-d' _distro_] ['-i' _filename_] ['-I' _regexp_] ['-l' _logfile_] ['-m' _url_] ['--bindmount' _dir_] [_package_]... [_changes_file_]...
+
+DESCRIPTION
+-----------
+*piuparts* tests that Debian packages handle installation, upgrading, and removal correctly. It does this by creating a minimal Debian installation in a chroot, and installing, upgrading, and removing packages in that environment, and comparing the state of the directory tree before and after. *piuparts* reports any files that have been added, removed, or modified during this process.
+
+*piuparts* is meant as a quality assurance tool for people who create Debian packages to test them before they upload them to the Debian package
+archive.
+
+By default, piuparts can do three different tests:
+
+. A simple install-purge test within one Debian distribution (chosen with the '-d' option, unstable by default). It sets up the chroot with the desired distribution, then installs and purges the packages, and reports problems.
+
+. A simple install-upgrade-purge test within one Debian distribution. This test is like the install-purge test, but it installs the packages first via *apt-get* and then from the package files given on the command line. If the command line has package names (option '--apt' used), or no tested package is known to *apt-get* (new packages), this test is skipped, otherwise it is performed automatically.
+
+. An upgrade test between Debian releases. This test is enabled by using the '-d' option multiple times and disables the other two tests. It sets up the chroot with the first distribution named, then upgrades it to each successive one, and then remembers the directory tree state at the end. After this, it starts over with the chroot of the first distribution, installs the desired packages (via *apt-get*), and does the successive upgrading (via *apt-get dist-upgrade*). Then, if package files (and not just package names) were given on the command line, it installs them. Finally, it reports problems against the state of the directory tree at the last distribution compared with the state without the packages having been installed. This test can be quite slow to execute.
++
+Note that this does not work with experimental, because *apt-get* does not automatically upgrade to packages in experimental. To test a particular package or group of packages in experimental, use the second test.
+
+
+Command line arguments are the paths to package files (e.g., *piuparts_1.0-1_all.deb*), paths to changes files (e.g., *piuparts_1.0-1_i386.changes*), or names of packages, if the '--apt' option is given.
+
+When processing changes files, by default, all packages in a changes file will be processed together with all individual packages given on the command line. Then each package given on the command line is processed in a single group. If the '--single-changes-list' is used, the packages in all changes files are processed together along with any individual packages that were given on the command line. To avoid this behaviour, it is possible to specify '--single-packages'.
+
+*piuparts* outputs to the standard output some log messages to show what is going on. If a log file is used, the messages go there as well.
+
+*piuparts* needs to be run as root.
+
+OPTIONS
+-------
+Options must come before the other command line arguments.
+
+*-a*, *--apt*::
+  The package arguments on the command line are to be treated as package names and installed via *apt-get* instead  of  being  names  of  package  files, to be installed via *dpkg -i*.
+
+*-*-allow-database*::
+  Allow starting MySQL and PostgreSQL database servers in the chroot for
+  packages requiring database access in their maintainer scripts.
+  Do not use this option if there is already a database server running on the
+  system running piuparts (or piuparts-slave)!
+  In master-slave setups with multiple slaves running on one host collisions
+  may occur, these will be detected by 'detect_piuparts_issues' and the
+  affected packages will be tested again.
+
+*-*-arch*='arch'::
+  Create chroot and run tests for (non-default) architecture 'arch'. The default is the output from 'dpkg --print-architecture'.
+
+*-b* 'tarball', *-*-basetgz*='tarball'::
+  Use tarball as the contents of the initial chroot, instead of building a new one with debootstrap.
+
+  The tarball can be created with the '-s' option, or you can use one that *pbuilder* has created (see '-p'). If you create one manually, make sure the root of the chroot is the root of the tarball.
+
+*-*-bindmount*='dir'::
+  Bind-mount a directory inside the chroot.
+
+*-d* 'name', *-*-distribution*='name'::
+  Which Debian distribution to use: a code name (for example jessie, stretch or sid) or experimental. The default is sid (=unstable).
+
+*-D* 'flavor', *-*-defaults*='flavor'::
+  Use default settings suitable for a particular flavor of Debian: either debian or ubuntu. The default is debian.
+
+*-*-do-not-verify-signatures*::
+  Do not verify signatures from the Release files when running debootstrap. Also set APT::Get::AllowUnauthenticated accordingly in /etc/apt/apt.conf in the chroots.
+
+*-*-dpkg-force-confdef*::
+  Make dpkg use --force-confdef, which lets dpkg always choose the default action when a modified conffile is found. This option will make piuparts ignore errors it was designed to report and therefore should only be used to hide problems in depending packages. 'This option shall normally not be used.' (See #466118.)
+
+*-*-dpkg-noforce-unsafe-io*::
+  Prevent running dpkg with --force-unsafe-io.  --force-unsafe-io causes dpkg to skip certain file system syncs known to cause substantial performance degradation on some filesystems.  Thus, including this option reverts to safe but slower behavior.  The --dpkg-noforce-unsafe-io is required for running tests on distributions older than squeeze.
+
+*-*-no-eatmydata*::
+  Prevent use of eatmydata.  The --no-eatmydata option is required for running tests on squeeze or older distributions.
+
+*-*-extra-old-packages*='pkg1[,pkg2]...'::
+  Install additional old packages before upgrading.  Allows testing package renames/merges where the old package is no longer available in the new distribution and the new one utilizes Conflicts/Replaces.  The argument is a comma separated list of package names and the option can be given multiple times.
+  For install/purge tests these packages will be installed before the package
+  that is to be tested.
+
+*-e* 'dirname', *-*-existing-chroot*='dirname'::
+  Use the specified directory as source for the new chroot, instead of building
+  a new one with debootstrap. This is similar to '--basetgz', but the contents
+  are not archived. See also the --hard-link option.
+
+*-*-distupgrade-to-testdebs*::
+  Use the "testdebs" repository to override the packages in the distupgrade
+  target distribution. This allows one to test complex upgrade paths before the
+  packages enter the archive.
+
+*-*-extra-repo*='deb-line'::
+  Provide an additional (unparsed) line to be appended to sources.list, e.g.::
+
+
+    'deb <URL> <distrib> <components>'
+     or
+    'deb file:// </bind/mount> ./'
+
+  Useful for e.g. backports, security or local repositories that cannot be
+  handled by '--mirror'. May be repeated to add more than one line.
+
+*-*-fake-essential-packages*='pkg1[,pkg2]...'::
+  Install additional packages in the base chroot that are not removed after
+  the test. These are available during purge and for checking against
+  mistreatment.
+  Takes a comma separated list of package names and can be given multiple
+  times.
+
+*-*-hard-link*::
+  When the --existing-chroot option is used, and the source directory is on the
+  same filesystem, hard-link files instead of copying them. This is faster, but
+  any modifications to files will be reflected in the originals.
+
+*-i* 'filename', *-*-ignore*='filename'::
+  Add a filename to the list of filenames to be ignored when comparing changes
+  before and after installation. By default, piuparts ignores files that always
+  change during a package installation and uninstallation, such as *dpkg*
+  status files. The filename should be relative to the root of the chroot
+  (e.g., *var/lib/dpkg/status*).
+  Filenames prefixed with a ':' will be logged verbosely if found.
+  This option can be used as many times as necessary.
+
+*-I* 'regexp', *-*-ignore-regexp*='regexp'::
+  Add a regular expression pattern to the list of patterns for filenames to be
+  ignored when comparing changes before and after installation.
+  Patterns prefixed with a ':' will log verbosely all matching files.
+  This option can be used as many times as necessary.
+
+*-*-install-purge-install*::
+  Purge package after installation and reinstall. All dependencies are available during purge.
+
+*-*-install-recommends*::
+  Enable installation of Recommends.
+
+*-*-install-suggests*::
+  Enable installation of Suggests.
+
+*-*-install-remove-install*::
+  Remove package after installation and reinstall. For testing installation in config-files-remaining state.
+
+*-k*, *-*-keep-env*::
+  Depending on which option is passed, keep the environment used for testing after the program ends::
+   * By default it doesn't remove the temporary directory for the chroot,
+   * or if --schroot is used, the schroot session is not terminated,
+   * or if --docker-image is used, the container created is not destroyed.
+
+*-K*, *-*-keyring*='filename'::
+ Use FILE as the keyring to use with debootstrap when creating chroots.
+
+*-*-keep-sources-list*::
+  Don't modify the chroot's etc/apt/sources.list.
+
+*-*-list-installed-files*::
+  List the files added to the chroot after the installation of the package and after the installation of the package dependencies.
+
+*-*-lvm-volume*='lvm-volume'::
+  Use the specified lvm-volume as source for the chroot, instead of building a
+  new one with debootstrap. This creates a snapshot of the given LVM volume and
+  mounts it to the chroot path.
+
+*-*-lvm-snapshot-size*='snapshot-size'::
+  Use the specified snapshot-size as snapshot size when creating a new LVM
+  snapshot (default: 1G)
+
+*-l* 'filename', *-*-log-file*='filename'::
+  Append log file to _filename_ in addition to the standard output.
+
+*-*-log-level*='level'::
+  Display messages from loglevel LEVEL, possible values are: error, info, dump, debug. The default is dump.
+
+*-*-max-command-output-size*='size'::
+  Set the maximum permitted command output to _size_ (in MB) for debugging
+  runs exceeding the default of 8 MB.
+
+*-*-merged-usr*::
+  When using debootstrap to create the chroot, use the '--merged-usr' option
+  to create a chroot with /bin, /lib, /sbin being symlinks to their /usr
+  counterparts.
+
+*-m* 'url', *-*-mirror*='url'::
+  Which Debian mirror to use. The default is the first mirror named in */etc/apt/sources.list* or *http://deb.debian.org/debian* if none is found. This option may be used multiple times to use multiple mirrors. Only the first mirror is used with *debootstrap*.
+
+  The 'components' that are used for a mirror can also be set with this option: a space separated list within the same argument (so you need to quote the entire argument in the shell). If no components are given explicitly, the usual Debian components are used (main, contrib, and non-free). For the mirrors read from */etc/apt/sources.list*, the components are read from the same place.
+
+ Note that file: addresses works if the directories are made accessible from within the chroot with '--bindmount'.
+
+*-*-no-adequate*::
+  Don't run adequate after installation. The default is to run adequate, provided it is installed.
+
+*-*-no-check-valid-until*::
+  Set apt option Acquire::Check-Valid-Until=false in the chroot to ignore the
+  expiration of Release files. This is needed for testing archived releases.
+
+*-*-no-diversions*::
+  Don't check for broken diversions.
+
+*-n*, *-*-no-ignores*::
+  Forget all built-in and other ignores that have been set so far. Any '-i' or '-I' arguments that come after this one will be obeyed, but none of the ones that come before.
+
+*-N*, *-*-no-symlinks*::
+  Don't check for broken symlinks.
+
+*-*-fail-if-inadequate*::
+  Fail on inadequate results from running adequate. The default is to just issue those errors as warnings.
+
+*-*-fail-on-broken-symlinks*::
+  Fail on broken symlinks. The default is to just issue those errors as warnings.
+
+*-*-no-upgrade-test*::
+  Skip testing upgrade from an existing version in the archive.
+
+*-*-no-install-purge-test*::
+  Skip the install and purge test.
+
+*-p, *-*-pbuilder*::
+  Use */var/cache/pbuilder/base.tgz* as the base tarball. This is a shorthand so that you don't need to use '-b' for it.
+
+*-*-pedantic-purge-test*::
+  Be pedantic when checking if a purged package leaves files behind. If this option is not set, files left in */tmp* are ignored.")
+
+*-*-proxy*='URL'::
+  Use the proxy at URL to access the Debian mirror(s). Takes precedence over
+  the 'http_proxy' environment variable. Using a local proxy is recommended
+  because piuparts may use large amounts of bandwidth to repeatedly download
+  the same files.
+
+*-s* 'filename', *-*-save*='filename'::
+  Save the chroot, after it has been set up, as a tarball into *filename*. It can then be used with '-b'.
+
+*-B* 'FILE', *-*-end-meta*='FILE'::
+  Load chroot package selection and file meta data from FILE. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.
+
+*-S* 'FILE', *-*-save-end-meta*='FILE'::
+  Save chroot package selection and file meta data in FILE for later use. See the function install_and_upgrade_between_distros() in piuparts.py for defaults. Mostly useful for large scale distro upgrade tests.
+
+*-*-scriptsdir*='DIR'::
+  Directory where are custom scripts are placed. By default, this is not set. For more information about this, read README_server.txt
+
+*-*-schroot*='SCHROOT-NAME'::
+  Use schroot session named SCHROOT-NAME for the testing environment, instead of building a new one with debootstrap.
+
+*-*-docker-image*='DOCKER-IMAGE'::
+  Use a container created from the docker image DOCKER-IMAGE for the testing environment, instead of building a new one with debootstrap.
+  This only supports overlay2 for now and it uses the `MergedDir` layer where piuparts can access, add, edit and remove files easily.
+
+*-*-single-changes-list*::
+  When processing changes files, piuparts will process the packages in each individual changes file seperately. This option will set piuparts to scan the packages of all changes files together along with any individual package files that may have been given on the command line.
+
+*-*-single-packages*::
+  Process every package file or package name individually, thus piuparts process runs multiple times. This option can be useful with conflicting packages.
+
+*-*-shell-on-error*::
+  Start an interactive shell in the chroot after an error occurred.
+  This should help debugging failures directly inside the piuparts test environment.
+  The chroot cleanup will continue after the shell terminates.
+  Note: This does not work if the piuparts command is prefixed with 'timeout',
+  which is usually the case in command lines directly copied from logfiles
+  from a master-slave setup. Removing the 'timeout' part is sufficient.
+
+*-*-skip-minimize*::
+  Allow skip minimize chroot step. This is useful when you want to test several packages with piuparts. You can prepare a tarball already minimized and skip this step in all the tests. This is the default now.
+
+*-*-minimize*::
+  Minimize the chroot with debfoster. This used to be the default until #539142 was fixed.
+
+*-*-skip-cronfiles-test*::
+  Skip testing the output from the cron files left in the system after remove a package.
+
+*-*-skip-logrotatefiles-test*::
+  Skip testing the output from the logrotate files left in the system after remove a package.
+
+*-*-testdebs-repo*='deb-line'::
+  Provide an additional line to be appended to sources.list, e.g.::
+
+    'deb [ trusted=yes ] <URL> <distrib> <components>'
+     or
+    'deb [ trusted=yes ] file:// </bind/mount> ./'
+
+  If only an URL or local path is given as argument, "deb [ trusted=yes ]",
+  "file://", and "./" will be prepended/appended as needed.
+  The "testdebs" repository provides the packages to be tested (and some
+  additional dependencies, if needed, e.g. all packages built from the same
+  source package as the (binary) package being tested) and can be used for
+  testing complex installation and upgrade scenarios involving dependencies
+  that are not yet in the archive. This repository will be available only
+  for installing the target packages. Dependency resolution will be done by
+  apt-get. The packages to be tested can be passed as .debs or as package
+  names (with '--apt').
+
+  The "trusted=yes" option causes this (and only this) repository to be
+  trustworthy even if the Packages file is not signed, such that a
+  (globally acting) '--do-not-verify-signatures' will not be needed.
+
+*-t directory*, *-*-tmpdir*='directory'::
+  Use directory as the place where temporary files and directories are created. The default is the environment variable *TMPDIR*, or */tmp* if not set.
+  Note: the temporary directory must *not* be mounted with the _nodev_ or _nosuid_ mount option.
+
+*-*-upgrade-before-dist-upgrade*::
+  Perform two-stage upgrades: 'apt-get upgrade && apt-get dist-upgrade'.
+
+*-v*, *-*-verbose*::
+  This option no longer has any meaning, but it is still accepted for backwards compatibility.
+
+*-V*, *-*-version*::
+  Write out the version number of the program.
+
+*-*-warn-on-debsums-errors*::
+  Print a warning rather than failing if debsums reports modified files.
+
+*-*-warn-on-leftovers-after-purge*::
+  Print a warning rather than failing if files are left behind after purge.
+
+*-*-warn-on-others*::
+  Print a warning rather than failing if files are left behind, modified, or removed by a package that was not given on the command-line.
+
+  This way, you can basically isolate the purge test to your own packages. If a package that is brought in as a dependency doesn't purge cleanly, the test will not fail because of it (but a warning message will be printed).
+
+  Behavior with multiple packages given on the command-line could be problematic, particularly if the dependency tree of one package in the list includes another in the list. Therefore, it is recommended to use this option with one package at a time.
+
+
+
+EXAMPLES
+--------
+Assume that you have just built a new version of your Debian package, to be uploaded to Debian unstable. It is in *../foo_1.0-2_i386.deb* and you would like to know whether it installs and uninstalls properly. Here's what you would do::
+
+ ----
+ piuparts ../foo_1.0-2_i386.deb
+ ----
+
+If the package exists in the Debian archive already, the above command also tests that it upgrades properly.
+
+To do the same test, but using a particular mirror, and only the main component, you would do this::
+
+ ----
+ piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.deb
+ ----
+
+If you want to do the same as above but for your changes files, pass in your changes files when running piuparts, and piuparts will process each package in the changes files as though you had passed all those packages on the command line to piuparts yourself. For example::
+
+ ----
+ piuparts ../foo_1.0-2_i386.changes
+
+ piuparts -m 'http://gytha/debian main' ../foo_1.0-2_i386.changes
+ ----
+
+If you want to test that a package installs properly in the stable (currently jessie) Debian release, then can be upgraded to the testing (currently stretch) and unstable (sid) versions, and then uninstalled without problems, you would give the following command::
+
+ ----
+ piuparts -a -d jessie -d stretch -d sid foo
+ ----
+
+ENVIRONMENT
+-----------
+*TMPDIR* Location for temporary files and directories. If not set, use */tmp*. See also the '-t' ('--tmpdir') option.
+
+NOTES
+-----
+Output of commands run by piuparts is limited to three megabytes. To change this limit, the source code needs to be edited.
+Commands exceeding this limit will be aborted.
+
+SEE ALSO
+--------
+*pbuilder* (1), *debootstrap* (8)
+
+AUTHOR
+------
+Lars Wirzenius (liw@iki.fi) and others
