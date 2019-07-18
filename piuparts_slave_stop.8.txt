@@ -1,11 +1,11 @@
-piuparts_slave_stop(8)
-======================
-:doctype: manpage
-:revdate: 2017-03-06
+.. only:: html
 
-NAME
-----
-piuparts_slave_stop - stop all running piuparts-slaves on a host.
+ piuparts_slave_stop(8)
+ ======================
+ :doctype: manpage
+ :revdate: 2017-03-06
+
+
 
 SYNOPSIS
 --------
@@ -26,7 +26,7 @@ There are no options to this command.
 
 ENVIRONMENT
 -----------
-Running piuparts in master-slave mode requires configuration in _/etc/piuparts_.
+Running piuparts in master-slave mode requires configuration in */etc/piuparts*.
 
 NOTES
 -----
@@ -34,10 +34,8 @@ Make sure to also read */usr/share/doc/piuparts-master/README_server.txt*.
 
 SEE ALSO
 --------
-*piuparts*(1), *piuparts_slave_join*(8)
+*piuparts* (1), *piuparts_slave_join* (8)
 
 AUTHOR
 ------
 Holger Levsen (holger@layer-acht.org)
-
-// vim: set filetype=asciidoc:

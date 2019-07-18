@@ -1,11 +1,11 @@
-piuparts_slave_join(8)
-======================
-:doctype: manpage
-:revdate: 2016-03-06
+.. only:: html
 
-NAME
-----
-piuparts_slave_join - join a running piuparts-slave screen session
+ piuparts_slave_join(8)
+ ======================
+ :doctype: manpage
+ :revdate: 2016-03-06
+
+
 
 SYNOPSIS
 --------
@@ -21,26 +21,24 @@ There are no options to this command.
 
 ENVIRONMENT
 -----------
-Running piuparts in master-slave mode requires configuration in _/etc/piuparts_.
+Running piuparts in master-slave mode requires configuration in */etc/piuparts*.
 
 NOTES
 -----
 Make sure to also read */usr/share/doc/piuparts-master/README_server.txt*.
 
-See *screen*(1) for full instructions on how to navigate between displays. In short:
+See *screen* (1) for full instructions on how to navigate between displays. In short::
 
-*Ctrl-A <n>*::
+ *Ctrl-A <n>*::
     Navigates to display <n>. Slaves are found at screens 1 through 'slave-count', defined in the piuparts configuration file.
 
-*Ctrl-A d*::
+ *Ctrl-A d*::
     Detach from *screen*. The session can be re-established with *piuparts-slave-join*.
 
 SEE ALSO
 --------
-*piuparts*(1), *piuparts_slave_run*(8), *screen*(1)
+*piuparts* (1), *piuparts_slave_run* (8), *screen* (1)
 
 AUTHOR
 ------
 Holger Levsen (holger@layer-acht.org)
-
-// vim: set filetype=asciidoc:
