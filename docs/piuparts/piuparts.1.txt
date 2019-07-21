@@ -253,7 +253,7 @@ Options must come before the other command line arguments.
   This only supports overlay2 for now and it uses the `MergedDir` layer where piuparts can access, add, edit and remove files easily.
 
 *-*-single-changes-list*::
-  When processing changes files, piuparts will process the packages in each individual changes file seperately. This option will set piuparts to scan the packages of all changes files together along with any individual package files that may have been given on the command line.
+  When processing changes files, piuparts will process the packages in each individual changes file separately. This option will set piuparts to scan the packages of all changes files together along with any individual package files that may have been given on the command line.
 
 *-*-single-packages*::
   Process every package file or package name individually, thus piuparts process runs multiple times. This option can be useful with conflicting packages.

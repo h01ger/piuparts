@@ -1,5 +1,19 @@
-Notes about the piuparts installation on pejacevic.debian.org and it's slave(s)
-===============================================================================
+.. raw:: html
+
+ <style> .blue {color:navy} </style>
+
+.. role:: blue
+
+
+.. _top3:
+
+
+README_perjacevic
+=================
+
+
+:blue:`Notes about the piuparts installation on pejacevic.debian.org and it's slave(s)`
+
 
 This document describes the setup for https://piuparts.debian.org - it's used
 for reference for the Debian System Administrators (DSA) as well as a guide
@@ -8,7 +22,8 @@ installed from git. For regular installations we recommend to use the
 piuparts-master and piuparts-slaves packages as described in
 /usr/share/doc/piuparts-master/README_server.txt
 
-== Installation
+:blue:`Installation`
+^^^^^^^^^^^^^^^^^^^^
 
 piuparts.debian.org is a setup running on three systems:
 
@@ -18,7 +33,9 @@ piuparts.debian.org is a setup running on three systems:
   actual tests.
 * piu-slave-ubc-01.debian.org, running four piuparts-slave nodes as well.
 
-=== piuparts installation from source
+
+:blue:`piuparts installation from source`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * basically, apt-get build-dep piuparts - in reality both systems get their
   package configuration from git.debian.org/git/mirror/debian.org.git
@@ -35,108 +52,129 @@ piuparts.debian.org is a setup running on three systems:
 * `sudo ln -s /srv/piuparts.debian.org/etc/piuparts /etc/piuparts`
 * See below for further user setup instructions.
 
-=== User setup
+
+:ref:`top <top3>`
+
+:blue:`User setup`
+^^^^^^^^^^^^^^^^^^
 
 On pejacevic the piuparts-master user piupartsm needs to be created, on
 piu-slave-bm-a and piu-slave-ubc-01 a piupartss user is needed for the slave.
 Both are members of the group piuparts and '/srv/piuparts.debian.org' needs to
 be chmod 2775 and chown piuparts(sm):piuparts.
 
-==== '~/bashrc' for piupartsm and piupartss
 
-Do this for the piupartsm user on pejacevic and piupartss on the slave(s):
+:ref:`top <top3>`
 
-----
-piupartsm@pejacevic$ cat >> ~/.bashrc <<-EOF
+:blue:`'~/bashrc' for piupartsm and piuparts`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-# added manually for piuparts
-umask 0002
-export PATH="~/bin:\$PATH"
-EOF
-----
+Do this for the piupartsm user on pejacevic and piupartss on the slave(s):::
 
-==== set up ssh pubkey authentification
+ piupartsm@pejacevic$ cat >> ~/.bashrc <<-EOF
+
+ # added manually for piuparts
+ umask 0002
+ export PATH="~/bin:\$PATH"
+ EOF
+
+
+:ref:`top <top3>`
+
+:blue:`set up ssh pubkey authentification`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Then create an SSH keypair for piupartss and put it into
 '/etc/ssh/userkeys/piupartsm' on pejacevic, so the piupartss user can login
-with ssh and run only piuparts-master. Restrict it like this:
+with ssh and run only piuparts-master. Restrict it like this:::
 
-----
-$ cat /etc/ssh/userkeys/piupartsm
-command="/srv/piuparts.debian.org/share/piuparts/piuparts-master",from="2001:41c8:1000:21::21:7,5.153.231.7",no-port-forwarding,no-X11-forwarding,no-agent-forwarding ssh-rsa ...
-----
+ $ cat /etc/ssh/userkeys/piupartsm
+ command="/srv/piuparts.debian.org/share/piuparts/piuparts-master",from="2001:41c8:1000:21::21:7,5.153.231.7",no-port-forwarding,no-X11-forwarding,no-agent-forwarding ssh-rsa ...
 
-=== Setup sudo for the slave(s)
+
+:ref:`top <top3>`
+
+:blue:`Setup sudo for the slave(s)`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is actually done by DSA:
 
-==== '/etc/sudoers' for piu-slave-bm-a and piu-slave-ubc-01
+ '/etc/sudoers' for piu-slave-bm-a and piu-slave-ubc-01:
 
-----
-# The piuparts slave needs to handle chroots.
-piupartss       ALL = NOPASSWD: /usr/sbin/piuparts *, \
-                                /bin/umount /srv/piuparts.debian.org/tmp/tmp*, \
-                                /usr/bin/test -f /srv/piuparts.debian.org/tmp/tmp*, \
-                                /usr/bin/rm -rf --one-file-system /srv/piuparts.debian.org/tmp/tmp*
-----
+.. code-block:: text
 
-=== Apache configuration
+ # The piuparts slave needs to handle chroots.
+ piupartss       ALL = NOPASSWD: /usr/sbin/piuparts *, \
+                                 /bin/umount /srv/piuparts.debian.org/tmp/tmp*, \
+                                 /usr/bin/test -f /srv/piuparts.debian.org/tmp/tmp*, \
+                                 /usr/bin/rm -rf --one-file-system /srv/piuparts.debian.org/tmp/tmp*
 
-Any other webserver will do but apache is used on pejacevic (and maintained by DSA):
 
-----
-<VirtualHost *:80>
-	ServerName piuparts.debian.org
+:ref:`top <top3>`
 
-	ServerAdmin debian-admin@debian.org
+:blue:`Apache configuration`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-	ErrorLog /var/log/apache2/piuparts.debian.org-error.log
-	CustomLog /var/log/apache2/piuparts.debian.org-access.log combined
+Any other webserver will do but apache is used on pejacevic (and maintained by DSA):::
 
-	DocumentRoot /srv/piuparts.debian.org/htdocs
-	AddType text/plain .log
-	AddDefaultCharset utf-8
+ <VirtualHost *:80>
+ 	ServerName piuparts.debian.org
 
-	HostnameLookups Off
-	UseCanonicalName Off
-	ServerSignature On
-	<IfModule mod_userdir.c>
-		UserDir disabled
-	</IfModule>
-</VirtualHost>
-# vim:set syn=apache:
-----
+ 	ServerAdmin debian-admin@debian.org
 
-== Running piuparts
+        ErrorLog /var/log/apache2/piuparts.debian.org-error.log
+        CustomLog /var/log/apache2/piuparts.debian.org-access.log combined
 
-=== Updating the piuparts installation
+        DocumentRoot /srv/piuparts.debian.org/htdocs
+        AddType text/plain .log
+        AddDefaultCharset utf-8
 
-Updating the master, pejacevic.debian.org:
+        HostnameLookups Off
+        UseCanonicalName Off
+        ServerSignature On
+        <IfModule mod_userdir.c>
+        	UserDir disabled
+        </IfModule>
+ </VirtualHost>
 
-----
-holger@pejacevic~$ sudo su - piupartsm update-piuparts-master-setup develop origin
-----
 
-Updating the slave(s), for example on piu-slave-bm-a.debian.org:
+:ref:`top <top3>`
 
-----
-holger@piu-slave-bm-a~$ sudo su - piupartss update-piuparts-slave-setup develop origin
-----
+:blue:`Running piuparts`
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-=== Running piuparts
+Updating the piuparts installation
+
+Updating the master, pejacevic.debian.org:::
+
+ holger@pejacevic~$ sudo su - piupartsm update-piuparts-master-setup develop origin
+
+
+Updating the slave(s), for example on piu-slave-bm-a.debian.org:::
+
+ holger@piu-slave-bm-a~$ sudo su - piupartss update-piuparts-slave-setup develop origin
+
+
+:ref:`top <top3>`
+
+:blue:`Running piuparts`
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 When running piuparts in master/slave mode, the master is never run by itself,
 instead it is always started by the slave(s).
 
-==== Starting and stopping the slaves
+
+:ref:`top <top3>`
+
+:blue:`Starting and stopping the slaves`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Run the following script under *your* user account to start four instances of
 piuparts-slave on pejacevic, piuparts-master will be started automatically by
-the slaves.
+the slaves.::
 
-----
-holger@piu-slave-bm-a:~$ sudo -u piupartss -i slave_run
-----
+ holger@piu-slave-bm-a:~$ sudo -u piupartss -i slave_run
+
 
 There are several cronjobs installed via '~piupartsm/crontab' and
 '~piupartss/crontab') to monitor both master and slave as well as the hosts
@@ -150,22 +188,33 @@ but that may leave temporary directories and processes around.
 
 See the 'piuparts_slave_run (8)' manpage for more information on 'slave_run'.
 
-==== Joining an existing slave session
 
-Run the following script under *your* user account:
+:ref:`top <top3>`
 
-----
-holger@pejacevic:~$ sudo -u piupartss -i slave_join
-----
+:blue:`Joining an existing slave session`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Run the following script under *your* user account:::
+
+ holger@pejacevic:~$ sudo -u piupartss -i slave_join
+
 
 See the 'piuparts_slave_join (8)' manpage for more information on 'slave_join'.
 
-=== Generating reports for the website
+
+:ref:`top <top3>`
+
+:blue:`Generating reports for the website`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 'piuparts-report' is run daily at midnight and at noon from
 '~piupartsm/crontab' on pejacevic.
 
-=== Cronjobs to aid problem spotting
+
+:ref:`top <top3>`
+
+:blue:`Cronjobs to aid problem spotting`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Some cronjobs to aid problem spotting reside in '~piupartsm/bin/' and are run
 daily by '~piupartsm/crontab'.
@@ -178,10 +227,11 @@ daily by '~piupartsm/crontab'.
 More checks should be added as we become aware of them.
 
 
-== Authors
+:ref:`top <top3>`
+
+:blue:`Authors`
+^^^^^^^^^^^^^^^
 
 Last updated: February 2017
 
 Holger Levsen <holger@layer-acht.org>
-
-// vim: set filetype=asciidoc:

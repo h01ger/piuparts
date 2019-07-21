@@ -1,0 +1,21 @@
+Welcome to piuparts's documentation!
+====================================
+
+.. toctree::
+   :maxdepth: 4
+    
+   README
+   README_server
+   README_pejacevic
+   piuparts <piuparts/index.txt> 
+   piuparts slave join <piuparts_slave_join/index.txt>
+   piuparts slave run <piuparts_slave_run/index.txt>
+   piuparts slave stop <piuparts_slave_stop/index.txt>
+   license
+
+
+
+Search
+======
+
+* :ref:`search`
