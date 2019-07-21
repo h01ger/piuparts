@@ -7,7 +7,6 @@ Priority: optional
 Standards-Version: 4.4.0
 Rules-Requires-Root: no
 Build-Depends:
- asciidoc,
  debhelper-compat (= 11),
  dh-python,
  python (>= 2.7),
@@ -19,8 +18,8 @@ Build-Depends:
  python-yaml,
  python-mox3,
  python-lzma,
+ python-sphinx,
  golang-any,
- xmlto,
 Build-Depends-Indep:
  git,
 Homepage: https://piuparts.debian.org
@@ -35,6 +34,7 @@ Depends:
 # keep this list in sync with piuparts-slave-from-git-deps
  debootstrap (>= 1.0.89~),
  debsums (>= 2.2.2~),
+ libjs-sphinxdoc,
  lsb-release,
  lsof,
  mount,
@@ -160,6 +160,7 @@ Depends:
 # this list is synced from piuparts
  debootstrap (>= 1.0.89~),
  debsums (>= 2.2.2~),
+ libjs-sphinxdoc,
  lsb-release,
  lsof,
  mount,
