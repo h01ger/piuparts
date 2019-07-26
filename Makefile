@@ -5,7 +5,7 @@ mandir = $(sharedir)/man
 man1dir = $(mandir)/man1
 man8dir = $(mandir)/man8
 libdir = $(prefix)/lib
-docdir = $(prefix)/share/doc/piuparts/
+docdir = $(prefix)/share/doc/piuparts
 site27 = $(libdir)/python2.7/dist-packages
 htdocsdir	 = $(sharedir)/piuparts/htdocs
 etcdir = $(prefix)/etc
@@ -23,7 +23,7 @@ endif
 SCRIPTS_TEMPLATES	 = $(wildcard *.in master-bin/*.in slave-bin/*.in conf/*.in)
 SCRIPTS_PYTHON_BINARY	 = $(wildcard *.py master-bin/*.py slave-bin/*.py)
 SCRIPTS_GENERATED	 = $(SCRIPTS_TEMPLATES:.in=) $(SCRIPTS_PYTHON_BINARY:.py=)
-DOCS_GENERATED		 = piuparts.1 piuparts.1.html piuparts_slave_run.8 piuparts_slave_join.8 piuparts_slave_stop.8 README.html README_server.html
+DOCS_GENERATED		 = piuparts.1 piuparts_slave_run.8 piuparts_slave_join.8 piuparts_slave_stop.8 docs/build
 
 define placeholder_substitution
 	sed -r \
@@ -63,31 +63,63 @@ build-master-stamp:
 
 build-doc: $(DOCS_GENERATED)
 
-README.html: README.txt
-	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README.txt
+docs/build: docs/build
+	sphinx-build docs/ docs/build/
 
-README_server.html: README_server.txt
-	a2x --copy -a toc -a toclevels=3 -f xhtml -r /etc/asciidoc/ README_server.txt
+piuparts.1: docs/piuparts/piuparts.1.txt
+	sphinx-build -b man -c docs/piuparts/ docs/piuparts/ ./
 
-piuparts.1: piuparts.1.txt
-	a2x -f manpage piuparts.1.txt
+piuparts_slave_run.8: docs/piuparts_slave_run/piuparts_slave_run.8.txt
+	sphinx-build -b man -c docs/piuparts_slave_run/ docs/piuparts_slave_run/ ./
 
-piuparts_slave_run.8: piuparts_slave_run.8.txt
-	a2x -f manpage piuparts_slave_run.8.txt
+piuparts_slave_join.8: docs/piuparts_slave_join/piuparts_slave_join.8.txt
+	sphinx-build -b man -c docs/piuparts_slave_join/ docs/piuparts_slave_join/ ./
 
-piuparts_slave_join.8: piuparts_slave_join.8.txt
-	a2x -f manpage piuparts_slave_join.8.txt
-
-piuparts_slave_stop.8: piuparts_slave_stop.8.txt
-	a2x -f manpage piuparts_slave_stop.8.txt
-
-piuparts.1.html: piuparts.1.txt
-	a2x --copy -f xhtml piuparts.1.txt
-
+piuparts_slave_stop.8: docs/piuparts_slave_stop/piuparts_slave_stop.8.txt
+	sphinx-build -b man -c docs/piuparts_slave_stop/ docs/piuparts_slave_stop/ ./
 
 install-doc: build-stamp
+	# txt
 	install -d $(DESTDIR)$(docdir)/
-	install -m 0644 README.txt README.html README_server.txt README_server.html docbook-xsl.css $(DESTDIR)$(docdir)/
+	install -m 0644 docs/README.txt docs/README_server.txt $(DESTDIR)$(docdir)/
+	# html
+	install -d $(DESTDIR)$(docdir)/html/
+	install -m 0644 docs/build/*.html $(DESTDIR)$(docdir)/html/
+	install -m 0644 docs/build/searchindex.js $(DESTDIR)$(docdir)/html/
+	install -m 0644 docs/build/objects.inv $(DESTDIR)$(docdir)/html/
+	install -d $(DESTDIR)$(docdir)/html/_static/
+	install -m 0644 docs/build/_static/* $(DESTDIR)$(docdir)/html/_static
+	install -d $(DESTDIR)$(docdir)/html/piuparts/
+	install -m 0644 docs/build/piuparts/index.html $(DESTDIR)$(docdir)/html/piuparts/
+	install -m 0644 docs/build/piuparts/piuparts.1.html $(DESTDIR)$(docdir)/html/piuparts/
+	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_run/
+	install -m 0644 docs/build/piuparts_slave_run/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_run/
+	install -m 0644 docs/build/piuparts_slave_run/piuparts_slave_run.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_run/
+	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_join/
+	install -m 0644 docs/build/piuparts_slave_join/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_join/
+	install -m 0644 docs/build/piuparts_slave_join/piuparts_slave_join.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_join/
+	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
+	install -m 0644 docs/build/piuparts_slave_stop/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
+	install -m 0644 docs/build/piuparts_slave_stop/piuparts_slave_stop.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
+	install -d $(DESTDIR)$(docdir)/html/
+	install -m 0644 docs/build/*.html $(DESTDIR)$(docdir)/html/
+	install -m 0644 docs/build/searchindex.js $(DESTDIR)$(docdir)/html/
+	install -m 0644 docs/build/objects.inv $(DESTDIR)$(docdir)/html/
+	install -d $(DESTDIR)$(docdir)/html/_static/
+	install -m 0644 docs/build/_static/* $(DESTDIR)$(docdir)/html/_static
+	install -d $(DESTDIR)$(docdir)/html/piuparts/
+	install -m 0644 docs/build/piuparts/index.html $(DESTDIR)$(docdir)/html/piuparts/
+	install -m 0644 docs/build/piuparts/piuparts.1.html $(DESTDIR)$(docdir)/html/piuparts/
+	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_run/
+	install -m 0644 docs/build/piuparts_slave_run/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_run/
+	install -m 0644 docs/build/piuparts_slave_run/piuparts_slave_run.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_run/
+	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_join/
+	install -m 0644 docs/build/piuparts_slave_join/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_join/
+	install -m 0644 docs/build/piuparts_slave_join/piuparts_slave_join.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_join/
+	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
+	install -m 0644 docs/build/piuparts_slave_stop/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
+	install -m 0644 docs/build/piuparts_slave_stop/piuparts_slave_stop.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
+	# manpages
 	install -d $(DESTDIR)$(man1dir)
 	install -m 0644 piuparts.1 $(DESTDIR)$(man1dir)/
 	gzip -9fn $(DESTDIR)$(man1dir)/piuparts.1
@@ -96,7 +128,6 @@ install-doc: build-stamp
 	gzip -9fn $(DESTDIR)$(man8dir)/piuparts_slave_run.8
 	gzip -9fn $(DESTDIR)$(man8dir)/piuparts_slave_join.8
 	gzip -9fn $(DESTDIR)$(man8dir)/piuparts_slave_stop.8
-	install -m 0644 piuparts.1.html $(DESTDIR)$(docdir)/
 
 install-conf: build-stamp
 	install -d $(DESTDIR)$(etcdir)/piuparts
@@ -175,8 +206,8 @@ check:
 clean:
 	rm -f build-stamp
 	rm -f build-master-stamp
-	rm -f $(DOCS_GENERATED)
-	rm -f piuparts.1.xml README.xml README_server.xml docbook-xsl.css piuparts.html
+	rm -fr $(DOCS_GENERATED)
+	rm -fr .doctrees/
 	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc tests/*.pyc
 	rm -f $(SCRIPTS_GENERATED)
 	$(RM) helpers/debiman-piuparts-distill/debiman-piuparts-distill
