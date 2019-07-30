@@ -182,6 +182,7 @@ sections =
 	sid-merged-usr
 	sid-broken-symlinks
 	testing2sid
+	bullseye
 	stable2sid
 	stable22sid
 	buster
