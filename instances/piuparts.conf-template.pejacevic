@@ -183,6 +183,7 @@ sections =
 	sid-broken-symlinks
 	testing2sid
 	bullseye
+	bullseye-rcmd
 	stable2sid
 	stable22sid
 	buster
@@ -477,6 +478,26 @@ piuparts-flags =
 distro = oldstable
 upgrade-test-distros = oldstable stable testing
 
+[bullseye]
+precedence = 3
+piuparts-flags =
+	--scriptsdir /etc/piuparts/scripts-log-alternatives
+	%(flags-default)s
+	%(flags-start-bullseye)s
+	%(flags-end-bullseye)s
+distro = bullseye
+
+
+[bullseye-rcmd]
+precedence = 5
+json-sections = none
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-bullseye)s
+	%(flags-end-bullseye)s
+distro = bullseye
 
 [buster]
 precedence = 4
@@ -489,7 +510,7 @@ distro = buster
 
 
 [buster-rcmd]
-precedence = 4
+precedence = 5
 json-sections = none
 description = + With recommended packages.
 piuparts-flags =

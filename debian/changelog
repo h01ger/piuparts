@@ -6,7 +6,7 @@ piuparts (1.0.2) UNRELEASED; urgency=medium
 
   [ Holger Levsen ]
   * Bump standards version to 4.4.0, no changes needed. 
-  * piuparts.conf-template.pejacevic: add bullseye to sections.
+  * piuparts.conf-template.pejacevic: also test bullseye and bullseye-rcmd.
     Closes: #933061.
   
   [ David Prévot ]
