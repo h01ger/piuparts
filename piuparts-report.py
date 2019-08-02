@@ -38,7 +38,6 @@ import hashlib
 import pickle
 import random
 import fcntl
-from urllib2 import HTTPError, URLError
 from collections import deque
 
 # if python-rpy2 ain't installed, we don't draw fancy graphs
@@ -52,6 +51,8 @@ import piupartslib
 from piupartslib.conf import MissingSection
 from piupartslib.dwke import *
 import piupartslib.pkgsummary as pkgsummary
+
+from six.moves.urllib.error import HTTPError, URLError
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
@@ -1367,9 +1368,9 @@ class Section:
                                 "rows": rows,
                             })
                     if state == "failed-testing":
-                        count_bugged = string.count(rows, '"bugged/')
-                        count_affected = string.count(rows, '"affected/')
-                        count_failed = string.count(rows, '"fail/')
+                        count_bugged = rows.count('"bugged/')
+                        count_affected = rows.count('"affected/')
+                        count_failed = rows.count('"fail/')
                         sep = ": "
                         if count_bugged > 0:
                             substats += sep + "%s bugged" % count_bugged
@@ -1380,7 +1381,7 @@ class Section:
                         if count_failed > 0:
                             substats += sep + "<span class=\"needs-bugging\">%s failed</span>" % count_failed
                     else:
-                        count_passed = string.count(rows, '"pass/')
+                        count_passed = rows.count('"pass/')
                         if count_passed > 0:
                             substats += ": %s passed" % count_passed
                     link += "<li><a href=%s>%s</a>%s</li>\n" % \

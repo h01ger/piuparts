@@ -30,11 +30,12 @@ import os
 import fcntl
 import time
 import random
-from urllib2 import URLError
 
 import piupartslib
 from piupartslib.packagesdb import LogfileExists
 from piupartslib.conf import MissingSection
+
+from six.moves.urllib.error import URLError
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"

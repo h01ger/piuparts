@@ -20,12 +20,12 @@
 import bz2
 import lzma
 import zlib
-import urllib2
-
 
 import conf
 import dependencyparser
 import packagesdb
+
+from six.moves import urllib
 
 
 class DecompressedStream():
@@ -82,8 +82,8 @@ def open_packages_url(url):
     socket = None
     for ext in ['.xz', '.bz2', '.gz', '']:
         try:
-            socket = urllib2.urlopen(url + ext)
-        except urllib2.HTTPError as httperror:
+            socket = urllib.request.urlopen(url + ext)
+        except urllib.error.HTTPError as httperror:
             pass
         else:
             break

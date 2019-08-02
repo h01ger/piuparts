@@ -51,7 +51,6 @@ import json
 import pickle
 import subprocess
 import traceback
-import urllib
 import uuid
 import apt_pkg
 import pipes
@@ -64,6 +63,11 @@ except ImportError:
     from debian_bundle import deb822
 
 import piupartslib.conf
+
+from six.moves import urllib
+
+import six
+
 
 apt_pkg.init_system()
 
@@ -1537,24 +1541,24 @@ class Chroot:
         changes = diff_selections(self, selections)
         deps = {}
         nondeps = {}
-        for name, state_version in iter(changes.items()):
+        for name, state_version in six.iteritems(changes):
             if name in packages:
                 nondeps[name] = state_version
             else:
                 deps[name] = state_version
 
-        deps_to_remove = [name for name, (state, version) in iter(deps.items())
+        deps_to_remove = [name for name, (state, version) in six.iteritems(deps)
                           if state == "remove"]
-        deps_to_purge = [name for name, (state, version) in iter(deps.items())
+        deps_to_purge = [name for name, (state, version) in six.iteritems(deps)
                          if state == "purge"]
-        nondeps_to_remove = [name for name, (state, version) in iter(nondeps.items())
+        nondeps_to_remove = [name for name, (state, version) in  six.iteritems(nondeps)
                              if state == "remove"]
-        nondeps_to_purge = [name for name, (state, version) in iter(nondeps.items())
+        nondeps_to_purge = [name for name, (state, version) in  six.iteritems(nondeps)
                             if state == "purge"]
         all_to_remove = deps_to_remove + deps_to_purge + nondeps_to_remove + nondeps_to_purge
-        all_to_install = [(name, version) for name, (state, version) in iter(deps.items())
+        all_to_install = [(name, version) for name, (state, version) in six.iteritems(deps)
                           if state == "install"]
-        all_to_install += [(name, version) for name, (state, version) in iter(nondeps.items())
+        all_to_install += [(name, version) for name, (state, version) in six.iteritems(nondeps)
                            if state == "install"]
 
         # First remove all packages (and reinstall missing ones).
@@ -2048,8 +2052,8 @@ def diff_meta_data(tree1, tree2, quiet=False):
             del tree1_c[name]
             del tree2_c[name]
 
-    removed = [x for x in iter(tree1_c.items())]
-    new = [x for x in iter(tree2_c.items())]
+    removed = [x for x in six.iteritems(tree1)]
+    new = [x for x in six.iteritems(tree2)]
 
     # fix for #586793
     # prune rc?.d symlinks renamed by insserv
@@ -2120,13 +2124,13 @@ def diff_selections(chroot, selections):
        set to to restore original selections."""
     changes = {}
     current = chroot.get_selections()
-    for name, (value, version) in iter(current.items()):
+    for name, (value, version) in six.iteritems(current):
         if name not in selections:
             changes[name] = ("purge", None)
         elif selections[name][0] != value and \
                 selections[name][0] in ["purge", "install"]:
             changes[name] = selections[name]
-    for name, (value, version) in iter(selections.items()):
+    for name, (value, version) in six.iteritems(selections):
         if name not in current or \
             current[name][1] != version:
                 changes[name] = selections[name]
@@ -2511,8 +2515,8 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     if chroot_state is not None:
         if chroot.initial_selections != chroot_state["initial_selections"]:
             logging.warn("Initial package selections do not match - ignoring loaded reference chroot state")
-            refsel = [(s, p, v) for p, (s, v) in iter(chroot_state["initial_selections"].items())]
-            cursel = [(s, p, v) for p, (s, v) in iter(chroot.initial_selections.items())]
+            refsel = [(s, p, v) for p, (s, v) in six.iteritems(chroot_state["initial_selections"])]
+            cursel = [(s, p, v) for p, (s, v) in six.iteritems(chroot.initial_selections)]
             rsel = [x for x in refsel if not x in cursel]
             csel = [x for x in cursel if not x in refsel]
             [logging.debug("  -%s" % " ".join(x)) for x in rsel]
