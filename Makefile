@@ -6,7 +6,7 @@ man1dir = $(mandir)/man1
 man8dir = $(mandir)/man8
 libdir = $(prefix)/lib
 docdir = $(prefix)/share/doc/piuparts
-site27 = $(libdir)/python2.7/dist-packages
+site3 = $(libdir)/python3/dist-packages
 htdocsdir	 = $(sharedir)/piuparts/htdocs
 etcdir = $(prefix)/etc
 
@@ -45,7 +45,7 @@ all: build
 
 python_scripts	 = $(wildcard *.py piupartslib/*.py master-bin/*.py slave-bin/*.py)
 python-syntax-check:
-	@set -e -x; $(foreach py,$(python_scripts),python -m py_compile $(py);)
+	@set -e -x; $(foreach py,$(python_scripts),python3 -m py_compile $(py);)
 	$(RM) $(python_scripts:=c)
 
 build: build-stamp build-master-stamp
@@ -64,19 +64,19 @@ build-master-stamp:
 build-doc: $(DOCS_GENERATED)
 
 docs/build: docs/build
-	sphinx-build docs/ docs/build/
+	python3 -m sphinx docs/ docs/build/
 
 piuparts.1: docs/piuparts/piuparts.1.txt
-	sphinx-build -b man -c docs/piuparts/ docs/piuparts/ ./
+	python3 -m sphinx -b man -c docs/piuparts/ docs/piuparts/ ./
 
 piuparts_slave_run.8: docs/piuparts_slave_run/piuparts_slave_run.8.txt
-	sphinx-build -b man -c docs/piuparts_slave_run/ docs/piuparts_slave_run/ ./
+	python3 -m sphinx -b man -c docs/piuparts_slave_run/ docs/piuparts_slave_run/ ./
 
 piuparts_slave_join.8: docs/piuparts_slave_join/piuparts_slave_join.8.txt
-	sphinx-build -b man -c docs/piuparts_slave_join/ docs/piuparts_slave_join/ ./
+	python3 -m sphinx -b man -c docs/piuparts_slave_join/ docs/piuparts_slave_join/ ./
 
 piuparts_slave_stop.8: docs/piuparts_slave_stop/piuparts_slave_stop.8.txt
-	sphinx-build -b man -c docs/piuparts_slave_stop/ docs/piuparts_slave_stop/ ./
+	python3 -m sphinx -b man -c docs/piuparts_slave_stop/ docs/piuparts_slave_stop/ ./
 
 install-doc: build-stamp
 	# txt
@@ -148,8 +148,8 @@ install-conf-4-running-from-git: build-stamp
 	install -m 0755 update-piuparts-master-setup $(DESTDIR)$(sharedir)/piuparts/master/
 
 install-common: build-stamp
-	install -d $(DESTDIR)$(site27)/piupartslib
-	install -m 0644 piupartslib/*.py $(DESTDIR)$(site27)/piupartslib/
+	install -d $(DESTDIR)$(site3)/piupartslib
+	install -m 0644 piupartslib/*.py $(DESTDIR)$(site3)/piupartslib/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts/lib
 	install -m 0644 lib/*.sh $(DESTDIR)$(sharedir)/piuparts/lib/
@@ -201,7 +201,7 @@ install: install-master install-slave
 
 
 check:
-	nosetests --verbose
+	python3 -m nose --verbose
 
 clean:
 	rm -f build-stamp

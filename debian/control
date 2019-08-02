@@ -9,16 +9,16 @@ Rules-Requires-Root: no
 Build-Depends:
  debhelper-compat (= 11),
  dh-python,
- python (>= 2.7),
- python-debian,
- python-apt,
- python-distro-info,
- python-nose,
- python-debianbts,
- python-yaml,
- python-mox3,
- python-lzma,
- python-sphinx,
+ python3-all,
+ python3-apt,
+ python3-debian,
+ python3-debianbts,
+ python3-distro-info,
+ python3-mox3,
+ python3-nose,
+ python3-six,
+ python3-sphinx,
+ python3-yaml,
  golang-any,
 Build-Depends-Indep:
  git,
@@ -38,8 +38,8 @@ Depends:
  lsb-release,
  lsof,
  mount,
- python-debian,
- ${python:Depends},
+ python3-debian,
+ ${python3:Depends},
  ${misc:Depends},
 Recommends:
  adequate
@@ -66,19 +66,18 @@ Depends:
 # keep this list in sync with piuparts-master-from-git-deps
  adduser,
  openssh-server,
- python-debianbts,
- python-setproctitle,
+ python3-debianbts,
+ python3-setproctitle,
  tango-icon-theme,
  xz-utils,
- python-yaml,
- python (>= 2.7),
- ${python:Depends},
+ python3-yaml,
+ ${python3:Depends},
  ${shlibs:Depends},
  ${misc:Depends},
 Recommends:
  apache2 | httpd,
  ghostscript,
- python-rpy2,
+ python3-rpy2,
  r-base-dev,
  r-recommended,
  devscripts,
@@ -100,20 +99,19 @@ Depends:
 # this list is synced from piuparts-master
  adduser,
  openssh-server,
- python-debianbts,
- python-setproctitle,
+ python3-debianbts,
+ python3-setproctitle,
  tango-icon-theme,
  xz-utils,
- python-yaml,
- python (>= 2.7),
+ python3-yaml,
 # selected packages from piuparts-master Recommends
  apache2 | httpd,
- python-rpy2,
+ python3-rpy2,
 # this list is synced from piuparts-common
- python-apt,
- python-distro-info,
- python-lzma,
+ python3-apt,
+ python3-distro-info,
  ${misc:Depends},
+ ${python3:Depends},
 Description: dependencies for running piuparts master from git
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.
@@ -133,9 +131,8 @@ Depends:
  openssh-client,
  screen,
  sudo,
- python (>= 2.7),
- ${python:Depends},
  ${misc:Depends},
+ ${python3:Depends},
 Suggests:
  schroot
 Description: piuparts slave components
@@ -156,7 +153,6 @@ Depends:
  openssh-client,
  screen,
  sudo,
- python (>= 2.7),
 # this list is synced from piuparts
  debootstrap (>= 1.0.89~),
  debsums (>= 2.2.2~),
@@ -164,12 +160,12 @@ Depends:
  lsb-release,
  lsof,
  mount,
- python-debian,
+ python3-debian,
 # this list is synced from piuparts-common
- python-apt,
- python-distro-info,
- python-lzma,
+ python3-apt,
+ python3-distro-info,
  ${misc:Depends},
+ ${python3:Depends},
 Description: dependencies for running piuparts slave from git
  piuparts is meant as a quality assurance tool for people who create .deb
  packages to test them before they upload them to the Debian package archive.
@@ -183,11 +179,11 @@ Package: piuparts-common
 Architecture: all
 Depends:
 # keep this list in sync with piuparts-{master,slave}-from-git-deps
- python-apt,
- python-distro-info,
- python-lzma,
- ${python:Depends},
+ python3-apt,
+ python3-distro-info,
+ python3-six,
  ${misc:Depends},
+ ${python3:Depends},
 Description: common piuparts components
  piupartslib, common library used by piuparts-master, -report, -analyze and
  -slave.

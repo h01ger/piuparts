@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import os
-import StringIO
 import unittest
 
 
 import piupartslib.packagesdb
+
+
+import six
 
 
 class FakeLogDB(piupartslib.packagesdb.LogDB):
@@ -50,7 +52,7 @@ class PackagesDbTests(unittest.TestCase):
 
     def new_db(self, packages_file_contents):
         db = piupartslib.packagesdb.PackagesDB(FakeLogDB())
-        db.read_packages_file(StringIO.StringIO(packages_file_contents))
+        db.read_packages_file(six.StringIO(packages_file_contents))
         return db
 
     def reserve(self, packages_file_contents):

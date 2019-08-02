@@ -22,8 +22,8 @@ import lzma
 import zlib
 
 import conf
-import dependencyparser
-import packagesdb
+from piupartslib import dependencyparser
+from piupartslib import packagesdb
 
 from six.moves import urllib
 

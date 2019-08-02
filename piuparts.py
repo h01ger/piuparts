@@ -40,7 +40,6 @@ import time
 import logging
 import optparse
 import sys
-import commands
 import tempfile
 import shutil
 import os
@@ -1773,7 +1772,7 @@ class Chroot:
         dev_ptmx_rel_path = self.relative("dev/ptmx")
         if not os.path.islink(dev_ptmx_rel_path):
             if not os.path.exists(dev_ptmx_rel_path):
-                os.mknod(dev_ptmx_rel_path, 0666 | stat.S_IFCHR, os.makedev(5, 2))
+                os.mknod(dev_ptmx_rel_path, 0o0666 | stat.S_IFCHR, os.makedev(5, 2))
             self.mount(self.relative("dev/pts/ptmx"), "/dev/ptmx", opts="bind", no_mkdir=True)
         p = subprocess.Popen(["tty"], stdout=subprocess.PIPE,
                              universal_newlines=True)
@@ -1782,7 +1781,7 @@ class Chroot:
         if p.returncode == 0 and os.path.exists(current_tty):
             dev_console = self.relative("/dev/console")
             if not os.path.exists(dev_console):
-                os.mknod(dev_console, 0600, os.makedev(5, 1))
+                os.mknod(dev_console, 0o0600, os.makedev(5, 1))
             self.mount(current_tty, "/dev/console", opts="bind", no_mkdir=True)
         self.mount("tmpfs", "/dev/shm", fstype="tmpfs", opts="size=65536k")
         if selinux_enabled():

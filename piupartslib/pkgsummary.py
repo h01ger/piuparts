@@ -85,6 +85,9 @@ import datetime
 from collections import namedtuple, defaultdict
 
 
+import six
+
+
 class SummaryException(Exception):
     pass
 
@@ -117,7 +120,7 @@ flaginfo = {
                           ]),
 }
 
-state2flg = dict([(y, x[0]) for x in flaginfo.iteritems() for y in x[1].states])
+state2flg = dict([(y, x[0]) for x in six.iteritems(flaginfo) for y in x[1].states])
 
 
 def worst_flag(*flags):
