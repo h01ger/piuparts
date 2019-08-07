@@ -10,6 +10,7 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
     - also test bullseye and bullseye-rcmd. Closes: #933061.
     - increase precedence values for oldstable and older.
   * Bump version number to 1.1.x due to the switch to python3.
+  * d/tests: Add simple smoke-test.
   
   [ David Prévot ]
   * Use the same favicon as the one from www.d.o. 
