@@ -21,7 +21,7 @@ import bz2
 import lzma
 import zlib
 
-import conf
+from piupartslib import conf
 from piupartslib import dependencyparser
 from piupartslib import packagesdb
 
