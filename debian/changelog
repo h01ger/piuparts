@@ -1,5 +1,7 @@
 piuparts (1.0.0+deb10u1) UNRELEASED; urgency=medium
 
+  * Happy 26th birthday, Debian! And many thanks to all the contributors!
+ 
   [ Andreas Beckmann ]
   * piuparts.py:
     - Add '--max-command-output-size' option to allow overriding the default
