@@ -1,3 +1,9 @@
+piuparts (1.0.1~bpo10+1) buster-backports; urgency=medium
+
+  * Rebuild for buster-backports.
+
+ -- Holger Levsen <holger@debian.org>  Fri, 16 Aug 2019 15:29:44 +0200
+
 piuparts (1.0.1) unstable; urgency=medium
 
   [ Andreas Beckmann ]
