@@ -6,6 +6,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2019-07-31</b>
+	Add two new suites, <a href="https://piuparts.debian.org/bullseye">bullseye</a> and <a href="https://piuparts.debian.org/bullseye-rcmd">bullseye-rcmd</a>, after the release of buster on July 6th.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2019-05-04</b> Release of piuparts 1.0.0 - may the force be with you! If everything goes as planned, this is also the last Python 2 release. Many thanks and kudos to Lars Wirzenius for starting to write piuparts 14 years ago.
      </td>
     </tr>

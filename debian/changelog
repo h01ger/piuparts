@@ -34,6 +34,8 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
     testing.
   * Bump standards version to 4.4.0, no changes needed.
   * d/tests: Add simple smoke-test.
+  * htdocs/news.tpl: mention new suites bullseye and bullseye-rcmd being
+    tested.
 
   [ David Prévot ]
   * Use the same favicon as the one from www.d.o.
