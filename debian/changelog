@@ -11,6 +11,9 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
     - increase precedence values for oldstable and older.
   * Bump version number to 1.1.x due to the switch to python3.
   * d/tests: Add simple smoke-test.
+  * docs/README_server.txt, docs/piuparts/piuparts.1.txt and piuparts.py:
+    update examples for buster being stable and bullseye being the new
+    testing.
   
   [ David Prévot ]
   * Use the same favicon as the one from www.d.o. 

@@ -2684,7 +2684,7 @@ def parse_command_line():
 
     parser.add_option("-d", "--distribution", action="append", metavar="NAME",
                       help="Which Debian distribution to use: a code name " +
-                           "(for example jessie, stretch, sid) or experimental. The " +
+                           "(for example buster, bullseye, sid) or experimental. The " +
                            "default is sid (=unstable).")
 
     parser.add_option("-D", "--defaults", action="store",
