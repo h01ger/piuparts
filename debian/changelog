@@ -4,20 +4,6 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
   * piuparts.py: use Popen with universal_newlines=True. Py2, Py3 compatible.
   * New mail template: add bug-templates/obsolete_conffiles.mail.
 
-  [ Holger Levsen ]
-  * Bump standards version to 4.4.0, no changes needed. 
-  * piuparts.conf-template.pejacevic:
-    - also test bullseye and bullseye-rcmd. Closes: #933061.
-    - increase precedence values for oldstable and older.
-  * Bump version number to 1.1.x due to the switch to python3.
-  * d/tests: Add simple smoke-test.
-  * docs/README_server.txt, docs/piuparts/piuparts.1.txt and piuparts.py:
-    update examples for buster being stable and bullseye being the new
-    testing.
-  
-  [ David Prévot ]
-  * Use the same favicon as the one from www.d.o. 
-
   [ Thomas Goirand ]
   * Switch to package to Python 3:
     - Replaced python- with python3- in debian/control.
@@ -37,6 +23,20 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
       for the 2nd time, so that it correctly adds the interpreter as depends.
     - Lintian overrides "python-script-but-no-python-dep": that's ok, because
       piuparts-common already has the dependency.
+
+  [ Holger Levsen ]
+  * Bump version number to 1.1.x due to the switch to python3.
+  * piuparts.conf-template.pejacevic:
+    - also test bullseye and bullseye-rcmd. Closes: #933061.
+    - increase precedence values for oldstable and older.
+  * docs/README_server.txt, docs/piuparts/piuparts.1.txt and piuparts.py:
+    update examples for buster being stable and bullseye being the new
+    testing.
+  * Bump standards version to 4.4.0, no changes needed.
+  * d/tests: Add simple smoke-test.
+
+  [ David Prévot ]
+  * Use the same favicon as the one from www.d.o.
 
  -- Holger Levsen <holger@debian.org>  Sun, 07 Jul 2019 17:15:41 +0200
 
