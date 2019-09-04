@@ -446,7 +446,7 @@ piuparts-command =
 	env PYTHONPATH=%(PYTHONPATH)s
 	timeout -s INT -k 5m 110m
 	/srv/piuparts/sbin/piuparts
-PYTHONPATH = /srv/piuparts/lib/python2.7/dist-packages
+PYTHONPATH = /srv/piuparts/lib/python3/dist-packages
 master-directory = /srv/piuparts/master
 slave-directory = /srv/piuparts/slave
 basetgz-directory = /srv/piuparts/slave/basetgz

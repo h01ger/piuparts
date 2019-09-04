@@ -2,7 +2,7 @@
 
 # set PATH, variable substitution is not supported (PATH=$PATH:/my/bin)
 PATH=@sharedir@/piuparts/master:@sharedir@/piuparts:/usr/bin:/bin
-PYTHONPATH=@libdir@/python2.7/dist-packages
+PYTHONPATH=@libdir@/python3/dist-packages
 
 #
 # cleanup $HTDOCS/daily.lock
