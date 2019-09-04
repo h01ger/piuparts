@@ -1817,7 +1817,7 @@ def main():
         os.makedirs(master_directory)
         return
 
-    with open(os.path.join(master_directory, "report.lock"), "we") as lock:
+    with open(os.path.join(master_directory, "report.lock"), "w") as lock:
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
@@ -1840,7 +1840,7 @@ def main():
                 section_directory = os.path.join(master_directory, section_name)
                 if not os.path.exists(section_directory):
                     raise MissingSection("", section_name)
-                with open(os.path.join(section_directory, "master.lock"), "we") as lock:
+                with open(os.path.join(section_directory, "master.lock"), "w") as lock:
                     try:
                         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
                     except IOError:

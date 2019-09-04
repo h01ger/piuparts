@@ -175,7 +175,7 @@ class Master(Protocol):
         if not os.path.exists(section):
             os.makedirs(section)
 
-        self._lock = open(os.path.join(section, "master.lock"), "we")
+        self._lock = open(os.path.join(section, "master.lock"), "w")
         try:
             fcntl.flock(self._lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:

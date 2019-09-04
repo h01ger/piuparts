@@ -554,7 +554,7 @@ class Section:
             self._error_wait_until = time.time() + 3600
             return 0
 
-        with open(os.path.join(self._slave_directory, "slave.lock"), "we") as lock:
+        with open(os.path.join(self._slave_directory, "slave.lock"), "w") as lock:
             oldcwd = os.getcwd()
             os.chdir(self._slave_directory)
             try:
@@ -707,7 +707,7 @@ class Section:
         output_name = log_name(pname, pvers)
         logging.debug("Opening log file %s" % output_name)
         new_name = os.path.join("new", output_name)
-        output = open(new_name, "we")
+        output = open(new_name, "w")
         output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n",
                                    time.gmtime()))
 
@@ -947,7 +947,7 @@ def create_chroot(config, tarball, distro):
     command.extend(["--apt", "TARBALL"])  # dummy package name
 
     output_name = tarball + ".log"
-    with open(output_name, "we") as output:
+    with open(output_name, "w") as output:
         try:
             fcntl.flock(output, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
