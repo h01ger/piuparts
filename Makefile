@@ -161,9 +161,9 @@ install-master: build-master-stamp install-common
 	install -d $(DESTDIR)$(sharedir)/piuparts
 	install -m 0755 piuparts-master piuparts-master-backend piuparts-report piuparts-analyze $(DESTDIR)$(sharedir)/piuparts/
 
-	# do not install the templates (*.in, *.py)
+	# do not install the templates (*.in, *.py, *.) nor __pycache__
 	install -d $(DESTDIR)$(sharedir)/piuparts/master
-	install -m 0755 $(filter-out %.in %.py,$(wildcard master-bin/*)) $(DESTDIR)$(sharedir)/piuparts/master/
+	install -m 0755 $(filter-out %.in %.py %__pycache__,$(wildcard master-bin/*)) $(DESTDIR)$(sharedir)/piuparts/master/
 
 	install -d $(DESTDIR)$(sharedir)/piuparts/known_problems
 	install -m 0644 known_problems/*.conf $(DESTDIR)$(sharedir)/piuparts/known_problems/
@@ -187,9 +187,9 @@ install-slave: install-common
 	install -d $(DESTDIR)$(sharedir)/piuparts
 	install -m 0755 piuparts-slave $(DESTDIR)$(sharedir)/piuparts/
 
-	# do not install the templates (*.in, *.py)
+	# do not install the templates (*.in, *.py) nor __pycache__
 	install -d $(DESTDIR)$(sharedir)/piuparts/slave
-	install -m 0755 $(filter-out %.in %.py,$(wildcard slave-bin/*)) $(DESTDIR)$(sharedir)/piuparts/slave/
+	install -m 0755 $(filter-out %.in %.py %__pycache__,$(wildcard slave-bin/*)) $(DESTDIR)$(sharedir)/piuparts/slave/
 
 	install -d $(DESTDIR)$(etcdir)/piuparts
 	@set -e -x ; \
