@@ -182,6 +182,7 @@ Depends:
  python3-apt,
  python3-distro-info,
  python3-six,
+ python3-urllib3,
  ${misc:Depends},
  ${python3:Depends},
 Description: common piuparts components
