@@ -32,6 +32,7 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
   * docs/README_server.txt, docs/piuparts/piuparts.1.txt and piuparts.py:
     update examples for buster being stable and bullseye being the new
     testing.
+  * Use /usr/bin/python3 everywhere.
   * Bump standards version to 4.4.0, no changes needed.
   * d/tests: Add simple smoke-test.
   * htdocs/news.tpl: mention new suites bullseye and bullseye-rcmd being
