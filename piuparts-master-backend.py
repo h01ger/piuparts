@@ -408,7 +408,7 @@ class Master(Protocol):
 
 
 def main():
-    setup_logging(logging.DEBUG, None)
+    setup_logging(logging.INFO, None)
     global_config = Config(section="global")
     global_config.read(CONFIG_FILE)
     if global_config["proxy"]:

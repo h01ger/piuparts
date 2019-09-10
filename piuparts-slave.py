@@ -985,7 +985,7 @@ def create_file(filename, contents):
 
 
 def main():
-    setup_logging(logging.DEBUG, None)
+    setup_logging(logging.INFO, None)
     signal(SIGHUP, sighup_handler)
     signal(SIGUSR1, sigusr1_handler)
 
