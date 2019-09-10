@@ -760,7 +760,7 @@ def create_section_navigation(section_names, current_section, doc_root):
                  % (doc_root, current_section)
     tablerows += "<tr><td class=\"contentcell\"><a href=\"%s/%s/source/\">by source package</a></td></tr>\n" \
                  % (doc_root, current_section)
-    tablerows += "<tr><td class=\"contentcell\">states <a href=\"%s/%s/states.png/\">graph</a></td></tr>\n" \
+    tablerows += "<tr><td class=\"contentcell\">states <a href=\"%s/%s/states.png\">graph</a></td></tr>\n" \
                  % (doc_root, current_section)
     tablerows += "<tr class=\"titlerow\"><td class=\"alerttitlecell\">all tested suites</td></tr>"
     for section in section_names:
