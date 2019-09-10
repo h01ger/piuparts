@@ -99,7 +99,7 @@ def open_packages_url(url):
     elif ext == '':
         decompressed = socket
     else:
-        raise ext
+        raise Exception('Unknown compression: {}'.format(ext))
     return (url, decompressed)
 
 # vi:set et ts=4 sw=4 :
