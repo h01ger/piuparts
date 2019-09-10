@@ -76,15 +76,16 @@ class DecompressedStream():
 def open_packages_url(url):
     """Open a Packages.bz2 file pointed to by a URL"""
     socket = None
+    error = None
     for ext in ['.xz', '.bz2', '.gz', '']:
         try:
             socket = urllib.request.urlopen(url + ext)
-        except urllib.error.HTTPError as httperror:
-            pass
+        except urllib.error.HTTPError as e:
+            error = e
         else:
             break
-    if socket is None:
-        raise httperror
+    else:
+        raise error
     url = socket.geturl()
     if ext == '.bz2':
         decompressor = bz2.BZ2Decompressor()
