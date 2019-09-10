@@ -21,10 +21,6 @@ import bz2
 import lzma
 import zlib
 
-from piupartslib import conf
-from piupartslib import dependencyparser
-from piupartslib import packagesdb
-
 from six.moves import urllib
 
 
