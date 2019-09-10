@@ -24,6 +24,9 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
     - Lintian overrides "python-script-but-no-python-dep": that's ok, because
       piuparts-common already has the dependency.
 
+  [ Mattia Rizzolo ]
+  * piuparts-slave.py: port to python3.
+
   [ Holger Levsen ]
   * Bump version number to 1.1.x due to the switch to python3.
   * piuparts.conf-template.pejacevic:

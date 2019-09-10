@@ -189,7 +189,7 @@ class Slave:
             line = self._from_master.readline()
         except IOError:
             raise MasterCommunicationFailed()
-        logging.debug("<< " + line.rstrip())
+        logging.debug("<< " + str(line.rstrip()))
         return line
 
     def _writeline(self, *words):
@@ -238,7 +238,7 @@ class Slave:
             ssh_command.extend(["-l", self._master_user])
         ssh_command.append(self._master_host)
         ssh_command.append(self._master_command or "command-is-set-in-authorized_keys")
-        p = subprocess.Popen(ssh_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        p = subprocess.Popen(ssh_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
         self._to_master = p.stdin
         self._from_master = p.stdout
         line = self._readline()
@@ -860,7 +860,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
         pids = [p.pid]
         if kill_all:
             ps = subprocess.Popen(["ps", "--no-headers", "-o", "pid", "--ppid", "%d" % p.pid],
-                                  stdout=subprocess.PIPE)
+                                  stdout=subprocess.PIPE, universal_newlines=True)
             stdout, stderr = ps.communicate()
             pids.extend([int(pid) for pid in stdout.split()])
         if p.poll() is None:
@@ -896,7 +896,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
     logging.debug("Executing: %s" % command2string(cmd))
 
     stdout = ""
-    p = subprocess.Popen(cmd, preexec_fn=os.setpgrp,
+    p = subprocess.Popen(cmd, preexec_fn=os.setpgrp, universal_newlines=True,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if maxwait > 0:
         signal(SIGALRM, alarm_handler)
@@ -959,7 +959,10 @@ def create_chroot(config, tarball, distro):
             output.write("Executing: " + command2string(command) + "\n\n")
             logging.debug("Executing: " + command2string(command))
             try:
-                p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                p = subprocess.Popen(command,
+                                     stdout=subprocess.PIPE,
+                                     stderr=subprocess.STDOUT,
+                                     universal_newlines=True)
                 for line in p.stdout:
                     output.write(line)
                     logging.debug(">> " + line.rstrip())
