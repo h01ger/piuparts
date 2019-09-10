@@ -45,6 +45,8 @@ class DecompressedStream():
                 return False
             if self._decompressor:
                 chunk = self._decompressor.decompress(chunk)
+            if isinstance(chunk, bytes):
+                chunk = chunk.decode()
             self._buffer = self._buffer + chunk
             if chunk:
                 return True
