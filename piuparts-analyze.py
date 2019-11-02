@@ -78,7 +78,7 @@ class PiupartsBTS():
 
     def all_piuparts_bugs(self):
         if self._bugs_usertagged_piuparts is None:
-            self._bugs_usertagged_piuparts = debianbts.get_usertag("debian-qa@lists.debian.org", 'piuparts')['piuparts']
+            self._bugs_usertagged_piuparts = debianbts.get_usertag("debian-qa@lists.debian.org", ['piuparts'])['piuparts']
         return self._bugs_usertagged_piuparts
 
     def bugs_in(self, package):
@@ -86,8 +86,8 @@ class PiupartsBTS():
             self._misses += 1
             signal(SIGALRM, alarm_handler)
             alarm(120)
-            bugs = debianbts.get_bugs('package', package, 'bugs', self.all_piuparts_bugs(), 'archive', 'both')
-            bugs += debianbts.get_bugs('package', 'src:' + package, 'bugs', self.all_piuparts_bugs(), 'archive', 'both')
+            bugs = debianbts.get_bugs(package=package, bugs=self.all_piuparts_bugs(), archive='both')
+            bugs += debianbts.get_bugs(package='src:' + package, bugs=self.all_piuparts_bugs(), archive='both')
             alarm(0)
             self._bugs_in_package[package] = sorted(set(bugs), reverse=True)
         self._queries += 1
@@ -98,8 +98,8 @@ class PiupartsBTS():
             self._misses += 1
             signal(SIGALRM, alarm_handler)
             alarm(120)
-            bugs = debianbts.get_bugs('affects', package, 'bugs', self.all_piuparts_bugs(), 'archive', 'both')
-            bugs += debianbts.get_bugs('affects', 'src:' + package, 'bugs', self.all_piuparts_bugs(), 'archive', 'both')
+            bugs = debianbts.get_bugs(affects=package, bugs=self.all_piuparts_bugs(), archive='both')
+            bugs += debianbts.get_bugs(affects='src:' + package, bugs=self.all_piuparts_bugs(), archive='both')
             alarm(0)
             self._bugs_affecting_package[package] = sorted(set(bugs), reverse=True)
         self._queries += 1
@@ -113,7 +113,7 @@ class PiupartsBTS():
             self._misses += 1
             signal(SIGALRM, alarm_handler)
             alarm(60)
-            found_versions = debianbts.get_status(bug)[0].found_versions
+            found_versions = debianbts.get_status([bug])[0].found_versions
             alarm(0)
             versions = []
             for found_version in found_versions:

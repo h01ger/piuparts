@@ -12,7 +12,7 @@ Build-Depends:
  python3-all,
  python3-apt,
  python3-debian,
- python3-debianbts,
+ python3-debianbts (>= 2.10.0),
  python3-distro-info,
  python3-mox3,
  python3-nose,
@@ -66,7 +66,7 @@ Depends:
 # keep this list in sync with piuparts-master-from-git-deps
  adduser,
  openssh-server,
- python3-debianbts,
+ python3-debianbts (>= 2.10.0),
  python3-setproctitle,
  tango-icon-theme,
  xz-utils,
@@ -99,7 +99,7 @@ Depends:
 # this list is synced from piuparts-master
  adduser,
  openssh-server,
- python3-debianbts,
+ python3-debianbts (>= 2.10.0),
  python3-setproctitle,
  tango-icon-theme,
  xz-utils,
