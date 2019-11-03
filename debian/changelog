@@ -44,6 +44,10 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
   [ David Prévot ]
   * Use the same favicon as the one from www.d.o.
 
+  [ Bastian Venthur ]
+  * piuparts-analyze.py: updates for python-debianbts 2.10.0 deprecating
+    some methodcalls, update depends in d/control accordingly.
+
  -- Holger Levsen <holger@debian.org>  Sun, 07 Jul 2019 17:15:41 +0200
 
 piuparts (1.0.1) unstable; urgency=medium
