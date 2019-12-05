@@ -81,7 +81,7 @@ def open_packages_url(url):
     error = None
     for ext in ['.xz', '.bz2', '.gz', '']:
         try:
-            socket = urllib.request.urlopen(url + ext)
+            socket = urllib.request.urlopen(url + ext, timeout=30)
         except urllib.error.HTTPError as e:
             error = e
         else:
