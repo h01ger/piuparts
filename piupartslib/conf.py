@@ -152,7 +152,7 @@ class Config(UserDict):
             # Try to figure it out ourselves, using dpkg
             p = subprocess.Popen(["dpkg", "--print-architecture"],
                                  stdout=subprocess.PIPE)
-            self["arch"] = p.stdout.read().rstrip()
+            self["arch"] = p.stdout.read().decode().rstrip()
         return self["arch"]
 
 
