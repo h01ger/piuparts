@@ -48,6 +48,10 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
   * piuparts-analyze.py: updates for python-debianbts 2.10.0 deprecating
     some methodcalls, update depends in d/control accordingly.
 
+  [ Nis Martensen ]
+  * piupartslib/dependencyparser and piupartslib/packagesdb: several fixes
+    related to porting to python3.
+
  -- Holger Levsen <holger@debian.org>  Sun, 07 Jul 2019 17:15:41 +0200
 
 piuparts (1.0.1) unstable; urgency=medium
