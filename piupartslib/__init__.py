@@ -33,6 +33,17 @@ class DecompressedStream():
         self._line_buffer = []
         self._i = 0
         self._end = 0
+        self._undecbuf = b''
+
+    def _split_decode(self, myb):
+        lmyb = len(myb)
+        for end in range(lmyb, max(lmyb-6, -1), -1):
+            try:
+                return myb[:end].decode(), myb[end:]
+            except UnicodeDecodeError:
+                pass
+        # not returned yet? We have a problem
+        raise UnicodeDecodeError
 
     def _refill(self):
         if self._input is None:
@@ -46,7 +57,8 @@ class DecompressedStream():
             if self._decompressor:
                 chunk = self._decompressor.decompress(chunk)
             if isinstance(chunk, bytes):
-                chunk = chunk.decode()
+                chunk = self._undecbuf + chunk
+                chunk, self._undecbuf = self._split_decode(chunk)
             self._buffer = self._buffer + chunk
             if chunk:
                 return True
