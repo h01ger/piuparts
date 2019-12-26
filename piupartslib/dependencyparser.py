@@ -263,7 +263,7 @@ class DependencyParser:
     def _parse_version_dependency(self):
         self._cursor.skip_whitespace()
         if self._cursor.get_char() == "(":
-            self._cursor.mynext(self._cursor)
+            self._cursor.mynext()
 
             self._cursor.skip_whitespace()
             opm = self._cursor.match(self._op_pat)
@@ -285,7 +285,7 @@ class DependencyParser:
             self._cursor.skip_whitespace()
             if self._cursor.get_char() != ")":
                 raise DependencySyntaxError("Expected ')'", self._cursor)
-            self._cursor.mynext(self._cursor)
+            self._cursor.mynext()
 
             return opm.group(), verm.group()
         else:
@@ -296,13 +296,13 @@ class DependencyParser:
     def _parse_arch_restriction(self):
         self._cursor.skip_whitespace()
         if self._cursor.get_char() == "[":
-            self.mynext(self._cursor)
+            self.mynext()
 
             vlist = []
             while True:
                 self._cursor.skip_whitespace()
                 if self._cursor.get_char() == "]":
-                    self._cursor.mynext(self._cursor)
+                    self._cursor.mynext()
                     break
                 m = self._cursor.match(self._arch_pat)
                 if not m:
