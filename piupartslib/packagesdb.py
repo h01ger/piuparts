@@ -257,6 +257,7 @@ class LogDB:
 
     def create(self, subdir, package, version, contents):
         (fd, temp_name) = tempfile.mkstemp(dir=subdir)
+        contents = contents.encode()
         if os.write(fd, contents) != len(contents):
             raise Exception("Partial write?")
         os.close(fd)
