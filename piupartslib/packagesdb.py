@@ -47,10 +47,10 @@ import six
 apt_pkg.init_system()
 
 
-def rfc822_like_header_parse(input):
+def rfc822_like_header_parse(myinput):
     headers = []
     while True:
-        line = input.readline()
+        line = myinput.readline()
         if not line or line in ["\r\n", "\n"]:
             break
         if headers and line and line[0].isspace():
@@ -184,10 +184,10 @@ class PackagesFile(UserDict):
             stream.close()
             self._urllist.append(url)
 
-    def _read_file(self, input, restrict_packages=None):
+    def _read_file(self, myinput, restrict_packages=None):
         """Parse a Packages file and add its packages to us-the-dict"""
         while True:
-            headers = rfc822_like_header_parse(input)
+            headers = rfc822_like_header_parse(myinput)
             if not headers:
                 break
             p = Package(headers)

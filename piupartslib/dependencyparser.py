@@ -51,8 +51,8 @@ class _Cursor:
 
     """Store an input string and a movable location in it"""
 
-    def __init__(self, input):
-        self._input = input
+    def __init__(self, myinput):
+        self._input = myinput
         self._len = len(self._input)
         self._pos = 0
 

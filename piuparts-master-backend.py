@@ -96,8 +96,8 @@ class ProtocolError(Exception):
 
 class Protocol:
 
-    def __init__(self, input, output):
-        self._input = input
+    def __init__(self, myinput, output):
+        self._input = myinput
         self._output = output
 
     def _readline(self):
@@ -129,8 +129,8 @@ class Protocol:
 
 class Master(Protocol):
 
-    def __init__(self, input, output):
-        Protocol.__init__(self, input, output)
+    def __init__(self, myinput, output):
+        Protocol.__init__(self, myinput, output)
         self._commands = {
             "section": self._switch_section,
             "recycle": self._recycle,
