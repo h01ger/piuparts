@@ -815,7 +815,7 @@ class PackagesDB:
         if not providers:
             return package_state
         states = [self.get_package_state(name, resolve_virtual=False, recurse=recurse) for name in [package_name] + providers]
-        for state in self._good_states + list(self._propagate_waiting_state.keys()) + self._propagate_error_state.keys():
+        for state in self._good_states + list(self._propagate_waiting_state.keys()) + list(self._propagate_error_state.keys()):
             if state in states:
                 return state
         return package_state
