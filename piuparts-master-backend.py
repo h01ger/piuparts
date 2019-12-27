@@ -426,6 +426,13 @@ def main():
             pass
     except URLError as e:
         logging.error("ABORT: URLError: " + str(e.reason))
+    except BrokenPipeError:
+        logging.error("ABORT: BrokenPipeError")
+        logging.debug(timestamp() + " disconnected")
+        # https://docs.python.org/3/library/signal.html#note-on-sigpipe
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, sys.stdout.fileno())
+        sys.exit(1)
 
     logging.debug(timestamp() + " disconnected")
 
