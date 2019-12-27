@@ -6,6 +6,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2019-12-27</b>
+	piuparts.debian.org switch to python3 done. Many thanks to all who contributed.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2019-07-31</b>
 	Add two new suites, <a href="https://piuparts.debian.org/bullseye">bullseye</a> and <a href="https://piuparts.debian.org/bullseye-rcmd">bullseye-rcmd</a>, after the release of buster on July 6th.
      </td>

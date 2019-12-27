@@ -38,8 +38,9 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
   * Use /usr/bin/python3 everywhere.
   * Bump standards version to 4.4.0, no changes needed.
   * d/tests: Add simple smoke-test.
-  * htdocs/news.tpl: mention new suites bullseye and bullseye-rcmd being
-    tested.
+  * htdocs/news.tpl:
+    - mention new suites bullseye and bullseye-rcmd being tested.
+    - mention piuparts.debian.org is running the python3 branch.
   * instances/Makefile: set default mirror to deb.debian.org.
 
   [ David Prévot ]
