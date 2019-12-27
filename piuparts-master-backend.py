@@ -31,7 +31,8 @@ import fcntl
 import time
 import random
 
-import piupartslib
+import piupartslib.conf
+import piupartslib.packagesdb
 from piupartslib.packagesdb import LogfileExists
 from piupartslib.conf import MissingSection
 

@@ -47,7 +47,8 @@ try:
 except:
     pass
 
-import piupartslib
+import piupartslib.conf
+import piupartslib.packagesdb
 from piupartslib.conf import MissingSection
 from piupartslib.dwke import *
 import piupartslib.pkgsummary as pkgsummary

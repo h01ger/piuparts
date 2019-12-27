@@ -29,7 +29,7 @@ import argparse
 import fcntl
 from collections import deque
 
-import piupartslib
+import piupartslib.conf
 from piupartslib.conf import MissingSection
 from piupartslib.dwke import *
 
