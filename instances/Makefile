@@ -1,5 +1,5 @@
 ARCH				 = amd64
-MIRROR				 = http://mirror.bm.debian.org/debian/
+MIRROR				 = http://deb.debian.org/debian/
 
 ARCH_piu-slave-1und1-01		 = i386
 MIRROR_piu-slave-1und1-01	 = http://mirror.1und1.de/debian/
