@@ -7,7 +7,7 @@
     <tr class="normalrow">
      <td class="contentcell2">
       <b>2019-12-27</b>
-	piuparts.debian.org switch to python3 done. Many thanks to all who contributed.
+	piuparts.debian.org switch to python3 done. Many thanks to all who contributed: Herbert Parentes Fortes Neto, Thomas Goirand, Mattia Rizzolo, Holger Levsen, Bastian Venthur, and Nis Martensen.
      </td>
     </tr>
     <tr class="normalrow">
