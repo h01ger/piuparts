@@ -44,6 +44,7 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
   * instances/Makefile: set default mirror to deb.debian.org.
   * d/rules: set GOCACHE to a safely writable directory during build as
     the cache is mandatory with Go 1.12.
+  * Bump debhelper-compat to 12.
 
   [ David Prévot ]
   * Use the same favicon as the one from www.d.o.
