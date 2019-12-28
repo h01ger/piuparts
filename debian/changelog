@@ -36,7 +36,7 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
     update examples for buster being stable and bullseye being the new
     testing.
   * Use /usr/bin/python3 everywhere.
-  * Bump standards version to 4.4.0, no changes needed.
+  * Bump standards version to 4.4.1, no changes needed.
   * d/tests: Add simple smoke-test.
   * htdocs/news.tpl:
     - mention new suites bullseye and bullseye-rcmd being tested.
