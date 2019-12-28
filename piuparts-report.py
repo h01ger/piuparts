@@ -711,7 +711,7 @@ def write_template_html(filename, body, mapping={}, defer_if_unmodified=False, m
         "piuparts_version": "",
         "time": "",
     })
-    content_md5 = hashlib.md5(htmlpage.safe_substitute(mapping)).hexdigest()
+    content_md5 = hashlib.md5(htmlpage.safe_substitute(mapping).encode()).hexdigest()
 
     if md5cache is not None:
         md5cache['new'][filename] = content_md5
