@@ -1559,7 +1559,7 @@ class Section:
     def generate_html(self):
         md5cachefile = os.path.join(self._output_directory, '.md5cache')
         try:
-            with open(md5cachefile, "r") as f:
+            with open(md5cachefile, "rb") as f:
                 self._md5cache['old'] = pickle.load(f)
         except IOError:
             pass
@@ -1596,7 +1596,7 @@ class Section:
         logging.debug("Wrote %d out of %d html files, refreshed %d out of %d unmodified files" % ( \
                 self._md5cache['written'], len(self._md5cache['new']),
                 self._md5cache['refreshed'], self._md5cache['unmodified']))
-        with open(md5cachefile, "w") as f:
+        with open(md5cachefile, "wb") as f:
             pickle.dump(self._md5cache['new'], f)
 
         logging.debug("Removing old log files")

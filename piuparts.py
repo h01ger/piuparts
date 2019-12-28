@@ -2460,14 +2460,14 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
 def save_meta_data(filename, chroot_state):
     """Save directory tree meta data into a file for fast access later."""
     logging.debug("Saving chroot meta data to %s" % filename)
-    with open(filename, "w") as f:
+    with open(filename, "wb") as f:
         pickle.dump(chroot_state, f)
 
 
 def load_meta_data(filename):
     """Load meta data saved by 'save_meta_data'."""
     logging.debug("Loading chroot meta data from %s" % filename)
-    with open(filename, "r") as f:
+    with open(filename, "rb") as f:
         return pickle.load(f)
 
 
