@@ -51,8 +51,9 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
     some methodcalls, update depends in d/control accordingly.
 
   [ Nis Martensen ]
-  * piupartslib/dependencyparser and piupartslib/packagesdb: several fixes
-    related to porting to python3.
+  * piuparts, piuparts-master-backend, piuparts-report,
+    detect_well_known_errors, piupartslib/(dependencyparser|packagesdb):
+    several fixes and improvements related to porting to python3.
 
  -- Holger Levsen <holger@debian.org>  Sun, 07 Jul 2019 17:15:41 +0200
 
