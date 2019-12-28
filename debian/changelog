@@ -42,6 +42,8 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
     - mention new suites bullseye and bullseye-rcmd being tested.
     - mention piuparts.debian.org is running the python3 branch.
   * instances/Makefile: set default mirror to deb.debian.org.
+  * d/rules: set GOCACHE to a safely writable directory during build as
+    the cache is mandatory with Go 1.12.
 
   [ David Prévot ]
   * Use the same favicon as the one from www.d.o.
