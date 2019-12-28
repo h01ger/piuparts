@@ -1561,7 +1561,7 @@ class Section:
         try:
             with open(md5cachefile, "rb") as f:
                 self._md5cache['old'] = pickle.load(f)
-        except IOError:
+        except (IOError, EOFError):
             pass
 
         logging.debug("Finding log files")
