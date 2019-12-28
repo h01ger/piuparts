@@ -1533,7 +1533,7 @@ class Section:
 
     def cleanup_removed_packages(self, logs_by_dir):
         vdirs = logs_by_dir.keys()
-        vdirs.remove("reserved")
+        vdirs = vdirs - {"reserved"}
         for vdir in vdirs:
             for log in sorted(logs_by_dir[vdir]):
                 if log.endswith(".log"):
