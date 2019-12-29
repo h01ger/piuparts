@@ -36,7 +36,9 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
     update examples for buster being stable and bullseye being the new
     testing.
   * Use /usr/bin/python3 everywhere.
-  * Bump standards version to 4.4.1, no changes needed.
+  * d/control:
+    - bump standards version to 4.4.1, no changes needed.
+    - bump debhelper-compat to 12.
   * d/tests: Add simple smoke-test.
   * htdocs/news.tpl:
     - mention new suites bullseye and bullseye-rcmd being tested.
@@ -44,7 +46,11 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
   * instances/Makefile: set default mirror to deb.debian.org.
   * d/rules: set GOCACHE to a safely writable directory during build as
     the cache is mandatory with Go 1.12.
-  * Bump debhelper-compat to 12.
+  * d/control:
+    - bump standards version to 4.4.1, no changes needed.
+    - bump debhelper-compat to 12.
+    - remove myself from uploaders. It was fun! Policy is your friend. Trust
+      the Policy. Love the Policy. Obey the Policy.
 
   [ David Prévot ]
   * Use the same favicon as the one from www.d.o.
