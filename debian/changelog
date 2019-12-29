@@ -58,6 +58,9 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
     detect_well_known_errors, piupartslib/(dependencyparser|packagesdb):
     several fixes and improvements related to porting to python3.
 
+  [ James Clarke ]
+  * piuparts: Fix diff_meta_data reporting every file as new and removed.
+
  -- Holger Levsen <holger@debian.org>  Sun, 07 Jul 2019 17:15:41 +0200
 
 piuparts (1.0.1) unstable; urgency=medium
