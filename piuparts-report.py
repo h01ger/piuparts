@@ -1560,7 +1560,7 @@ class Section:
         md5cachefile = os.path.join(self._output_directory, '.md5cache')
         try:
             with open(md5cachefile, "rb") as f:
-                self._md5cache['old'] = pickle.load(f)
+                self._md5cache['old'] = pickle.load(f, encoding='utf-8')
         except (IOError, EOFError):
             pass
 
