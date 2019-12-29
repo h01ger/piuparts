@@ -2051,8 +2051,8 @@ def diff_meta_data(tree1, tree2, quiet=False):
             del tree1_c[name]
             del tree2_c[name]
 
-    removed = [x for x in six.iteritems(tree1)]
-    new = [x for x in six.iteritems(tree2)]
+    removed = [x for x in six.iteritems(tree1_c)]
+    new = [x for x in six.iteritems(tree2_c)]
 
     # fix for #586793
     # prune rc?.d symlinks renamed by insserv
