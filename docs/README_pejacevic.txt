@@ -25,13 +25,12 @@ piuparts-master and piuparts-slaves packages as described in
 :blue:`Installation`
 ^^^^^^^^^^^^^^^^^^^^
 
-piuparts.debian.org is a setup running on three systems:
+piuparts.debian.org is a setup running on two systems:
 
 * pejacevic.debian.org, running the piuparts-master instance and an apache
   webserver to display the results.
-* piu-slave-bm-a.debian.org, running four piuparts-slave nodes to run the
+* piu-slave-ubc-01.debian.org, running four piuparts-slave nodes to run the
   actual tests.
-* piu-slave-ubc-01.debian.org, running four piuparts-slave nodes as well.
 
 
 :blue:`piuparts installation from source`
@@ -59,7 +58,7 @@ piuparts.debian.org is a setup running on three systems:
 ^^^^^^^^^^^^^^^^^^
 
 On pejacevic the piuparts-master user piupartsm needs to be created, on
-piu-slave-bm-a and piu-slave-ubc-01 a piupartss user is needed for the slave.
+piu-slave-ubc-01 a piupartss user is needed for the slave.
 Both are members of the group piuparts and '/srv/piuparts.debian.org' needs to
 be chmod 2775 and chown piuparts(sm):piuparts.
 
@@ -99,7 +98,7 @@ with ssh and run only piuparts-master. Restrict it like this:::
 
 This is actually done by DSA:
 
- '/etc/sudoers' for piu-slave-bm-a and piu-slave-ubc-01:
+ '/etc/sudoers' for piu-slave-ubc-01:
 
 .. code-block:: text
 
@@ -150,9 +149,9 @@ Updating the master, pejacevic.debian.org:::
  holger@pejacevic~$ sudo su - piupartsm update-piuparts-master-setup develop origin
 
 
-Updating the slave(s), for example on piu-slave-bm-a.debian.org:::
+Updating the slave(s), for example on piu-slave-ubc-01.debian.org:::
 
- holger@piu-slave-bm-a~$ sudo su - piupartss update-piuparts-slave-setup develop origin
+ holger@piu-slave-ubc-01~$ sudo su - piupartss update-piuparts-slave-setup develop origin
 
 
 :ref:`top <top3>`
@@ -173,7 +172,7 @@ Run the following script under *your* user account to start four instances of
 piuparts-slave on pejacevic, piuparts-master will be started automatically by
 the slaves.::
 
- holger@piu-slave-bm-a:~$ sudo -u piupartss -i slave_run
+ holger@piu-slave-ubc-01:~$ sudo -u piupartss -i slave_run
 
 
 There are several cronjobs installed via '~piupartsm/crontab' and

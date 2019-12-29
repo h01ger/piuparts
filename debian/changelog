@@ -51,6 +51,8 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
     - bump debhelper-compat to 12.
     - remove myself from uploaders. It was fun! Policy is your friend. Trust
       the Policy. Love the Policy. Obey the Policy.
+  * instances/*, docs/README_pejacevic.txt and htdocs/index: stop mentioning
+    piu-slave-bm-a.debian.org.
 
   [ David Prévot ]
   * Use the same favicon as the one from www.d.o.

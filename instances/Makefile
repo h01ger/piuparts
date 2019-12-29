@@ -6,7 +6,6 @@ MIRROR_piu-slave-1und1-01	 = http://mirror.1und1.de/debian/
 MIRROR_piu-slave-ubc-01		 = http://mirror-ubc.debian.org/debian/
 
 GENCONF		 = piuparts.conf.pejacevic
-GENCONF		+= piuparts.conf.piu-slave-bm-a
 GENCONF		+= piuparts.conf.piu-slave-1und1-01
 GENCONF		+= piuparts.conf.piu-slave-ubc-01
 

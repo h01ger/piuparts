@@ -1,7 +1,7 @@
 #
 # This is the configuration file for piuparts running in master-slave mode on
 # - pejacevic.debian.org (as master) and
-# - piu-slave-bm-a.debian.org (as slave).
+# - piu-slave-ubc-01.debian.org (as slave).
 #
 # For more information on this setup see https://salsa.debian.org/debian/piuparts/blob/develop/README_pejacevic.txt
 #
