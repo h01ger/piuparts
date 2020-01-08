@@ -6,6 +6,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2020-01-08</b>
+	After maintaining piuparts.debian.org for more than a decade, Holger Levsen resigns from doing so and also steps back from maintaining the <a href="https://tracker.debian.org/piuparts">piuparts</a> source package in Debian, after doing this for even more years. It was really a lot of fun, I learned a lot and am thankful for being able to contribute <em>this service</em> to improve Debian. Many thanks to all who contributed to it, especially Andreas Beckmann. And also many thanks to those, who will keep it running in the future!
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2019-12-27</b>
 	piuparts.debian.org switch to python3 done. Many thanks to all who contributed: Herbert Parentes Fortes Neto, Thomas Goirand, Mattia Rizzolo, Holger Levsen, Bastian Venthur, Nis Martensen and James Clarke.
      </td>
