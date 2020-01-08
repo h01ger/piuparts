@@ -3,16 +3,18 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-%:
-	dh $@ --with python2
+export GOCACHE := $(CURDIR)/.gocache
 
+%:
+	dh $@ --with python3
 
 override_dh_auto_build:
 	$(MAKE) prefix=/usr build build-doc
 
 override_dh_auto_install:
+	for i in $$(find . -type d -iname __pycache__) ; do rm -rf $$i ; done
 	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp prefix=/usr etcdir=/etc install install-doc install-conf
 
-override_dh_python2:
-	dh_python2 -p piuparts-master -p piuparts-slave /usr/share/piuparts
-	dh_python2 -N piuparts-master -N piuparts-slave
+override_dh_python3:
+	dh_python3 -p piuparts-master -p piuparts-slave /usr/share/piuparts --shebang=/usr/bin/python3
+	dh_python3 -N piuparts-master -N piuparts-slave

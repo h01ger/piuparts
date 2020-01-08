@@ -1,0 +1,5 @@
+# It's ok, because it depends on piuparts-common that has the dependency.
+piuparts-master: python-script-but-no-python-dep usr/share/piuparts/master/detect_well_known_errors #!/usr/bin/python3
+piuparts-master: python-script-but-no-python-dep usr/share/piuparts/piuparts-analyze #!/usr/bin/python3
+piuparts-master: python-script-but-no-python-dep usr/share/piuparts/piuparts-master-backend #!/usr/bin/python3
+piuparts-master: python-script-but-no-python-dep usr/share/piuparts/piuparts-report #!/usr/bin/python3

@@ -43,14 +43,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      Since 2005 piuparts is run systematically on all packages in Debian, at first only on <a href="/sid" target="_blank">unstable</a>. Today piuparts.debian.org is testing many suites by running piuparts in <a href="/doc/README_server.html" target="_blank">master/slave mode</a>. This setup currently consists of three hosts: <a href="https://db.debian.org/machines.cgi?host=pejacevic" target="_blank">pejacevic.debian.org</a> and <a href="https://db.debian.org/machines.cgi?host=piu-slave-bm-a" target="_blank">piu-slave-bm-a.debian.org</a> and <a href="https://db.debian.org/machines.cgi?host=piu-slave-ubc-01" target="_blank">piu-slave-ubc-01.debian.org</a>:
+      Since 2005 piuparts is run systematically on all packages in Debian, at first only on <a href="/sid" target="_blank">unstable</a>. Today piuparts.debian.org is testing many suites by running piuparts in <a href="/doc/README_server.html" target="_blank">master/slave mode</a>. This setup currently consists of two hosts: <a href="https://db.debian.org/machines.cgi?host=pejacevic" target="_blank">pejacevic.debian.org</a> and and <a href="https://db.debian.org/machines.cgi?host=piu-slave-ubc-01" target="_blank">piu-slave-ubc-01.debian.org</a>:
      <ul>
       <li> pejacevic acts as the piuparts-master, which is responsible for scheduling test jobs to the slaves. The other main task is to generate the reports which are served via https://piuparts.debian.org.</li>
-      <li> piu-slave-bm-a runs four piuparts-slave instances, which then run piuparts itself.</li>
-      <li> piu-slave-ubc-01 also runs four piuparts-slave instances.</li>
+      <li> piu-slave-ubc-01 runs four piuparts-slave instances, which then run piuparts itself.</li>
      </ul>
-      The first two of these hosts run as virtualized hardware on <a href="http://bits.debian.org/2013/04/bytemark-donation.html" target="_blank">a nice cluster</a> hosted at <a href="http://www.bytemark.co.uk" target="_blank">Bytemark</a> and the last one runs virtualised at the University of British Columbia.
-     </td>
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">

@@ -51,21 +51,21 @@ class _Cursor:
 
     """Store an input string and a movable location in it"""
 
-    def __init__(self, input):
-        self._input = input
+    def __init__(self, myinput):
+        self._input = myinput
         self._len = len(self._input)
         self._pos = 0
 
     def skip_whitespace(self):
         while self._pos < self._len and self._input[self._pos].isspace():
-            self.next()
+            self.mynext()
 
     def at_end(self):
         """Are we at the end of the input?"""
         self.skip_whitespace()
         return self._pos >= self._len
 
-    def next(self):
+    def mynext(self):
         """Move to the next character"""
         if self._pos < self._len:
             self._pos += 1
@@ -263,7 +263,7 @@ class DependencyParser:
     def _parse_version_dependency(self):
         self._cursor.skip_whitespace()
         if self._cursor.get_char() == "(":
-            self._cursor.next()
+            self._cursor.mynext()
 
             self._cursor.skip_whitespace()
             opm = self._cursor.match(self._op_pat)
@@ -285,7 +285,7 @@ class DependencyParser:
             self._cursor.skip_whitespace()
             if self._cursor.get_char() != ")":
                 raise DependencySyntaxError("Expected ')'", self._cursor)
-            self._cursor.next()
+            self._cursor.mynext()
 
             return opm.group(), verm.group()
         else:
@@ -296,13 +296,13 @@ class DependencyParser:
     def _parse_arch_restriction(self):
         self._cursor.skip_whitespace()
         if self._cursor.get_char() == "[":
-            self._cursor.next()
+            self.mynext()
 
             vlist = []
             while True:
                 self._cursor.skip_whitespace()
                 if self._cursor.get_char() == "]":
-                    self._cursor.next()
+                    self._cursor.mynext()
                     break
                 m = self._cursor.match(self._arch_pat)
                 if not m:

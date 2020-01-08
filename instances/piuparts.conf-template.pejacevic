@@ -166,6 +166,7 @@ flags-broken-symlinks =
 basetgz-sections =
 	tarball/sid
 	tarball/sid-merged-usr
+	tarball/bullseye
 	tarball/buster
 	tarball/stretch
 	tarball/jessie
@@ -181,6 +182,8 @@ sections =
 	sid-merged-usr
 	sid-broken-symlinks
 	testing2sid
+	bullseye
+	bullseye-rcmd
 	stable2sid
 	stable22sid
 	buster
@@ -241,7 +244,7 @@ piuparts-command =
 	env PYTHONPATH=%(PYTHONPATH)s
 	timeout -s INT -k 5m 80m
 	/srv/piuparts.debian.org/sbin/piuparts
-PYTHONPATH = /srv/piuparts.debian.org/lib/python2.7/dist-packages
+PYTHONPATH = /srv/piuparts.debian.org/lib/python3/dist-packages
 master-directory = /srv/piuparts.debian.org/master
 slave-directory = /srv/piuparts.debian.org/slave
 basetgz-directory = /srv/piuparts.debian.org/slave/basetgz
@@ -289,14 +292,24 @@ upgrade-test-distros = sid
 max-tgz-age = 259200
 
 
+[tarball/bullseye]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-bullseye)s
+distro = None
+upgrade-test-distros = bullseye
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
+
+
 [tarball/buster]
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-buster)s
 distro = None
 upgrade-test-distros = buster
-# 1 week (60*60*24*7)
-max-tgz-age = 604800
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
 
 
 [tarball/stretch]
@@ -465,6 +478,26 @@ piuparts-flags =
 distro = oldstable
 upgrade-test-distros = oldstable stable testing
 
+[bullseye]
+precedence = 3
+piuparts-flags =
+	--scriptsdir /etc/piuparts/scripts-log-alternatives
+	%(flags-default)s
+	%(flags-start-bullseye)s
+	%(flags-end-bullseye)s
+distro = bullseye
+
+
+[bullseye-rcmd]
+precedence = 5
+json-sections = none
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-bullseye)s
+	%(flags-end-bullseye)s
+distro = bullseye
 
 [buster]
 precedence = 4
@@ -477,7 +510,7 @@ distro = buster
 
 
 [buster-rcmd]
-precedence = 4
+precedence = 6
 json-sections = none
 description = + With recommended packages.
 piuparts-flags =
@@ -557,7 +590,7 @@ exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_b
 
 
 [stretch2buster-rcmd]
-precedence = 5
+precedence = 6
 json-sections = none
 description = + Testing with --install-recommends.
 piuparts-flags =
@@ -570,7 +603,7 @@ upgrade-test-distros = stretch buster
 
 
 [stretch2Xbuster-rcmd]
-precedence = 6
+precedence = 7
 json-sections = none
 description = + Testing two-stage upgrades with --install-recommends.
 piuparts-flags =
@@ -585,7 +618,7 @@ exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_b
 
 
 [stretch2bpo2buster]
-precedence = 5
+precedence = 6
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -597,7 +630,7 @@ upgrade-test-distros = stretch stretch-backports buster
 
 
 [stretch2bpo]
-precedence = 5
+precedence = 6
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -609,7 +642,7 @@ upgrade-test-distros = stretch stretch-backports
 
 
 [stretch]
-precedence = 4
+precedence = 5
 piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-log-alternatives
 	%(flags-default)s
@@ -619,7 +652,7 @@ distro = stretch
 
 
 [stretch-rcmd]
-precedence = 4
+precedence = 6
 json-sections = none
 description = + With recommended packages.
 piuparts-flags =
@@ -631,7 +664,7 @@ distro = stretch
 
 
 [stretch-security]
-precedence = 2
+precedence = 3
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -642,7 +675,7 @@ distro = stretch/updates
 
 
 [stretch-pu]
-precedence = 3
+precedence = 4
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
@@ -652,7 +685,7 @@ distro = stretch-proposed-updates
 
 
 [stretch-next]
-precedence = 3
+precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -662,7 +695,7 @@ distro = stretch-next
 
 
 [stretch2next]
-precedence = 3
+precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -673,7 +706,7 @@ upgrade-test-distros = stretch stretch-next
 
 
 [jessie2stretch]
-precedence = 5
+precedence = 6
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -684,7 +717,7 @@ upgrade-test-distros = jessie stretch
 
 
 [jessie2Xstretch]
-precedence = 5
+precedence = 6
 json-sections = none
 description = + Testing two-stage upgrades.
 piuparts-flags =
@@ -698,7 +731,7 @@ exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_b
 
 
 [jessie2stretch-rcmd]
-precedence = 6
+precedence = 7
 json-sections = none
 description = + Testing with --install-recommends.
 piuparts-flags =
@@ -711,7 +744,7 @@ upgrade-test-distros = jessie stretch
 
 
 [jessie2Xstretch-rcmd]
-precedence = 6
+precedence = 7
 json-sections = none
 description = + Testing two-stage upgrades with --install-recommends.
 piuparts-flags =
@@ -726,7 +759,7 @@ exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_b
 
 
 [jessie-lts2stretch]
-precedence = 7
+precedence = 8
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -737,7 +770,7 @@ upgrade-test-distros = jessie-lts stretch
 
 
 [jessie2bpo2stretch]
-precedence = 5
+precedence = 6
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -749,7 +782,7 @@ upgrade-test-distros = jessie jessie-backports stretch
 
 
 [jessie2bpo]
-precedence = 6
+precedence = 7
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -761,7 +794,7 @@ upgrade-test-distros = jessie jessie-backports
 
 
 [jessie]
-precedence = 6
+precedence = 7
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
@@ -770,7 +803,7 @@ distro = jessie
 
 
 [jessie-rcmd]
-precedence = 6
+precedence = 70
 json-sections = none
 description = + With recommended packages.
 piuparts-flags =
@@ -782,7 +815,7 @@ distro = jessie
 
 
 [jessie-security]
-precedence = 3
+precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -793,7 +826,7 @@ distro = jessie/updates
 
 
 [jessie-lts]
-precedence = 5
+precedence = 6
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -803,7 +836,7 @@ distro = jessie-lts
 
 
 [jessie2lts]
-precedence = 5
+precedence = 6
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -814,7 +847,7 @@ upgrade-test-distros = jessie jessie-lts
 
 
 [wheezy2jessie-lts]
-precedence = 7
+precedence = 8
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -825,7 +858,7 @@ upgrade-test-distros = wheezy jessie-lts
 
 
 [wheezy2jessie]
-precedence = 7
+precedence = 80
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -836,7 +869,7 @@ upgrade-test-distros = wheezy jessie
 
 
 [wheezy2jessie-rcmd]
-precedence = 8
+precedence = 90
 json-sections = none
 description = + Testing with --install-recommends.
 piuparts-flags =
@@ -850,7 +883,7 @@ upgrade-test-distros = wheezy jessie
 
 
 [wheezy2bpo2jessie]
-precedence = 8
+precedence = 90
 json-sections = none
 piuparts-flags =
 	%(flags-default)s

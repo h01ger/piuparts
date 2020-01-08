@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo running $0
+
+test_this() {
+	echo
+	echo "running $@"
+	$@
+}
+
+test_this piuparts --info
+test_this piuparts --list

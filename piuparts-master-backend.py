@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
@@ -30,11 +30,13 @@ import os
 import fcntl
 import time
 import random
-from urllib2 import URLError
 
-import piupartslib
+import piupartslib.conf
+import piupartslib.packagesdb
 from piupartslib.packagesdb import LogfileExists
 from piupartslib.conf import MissingSection
+
+from six.moves.urllib.error import URLError
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
@@ -95,8 +97,8 @@ class ProtocolError(Exception):
 
 class Protocol:
 
-    def __init__(self, input, output):
-        self._input = input
+    def __init__(self, myinput, output):
+        self._input = myinput
         self._output = output
 
     def _readline(self):
@@ -128,8 +130,8 @@ class Protocol:
 
 class Master(Protocol):
 
-    def __init__(self, input, output):
-        Protocol.__init__(self, input, output)
+    def __init__(self, myinput, output):
+        Protocol.__init__(self, myinput, output)
         self._commands = {
             "section": self._switch_section,
             "recycle": self._recycle,
@@ -174,7 +176,7 @@ class Master(Protocol):
         if not os.path.exists(section):
             os.makedirs(section)
 
-        self._lock = open(os.path.join(section, "master.lock"), "we")
+        self._lock = open(os.path.join(section, "master.lock"), "w")
         try:
             fcntl.flock(self._lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
@@ -425,6 +427,13 @@ def main():
             pass
     except URLError as e:
         logging.error("ABORT: URLError: " + str(e.reason))
+    except BrokenPipeError:
+        logging.error("ABORT: BrokenPipeError")
+        logging.debug(timestamp() + " disconnected")
+        # https://docs.python.org/3/library/signal.html#note-on-sigpipe
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, sys.stdout.fileno())
+        sys.exit(1)
 
     logging.debug(timestamp() + " disconnected")
 

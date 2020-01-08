@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
@@ -38,7 +38,6 @@ import hashlib
 import pickle
 import random
 import fcntl
-from urllib2 import HTTPError, URLError
 from collections import deque
 
 # if python-rpy2 ain't installed, we don't draw fancy graphs
@@ -48,10 +47,13 @@ try:
 except:
     pass
 
-import piupartslib
+import piupartslib.conf
+import piupartslib.packagesdb
 from piupartslib.conf import MissingSection
 from piupartslib.dwke import *
 import piupartslib.pkgsummary as pkgsummary
+
+from six.moves.urllib.error import HTTPError, URLError
 
 
 CONFIG_FILE = "/etc/piuparts/piuparts.conf"
@@ -709,7 +711,7 @@ def write_template_html(filename, body, mapping={}, defer_if_unmodified=False, m
         "piuparts_version": "",
         "time": "",
     })
-    content_md5 = hashlib.md5(htmlpage.safe_substitute(mapping)).hexdigest()
+    content_md5 = hashlib.md5(htmlpage.safe_substitute(mapping).encode()).hexdigest()
 
     if md5cache is not None:
         md5cache['new'][filename] = content_md5
@@ -1367,9 +1369,9 @@ class Section:
                                 "rows": rows,
                             })
                     if state == "failed-testing":
-                        count_bugged = string.count(rows, '"bugged/')
-                        count_affected = string.count(rows, '"affected/')
-                        count_failed = string.count(rows, '"fail/')
+                        count_bugged = rows.count('"bugged/')
+                        count_affected = rows.count('"affected/')
+                        count_failed = rows.count('"fail/')
                         sep = ": "
                         if count_bugged > 0:
                             substats += sep + "%s bugged" % count_bugged
@@ -1380,7 +1382,7 @@ class Section:
                         if count_failed > 0:
                             substats += sep + "<span class=\"needs-bugging\">%s failed</span>" % count_failed
                     else:
-                        count_passed = string.count(rows, '"pass/')
+                        count_passed = rows.count('"pass/')
                         if count_passed > 0:
                             substats += ": %s passed" % count_passed
                     link += "<li><a href=%s>%s</a>%s</li>\n" % \
@@ -1531,7 +1533,7 @@ class Section:
 
     def cleanup_removed_packages(self, logs_by_dir):
         vdirs = logs_by_dir.keys()
-        vdirs.remove("reserved")
+        vdirs = vdirs - {"reserved"}
         for vdir in vdirs:
             for log in sorted(logs_by_dir[vdir]):
                 if log.endswith(".log"):
@@ -1557,9 +1559,9 @@ class Section:
     def generate_html(self):
         md5cachefile = os.path.join(self._output_directory, '.md5cache')
         try:
-            with open(md5cachefile, "r") as f:
-                self._md5cache['old'] = pickle.load(f)
-        except IOError:
+            with open(md5cachefile, "rb") as f:
+                self._md5cache['old'] = pickle.load(f, encoding='utf-8')
+        except (IOError, EOFError):
             pass
 
         logging.debug("Finding log files")
@@ -1594,7 +1596,7 @@ class Section:
         logging.debug("Wrote %d out of %d html files, refreshed %d out of %d unmodified files" % ( \
                 self._md5cache['written'], len(self._md5cache['new']),
                 self._md5cache['refreshed'], self._md5cache['unmodified']))
-        with open(md5cachefile, "w") as f:
+        with open(md5cachefile, "wb") as f:
             pickle.dump(self._md5cache['new'], f)
 
         logging.debug("Removing old log files")
@@ -1816,7 +1818,7 @@ def main():
         os.makedirs(master_directory)
         return
 
-    with open(os.path.join(master_directory, "report.lock"), "we") as lock:
+    with open(os.path.join(master_directory, "report.lock"), "w") as lock:
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
@@ -1839,7 +1841,7 @@ def main():
                 section_directory = os.path.join(master_directory, section_name)
                 if not os.path.exists(section_directory):
                     raise MissingSection("", section_name)
-                with open(os.path.join(section_directory, "master.lock"), "we") as lock:
+                with open(os.path.join(section_directory, "master.lock"), "w") as lock:
                     try:
                         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
                     except IOError:

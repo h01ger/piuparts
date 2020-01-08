@@ -32,19 +32,25 @@ import random
 import stat
 import tempfile
 import time
-import UserDict
+try:
+    import UserDict
+except ImportError:
+    from collections import UserDict
 import apt_pkg
 
 import piupartslib
 from piupartslib.dependencyparser import DependencyParser
 
+import six
+
+
 apt_pkg.init_system()
 
 
-def rfc822_like_header_parse(input):
+def rfc822_like_header_parse(myinput):
     headers = []
     while True:
-        line = input.readline()
+        line = myinput.readline()
         if not line or line in ["\r\n", "\n"]:
             break
         if headers and line and line[0].isspace():
@@ -54,10 +60,10 @@ def rfc822_like_header_parse(input):
     return headers
 
 
-class Package(UserDict.UserDict):
+class Package(UserDict):
 
     def __init__(self, headers):
-        UserDict.UserDict.__init__(self)
+        UserDict.__init__(self)
         self.headers = headers
         for header in headers:
             name, value = header.split(":", 1)
@@ -163,10 +169,10 @@ class Package(UserDict.UserDict):
         output_file.write("".join(self.headers))
 
 
-class PackagesFile(UserDict.UserDict):
+class PackagesFile(UserDict):
 
     def __init__(self):
-        UserDict.UserDict.__init__(self)
+        UserDict.__init__(self)
         self._urllist = []
 
     def load_packages_urls(self, urls, restrict_packages=None):
@@ -178,10 +184,10 @@ class PackagesFile(UserDict.UserDict):
             stream.close()
             self._urllist.append(url)
 
-    def _read_file(self, input, restrict_packages=None):
+    def _read_file(self, myinput, restrict_packages=None):
         """Parse a Packages file and add its packages to us-the-dict"""
         while True:
-            headers = rfc822_like_header_parse(input)
+            headers = rfc822_like_header_parse(myinput)
             if not headers:
                 break
             p = Package(headers)
@@ -251,6 +257,7 @@ class LogDB:
 
     def create(self, subdir, package, version, contents):
         (fd, temp_name) = tempfile.mkstemp(dir=subdir)
+        contents = contents.encode()
         if os.write(fd, contents) != len(contents):
             raise Exception("Partial write?")
         os.close(fd)
@@ -643,7 +650,7 @@ class PackagesDB:
             self._in_state[state] = []
         todo = []
 
-        for package_name, package in self._packages.iteritems():
+        for package_name, package in six.iteritems(self._packages):
             state = self._lookup_package_state(package, use_cached_success, check_outdated)
             assert state in self._states
             self._package_state[package_name] = state
@@ -809,7 +816,7 @@ class PackagesDB:
         if not providers:
             return package_state
         states = [self.get_package_state(name, resolve_virtual=False, recurse=recurse) for name in [package_name] + providers]
-        for state in self._good_states + self._propagate_waiting_state.keys() + self._propagate_error_state.keys():
+        for state in self._good_states + list(self._propagate_waiting_state.keys()) + list(self._propagate_error_state.keys()):
             if state in states:
                 return state
         return package_state

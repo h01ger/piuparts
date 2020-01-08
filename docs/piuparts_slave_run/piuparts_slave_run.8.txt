@@ -1,11 +1,11 @@
-piuparts_slave_run(8)
-=====================
-:doctype: manpage
-:revdate: 2017-03-06
+.. only:: html
 
-NAME
-----
-piuparts_slave_run - start up piuparts-slave instance(s) in screen
+ piuparts_slave_run(8)
+ =====================
+ :doctype: manpage
+ :revdate: 2017-03-06
+
+
 
 SYNOPSIS
 --------
@@ -23,7 +23,7 @@ There are no options to this command currently. Note however that *this interfac
 
 ENVIRONMENT
 -----------
-Running piuparts in master-slave mode requires configuration in _/etc/piuparts_.
+Running piuparts in master-slave mode requires configuration in */etc/piuparts*.
 
 BUGS
 ----
@@ -39,10 +39,8 @@ Make sure to also read */usr/share/doc/piuparts-master/README_server.txt*.
 
 SEE ALSO
 --------
-*piuparts*(1), *piuparts_slave_join*(8), *piuparts_slave_stop*(8), *screen*(1)
+*piuparts* (1), *piuparts_slave_join* (8), *piuparts_slave_stop* (8), *screen* (1)
 
 AUTHOR
 ------
 Holger Levsen (holger@layer-acht.org)
-
-// vim: set filetype=asciidoc:

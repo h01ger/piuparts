@@ -21,7 +21,7 @@ set -e
 # picking up new code and sections.
 #
 
-for pid in $(pgrep --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave')
+for pid in $(pgrep --full '/usr/bin/python3 @sharedir@/piuparts/piuparts-slave')
 do
 	echo "Sending SIGUSR1 to ${pid}..."
 	kill -USR1 $pid

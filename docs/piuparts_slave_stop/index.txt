@@ -1,0 +1,8 @@
+Manpage
+=======
+
+
+.. toctree::
+   :maxdepth: 1
+    
+   piuparts slave stop <piuparts_slave_stop.8>

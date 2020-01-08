@@ -20,12 +20,8 @@
 import bz2
 import lzma
 import zlib
-import urllib2
 
-
-import conf
-import dependencyparser
-import packagesdb
+from six.moves import urllib
 
 
 class DecompressedStream():
@@ -37,6 +33,17 @@ class DecompressedStream():
         self._line_buffer = []
         self._i = 0
         self._end = 0
+        self._undecbuf = b''
+
+    def _split_decode(self, myb):
+        lmyb = len(myb)
+        for end in range(lmyb, max(lmyb-6, -1), -1):
+            try:
+                return myb[:end].decode(), myb[end:]
+            except UnicodeDecodeError:
+                pass
+        # not returned yet? We have a problem
+        raise UnicodeDecodeError
 
     def _refill(self):
         if self._input is None:
@@ -49,6 +56,9 @@ class DecompressedStream():
                 return False
             if self._decompressor:
                 chunk = self._decompressor.decompress(chunk)
+            if isinstance(chunk, bytes):
+                chunk = self._undecbuf + chunk
+                chunk, self._undecbuf = self._split_decode(chunk)
             self._buffer = self._buffer + chunk
             if chunk:
                 return True
@@ -80,15 +90,16 @@ class DecompressedStream():
 def open_packages_url(url):
     """Open a Packages.bz2 file pointed to by a URL"""
     socket = None
+    error = None
     for ext in ['.xz', '.bz2', '.gz', '']:
         try:
-            socket = urllib2.urlopen(url + ext)
-        except urllib2.HTTPError as httperror:
-            pass
+            socket = urllib.request.urlopen(url + ext)
+        except urllib.error.HTTPError as e:
+            error = e
         else:
             break
-    if socket is None:
-        raise httperror
+    else:
+        raise error
     url = socket.geturl()
     if ext == '.bz2':
         decompressor = bz2.BZ2Decompressor()
@@ -102,7 +113,7 @@ def open_packages_url(url):
     elif ext == '':
         decompressed = socket
     else:
-        raise ext
+        raise Exception('Unknown compression: {}'.format(ext))
     return (url, decompressed)
 
 # vi:set et ts=4 sw=4 :

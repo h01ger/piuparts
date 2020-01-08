@@ -38,14 +38,14 @@ TAILPID=$!
 trap "kill $TAILPID" INT TERM EXIT
 
 sleep 0.5
-pkill --signal INT --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave'
+pkill --signal INT --full '/usr/bin/python3 @sharedir@/piuparts/piuparts-slave'
 
 i=1
-while pgrep --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave' > /dev/null ; do
+while pgrep --full '/usr/bin/python3 @sharedir@/piuparts/piuparts-slave' > /dev/null ; do
 	echo -n "$(date -u +%T) - "
-	pgrep --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave' | xargs -r echo -n "slaves running: "
+	pgrep --full '/usr/bin/python3 @sharedir@/piuparts/piuparts-slave' | xargs -r echo -n "slaves running: "
 	SLEEP=$(( $i * $i ))
-	BUSY=$(ps fax | grep -v grep | grep '/usr/bin/python @sbindir@/piuparts' | awk '{print $NF}')
+	BUSY=$(ps fax | grep -v grep | grep '/usr/bin/python3 @sbindir@/piuparts' | awk '{print $NF}')
 	if [ -n "$BUSY" ] ; then
 		# really/meaningful busy
 		echo
@@ -61,7 +61,7 @@ while pgrep --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave' > /dev/n
 	i=$(( $i + 1 ))
 done
 echo -n "$(date -u +%T) - "
-pgrep --full '/usr/bin/python @sharedir@/piuparts/piuparts-slave' | xargs echo "slaves running: (should list none) "
+pgrep --full '/usr/bin/python3 @sharedir@/piuparts/piuparts-slave' | xargs echo "slaves running: (should list none) "
 
 trap - INT TERM EXIT
 kill $TAILPID

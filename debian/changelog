@@ -1,3 +1,76 @@
+piuparts (1.1.0) UNRELEASED; urgency=medium
+
+  [ Herbert Parentes Fortes Neto ]
+  * piuparts.py: use Popen with universal_newlines=True. Py2, Py3 compatible.
+  * New mail template: add bug-templates/obsolete_conffiles.mail.
+
+  [ Thomas Goirand ]
+  * Switch to package to Python 3:
+    - Replaced python- with python3- in debian/control.
+    - Removed all python2 (>= 2.7) by a ${python3:Depends}.
+    - Replaced python2 by python3 in debian/rules.
+    - Replaced dh_python2 stuff by dh_python3 in debian/rules.
+    - Patched piupartslib/conf.py, piupartslib/dependencyparser.py,
+      piupartslib/packagesdb.py, piupartslib/pkgsummary.py, tests/unittests.py
+      so that they are Python 3 compatible.
+    - Removed python-lzma (build-)depends as it's in standard in Py 3.
+    - Add python3-six as (build-)depends.
+    - Fix Makefile to use python3 and not python2.
+    - d/piuparts-common.install: switch to python 3.
+    - d/rules: remove all __pycache__ folder before proceeding to install.
+    - Add --shebang=/usr/bin/python3 when calling dh_python3.
+    - Do not use -N piuparts-master -N piuparts-slave when calling dh_python3
+      for the 2nd time, so that it correctly adds the interpreter as depends.
+    - Lintian overrides "python-script-but-no-python-dep": that's ok, because
+      piuparts-common already has the dependency.
+
+  [ Mattia Rizzolo ]
+  * piuparts-slave.py: port to python3.
+
+  [ Holger Levsen ]
+  * Bump version number to 1.1.x due to the switch to python3.
+  * piuparts.conf-template.pejacevic:
+    - also test bullseye and bullseye-rcmd. Closes: #933061.
+    - increase precedence values for oldstable and older.
+  * docs/README_server.txt, docs/piuparts/piuparts.1.txt and piuparts.py:
+    update examples for buster being stable and bullseye being the new
+    testing.
+  * Use /usr/bin/python3 everywhere.
+  * d/control:
+    - bump standards version to 4.4.1, no changes needed.
+    - bump debhelper-compat to 12.
+  * d/tests: Add simple smoke-test.
+  * htdocs/news.tpl:
+    - mention new suites bullseye and bullseye-rcmd being tested.
+    - mention piuparts.debian.org is running the python3 branch.
+  * instances/Makefile: set default mirror to deb.debian.org.
+  * d/rules: set GOCACHE to a safely writable directory during build as
+    the cache is mandatory with Go 1.12.
+  * d/control:
+    - bump standards version to 4.4.1, no changes needed.
+    - bump debhelper-compat to 12.
+    - remove myself from uploaders. It was fun! Policy is your friend. Trust
+      the Policy. Love the Policy. Obey the Policy.
+  * instances/*, docs/README_pejacevic.txt and htdocs/index: stop mentioning
+    piu-slave-bm-a.debian.org.
+
+  [ David Prévot ]
+  * Use the same favicon as the one from www.d.o.
+
+  [ Bastian Venthur ]
+  * piuparts-analyze.py: updates for python-debianbts 2.10.0 deprecating
+    some methodcalls, update depends in d/control accordingly.
+
+  [ Nis Martensen ]
+  * piuparts, piuparts-master-backend, piuparts-report,
+    detect_well_known_errors, piupartslib/(dependencyparser|packagesdb):
+    several fixes and improvements related to porting to python3.
+
+  [ James Clarke ]
+  * piuparts: Fix diff_meta_data reporting every file as new and removed.
+
+ -- Holger Levsen <holger@debian.org>  Sun, 07 Jul 2019 17:15:41 +0200
+
 piuparts (1.0.1) unstable; urgency=medium
 
   [ Andreas Beckmann ]

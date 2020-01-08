@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
@@ -40,7 +40,6 @@ import time
 import logging
 import optparse
 import sys
-import commands
 import tempfile
 import shutil
 import os
@@ -51,7 +50,6 @@ import json
 import pickle
 import subprocess
 import traceback
-import urllib
 import uuid
 import apt_pkg
 import pipes
@@ -64,6 +62,11 @@ except ImportError:
     from debian_bundle import deb822
 
 import piupartslib.conf
+
+from six.moves import urllib
+
+import six
+
 
 apt_pkg.init_system()
 
@@ -131,7 +134,8 @@ class DefaultsFactory:
 
     def guess_flavor(self):
         p = subprocess.Popen(["lsb_release", "-i", "-s"],
-                             stdout=subprocess.PIPE)
+                             stdout=subprocess.PIPE,
+                             universal_newlines=True)
         stdout, stderr = p.communicate()
         return stdout.strip().lower()
 
@@ -553,7 +557,8 @@ def run(command, ignore_errors=False, timeout=0):
     env["PIUPARTS_OBJECTS"] = ' '.join(str(vobject) for vobject in settings.testobjects)
     devnull = open('/dev/null', 'r')
     p = subprocess.Popen(command, env=env, stdin=devnull,
-                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                         universal_newlines=True)
     output = ""
     excessive_output = False
     if timeout > 0:
@@ -1033,7 +1038,8 @@ class Chroot:
             proxy = None
             pat = re.compile(r"^Acquire::http::Proxy\s+\"([^\"]+)\"", re.I)
             p = subprocess.Popen(["apt-config", "dump"],
-                                 stdout=subprocess.PIPE)
+                                 stdout=subprocess.PIPE,
+                                 universal_newlines=True)
             stdout, _ = p.communicate()
             if stdout:
                 for line in stdout.split("\n"):
@@ -1534,24 +1540,24 @@ class Chroot:
         changes = diff_selections(self, selections)
         deps = {}
         nondeps = {}
-        for name, state_version in changes.iteritems():
+        for name, state_version in six.iteritems(changes):
             if name in packages:
                 nondeps[name] = state_version
             else:
                 deps[name] = state_version
 
-        deps_to_remove = [name for name, (state, version) in deps.iteritems()
+        deps_to_remove = [name for name, (state, version) in six.iteritems(deps)
                           if state == "remove"]
-        deps_to_purge = [name for name, (state, version) in deps.iteritems()
+        deps_to_purge = [name for name, (state, version) in six.iteritems(deps)
                          if state == "purge"]
-        nondeps_to_remove = [name for name, (state, version) in nondeps.iteritems()
+        nondeps_to_remove = [name for name, (state, version) in  six.iteritems(nondeps)
                              if state == "remove"]
-        nondeps_to_purge = [name for name, (state, version) in nondeps.iteritems()
+        nondeps_to_purge = [name for name, (state, version) in  six.iteritems(nondeps)
                             if state == "purge"]
         all_to_remove = deps_to_remove + deps_to_purge + nondeps_to_remove + nondeps_to_purge
-        all_to_install = [(name, version) for name, (state, version) in deps.iteritems()
+        all_to_install = [(name, version) for name, (state, version) in six.iteritems(deps)
                           if state == "install"]
-        all_to_install += [(name, version) for name, (state, version) in nondeps.iteritems()
+        all_to_install += [(name, version) for name, (state, version) in six.iteritems(nondeps)
                            if state == "install"]
 
         # First remove all packages (and reinstall missing ones).
@@ -1697,7 +1703,8 @@ class Chroot:
         seen = []
         while True:
             p = subprocess.Popen(["lsof", "-t", "+D", self.name],
-                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                 universal_newlines=True)
             stdout, _ = p.communicate()
             if not stdout:
                 break
@@ -1765,15 +1772,16 @@ class Chroot:
         dev_ptmx_rel_path = self.relative("dev/ptmx")
         if not os.path.islink(dev_ptmx_rel_path):
             if not os.path.exists(dev_ptmx_rel_path):
-                os.mknod(dev_ptmx_rel_path, 0666 | stat.S_IFCHR, os.makedev(5, 2))
+                os.mknod(dev_ptmx_rel_path, 0o0666 | stat.S_IFCHR, os.makedev(5, 2))
             self.mount(self.relative("dev/pts/ptmx"), "/dev/ptmx", opts="bind", no_mkdir=True)
-        p = subprocess.Popen(["tty"], stdout=subprocess.PIPE)
+        p = subprocess.Popen(["tty"], stdout=subprocess.PIPE,
+                             universal_newlines=True)
         stdout, _ = p.communicate()
         current_tty = stdout.strip()
         if p.returncode == 0 and os.path.exists(current_tty):
             dev_console = self.relative("/dev/console")
             if not os.path.exists(dev_console):
-                os.mknod(dev_console, 0600, os.makedev(5, 1))
+                os.mknod(dev_console, 0o0600, os.makedev(5, 1))
             self.mount(current_tty, "/dev/console", opts="bind", no_mkdir=True)
         self.mount("tmpfs", "/dev/shm", fstype="tmpfs", opts="size=65536k")
         if selinux_enabled():
@@ -1994,8 +2002,8 @@ def diff_meta_data(tree1, tree2, quiet=False):
     """Compare two dir trees and return list of new files (only in 'tree2'),
        removed files (only in 'tree1'), and modified files."""
 
-    tree1 = tree1.copy()
-    tree2 = tree2.copy()
+    tree1_c = tree1.copy()
+    tree2_c = tree2.copy()
 
     for name in settings.ignored_files:
         if name[0] == ':':
@@ -2006,11 +2014,11 @@ def diff_meta_data(tree1, tree2, quiet=False):
         if name in tree1:
             if verbose:
                 logging.info("IGNORED PATH@1: %s" % name)
-            del tree1[name]
+            del tree1_c[name]
         if name in tree2:
             if verbose:
                 logging.info("IGNORED PATH@2: %s" % name)
-            del tree2[name]
+            del tree2_c[name]
 
     for pattern in settings.ignored_patterns:
         if pattern[0] == ':':
@@ -2024,27 +2032,27 @@ def diff_meta_data(tree1, tree2, quiet=False):
             if m:
                 if verbose:
                     logging.info("IGNORED PATH@1: %s" % name)
-                del tree1[name]
+                del tree1_c[name]
         for name in tree2.keys():
             m = pat.search(name)
             if m:
                 if verbose:
                     logging.info("IGNORED PATH@2: %s" % name)
-                del tree2[name]
+                del tree2_c[name]
 
     modified = []
-    for name in tree1.keys()[:]:
-        if name in tree2:
+    for name in tree1.keys():
+        if name in tree2_c:
             if objects_are_different(tree1[name], tree2[name]):
                 if not quiet:
                     logging.debug("Modified(user, group, mode, size, target): %s expected%s != found%s" %
                                   (name, format_object_attributes(tree1[name]), format_object_attributes(tree2[name])))
                 modified.append((name, tree1[name]))
-            del tree1[name]
-            del tree2[name]
+            del tree1_c[name]
+            del tree2_c[name]
 
-    removed = [x for x in tree1.iteritems()]
-    new = [x for x in tree2.iteritems()]
+    removed = [x for x in six.iteritems(tree1_c)]
+    new = [x for x in six.iteritems(tree2_c)]
 
     # fix for #586793
     # prune rc?.d symlinks renamed by insserv
@@ -2115,13 +2123,13 @@ def diff_selections(chroot, selections):
        set to to restore original selections."""
     changes = {}
     current = chroot.get_selections()
-    for name, (value, version) in current.iteritems():
+    for name, (value, version) in six.iteritems(current):
         if name not in selections:
             changes[name] = ("purge", None)
         elif selections[name][0] != value and \
                 selections[name][0] in ["purge", "install"]:
             changes[name] = selections[name]
-    for name, (value, version) in selections.iteritems():
+    for name, (value, version) in six.iteritems(selections):
         if name not in current or \
             current[name][1] != version:
                 changes[name] = selections[name]
@@ -2452,14 +2460,14 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
 def save_meta_data(filename, chroot_state):
     """Save directory tree meta data into a file for fast access later."""
     logging.debug("Saving chroot meta data to %s" % filename)
-    with open(filename, "w") as f:
+    with open(filename, "wb") as f:
         pickle.dump(chroot_state, f)
 
 
 def load_meta_data(filename):
     """Load meta data saved by 'save_meta_data'."""
     logging.debug("Loading chroot meta data from %s" % filename)
-    with open(filename, "r") as f:
+    with open(filename, "rb") as f:
         return pickle.load(f)
 
 
@@ -2506,8 +2514,8 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     if chroot_state is not None:
         if chroot.initial_selections != chroot_state["initial_selections"]:
             logging.warn("Initial package selections do not match - ignoring loaded reference chroot state")
-            refsel = [(s, p, v) for p, (s, v) in chroot_state["initial_selections"].iteritems()]
-            cursel = [(s, p, v) for p, (s, v) in chroot.initial_selections.iteritems()]
+            refsel = [(s, p, v) for p, (s, v) in six.iteritems(chroot_state["initial_selections"])]
+            cursel = [(s, p, v) for p, (s, v) in six.iteritems(chroot.initial_selections)]
             rsel = [x for x in refsel if not x in cursel]
             csel = [x for x in cursel if not x in refsel]
             [logging.debug("  -%s" % " ".join(x)) for x in rsel]
@@ -2676,7 +2684,7 @@ def parse_command_line():
 
     parser.add_option("-d", "--distribution", action="append", metavar="NAME",
                       help="Which Debian distribution to use: a code name " +
-                           "(for example jessie, stretch, sid) or experimental. The " +
+                           "(for example buster, bullseye, sid) or experimental. The " +
                            "default is sid (=unstable).")
 
     parser.add_option("-D", "--defaults", action="store",

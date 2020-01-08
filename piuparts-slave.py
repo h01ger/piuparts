@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
@@ -189,7 +189,7 @@ class Slave:
             line = self._from_master.readline()
         except IOError:
             raise MasterCommunicationFailed()
-        logging.debug("<< " + line.rstrip())
+        logging.debug("<< " + str(line.rstrip()))
         return line
 
     def _writeline(self, *words):
@@ -238,7 +238,7 @@ class Slave:
             ssh_command.extend(["-l", self._master_user])
         ssh_command.append(self._master_host)
         ssh_command.append(self._master_command or "command-is-set-in-authorized_keys")
-        p = subprocess.Popen(ssh_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        p = subprocess.Popen(ssh_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
         self._to_master = p.stdin
         self._from_master = p.stdout
         line = self._readline()
@@ -554,7 +554,7 @@ class Section:
             self._error_wait_until = time.time() + 3600
             return 0
 
-        with open(os.path.join(self._slave_directory, "slave.lock"), "we") as lock:
+        with open(os.path.join(self._slave_directory, "slave.lock"), "w") as lock:
             oldcwd = os.getcwd()
             os.chdir(self._slave_directory)
             try:
@@ -707,7 +707,7 @@ class Section:
         output_name = log_name(pname, pvers)
         logging.debug("Opening log file %s" % output_name)
         new_name = os.path.join("new", output_name)
-        output = open(new_name, "we")
+        output = open(new_name, "w")
         output.write(time.strftime("Start: %Y-%m-%d %H:%M:%S %Z\n",
                                    time.gmtime()))
 
@@ -860,7 +860,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
         pids = [p.pid]
         if kill_all:
             ps = subprocess.Popen(["ps", "--no-headers", "-o", "pid", "--ppid", "%d" % p.pid],
-                                  stdout=subprocess.PIPE)
+                                  stdout=subprocess.PIPE, universal_newlines=True)
             stdout, stderr = ps.communicate()
             pids.extend([int(pid) for pid in stdout.split()])
         if p.poll() is None:
@@ -896,7 +896,7 @@ def run_test_with_timeout(cmd, maxwait, kill_all=True):
     logging.debug("Executing: %s" % command2string(cmd))
 
     stdout = ""
-    p = subprocess.Popen(cmd, preexec_fn=os.setpgrp,
+    p = subprocess.Popen(cmd, preexec_fn=os.setpgrp, universal_newlines=True,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if maxwait > 0:
         signal(SIGALRM, alarm_handler)
@@ -947,7 +947,7 @@ def create_chroot(config, tarball, distro):
     command.extend(["--apt", "TARBALL"])  # dummy package name
 
     output_name = tarball + ".log"
-    with open(output_name, "we") as output:
+    with open(output_name, "w") as output:
         try:
             fcntl.flock(output, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
@@ -959,7 +959,10 @@ def create_chroot(config, tarball, distro):
             output.write("Executing: " + command2string(command) + "\n\n")
             logging.debug("Executing: " + command2string(command))
             try:
-                p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                p = subprocess.Popen(command,
+                                     stdout=subprocess.PIPE,
+                                     stderr=subprocess.STDOUT,
+                                     universal_newlines=True)
                 for line in p.stdout:
                     output.write(line)
                     logging.debug(">> " + line.rstrip())

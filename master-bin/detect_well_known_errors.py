@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Copyright 2013 David Steele (dsteele@gmail.com)
@@ -29,7 +29,7 @@ import argparse
 import fcntl
 from collections import deque
 
-import piupartslib
+import piupartslib.conf
 from piupartslib.conf import MissingSection
 from piupartslib.dwke import *
 
@@ -77,7 +77,7 @@ def process_section(section, config, problem_list,
     if not os.access(sectiondir, os.F_OK):
         raise MissingSection("", section)
 
-    with open(os.path.join(sectiondir, "master.lock"), "we") as lock:
+    with open(os.path.join(sectiondir, "master.lock"), "w") as lock:
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
@@ -163,7 +163,7 @@ caching the problems found, by package, into ".kpr" files.
     conf = WKE_Config()
     conf.read(CONFIG_FILE)
 
-    with open(os.path.join(conf['master-directory'], "dwke.lock"), "we") as lock:
+    with open(os.path.join(conf['master-directory'], "dwke.lock"), "w") as lock:
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:

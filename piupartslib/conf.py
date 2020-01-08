@@ -23,13 +23,21 @@
 # in a configuration file, that's why).
 #
 
-import ConfigParser
-import UserDict
+try:
+    import UserDict
+except ImportError:
+    from collections import UserDict
+
 import subprocess
 import collections
 import re
 import distro_info
 from functools import reduce
+
+
+import six
+from six.moves import configparser
+from six.moves import reduce
 
 
 class MissingSection(Exception):
@@ -46,18 +54,18 @@ class MissingMandatorySetting(Exception):
             (key, filename),
 
 
-class Config(UserDict.UserDict):
+class Config(UserDict):
 
     def __init__(self, section, defaults, mandatory=[], defaults_section=None):
-        UserDict.UserDict.__init__(self)
+        UserDict.__init__(self)
         self._section = section
         self._defaults_section = defaults_section
-        for key, value in defaults.iteritems():
+        for key, value in six.iteritems(defaults):
             self[key] = value
         self._mandatory = mandatory
 
     def read(self, filename):
-        cp = ConfigParser.ConfigParser()
+        cp = configparser.ConfigParser()
         cp.read(filename)
         if not cp.has_section(self._section):
             raise MissingSection(filename, self._section)
@@ -113,7 +121,7 @@ class Config(UserDict.UserDict):
         ])
 
         # add mappings for e.g. "oldstable" -> "oldstable"
-        distmap.update(dict([(val, val) for key, val in distmap.iteritems()]))
+        distmap.update(dict([(val, val) for key, val in six.iteritems(distmap)]))
 
         # map e.g. "Debian6" -> "oldstable" where debdist.old(result="fullname")
         # currently returns 'Debian 6.0 "Squeeze"'
@@ -144,14 +152,14 @@ class Config(UserDict.UserDict):
             # Try to figure it out ourselves, using dpkg
             p = subprocess.Popen(["dpkg", "--print-architecture"],
                                  stdout=subprocess.PIPE)
-            self["arch"] = p.stdout.read().rstrip()
+            self["arch"] = p.stdout.read().decode().rstrip()
         return self["arch"]
 
 
-class DistroConfig(UserDict.UserDict):
+class DistroConfig(UserDict):
 
     def __init__(self, filename, mirror):
-        UserDict.UserDict.__init__(self)
+        UserDict.__init__(self)
         self._mirror = mirror
         self._defaults = {
             "uri": None,
@@ -161,7 +169,7 @@ class DistroConfig(UserDict.UserDict):
                 "depends": None,
                 "candidates": None,
         }
-        cp = ConfigParser.SafeConfigParser()
+        cp = configparser.SafeConfigParser()
         cp.read(filename)
         for section in cp.sections():
             self[section] = dict(self._defaults)
