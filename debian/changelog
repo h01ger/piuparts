@@ -1,4 +1,4 @@
-piuparts (1.1.0) UNRELEASED; urgency=medium
+piuparts (1.1.0) unstable; urgency=medium
 
   * Team upload.
 
@@ -26,8 +26,24 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
     - Lintian overrides "python-script-but-no-python-dep": that's ok, because
       piuparts-common already has the dependency.
 
+  [ Bastian Venthur ]
+  * piuparts-analyze.py: updates for python-debianbts 2.10.0 deprecating
+    some methodcalls, update depends in d/control accordingly.
+    Closes: #919170.
+
+  [ Nis Martensen ]
+  * piuparts, piuparts-master-backend, piuparts-report,
+    detect_well_known_errors, piupartslib/(dependencyparser|packagesdb):
+    several fixes and improvements related to porting to python3.
+
+  [ James Clarke ]
+  * piuparts: Fix diff_meta_data reporting every file as new and removed.
+
   [ Mattia Rizzolo ]
   * piuparts-slave.py: port to python3.
+
+  [ David Prévot ]
+  * Use the same favicon as the one from www.d.o.
 
   [ Holger Levsen ]
   * Bump version number to 1.1.x due to the switch to python3.
@@ -37,7 +53,7 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
   * docs/README_server.txt, docs/piuparts/piuparts.1.txt and piuparts.py:
     update examples for buster being stable and bullseye being the new
     testing.
-  * Use /usr/bin/python3 everywhere.
+  * Use /usr/bin/python3 everywhere. Closes: #937293.
   * d/control:
     - bump standards version to 4.4.1, no changes needed.
     - bump debhelper-compat to 12.
@@ -57,22 +73,7 @@ piuparts (1.1.0) UNRELEASED; urgency=medium
   * instances/*, docs/README_pejacevic.txt and htdocs/index: stop mentioning
     piu-slave-bm-a.debian.org.
 
-  [ David Prévot ]
-  * Use the same favicon as the one from www.d.o.
-
-  [ Bastian Venthur ]
-  * piuparts-analyze.py: updates for python-debianbts 2.10.0 deprecating
-    some methodcalls, update depends in d/control accordingly.
-
-  [ Nis Martensen ]
-  * piuparts, piuparts-master-backend, piuparts-report,
-    detect_well_known_errors, piupartslib/(dependencyparser|packagesdb):
-    several fixes and improvements related to porting to python3.
-
-  [ James Clarke ]
-  * piuparts: Fix diff_meta_data reporting every file as new and removed.
-
- -- Holger Levsen <holger@debian.org>  Sun, 07 Jul 2019 17:15:41 +0200
+ -- Holger Levsen <holger@debian.org>  Wed, 08 Jan 2020 20:50:42 +0100
 
 piuparts (1.0.1) unstable; urgency=medium
 
