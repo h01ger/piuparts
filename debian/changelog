@@ -1,5 +1,7 @@
 piuparts (1.1.0) UNRELEASED; urgency=medium
 
+  * Team upload.
+
   [ Herbert Parentes Fortes Neto ]
   * piuparts.py: use Popen with universal_newlines=True. Py2, Py3 compatible.
   * New mail template: add bug-templates/obsolete_conffiles.mail.
