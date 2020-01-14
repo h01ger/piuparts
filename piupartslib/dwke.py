@@ -248,7 +248,7 @@ def make_kprs(logdict, kprdict, problem_list):
         logpath = logdict[pkg_spec]
 
         try:
-            with open(logpath, 'r') as lb:
+            with open(logpath, 'r', errors='backslashreplace') as lb:
                 logbody = lb.read()
 
             where = get_where(logpath)

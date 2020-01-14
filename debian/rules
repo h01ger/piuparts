@@ -12,7 +12,6 @@ override_dh_auto_build:
 	$(MAKE) prefix=/usr build build-doc
 
 override_dh_auto_install:
-	for i in $$(find . -type d -iname __pycache__) ; do rm -rf $$i ; done
 	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp prefix=/usr etcdir=/etc install install-doc install-conf
 
 override_dh_python3:

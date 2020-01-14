@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 echo running $0
 
 test_this() {
@@ -8,5 +10,24 @@ test_this() {
 	$@
 }
 
-test_this piuparts --info
-test_this piuparts --list
+test_this piuparts --version
+
+WORKDIR=$(mktemp -d)
+trap "rm -rf $WORKDIR" 0 INT QUIT ABRT PIPE TERM
+cd $WORKDIR
+
+mkdir -p t/DEBIAN t/usr t/etc
+cat >t/DEBIAN/control <<EOF
+Package: t
+Version: 4
+Maintainer: Piu Parts <piuparts-devel@alioth-lists.debian.net>
+Priority: optional
+Architecture: all
+Installed-Size: 0
+Description: Auto Package Test Dummy
+ Extremely simple binary package for piuparts testing
+EOF
+
+dpkg-deb -b t
+
+test_this piuparts t.deb

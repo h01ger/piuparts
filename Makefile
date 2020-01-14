@@ -208,7 +208,8 @@ clean:
 	rm -f build-master-stamp
 	rm -fr $(DOCS_GENERATED)
 	rm -fr .doctrees/
-	rm -f *.pyc piupartslib/*.pyc master-bin/*.pyc slave-bin/*.pyc tests/*.pyc
+	find . -iname '*.pyc' -type f -delete
+	find . -iname __pycache__ -type d -delete
 	rm -f $(SCRIPTS_GENERATED)
 	$(RM) helpers/debiman-piuparts-distill/debiman-piuparts-distill
 	$(MAKE) -C instances clean
