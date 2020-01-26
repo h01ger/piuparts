@@ -43,6 +43,7 @@ import debianbts
 import apt_pkg
 from signal import alarm, signal, SIGALRM
 from collections import deque
+from functools import cmp_to_key
 
 import piupartslib.conf
 from piupartslib.conf import MissingSection
@@ -123,7 +124,7 @@ class PiupartsBTS():
                     pass
                 else:
                     versions.append(v)
-            self._bug_versions[bug] =  list(reversed(sorted(versions, cmp=apt_pkg.version_compare))) or ['~']
+            self._bug_versions[bug] = sorted(versions, key=cmp_to_key(apt_pkg.version_compare), reverse=True) or ['~']
         self._queries += 1
         return self._bug_versions[bug]
 
