@@ -354,7 +354,7 @@ def main():
                     os.chdir(oldcwd)
             except Busy:
                 print("Section is busy")
-                todo.append((section_name, time.time() + 300))
+                todo.append((section_name, time.time() + 60))
             except MissingSection as e:
                 print("Configuration Error in section '%s': %s" % (section_name, e))
             print("")
