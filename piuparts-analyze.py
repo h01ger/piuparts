@@ -38,6 +38,7 @@ import re
 import shutil
 import subprocess
 import fcntl
+import traceback
 
 import debianbts
 import apt_pkg
@@ -310,9 +311,9 @@ def mark_logs_with_reported_bugs():
                 write_bug_file(failed_log, abugs + bugs)
         except KeyboardInterrupt:
             raise
-        except:
+        except Exception:
             print('ERROR processing %s' % failed_log)
-            print(sys.exc_info()[0])
+            traceback.print_exc()
         alarm(0)
 
 
