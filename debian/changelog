@@ -1,3 +1,23 @@
+piuparts (1.1.2) UNRELEASED; urgency=medium
+
+  [ Ansgar ]
+  * piuparts-report.py: fix link to states.png
+
+  [ Stuart Prescott ]
+  * Add timeout when fetching packages files
+
+  [ Nis Martensen ]
+  * piuparts-analyze: unbreak sorting of version lists
+
+  [ Nicolas Dandrimont ]
+  * piuparts-analyze: print full exceptions when failing
+  * piuparts-analyze: fetch all bugs in bulk instead of package by package
+  * piuparts-analyze: only wait for 60 seconds when a given section is busy
+  * Add exemption for /var/lib/dpkg/cmethopt (Closes: #953756)
+  * Add myself to uploaders
+
+ -- Nicolas Dandrimont <olasd@debian.org>  Fri, 13 Mar 2020 11:29:07 +0100
+
 piuparts (1.1.1) unstable; urgency=medium
 
   * Team upload to unstuck python-debianbts migration.
