@@ -297,6 +297,7 @@ class Settings:
             "/var/lib/dpkg/arch",
             "/var/lib/dpkg/available",
             "/var/lib/dpkg/available-old",
+            "/var/lib/dpkg/cmethopt",               # Bug#953756
             "/var/lib/dpkg/diversions",
             "/var/lib/dpkg/diversions-old",
             "/var/lib/dpkg/lock",
