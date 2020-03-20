@@ -656,14 +656,15 @@ def make_metapackage(name, depends, conflicts, arch='all'):
     control['Architecture'] = arch
     control['Maintainer'] = ('piuparts developers team '
                              '<piuparts-devel@alioth-lists.debian.net>')
-    control['Description'] = ('Dummy package to satisfy dependencies - '
-                              'created by piuparts\n'
-                              ' This package was created automatically by '
-                              'piuparts and can safely be removed')
     if depends:
         control['Depends'] = depends
     if conflicts:
         control['Conflicts'] = conflicts
+
+    control['Description'] = ('Dummy package to satisfy dependencies - '
+                              'created by piuparts\n'
+                              ' This package was created automatically by '
+                              'piuparts and can safely be removed')
 
     create_file(os.path.join(tmpdir, name, 'DEBIAN', 'control'),
                 control.dump())
