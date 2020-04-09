@@ -83,6 +83,7 @@ from __future__ import print_function
 import json
 import datetime
 from collections import namedtuple, defaultdict
+import os
 
 
 import six
@@ -221,8 +222,9 @@ def tooltip(summary, pkg):
 
 
 def write_summary(summary, fname):
-    with open(fname, 'w') as fl:
+    with open(fname + '.tmp', 'w') as fl:
         json.dump(summary, fl, sort_keys=True, indent=1)
+    os.rename(fname + '.tmp', fname)
 
 
 def read_summary(fname):
