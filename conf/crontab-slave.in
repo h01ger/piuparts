@@ -6,7 +6,8 @@ PATH=@sharedir@/piuparts/slave:/usr/bin:/bin
 #
 # start slave_run automatically after reboots
 #
-#@reboot slave_cleanup ; slave_run
+@reboot slave_cleanup ; slave_run
+
 #42 * * * * slave_cleanup ; ! slave_run >/dev/null 2>&1 || echo "piuparts-slave started by cron"
 
 #
