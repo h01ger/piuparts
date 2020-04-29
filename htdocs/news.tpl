@@ -6,6 +6,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2020-04-29</b>
+	Thanks to DSA, a new worker host, <a href="https://db.debian.org/machines.cgi?host=piu-slave-conova-01">piu-slave-conova-01</a>, has been introduced. It will run 4 parallel worker processes on the amd64 arch.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2020-01-08</b>
 	After maintaining piuparts.debian.org for more than a decade, Holger Levsen resigns from doing so and also steps back from maintaining the <a href="https://tracker.debian.org/piuparts">piuparts</a> source package in Debian, after doing this for even more years. It was really a lot of fun, I learned a lot and am thankful for being able to contribute <em>this service</em> to improve Debian. Many thanks to all who contributed to it, especially Andreas Beckmann. And also many thanks to those, who will keep it running in the future!
      </td>
