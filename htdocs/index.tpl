@@ -43,10 +43,11 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
-      Since 2005 piuparts is run systematically on all packages in Debian, at first only on <a href="/sid" target="_blank">unstable</a>. Today piuparts.debian.org is testing many suites by running piuparts in <a href="/doc/README_server.html" target="_blank">master/slave mode</a>. This setup currently consists of two hosts: <a href="https://db.debian.org/machines.cgi?host=pejacevic" target="_blank">pejacevic.debian.org</a> and and <a href="https://db.debian.org/machines.cgi?host=piu-slave-ubc-01" target="_blank">piu-slave-ubc-01.debian.org</a>:
+      Since 2005 piuparts is run systematically on all packages in Debian, at first only on <a href="/sid" target="_blank">unstable</a>. Today piuparts.debian.org is testing many suites by running piuparts in <a href="/doc/README_server.html" target="_blank">master/slave mode</a>. This setup currently consists of three hosts: <a href="https://db.debian.org/machines.cgi?host=pejacevic" target="_blank">pejacevic.debian.org</a>, <a href="https://db.debian.org/machines.cgi?host=piu-slave-ubc-01" target="_blank">piu-slave-ubc-01.debian.org</a> and <a href="https://db.debian.org/machines.cgi?host=piu-slave-conova-01" target="_blank">piu-slave-conova-01.debian.org</a>:
      <ul>
-      <li> pejacevic acts as the piuparts-master, which is responsible for scheduling test jobs to the slaves. The other main task is to generate the reports which are served via https://piuparts.debian.org.</li>
-      <li> piu-slave-ubc-01 runs four piuparts-slave instances, which then run piuparts itself.</li>
+      <li> pejacevic acts as the piuparts-master, which is responsible for scheduling test jobs to the slaves. The other main task is to generate the reports which are served via https://piuparts.debian.org;</li>
+      <li> piu-slave-ubc-01 runs four piuparts-slave instances, which then run piuparts itself;</li>
+      <li> piu-slave-conova-01 also runs four piuparts-slave instances, which then run piuparts itself.</li>
      </ul>
     </tr>
     <tr class="normalrow">
