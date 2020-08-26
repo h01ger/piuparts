@@ -2013,11 +2013,11 @@ def diff_meta_data(tree1, tree2, quiet=False):
             name = name[1:]
         else:
             verbose = False
-        if name in tree1:
+        if name in tree1_c:
             if verbose:
                 logging.info("IGNORED PATH@1: %s" % name)
             del tree1_c[name]
-        if name in tree2:
+        if name in tree2_c:
             if verbose:
                 logging.info("IGNORED PATH@2: %s" % name)
             del tree2_c[name]
@@ -2031,20 +2031,20 @@ def diff_meta_data(tree1, tree2, quiet=False):
         pat = re.compile(pattern)
         for name in tree1.keys():
             m = pat.search(name)
-            if m:
+            if m and name in tree1_c:
                 if verbose:
                     logging.info("IGNORED PATH@1: %s" % name)
                 del tree1_c[name]
         for name in tree2.keys():
             m = pat.search(name)
-            if m:
+            if m and name in tree2_c:
                 if verbose:
                     logging.info("IGNORED PATH@2: %s" % name)
                 del tree2_c[name]
 
     modified = []
     for name in tree1.keys():
-        if name in tree2_c:
+        if name in tree1_c and name in tree2_c:
             if objects_are_different(tree1[name], tree2[name]):
                 if not quiet:
                     logging.debug("Modified(user, group, mode, size, target): %s expected%s != found%s" %
