@@ -559,7 +559,7 @@ def run(command, ignore_errors=False, timeout=0):
     devnull = open('/dev/null', 'r')
     p = subprocess.Popen(command, env=env, stdin=devnull,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                         universal_newlines=True)
+                         universal_newlines=True, errors="backslashreplace")
     output = ""
     excessive_output = False
     if timeout > 0:
