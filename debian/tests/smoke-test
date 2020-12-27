@@ -16,6 +16,9 @@ WORKDIR=$(mktemp -d)
 trap "rm -rf $WORKDIR" 0 INT QUIT ABRT PIPE TERM
 cd $WORKDIR
 
+
+# set up a very simple test package
+
 mkdir -p t/DEBIAN t/usr t/etc
 cat >t/DEBIAN/control <<EOF
 Package: t
@@ -30,4 +33,35 @@ EOF
 
 dpkg-deb -b t
 
+# this should always succeed
 test_this piuparts t.deb
+
+
+# another simple package, but set up for failure
+
+mkdir -p f/DEBIAN f/usr f/etc
+cat >f/DEBIAN/control <<EOF
+Package: f
+Version: 4
+Maintainer: Piu Parts <piuparts-devel@alioth-lists.debian.net>
+Priority: optional
+Architecture: all
+Installed-Size: 0
+Description: Auto Package Test Fail Dummy
+ Extremely simple binary package for piuparts testing - fail version
+EOF
+
+cat >f/DEBIAN/postinst <<EOF
+#! /bin/sh
+mkdir -p /etc/f/
+touch /etc/f/ailure
+EOF
+
+chmod +x f/DEBIAN/postinst
+
+dpkg-deb -b f
+
+# it is an error if this succeeds
+test_this piuparts f.deb && false
+
+exit 0
