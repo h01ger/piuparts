@@ -19,7 +19,6 @@ piuparts (1.1.2) UNRELEASED; urgency=medium
   * piuparts-analyze: only wait for 60 seconds when a given section is busy
   * Add exemption for /var/lib/dpkg/cmethopt (Closes: #953756)
   * Add myself to uploaders
-  * d/rules: Add workaround for dh-dwz bug #933541.
   * Set Description last when generating a dummy package
   * Start piuparts-slave automatically after reboots again
   * Add piu-slave-conova-01
