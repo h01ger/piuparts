@@ -8,6 +8,10 @@ piuparts (1.1.2) UNRELEASED; urgency=medium
 
   [ Nis Martensen ]
   * piuparts-analyze: unbreak sorting of version lists
+  * autopkgtest: add a must-fail test
+  * d/p-[ms].lintian-overrides: update to python3
+  * piuparts.py: run: do not crash on non-utf-8 command output
+  * piuparts.py: Prevent KeyError in diff_meta_data (Closes: #968842)
 
   [ Nicolas Dandrimont ]
   * piuparts-analyze: print full exceptions when failing
@@ -15,8 +19,21 @@ piuparts (1.1.2) UNRELEASED; urgency=medium
   * piuparts-analyze: only wait for 60 seconds when a given section is busy
   * Add exemption for /var/lib/dpkg/cmethopt (Closes: #953756)
   * Add myself to uploaders
+  * d/rules: Add workaround for dh-dwz bug #933541.
+  * Set Description last when generating a dummy package
+  * Start piuparts-slave automatically after reboots again
+  * Add piu-slave-conova-01
+  * Add news entry for piu-slave-conova-01
+  * Move piu-slave-ubc-01 to deb.d.o
 
   [ Debian Janitor ]
+  * Fix day-of-week for changelog entry 0.16-1.
+
+  [ Julien Cristau ]
+  * Make the summary generation atomic
+
+  [ Holger Levsen ]
+  * Bump standards version to 4.5.1, no changes needed.
   * Fix day-of-week for changelog entry 0.16-1.
 
  -- Nicolas Dandrimont <olasd@debian.org>  Fri, 13 Mar 2020 11:29:07 +0100
