@@ -304,6 +304,10 @@ Options must come before the other command line arguments.
   Use directory as the place where temporary files and directories are created. The default is the environment variable *TMPDIR*, or */tmp* if not set.
   Note: the temporary directory must *not* be mounted with the _nodev_ or _nosuid_ mount option.
 
+*-*-update-retries*='num-retries'::
+  Rerun 'apt-get update` up to "num-retries" times.
+  Useful to work around temporary network failures and hashsum mismatch errors.
+
 *-*-upgrade-before-dist-upgrade*::
   Perform two-stage upgrades: 'apt-get upgrade && apt-get dist-upgrade'.
 

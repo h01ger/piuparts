@@ -182,6 +182,7 @@ class Settings:
         self.scriptsdirs = []
         self.bindmounts = []
         self.allow_database = False
+        self.update_retries = None
         # chroot setup
         self.arch = None
         self.basetgz = None
@@ -820,7 +821,8 @@ class Chroot:
         # Useful for adjusting apt configuration e.g. for internal mirror usage
         self.run_scripts("post_chroot_unpack")
 
-        self.run(["apt-get", "update"])
+        self.aptupdate_run()
+
         if settings.basetgz or settings.docker_image or settings.schroot or settings.existing_chroot:
             self.run(["apt-get", "-yf", "dist-upgrade"])
         self.minimize()
@@ -1005,6 +1007,28 @@ class Chroot:
                     "\n".join(lines) + "\n")
         logging.debug("sources.list:\n" + indent_string("\n".join(lines)))
 
+    def aptupdate_run(self):
+        """Resynchronize the package index files.
+           If executed under --update-retries <num>, retry
+           its execution up to <num> times, useful e.g.
+           on temporary network failures or hashsum mismatch
+           errors."""
+        if not settings.update_retries:
+            self.run(["apt-get", "update"])
+            return
+
+        count = 0
+        for count, run in enumerate(range(settings.update_retries), 1):
+            (status, output) = self.run(["apt-get", "update"],
+                                        ignore_errors=True)
+            if status == 0:
+                break
+            else:
+                logging.info("apt-get update failed to execute " +
+                             "(run #%d, re-trying up to %d times)" % (count, settings.update_retries))
+
+        return status
+
     def enable_testdebs_repo(self, update=True):
         if settings.testdebs_repo:
             if settings.testdebs_repo.startswith("deb"):
@@ -1016,7 +1040,7 @@ class Chroot:
             logging.debug("enabling testdebs repository '%s'" % debline)
             create_file(self.relative("etc/apt/sources.list.d/piuparts-testdebs-repo.list"), debline + "\n")
             if update:
-                self.run(["apt-get", "update"])
+                self.aptupdate_run()
 
     def disable_testdebs_repo(self):
         if settings.testdebs_repo:
@@ -1171,7 +1195,7 @@ class Chroot:
             self.create_apt_sources(distro)
             # Run custom scripts before upgrade
             self.run_scripts("pre_distupgrade")
-            self.run(["apt-get", "update"])
+            self.aptupdate_run()
             if apt_get_upgrade:
                 self.run(["apt-get", "-y", "upgrade"])
             self.run(["apt-get", "-yf", "dist-upgrade"])
@@ -2939,6 +2963,11 @@ def parse_command_line():
                       help="Use DIR for temporary storage. Default is " +
                            "$TMPDIR or /tmp.")
 
+    parser.add_option("--update-retries", metavar="UPDATE_RETRIES", type="int",
+                      help="Rerun `apt-get update` up to UPDATE_RETRIES "
+                           "times. Useful to work around temporary network failures "
+                           "and hashsum mismatch errors.")
+
     parser.add_option("-v", "--verbose",
                       action="store_true", default=False,
                       help="No meaning anymore.")
@@ -3033,6 +3062,7 @@ def parse_command_line():
     settings.scriptsdirs = opts.scriptsdir
     settings.bindmounts += opts.bindmount
     settings.allow_database = opts.allow_database
+    settings.update_retries = opts.update_retries
     # chroot setup
     settings.arch = opts.arch
     settings.basetgz = opts.basetgz
