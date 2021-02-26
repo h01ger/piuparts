@@ -1,6 +1,7 @@
 Source: piuparts
 Maintainer: piuparts developers team <piuparts-devel@alioth-lists.debian.net>
-Uploaders: Nicolas Dandrimont <olasd@debian.org>
+Uploaders: Nicolas Dandrimont <olasd@debian.org>,
+ Holger Levsen <holger@debian.org>
 Section: devel
 Priority: optional
 Standards-Version: 4.5.1
