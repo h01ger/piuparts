@@ -146,7 +146,9 @@ Description: piuparts slave components
 Package: piuparts-slave-from-git-deps
 Architecture: all
 Depends:
+ adequate,
  git,
+ pkg-config,
 # this list is synced from piuparts-slave
  adduser,
  openssh-client,
