@@ -1,7 +1,11 @@
 piuparts (1.1.3) UNRELEASED; urgency=medium
 
+  [ Holger Levsen ]
   * Team upload.
   * [...]
+
+  [  ]
+  * Upgrade to newer source format 3.0 (native).
 
  -- Holger Levsen <holger@debian.org>  Sun, 21 Feb 2021 10:26:15 +0100
 
