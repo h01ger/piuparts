@@ -104,6 +104,11 @@ class PkgSummaryAddTests(unittest.TestCase):
         pkgsummary.add_summary(self.summ, 'dist', 'pkg', 'F', 2, 'http://foo')
         self.assertEqual(2, self.summ['packages']['pkg']['dist'][1])
 
+    def testSummAddInvalid(self):
+        pkgsummary.add_summary(self.summ, 'dist', 'pkg', '-', 0, 'http://foo')
+        print(self.summ['packages']['pkg']['dist'][2])
+        self.assertTrue("http" in self.summ['packages']['pkg']['dist'][2])
+
     def testSummMerge(self):
         pkgsummary.add_summary(self.summ, 'dist', 'pkg', 'X', 0, 'http://foo')
 

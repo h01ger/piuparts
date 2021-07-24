@@ -89,6 +89,9 @@ import os
 import six
 
 
+INVALID_URL = "invalid url"
+
+
 class SummaryException(Exception):
     pass
 
@@ -147,7 +150,7 @@ def new_summary():
     utcdate = " ".join(cdate_array[:-1] + ["UTC"] + [cdate_array[-1]])
 
     # define the packages struct. The default should never be the one added
-    dfltentry = ['-', 0, 'invalid url']
+    dfltentry = ['-', 0, INVALID_URL]
     pkgstruct = defaultdict(lambda: defaultdict(lambda: dfltentry))
 
     return({
@@ -171,7 +174,7 @@ def add_summary(summary, rep_sec, pkg, flag, block_cnt, url):
 
     [old_flag, old_cnt, old_url] = pdict[pkg][rep_sec]
     block_cnt = max(block_cnt, old_cnt)
-    if old_flag != worst_flag(old_flag, flag):
+    if old_flag != worst_flag(old_flag, flag) or old_url == INVALID_URL:
         pdict[pkg][rep_sec] = [flag, block_cnt, url]
     else:
         pdict[pkg][rep_sec] = [old_flag, block_cnt, old_url]
