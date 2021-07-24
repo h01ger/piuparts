@@ -92,33 +92,50 @@ INVALID_URL = "invalid url"
 class SummaryException(Exception):
     pass
 
+
 SUMMID = "Piuparts Package Test Results Summary"
 SUMMVER = "1.0"
 
-DEFSEC = 'overall'
+DEFSEC = "overall"
 
-FlagInfo = namedtuple('FlagInfo', ['word', 'priority', 'states'])
+FlagInfo = namedtuple("FlagInfo", ["word", "priority", "states"])
 
 flaginfo = {
-    'F': FlagInfo('Failed', 0, ["failed-testing"]),
-            'X': FlagInfo('Blocked', 1, [
-                          "cannot-be-tested",
-                          "dependency-failed-testing",
-                          "dependency-cannot-be-tested",
-                          "dependency-does-not-exist",
-                          ]),
-            'W': FlagInfo('Waiting', 2, [
-                          "waiting-to-be-tested",
-                          "waiting-for-dependency-to-be-tested",
-                          ]),
-            'P': FlagInfo('Passed', 3, [
-                          "essential-required",
-                          "successfully-tested",
-                          ]),
-            '-': FlagInfo('Unknown', 4, [
-                          "does-not-exist",
-                          "unknown",
-                          ]),
+    "F": FlagInfo("Failed", 0, ["failed-testing"]),
+    "X": FlagInfo(
+        "Blocked",
+        1,
+        [
+            "cannot-be-tested",
+            "dependency-failed-testing",
+            "dependency-cannot-be-tested",
+            "dependency-does-not-exist",
+        ],
+    ),
+    "W": FlagInfo(
+        "Waiting",
+        2,
+        [
+            "waiting-to-be-tested",
+            "waiting-for-dependency-to-be-tested",
+        ],
+    ),
+    "P": FlagInfo(
+        "Passed",
+        3,
+        [
+            "essential-required",
+            "successfully-tested",
+        ],
+    ),
+    "-": FlagInfo(
+        "Unknown",
+        4,
+        [
+            "does-not-exist",
+            "unknown",
+        ],
+    ),
 }
 
 state2flg = dict([(y, x[0]) for x in flaginfo.items() for y in x[1].states])
@@ -130,7 +147,7 @@ def worst_flag(*flags):
     except KeyError:
         raise SummaryException("Unknown flag in " + flags.__repr__())
 
-    return(flag)
+    return flag
 
 
 def get_flag(state):
@@ -139,7 +156,7 @@ def get_flag(state):
     except KeyError:
         raise SummaryException("Unknown state - " + state)
 
-    return(flag)
+    return flag
 
 
 def new_summary():
@@ -147,24 +164,27 @@ def new_summary():
     utcdate = " ".join(cdate_array[:-1] + ["UTC"] + [cdate_array[-1]])
 
     # define the packages struct. The default should never be the one added
-    dfltentry = ['-', 0, INVALID_URL]
+    dfltentry = ["-", 0, INVALID_URL]
     pkgstruct = defaultdict(lambda: defaultdict(lambda: dfltentry))
 
-    return({
+    return {
         "_id": SUMMID,
-               "_version": SUMMVER,
-               "_date": utcdate,
-               "_comment": "Debian Piuparts Package Results - "
-                            "https://salsa.debian.org/debian/piuparts/raw/"
-                            "develop/piupartslib/pkgsummary.py",
-               "_type": "source",
-               "packages": pkgstruct,
-    })
+        "_version": SUMMVER,
+        "_date": utcdate,
+        "_comment": "Debian Piuparts Package Results - "
+        "https://salsa.debian.org/debian/piuparts/raw/"
+        "develop/piupartslib/pkgsummary.py",
+        "_type": "source",
+        "packages": pkgstruct,
+    }
 
 
 def add_summary(summary, rep_sec, pkg, flag, block_cnt, url):
-    if not flag in flaginfo or not isinstance(block_cnt, int) \
-            or not url.startswith('http'):
+    if (
+        not flag in flaginfo
+        or not isinstance(block_cnt, int)
+        or not url.startswith("http")
+    ):
         raise SummaryException("Invalid summary argument")
 
     pdict = summary["packages"]
@@ -194,9 +214,9 @@ def merge_summary(gbl_summ, sec_summ):
 def tooltip(summary, pkg):
     """Returns e.g. "Failed in testing and stable, blocking 5 packages"."""
 
-    tip = ''
+    tip = ""
 
-    pkgdict = summary['packages']
+    pkgdict = summary["packages"]
 
     if pkg in pkgdict:
         flag, block_cnt, url = pkgdict[pkg][DEFSEC]
@@ -207,42 +227,43 @@ def tooltip(summary, pkg):
         tip = flaginfo[flag].word
 
         if len(applicable) > 2:
-            tip += ' in ' + ', '.join(applicable[:-1]) + ' and ' + applicable[-1]
+            tip += " in " + ", ".join(applicable[:-1]) + " and " + applicable[-1]
         elif len(applicable) == 2:
-            tip += ' in ' + ' and '.join(applicable)
+            tip += " in " + " and ".join(applicable)
         elif len(applicable) == 1:
-            tip += ' in ' + applicable[0]
+            tip += " in " + applicable[0]
 
         if block_cnt:
             tip += ", blocking %d packages" % block_cnt
 
-        tip += '.'
+        tip += "."
 
     return tip
 
 
 def write_summary(summary, fname):
-    with open(fname + '.tmp', 'w') as fl:
+    with open(fname + ".tmp", "w") as fl:
         json.dump(summary, fl, sort_keys=True, indent=1)
-    os.rename(fname + '.tmp', fname)
+    os.rename(fname + ".tmp", fname)
 
 
 def read_summary(fname):
-    with open(fname, 'r') as fl:
+    with open(fname, "r") as fl:
         result = json.load(fl)
 
     if result["_id"] != SUMMID or result["_version"] != SUMMVER:
-        raise SummaryException('Summary JSON header mismatch')
+        raise SummaryException("Summary JSON header mismatch")
 
     return result
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     import sys
 
     # read a global summary file and return DDPO info by package
     summary = read_summary(sys.argv[1])
 
-    for pkg in summary['packages']:
-        flag, blocked, url = summary['packages'][pkg][DEFSEC]
+    for pkg in summary["packages"]:
+        flag, blocked, url = summary["packages"][pkg][DEFSEC]
 
         print(pkg, flag, url, tooltip(summary, pkg))
