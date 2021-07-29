@@ -49,7 +49,7 @@ if [ "$1" = "configure" ] ; then
     fi
 
     if [ ! -e $userhome/$suser/.ssh/known_hosts ] ; then
-        ssh-keyscan localhost > $userhome/$suser/.ssh/known_hosts 2>/dev/null
+        ssh-keyscan localhost > $userhome/$suser/.ssh/known_hosts 2>/dev/null || true
         chown $suser:$pgroup $userhome/$suser/.ssh/known_hosts
     fi
 
