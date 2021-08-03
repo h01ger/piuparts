@@ -520,7 +520,7 @@ section, too, and will serve as defaults for all other sections
  distributions the slave should use for testing upgrades
  between distributions (i.e., Debian versions). Using "partial"
  distributions as defined in distros.conf is possible. Currently,
- "buster bullseye sid" is a good choice.
+ "bullseye bookworm sid" is a good choice.
  Setting this switches from doing install/purge tests to
  dist-upgrade tests. Not set by default.
 
