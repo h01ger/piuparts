@@ -29,6 +29,9 @@ flags-end-testing =
 flags-start-stable =
 	%(flags-start-buster)s
 
+flags-start-bookworm =
+flags-end-bookworm =
+
 flags-start-bullseye =
 flags-end-bullseye =
 
@@ -120,6 +123,8 @@ basetgz-sections =
 	tarball/sid/i386
 	tarball/sid-merged-usr/amd64
 	tarball/sid-merged-usr/i386
+	tarball/bookworm/amd64
+	tarball/bookworm/i386
 	tarball/bullseye/amd64
 	tarball/bullseye/i386
 	tarball/buster/amd64
@@ -525,6 +530,33 @@ components = main
 max-tgz-age = 172800
 
 
+[tarball/bookworm/amd64]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-bookworm)s
+distro = None
+upgrade-test-distros = bookworm
+arch = amd64
+area = main
+components = main
+# 60*60*24*7
+max-tgz-age = 604800
+
+
+[tarball/bookworm/i386]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-bookworm)s
+distro = None
+upgrade-test-distros = bookworm
+arch = i386
+setarch = linux32
+area = main
+components = main
+# 60*60*24*7
+max-tgz-age = 604800
+
+
 [tarball/bullseye/amd64]
 piuparts-flags =
 	%(flags-default)s
@@ -534,8 +566,8 @@ upgrade-test-distros = bullseye
 arch = amd64
 area = main
 components = main
-# 60*60*24*7
-max-tgz-age = 604800
+# 60*60*24*30
+max-tgz-age = 2592000
 
 
 [tarball/bullseye/i386]
@@ -548,8 +580,8 @@ arch = i386
 setarch = linux32
 area = main
 components = main
-# 60*60*24*7
-max-tgz-age = 604800
+# 60*60*24*30
+max-tgz-age = 2592000
 
 
 [tarball/buster/amd64]

@@ -38,6 +38,14 @@ flags-end-stable = %(flags-end-buster)s
 flags-start-oldstable = %(flags-start-stretch)s
 flags-end-oldstable = %(flags-end-stretch)s
 
+# common flags for tests starting in bookworm
+flags-start-bookworm =
+# no flags needed
+
+# common flags for tests ending in bookworm
+flags-end-bookworm =
+# no flags needed
+
 # common flags for tests starting in bullseye
 flags-start-bullseye =
 # no flags needed
@@ -166,6 +174,7 @@ flags-broken-symlinks =
 basetgz-sections =
 	tarball/sid
 	tarball/sid-merged-usr
+	tarball/bookworm
 	tarball/bullseye
 	tarball/buster
 	tarball/stretch
@@ -292,14 +301,24 @@ upgrade-test-distros = sid
 max-tgz-age = 259200
 
 
+[tarball/bookworm]
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-bookworm)s
+distro = None
+upgrade-test-distros = bookworm
+# 1 week (60*60*24*7)
+max-tgz-age = 604800
+
+
 [tarball/bullseye]
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-bullseye)s
 distro = None
 upgrade-test-distros = bullseye
-# 1 week (60*60*24*7)
-max-tgz-age = 604800
+# 1 month (60*60*24*30)
+max-tgz-age = 2592000
 
 
 [tarball/buster]
