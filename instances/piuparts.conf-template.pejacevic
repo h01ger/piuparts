@@ -33,10 +33,10 @@ flags-leftovers =
 # aliases for the definitions below
 flags-start-testing = %(flags-start-bullseye)s
 flags-end-testing = %(flags-end-bullseye)s
-flags-start-stable = %(flags-start-stretch)s
-flags-end-stable = %(flags-end-stretch)s
-flags-start-oldstable = %(flags-start-jessie)s
-flags-end-oldstable = %(flags-end-jessie)s
+flags-start-stable = %(flags-start-buster)s
+flags-end-stable = %(flags-end-buster)s
+flags-start-oldstable = %(flags-start-stretch)s
+flags-end-oldstable = %(flags-end-stretch)s
 
 # common flags for tests starting in bullseye
 flags-start-bullseye =

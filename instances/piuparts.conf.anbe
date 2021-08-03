@@ -27,7 +27,7 @@ flags-end-testing =
 	%(flags-end-bullseye)s
 
 flags-start-stable =
-	%(flags-start-stretch)s
+	%(flags-start-buster)s
 
 flags-start-bullseye =
 flags-end-bullseye =
