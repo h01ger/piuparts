@@ -58,7 +58,7 @@ case "$PIUPARTS_DISTRIBUTION_NEXT" in
 		;;
 	bullseye|sid)
 		CANDIDATES="$CANDIDATES mariadb-server-10.5"
-		CANDIDATES="$CANDIDATES postgresql-11"
+		CANDIDATES="$CANDIDATES postgresql-13"
 		;;
 esac
 
@@ -165,10 +165,10 @@ case "${PIUPARTS_DISTRIBUTION}:${PIUPARTS_DISTRIBUTION_NEXT}" in
 		upgrade_pg_cluster 9.6 11
 		;;
 	buster*:bullseye)
-		upgrade_pg_cluster 9.6 11
+		upgrade_pg_cluster 11 13
 		;;
 	buster:sid)
-		upgrade_pg_cluster 9.6 11
+		upgrade_pg_cluster 11 13
 		;;
 esac
 
