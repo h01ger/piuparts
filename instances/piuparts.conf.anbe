@@ -156,7 +156,7 @@ sections =
 	buster-debug/main
 	stretch/main
 	stretch-rcmd/main
-	stretch-next/main
+	stretch-lts/main
 	stretch-security/main
 	stretch-updates/main
 	stretch-pu/main
@@ -171,7 +171,7 @@ sections =
 	testing2sid/main
 	stable2sid/main
 	stable2testing2sid/main
-	stretch2next/main
+	stretch2lts/main
 	stretch2buster/main
 	stretch3buster/main
 	stretch2buster_i386/main
@@ -222,7 +222,7 @@ sections =
 	buster-debug/contrib
 	stretch/contrib
 	stretch-rcmd/contrib
-	stretch-next/contrib
+	stretch-lts/contrib
 	stretch-security/contrib
 	stretch-updates/contrib
 	stretch-pu/contrib
@@ -237,7 +237,7 @@ sections =
 	testing2sid/contrib
 	stable2sid/contrib
 	stable2testing2sid/contrib
-	stretch2next/contrib
+	stretch2lts/contrib
 	stretch2buster/contrib
 	stretch3buster/contrib
 	stretch2buster_i386/contrib
@@ -288,7 +288,7 @@ sections =
 	buster-debug/non-free
 	stretch/non-free
 	stretch-rcmd/non-free
-	stretch-next/non-free
+	stretch-lts/non-free
 	stretch-security/non-free
 	stretch-updates/non-free
 	stretch-pu/non-free
@@ -303,7 +303,7 @@ sections =
 	testing2sid/non-free
 	stable2sid/non-free
 	stable2testing2sid/non-free
-	stretch2next/non-free
+	stretch2lts/non-free
 	stretch2buster/non-free
 	stretch3buster/non-free
 	stretch2buster_i386/non-free
@@ -1499,39 +1499,39 @@ arch = amd64
 area = non-free
 
 
-[stretch-next/main]
+[stretch-lts/main]
 precedence = 20
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-distro = stretch-next
+distro = stretch-lts
 arch = amd64
 area = main
 components = main
 reschedule-old-count = 500
 reschedule-old-days = 25
 
-[stretch-next/contrib]
+[stretch-lts/contrib]
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-depends-sections = stretch-next/main stretch-next/non-free
-distro = stretch-next
+depends-sections = stretch-lts/main stretch-lts/non-free
+distro = stretch-lts
 arch = amd64
 area = contrib
 reschedule-old-days = 25
 
-[stretch-next/non-free]
+[stretch-lts/non-free]
 precedence = 45
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-depends-sections = stretch-next/main stretch-next/contrib
-distro = stretch-next
+depends-sections = stretch-lts/main stretch-lts/contrib
+distro = stretch-lts
 arch = amd64
 area = non-free
 reschedule-old-days = 25
@@ -3286,7 +3286,7 @@ arch = amd64
 area = main
 components = main
 distro = wheezy-lts
-upgrade-test-distros = wheezy-lts jessie-lts stretch-next buster testing
+upgrade-test-distros = wheezy-lts jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
@@ -3301,7 +3301,7 @@ depends-sections = wheezy222testing/main wheezy222testing/non-free
 arch = amd64
 area = contrib
 distro = wheezy-lts
-upgrade-test-distros = wheezy-lts jessie-lts stretch-next buster testing
+upgrade-test-distros = wheezy-lts jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
@@ -3316,7 +3316,7 @@ depends-sections = wheezy222testing/main wheezy222testing/contrib
 arch = amd64
 area = non-free
 distro = wheezy-lts
-upgrade-test-distros = wheezy-lts jessie-lts stretch-next buster testing
+upgrade-test-distros = wheezy-lts jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
@@ -3333,7 +3333,7 @@ setarch = linux32
 area = main
 components = main
 distro = wheezy-lts
-upgrade-test-distros = wheezy-lts jessie-lts stretch-next buster testing
+upgrade-test-distros = wheezy-lts jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
@@ -3349,7 +3349,7 @@ arch = i386
 setarch = linux32
 area = contrib
 distro = wheezy-lts
-upgrade-test-distros = wheezy-lts jessie-lts stretch-next buster testing
+upgrade-test-distros = wheezy-lts jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
@@ -3365,7 +3365,7 @@ arch = i386
 setarch = linux32
 area = non-free
 distro = wheezy-lts
-upgrade-test-distros = wheezy-lts jessie-lts stretch-next buster testing
+upgrade-test-distros = wheezy-lts jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
@@ -3417,7 +3417,7 @@ arch = amd64
 area = main
 components = main
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 [jessie2stretch/contrib]
 precedence = 95
@@ -3429,7 +3429,7 @@ depends-sections = jessie2stretch/main jessie2stretch/non-free
 arch = amd64
 area = contrib
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 [jessie2stretch/non-free]
 precedence = 95
@@ -3441,7 +3441,7 @@ depends-sections = jessie2stretch/main jessie2stretch/contrib
 arch = amd64
 area = non-free
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 
 [jessie3stretch/main]
@@ -3456,7 +3456,7 @@ arch = amd64
 area = main
 components = main
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch/contrib]
@@ -3471,7 +3471,7 @@ depends-sections = jessie3stretch/main jessie3stretch/non-free
 arch = amd64
 area = contrib
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch/non-free]
@@ -3486,7 +3486,7 @@ depends-sections = jessie3stretch/main jessie3stretch/contrib
 arch = amd64
 area = non-free
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
@@ -3501,7 +3501,7 @@ setarch = linux32
 area = main
 components = main
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 [jessie2stretch_i386/contrib]
 precedence = 95
@@ -3514,7 +3514,7 @@ arch = i386
 setarch = linux32
 area = contrib
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 [jessie2stretch_i386/non-free]
 precedence = 95
@@ -3527,7 +3527,7 @@ arch = i386
 setarch = linux32
 area = non-free
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 
 [jessie3stretch_i386/main]
@@ -3543,7 +3543,7 @@ setarch = linux32
 area = main
 components = main
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch_i386/contrib]
@@ -3559,7 +3559,7 @@ arch = i386
 setarch = linux32
 area = contrib
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch_i386/non-free]
@@ -3575,7 +3575,7 @@ arch = i386
 setarch = linux32
 area = non-free
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
@@ -3591,7 +3591,7 @@ arch = amd64
 area = main
 components = main
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 [jessie2stretch-rcmd/contrib]
 precedence = 95
@@ -3605,7 +3605,7 @@ depends-sections = jessie2stretch-rcmd/main jessie2stretch-rcmd/non-free
 arch = amd64
 area = contrib
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 [jessie2stretch-rcmd/non-free]
 precedence = 95
@@ -3619,7 +3619,7 @@ depends-sections = jessie2stretch-rcmd/main jessie2stretch-rcmd/contrib
 arch = amd64
 area = non-free
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 
 [jessie3stretch-rcmd/main]
@@ -3635,7 +3635,7 @@ arch = amd64
 area = main
 components = main
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch-rcmd/contrib]
@@ -3651,7 +3651,7 @@ depends-sections = jessie3stretch-rcmd/main jessie3stretch-rcmd/non-free
 arch = amd64
 area = contrib
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch-rcmd/non-free]
@@ -3667,7 +3667,7 @@ depends-sections = jessie3stretch-rcmd/main jessie3stretch-rcmd/contrib
 arch = amd64
 area = non-free
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
@@ -3684,7 +3684,7 @@ setarch = linux32
 area = main
 components = main
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 [jessie2stretch-rcmd_i386/contrib]
 precedence = 95
@@ -3699,7 +3699,7 @@ arch = i386
 setarch = linux32
 area = contrib
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 [jessie2stretch-rcmd_i386/non-free]
 precedence = 95
@@ -3714,7 +3714,7 @@ arch = i386
 setarch = linux32
 area = non-free
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 
 [jessie3stretch-rcmd_i386/main]
@@ -3731,7 +3731,7 @@ setarch = linux32
 area = main
 components = main
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch-rcmd_i386/contrib]
@@ -3748,7 +3748,7 @@ arch = i386
 setarch = linux32
 area = contrib
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 [jessie3stretch-rcmd_i386/non-free]
@@ -3765,7 +3765,7 @@ arch = i386
 setarch = linux32
 area = non-free
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 exclude-known-problems = packages_have_been_kept_back_error.conf packages_have_been_kept_back_issue.conf
 
 
@@ -3781,7 +3781,7 @@ arch = amd64
 area = main
 components = main
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 [jessie2stretch-iri/contrib]
 precedence = 95
@@ -3795,7 +3795,7 @@ depends-sections = jessie2stretch-iri/main jessie2stretch-iri/non-free
 arch = amd64
 area = contrib
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 [jessie2stretch-iri/non-free]
 precedence = 95
@@ -3809,7 +3809,7 @@ depends-sections = jessie2stretch-iri/main jessie2stretch-iri/contrib
 arch = amd64
 area = non-free
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next
+upgrade-test-distros = jessie-lts stretch-lts
 
 
 [jessie2bpo2stretch/main]
@@ -3823,7 +3823,7 @@ distro = jessie-backports
 arch = amd64
 area = main
 components = main
-upgrade-test-distros = jessie-lts jessie-backports stretch-next
+upgrade-test-distros = jessie-lts jessie-backports stretch-lts
 
 [jessie2bpo2stretch/contrib]
 precedence = 95
@@ -3835,7 +3835,7 @@ depends-sections = jessie-lts/main jessie-lts/contrib jessie-lts/non-free jessie
 distro = jessie-backports
 arch = amd64
 area = contrib
-upgrade-test-distros = jessie-lts jessie-backports stretch-next
+upgrade-test-distros = jessie-lts jessie-backports stretch-lts
 
 [jessie2bpo2stretch/non-free]
 precedence = 95
@@ -3847,7 +3847,7 @@ depends-sections = jessie-lts/main jessie-lts/contrib jessie-lts/non-free jessie
 distro = jessie-backports
 arch = amd64
 area = non-free
-upgrade-test-distros = jessie-lts jessie-backports stretch-next
+upgrade-test-distros = jessie-lts jessie-backports stretch-lts
 
 
 [jessie222testing/main]
@@ -3861,7 +3861,7 @@ arch = amd64
 area = main
 components = main
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next buster testing
+upgrade-test-distros = jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
@@ -3876,7 +3876,7 @@ depends-sections = jessie222testing/main jessie222testing/non-free
 arch = amd64
 area = contrib
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next buster testing
+upgrade-test-distros = jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
@@ -3891,7 +3891,7 @@ depends-sections = jessie222testing/main jessie222testing/contrib
 arch = amd64
 area = non-free
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next buster testing
+upgrade-test-distros = jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
@@ -3908,7 +3908,7 @@ setarch = linux32
 area = main
 components = main
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next buster testing
+upgrade-test-distros = jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
@@ -3924,7 +3924,7 @@ arch = i386
 setarch = linux32
 area = contrib
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next buster testing
+upgrade-test-distros = jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
@@ -3940,12 +3940,12 @@ arch = i386
 setarch = linux32
 area = non-free
 distro = jessie-lts
-upgrade-test-distros = jessie-lts stretch-next buster testing
+upgrade-test-distros = jessie-lts stretch-lts buster testing
 max-reserved = 25
 reschedule-old-count = 100
 
 
-[stretch2next/main]
+[stretch2lts/main]
 precedence = 60
 piuparts-flags =
 	%(flags-default)s
@@ -3955,31 +3955,31 @@ arch = amd64
 area = main
 components = main
 distro = stretch
-upgrade-test-distros = stretch stretch-next
+upgrade-test-distros = stretch stretch-lts
 
-[stretch2next/contrib]
+[stretch2lts/contrib]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-depends-sections = stretch2next/main stretch2next/non-free
+depends-sections = stretch2lts/main stretch2lts/non-free
 arch = amd64
 area = contrib
 distro = stretch
-upgrade-test-distros = stretch stretch-next
+upgrade-test-distros = stretch stretch-lts
 
-[stretch2next/non-free]
+[stretch2lts/non-free]
 precedence = 95
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-stretch)s
 	%(flags-end-stretch)s
-depends-sections = stretch2next/main stretch2next/contrib
+depends-sections = stretch2lts/main stretch2lts/contrib
 arch = amd64
 area = non-free
 distro = stretch
-upgrade-test-distros = stretch stretch-next
+upgrade-test-distros = stretch stretch-lts
 
 
 [stretch2buster/main]
