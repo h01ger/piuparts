@@ -31,12 +31,12 @@ flags-leftovers =
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
 # aliases for the definitions below
-flags-start-testing = %(flags-start-bullseye)s
-flags-end-testing = %(flags-end-bullseye)s
-flags-start-stable = %(flags-start-buster)s
-flags-end-stable = %(flags-end-buster)s
-flags-start-oldstable = %(flags-start-stretch)s
-flags-end-oldstable = %(flags-end-stretch)s
+flags-start-testing = %(flags-start-bookworm)s
+flags-end-testing = %(flags-end-bookworm)s
+flags-start-stable = %(flags-start-bullseye)s
+flags-end-stable = %(flags-end-bullseye)s
+flags-start-oldstable = %(flags-start-buster)s
+flags-end-oldstable = %(flags-end-buster)s
 
 # common flags for tests starting in bookworm
 flags-start-bookworm =
@@ -242,7 +242,7 @@ sections =
 	squeeze2squeeze-lts
 	squeeze
 	lenny2squeeze
-testing-suite = bullseye
+testing-suite = bookworm
 mirror = @MIRROR@
 master-host = pejacevic.debian.org
 master-user = piupartsm

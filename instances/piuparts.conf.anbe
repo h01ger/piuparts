@@ -22,12 +22,12 @@ flags-leftovers =
 	--scriptsdir /etc/piuparts/scripts-leftovers
 
 flags-start-testing =
-	%(flags-start-bullseye)s
+	%(flags-start-bookworm)s
 flags-end-testing =
-	%(flags-end-bullseye)s
+	%(flags-end-bookworm)s
 
 flags-start-stable =
-	%(flags-start-buster)s
+	%(flags-start-bullseye)s
 
 flags-start-bookworm =
 flags-end-bookworm =
@@ -433,7 +433,7 @@ sections =
 	lenny2squeeze/non-free
 	lenny2squeeze_i386/non-free
 #
-testing-suite = bullseye
+testing-suite = bookworm
 #
 json-sections = none
 #
