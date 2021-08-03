@@ -57,7 +57,7 @@ case "$PIUPARTS_DISTRIBUTION_NEXT" in
 		CANDIDATES="$CANDIDATES postgresql-11"
 		;;
 	bullseye|sid)
-		CANDIDATES="$CANDIDATES mariadb-server-10.3"
+		CANDIDATES="$CANDIDATES mariadb-server-10.5"
 		CANDIDATES="$CANDIDATES postgresql-11"
 		;;
 esac

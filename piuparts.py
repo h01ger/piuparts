@@ -1100,6 +1100,7 @@ class Chroot:
         full_name = self.relative("usr/sbin/policy-rc.d")
         policy = "#!/bin/sh\n"
         if settings.allow_database:
+            policy += 'test "$1" = "mariadb" && exit 0\n'
             policy += 'test "$1" = "mysql" && exit 0\n'
             policy += 'test "$1" = "postgresql" && exit 0\n'
             policy += 'test "$1" = "postgresql-8.3" && exit 0\n'
