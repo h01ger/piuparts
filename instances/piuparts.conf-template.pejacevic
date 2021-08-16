@@ -182,8 +182,14 @@ sections =
 	sid-merged-usr
 	sid-broken-symlinks
 	testing2sid
+	bookworm
+	bookworm-rcmd
 	bullseye
 	bullseye-rcmd
+	bullseye-security
+	bullseye-pu
+#	bullseye-next
+	bullseye2next
 	stable2sid
 	stable22sid
 	buster
@@ -478,8 +484,31 @@ piuparts-flags =
 distro = oldstable
 upgrade-test-distros = oldstable stable testing
 
-[bullseye]
+[bookworm]
 precedence = 3
+piuparts-flags =
+	--scriptsdir /etc/piuparts/scripts-log-alternatives
+	%(flags-default)s
+	%(flags-start-bookworm)s
+	%(flags-end-bookworm)s
+distro = bookworm
+
+
+[bookworm-rcmd]
+precedence = 5
+json-sections = none
+description = + With recommended packages.
+piuparts-flags =
+	--install-recommends
+	%(flags-default)s
+	%(flags-start-bookworm)s
+	%(flags-end-bookworm)s
+distro = bookworm
+
+
+
+[bullseye]
+precedence = 4
 piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-log-alternatives
 	%(flags-default)s
@@ -489,7 +518,7 @@ distro = bullseye
 
 
 [bullseye-rcmd]
-precedence = 5
+precedence = 6
 json-sections = none
 description = + With recommended packages.
 piuparts-flags =
@@ -499,8 +528,54 @@ piuparts-flags =
 	%(flags-end-bullseye)s
 distro = bullseye
 
+
+[bullseye-security]
+precedence = 2
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-bullseye)s
+	%(flags-end-bullseye)s
+depends-sections = bullseye
+distro = bullseye-security
+
+
+[bullseye-pu]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-bullseye)s
+	%(flags-end-bullseye)s
+depends-sections = bullseye
+distro = bullseye-proposed-updates
+
+
+[bullseye-next]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-bullseye)s
+	%(flags-end-bullseye)s
+distro = bullseye-next
+
+
+[bullseye2next]
+precedence = 3
+json-sections = none
+piuparts-flags =
+	%(flags-default)s
+	%(flags-start-bullseye)s
+	%(flags-end-bullseye)s
+distro = bullseye
+upgrade-test-distros = bullseye bullseye-next
+
+
+
+
 [buster]
-precedence = 4
+precedence = 5
 piuparts-flags =
 	--scriptsdir /etc/piuparts/scripts-log-alternatives
 	%(flags-default)s
@@ -510,7 +585,7 @@ distro = buster
 
 
 [buster-rcmd]
-precedence = 6
+precedence = 7
 json-sections = none
 description = + With recommended packages.
 piuparts-flags =
@@ -522,7 +597,7 @@ distro = buster
 
 
 [buster-security]
-precedence = 2
+precedence = 3
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -533,7 +608,7 @@ distro = buster/updates
 
 
 [buster-pu]
-precedence = 3
+precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -544,7 +619,7 @@ distro = buster-proposed-updates
 
 
 [buster-next]
-precedence = 3
+precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
@@ -554,7 +629,7 @@ distro = buster-next
 
 
 [buster2next]
-precedence = 3
+precedence = 4
 json-sections = none
 piuparts-flags =
 	%(flags-default)s
