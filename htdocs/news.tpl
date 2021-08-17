@@ -6,6 +6,12 @@
     </tr>
     <tr class="normalrow">
      <td class="contentcell2">
+      <b>2021-08-16</b>
+    Update the list of suites for the new (old)stable and testing, after the release of bullseye on August 15th.
+     </td>
+    </tr>
+    <tr class="normalrow">
+     <td class="contentcell2">
       <b>2020-04-29</b>
 	Thanks to DSA, a new worker host, <a href="https://db.debian.org/machines.cgi?host=piu-slave-conova-01">piu-slave-conova-01</a>, has been introduced. It will run 4 parallel worker processes on the amd64 arch.
      </td>
