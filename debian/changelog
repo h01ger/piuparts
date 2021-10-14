@@ -1,3 +1,20 @@
+piuparts (1.1.5) unstable; urgency=medium
+
+  [ Nicolas Dandrimont ]
+  * pejacevic: update enabled suites for bullseye as stable, bookworm as
+    testing.
+  * Add news for the bullseye update.
+  * Fix perjacevic typo in docs.
+
+  [ David Steele ]
+  * Remove oldstable results from summary.json.
+
+  [ Athos Ribeiro ]
+  * d/rules: set GO111MODULE to auto to maintain pre Go 1.16 behavior. Closes: #991970.
+    (MR: debian/piuparts!35)
+
+ -- Holger Levsen <holger@debian.org>  Thu, 14 Oct 2021 15:23:26 +0200
+
 piuparts (1.1.4) unstable; urgency=medium
 
   [ David Steele ]
