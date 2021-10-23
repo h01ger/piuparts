@@ -891,6 +891,7 @@ upgrade-test-distros = jessie jessie-backports
 
 [jessie]
 precedence = 7
+json-sections = none
 piuparts-flags =
 	%(flags-default)s
 	%(flags-start-jessie)s
