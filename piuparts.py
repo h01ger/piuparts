@@ -2656,6 +2656,9 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     chroot.check_for_no_processes()
 
+    if settings.warn_on_usr_move != "disabled":
+        file_owners_before = chroot.get_files_owned_by_packages()
+
     os.environ["PIUPARTS_PHASE"] = "distupgrade"
 
     chroot.upgrade_to_distros(settings.debian_distros[1:-1], distupgrade_packages, settings.upgrade_before_dist_upgrade)
@@ -2679,6 +2682,10 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     file_owners = chroot.get_files_owned_by_packages()
 
     chroot.check_for_no_processes()
+
+    if settings.warn_on_usr_move != "disabled":
+        file_owners_after = chroot.get_files_owned_by_packages()
+        chroot.check_files_moved_usr(packages, files_before=file_owners_before, files_after=file_owners_after)
 
     # Remove all packages from the chroot that weren't in the reference chroot.
     chroot.restore_selections(chroot_state, packages_qualified)
