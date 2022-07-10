@@ -501,6 +501,8 @@ linktarget_by_template = [
     ("missing_md5sums_error.tpl", "...and logfile reports missing md5sums"),
     ("unowned_lib_symlink_error.tpl", "...and logfile reports unowned lib symlinks"),
     ("piuparts-depends-dummy_error.tpl", "...and logfile reports piuparts-depends-dummy.deb could not be installed"),
+    ("file_moved_usr_error,tpl", "...and logfile reports a file moved between /{bin|sbin|lib*} and /usr/{bin|sbin|lib*}"),
+    ("file_moved_usr_issue,tpl", "but logfile reports a file moved between /{bin|sbin|lib*} and /usr/{bin|sbin|lib*}"),
     ("unclassified_failures.tpl", "due to unclassified failures"),
 ]
 
