@@ -53,6 +53,7 @@ import traceback
 import uuid
 import apt_pkg
 import pipes
+import pathlib
 from collections import namedtuple
 from signal import alarm, signal, SIGALRM, SIGTERM, SIGKILL
 
@@ -220,6 +221,7 @@ class Settings:
         self.warn_on_debsums_errors = False
         self.warn_on_install_over_symlink = False
         self.warn_if_inadequate = True
+        self.warn_on_usr_move = "disabled"
         self.pedantic_purge_test = False
         self.ignored_files = [
             # /root/.rnd should *not* be listed here, see #750099
@@ -1833,6 +1835,45 @@ class Chroot:
                 return True
         return False
 
+    def check_files_moved_usr(self, packages=[], files_before={}, files_after={}, warn_only=None):
+        """Check that no files were moved from /{bin|sbin|lib*} and /usr/{bin|sbin|lib*}"""
+
+        if settings.warn_on_usr_move == "disabled":
+            return
+
+        # For each path that is a file in each package, check that it did not move between
+        # /bin, /sbin or /lib* to the corresponding location under /usr, and viceversa.
+        # See: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=994388#80
+        # If a file moved in a package that we are inspecting, print an error by default.
+        # Otherwise, print a warning.
+        broken = []
+        for old_path in files_before:
+            # '/' is a separate element in the parts list
+            old_path_parts = pathlib.Path(old_path).parts
+            if len(old_path_parts) < 3:
+                continue
+
+            if old_path_parts[1] == 'usr' and (old_path_parts[2] in ['bin', 'sbin'] or old_path_parts[2].startswith('lib')):
+                new_path = os.path.join("/", *old_path_parts[2:])
+            elif old_path_parts[1] in ['bin', 'sbin'] or old_path_parts[1].startswith('lib'):
+                new_path = "/usr" + old_path
+            else:
+                continue
+
+            # Skip over directories, multiple packages can ship files in the same directories
+            if new_path in files_after and os.path.isfile(self.relative(new_path)):
+                broken.append("%s %s => %s %s" % (old_path, files_before[old_path], new_path, files_after[new_path]))
+
+        if broken:
+            if settings.warn_on_usr_move == "warn" or warn_only:
+                logging.warning("WARN: File(s) moved between /{bin|sbin|lib*} and /usr/{bin|sbin|lib*}: %s" % indent_string("\n".join(broken)))
+            else:
+                logging.error("FAIL: File(s) moved between /{bin|sbin|lib*} and /usr/{bin|sbin|lib*}: %s" % indent_string("\n".join(broken)))
+                panic()
+        else:
+            logging.debug("No file moved between /{bin|sbin|lib*} and /usr/{bin|sbin|lib*}.")
+
+
     def check_for_broken_symlinks(self, warn_only=None, file_owners={}):
         """Check that all symlinks in chroot are non-broken."""
         if not settings.check_broken_symlinks:
@@ -2456,6 +2497,9 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
     chroot.check_for_no_processes()
     chroot.check_for_broken_symlinks()
 
+    if settings.warn_on_usr_move != "disabled":
+        file_owners_before = chroot.get_files_owned_by_packages()
+
     if settings.install_remove_install:
         chroot.remove_packages(packages, ignore_errors=True)
 
@@ -2468,10 +2512,12 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
 
     chroot.disable_testdebs_repo()
 
-    file_owners = chroot.get_files_owned_by_packages()
+    file_owners_after = chroot.get_files_owned_by_packages()
 
     chroot.check_for_no_processes()
-    chroot.check_for_broken_symlinks(file_owners=file_owners)
+    chroot.check_for_broken_symlinks(file_owners=file_owners_after)
+    if settings.warn_on_usr_move != "disabled":
+        chroot.check_files_moved_usr(packages, file_owners_before, file_owners_after)
 
     # Remove all packages from the chroot that weren't there initially.
     chroot.restore_selections(chroot_state, packages)
@@ -2479,9 +2525,9 @@ def install_upgrade_test(chroot, chroot_state, package_files, packages, old_pack
     chroot.run_scripts("post_test")
 
     chroot.check_for_no_processes(fail=True)
-    chroot.check_for_broken_symlinks(file_owners=file_owners)
+    chroot.check_for_broken_symlinks(file_owners=file_owners_after)
 
-    return check_results(chroot, chroot_state, file_owners)
+    return check_results(chroot, chroot_state, file_owners_after)
 
 
 def save_meta_data(filename, chroot_state):
@@ -2610,6 +2656,9 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
 
     chroot.check_for_no_processes()
 
+    if settings.warn_on_usr_move != "disabled":
+        file_owners_before = chroot.get_files_owned_by_packages()
+
     os.environ["PIUPARTS_PHASE"] = "distupgrade"
 
     chroot.upgrade_to_distros(settings.debian_distros[1:-1], distupgrade_packages, settings.upgrade_before_dist_upgrade)
@@ -2633,6 +2682,10 @@ def install_and_upgrade_between_distros(package_files, packages_qualified):
     file_owners = chroot.get_files_owned_by_packages()
 
     chroot.check_for_no_processes()
+
+    if settings.warn_on_usr_move != "disabled":
+        file_owners_after = chroot.get_files_owned_by_packages()
+        chroot.check_files_moved_usr(packages, files_before=file_owners_before, files_after=file_owners_after)
 
     # Remove all packages from the chroot that weren't in the reference chroot.
     chroot.restore_selections(chroot_state, packages_qualified)
@@ -3008,6 +3061,10 @@ def parse_command_line():
                       default=False,
                       help="Fail if broken symlinks are detected.")
 
+    parser.add_option("--warn-on-usr-move", action="store", default="disabled",
+                      help="Whether to enable the test (with a warning or a failure) that checks if files are moved "
+                           "between /{bin|sbin|lib*} and /usr/{bin|sbin|lib*}. Accepted values: 'disabled' (default), 'warn', 'fail'.")
+
     parser.add_option("--log-level", action="store", metavar='LEVEL',
                       default="dump",
                       help="Displays messages from LEVEL level, possible values are: error, info, dump, debug. The default is dump.")
@@ -3103,6 +3160,7 @@ def parse_command_line():
     settings.warn_on_debsums_errors = opts.warn_on_debsums_errors
     settings.warn_on_install_over_symlink = opts.warn_on_install_over_symlink
     settings.warn_if_inadequate = not opts.fail_if_inadequate
+    settings.warn_on_usr_move = opts.warn_on_usr_move
     settings.pedantic_purge_test = opts.pedantic_purge_test
     settings.ignored_files += opts.ignore
     settings.ignored_patterns += opts.ignore_regex
@@ -3137,6 +3195,10 @@ def parse_command_line():
         if not os.path.isdir(sdir):
             logging.error("Scripts directory is not a directory: %s" % sdir)
             panic()
+
+    if settings.warn_on_usr_move not in ["disabled", "warn", "fail"]:
+        logging.error("--warn-on-usr-move must be one of 'disabled', 'warn', 'fail'")
+        panic()
 
     if not settings.debian_distros:
         settings.debian_distros = defaults.get_distribution()

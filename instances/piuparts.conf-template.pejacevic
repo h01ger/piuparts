@@ -40,15 +40,18 @@ flags-end-oldstable = %(flags-end-buster)s
 
 # common flags for tests starting in bookworm
 flags-start-bookworm =
-# no flags needed
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=994388#80
+	--warn-on-usr-move fail
 
 # common flags for tests ending in bookworm
 flags-end-bookworm =
-# no flags needed
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=994388#80
+	--warn-on-usr-move fail
 
 # common flags for tests starting in bullseye
 flags-start-bullseye =
-# no flags needed
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=994388#80
+	--warn-on-usr-move fail
 
 # common flags for tests ending in bullseye
 flags-end-bullseye =

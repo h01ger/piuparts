@@ -330,6 +330,10 @@ Options must come before the other command line arguments.
 
   Behavior with multiple packages given on the command-line could be problematic, particularly if the dependency tree of one package in the list includes another in the list. Therefore, it is recommended to use this option with one package at a time.
 
+*-*-warn-on-usr-move*='disabled|warn|fail'::
+  Whether to enable the test (with a warning or a failure) that checks if files are moved between /{bin|sbin|lib*} and /usr/{bin|sbin|lib*}.
+  Accepted values: 'disabled' (default), 'warn', 'fail'.
+
 
 
 EXAMPLES
