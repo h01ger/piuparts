@@ -53,6 +53,13 @@ case ${PIUPARTS_OBJECTS%%=*} in
 		log_debug
 		sleep 10
 		;;
+	*usr-is-merged*|*usrmerge*)
+		# Remove the exception flag that we added in pre_install_exceptions, if we added it
+		if [ -f /etc/unsupported-skip-usrmerge-conversion.piuparts ]; then
+			log_debug
+			rm -f /etc/unsupported-skip-usrmerge-conversion*
+		fi
+		;;
 esac
 
 if [ -f /var/run/piuparts-stamp-dkms-installed ]; then
