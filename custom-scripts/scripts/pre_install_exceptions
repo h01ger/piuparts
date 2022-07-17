@@ -106,6 +106,20 @@ case ${PIUPARTS_OBJECTS%%=*} in
 			mkdir -p /var/state/samhain/
 			touch /var/state/samhain/samhain_file
 			;;
+	*usr-is-merged*|*usrmerge*)
+			# usr-is-merged intentionally fails to install unless either the system is merged-usr, or
+			# the exception flag is set.
+			# usrmerge does a live-upgrade of the chroot, which piuparts does not expect, so skip it.
+			# debootstrap will take care of this in a future update, so remember if we were the ones
+			# that added the flag file, to remove it in the post_purge_exceptions script.
+			# For details on the flag file, see: https://sources.debian.org/src/usrmerge/27/debian/README.Debian/#L66
+			# and: https://lists.debian.org/debian-ctte/2022/07/msg00019.html
+			if [ ! -f /etc/unsupported-skip-usrmerge-conversion ]; then
+				log_debug
+				touch /etc/unsupported-skip-usrmerge-conversion.piuparts
+				echo "this system will not be supported in the future" > /etc/unsupported-skip-usrmerge-conversion
+			fi
+			;;
 esac
 
 if [ "$PIUPARTS_DISTRIBUTION" = "jessie" ]; then
