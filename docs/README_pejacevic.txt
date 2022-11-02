@@ -228,9 +228,25 @@ More checks should be added as we become aware of them.
 
 :ref:`top <top3>`
 
+:blue:`New Stable Release`
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The server exports data, used by DDPO et al. to display test results by
+package. With a new release of Debian Stable, a number of tasks are required to
+update the summary data appropriately:
+
+- Edit 'piuparts.conf.pejacevic' to set 'json-sections = none' for the sections
+  that now represent oldstable ('foo', 'bar2foo', 'foo-proposed', etc.).
+- Update the 'distro-info-data' package, so that 'piuparts-report' can correctly
+  assign sections to distribution names.
+
+
+:ref:`top <top3>`
+
 :blue:`Authors`
 ^^^^^^^^^^^^^^^
 
-Last updated: February 2017
+Last updated: November 2022
 
 Holger Levsen <holger@layer-acht.org>
+David Steele <steele@debian.org>
