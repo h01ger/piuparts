@@ -35,39 +35,38 @@ from __future__ import print_function
 VERSION = "__PIUPARTS_VERSION__"
 
 
-import distro_info
-import time
+import json
 import logging
 import optparse
-import sys
-import tempfile
-import shutil
 import os
-import tarfile
-import stat
-import re
-import json
+import pathlib
 import pickle
+import pipes
+import re
+import shutil
+import stat
 import subprocess
+import sys
+import tarfile
+import tempfile
+import time
 import traceback
 import uuid
-import apt_pkg
-import pipes
-import pathlib
 from collections import namedtuple
-from signal import alarm, signal, SIGALRM, SIGTERM, SIGKILL
+from signal import SIGALRM, SIGKILL, SIGTERM, alarm, signal
+
+import apt_pkg
+import distro_info
 
 try:
     from debian import deb822
 except ImportError:
     from debian_bundle import deb822
 
-import piupartslib.conf
-
+import six
 from six.moves import urllib
 
-import six
-
+import piupartslib.conf
 
 apt_pkg.init_system()
 
