@@ -24,17 +24,18 @@ Lars Wirzenius <liw@iki.fi>
 """
 from __future__ import print_function
 
-import os
-import sys
-import stat
-import time
-import logging
-from signal import alarm, signal, SIGALRM, SIGINT, SIGKILL, SIGHUP, SIGUSR1
-import subprocess
 import fcntl
-import random
-import apt_pkg
+import logging
+import os
 import pipes
+import random
+import stat
+import subprocess
+import sys
+import time
+from signal import SIGALRM, SIGHUP, SIGINT, SIGKILL, SIGUSR1, alarm, signal
+
+import apt_pkg
 
 import piupartslib.conf
 import piupartslib.packagesdb
