@@ -15,7 +15,6 @@ Build-Depends:
  python3-debian,
  python3-debianbts (>= 2.10.0),
  python3-distro-info,
- python3-mox3,
  python3-nose,
  python3-six,
  python3-sphinx,
