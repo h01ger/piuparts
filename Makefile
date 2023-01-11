@@ -83,42 +83,7 @@ install-doc: build-stamp
 	install -d $(DESTDIR)$(docdir)/
 	install -m 0644 docs/README.txt docs/README_server.txt $(DESTDIR)$(docdir)/
 	# html
-	install -d $(DESTDIR)$(docdir)/html/
-	install -m 0644 docs/build/*.html $(DESTDIR)$(docdir)/html/
-	install -m 0644 docs/build/searchindex.js $(DESTDIR)$(docdir)/html/
-	install -m 0644 docs/build/objects.inv $(DESTDIR)$(docdir)/html/
-	install -d $(DESTDIR)$(docdir)/html/_static/
-	install -m 0644 docs/build/_static/* $(DESTDIR)$(docdir)/html/_static
-	install -d $(DESTDIR)$(docdir)/html/piuparts/
-	install -m 0644 docs/build/piuparts/index.html $(DESTDIR)$(docdir)/html/piuparts/
-	install -m 0644 docs/build/piuparts/piuparts.1.html $(DESTDIR)$(docdir)/html/piuparts/
-	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_run/
-	install -m 0644 docs/build/piuparts_slave_run/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_run/
-	install -m 0644 docs/build/piuparts_slave_run/piuparts_slave_run.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_run/
-	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_join/
-	install -m 0644 docs/build/piuparts_slave_join/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_join/
-	install -m 0644 docs/build/piuparts_slave_join/piuparts_slave_join.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_join/
-	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
-	install -m 0644 docs/build/piuparts_slave_stop/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
-	install -m 0644 docs/build/piuparts_slave_stop/piuparts_slave_stop.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
-	install -d $(DESTDIR)$(docdir)/html/
-	install -m 0644 docs/build/*.html $(DESTDIR)$(docdir)/html/
-	install -m 0644 docs/build/searchindex.js $(DESTDIR)$(docdir)/html/
-	install -m 0644 docs/build/objects.inv $(DESTDIR)$(docdir)/html/
-	install -d $(DESTDIR)$(docdir)/html/_static/
-	install -m 0644 docs/build/_static/* $(DESTDIR)$(docdir)/html/_static
-	install -d $(DESTDIR)$(docdir)/html/piuparts/
-	install -m 0644 docs/build/piuparts/index.html $(DESTDIR)$(docdir)/html/piuparts/
-	install -m 0644 docs/build/piuparts/piuparts.1.html $(DESTDIR)$(docdir)/html/piuparts/
-	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_run/
-	install -m 0644 docs/build/piuparts_slave_run/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_run/
-	install -m 0644 docs/build/piuparts_slave_run/piuparts_slave_run.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_run/
-	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_join/
-	install -m 0644 docs/build/piuparts_slave_join/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_join/
-	install -m 0644 docs/build/piuparts_slave_join/piuparts_slave_join.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_join/
-	install -d $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
-	install -m 0644 docs/build/piuparts_slave_stop/index.html $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
-	install -m 0644 docs/build/piuparts_slave_stop/piuparts_slave_stop.8.html $(DESTDIR)$(docdir)/html/piuparts_slave_stop/
+	cp -r docs/build/ $(DESTDIR)$(docdir)/html/
 	# manpages
 	install -d $(DESTDIR)$(man1dir)
 	install -m 0644 piuparts.1 $(DESTDIR)$(man1dir)/
