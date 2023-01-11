@@ -1,3 +1,10 @@
+piuparts (1.1.7) UNRELEASED; urgency=medium
+
+  * Start 1.1.7 development. d/changelog entries will be written on
+    release using the git commit messages.
+
+ -- Nicolas Dandrimont <olasd@debian.org>  Wed, 11 Jan 2023 15:57:37 +0100
+
 piuparts (1.1.6) unstable; urgency=medium
 
   [ David Steele ]
