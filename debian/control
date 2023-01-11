@@ -34,13 +34,13 @@ Depends:
 # keep this list in sync with piuparts-slave-from-git-deps
  debootstrap (>= 1.0.89~),
  debsums (>= 2.2.2~),
- libjs-sphinxdoc,
  lsb-release,
  lsof,
  mount,
  python3-debian,
  ${python3:Depends},
  ${misc:Depends},
+ ${sphinxdoc:Depends}
 Recommends:
  adequate
 Suggests:
