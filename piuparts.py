@@ -41,8 +41,8 @@ import optparse
 import os
 import pathlib
 import pickle
-import pipes
 import re
+import shlex
 import shutil
 import stat
 import subprocess
@@ -505,7 +505,7 @@ def indent_string(str):
 
 def command2string(command):
     """Quote s.t. copy+paste from the logfile gives a runnable command in the shell."""
-    return " ".join([pipes.quote(arg) for arg in command])
+    return " ".join([shlex.quote(arg) for arg in command])
 
 
 def unqualify(packages):
