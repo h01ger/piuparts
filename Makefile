@@ -10,11 +10,11 @@ site3 = $(libdir)/python3/dist-packages
 htdocsdir	 = $(sharedir)/piuparts/htdocs
 etcdir = $(prefix)/etc
 
-distribution=${shell dpkg-parsechangelog | sed -n 's/^Distribution: *//p'}
+distribution=${shell dpkg-parsechangelog -SDistribution}
 ifeq ($(distribution),UNRELEASED)
-version		:= ${shell echo "`dpkg-parsechangelog | sed -n 's/^Version: *//p'`~`date +%Y%m%d%H%M`~`git describe --dirty`"}
+version		:= ${shell echo "`dpkg-parsechangelog -SVersion`~`date +%Y%m%d%H%M`~`git describe --dirty`"}
 else
-version		:= ${shell dpkg-parsechangelog | sed -n 's/^Version: *//p'}
+version		:= ${shell dpkg-parsechangelog -SVersion}
 endif
 
 
