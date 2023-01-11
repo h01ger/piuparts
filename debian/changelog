@@ -1,4 +1,4 @@
-piuparts (1.1.6) UNRELEASED; urgency=medium
+piuparts (1.1.6) unstable; urgency=medium
 
   [ David Steele ]
   * Remove oldold*stable dists from json summary
@@ -26,7 +26,7 @@ piuparts (1.1.6) UNRELEASED; urgency=medium
   * Simplify docs install in Makefile
   * Use sphinxdoc dh plugin
 
- -- Nicolas Dandrimont <olasd@debian.org>  Wed, 11 Jan 2023 13:20:24 +0100
+ -- Nicolas Dandrimont <olasd@debian.org>  Wed, 11 Jan 2023 13:31:41 +0100
 
 piuparts (1.1.5) unstable; urgency=medium
 
