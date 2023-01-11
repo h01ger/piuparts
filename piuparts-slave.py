@@ -27,8 +27,8 @@ from __future__ import print_function
 import fcntl
 import logging
 import os
-import pipes
 import random
+import shlex
 import stat
 import subprocess
 import sys
@@ -852,7 +852,7 @@ def log_name(package, version):
 
 def command2string(command):
     """Quote s.t. copy+paste from the logfile gives a runnable command in the shell."""
-    return " ".join([pipes.quote(arg) for arg in command])
+    return " ".join([shlex.quote(arg) for arg in command])
 
 
 def run_test_with_timeout(cmd, maxwait, kill_all=True):
