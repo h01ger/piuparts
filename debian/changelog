@@ -1,3 +1,33 @@
+piuparts (1.1.6) UNRELEASED; urgency=medium
+
+  [ David Steele ]
+  * Remove oldold*stable dists from json summary
+
+  [ Holger Levsen ]
+  * custom-scripts/scripts/pre_test_root_password: fix grammar in comment
+
+  [ Luca Boccassi ]
+  * piuparts: detect files moving between / and /usr on upgrade
+  * piuparts: detect files moving between / and /usr on dist-upgrade
+  * p.conf: enable --warn-on-usr-move for bullseye/bookworm
+  * custom_scripts: ensure usr-is-merged/usrmerge does not fail the
+    migration test
+
+  [ David Steele ]
+  * Add Stable Release tasks to README_pejacevic.txt
+
+  [ Nicolas Dandrimont ]
+  * piuparts-slave: run isort
+  * piuparts-slave: replace pipes.quote with shlex.quote
+  * piuparts.py: run isort
+  * piuparts.py: replace pipes.quote with shlex.quote
+  * test_piuparts: replace mox3 with unittest.mock (Closes: #1028453)
+  * Migrate lintian overrides to pointed hints
+  * Simplify docs install in Makefile
+  * Use sphinxdoc dh plugin
+
+ -- Nicolas Dandrimont <olasd@debian.org>  Wed, 11 Jan 2023 13:20:24 +0100
+
 piuparts (1.1.5) unstable; urgency=medium
 
   [ Nicolas Dandrimont ]
@@ -10,8 +40,8 @@ piuparts (1.1.5) unstable; urgency=medium
   * Remove oldstable results from summary.json.
 
   [ Athos Ribeiro ]
-  * d/rules: set GO111MODULE to auto to maintain pre Go 1.16 behavior. Closes: #991970.
-    (MR: debian/piuparts!35)
+  * d/rules: set GO111MODULE to auto to maintain pre Go 1.16 behavior.
+    Closes: #991970. (MR: debian/piuparts!35)
 
  -- Holger Levsen <holger@debian.org>  Thu, 14 Oct 2021 15:23:26 +0200
 
