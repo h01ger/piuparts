@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2005 Lars Wirzenius (liw@iki.fi)
-# Copyright © 2007-2018 Holger Levsen (holger@layer-acht.org)
+# Copyright © 2007-2023 Holger Levsen (holger@layer-acht.org)
 # Copyright © 2010-2019 Andreas Beckmann (anbe@debian.org)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -101,7 +101,7 @@ class Defaults:
 class DebianDefaults(Defaults):
 
     def get_components(self):
-        return ["main", "contrib", "non-free"]
+        return ["main", "contrib", "non-free", "non-free-firmware"]
 
     def get_mirror(self):
         return [("http://deb.debian.org/debian", self.get_components())]

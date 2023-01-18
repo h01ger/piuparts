@@ -3,7 +3,7 @@
  piuparts(1)
  ===========
  :doctype: manpage
- :revdate: 2017-03-06
+ :revdate: 2023-01-18
 
 
 
@@ -189,7 +189,7 @@ Options must come before the other command line arguments.
 *-m* 'url', *-*-mirror*='url'::
   Which Debian mirror to use. The default is the first mirror named in */etc/apt/sources.list* or *http://deb.debian.org/debian* if none is found. This option may be used multiple times to use multiple mirrors. Only the first mirror is used with *debootstrap*.
 
-  The 'components' that are used for a mirror can also be set with this option: a space separated list within the same argument (so you need to quote the entire argument in the shell). If no components are given explicitly, the usual Debian components are used (main, contrib, and non-free). For the mirrors read from */etc/apt/sources.list*, the components are read from the same place.
+  The 'components' that are used for a mirror can also be set with this option: a space separated list within the same argument (so you need to quote the entire argument in the shell). If no components are given explicitly, the usual Debian components are used (main, contrib, non-free and non-free-firmware). For the mirrors read from */etc/apt/sources.list*, the components are read from the same place.
 
  Note that file: addresses works if the directories are made accessible from within the chroot with '--bindmount'.
 

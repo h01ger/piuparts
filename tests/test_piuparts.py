@@ -23,10 +23,10 @@ class DefaultsFactoryTests(unittest.TestCase):
         self.assertEqual(
             defaults.get_keyring(), "/usr/share/keyrings/debian-archive-keyring.gpg"
         )
-        self.assertEqual(defaults.get_components(), ["main", "contrib", "non-free"])
+        self.assertEqual(defaults.get_components(), ["main", "contrib", "non-free", "non-free-firmware"])
         self.assertEqual(
             defaults.get_mirror(),
-            [("http://deb.debian.org/debian", ["main", "contrib", "non-free"])],
+            [("http://deb.debian.org/debian", ["main", "contrib", "non-free", "non-free-firmware"])],
         )
         self.assertEqual(defaults.get_distribution(), ["sid"])
 

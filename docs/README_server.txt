@@ -480,7 +480,7 @@ section, too, and will serve as defaults for all other sections
  * "area" is the archive area used to get the list of packages to
  be tested. The Packages file for this area will be loaded. The
  default is "main" and the possible values depend on the vendor,
- for Debian these are main, contrib, non-free.
+ for Debian these are main, contrib, non-free and non-free-firmware.
 
  * "components" sets the archive areas that will be available when
  testing the packages selected via the "area" setting. These will
