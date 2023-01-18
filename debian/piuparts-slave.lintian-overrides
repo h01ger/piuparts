@@ -1,2 +1,0 @@
-# It's ok, because it depends on piuparts-common that has the dependency.
-piuparts-slave: python3-script-but-no-python3-dep usr/share/piuparts/piuparts-slave #!/usr/bin/python3
