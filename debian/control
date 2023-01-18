@@ -25,7 +25,7 @@ Build-Depends-Indep:
 Homepage: https://piuparts.debian.org
 Vcs-Git: https://salsa.debian.org/debian/piuparts.git
 Vcs-Browser: https://salsa.debian.org/debian/piuparts
-Xs-Go-Import-Path: salsa.debian.org/debian/piuparts
+XS-Go-Import-Path: salsa.debian.org/debian/piuparts
 
 Package: piuparts
 Architecture: all
