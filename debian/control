@@ -5,7 +5,7 @@ Uploaders: Nicolas Dandrimont <olasd@debian.org>,
  Holger Levsen <holger@debian.org>
 Section: devel
 Priority: optional
-Standards-Version: 4.6.1
+Standards-Version: 4.6.2
 Rules-Requires-Root: no
 Build-Depends:
  debhelper-compat (= 12),
