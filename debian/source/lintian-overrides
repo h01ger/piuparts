@@ -1,0 +1,4 @@
+very-long-line-length-in-source-file 650 > 512 [htdocs/news.tpl:214]
+very-long-line-length-in-source-file 671 > 512 [htdocs/index.tpl:46]
+very-long-line-length-in-source-file 777 > 512 [docs/piuparts/piuparts.1.txt:27]
+very-long-line-length-in-source-file 515 > 512 [known_problems/db_setup_issue.conf:4]
