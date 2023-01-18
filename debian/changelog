@@ -1,37 +1,51 @@
-piuparts (1.1.7) UNRELEASED; urgency=medium
+piuparts (1.1.7) unstable; urgency=medium
 
-  * Start 1.1.7 development. d/changelog entries will be written on
-    release using the git commit messages.
+  [ Holger Levsen ]
+  * piuparts.py, tests and docs: handle new "non-free-firmware" section in
+    Debian. Closes: #1028661.
+  * d/control:
+    - remove version constraints on the (build-)depends on python3-debianbts,
+      debootstrap amd debsums as they are met since (at least) buster.
+    - fix cute-field warning, thanks lintian.
+    - bump standards version to 4.6.2, no changes needed.
+  * Add debian/source/lintian-overrides to override a bunch of very-long-line-
+    length-in-source-file warnings.
+  * d/piuparts.lintian-overrides: add debian-news-entry-has-unknown-version
+    0.45 due to trimmed d/chanelog in binary packages.
+  * Drop unused d./piuparts-(master|slave).lintian-overrides.
 
- -- Nicolas Dandrimont <olasd@debian.org>  Wed, 11 Jan 2023 15:57:37 +0100
+  [ Nicolas Dandrimont ]
+  * Makefile: use dpkg-parsechangelog -S instead of sed.
+
+ -- Holger Levsen <holger@debian.org>  Wed, 18 Jan 2023 22:45:04 +0100
 
 piuparts (1.1.6) unstable; urgency=medium
 
   [ David Steele ]
-  * Remove oldold*stable dists from json summary
+  * Remove oldold*stable dists from json summary.
 
   [ Holger Levsen ]
-  * custom-scripts/scripts/pre_test_root_password: fix grammar in comment
+  * custom-scripts/scripts/pre_test_root_password: fix grammar in comment.
 
   [ Luca Boccassi ]
-  * piuparts: detect files moving between / and /usr on upgrade
-  * piuparts: detect files moving between / and /usr on dist-upgrade
-  * p.conf: enable --warn-on-usr-move for bullseye/bookworm
+  * piuparts: detect files moving between / and /usr on upgrade.
+  * piuparts: detect files moving between / and /usr on dist-upgrade.
+  * p.conf: enable --warn-on-usr-move for bullseye/bookworm.
   * custom_scripts: ensure usr-is-merged/usrmerge does not fail the
-    migration test
+    migration test.
 
   [ David Steele ]
-  * Add Stable Release tasks to README_pejacevic.txt
+  * Add Stable Release tasks to README_pejacevic.txt.
 
   [ Nicolas Dandrimont ]
-  * piuparts-slave: run isort
-  * piuparts-slave: replace pipes.quote with shlex.quote
-  * piuparts.py: run isort
-  * piuparts.py: replace pipes.quote with shlex.quote
+  * piuparts-slave: run isort.
+  * piuparts-slave: replace pipes.quote with shlex.quote.
+  * piuparts.py: run isort.
+  * piuparts.py: replace pipes.quote with shlex.quote.
   * test_piuparts: replace mox3 with unittest.mock (Closes: #1028453)
-  * Migrate lintian overrides to pointed hints
-  * Simplify docs install in Makefile
-  * Use sphinxdoc dh plugin
+  * Migrate lintian overrides to pointed hints.
+  * Simplify docs install in Makefile.
+  * Use sphinxdoc dh plugin.
 
  -- Nicolas Dandrimont <olasd@debian.org>  Wed, 11 Jan 2023 13:31:41 +0100
 
