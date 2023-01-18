@@ -4,3 +4,4 @@ uses-dpkg-database-directly [etc/piuparts/scripts-debug-remove/pre_remove_prerm_
 uses-dpkg-database-directly [etc/piuparts/scripts/post_remove_exceptions]
 uses-dpkg-database-directly [etc/piuparts/scripts/pre_remove_40_find_missing_md5sums]
 uses-dpkg-database-directly [usr/sbin/piuparts]
+debian-news-entry-has-unknown-version 0.45 [usr/share/doc/piuparts/NEWS.Debian.gz:1]
