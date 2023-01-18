@@ -1,3 +1,10 @@
+piuparts (1.1.8) UNRELEASED; urgency=medium
+
+  * Start 1.1.8 development. d/changelog entries will be written on
+    release using the git commit messages.
+
+ -- Holger Levsen <holger@debian.org>  Wed, 18 Jan 2023 22:53:30 +0100
+
 piuparts (1.1.7) unstable; urgency=medium
 
   [ Holger Levsen ]
